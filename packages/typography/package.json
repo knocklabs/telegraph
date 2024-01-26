@@ -1,0 +1,34 @@
+{
+  "name": "@telegraph/typography",
+  "version": "0.0.1",
+  "description": "Shared build utilities for Telegraph",
+  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/typography",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.umdjs",
+  "module": "dist/index.es.js",
+  "types": "dist/types/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "tsc && vite build --watch",
+    "dev:local": "vite",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "export BUILD_TARGET=esm; tsc && vite build",
+    "build:cjs": "export BUILD_TARGET=cjs; tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@telegraph/build": "*",
+    "@types/react": "^18.2.48"
+  }
+}

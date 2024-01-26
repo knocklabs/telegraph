@@ -1,0 +1,33 @@
+{
+  "name": "@knocklabs/telegraph",
+  "version": "0.0.1",
+  "description": "The design system at Knock",
+  "main": "index.js",
+  "repository": "https://github.com/knocklabs/telegraph",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "yarn@1.22.19",
+  "scripts": {
+    "dev:packages": "turbo dev --filter=\"./packages/*\"",
+    "build:packages": "turbo build --filter=\"./packages/*\"",
+    "dev:examples": "turbo dev --filter=\"./examples/*\"",
+    "build:examples": "turbo build --filter=\"./examples/*\"",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "postinstall": "manypkg check",
+    "prepare": "husky"
+  },
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "dependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
+    "@manypkg/cli": "^0.21.2",
+    "husky": "^9.0.6",
+    "prettier": "^3.2.4",
+    "turbo": "^1.11.3"
+  }
+}
