@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@telegraph/stylesheet": "*",
     "@telegraph/typography": "*",
     "next": "14.0.2",
     "react": "^18.2.0",

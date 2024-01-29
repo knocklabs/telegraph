@@ -6,10 +6,17 @@
   "author": "@knocklabs",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.umdjs",
+  "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/types/index.d.ts",
   "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
   "files": [
     "dist",
     "README.md"
@@ -17,18 +24,21 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "tsc && vite build --watch",
-    "dev:local": "vite",
     "build": "yarn clean && yarn build:esm && yarn build:cjs",
     "build:esm": "export BUILD_TARGET=esm; tsc && vite build",
     "build:cjs": "export BUILD_TARGET=cjs; tsc && vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@telegraph/build": "*",
-    "@types/react": "^18.2.48"
+    "@telegraph/postcss-config": "*",
+    "@telegraph/tailwind-config": "*",
+    "@telegraph/vite-config": "*",
+    "@types/react": "^18.2.48",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

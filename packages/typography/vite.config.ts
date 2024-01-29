@@ -1,4 +1,4 @@
-import { config } from "@telegraph/build";
-import { defineConfig} from 'vite'
+import { viteConfig } from "@telegraph/vite-config";
+import { defineConfig } from "vite";
 
-export default defineConfig(config);
+export default defineConfig(viteConfig);
