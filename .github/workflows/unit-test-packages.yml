@@ -21,7 +21,7 @@ jobs:
        - name: Install Dependencies
          run: yarn --frozen-lockfile
        - name: Build Packages
-         run: yarn build
+         run: yarn build:packages
        - name: Run Tests
          run: yarn test
        # TODO: Collect Coverage and display in repo
