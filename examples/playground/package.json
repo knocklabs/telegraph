@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@telegraph/tailwind-config": "*",
     "@telegraph/typography": "*",
     "next": "14.0.2",
     "react": "^18.2.0",

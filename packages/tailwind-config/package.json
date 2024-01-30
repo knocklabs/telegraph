@@ -5,20 +5,22 @@
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/tailwind-config",
   "main": "dist/index.js",
-  "files": [
-    "dist/*",
-    "style.css"
-  ],
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "require": "./dist/index.js",
+      "default": "./dist/style.css"
     },
-    "./style.css": "./style.css"
+    "./style.css": "./dist/style.css"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc"
+    "build": "yarn clean && tsc && cp ./src/style.css ./dist/style.css"
   },
   "dependencies": {
     "tailwindcss": "^3.4.1"

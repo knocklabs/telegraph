@@ -5,7 +5,6 @@
   "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/typography",
   "author": "@knocklabs",
   "license": "MIT",
-  "type": "module",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/types/index.d.ts",
@@ -13,7 +12,8 @@
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.umd.js",
+      "default": "./dist/style.css"
     },
     "./style.css": "./dist/style.css"
   },
@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "tsc && vite build --watch",
+    "dev": "tsc && vite build --watch --emptyOutDir false",
     "build": "yarn clean && yarn build:esm && yarn build:cjs",
     "build:esm": "export BUILD_TARGET=esm; tsc && vite build",
     "build:cjs": "export BUILD_TARGET=cjs; tsc && vite build",

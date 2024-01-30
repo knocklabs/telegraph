@@ -1,9 +1,15 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  content: ["./src/**/*.{jsx,ts,jsx,tsx}", "../../packages/**/*.{jsx,ts,jsx,tsx}"],
+  content: [
+    "./src/**/*.{jsx,ts,jsx,tsx}",
+  ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        green: "var(--telegraph-green)",
+      },
+    },
   },
   plugins: [],
 } satisfies Config;
