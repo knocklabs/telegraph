@@ -27,6 +27,9 @@
     "build": "yarn clean && yarn build:esm && yarn build:cjs",
     "build:esm": "export BUILD_TARGET=esm; tsc && vite build",
     "build:cjs": "export BUILD_TARGET=cjs; tsc && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
     "preview": "vite preview"
   },
   "peerDependencies": {
@@ -36,9 +39,11 @@
   "devDependencies": {
     "@telegraph/postcss-config": "*",
     "@telegraph/tailwind-config": "*",
+    "@telegraph/test": "*",
     "@telegraph/vite-config": "*",
     "@types/react": "^18.2.48",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  }
+  },
+  "dependencies": {}
 }
