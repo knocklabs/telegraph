@@ -22,6 +22,7 @@
     "coverage": "turbo coverage --filter=\"./packages/*\"",
     "lint": "turbo lint",
     "format": "turbo format",
+    "format:check": "turbo format:check",
     "postinstall": "manypkg check",
     "prepare": "husky"
   },

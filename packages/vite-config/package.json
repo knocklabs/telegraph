@@ -5,9 +5,13 @@
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
+  "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc -b"
+    "build": "yarn clean && tsc -b",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
+    "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.2.1",
@@ -15,6 +19,9 @@
     "vite-plugin-dts": "^3.7.2"
   },
   "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/prettier-config": "*",
     "typescript": "^5.3.3"
   },
   "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/vite-config"

@@ -21,6 +21,7 @@
     "dist",
     "README.md"
   ],
+  "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "tsc && vite build --watch --emptyOutDir false",
@@ -30,11 +31,19 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
+            "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
+
+
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/core": "*",
     "@telegraph/postcss-config": "*",
+    "@telegraph/prettier-config": "*",
     "@telegraph/tailwind-config": "*",
     "@telegraph/vite-config": "*",
     "@telegraph/vitest-config": "*",

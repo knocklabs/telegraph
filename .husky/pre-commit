@@ -1,2 +1,2 @@
 yarn lint
-# yarn format
+yarn format

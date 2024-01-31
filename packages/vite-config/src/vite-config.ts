@@ -1,5 +1,5 @@
-import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
 
 export default {
   build: {
@@ -12,7 +12,6 @@ export default {
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
-        interop: "compat",
         globals: {
           react: "React",
         },

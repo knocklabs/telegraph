@@ -1,0 +1,30 @@
+{
+  "name": "@telegraph/prettier-config",
+  "version": "0.0.1",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/prettier-config",
+  "main": "dist/index.js",
+  "files": [
+    "dist/*",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn clean && tsc"
+  },
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "prettier": "^3.2.4"
+  },
+  "devDependencies": {
+    "@knocklabs/typescript-config": "^0.0.2",
+    "typescript": "^5.3.3"
+  }
+}
