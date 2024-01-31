@@ -20,12 +20,14 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc"
+    "build": "yarn clean && tsc",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
     "typescript": "^5.3.3"
   }
