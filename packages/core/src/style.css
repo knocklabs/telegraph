@@ -1,10 +1,7 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
-/*
- * Default variables for Telegraph
- */
+/* Default variables for Telegraph Design System */
 :root {
     --telegraph-green: green;
 }

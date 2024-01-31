@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev:examples": "next dev",
+    "build:examples": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@telegraph/core": "*",
     "@telegraph/tailwind-config": "*",
     "@telegraph/typography": "*",
     "next": "14.0.2",

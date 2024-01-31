@@ -1,6 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "dev": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
@@ -9,15 +14,24 @@
       "dependsOn": ["^build:packages"],
       "outputs": ["packages/**/dist/**"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
+    "build:config": {
+      "dependsOn": ["^build:config"],
+      "outputs": ["packages/**/dist/**"]
     },
-    "dev": {
+    "dev:packages": {
+      "dependsOn": ["^build:config"],
       "cache": false,
       "persistent": true
     },
+    "dev:examples": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
     "test": {
-      "dependsOn": ["build:packages"]
+      "dependsOn": ["build"]
     },
     "test:watch": {
       "cache": false

@@ -1,0 +1,30 @@
+{
+  "name": "@telegraph/core",
+  "version": "0.0.1",
+  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/core",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "default": "./dist/style.css"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "tsc && vite build --watch --emptyOutDir false",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "export BUILD_TARGET=esm; tsc && vite build",
+    "build:cjs": "export BUILD_TARGET=cjs; tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@telegraph/postcss-config": "*",
+    "@telegraph/tailwind-config": "*",
+    "@telegraph/vite-config": "*"
+  }
+}

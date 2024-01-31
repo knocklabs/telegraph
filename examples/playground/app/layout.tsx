@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
-
-// TODO: This should probably come from a different package
-// coming from tailwind-config feels not ergonomic
-import "@telegraph/tailwind-config/style.css";
-import "@telegraph/typography/style.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

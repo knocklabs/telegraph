@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc && cp ./src/style.css ./dist/style.css"
+    "build": "yarn clean && tsc"
   },
   "dependencies": {
     "tailwindcss": "^3.4.1"

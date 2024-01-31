@@ -33,6 +33,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@telegraph/core": "*",
     "@telegraph/postcss-config": "*",
     "@telegraph/tailwind-config": "*",
     "@telegraph/vite-config": "*",
