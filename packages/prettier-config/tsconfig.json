@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@knocklabs/typescript-config/base.json",
+  "display": "@telegraph/prettier-config",
+  "compilerOptions": {
+    "outDir": "dist",
+    "allowJs": true
+  },
+}

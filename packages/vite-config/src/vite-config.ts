@@ -1,5 +1,5 @@
-import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
 
 export default {
   build: {
