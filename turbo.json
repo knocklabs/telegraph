@@ -8,15 +8,20 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "cache": false
     },
     "build:packages": {
       "dependsOn": ["^build:packages"],
-      "outputs": ["packages/**/dist/**"]
+      "inputs": ["src/**"],
+      "outputs": ["dist/**"],
+      "cache": false
     },
     "build:config": {
       "dependsOn": ["^build:config"],
-      "outputs": ["packages/**/dist/**"]
+      "inputs": ["src/**"],
+      "outputs": ["dist/**"],
+      "cache": false
     },
     "dev:packages": {
       "dependsOn": ["^build:config"],
@@ -36,6 +41,8 @@
     "test:watch": {
       "cache": false
     },
-    "coverage": {}
+    "coverage": {
+      "cache": false
+    }
   }
 }
