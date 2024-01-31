@@ -1,0 +1,41 @@
+{
+  "name": "@telegraph/vitest-config",
+  "version": "0.0.1",
+  "description": "Shared test utilities for Telegraph",
+  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/vitest-config",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./setup": "./src/vitest-setup/index.ts"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn clean && tsc"
+  },
+  "dependencies": {
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^24.0.0",
+    "vitest": "^1.2.2",
+    "vitest-axe": "^0.1.0"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

@@ -1,0 +1,28 @@
+name: Unit Test Packages
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+   unit-test-packages:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v4
+       - name: Setup Node
+         uses: actions/setup-node@v4
+         with:
+          node-version-file: "package.json"
+       - name: Install Dependencies
+         run: yarn --frozen-lockfile
+       - name: Build Packages
+         run: yarn build:packages
+       - name: Run Tests
+         run: yarn test
+       # TODO: Collect Coverage and display in repo
+

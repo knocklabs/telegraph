@@ -1,9 +1,0 @@
-{
-  "name": "@telegraph/test",
-  "version": "0.0.1",
-  "description": "Shared test utilities for Telegraph",
-  "main": "src/index.js",
-  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/test",
-  "author": "@knocklabs",
-  "license": "MIT"
-}

@@ -8,11 +8,17 @@
   "license": "MIT",
   "private": true,
   "packageManager": "yarn@1.22.19",
+  "engines": {
+    "node": "20.9.0"
+  },
   "scripts": {
     "dev:packages": "turbo dev --filter=\"./packages/*\"",
     "build:packages": "turbo build --filter=\"./packages/*\"",
     "dev:examples": "turbo dev --filter=\"./examples/*\"",
     "build:examples": "turbo build --filter=\"./examples/*\"",
+    "test": "turbo test --filter=\"./packages/*\"",
+    "test:watch": "turbo test:watch --filter=\"./packages/*\"",
+    "coverage": "turbo coverage --filter=\"./packages/*\"",
     "lint": "turbo lint",
     "format": "turbo format",
     "postinstall": "manypkg check",
