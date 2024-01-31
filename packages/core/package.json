@@ -23,6 +23,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "*",
     "@telegraph/tailwind-config": "*",
     "@telegraph/vite-config": "*"

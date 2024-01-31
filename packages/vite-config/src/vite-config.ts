@@ -12,7 +12,6 @@ export default {
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
-        interop: "compat",
         globals: {
           react: "React",
         },

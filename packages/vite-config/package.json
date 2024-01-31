@@ -15,6 +15,7 @@
     "vite-plugin-dts": "^3.7.2"
   },
   "devDependencies": {
+    "@knocklabs/typescript-config": "^0.0.2",
     "typescript": "^5.3.3"
   },
   "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/vite-config"

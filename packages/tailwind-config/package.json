@@ -26,6 +26,7 @@
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
+    "@knocklabs/typescript-config": "^0.0.2",
     "typescript": "^5.3.3"
   }
 }

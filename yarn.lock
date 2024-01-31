@@ -668,6 +668,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@knocklabs/typescript-config@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@knocklabs/typescript-config/-/typescript-config-0.0.2.tgz#bb1a59be87f99a886cc249274fce444ea4e6437d"
+  integrity sha512-TxiQVn/f7eck5ssTFP2Iz12NQV30ZFT0wm2U75HsHvm/rV0VBaH1Q+7MBJBroP1k+ge2yG1ToFPPVGwkEZfGFg==
+
 "@manypkg/cli@^0.21.2":
   version "0.21.2"
   resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.21.2.tgz#35e1167b386cfb1d2776e0b188492da75ba74336"
