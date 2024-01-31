@@ -1,24 +1,21 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "React Library",
+  "display": "tailwind-config",
   "compilerOptions": {
-    "jsx": "react-jsx",
     "outDir": "dist",
+    "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
-    "esModuleInterop": true,
     "incremental": false,
     "isolatedModules": true,
     "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "module": "esnext",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext",
+    "target": "esnext",
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.*", "node_modules", "dist", "*.css"]
 }

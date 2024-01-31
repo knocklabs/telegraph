@@ -13,9 +13,10 @@
   },
   "scripts": {
     "dev:packages": "turbo dev --filter=\"./packages/*\"",
-    "build:packages": "turbo build --filter=\"./packages/*\"",
-    "dev:examples": "turbo dev --filter=\"./examples/*\"",
-    "build:examples": "turbo build --filter=\"./examples/*\"",
+    "build:packages": "turbo build --filter=\"./packages/*\" --filter=\"!config\"",
+    "build:config": "turbo build --filter=\"./packages/*-config\"",
+    "dev:examples": "turbo dev:examples --filter=\"./examples/*\"",
+    "build:examples": "turbo build:examples --filter=\"./examples/*\"",
     "test": "turbo test --filter=\"./packages/*\"",
     "test:watch": "turbo test:watch --filter=\"./packages/*\"",
     "coverage": "turbo coverage --filter=\"./packages/*\"",

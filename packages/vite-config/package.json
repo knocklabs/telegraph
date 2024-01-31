@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "author": "@knocklabs",
   "license": "MIT",
-  "main": "src/index.js",
   "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn clean && tsc -b"
+  },
   "dependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.0.12",

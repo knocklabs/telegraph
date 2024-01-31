@@ -20,5 +20,5 @@
     "target": "ESNext",
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.*", "node_modules", "dist", "*.css"]
+  "exclude": ["src/**/*.test.*", "node_modules", "dist", "*.css"],
 }

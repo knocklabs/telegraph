@@ -16,6 +16,8 @@
     "@telegraph/tailwind-config": "*",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
+    "postcss-combine-duplicated-selectors": "^10.0.3",
+    "postcss-discard-empty": "^6.0.1",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {

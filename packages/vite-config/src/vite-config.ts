@@ -1,12 +1,12 @@
-import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
+import react from "@vitejs/plugin-react";
 
 export default {
   build: {
     lib: {
       entry: "src/index.ts",
       name: "telegraph",
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format: string) => `index.${format}.js`,
     },
     sourcemap: true,
     rollupOptions: {
@@ -22,7 +22,6 @@ export default {
   plugins: [
     dts({
       include: ["src/**/*"],
-      outputDir: "dist/types",
     }),
     react(),
   ],

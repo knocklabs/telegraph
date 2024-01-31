@@ -1,2 +1,8 @@
-/* import all telegraph stylesheets here */
-@import "@telegraph/typography/style.css"
+@import "@telegraph/core";
+@import "@telegraph/typography";
+
+/*
+ * Overrides could go here, i.e. custom theme
+ * */
+:root {
+}
