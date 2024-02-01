@@ -12,10 +12,6 @@ jobs:
   setup-files:
     name: Setup Files
     uses: ./.github/workflows/setup-files.yml
-  build-packages:
-    name: Build Packages
-    needs: [setup-files]
-    uses: ./.github/workflows/build-packages.yml
   format:
     name: Check Project Formatting
     needs: [setup-files]
