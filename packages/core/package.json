@@ -1,7 +1,7 @@
 {
   "name": "@telegraph/core",
   "version": "0.0.1",
-  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/core",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/core",
   "author": "@knocklabs",
   "license": "MIT",
   "exports": {
