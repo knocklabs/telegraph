@@ -27,4 +27,4 @@ jobs:
   unit-test-packages:
     name: Unit Test Packages
     needs: [install-dependencies, build-packages]
-    uses: ./.github/workflows/unit-test-packages.yml-
+    uses: ./.github/workflows/unit-test-packages.yml
