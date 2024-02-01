@@ -1,0 +1,26 @@
+name: Code Checks
+
+on:
+  merge_group:
+  pull_request:
+
+concurrency:
+  group: code-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup-files:
+    name: Setup Files
+    uses: ./.github/workflows/setup-files.yml
+  format:
+    name: Check Project Formatting
+    needs: [setup-files]
+    uses: ./.github/workflows/format.yml
+  lint:
+    name: Lint Project
+    needs: [setup-files]
+    uses: ./.github/workflows/lint.yml
+  unit-test-packages:
+    name: Unit Test Packages
+    needs: [setup-files]
+    uses: ./.github/workflows/unit-test-packages.yml

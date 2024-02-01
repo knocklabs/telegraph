@@ -1,0 +1,32 @@
+name: Setup Files
+
+on:
+  workflow_call:
+
+concurrency:
+  group: setup-files-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Latest
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+          cache: 'yarn'
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile --prefer-offline
+      - name: Cache Build
+        id: build-packages-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/dist
+          key: build:packages-${{ hashFiles('packages') }}
+      - name: Build Packages
+        if: steps.build-packages-cache.outputs.cache-hit != 'true'
+        run: yarn build:packages

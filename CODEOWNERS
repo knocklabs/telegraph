@@ -1,0 +1,5 @@
+# General Codeowners, used for PR approval.
+# Each package can eventually contain a CODEOWNERS
+# file based on the original author of the package
+
+* @kylemcd
