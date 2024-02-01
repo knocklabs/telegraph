@@ -23,4 +23,4 @@ jobs:
        - name: Run Commitlint on PR Title
          uses: JulienKode/pull-request-name-linter-action@v0.1.2
          with:
-           configuration-path: ./.commitlint.config.js
+           configuration-path: ./commitlint.config.js
