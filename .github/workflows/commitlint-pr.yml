@@ -20,6 +20,4 @@ jobs:
        - name: Install Commitlint CLI
          uses: yarn add @commitlint/config-conventional --frozen-lockfile
        - name: Run Commitlint on PR Title
-         uses: amannn/action-semantic-pull-request@v1.2.0
-         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         uses: JulienKode/pull-request-name-linter-action@v0.1.2
