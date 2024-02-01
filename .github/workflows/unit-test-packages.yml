@@ -26,7 +26,7 @@ jobs:
              **/dist
            key: build:packages-${{ hashFiles('packages') }}
        - name: Install Dependencies
-         run: yarn --frozen-lockfile --prefer-offline
+         run: yarn --immutable
        - name: Build Packages
          if: steps.build-packages-cache.outputs.cache-hit != 'true'
          run: yarn build:packages
