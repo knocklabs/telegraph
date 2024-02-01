@@ -25,7 +25,7 @@ jobs:
           path: |
             ./node_modules
             **/node_modules
-        key: node_modules-${{ hashFiles('yarn.lock') }}
+          key: node_modules-${{ hashFiles('yarn.lock') }}
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile

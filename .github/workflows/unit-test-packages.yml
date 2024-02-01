@@ -24,14 +24,14 @@ jobs:
            path: |
              ./node_modules
              **/node_modules
-         key: node_modules-${{ hashFiles('yarn.lock') }}
+           key: node_modules-${{ hashFiles('yarn.lock') }}
        - name: Cache Build
          id: build-packages-cache
          uses: actions/cache@v3
          with:
            path: |
              **/dist
-         key: build:packages
+           key: build:packages-${{ hashFiles('packages') }}
        - name: Install Dependencies
          if: steps.dependencies-cache.outputs.cache-hit != 'true'
          run: yarn --frozen-lockfile
