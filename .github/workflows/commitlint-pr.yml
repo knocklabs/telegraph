@@ -19,6 +19,8 @@ jobs:
           node-version-file: "package.json"
           cache: 'yarn'
        - name: Install Commitlint CLI
-         run: yarn add @commitlint/config-conventional --frozen-lockfile -W
+         run: yarn
        - name: Run Commitlint on PR Title
          uses: JulienKode/pull-request-name-linter-action@v0.1.2
+         with:
+           configuration-path: ./.commitlint.config.js
