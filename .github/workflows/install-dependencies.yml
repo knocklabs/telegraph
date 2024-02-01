@@ -1,0 +1,31 @@
+name: Install Dependencies
+
+on:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install-dependencies:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Latest
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+         node-version-file: "package.json"
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+        path: |
+          ./node_modules
+          **/node_modules
+        key: node_modules-${{ hashFiles('yarn.lock') }}
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile

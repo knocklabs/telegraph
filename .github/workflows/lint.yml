@@ -1,8 +1,7 @@
 name: Lint Project
 
 on:
-  pull_request:
-  workflow_dispatch:
+  workflow_call:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,9 +17,26 @@ jobs:
          uses: actions/setup-node@v4
          with:
           node-version-file: "package.json"
+       - name: Cache Dependencies
+         id: dependencies-cache
+         uses: actions/cache/restore@v3
+         with:
+         path: |
+          ./node_modules
+          **/node_modules
+         key: node_modules-${{ hashFiles('yarn.lock') }}
+       - name: Cache Build
+         id: build-packages-cache
+         uses: actions/cache@v3
+         with:
+         path: |
+          **/dist
+         key: build:packages
        - name: Install Dependencies
+         if: steps.dependencies-cache.outputs.cache-hit != 'true'
          run: yarn --frozen-lockfile
        - name: Build Packages
+         if: steps.build-packages-cache.outputs.cache-hit != 'true'
          run: yarn build:packages
        - name: Run Lint
          run: yarn lint
