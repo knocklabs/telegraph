@@ -34,6 +34,7 @@
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
+    "eslint": "^8.56.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
   }
