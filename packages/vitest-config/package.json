@@ -2,7 +2,7 @@
   "name": "@telegraph/vitest-config",
   "version": "0.0.1",
   "description": "Shared test utilities for Telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/vitest-config",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/vitest-config",
   "author": "@knocklabs",
   "license": "MIT",
   "type": "module",

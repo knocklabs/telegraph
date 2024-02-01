@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "@knocklabs",
   "license": "MIT",
-  "repository": "https://github.com/knocklabs/telegraph/tree/master/packages/prettier-config",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/prettier-config",
   "main": "dist/index.js",
   "files": [
     "dist/*",
