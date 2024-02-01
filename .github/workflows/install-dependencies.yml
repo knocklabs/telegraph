@@ -17,15 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-         node-version-file: "package.json"
-      - name: Cache Dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./node_modules
-            **/node_modules
-          key: node_modules-${{ hashFiles('yarn.lock') }}
+          node-version-file: "package.json"
+          cache: 'yarn'
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile

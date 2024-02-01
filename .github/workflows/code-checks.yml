@@ -4,6 +4,10 @@ on:
   merge_group:
   pull_request:
 
+concurrency:
+  group: code-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   install-dependencies:
     name: Install Dependencies
