@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/vitest-config",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Shared test utilities for Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/vitest-config",
   "author": "@knocklabs",
@@ -27,6 +27,7 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "dependencies": {
+    "@testing-library/dom": "^9.3.4",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
     "@vitest/coverage-v8": "^1.2.2",
@@ -37,7 +38,7 @@
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/prettier-config": "*",
+    "@telegraph/prettier-config": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3"

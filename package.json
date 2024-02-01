@@ -7,7 +7,7 @@
   "author": "@knocklabs",
   "license": "MIT",
   "private": true,
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@4.1.0",
   "engines": {
     "node": "20.9.0"
   },
@@ -23,21 +23,19 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "format:check": "turbo format:check",
+    "release": "turbo build:packages && changeset version && changeset publish",
     "postinstall": "manypkg check",
     "prepare": "husky"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "examples/*"
-    ],
-    "nohoist": [
-      "@telegraph/**",
-      "**/@telegraph/**"
-    ]
-  },
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "manypkg": {
-    "defaultBranch": "main"
+    "defaultBranch": "main",
+    "ignoredRules": [
+      "INTERNAL_MISMATCH"
+    ]
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.5.0",
