@@ -2,6 +2,18 @@ name: Commitlint PR
 
 on:
   pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions:
+  pull-requests: read
 
 concurrency:
   group: commitlint-pr-${{ github.workflow }}-${{ github.ref }}
@@ -11,16 +23,7 @@ jobs:
   commit-lint-pr:
     runs-on: ubuntu-latest
     steps:
-       - name: Checkout
-         uses: actions/checkout@v4
-       - name: Setup Node
-         uses: actions/setup-node@v4
-         with:
-          node-version-file: "package.json"
-          cache: 'yarn'
-       - name: Install Commitlint CLI
-         run: yarn
-       - name: Run Commitlint on PR Title
-         uses: JulienKode/pull-request-name-linter-action@v0.1.2
-         with:
-           configuration-path: ./commitlint.config.js
+      - name: Run Commitlint on PR Title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
