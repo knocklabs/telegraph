@@ -13,6 +13,11 @@ jobs:
     steps:
        - name: Checkout
          uses: actions/checkout@v4
+       - name: Setup Node
+         uses: actions/setup-node@v4
+         with:
+          node-version-file: "package.json"
+          cache: 'yarn'
        - name: Install Commitlint CLI
          run: yarn add @commitlint/config-conventional --frozen-lockfile -W
        - name: Run Commitlint on PR Title
