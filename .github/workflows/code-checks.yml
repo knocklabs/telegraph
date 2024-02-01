@@ -9,22 +9,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  install-dependencies:
-    name: Install Dependencies
-    uses: ./.github/workflows/install-dependencies.yml
+  setup-files:
+    name: Setup Files
+    uses: ./.github/workflows/setup-files.yml
   build-packages:
     name: Build Packages
-    needs: [install-dependencies]
+    needs: [setup-files]
     uses: ./.github/workflows/build-packages.yml
   format:
     name: Check Project Formatting
-    needs: [install-dependencies, build-packages]
+    needs: [setup-files]
     uses: ./.github/workflows/format.yml
   lint:
     name: Lint Project
-    needs: [install-dependencies, build-packages]
+    needs: [setup-files]
     uses: ./.github/workflows/lint.yml
   unit-test-packages:
     name: Unit Test Packages
-    needs: [install-dependencies, build-packages]
+    needs: [setup-files]
     uses: ./.github/workflows/unit-test-packages.yml
