@@ -14,6 +14,6 @@ jobs:
        - name: Checkout
          uses: actions/checkout@v4
        - name: Install Commitlint CLI
-         run: yarn add @commitlint/config-conventional --frozen-lockfile
+         run: yarn add @commitlint/config-conventional --frozen-lockfile -W
        - name: Run Commitlint on PR Title
          uses: JulienKode/pull-request-name-linter-action@v0.1.2
