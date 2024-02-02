@@ -24,6 +24,7 @@ jobs:
         run: yarn --immutable
       - name: Create .yarnc File
         run: |
+          touch ~/.yarnrc
           echo
             "
               npmRegistryServer: \"https://npm.pkg.github.com\"
