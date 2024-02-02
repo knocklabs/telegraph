@@ -5,6 +5,10 @@
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
+  "files": [
+    "dist/*",
+    "README.md"
+  ],
   "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",

@@ -23,7 +23,8 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "format:check": "turbo format:check",
-    "release": "yarn build:packages && changeset version && changeset publish",
+    "release": "yarn build:packages && yarn release:publish && yarn changeset tag",
+    "release:publish": "yarn workspaces foreach --no-private --from '@telegraph/*' npm publish --access public --tolerate-republish",
     "postinstall": "manypkg check",
     "prepare": "husky"
   },
