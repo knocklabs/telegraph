@@ -1718,6 +1718,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/tokens@workspace:packages/tokens":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/tokens@workspace:packages/tokens"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/prettier-config": "workspace:^"
+    eslint: "npm:^8.56.0"
+    typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/typography@workspace:^, @telegraph/typography@workspace:packages/typography":
   version: 0.0.0-use.local
   resolution: "@telegraph/typography@workspace:packages/typography"

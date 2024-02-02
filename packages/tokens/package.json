@@ -1,0 +1,32 @@
+{
+  "name": "@telegraph/tokens",
+  "version": "0.0.0",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tokens",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/style.css"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "prettier": "@telegraph/prettier-config",
+  "scripts": {
+    "generate-css-file": "node ./scripts/generate-css-file.js ../src/tokens/index.js style"
+  },
+  "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/prettier-config": "workspace:^",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  }
+}
