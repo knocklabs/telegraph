@@ -1125,6 +1125,9 @@ __metadata:
     "@commitlint/cli": "npm:^18.6.0"
     "@commitlint/config-conventional": "npm:^18.6.0"
     "@manypkg/cli": "npm:^0.21.2"
+    "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
+    "@typescript-eslint/parser": "npm:^6.20.0"
+    eslint-plugin-turbo: "npm:^1.12.2"
     husky: "npm:^9.0.6"
     prettier: "npm:^3.2.4"
     turbo: "npm:^1.11.3"
@@ -2006,7 +2009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^6.10.0, @typescript-eslint/eslint-plugin@npm:^6.5.0":
+"@typescript-eslint/eslint-plugin@npm:^6.10.0, @typescript-eslint/eslint-plugin@npm:^6.20.0, @typescript-eslint/eslint-plugin@npm:^6.5.0":
   version: 6.20.0
   resolution: "@typescript-eslint/eslint-plugin@npm:6.20.0"
   dependencies:
@@ -2031,7 +2034,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.4.2 || ^6.0.0, @typescript-eslint/parser@npm:^6.10.0, @typescript-eslint/parser@npm:^6.5.0":
+"@typescript-eslint/parser@npm:^5.4.2 || ^6.0.0, @typescript-eslint/parser@npm:^6.10.0, @typescript-eslint/parser@npm:^6.20.0, @typescript-eslint/parser@npm:^6.5.0":
   version: 6.20.0
   resolution: "@typescript-eslint/parser@npm:6.20.0"
   dependencies:
@@ -2200,8 +2203,8 @@ __metadata:
   linkType: hard
 
 "@vercel/style-guide@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@vercel/style-guide@npm:5.1.0"
+  version: 5.2.0
+  resolution: "@vercel/style-guide@npm:5.2.0"
   dependencies:
     "@babel/core": "npm:^7.22.11"
     "@babel/eslint-parser": "npm:^7.22.11"
@@ -2236,7 +2239,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10c0/a28cdc1987257a42189746874bdc34c3e9f0b16ef26dfdeded120c6dde7ee436e876459182471974b850d9c66f882fb9e3c80112f19b7a8822ddcd548ec69fe0
+  checksum: 10c0/b3c7ef6952df05d90d0786269d4139b042be29de6f5c065c117b9ef682ee47c8f6c903960c6446cb14d0959161ed6ea21e74f647e1e4ae5901cbfe6ec482afe9
   languageName: node
   linkType: hard
 
@@ -2987,9 +2990,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001578, caniuse-lite@npm:^1.0.30001580":
-  version: 1.0.30001582
-  resolution: "caniuse-lite@npm:1.0.30001582"
-  checksum: 10c0/6fe9dede07b61755a1ca55e7e6381d113a166942196c98828038524eb0adc8f0001d492a7c0e81a568a6c6edfe76051e0a0dc5a435d72a77d351144be31998ec
+  version: 1.0.30001583
+  resolution: "caniuse-lite@npm:1.0.30001583"
+  checksum: 10c0/9ce61437e7a0c8e69bdb3480962dca7d7a9e9fa8d7c56ae411454d8b101d7c83d71f6c7fa74450c131f6c14e35e347042b3e1787b15edbfaba0e05fd75ab2625
   languageName: node
   linkType: hard
 
@@ -3682,9 +3685,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.648":
-  version: 1.4.653
-  resolution: "electron-to-chromium@npm:1.4.653"
-  checksum: 10c0/22c9dbe6d9a756caf7909d87fd93d00ca0043158a82f1ba87e855e09de295da6d3c1346feab89e49119b5043bb4c4f56f868fd184e6a7654b088bd089b451b3a
+  version: 1.4.656
+  resolution: "electron-to-chromium@npm:1.4.656"
+  checksum: 10c0/3b4eafac9ef11bbc33632d4d2c038eab921e5b3e85526a118b9a6bc06d3c93d7ad1b4e8cefdf12a4f96166ccc99df3ae1075911070be7c9d4fb82f29995ecb44
   languageName: node
   linkType: hard
 
@@ -4242,7 +4245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-turbo@npm:1.12.2":
+"eslint-plugin-turbo@npm:1.12.2, eslint-plugin-turbo@npm:^1.12.2":
   version: 1.12.2
   resolution: "eslint-plugin-turbo@npm:1.12.2"
   dependencies:
@@ -5058,9 +5061,11 @@ __metadata:
   linkType: hard
 
 "has-tostringtag@npm:^1.0.0, has-tostringtag@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "has-tostringtag@npm:1.0.1"
-  checksum: 10c0/fa0549fe8fc332f2d56fa9e947a030d34e5b304613b448edf93fbd26c5cd27c2201edd9817dd0ea2072001a67615e9a30a3753c765521a306e7a0bc3241c7650
+  version: 1.0.2
+  resolution: "has-tostringtag@npm:1.0.2"
+  dependencies:
+    has-symbols: "npm:^1.0.3"
+  checksum: 10c0/a8b166462192bafe3d9b6e420a1d581d93dd867adb61be223a17a8d6dad147aa77a8be32c961bb2f27b3ef893cae8d36f564ab651f5e9b7938ae86f74027c48c
   languageName: node
   linkType: hard
 
@@ -5568,11 +5573,11 @@ __metadata:
   linkType: hard
 
 "is-typed-array@npm:^1.1.10, is-typed-array@npm:^1.1.12, is-typed-array@npm:^1.1.9":
-  version: 1.1.12
-  resolution: "is-typed-array@npm:1.1.12"
+  version: 1.1.13
+  resolution: "is-typed-array@npm:1.1.13"
   dependencies:
-    which-typed-array: "npm:^1.1.11"
-  checksum: 10c0/9863e9cc7223c6fc1c462a2c3898a7beff6b41b1ee0fabb03b7d278ae7de670b5bcbc8627db56bb66ed60902fa37d53fe5cce0fd2f7d73ac64fe5da6f409b6ae
+    which-typed-array: "npm:^1.1.14"
+  checksum: 10c0/fa5cb97d4a80e52c2cc8ed3778e39f175a1a2ae4ddf3adae3187d69586a1fd57cfa0b095db31f66aa90331e9e3da79184cea9c6abdcd1abc722dc3c3edd51cca
   languageName: node
   linkType: hard
 
@@ -9442,7 +9447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which-typed-array@npm:^1.1.11, which-typed-array@npm:^1.1.13, which-typed-array@npm:^1.1.9":
+"which-typed-array@npm:^1.1.13, which-typed-array@npm:^1.1.14, which-typed-array@npm:^1.1.9":
   version: 1.1.14
   resolution: "which-typed-array@npm:1.1.14"
   dependencies:
