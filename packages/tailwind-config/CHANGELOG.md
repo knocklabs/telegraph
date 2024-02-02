@@ -1,5 +1,11 @@
 # @telegraph/tailwind-config
 
+## 0.0.5
+
+### Patch Changes
+
+- [#17](https://github.com/knocklabs/telegraph/pull/17) [`615c6c4`](https://github.com/knocklabs/telegraph/commit/615c6c4f835819933ab292ecbdf12cba3b95f446) Thanks [@kylemcd](https://github.com/kylemcd)! - bump versions
+
 ## 0.0.4
 
 ### Patch Changes
