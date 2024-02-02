@@ -1,5 +1,11 @@
 # @telegraph/prettier-config
 
+## 0.0.3
+
+### Patch Changes
+
+- [#13](https://github.com/knocklabs/telegraph/pull/13) [`cb2e132`](https://github.com/knocklabs/telegraph/commit/cb2e1322647c2f86c72bca4a1fe342c530ba9feb) Thanks [@kylemcd](https://github.com/kylemcd)! - bump versions
+
 ## 0.0.2
 
 ### Patch Changes
