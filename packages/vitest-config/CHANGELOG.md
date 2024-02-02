@@ -1,5 +1,11 @@
 # @telegraph/vitest-config
 
+## 0.0.4
+
+### Patch Changes
+
+- [#15](https://github.com/knocklabs/telegraph/pull/15) [`4c8c13d`](https://github.com/knocklabs/telegraph/commit/4c8c13d877b3065d03c156519646a5641185da17) Thanks [@kylemcd](https://github.com/kylemcd)! - bump versions
+
 ## 0.0.3
 
 ### Patch Changes
