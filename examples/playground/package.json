@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/playground",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev:examples": "next dev",
@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@telegraph/core": "*",
-    "@telegraph/tailwind-config": "*",
-    "@telegraph/typography": "*",
+    "@telegraph/core": "workspace:^",
+    "@telegraph/tailwind-config": "workspace:^",
+    "@telegraph/typography": "workspace:^",
     "next": "14.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -20,7 +20,7 @@
     "@types/node": "^20",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
     "typescript": "^5.3.3"
   },

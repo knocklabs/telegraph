@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/postcss-config",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/postcss-config",
@@ -17,7 +17,7 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "dependencies": {
-    "@telegraph/tailwind-config": "*",
+    "@telegraph/tailwind-config": "workspace:^",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
     "postcss-combine-duplicated-selectors": "^10.0.3",
@@ -27,7 +27,8 @@
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/prettier-config": "*",
+    "@telegraph/prettier-config": "workspace:^",
+    "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   }
 }
