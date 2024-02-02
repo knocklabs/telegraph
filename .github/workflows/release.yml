@@ -22,6 +22,13 @@ jobs:
           cache: 'yarn'
       - name: Install Dependencies
         run: yarn --immutable
+      - name: Create .yarnc File
+        run: |
+          echo
+            "
+              npmRegistryServer: \"https://npm.pkg.github.com\"
+              npmAuthToken: "${{ secrets.NPM_TOKEN }}"
+            " >> ~/.yarnrc
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
