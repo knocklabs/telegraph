@@ -26,11 +26,9 @@ jobs:
       - name: Creating .yarnrc
         run: |
           cat << EOF > "$HOME/.yarnrc"
-            npmScopes:
-              telegraph:
-                npmAlwaysAuth: true
-                npmPublishRegistry: "https://registry.npmjs.org"
-                npmAuthToken: $NPM_TOKEN
+              npmAlwaysAuth: true
+              npmPublishRegistry: "https://registry.npmjs.org"
+              npmAuthToken: $NPM_TOKEN
           EOF
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
