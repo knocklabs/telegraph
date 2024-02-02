@@ -1,5 +1,14 @@
 # @telegraph/playground
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`4c8c13d`](https://github.com/knocklabs/telegraph/commit/4c8c13d877b3065d03c156519646a5641185da17)]:
+  - @telegraph/tailwind-config@0.0.4
+  - @telegraph/core@0.0.0
+  - @telegraph/typography@0.0.0
+
 ## 0.0.3
 
 ### Patch Changes
