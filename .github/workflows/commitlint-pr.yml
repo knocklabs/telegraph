@@ -1,7 +1,6 @@
 name: Commitlint PR
 
 on:
-  merge_group:
   pull_request:
     types:
       - opened
