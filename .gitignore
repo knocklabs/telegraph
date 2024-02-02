@@ -39,7 +39,6 @@ yarn-error.log*
 
 # Yarn Berry
 .yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state*
-.pnp*
 .yarn/install-state.gz
+.yarn/build-state.yml
+.pnp*
