@@ -23,7 +23,7 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "format:check": "turbo format:check",
-    "release": "turbo build:packages && changeset version && changeset publish",
+    "release": "yarn build:packages && changeset version && changeset publish",
     "postinstall": "manypkg check",
     "prepare": "husky"
   },
