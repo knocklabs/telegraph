@@ -10,9 +10,20 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.js",
-      "default": "./dist/style.css"
+      "default": "./dist/default.css"
     },
-    "./style.css": "./dist/style.css"
+    "./default": {
+      "default": "./dist/default.css"
+    },
+    "./light": {
+      "default": "./dist/light.css"
+    },
+    "./dark": {
+      "default": "./dist/dark.css"
+    },
+    "./semantic": {
+      "default": "./dist/semantic.css"
+    }
   },
   "files": [
     "dist",
@@ -20,13 +31,16 @@
   ],
   "prettier": "@telegraph/prettier-config",
   "scripts": {
-    "generate-css-file": "node ./scripts/generate-css-file.js ../src/tokens/index.js style"
+    "clean": "rm -rf dist",
+    "generate-css-file": "node ./scripts/generate-css-file.js ../dist/index.js",
+    "build": "yarn clean && tsc && yarn generate-css-file"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
     "eslint": "^8.56.0",
+    "lightningcss": "^1.23.0",
     "typescript": "^5.3.3"
   }
 }
