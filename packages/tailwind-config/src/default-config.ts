@@ -28,6 +28,9 @@ export default {
     letterSpacing: {
       ...tokens.tracking,
     },
+    fontWeight: {
+      ...tokens.weight,
+    },
     fontSize: {
       ...tokens.text,
     },
