@@ -1,7 +1,6 @@
+import * as rtlMatchers from "@testing-library/jest-dom/matchers";
 import { expect } from "vitest";
 import * as axeMatchers from "vitest-axe/matchers";
-import * as rtlMatchers from "@testing-library/jest-dom/matchers";
-
 
 expect.extend(axeMatchers);
 expect.extend(rtlMatchers);

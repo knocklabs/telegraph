@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-      globals: true,
+    globals: true,
     setupFiles: ["@telegraph/vitest-config/setup"],
     environment: "jsdom",
     coverage: {
