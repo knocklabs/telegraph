@@ -8,8 +8,9 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts",
       "default": "./dist/default.css"
     },
     "./default": {
@@ -23,6 +24,14 @@
     },
     "./semantic": {
       "default": "./dist/semantic.css"
+    },
+    "./mappings/semantic": {
+      "import": "./dist/mappings/semantic.json",
+      "default": "./dist/mappings/semantic.json"
+    },
+    "./mappings/tokens": {
+      "import": "./dist/mappings/tokens.json",
+      "default": "./dist/mappings/tokens.json"
     }
   },
   "files": [
@@ -32,15 +41,20 @@
   "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "generate-css-file": "node ./scripts/generate-css-file.js ../dist/index.js",
-    "build": "yarn clean && tsc && yarn generate-css-file"
+    "generate-css-file": "node ./scripts/generate-css-file.js ../dist/index.umd.js",
+    "generate-css-var-map": "node ./scripts/generate-css-var-map.js ../dist/index.umd.js",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs && yarn generate-css-file && yarn generate-css-var-map",
+    "build:esm": "BUILD_TARGET=esm; tsc && vite build",
+    "build:cjs": "BUILD_TARGET=cjs; tsc && vite build"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
+    "@telegraph/vite-config": "workspace:^",
     "eslint": "^8.56.0",
     "lightningcss": "^1.23.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
   }
 }
