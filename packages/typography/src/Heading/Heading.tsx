@@ -3,7 +3,8 @@ import React from "react";
 
 import { alignMap, colorMap, sizeMap } from "../helpers/prop-mappings";
 
-type HeadingProps = React.ComponentProps<"h1"> & {
+type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
+  as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   align?: keyof typeof alignMap;
   size?: keyof typeof sizeMap;
   color?: keyof typeof colorMap;
@@ -12,21 +13,13 @@ type HeadingProps = React.ComponentProps<"h1"> & {
 type HeadingRef = HTMLHeadingElement;
 
 const Heading = React.forwardRef<HeadingRef, HeadingProps>(
-  (
-    {
-      align = "DEFAULT",
-      color = "DEFAULT",
-      size = "DEFAULT",
-      ...props
-    }: HeadingProps,
-    forwardedRef,
-  ) => {
+  ({ color = "black", size = "2", align, ...props }, forwardedRef) => {
     return (
       <h3
         className={clsx(
-          alignMap[align],
-          colorMap[color],
-          sizeMap[size],
+          align && alignMap[align],
+          color && colorMap[color],
+          size && sizeMap[size],
           "font-semi-bold",
         )}
         ref={forwardedRef}

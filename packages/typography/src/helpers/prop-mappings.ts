@@ -1,5 +1,4 @@
 export const sizeMap = {
-  DEFAULT: "text-2 leading-2 tracking-2",
   "0": "text-0 leading-0 tracking-0",
   "1": "text-1 leading-1 tracking-1",
   "2": "text-2 leading-2 tracking-2",
@@ -13,13 +12,12 @@ export const sizeMap = {
 } as const;
 
 export const weightMap = {
-  DEFAULT: "font-regular",
   regular: "font-regular",
   medium: "font-medium",
 } as const;
 
 export const colorMap = {
-  DEFAULT: "text-gray-12",
+  black: "text-gray-12",
   gray: "text-gray-11",
   red: "text-red-11",
   beige: "text-beige-11",
@@ -30,7 +28,6 @@ export const colorMap = {
 } as const;
 
 export const alignMap = {
-  DEFAULT: "",
   left: "text-left",
   center: "text-center",
   right: "text-right",
