@@ -141,7 +141,7 @@ const main = async () => {
   try {
     const args = argv.slice(2);
     const tokensPath = format({ root: "./", base: normalize(args[0]) });
-    const { tgph } = require(tokensPath);
+    const tgph = require(tokensPath);
 
     const [tokens, lightTokens, darkTokens] = tokensToCss(
       tgph.tokens,
@@ -167,4 +167,3 @@ const main = async () => {
 };
 
 main();
-

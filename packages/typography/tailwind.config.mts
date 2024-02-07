@@ -1,3 +1,7 @@
-import { tailwindConfig } from "@telegraph/tailwind-config";
+import tailwindConfig from "@telegraph/tailwind-config";
 
-export default tailwindConfig;
+export default {
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  extend: {},
+  presets: [tailwindConfig],
+};

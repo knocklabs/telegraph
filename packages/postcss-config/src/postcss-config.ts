@@ -1,4 +1,4 @@
-import { tailwindConfig } from "@telegraph/tailwind-config";
+import tailwindConfig from "@telegraph/tailwind-config";
 
 export default {
   plugins: [
