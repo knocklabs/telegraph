@@ -9,6 +9,7 @@ import { shadow } from "./tokens/shadow";
 import { spacing } from "./tokens/spacing";
 import { text } from "./tokens/text";
 import { tracking } from "./tokens/tracking";
+import { weight } from "./tokens/weight";
 
 export default {
   tokens: {
@@ -20,6 +21,7 @@ export default {
     leading,
     tracking,
     text,
+    weight
   },
   semantic: {
     color: semanticColor,

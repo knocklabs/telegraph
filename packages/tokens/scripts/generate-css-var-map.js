@@ -5,12 +5,15 @@ const { writeFile, mkdir } = require("node:fs/promises"); // For file system ope
 
 // Constant for the prefix used in CSS variables
 const TELEGRAPH_VARIABLE_PREFIX = "tgph";
+
 const THEME_NAMES = ["light","dark"];
+
 
 /**
  * Maps CSS variables to class names based on the provided object structure.
  * @param {Object} obj - The object containing design tokens.
  * @param {String} prefix - Prefix for the class name.
+
  * @param {Boolean} includeVariableNamePrefix - Flag to include/exclude the prefix in variable names.
  * @returns {Object} - Mapped CSS variables to class names.
  */

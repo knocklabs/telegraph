@@ -8,12 +8,12 @@
   "license": "MIT",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
-  "types": "dist/types/index.d.ts",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts",
       "default": "./dist/style.css"
     },
     "./style.css": "./dist/style.css"
@@ -57,5 +57,8 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0"
   }
 }
