@@ -8,7 +8,7 @@ import {
   weightMap,
 } from "../helpers/prop-mappings";
 
-type TextProps = React.HTMLAttributes<HTMLHeadingElement> & {
+type TextProps = React.HTMLAttributes<HTMLElement> & {
   as:
     | "p"
     | "span"
