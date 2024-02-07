@@ -13,7 +13,10 @@ type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
 type HeadingRef = HTMLHeadingElement;
 
 const Heading = React.forwardRef<HeadingRef, HeadingProps>(
-  ({ color = "black", size = "2", align, ...props }, forwardedRef) => {
+  (
+    { color = "black", size = "2", align, className, ...props },
+    forwardedRef,
+  ) => {
     return (
       <h3
         className={clsx(
@@ -21,6 +24,7 @@ const Heading = React.forwardRef<HeadingRef, HeadingProps>(
           color && colorMap[color],
           size && sizeMap[size],
           "font-semi-bold",
+          className,
         )}
         ref={forwardedRef}
         {...props}

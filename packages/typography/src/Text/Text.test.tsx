@@ -3,43 +3,51 @@ import React from "react";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 
-import { Heading } from "./Heading";
+import { Text } from "./Text";
 
-describe("Heading", () => {
+describe("Text", () => {
   it("should render without a11y issues", async () => {
-    const { container } = render(<Heading as="h1">Heading</Heading>);
+    const { container } = render(<Text as="p">Text</Text>);
     expect(await axe(container)).toHaveNoViolations();
   });
   it("size props applies correct className", () => {
     const { container } = render(
-      <Heading size="9" as="h1">
-        Heading
-      </Heading>,
+      <Text size="9" as="p">
+        Text
+      </Text>,
     );
     expect(container.firstChild).toHaveClass("text-9");
   });
   it("color props applies correct className", () => {
     const { container } = render(
-      <Heading color="red" as="h1">
-        Heading
-      </Heading>,
+      <Text color="red" as="p">
+        Text
+      </Text>,
     );
     expect(container.firstChild).toHaveClass("text-red-11");
   });
   it("align props applies correct className", () => {
     const { container } = render(
-      <Heading align="left" as="h1">
-        Heading
-      </Heading>,
+      <Text align="left" as="p">
+        Text
+      </Text>,
     );
     expect(container.firstChild).toHaveClass("text-left");
   });
+  it("weight props applies correct className", () => {
+    const { container } = render(
+      <Text weight="medium" as="p">
+        Text
+      </Text>,
+    );
+    expect(container.firstChild).toHaveClass("font-medium");
+  });
   it("default props applies correct className", () => {
-    const { container } = render(<Heading as="h1">Heading</Heading>);
+    const { container } = render(<Text as="p">Text</Text>);
     expect(container.firstChild).toHaveClass("text-gray-12");
     expect(container.firstChild).toHaveClass("text-2");
     expect(container.firstChild).toHaveClass("leading-2");
     expect(container.firstChild).toHaveClass("tracking-2");
-    expect(container.firstChild).toHaveClass("font-semi-bold");
+    expect(container.firstChild).toHaveClass("font-regular");
   });
 });
