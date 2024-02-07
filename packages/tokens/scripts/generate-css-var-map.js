@@ -6,14 +6,18 @@ const { writeFile, mkdir } = require("node:fs/promises"); // For file system ope
 // Constant for the prefix used in CSS variables
 const TELEGRAPH_VARIABLE_PREFIX = "tgph";
 
+const THEME_NAMES = ["light","dark"];
+
+
 /**
  * Maps CSS variables to class names based on the provided object structure.
  * @param {Object} obj - The object containing design tokens.
  * @param {String} prefix - Prefix for the class name.
- * @param {Boolean} noVariableNamePrefix - Flag to include/exclude the prefix in variable names.
+
+ * @param {Boolean} includeVariableNamePrefix - Flag to include/exclude the prefix in variable names.
  * @returns {Object} - Mapped CSS variables to class names.
  */
-const mapCssVarToClassName = (obj, prefix, noVariableNamePrefix) => {
+const mapCssVarToClassName = (obj, prefix, includeVariableNamePrefix) => {
   const result = {};
 
   // Helper function to recursively traverse the object
@@ -31,13 +35,13 @@ const mapCssVarToClassName = (obj, prefix, noVariableNamePrefix) => {
         traverseObject(obj[key], currentPath);
       } else {
         // Process leaf nodes
-        if (!currentPath.includes("dark")) {
+        if (!currentPath.includes(THEME_NAMES[1])) {
           const filteredPath = currentPath
-            .filter((t) => t !== "dark" && t !== "light" && t)
+            .filter((t) => t && !THEME_NAMES.includes(t))
             .join("-");
 
           // Construct variable name and CSS variable
-          const variableName = `${prefix && !noVariableNamePrefix ? `${prefix}-` : ""}${filteredPath}`;
+          const variableName = `${prefix && includeVariableNamePrefix ? `${prefix}-` : ""}${filteredPath}`;
           const cssVar = `var(--${TELEGRAPH_VARIABLE_PREFIX}${prefix ? `-${prefix}` : ""}-${filteredPath})`;
 
           result[variableName] = cssVar;
@@ -87,11 +91,11 @@ const main = async () => {
       ...Object.entries(tgph.tokens).map(([key, value]) => {
         if (key === "color") {
           return {
-            [key]: mapCssVarToClassName(value, "", false),
+            [key]: mapCssVarToClassName(value, "", true),
           };
         }
         return {
-          [key]: mapCssVarToClassName(value, key, true),
+          [key]: mapCssVarToClassName(value, key),
         };
       }),
     );
@@ -100,7 +104,7 @@ const main = async () => {
     const semantic = Object.assign(
       ...Object.entries(tgph.semantic).map(([key, value]) => {
         return {
-          [key]: mapCssVarToClassName(value, key, true),
+          [key]: mapCssVarToClassName(value, key),
         };
       }),
     );
