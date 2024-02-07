@@ -11,15 +11,27 @@ describe("Heading", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
   it("size props applies correct className", () => {
-    const { container } = render(<Heading size="9" as="h1">Heading</Heading>);
+    const { container } = render(
+      <Heading size="9" as="h1">
+        Heading
+      </Heading>,
+    );
     expect(container.firstChild).toHaveClass("text-9");
   });
   it("color props applies correct className", () => {
-    const { container } = render(<Heading color="red" as="h1">Heading</Heading>);
+    const { container } = render(
+      <Heading color="red" as="h1">
+        Heading
+      </Heading>,
+    );
     expect(container.firstChild).toHaveClass("text-red-11");
   });
   it("align props applies correct className", () => {
-    const { container } = render(<Heading align="left" as="h1">Heading</Heading>);
+    const { container } = render(
+      <Heading align="left" as="h1">
+        Heading
+      </Heading>,
+    );
     expect(container.firstChild).toHaveClass("text-left");
   });
   it("default props applies correct className", () => {
