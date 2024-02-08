@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tailwind-config",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tailwind-config",
