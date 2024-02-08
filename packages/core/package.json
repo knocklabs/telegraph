@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@telegraph/core",
   "version": "0.0.0",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/core",
