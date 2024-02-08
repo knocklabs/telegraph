@@ -14,7 +14,7 @@ type HeadingRef = HTMLHeadingElement;
 
 const Heading = React.forwardRef<HeadingRef, HeadingProps>(
   (
-    { color = "black", size = "2", align, className, ...props },
+    { color = "default", size = "2", align, className, ...props },
     forwardedRef,
   ) => {
     return (
