@@ -17,7 +17,7 @@ export const weightMap = {
 } as const;
 
 export const colorMap = {
-  black: "text-gray-12",
+  default: "text-gray-12",
   gray: "text-gray-11",
   red: "text-red-11",
   beige: "text-beige-11",
@@ -25,6 +25,8 @@ export const colorMap = {
   green: "text-green-11",
   yellow: "text-yellow-11",
   accent: "text-accent-11",
+  white: "text-white",
+  disabled: "text-gray-9",
 } as const;
 
 export const alignMap = {
