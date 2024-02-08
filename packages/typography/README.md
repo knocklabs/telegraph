@@ -28,7 +28,8 @@ import "@telegraph/typography/style.css"
 
 #### Usage
 
-##### <Heading/>
+##### `<Heading/>`
+
 ```
 import { Heading } from "@telegraph/typography"
 
@@ -46,7 +47,8 @@ import { Heading } from "@telegraph/typography"
 | color | string | "black" | "black" "gray" "red" "beige" "blue" "green" "yellow" "accent" |
 | align | string | null | "left" "right" "center" |
 
-##### <Text/>
+##### `<Text/>`
+
 ```
 import { Text } from "@telegraph/typography"
 
