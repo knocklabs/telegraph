@@ -1,16 +1,16 @@
-![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/11a9e54e-2388-4c5d-9769-16099c5de9dc)
+![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/9b5022e3-b02c-4582-ba57-3d6171e45e44)
 
 # Telegraph
 > The design system at [Knock](https://knock.app)
 
-### Installation Instructions
+## Installation Instructions
 
 ```
 npm install @telegraph/core @telegraph/tokens
 ```
 
-#### Add stylesheets
-> Pick one
+### Add stylesheets
+Pick one:
 
 Via CSS (preferred):
 ```
@@ -24,9 +24,9 @@ import "@telegraph/core/style.css"
 import "@telegraph/tokens/default.css" (options: default.css, dark.css, light.css, semantic.css)
 ```
 
-### Packages
+## Packages
 
-#### Core Packages
+### Core Packages
 
 | Name | Version |
 | ---- | ------- |
@@ -34,7 +34,7 @@ import "@telegraph/tokens/default.css" (options: default.css, dark.css, light.cs
 | [@telegraph/tokens](https://github.com/knocklabs/telegraph/tree/main/packages/tokens) | [![npm version](https://img.shields.io/npm/v/@telegraph/tokens.svg)](https://www.npmjs.com/package/@telegraph/tokens) |
 | [@telegraph/typography](https://github.com/knocklabs/telegraph/tree/main/packages/typography) | [![npm version](https://img.shields.io/npm/v/@telegraph/typography.svg)](https://www.npmjs.com/package/@telegraph/typography) |
 
-#### Internal Packages
+### Internal Packages
 
 | Name | Version |
 | ---- | ------- |
@@ -45,7 +45,7 @@ import "@telegraph/tokens/default.css" (options: default.css, dark.css, light.cs
 | [@telegraph/vitest-config](https://github.com/knocklabs/telegraph/tree/main/packages/vitest-config) | [![npm version](https://img.shields.io/npm/v/@telegraph/vitest-config.svg)](https://www.npmjs.com/package/@telegraph/vitest-config) |
 
 
-#### Upcoming Packages
+### Upcoming Packages
 
 | Name | Status |
 | ---- | ------- |
