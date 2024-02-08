@@ -22,9 +22,9 @@ export const buttonColorMap = {
 } as const;
 
 export const textSizeMap = {
-    "1": "1",
-    "2": "2",
-    "3": "3",
+  "1": "1",
+  "2": "2",
+  "3": "3",
 } as const;
 
 export const textColorMap = {
