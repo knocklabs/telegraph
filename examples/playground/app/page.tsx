@@ -15,6 +15,9 @@ export default function Home() {
         size="9"
         variant="primary"
       />
+      <Button.Root color="red" variant="ghost">
+        <Button.Text>Button</Button.Text>
+      </Button.Root>
       <Heading as="h3" size="9">
         Heading
       </Heading>
