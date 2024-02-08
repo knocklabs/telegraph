@@ -1648,6 +1648,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@telegraph/button@workspace:^, @telegraph/button@workspace:packages/button":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/button@workspace:packages/button"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/core": "workspace:^"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/typography": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@telegraph/vitest-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    clsx: "npm:^2.1.0"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+    vitest: "npm:^1.2.2"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/core@workspace:^, @telegraph/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@telegraph/core@workspace:packages/core"
@@ -1668,6 +1695,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@telegraph/playground@workspace:examples/playground"
   dependencies:
+    "@telegraph/button": "workspace:^"
     "@telegraph/core": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/tokens": "workspace:^"

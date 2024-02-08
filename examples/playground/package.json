@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@telegraph/button": "workspace:^",
     "@telegraph/core": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/tokens": "workspace:^",

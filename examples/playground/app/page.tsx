@@ -1,8 +1,13 @@
-import { Heading, Text } from "@telegraph/typography";
+"use client"
+import { Heading } from "@telegraph/typography";
+import { Button } from "@telegraph/button";
 
 export default function Home() {
   return (
     <main>
+      <Button.Root color="red" variant="ghost">
+        <Button.Text>Button</Button.Text>
+      </Button.Root>
       <Heading as="h3" size="9">
         Heading
       </Heading>
