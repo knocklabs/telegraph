@@ -31,7 +31,7 @@ type TextRef = HTMLElement;
 const Text = React.forwardRef<TextRef, TextProps>(
   (
     {
-      color = "black",
+      color = "default",
       size = "2",
       weight = "regular",
       align,

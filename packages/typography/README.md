@@ -6,14 +6,14 @@
 > Heading & Text components that powers typography in telegraph
 
 
-### Installation Instructions
+## Installation Instructions
 
 ```
 npm install @telegraph/typography
 ```
 
 
-#### Add stylesheet
+### Add stylesheet
 Pick one:
 
 Via CSS (preferred):
@@ -26,9 +26,9 @@ Via Javascript:
 import "@telegraph/typography/style.css"
 ```
 
-#### Usage
+### Usage
 
-##### `<Heading/>`
+#### `<Heading/>`
 
 ```
 import { Heading } from "@telegraph/typography"
@@ -38,16 +38,16 @@ import { Heading } from "@telegraph/typography"
 <Heading>Heading</Heading>
 ```
 
-###### Props
+##### Props
 
 | Name | Type | Default | Options |
 | ---- | -----| ------- | ------- |
 | as | string | null | "h1" "h2" "h3" "h4" "h5" "h6" |
 | size | string | "2" | "1" "2" "3" "4" "5" "6" "7" "8" "9" |
-| color | string | "black" | "black" "gray" "red" "beige" "blue" "green" "yellow" "accent" |
+| color | string | "default" | "default" "gray" "red" "beige" "blue" "green" "yellow" "accent" "disabled" "white" |
 | align | string | null | "left" "right" "center" |
 
-##### `<Text/>`
+#### `<Text/>`
 
 ```
 import { Text } from "@telegraph/typography"
@@ -57,12 +57,12 @@ import { Text } from "@telegraph/typography"
 <Text>Text</Text>
 ```
 
-###### Props
+##### Props
 
 | Name | Type | Default | Options |
 | ---- | -----| ------- | ------- |
 | as | string | null | "p" "span" "div" "label" "em" "strong" "b" "i" "pre" "code"
 | size | string | "2" | "1" "2" "3" "4" "5" "6" "7" "8" "9" |
-| color | string | "black" | "black" "gray" "red" "beige" "blue" "green" "yellow" "accent" |
+| color | string | "default" | "default" "gray" "red" "beige" "blue" "green" "yellow" "accent" "disabled" "white" |
 | align | string | null | "left" "right" "center" |
 | weight | string | regular | "regular" "medium" |
