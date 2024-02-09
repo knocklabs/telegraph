@@ -31,6 +31,7 @@ import "@telegraph/tokens/default.css" (options: default.css, dark.css, light.cs
 | Name | Version |
 | ---- | ------- |
 | [@telegraph/core](https://github.com/knocklabs/telegraph/tree/main/packages/core) | [![npm version](https://img.shields.io/npm/v/@telegraph/core.svg)](https://www.npmjs.com/package/@telegraph/core) |
+| [@telegraph/nextjs](https://github.com/knocklabs/telegraph/tree/main/packages/nextjs) | [![npm version](https://img.shields.io/npm/v/@telegraph/nextjs.svg)](https://www.npmjs.com/package/@telegraph/nextjs) |
 | [@telegraph/tokens](https://github.com/knocklabs/telegraph/tree/main/packages/tokens) | [![npm version](https://img.shields.io/npm/v/@telegraph/tokens.svg)](https://www.npmjs.com/package/@telegraph/tokens) |
 | [@telegraph/typography](https://github.com/knocklabs/telegraph/tree/main/packages/typography) | [![npm version](https://img.shields.io/npm/v/@telegraph/typography.svg)](https://www.npmjs.com/package/@telegraph/typography) |
 

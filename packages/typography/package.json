@@ -15,6 +15,11 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/style.css"
     },
+    "./Heading": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/types/Heading.d.ts"
+    },
     "./style.css": "./dist/style.css"
   },
   "files": [
