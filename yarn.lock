@@ -1123,6 +1123,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@knocklabs/prettier-config@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@knocklabs/prettier-config@npm:0.0.1"
+  dependencies:
+    "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
+    prettier: "npm:^3.1.0"
+  checksum: 10c0/869e100a376b85fb6478a1dd6018274a6bbbd2ae42990a0280cf91343215c4cece0001d2cbe4351340dd362e5d7568715fa729f7dc45eec52486e46f47c38371
+  languageName: node
+  linkType: hard
+
 "@knocklabs/telegraph@workspace:.":
   version: 0.0.0-use.local
   resolution: "@knocklabs/telegraph@workspace:."
@@ -1630,6 +1640,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stencil/core@npm:^4.0.3":
+  version: 4.12.1
+  resolution: "@stencil/core@npm:4.12.1"
+  bin:
+    stencil: bin/stencil
+  checksum: 10c0/b4389ac577e0b0d6a7f28cd3e27f1a9be5d704b6ff1f09ffdb48d6ef4e278b7fc6e42457297055023d39b7b38ba7f8c429eb4abe46d146af2751e05ab479359e
+  languageName: node
+  linkType: hard
+
 "@swc/helpers@npm:0.5.2":
   version: 0.5.2
   resolution: "@swc/helpers@npm:0.5.2"
@@ -1664,11 +1683,39 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/icon@workspace:^, @telegraph/icon@workspace:packages/icon":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/icon@workspace:packages/icon"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/prettier-config": "npm:^0.0.1"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/core": "workspace:^"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@telegraph/vitest-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    clsx: "npm:^2.1.0"
+    eslint: "npm:^8.56.0"
+    ionicons: "npm:^7.2.2"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+    vitest: "npm:^1.2.2"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/playground@workspace:examples/playground":
   version: 0.0.0-use.local
   resolution: "@telegraph/playground@workspace:examples/playground"
   dependencies:
     "@telegraph/core": "workspace:^"
+    "@telegraph/icon": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/typography": "workspace:^"
@@ -5409,6 +5456,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ionicons@npm:^7.2.2":
+  version: 7.2.2
+  resolution: "ionicons@npm:7.2.2"
+  dependencies:
+    "@stencil/core": "npm:^4.0.3"
+  checksum: 10c0/9d5810f1b580756c52e06ba846c6518c91588843273a7b68104c7622f4a82b0f560aa7ef66e06e26e01400cfbe37ba8348731a2bab27a0d86d6d334225735bf3
+  languageName: node
+  linkType: hard
+
 "ip@npm:^2.0.0":
   version: 2.0.0
   resolution: "ip@npm:2.0.0"
@@ -7572,7 +7628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.2.4":
+"prettier@npm:^3.1.0, prettier@npm:^3.2.4":
   version: 3.2.5
   resolution: "prettier@npm:3.2.5"
   bin:
