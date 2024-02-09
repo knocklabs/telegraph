@@ -1,4 +1,3 @@
-"use client"
 import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
 

@@ -1,0 +1,58 @@
+{
+  "name": "@telegraph/icon",
+  "version": "0.0.0",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/icon",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "prettier": "@knocklabs/prettier-config",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "tsc && vite build --watch --emptyOutDir false",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "BUILD_TARGET=esm; tsc && vite build",
+    "build:cjs": "BUILD_TARGET=cjs; tsc && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
+    "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/prettier-config": "^0.0.1",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/core": "workspace:^",
+    "@telegraph/postcss-config": "workspace:^",
+    "@telegraph/tailwind-config": "workspace:^",
+    "@telegraph/vite-config": "workspace:^",
+    "@telegraph/vitest-config": "workspace:^",
+    "@types/react": "^18.2.48",
+    "eslint": "^8.56.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vitest": "^1.2.2"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0",
+    "ionicons": "^7.2.2"
+  }
+}
