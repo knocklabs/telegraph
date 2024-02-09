@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import { Heading, Text } from "@telegraph/typography";
-import { Icon } from "@telegraph/icon";
+import { Icon, addSharp } from "@telegraph/icon";
 
 export default function Home() {
   return (
     <main>
-      <Icon name="accessibility-outline" />
+      <Icon icon={addSharp} />
       <Heading as="h3" size="9">
         Heading
       </Heading>

@@ -1036,6 +1036,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ionic/core@npm:7.7.1":
+  version: 7.7.1
+  resolution: "@ionic/core@npm:7.7.1"
+  dependencies:
+    "@stencil/core": "npm:^4.12.0"
+    ionicons: "npm:^7.2.2"
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/9af649713ecada6c93c6262201e54ad6d526d99968c18bdb42a04170cff240ce8fc29cb6eb7a8a995eec7bf6b3392665d1be28cdd6a2640ff299cfbc34d8f9a4
+  languageName: node
+  linkType: hard
+
+"@ionic/react@npm:^7.7.1":
+  version: 7.7.1
+  resolution: "@ionic/react@npm:7.7.1"
+  dependencies:
+    "@ionic/core": "npm:7.7.1"
+    ionicons: "npm:^7.0.0"
+    tslib: "npm:*"
+  peerDependencies:
+    react: ">=16.8.6"
+    react-dom: ">=16.8.6"
+  checksum: 10c0/07c6f050aa2c7407e1d0414764bb8e7ffb0d54283381f3e546de5fa59a582f046bea458e9605a245defeab9eda9441dab218c0e4418dcc7350bd801bd5002feb
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -1640,7 +1665,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^4.0.3":
+"@stencil/core@npm:^4.0.3, @stencil/core@npm:^4.12.0":
   version: 4.12.1
   resolution: "@stencil/core@npm:4.12.1"
   bin:
@@ -1687,6 +1712,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@telegraph/icon@workspace:packages/icon"
   dependencies:
+    "@ionic/react": "npm:^7.7.1"
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
@@ -5456,7 +5482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ionicons@npm:^7.2.2":
+"ionicons@npm:^7.0.0, ionicons@npm:^7.2.2":
   version: 7.2.2
   resolution: "ionicons@npm:7.2.2"
   dependencies:
@@ -9076,17 +9102,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:*, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "tslib@npm:2.6.2"
+  checksum: 10c0/e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 10c0/69ae09c49eea644bc5ebe1bca4fa4cc2c82b7b3e02f43b84bd891504edf66dbc6b2ec0eef31a957042de2269139e4acff911e6d186a258fb14069cd7f6febce2
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.4.0, tslib@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "tslib@npm:2.6.2"
-  checksum: 10c0/e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb
   languageName: node
   linkType: hard
 

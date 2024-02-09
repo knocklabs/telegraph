@@ -16,6 +16,7 @@ export default {
       ...tokens.spacing,
       ...semantic.spacing,
     },
+
     boxShadow: {
       ...tokens.shadow,
     },
@@ -34,6 +35,13 @@ export default {
     fontSize: {
       ...tokens.text,
     },
-    extend: {},
+    extend: {
+      height: {
+        ...tokens.spacing,
+      },
+      width: {
+        ...tokens.spacing,
+      },
+    },
   },
 };
