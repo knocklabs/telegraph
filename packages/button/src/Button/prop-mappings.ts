@@ -34,7 +34,7 @@ export const textColorMap = {
     accent: "white",
   },
   soft: {
-    gray: "black",
+    gray: "default",
     red: "red",
     accent: "accent",
   },
@@ -44,7 +44,7 @@ export const textColorMap = {
     accent: "accent",
   },
   ghost: {
-    gray: "black",
+    gray: "default",
     red: "red",
     accent: "accent",
   },
