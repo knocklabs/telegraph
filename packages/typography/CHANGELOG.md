@@ -1,5 +1,11 @@
 # @telegraph/typography
 
+## 0.0.5
+
+### Patch Changes
+
+- [#41](https://github.com/knocklabs/telegraph/pull/41) [`48da6b0`](https://github.com/knocklabs/telegraph/commit/48da6b060193c6440e34a410b563206a1500a89a) Thanks [@kylemcd](https://github.com/kylemcd)! - fixes as property not assigning correct element
+
 ## 0.0.4
 
 ### Patch Changes
