@@ -3,7 +3,7 @@ import React from "react";
 
 import { alignMap, colorMap, sizeMap } from "../helpers/prop-mappings";
 
-type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
+type HeadingProps = React.HTMLAttributes<HeadingRef> & {
   as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   align?: keyof typeof alignMap;
   size?: keyof typeof sizeMap;
@@ -14,11 +14,20 @@ type HeadingRef = HTMLHeadingElement;
 
 const Heading = React.forwardRef<HeadingRef, HeadingProps>(
   (
-    { color = "default", size = "2", align, className, ...props },
+    {
+      as: Component,
+      color = "default",
+      size = "2",
+      align,
+      className,
+      ...props
+    },
     forwardedRef,
   ) => {
+    if (!Component) throw new Error("as prop is required");
+
     return (
-      <h3
+      <Component
         className={clsx(
           align && alignMap[align],
           color && colorMap[color],

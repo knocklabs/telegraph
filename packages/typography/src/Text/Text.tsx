@@ -8,7 +8,7 @@ import {
   weightMap,
 } from "../helpers/prop-mappings";
 
-type TextProps = React.HTMLAttributes<HTMLElement> & {
+type TextProps = React.HTMLAttributes<TextRef> & {
   as:
     | "p"
     | "span"
@@ -26,11 +26,16 @@ type TextProps = React.HTMLAttributes<HTMLElement> & {
   weight?: keyof typeof weightMap;
 };
 
-type TextRef = HTMLElement;
+type TextRef = HTMLParagraphElement &
+  HTMLSpanElement &
+  HTMLDivElement &
+  HTMLLabelElement &
+  HTMLPreElement;
 
 const Text = React.forwardRef<TextRef, TextProps>(
   (
     {
+      as: Component,
       color = "default",
       size = "2",
       weight = "regular",
@@ -40,8 +45,9 @@ const Text = React.forwardRef<TextRef, TextProps>(
     },
     forwardedRef,
   ) => {
+    if (!Component) throw new Error("as prop is required");
     return (
-      <span
+      <Component
         className={clsx(
           align && alignMap[align],
           color && colorMap[color],
