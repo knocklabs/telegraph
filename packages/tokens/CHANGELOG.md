@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.0.3
+
+### Patch Changes
+
+- [#43](https://github.com/knocklabs/telegraph/pull/43) [`f7d46e6`](https://github.com/knocklabs/telegraph/commit/f7d46e6e916f878cadb666032229badb5f182c0f) Thanks [@kylemcd](https://github.com/kylemcd)! - fixes leading tokens, adds new surface tokens
+
 ## 0.0.2
 
 ### Patch Changes
