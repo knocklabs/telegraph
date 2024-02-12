@@ -143,12 +143,12 @@ type DefaultProps = React.ComponentProps<typeof Root> &
     | {
         leadingIcon?: DefaultIconProps;
         trailingIcon?: DefaultIconProps;
-        icon?: never
+        icon?: never;
       }
     | {
         icon?: DefaultIconProps;
-        leadingIcon?: never
-        trailingIcon?: never
+        leadingIcon?: never;
+        trailingIcon?: never;
       }
   );
 
