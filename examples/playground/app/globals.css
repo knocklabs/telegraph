@@ -1,7 +1,6 @@
 @import "@telegraph/tokens";
 @import "@telegraph/core";
 @import "@telegraph/typography";
-@import "@telegraph/button";
 @import "@telegraph/icon";
 @import "@telegraph/button";
 
@@ -12,6 +11,6 @@
 }
 
 body {
-  background: var(--tgph-surface);
+  background: var(--tgph-surface-2);
   color: var(--tgph-gray-12);
 }

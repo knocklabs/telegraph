@@ -58,6 +58,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@telegraph/icon": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.0"
   }

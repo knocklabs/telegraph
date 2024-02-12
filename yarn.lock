@@ -1699,6 +1699,7 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/core": "workspace:^"
+    "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
