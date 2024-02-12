@@ -3,8 +3,14 @@ export const color = {
   white: "#ffffff",
   black: "#000000",
   surface: {
-    light: "#ffffff",
-    dark: "#111113",
+    1: {
+      light: "#ffffff",
+      dark: "#18191b",
+    },
+    2: {
+      light: "#f9f9f8",
+      dark: "#111110",
+    },
   },
   alpha: {
     white: {
