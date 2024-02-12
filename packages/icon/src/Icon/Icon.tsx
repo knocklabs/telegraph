@@ -5,7 +5,7 @@ type IconProps = {
   icon: string;
 };
 
-const Icon = React.forwardRef<unknown, IconProps>(({ icon, ...props } ) => {
+const Icon = React.forwardRef<unknown, IconProps>(({ icon, ...props }) => {
   return (
     <span className="inline-block h-8 w-8">
       <IonIcon
