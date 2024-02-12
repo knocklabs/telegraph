@@ -1,5 +1,6 @@
 import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
+import { Icon, addSharp} from "@telegraph/icon"
 
 export default function Home() {
   return (
@@ -7,6 +8,13 @@ export default function Home() {
       <Button.Root color="red" variant="ghost">
         <Button.Text>Button</Button.Text>
       </Button.Root>
+      <Icon
+        alt="add icon"
+        icon={addSharp}
+        color="red"
+        size="9"
+        variant="primary"
+      />
       <Heading as="h3" size="9">
         Heading
       </Heading>
