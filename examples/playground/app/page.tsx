@@ -1,8 +1,17 @@
+"use client";
 import { Heading, Text } from "@telegraph/typography";
+import { Icon, addSharp } from "@telegraph/icon";
 
 export default function Home() {
   return (
     <main>
+      <Icon
+        alt="add icon"
+        icon={addSharp}
+        color="red"
+        size="9"
+        variant="primary"
+      />
       <Heading as="h3" size="9">
         Heading
       </Heading>

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@telegraph/core": "workspace:^",
+    "@telegraph/icon": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/tokens": "workspace:^",
     "@telegraph/typography": "workspace:^",
