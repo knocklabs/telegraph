@@ -13,6 +13,10 @@
     ".": {
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
+    },
+    "./loader": {
+      "import": "./dist/use-client-loader.js",
+      "default": "./dist/use-client-loader.js"
     }
   },
   "prettier": "@knocklabs/prettier-config",

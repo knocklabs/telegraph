@@ -1,5 +1,3 @@
-import path from "path";
-
 export const withTelegraph = () => () => {
   //
   // Used to determine if we are in development mode
@@ -8,6 +6,7 @@ export const withTelegraph = () => () => {
   //
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   const DEV_MODE = process?.env?.NEXT_PUBLIC_IN_TELEGRAPH_REPO === "1";
+
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     webpack: function (config: any) {
@@ -17,7 +16,7 @@ export const withTelegraph = () => () => {
           DEV_MODE && /(?:.*\/)?packages\/(?:[^/]+\/)*[^/]+(?:\/[^/]*)*\.js$/,
         ],
         use: {
-          loader: path.resolve("./use-client-loader.js"),
+          loader: "@telegraph/nextjs/loader",
         },
       });
       return config;
