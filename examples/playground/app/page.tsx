@@ -5,7 +5,13 @@ import { Icon, addSharp } from "@telegraph/icon";
 export default function Home() {
   return (
     <main>
-      <Icon icon={addSharp} />
+      <Icon
+        alt="add icon"
+        icon={addSharp}
+        color="red"
+        size="9"
+        variant="primary"
+      />
       <Heading as="h3" size="9">
         Heading
       </Heading>
