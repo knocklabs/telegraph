@@ -16,7 +16,7 @@ import {
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "1" | "2" | "3";
-  color?: "accent" | "gray" | "red";
+  color?: "accent" | "gray" | "red" | "disabled";
   state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
 };
 
@@ -50,7 +50,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
     {
       variant = "solid",
       size = "2",
-      color = "gray",
+      color: initialColor = "gray",
       state: initialState = "default",
       disabled,
       className,
@@ -59,6 +59,8 @@ const Root = React.forwardRef<RootRef, RootProps>(
     forwardedRef,
   ) => {
     const state = disabled ? "disabled" : initialState;
+    const color = state === "disabled" ? "disabled" : initialColor;
+
     const [layout, setLayout] =
       React.useState<InternalProps["layout"]>("default");
 
@@ -80,9 +82,11 @@ const Root = React.forwardRef<RootRef, RootProps>(
           className={clsx(
             buttonColorMap[variant][color],
             buttonSizeMap[layout][size],
+            state === "disabled" && "cursor-not-allowed",
             "inline-flex items-center justify-center rounded-3 transition-colors",
             className,
           )}
+          data-button-layout={layout}
           ref={forwardedRef}
           {...props}
         />
@@ -111,7 +115,14 @@ const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
       color: color ?? iconColorMap[context.variant][context.color],
       variant: variant ?? iconVariantMap[context.layout],
     };
-    return <TelegraphIcon ref={forwardedRef} {...props} {...iconProps} />;
+    return (
+      <TelegraphIcon
+        ref={forwardedRef}
+        data-button-icon
+        {...props}
+        {...iconProps}
+      />
+    );
   },
 );
 
@@ -132,7 +143,14 @@ const Text = React.forwardRef<TextRef, TextProps>(
       size: size ?? textSizeMap[context.size],
     };
 
-    return <TypographyText ref={forwardedRef} {...props} {...textProps} />;
+    return (
+      <TypographyText
+        ref={forwardedRef}
+        data-button-text
+        {...props}
+        {...textProps}
+      />
+    );
   },
 );
 
@@ -163,7 +181,7 @@ const Default = ({
   return (
     <Root {...props}>
       {combinedLeadingIcon && <Icon {...combinedLeadingIcon} />}
-      {children}
+      {children && <Text>{children}</Text>}
       {trailingIcon && <Icon {...trailingIcon} />}
     </Root>
   );
