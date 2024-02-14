@@ -1,0 +1,4 @@
+@tailwind base;
+@tailwind components;
+
+@config "../tailwind.default.config.mts"

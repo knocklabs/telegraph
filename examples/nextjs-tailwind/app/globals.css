@@ -1,0 +1,12 @@
+@import "@telegraph/tokens";
+@import "@telegraph/typography/scoped";
+@import "@telegraph/icon/scoped";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: var(--tgph-surface-1);
+  color: var(--tgph-gray-12);
+}

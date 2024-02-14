@@ -11,11 +11,13 @@
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
+      "require": "./dist/index.cjs.js",
       "types": "./dist/index.d.ts",
-      "default": "./dist/style.css"
+      "default": "./dist/default.css"
     },
-    "./style.css": "./dist/style.css"
+    "./scoped": "./dist/scoped.css",
+    "./style.css": "./dist/default.css",
+    "./scoped.css": "./dist/scoped.css"
   },
   "files": [
     "dist",

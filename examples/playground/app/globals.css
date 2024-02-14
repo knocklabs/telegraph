@@ -10,6 +10,6 @@
 }
 
 body {
-  background: var(--tgph-surface);
+  background: var(--tgph-surface-1);
   color: var(--tgph-gray-12);
 }

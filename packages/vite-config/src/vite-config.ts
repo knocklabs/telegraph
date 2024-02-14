@@ -4,7 +4,7 @@ import dts from "vite-plugin-dts";
 export default {
   build: {
     lib: {
-      entry: "src/index.ts",
+      entry: ["src/index.ts"],
       name: "telegraph",
       fileName: (format: string) => `index.${format}.js`,
     },
@@ -12,6 +12,7 @@ export default {
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
+        entryFileNames: "[name].[format].js",
         globals: {
           react: "React",
         },

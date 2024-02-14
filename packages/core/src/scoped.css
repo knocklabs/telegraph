@@ -1,0 +1,9 @@
+/* Using tailwind `"important": ".tgph"` doesn't
+ * work so we have to use nested `@tailwind` directives
+ * in the scoped.css file. */
+.tgph {
+  @tailwind base;
+  @tailwind components;
+}
+
+@config "../tailwind.default.config.mts";

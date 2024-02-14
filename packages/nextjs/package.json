@@ -11,8 +11,9 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "default": "./dist/index.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "default": "./dist/index.umd.js"
     },
     "./loader": {
       "import": "./dist/use-client-loader.js",

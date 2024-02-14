@@ -6,9 +6,12 @@
   "license": "MIT",
   "exports": {
     ".": {
-      "default": "./dist/style.css"
+      "default": "./dist/default.css"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/default.css",
+    "./default.css": "./dist/default.css",
+    "./scoped.css": "./dist/scoped.css",
+    "./scoped": "./dist/scoped.css"
   },
   "files": [
     "dist",

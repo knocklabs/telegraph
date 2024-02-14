@@ -20,6 +20,11 @@
       "import": "./dist/token-config.es.js",
       "require": "./dist/token-config.cjs.js",
       "types": "./dist/token-config.d.ts"
+    },
+    "./scoped-config": {
+      "import": "./dist/scoped-config.es.js",
+      "require": "./dist/scoped-config.cjs.js",
+      "types": "./dist/scoped-config.d.ts"
     }
   },
   "files": [
