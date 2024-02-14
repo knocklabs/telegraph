@@ -46,7 +46,7 @@ describe("Button", () => {
       <Button icon={{ icon: addSharp, alt: "create" }} variant="soft" />,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-12");
+    expect(icon).toHaveClass("text-gray-11");
   });
   it("overrides on text work", async () => {
     const { container } = render(

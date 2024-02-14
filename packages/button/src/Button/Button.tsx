@@ -10,7 +10,7 @@ import {
   iconSizeMap,
   iconVariantMap,
   textColorMap,
-textSizeMap,
+  textSizeMap,
 } from "./Button.constants";
 
 type RootBaseProps = {
