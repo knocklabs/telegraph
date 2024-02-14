@@ -10,18 +10,19 @@ import {
   iconSizeMap,
   iconVariantMap,
   textColorMap,
-  textSizeMap,
+textSizeMap,
 } from "./Button.constants";
 
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "1" | "2" | "3";
-  color?: "accent" | "gray" | "red" | "disabled";
+  color?: "accent" | "gray" | "red";
   state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
 };
 
 type InternalProps = {
   layout: "default" | "icon-only";
+  color: Required<RootBaseProps>["color"] | "disabled";
 };
 
 type RootProps = RootBaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -36,7 +37,7 @@ type Required<T> = {
 };
 
 const ButtonContext = React.createContext<
-  Required<RootBaseProps & InternalProps>
+  Required<Omit<RootBaseProps, "color"> & InternalProps>
 >({
   variant: "solid",
   size: "2",
