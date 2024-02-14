@@ -14,6 +14,8 @@ npm install @telegraph/vite-config
 
 ### Usage
 
+#### Default
+
 vite.config.mts
 ```
 import { viteConfig } from "@telegraph/vite-config";
@@ -22,3 +24,12 @@ import { defineConfig } from "vite";
 export default defineConfig(viteConfig);
 ```
 
+#### Scoped CSS
+
+vite.config.mts
+```
+import { defaultViteConfig, scopeCssViteConfig } from "@telegraph/vite-config";
+import { mergeConfig } from "vite";
+
+export default mergeConfig(defaultViteConfig, scopeCssViteConfig);
+```
