@@ -61,20 +61,16 @@ const Root = React.forwardRef<RootRef, RootProps>(
     const state = disabled ? "disabled" : initialState;
     const color = state === "disabled" ? "disabled" : initialColor;
 
-    const [layout, setLayout] =
-      React.useState<InternalProps["layout"]>("default");
-
-    // Check if "Icon" is the only child so we can set the kind of layout
-    React.useEffect(() => {
-      const children = React.Children.toArray(props.children);
+    const layout = React.useMemo<InternalProps["layout"]>(() => {
+      const children = React.Children.toArray(props?.children);
       if (children?.length === 1 && React.isValidElement(children[0])) {
         const child = children[0] as React.ReactComponentElement<typeof Icon>;
-        if (child?.type?.displayName === "Icon") {
-          return setLayout("icon-only");
+        if (child?.props?.icon) {
+          return "icon-only";
         }
-        return setLayout("default");
       }
-    }, [props.children]);
+      return "default";
+    }, [props?.children]);
 
     return (
       <ButtonContext.Provider value={{ variant, size, color, state, layout }}>
@@ -115,6 +111,7 @@ const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
       color: color ?? iconColorMap[context.variant][context.color],
       variant: variant ?? iconVariantMap[context.layout],
     };
+
     return (
       <TelegraphIcon
         ref={forwardedRef}
