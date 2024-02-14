@@ -28,7 +28,7 @@ export const sizeMap = {
 export const colorMap = {
   primary: {
     default: "text-gray-12",
-    gray: "text-gray-12",
+    gray: "text-gray-11",
     accent: "text-accent-11",
     beige: "text-beige-11",
     blue: "text-blue-11",
