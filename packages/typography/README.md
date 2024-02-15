@@ -26,7 +26,7 @@ Via Javascript:
 import "@telegraph/typography/style.css"
 ```
 
-> If your project is already using tailwind, you can avoid collisions with Telegraph's tailwind classes by importing the scoped versions of css files: `@import "@telegraph/typography/scoped";`. Then, include `className="tgph"` on the nearest element wrapping a Telegraph component.
+> Then, include `className="tgph"` on the farthest parent element wrapping the telegraph components
 
 ### Usage
 

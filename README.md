@@ -24,7 +24,12 @@ import "@telegraph/core/style.css";
 import "@telegraph/tokens/default.css"; (options: default.css, dark.css, light.css)
 ```
 
-> If your project is already using tailwind, you can avoid collisions with Telegraph's tailwind classes by importing the scoped versions of css files: `@import "@telegraph/core/scoped";`. Then, include `className="tgph"` on the nearest element wrapping a Telegraph component.
+Scope styles:
+```
+<body className="tgph">
+```
+
+> Note: If you only want to use telegraph in a certain part of your app, you would wrap that part in an element with the `tgph` class.
 
 ## Packages
 

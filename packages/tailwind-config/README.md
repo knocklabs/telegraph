@@ -14,7 +14,7 @@ npm install @telegraph/tailwind-config
 
 ### Usage
 
-tailwind.default.config.mts
+tailwind.config.mts
 ```
 import tailwindConfig from "@telegraph/tailwind-config";
 
@@ -25,15 +25,5 @@ export default {
 };
 ```
 
-tailwind.scoped.config.mts
-```
-import tailwindConfig from "@telegraph/tailwind-config/scoped-config";
-
-export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  extend: {},
-  presets: [tailwindConfig],
-};
-```
-> Scoped config will require that a wrapping element containing `className="tgph"` be wrapping any Telegraph component
+>  Config will require that a wrapping element containing `className="tgph"` be wrapping any Telegraph component
 

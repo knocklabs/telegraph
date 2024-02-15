@@ -25,8 +25,6 @@ export default defineConfig(viteConfig);
 ```
 
 #### Scoped CSS
-
-vite.config.mts
 ```
 import { defaultViteConfig, scopeCssViteConfig } from "@telegraph/vite-config";
 import { mergeConfig } from "vite";
