@@ -2,6 +2,7 @@
 @import "@telegraph/core";
 @import "@telegraph/typography";
 @import "@telegraph/icon";
+@import "@telegraph/button";
 
 /*
  * Overrides could go here, i.e. custom theme

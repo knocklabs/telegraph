@@ -1,6 +1,7 @@
 "use client";
-import { Heading, Text } from "@telegraph/typography";
-import { Icon, addSharp } from "@telegraph/icon";
+import { Heading } from "@telegraph/typography";
+import { Button } from "@telegraph/button";
+import { Icon, addSharp, chevronDown } from "@telegraph/icon";
 
 export default function Home() {
   return (
@@ -12,6 +13,31 @@ export default function Home() {
         size="9"
         variant="primary"
       />
+      <div style={{ display: "block", gap: "0rem" }}>
+        <Button.Root color="red" variant="solid" size="2">
+          <Button.Icon icon={addSharp} alt="create" />
+        </Button.Root>
+        <Button.Root color="red" variant="solid" size="2">
+          <Button.Text>Button</Button.Text>
+        </Button.Root>
+        <Button.Root color="red" variant="solid">
+          <Button.Icon icon={addSharp} alt="create" />
+          <Button.Text>Button</Button.Text>
+        </Button.Root>
+        <Button.Root color="red" variant="soft" size="2">
+          <Button.Text>Button</Button.Text>
+          <Button.Icon icon={chevronDown} alt="Arrow pointing down" />
+        </Button.Root>
+        <Button.Root color="gray" variant="outline" size="2">
+          <Button.Icon icon={addSharp} alt="create" />
+          <Button.Text>Button</Button.Text>
+          <Button.Icon icon={chevronDown} alt="Arrow pointing down" />
+        </Button.Root>
+        <Button
+          icon={{ icon: addSharp, alt: "create" }}
+          color="accent"
+        />
+      </div>
       <Heading as="h3" size="9">
         Heading
       </Heading>

@@ -1,5 +1,12 @@
 # @telegraph/postcss-config
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`88c34e3`](https://github.com/knocklabs/telegraph/commit/88c34e35e0fd221b48e3f27ad5722e01295f06a2)]:
+  - @telegraph/tailwind-config@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes
