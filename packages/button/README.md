@@ -38,9 +38,9 @@ import { Button } from "@telegraph/button"
 | variant | string | "solid" | "solid", "soft", "outline", "ghost" |
 | size | string | "2" | "1", "2", "3" |
 | color | string | "gray" | "accent", "gray", "red" |
-| leadingIcon | IconProps | `{icon: undefined, alt: undefined}` | [See @telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon) exported icons |
-| trailingIcon | IconProps | `{icon: undefined, alt: undefined}` | [See @telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon) exported icons |
-| icon | IconProps | `{icon: undefined, alt: undefined}` | [See @telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon) exported icons |
+| leadingIcon | IconProps | `{icon: undefined, alt: undefined}` | See [@telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon) exported icons |
+| trailingIcon | IconProps | `{icon: undefined, alt: undefined}` | See [@telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon) exported icons |
+| icon | IconProps | `{icon: undefined, alt: undefined}` | See [@telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon) exported icons |
 
 
 ### Advanced Usage
