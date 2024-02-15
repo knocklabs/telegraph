@@ -17,8 +17,6 @@ npm install @telegraph/icon
 
 ```
 @import "@telegraph/icon"
-OR
-@import "@telegraph/icon/scoped"
 ```
 
 

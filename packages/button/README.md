@@ -14,8 +14,6 @@ npm install @telegraph/button
 ### Add stylesheet
 ```
 @import "@telegraph/button"
-OR
-@import "@telegraph/button/scoped"
 ```
 
 ### Basic Usage
