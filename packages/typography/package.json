@@ -15,9 +15,7 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/default.css"
     },
-    "./scoped": "./dist/scoped.css",
-    "./style.css": "./dist/default.css",
-    "./scoped.css": "./dist/scoped.css"
+    "./default.css": "./dist/default.css"
   },
   "files": [
     "dist",

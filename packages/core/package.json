@@ -8,10 +8,7 @@
     ".": {
       "default": "./dist/default.css"
     },
-    "./style.css": "./dist/default.css",
-    "./default.css": "./dist/default.css",
-    "./scoped.css": "./dist/scoped.css",
-    "./scoped": "./dist/scoped.css"
+    "./default.css": "./dist/default.css"
   },
   "files": [
     "dist",

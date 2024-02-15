@@ -1,4 +1,4 @@
 /* Including just "@tailwind utilities;" will build only the classnames within the package */
 @tailwind utilities;
 
-@config "../tailwind.scoped.config.mts";
+@config "../tailwind.config.mts";

@@ -1,6 +1,6 @@
 @import "@telegraph/tokens";
-@import "@telegraph/typography/scoped";
-@import "@telegraph/icon/scoped";
+@import "@telegraph/typography";
+@import "@telegraph/icon";
 
 @tailwind base;
 @tailwind components;
