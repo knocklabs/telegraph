@@ -3,6 +3,7 @@ import tokens from "@telegraph/tokens/mappings/tokens";
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  important: ".tgph",
   theme: {
     colors: {
       ...tokens.color,

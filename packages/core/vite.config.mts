@@ -1,4 +1,4 @@
-import { viteConfig } from "@telegraph/vite-config";
-import { defineConfig } from "vite";
+import { scopedCssViteConfig, viteConfig } from "@telegraph/vite-config";
+import { mergeConfig } from "vite";
 
-export default defineConfig(viteConfig);
+export default mergeConfig(viteConfig, scopedCssViteConfig);

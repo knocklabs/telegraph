@@ -1,14 +1,10 @@
 @import "@telegraph/tokens";
-@import "@telegraph/core";
 @import "@telegraph/typography";
 @import "@telegraph/icon";
-@import "@telegraph/button";
 
-/*
- * Overrides could go here, i.e. custom theme
- * */
-:root {
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   background: var(--tgph-surface-1);

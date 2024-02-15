@@ -25,3 +25,5 @@ export default {
 };
 ```
 
+>  Config will require that a wrapping element containing `className="tgph"` be wrapping any Telegraph component
+
