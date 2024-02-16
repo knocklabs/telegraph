@@ -14,15 +14,22 @@ Pick one:
 
 Via CSS (preferred):
 ```
-@import "@telegraph/core"
-@import "@telegraph/tokens"
+@import "@telegraph/core";
+@import "@telegraph/tokens"; (option: default.css, dark.css, light.css)
 ```
 
 Via Javascript:
 ```
-import "@telegraph/core/style.css"
-import "@telegraph/tokens/default.css" (options: default.css, dark.css, light.css, semantic.css)
+import "@telegraph/core/style.css";
+import "@telegraph/tokens/default.css"; (options: default.css, dark.css, light.css)
 ```
+
+Scope styles:
+```
+<body className="tgph">
+```
+
+> Note: If you only want to use telegraph in a certain part of your app, you would wrap that part in an element with the `tgph` class.
 
 ## Packages
 

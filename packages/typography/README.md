@@ -26,6 +26,8 @@ Via Javascript:
 import "@telegraph/typography/style.css"
 ```
 
+> Then, include `className="tgph"` on the farthest parent element wrapping the telegraph components
+
 ### Usage
 
 #### `<Heading/>`

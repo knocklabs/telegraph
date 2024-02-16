@@ -33,6 +33,7 @@ export default {
     rollupOptions: {
       external: [...allDependencies],
       output: {
+        entryFileNames: "[name].[format].js",
         globals: {
           ...allDependencies.reduce(
             (acc, dep) => {

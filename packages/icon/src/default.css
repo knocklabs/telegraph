@@ -1,3 +1,6 @@
+@import "./Icon/Icon.styles.css";
+
 /* Including just "@tailwind utilities;" will build only the classnames within the package */
 @tailwind utilities;
 
+@config "../tailwind.config.mts";
