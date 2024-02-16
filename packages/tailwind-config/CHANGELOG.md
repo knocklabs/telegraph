@@ -1,5 +1,11 @@
 # @telegraph/tailwind-config
 
+## 0.0.9
+
+### Patch Changes
+
+- [#48](https://github.com/knocklabs/telegraph/pull/48) [`14e9b48`](https://github.com/knocklabs/telegraph/commit/14e9b484a99b9e40460a91350297fefa9e98abd2) Thanks [@kylemcd](https://github.com/kylemcd)! - adds scoped css version of tailwind config
+
 ## 0.0.8
 
 ### Patch Changes

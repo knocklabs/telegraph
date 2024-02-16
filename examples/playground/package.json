@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/playground",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": true,
   "scripts": {
     "dev:examples": "next dev",
