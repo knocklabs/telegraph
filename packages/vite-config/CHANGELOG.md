@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.0.7
+
+### Patch Changes
+
+- [#48](https://github.com/knocklabs/telegraph/pull/48) [`14e9b48`](https://github.com/knocklabs/telegraph/commit/14e9b484a99b9e40460a91350297fefa9e98abd2) Thanks [@kylemcd](https://github.com/kylemcd)! - adds scoped css config that can be used to generate scoped taiwind classes in component packages
+
 ## 0.0.6
 
 ### Patch Changes
