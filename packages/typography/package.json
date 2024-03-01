@@ -34,7 +34,6 @@
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/core": "workspace:^",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",

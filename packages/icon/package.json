@@ -34,7 +34,6 @@
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/prettier-config": "^0.0.1",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/core": "workspace:^",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
