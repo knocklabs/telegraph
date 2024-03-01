@@ -1,5 +1,4 @@
-import semantic from "@telegraph/tokens/mappings/semantic";
-import tokens from "@telegraph/tokens/mappings/tokens";
+import tokens from "@telegraph/tokens/css-variables-map";
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -7,17 +6,13 @@ export default {
   theme: {
     colors: {
       ...tokens.color,
-      ...semantic.color,
     },
     borderRadius: {
       ...tokens.rounded,
-      ...semantic.rounded,
     },
     spacing: {
       ...tokens.spacing,
-      ...semantic.spacing,
     },
-
     boxShadow: {
       ...tokens.shadow,
     },

@@ -1,4 +1,4 @@
-import tokens from "@telegraph/tokens/mappings/tokens";
+import tokens from "@telegraph/tokens/css-variables-map";
 
 export default {
   theme: {

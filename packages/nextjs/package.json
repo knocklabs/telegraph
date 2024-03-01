@@ -5,29 +5,27 @@
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/nextjs",
   "author": "@knocklabs",
   "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
+    },
+    "./loader": {
+      "import": "./dist/esm/use-client-loader.mjs",
+      "require": "./dist/cjs/use-client-loader.js",
+      "default": "./dist/cjs/use-client-loader.js"
+    }
+  },
   "files": [
     "dist",
     "README.md"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
-      "default": "./dist/index.umd.js"
-    },
-    "./loader": {
-      "import": "./dist/use-client-loader.js",
-      "default": "./dist/use-client-loader.js"
-    }
-  },
   "prettier": "@knocklabs/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "tsc && vite build --watch --emptyOutDir false && yarn use-client-loader-copy",
-    "use-client-loader-copy": "cp src/use-client-loader.js dist/use-client-loader.js",
-    "build": "yarn clean && yarn build:esm && yarn build:cjs && yarn use-client-loader-copy",
-    "build:esm": "BUILD_TARGET=esm; tsc && vite build",
-    "build:cjs": "BUILD_TARGET=cjs; tsc && vite build",
+    "dev": "vite build --watch --emptyOutDir false",
+    "build": "yarn clean && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",

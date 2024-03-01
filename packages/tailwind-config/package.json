@@ -7,24 +7,24 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/default-config.es.js",
-      "require": "./dist/default-config.cjs.js",
-      "types": "./dist/default-config.d.ts"
+      "import": "./dist/esm/default-config.mjs",
+      "require": "./dist/cjs/default-config.js",
+      "types": "./dist/types/default-config.d.ts"
     },
     "./default-config": {
-      "import": "./dist/default-config.es.js",
-      "require": "./dist/default-config.cjs.js",
-      "types": "./dist/default-config.d.ts"
+      "import": "./dist/esm/default-config.mjs",
+      "require": "./dist/cjs/default-config.js",
+      "types": "./dist/types/default-config.d.ts"
     },
     "./token-config": {
-      "import": "./dist/token-config.es.js",
-      "require": "./dist/token-config.cjs.js",
-      "types": "./dist/token-config.d.ts"
+      "import": "./dist/esm/token-config.mjs",
+      "require": "./dist/cjs/token-config.js",
+      "types": "./dist/types/token-config.d.ts"
     },
     "./scoped-config": {
-      "import": "./dist/scoped-config.es.js",
-      "require": "./dist/scoped-config.cjs.js",
-      "types": "./dist/scoped-config.d.ts"
+      "import": "./dist/esm/scoped-config.mjs",
+      "require": "./dist/cjs/scoped-config.js",
+      "types": "./dist/types/scoped-config.d.ts"
     }
   },
   "files": [
@@ -34,9 +34,7 @@
   "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && yarn build:esm && yarn build:cjs",
-    "build:esm": "BUILD_TARGET=esm; tsc && vite build",
-    "build:cjs": "BUILD_TARGET=cjs; tsc && vite build",
+    "build": "yarn clean && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"

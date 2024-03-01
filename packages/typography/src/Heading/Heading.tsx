@@ -29,10 +29,10 @@ const Heading = React.forwardRef<HeadingRef, HeadingProps>(
     return (
       <Component
         className={clsx(
+          "m-0 box-border font-semi-bold",
           align && alignMap[align],
           color && colorMap[color],
           size && sizeMap[size],
-          "font-semi-bold",
           className,
         )}
         ref={forwardedRef}

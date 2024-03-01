@@ -49,6 +49,7 @@ const Text = React.forwardRef<TextRef, TextProps>(
     return (
       <Component
         className={clsx(
+          "m-0 box-border",
           align && alignMap[align],
           color && colorMap[color],
           size && sizeMap[size],

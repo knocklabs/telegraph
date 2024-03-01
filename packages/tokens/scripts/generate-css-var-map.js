@@ -6,8 +6,7 @@ const { writeFile, mkdir } = require("node:fs/promises"); // For file system ope
 // Constant for the prefix used in CSS variables
 const TELEGRAPH_VARIABLE_PREFIX = "tgph";
 
-const THEME_NAMES = ["light","dark"];
-
+const THEME_NAMES = ["light", "dark"];
 
 /**
  * Maps CSS variables to class names based on the provided object structure.
@@ -62,7 +61,7 @@ const mapCssVarToClassName = (obj, prefix, includeVariableNamePrefix) => {
 const saveMapping = async (name, tokens) => {
   try {
     // Define the directory path where the mappings will be saved
-    const distDirPath = path.join(__dirname, "../dist/mappings");
+    const distDirPath = path.join(__dirname, "../dist/json");
     // Ensure the directory exists (create it if not)
     await mkdir(distDirPath, { recursive: true });
     // Write the mappings to a JSON file
@@ -100,18 +99,8 @@ const main = async () => {
       }),
     );
 
-    // Generate mappings for semantic tokens
-    const semantic = Object.assign(
-      ...Object.entries(tgph.semantic).map(([key, value]) => {
-        return {
-          [key]: mapCssVarToClassName(value, key),
-        };
-      }),
-    );
-
     // Save the generated mappings
     saveMapping("tokens", tokens);
-    saveMapping("semantic", semantic);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",

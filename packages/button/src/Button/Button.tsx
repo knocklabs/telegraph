@@ -77,10 +77,11 @@ const Root = React.forwardRef<RootRef, RootProps>(
       <ButtonContext.Provider value={{ variant, size, color, state, layout }}>
         <button
           className={clsx(
+            "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
+            "inline-flex items-center justify-center rounded-3 transition-colors",
+            state === "disabled" && "cursor-not-allowed",
             buttonColorMap[variant][color],
             buttonSizeMap[layout][size],
-            state === "disabled" && "cursor-not-allowed",
-            "inline-flex items-center justify-center rounded-3 transition-colors",
             className,
           )}
           data-button-layout={layout}
