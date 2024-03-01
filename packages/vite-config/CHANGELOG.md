@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.0.8
+
+### Patch Changes
+
+- [#52](https://github.com/knocklabs/telegraph/pull/52) [`fa40877`](https://github.com/knocklabs/telegraph/commit/fa408773387bf864fb3d38f13028ba889fef60a5) Thanks [@kylemcd](https://github.com/kylemcd)! - fixes esm build issues, removes semantic tokens, deprecates the core package
+
 ## 0.0.7
 
 ### Patch Changes

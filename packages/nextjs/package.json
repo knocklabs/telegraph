@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/nextjs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Utility for utilizing telegraph components in Nextjs",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/nextjs",
   "author": "@knocklabs",
