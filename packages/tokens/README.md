@@ -28,7 +28,5 @@ OR
 import "@telegraph/tokens/light.css"
 OR
 import "@telegraph/tokens/dark.css"
-OR
-import "@telegraph/tokens/semantic.css"
 ```
 

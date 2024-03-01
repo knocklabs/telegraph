@@ -1,6 +1,3 @@
-import { semanticColor } from "./semantic/color";
-import { semanticRounded } from "./semantic/rounded";
-import { semanticSpacing } from "./semantic/spacing";
 import { color } from "./tokens/color";
 import { family } from "./tokens/family";
 import { leading } from "./tokens/leading";
@@ -21,11 +18,6 @@ export default {
     leading,
     tracking,
     text,
-    weight
-  },
-  semantic: {
-    color: semanticColor,
-    spacing: semanticSpacing,
-    rounded: semanticRounded,
+    weight,
   },
 };

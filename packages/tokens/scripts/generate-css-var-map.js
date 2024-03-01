@@ -99,18 +99,8 @@ const main = async () => {
       }),
     );
 
-    // Generate mappings for semantic tokens
-    const semantic = Object.assign(
-      ...Object.entries(tgph.semantic).map(([key, value]) => {
-        return {
-          [key]: mapCssVarToClassName(value, key),
-        };
-      }),
-    );
-
     // Save the generated mappings
     saveMapping("tokens", tokens);
-    saveMapping("semantic", semantic);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",
