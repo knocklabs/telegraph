@@ -2,10 +2,17 @@
 import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
 import { Icon, addSharp, chevronDown } from "@telegraph/icon";
+import { Tag } from "@telegraph/tag";
 
 export default function Home() {
   return (
     <main className="tgph">
+      <div style={{ margin: "80px 200px" }}>
+        <Tag.Root size="2">
+          <Tag.Text color="white">Tag</Tag.Text>
+          <Tag.Button />
+        </Tag.Root>
+      </div>
       <Icon
         alt="add icon"
         icon={addSharp}
