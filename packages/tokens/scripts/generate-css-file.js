@@ -41,11 +41,10 @@ function findPathAndValue(obj, targetValue) {
  * Converts design tokens into CSS custom properties.
  *
  * @param {Object} variables The design tokens to convert.
- * @param {String} mode The mode to use for token conversion (tokens or semantic).
- * @param {Object} source The source object for semantic tokens.
+ * @param {String} mode The mode to use for token conversion (currently only "tokens" ).
  * @returns {Array} An array containing CSS custom properties for regular, light, and dark themes.
  */
-const tokensToCss = (variables = {}, mode = "tokens", source) => {
+const tokensToCss = (variables = {}, mode = "tokens") => {
   let regularVars = "";
   let lightVars = "";
   let darkVars = "";
@@ -58,18 +57,6 @@ const tokensToCss = (variables = {}, mode = "tokens", source) => {
       if (typeof value === "object" && !Array.isArray(value)) {
         processObject(value, currentPrefix);
       } else {
-        if (mode === "semantic") {
-          const path = findPathAndValue(source, value)?.path;
-          if (path && !path.includes("dark")) {
-            const cssVariable = path
-              .split(".")
-              .filter((i) => !(i === "color" || i === "light"))
-              .join("-");
-            const filteredPrefix = currentPrefix.replace("-light", "");
-            regularVars += `  --${TELEGRAPH_VARIABLE_PREFIX}${filteredPrefix}: var(--${TELEGRAPH_VARIABLE_PREFIX}-${cssVariable});`;
-          }
-        }
-
         if (mode === "tokens") {
           if (currentPrefix.includes("color")) {
             if (currentPrefix.includes("dark")) {
@@ -114,29 +101,8 @@ const saveTokens = async (name, tokens) => {
 };
 
 /**
- * Converts semantic tokens into CSS custom properties.
- *
- * @param {Object} tgph The object containing both semantic and token values.
- * @returns {String} A string containing the CSS custom properties.
- */
-const semanticTokensToCSS = async (tgph) => {
-  const tokens = await Promise.all(
-    Object.entries(tgph.semantic).map(async ([key]) => {
-      return tokensToCss({ [key]: tgph.semantic[key] }, "semantic", {
-        [key]: tgph.tokens[key],
-      });
-    }),
-  );
-
-  return tokens
-    .flat()
-    .filter((i) => i)
-    .join("");
-};
-
-/**
  * Main function to read design tokens from a file, convert them to CSS,
- * and save the resulting CSS in different themes (default, light, dark, semantic).
+ * and save the resulting CSS in different themes (default, light, dark).
  */
 const main = async () => {
   try {
@@ -148,17 +114,14 @@ const main = async () => {
       tgph.tokens,
       "tokens",
     );
-    const semanticTokens = await semanticTokensToCSS(tgph);
 
-    const defaultCss = `:root {${lightTokens} ${tokens} ${semanticTokens}  @media (prefers-color-scheme: dark) {${darkTokens}}}`;
+    const defaultCss = `:root {${lightTokens} ${tokens} @media (prefers-color-scheme: dark) {${darkTokens}}}`;
     const lightCss = `:root {${lightTokens} ${tokens} }`;
     const darkCss = `:root {${darkTokens} ${tokens} }`;
-    const semanticCss = `:root {${semanticTokens}}`;
 
     saveTokens("default", defaultCss);
     saveTokens("light", lightCss);
     saveTokens("dark", darkCss);
-    saveTokens("semantic", semanticCss);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",
