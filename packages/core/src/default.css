@@ -1,9 +1,0 @@
-/* Using tailwind `"important": ".tgph"` doesn't
- * work so we have to use nested `@tailwind` directives
- * to get this to work. */
-.tgph {
-  @tailwind base;
-  @tailwind components;
-}
-
-@config "../tailwind.config.mts";

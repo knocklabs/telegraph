@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@telegraph/core": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/tokens": "workspace:^",
     "@telegraph/typography": "workspace:^",

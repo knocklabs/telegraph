@@ -1674,7 +1674,6 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@telegraph/core": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
@@ -1696,22 +1695,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/core@workspace:^, @telegraph/core@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "@telegraph/core@workspace:packages/core"
-  dependencies:
-    "@knocklabs/eslint-config": "npm:^0.0.3"
-    "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@telegraph/postcss-config": "workspace:^"
-    "@telegraph/prettier-config": "workspace:^"
-    "@telegraph/tailwind-config": "workspace:^"
-    "@telegraph/vite-config": "workspace:^"
-    eslint: "npm:^8.56.0"
-    typescript: "npm:^5.3.3"
-    vite: "npm:^5.0.12"
-  languageName: unknown
-  linkType: soft
-
 "@telegraph/icon@workspace:^, @telegraph/icon@workspace:packages/icon":
   version: 0.0.0-use.local
   resolution: "@telegraph/icon@workspace:packages/icon"
@@ -1719,7 +1702,6 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@telegraph/core": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
@@ -1758,7 +1740,6 @@ __metadata:
   resolution: "@telegraph/playground@workspace:examples/playground"
   dependencies:
     "@telegraph/button": "workspace:^"
-    "@telegraph/core": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/nextjs": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
@@ -1841,7 +1822,6 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@telegraph/core": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
@@ -6984,7 +6964,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nextjs-tailwind@workspace:examples/nextjs-tailwind"
   dependencies:
-    "@telegraph/core": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/typography": "workspace:^"

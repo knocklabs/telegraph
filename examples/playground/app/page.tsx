@@ -5,7 +5,7 @@ import { Icon, addSharp, chevronDown } from "@telegraph/icon";
 
 export default function Home() {
   return (
-    <main>
+    <main className="tgph">
       <Icon
         alt="add icon"
         icon={addSharp}
@@ -33,10 +33,7 @@ export default function Home() {
           <Button.Text>Button</Button.Text>
           <Button.Icon icon={chevronDown} alt="Arrow pointing down" />
         </Button.Root>
-        <Button
-          icon={{ icon: addSharp, alt: "create" }}
-          color="accent"
-        />
+        <Button icon={{ icon: addSharp, alt: "create" }} color="accent" />
       </div>
       <Heading as="h3" size="9">
         Heading

@@ -46,6 +46,7 @@ const Icon = React.forwardRef<IconRef, IconProps>(
         aria-label={alt}
         dangerouslySetInnerHTML={{ __html: iconMarkup }}
         className={clsx(
+          "box-border",
           size && sizeMap["box"][size],
           size && sizeMap["icon"][size],
           variant && color && colorMap[variant][color],
