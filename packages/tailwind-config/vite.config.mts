@@ -1,15 +1,10 @@
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
+import { defaultViteConfig } from "@telegraph/vite-config";
+import { mergeConfig } from "vite";
 
-export default defineConfig({
+export default mergeConfig(defaultViteConfig, {
   build: {
     lib: {
-      entry: ["src/default-config.ts", "src/token-config.ts"],
-      name: "telegraph",
-      fileName: (format: string, entryName: string) =>
-        `${entryName}.${format}.js`,
+      entry: ["src/default-config.ts", "src/token-config.ts", "src/index.ts"],
     },
-    sourcemap: true,
   },
-  plugins: [dts()],
 });

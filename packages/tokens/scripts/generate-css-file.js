@@ -101,12 +101,13 @@ const saveTokens = async (name, tokens) => {
   try {
     const distDirPath = path.join(__dirname, "../dist");
     await mkdir(distDirPath, { recursive: true });
+    await mkdir(`${distDirPath}/css`, { recursive: true });
     const { code } = transform({
       code: Buffer.from(tokens),
       minify: true,
       sourceMap: true,
     });
-    await writeFile(path.join(distDirPath, `./${name}.css`), code);
+    await writeFile(path.join(distDirPath, `./css/${name}.css`), code);
   } catch (e) {
     console.error("There was an error while saving a file.\n", e);
   }

@@ -4,26 +4,24 @@
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/icon",
   "author": "@knocklabs",
   "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/css/default.css"
+    },
+    "./default.css": "./dist/css/default.css"
+  },
   "files": [
     "dist",
     "README.md"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/default.css"
-    },
-    "./default.css": "./dist/default.css"
-  },
   "prettier": "@knocklabs/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "tsc && vite build --watch --emptyOutDir false",
-    "build": "yarn clean && yarn build:esm && yarn build:cjs",
-    "build:esm": "BUILD_TARGET=esm; tsc && vite build",
-    "build:cjs": "BUILD_TARGET=cjs; tsc && vite build",
+    "dev": "vite build --watch --emptyOutDir false",
+    "build": "yarn clean && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",

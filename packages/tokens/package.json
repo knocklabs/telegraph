@@ -4,34 +4,26 @@
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tokens",
-  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/default.css"
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/css/default.css"
     },
     "./default": {
-      "default": "./dist/default.css"
+      "default": "./dist/css/default.css"
     },
     "./light": {
-      "default": "./dist/light.css"
+      "default": "./dist/css/light.css"
     },
     "./dark": {
-      "default": "./dist/dark.css"
+      "default": "./dist/css/dark.css"
     },
-    "./semantic": {
-      "default": "./dist/semantic.css"
-    },
-    "./mappings/semantic": {
-      "import": "./dist/mappings/semantic.json",
-      "default": "./dist/mappings/semantic.json"
-    },
-    "./mappings/tokens": {
-      "import": "./dist/mappings/tokens.json",
-      "default": "./dist/mappings/tokens.json"
+    "./css-variables-map": {
+      "import": "./dist/json/tokens.json",
+      "default": "./dist/json/tokens.json"
     }
   },
   "files": [
@@ -41,11 +33,9 @@
   "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "generate-css-file": "node ./scripts/generate-css-file.js ../dist/index.umd.js",
-    "generate-css-var-map": "node ./scripts/generate-css-var-map.js ../dist/index.umd.js",
-    "build": "yarn clean && yarn build:esm && yarn build:cjs && yarn generate-css-file && yarn generate-css-var-map",
-    "build:esm": "BUILD_TARGET=esm; tsc && vite build",
-    "build:cjs": "BUILD_TARGET=cjs; tsc && vite build"
+    "generate-css-file": "node ./scripts/generate-css-file.js ../dist/cjs/index.js",
+    "generate-css-var-map": "node ./scripts/generate-css-var-map.js ../dist/cjs/index.js",
+    "build": "yarn clean && vite build && yarn generate-css-file && yarn generate-css-var-map"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
