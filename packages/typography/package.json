@@ -21,7 +21,7 @@
   "prettier": "@telegraph/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "tsc && vite build --watch --emptyOutDir false",
+    "dev": "vite build --watch --emptyOutDir false",
     "build": "yarn clean && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
