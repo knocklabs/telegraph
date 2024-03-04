@@ -30,7 +30,6 @@ describe("Tag", () => {
       const tagBgClassName = tag?.className.match(/bg-(?!none)[^"\s]+/)?.[0];
       const buttonBgClassName = button?.className.match(/bg-(?!none)[^"\s]+/);
 
-      console.log(tagBgClassName, buttonBgClassName);
       expect(tagBgClassName).toEqual(buttonBgClassName[0]);
     },
   );
