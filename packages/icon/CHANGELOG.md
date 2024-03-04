@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.0.4
+
+### Patch Changes
+
+- [#56](https://github.com/knocklabs/telegraph/pull/56) [`735810f`](https://github.com/knocklabs/telegraph/commit/735810f46e0236a0b486753168ca09f6f1fcc6dc) Thanks [@kylemcd](https://github.com/kylemcd)! - declare exports properly in package json
+
 ## 0.0.3
 
 ### Patch Changes

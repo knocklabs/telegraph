@@ -1,5 +1,13 @@
 # nextjs-tailwind
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`735810f`](https://github.com/knocklabs/telegraph/commit/735810f46e0236a0b486753168ca09f6f1fcc6dc)]:
+  - @telegraph/typography@0.0.8
+  - @telegraph/icon@0.0.4
+
 ## 0.1.2
 
 ### Patch Changes
