@@ -10,15 +10,17 @@ import React from "react";
 
 import { COLOR, SIZE } from "./Tag.constants";
 
-type RootProps = React.HTMLAttributes<RootRef> & {
+type RootBaseProps = {
   size?: "1" | "2";
   color?: React.ComponentProps<typeof TelegraphButton>["color"] & "default";
   variant?: "soft" | "solid";
 };
 
+type RootProps = React.HTMLAttributes<RootRef> & RootBaseProps;
+
 type RootRef = HTMLSpanElement;
 
-const TagContext = React.createContext<RootProps>({
+const TagContext = React.createContext<RootBaseProps>({
   size: "1",
   color: "default",
   variant: "soft",
@@ -109,7 +111,7 @@ const Icon = React.forwardRef<IconRef, IconProps>(
 
 type DefaultProps = React.ComponentProps<typeof Root> & {
   text: string;
-  icon?: React.ComponentProps<typeof TelegraphIcon>["icon"];
+  icon?: React.ComponentProps<typeof TelegraphIcon>
   onCopy?: () => void;
   onRemove?: () => void;
 };
@@ -121,10 +123,10 @@ const Default = React.forwardRef<DefaultRef, DefaultProps>(
       color = "default",
       size = "1",
       variant = "soft",
-      text,
       icon,
       onRemove,
       onCopy,
+      children,
       ...props
     },
     ref,
@@ -132,7 +134,7 @@ const Default = React.forwardRef<DefaultRef, DefaultProps>(
     return (
       <Root color={color} size={size} variant={variant} {...props} ref={ref}>
         {icon && <Icon {...icon} />}
-        <Text>{text}</Text>
+        <Text>{children}</Text>
         {onRemove && (
           <Button
             onClick={onRemove}
