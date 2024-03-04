@@ -50,8 +50,8 @@ export const COLOR = {
     solid: {
       default: "white",
       gray: "white",
-      red: "white",
       accent: "white",
+      red: "white",
       blue: "white",
       green: "white",
       yellow: "white",
@@ -78,8 +78,8 @@ export const COLOR = {
     },
     soft: {
       default: "gray",
-      accent: "accent",
       gray: "gray",
+      accent: "accent",
       red: "red",
       blue: "blue",
       green: "green",
