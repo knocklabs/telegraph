@@ -111,7 +111,7 @@ const Icon = React.forwardRef<IconRef, IconProps>(
 
 type DefaultProps = React.ComponentProps<typeof Root> & {
   text: string;
-  icon?: React.ComponentProps<typeof TelegraphIcon>
+  icon?: React.ComponentProps<typeof TelegraphIcon>;
   onCopy?: () => void;
   onRemove?: () => void;
 };
