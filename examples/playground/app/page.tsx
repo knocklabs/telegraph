@@ -8,9 +8,46 @@ export default function Home() {
   return (
     <main className="tgph">
       <div style={{ margin: "80px 200px" }}>
-        <Tag.Root size="2">
-          <Tag.Text color="white">Tag</Tag.Text>
+        <Tag text="Tag" onRemove={() => {}} size="2" />
+        <Tag text="Tag" onCopy={() => {}} size="2" />
+        <Tag text="Tag" size="2" />
+        <Tag.Root size="1">
+          <Tag.Icon icon={addSharp} />
+          <Tag.Text>Tag</Tag.Text>
           <Tag.Button />
+        </Tag.Root>
+        <Tag.Root size="2">
+          <Tag.Icon icon={addSharp} />
+          <Tag.Text>Tag</Tag.Text>
+          <Tag.Button />
+        </Tag.Root>
+        <br />
+        <br />
+        <Tag.Root size="1">
+          <Tag.Icon icon={addSharp} />
+          <Tag.Text>Tag</Tag.Text>
+        </Tag.Root>
+        <Tag.Root size="2">
+          <Tag.Icon icon={addSharp} />
+          <Tag.Text>Tag</Tag.Text>
+        </Tag.Root>
+        <br />
+        <br />
+        <Tag.Root size="1">
+          <Tag.Text>Tag</Tag.Text>
+          <Tag.Button />
+        </Tag.Root>
+        <Tag.Root size="2">
+          <Tag.Text>Tag</Tag.Text>
+          <Tag.Button />
+        </Tag.Root>
+        <br />
+        <br />
+        <Tag.Root size="1">
+          <Tag.Text>Tag</Tag.Text>
+        </Tag.Root>
+        <Tag.Root size="2">
+          <Tag.Text>Tag</Tag.Text>
         </Tag.Root>
       </div>
       <Icon
