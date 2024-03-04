@@ -12,7 +12,7 @@ import { COLOR, SIZE } from "./Tag.constants";
 
 type RootProps = React.HTMLAttributes<RootRef> & {
   size: "1" | "2";
-  color: React.ComponentProps<typeof TelegraphButton>["color"];
+  color: React.ComponentProps<typeof TelegraphButton>["color"] & "default";
   variant: "soft" | "solid";
 };
 
@@ -20,13 +20,13 @@ type RootRef = HTMLSpanElement;
 
 const TagContext = React.createContext<RootProps>({
   size: "1",
-  color: "gray",
+  color: "default",
   variant: "soft",
 });
 
 const Root = React.forwardRef<RootRef, RootProps>(
   (
-    { size = "1", color = "gray", variant = "soft", className, ...props },
+    { size = "1", color = "default", variant = "soft", className, ...props },
     forwardedRef,
   ) => {
     return (
@@ -77,7 +77,7 @@ const Button = React.forwardRef<ButtonRef, ButtonProps>(
     return (
       <TelegraphButton
         size={context.size}
-        color={context.color}
+        color={COLOR.Button[context.variant][context.color]}
         variant={context.variant}
         icon={{ icon: closeSharp, alt: "close" }}
         className={clsx("rounded-tl-0 rounded-bl-0", className)}
@@ -116,16 +116,34 @@ type DefaultProps = typeof Root & {
 type DefaultRef = React.ElementRef<typeof Root>;
 
 const Default = React.forwardRef<DefaultRef, DefaultProps>(
-  ({ color = "gray", size = "1", variant = "soft", ...props }, ref) => {
+  (
+    {
+      color = "default",
+      size = "1",
+      variant = "soft",
+      text,
+      icon,
+      onRemove,
+      onCopy,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <Root color={color} size={size} variant={variant} {...props} ref={ref}>
-        {props.icon && <Icon icon={props.icon} />}
-        <Text>{props.text}</Text>
-        {props.onRemove && (
-          <Button onClick={props.onRemove} icon={{ icon: closeSharp, alt: "Copy Text" }} />
+        {icon && <Icon {...icon} />}
+        <Text>{text}</Text>
+        {onRemove && (
+          <Button
+            onClick={onRemove}
+            icon={{ icon: closeSharp, alt: "Copy Text" }}
+          />
         )}
-        {props.onCopy && (
-          <Button onClick={props.onCopy} icon={{ icon: copyOutline, alt: "Remove" }} />
+        {onCopy && (
+          <Button
+            onClick={onCopy}
+            icon={{ icon: copyOutline, alt: "Remove" }}
+          />
         )}
       </Root>
     );

@@ -8,47 +8,176 @@ export default function Home() {
   return (
     <main className="tgph">
       <div style={{ margin: "80px 200px" }}>
-        <Tag text="Tag" onRemove={() => {}} size="2" />
-        <Tag text="Tag" onCopy={() => {}} size="2" />
-        <Tag text="Tag" size="2" />
-        <Tag.Root size="1">
-          <Tag.Icon icon={addSharp} />
-          <Tag.Text>Tag</Tag.Text>
-          <Tag.Button />
-        </Tag.Root>
-        <Tag.Root size="2">
-          <Tag.Icon icon={addSharp} />
-          <Tag.Text>Tag</Tag.Text>
-          <Tag.Button />
-        </Tag.Root>
-        <br />
-        <br />
-        <Tag.Root size="1">
-          <Tag.Icon icon={addSharp} />
-          <Tag.Text>Tag</Tag.Text>
-        </Tag.Root>
-        <Tag.Root size="2">
-          <Tag.Icon icon={addSharp} />
-          <Tag.Text>Tag</Tag.Text>
-        </Tag.Root>
-        <br />
-        <br />
-        <Tag.Root size="1">
-          <Tag.Text>Tag</Tag.Text>
-          <Tag.Button />
-        </Tag.Root>
-        <Tag.Root size="2">
-          <Tag.Text>Tag</Tag.Text>
-          <Tag.Button />
-        </Tag.Root>
-        <br />
-        <br />
-        <Tag.Root size="1">
-          <Tag.Text>Tag</Tag.Text>
-        </Tag.Root>
-        <Tag.Root size="2">
-          <Tag.Text>Tag</Tag.Text>
-        </Tag.Root>
+        <div>
+          <Tag text="Tag" size="1" color="default" />
+          <Tag text="Tag" size="1" color="accent" />
+          <Tag text="Tag" size="1" color="red" />
+          <Tag text="Tag" size="1" color="green" />
+          <Tag text="Tag" size="1" color="blue" />
+          <Tag text="Tag" size="1" color="yellow" />
+        </div>
+        <div>
+          <Tag text="Tag" size="2" color="default" />
+          <Tag text="Tag" size="2" color="accent" />
+          <Tag text="Tag" size="2" color="red" />
+          <Tag text="Tag" size="2" color="green" />
+          <Tag text="Tag" size="2" color="blue" />
+          <Tag text="Tag" size="2" color="yellow" />
+        </div>
+        <div>
+          <Tag text="Tag" size="2" color="default" variant="solid" />
+          <Tag text="Tag" size="2" color="accent" variant="solid" />
+          <Tag text="Tag" size="2" color="red" variant="solid" />
+          <Tag text="Tag" size="2" color="green" variant="solid" />
+          <Tag text="Tag" size="2" color="blue" variant="solid" />
+          <Tag text="Tag" size="2" color="yellow" variant="solid" />
+        </div>
+        <div>
+          <Tag
+            text="Tag"
+            size="2"
+            color="default"
+            variant="solid"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="accent"
+            variant="solid"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="red"
+            variant="solid"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="green"
+            variant="solid"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="blue"
+            variant="solid"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="yellow"
+            variant="solid"
+            icon={{ icon: addSharp }}
+          />
+        </div>
+        <div>
+          <Tag
+            text="Tag"
+            size="2"
+            color="default"
+            variant="soft"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="accent"
+            variant="soft"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="red"
+            variant="soft"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="green"
+            variant="soft"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="blue"
+            variant="soft"
+            icon={{ icon: addSharp }}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="yellow"
+            variant="soft"
+            icon={{ icon: addSharp }}
+          />
+        </div>
+        <div>
+          <Tag
+            text="Tag"
+            size="2"
+            color="default"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="gray"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="accent"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="red"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="green"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="blue"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+          <Tag
+            text="Tag"
+            size="2"
+            color="yellow"
+            variant="soft"
+            icon={{ icon: addSharp }}
+            onCopy={() => {}}
+          />
+        </div>
       </div>
       <Icon
         alt="add icon"
@@ -58,6 +187,62 @@ export default function Home() {
         variant="primary"
       />
       <div style={{ display: "block", gap: "0rem" }}>
+        <div>
+          <Button.Root color="green" variant="solid">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="solid">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="solid">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
+        <div>
+          <Button.Root color="green" variant="soft">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="soft">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="soft">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
+        <div>
+          <Button.Root color="green" variant="outline">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="outline">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="outline">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
+        <div>
+          <Button.Root color="green" variant="ghost">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="ghost">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="ghost">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
         <Button.Root color="red" variant="solid" size="2">
           <Button.Icon icon={addSharp} alt="create" />
         </Button.Root>
