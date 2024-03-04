@@ -2,10 +2,20 @@
 import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
 import { Icon, addSharp, chevronDown } from "@telegraph/icon";
+import { Field } from "@telegraph/form";
+import { TextField } from "@telegraph/text-field";
+import React from "react";
 
 export default function Home() {
+  const [value, setValue] = React.useState<string>("");
   return (
     <main className="tgph">
+      <Field
+        label="Label"
+        value={value}
+        onChange={setValue}
+        error={true}
+      />
       <Icon
         alt="add icon"
         icon={addSharp}

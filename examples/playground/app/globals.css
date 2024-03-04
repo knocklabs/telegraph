@@ -2,6 +2,8 @@
 @import "@telegraph/typography";
 @import "@telegraph/icon";
 @import "@telegraph/button";
+@import "@telegraph/text-field";
+@import "@telegraph/form";
 
 /*
  * Overrides could go here, i.e. custom theme

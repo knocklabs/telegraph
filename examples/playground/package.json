@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@telegraph/button": "workspace:^",
+    "@telegraph/form": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
+    "@telegraph/text-field": "workspace:^",
     "@telegraph/tokens": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "next": "14.1.0",
