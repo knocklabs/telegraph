@@ -2,10 +2,18 @@
 import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
 import { Icon, addSharp, chevronDown } from "@telegraph/icon";
+import { Tag } from "@telegraph/tag";
 
 export default function Home() {
   return (
     <main className="tgph">
+      <div style={{ margin: "80px 200px" }}>
+        <div>
+          <Tag text="Tag" size="1" color="yellow">
+            Tag
+          </Tag>
+        </div>
+      </div>
       <Icon
         alt="add icon"
         icon={addSharp}
@@ -14,6 +22,62 @@ export default function Home() {
         variant="primary"
       />
       <div style={{ display: "block", gap: "0rem" }}>
+        <div>
+          <Button.Root color="green" variant="solid">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="solid">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="solid">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
+        <div>
+          <Button.Root color="green" variant="soft">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="soft">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="soft">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
+        <div>
+          <Button.Root color="green" variant="outline">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="outline">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="outline">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
+        <div>
+          <Button.Root color="green" variant="ghost">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="blue" variant="ghost">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+          <Button.Root color="yellow" variant="ghost">
+            <Button.Icon icon={addSharp} alt="create" />
+            <Button.Text>Button</Button.Text>
+          </Button.Root>
+        </div>
         <Button.Root color="red" variant="solid" size="2">
           <Button.Icon icon={addSharp} alt="create" />
         </Button.Root>
