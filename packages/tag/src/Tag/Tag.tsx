@@ -11,9 +11,9 @@ import React from "react";
 import { COLOR, SIZE } from "./Tag.constants";
 
 type RootProps = React.HTMLAttributes<RootRef> & {
-  size: "1" | "2";
-  color: React.ComponentProps<typeof TelegraphButton>["color"] & "default";
-  variant: "soft" | "solid";
+  size?: "1" | "2";
+  color?: React.ComponentProps<typeof TelegraphButton>["color"] & "default";
+  variant?: "soft" | "solid";
 };
 
 type RootRef = HTMLSpanElement;
@@ -40,6 +40,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
           )}
           {...props}
           ref={forwardedRef}
+          data-tag
         />
       </TagContext.Provider>
     );
@@ -106,10 +107,9 @@ const Icon = React.forwardRef<IconRef, IconProps>(
   },
 );
 
-type DefaultProps = typeof Root & {
+type DefaultProps = React.ComponentProps<typeof Root> & {
   text: string;
   icon?: React.ComponentProps<typeof TelegraphIcon>["icon"];
-  color?: React.ComponentProps<typeof Root>["color"];
   onCopy?: () => void;
   onRemove?: () => void;
 };

@@ -67,25 +67,23 @@ export const COLOR = {
     },
   },
   Button: {
-      solid: {
-          default: "gray",
-          gray: "gray",
+    solid: {
+      default: "gray",
+      gray: "gray",
+      accent: "accent",
       red: "red",
       blue: "blue",
       green: "green",
       yellow: "yellow",
-
-
-      },
-      soft: {
-          default: "gray",
-          gray: "gray",
+    },
+    soft: {
+      default: "gray",
+      accent: "accent",
+      gray: "gray",
       red: "red",
       blue: "blue",
       green: "green",
       yellow: "yellow",
-
-
-      }
-    }
+    },
+  },
 } as const;
