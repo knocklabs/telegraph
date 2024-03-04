@@ -1,4 +1,3 @@
-
 export const COLOR = {
   Label: {
     default: "default",
