@@ -53,6 +53,10 @@ const Icon = React.forwardRef<IconRef, IconProps>(
           "stroke-[currentColor] fill-[currentColor] inline-block",
           className,
         )}
+        data-tgph-icon
+        data-tgph-icon-size={size}
+        data-tgph-icon-variant={variant}
+        data-tgph-icon-color={color}
         {...props}
         ref={forwardedRef}
       />

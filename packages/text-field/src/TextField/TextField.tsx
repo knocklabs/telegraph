@@ -1,3 +1,5 @@
+import { useComposedRefs } from "@telegraph/compose-refs";
+import { Icon } from "@telegraph/icon";
 import { clsx } from "clsx";
 import React from "react";
 
@@ -11,12 +13,13 @@ type TextFieldProps = Omit<
   variant?: "outline" | "ghost";
   disabled?: boolean;
   error?: boolean | string;
-  useChangeEvent?: boolean;
   value?: string;
   onChange?: (
     value: string,
     { event }: { event: React.ChangeEvent<HTMLInputElement> },
   ) => void;
+  leadingIcon?: React.ComponentProps<typeof Icon>;
+  TrailingAction?: React.ReactElement;
 };
 
 type TextFieldRef = HTMLInputElement;
@@ -36,13 +39,18 @@ const TextField = React.forwardRef<TextFieldRef, TextFieldProps>(
       variant = "outline",
       value,
       onChange,
+      leadingIcon,
+      TrailingAction,
       className,
       disabled,
       error,
       ...props
     },
-    ref,
+    forwardedRef,
   ) => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const composedRefs = useComposedRefs(inputRef, forwardedRef);
+
     const [internalState, setInternalState] =
       React.useState<InternalProps["state"]>("default");
 
@@ -56,22 +64,70 @@ const TextField = React.forwardRef<TextFieldRef, TextFieldProps>(
       }
     }, [disabled, error]);
 
+    // Adds default props to the component, which can be overridden by the caller
+    const TrailingActionComponent = TrailingAction
+      ? React.cloneElement(TrailingAction, {
+          size,
+          color: "gray",
+          variant: "ghost",
+          ...TrailingAction?.props,
+        })
+      : null;
     return (
-      <input
-        value={value}
-        onChange={(event) => {
-          onChange?.(event.target.value, { event });
-        }}
+      <div
         className={clsx(
-          "appearance-none outline-0 shadow-0 text-gray-12 border-solid",
-          SIZE.Field[size],
-          COLOR.Field[internalState][variant],
-          className,
+          "box-border flex items-center transition-all",
+          "border-2 border-solid text-gray-12 placeholder:text-gray-10",
+          COLOR.Container[internalState][variant],
+          SIZE.Container[size],
         )}
-        disabled={disabled}
-        {...props}
-        ref={ref}
-      />
+        // Focus the input when clicking on the container
+        onPointerDown={(event) => {
+          const target = event.target as HTMLElement;
+
+          // Make sure we're not clicking on an interactive element
+          if (target.closest("button, a")) {
+            event.preventDefault();
+            return;
+          }
+
+          const input = inputRef.current;
+          if (!input) return;
+
+          requestAnimationFrame(() => {
+            input.focus();
+          });
+        }}
+      >
+        {leadingIcon && <Icon size={size} color="gray" {...leadingIcon} />}
+        <input
+          value={value}
+          onChange={(event) => {
+            onChange?.(event.target.value, { event });
+          }}
+          className={clsx(
+            "appearance-none text-gray-12 border-none shadow-0 outline-0 bg-transparent",
+            "[font-family:inherit] h-full w-full",
+            SIZE.Field[size],
+            className,
+          )}
+          disabled={disabled}
+          {...props}
+          ref={composedRefs}
+        />
+        {TrailingAction && (
+          <div
+            className={clsx(
+              "box-border aspect-square h-full p-[2px] flex items-center justify-center",
+              // Overrides to get the button to fit into the text field as designed
+              "[&>[data-tgph-button]]:aspect-square [&>[data-tgph-button]]:p-0 [&>[data-tgph-button]]:w-full [&>[data-tgph-button]]:h-auto",
+              SIZE.TrailingAction[size],
+            )}
+          >
+            {TrailingActionComponent}
+          </div>
+        )}
+      </div>
     );
   },
 );

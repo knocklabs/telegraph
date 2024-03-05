@@ -84,7 +84,11 @@ const Root = React.forwardRef<RootRef, RootProps>(
             buttonSizeMap[layout][size],
             className,
           )}
-          data-button-layout={layout}
+          data-tgph-button
+          data-tgph-button-layout={layout}
+          data-tgph-button-size={size}
+          data-tgph-button-variant={variant}
+          data-tgph-button-state={color}
           ref={forwardedRef}
           {...props}
         />

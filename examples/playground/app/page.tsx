@@ -1,7 +1,7 @@
 "use client";
 import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
-import { Icon, addSharp, chevronDown } from "@telegraph/icon";
+import { Icon, searchOutline, chevronDown, addSharp } from "@telegraph/icon";
 import { Field } from "@telegraph/form";
 import { TextField } from "@telegraph/text-field";
 import React from "react";
@@ -10,12 +10,45 @@ export default function Home() {
   const [value, setValue] = React.useState<string>("");
   return (
     <main className="tgph">
-      <Field
-        label="Label"
-        value={value}
-        onChange={setValue}
-        error={true}
-      />
+      <div style={{ maxWidth: "500px", width: "100%" }}>
+        <Field
+          size="1"
+          label="Label"
+          placeholder="Placeholder"
+          value={value}
+          onChange={setValue}
+          leadingIcon={{ icon: searchOutline, alt: "add icon" }}
+          TrailingAction={<Button icon={{ icon: addSharp }} />}
+        />
+        <Field
+          size="2"
+          label="Label"
+          placeholder="Placeholder"
+          value={value}
+          onChange={setValue}
+          leadingIcon={{ icon: searchOutline, alt: "add icon" }}
+          TrailingAction={<Button icon={{ icon: addSharp }} />}
+        />
+        <Field
+          size="3"
+          label="Label"
+          placeholder="Placeholder"
+          value={value}
+          onChange={setValue}
+          leadingIcon={{ icon: searchOutline, alt: "add icon" }}
+          TrailingAction={<Button icon={{ icon: addSharp }} />}
+        />
+        <Field
+          size="2"
+          label="Label"
+          variant="ghost"
+          placeholder="Placeholder"
+          value={value}
+          onChange={setValue}
+          leadingIcon={{ icon: searchOutline, alt: "add icon" }}
+          error
+        />
+      </div>
       <Icon
         alt="add icon"
         icon={addSharp}

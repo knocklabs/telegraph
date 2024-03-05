@@ -1735,6 +1735,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/compose-refs@workspace:^, @telegraph/compose-refs@workspace:packages/compose-refs":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/compose-refs@workspace:packages/compose-refs"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/prettier-config": "npm:^0.0.1"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/vite-config": "workspace:^"
+    "@telegraph/vitest-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+    vitest: "npm:^1.2.2"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/form@workspace:^, @telegraph/form@workspace:packages/form":
   version: 0.0.0-use.local
   resolution: "@telegraph/form@workspace:packages/form"
@@ -1743,8 +1765,10 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-slot": "npm:^1.0.2"
+    "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/text-field": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
@@ -1877,9 +1901,10 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/compose-refs": "workspace:^"
+    "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
-    "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
     "@types/react": "npm:^18.2.48"

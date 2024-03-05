@@ -12,8 +12,8 @@ export const buttonColorMap = {
     disabled: "bg-gray-2",
   },
   outline: {
-    gray: "bg-transparent shadow-[inset_0_0_0_1px] shadow-gray-6 hover:shadow-gray-7 focus:shadow-gray-8",
-    red: "bg-transparent shadow-[inset_0_0_0_1px] shadow-red-6 hover:shadow-red-7 focus:shadow-red-8",
+    gray: "bg-transparent shadow-[inset_0_0_0_2px] shadow-gray-6 hover:shadow-gray-7 focus:shadow-gray-8",
+    red: "bg-transparent shadow-[inset_0_0_0_2px] shadow-red-6 hover:shadow-red-7 focus:shadow-red-8",
     accent:
       "bg-transparent shadow-[inset_0_0_0_1px] shadow-accent-6 hover:shadow-accent-7 focus:shadow-accent-8",
     disabled: "bg-gray-2",

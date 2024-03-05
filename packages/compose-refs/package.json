@@ -1,5 +1,5 @@
 {
-  "name": "@telegraph/text-field",
+  "name": "@telegraph/compose-refs",
   "version": "0.0.0",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/icon",
   "author": "@knocklabs",
@@ -11,10 +11,8 @@
     ".": {
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/css/default.css"
-    },
-    "./default.css": "./dist/css/default.css"
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "files": [
     "dist",
@@ -33,17 +31,10 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@telegraph/compose-refs": "workspace:^",
-    "@telegraph/icon": "workspace:^",
-    "clsx": "^2.1.0"
-  },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/prettier-config": "^0.0.1",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/postcss-config": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@telegraph/vitest-config": "workspace:^",
     "@types/react": "^18.2.48",

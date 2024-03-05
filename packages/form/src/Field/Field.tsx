@@ -8,7 +8,7 @@ import { COLOR } from "./Field.constants";
 
 type RootProps = Omit<
   React.HTMLProps<HTMLInputElement>,
-  "value" | "onChange"
+  "value" | "onChange" | "size"
 > & {
   disabled?: boolean;
   error?: boolean | string;
@@ -141,10 +141,15 @@ const Control = React.forwardRef<ControlRef, ControlProps>(
 type DefaultProps = React.ComponentProps<typeof Root> & {
   label?: string;
   message?: string;
+} & {
   control?: {
     name: "TextField";
-    props: React.ComponentProps<typeof TextField>;
-  } & React.ComponentProps<typeof TextField>;
+    props?: React.ComponentProps<typeof TextField>;
+  };
+  size?: React.ComponentProps<typeof TextField>["size"];
+  variant?: React.ComponentProps<typeof TextField>["variant"];
+  leadingIcon?: React.ComponentProps<typeof TextField>["leadingIcon"];
+  TrailingAction?: React.ComponentProps<typeof TextField>["TrailingAction"];
 };
 
 const Default = ({
@@ -154,17 +159,23 @@ const Default = ({
   },
   label,
   message,
+  value,
+  onChange,
+  disabled,
+  error,
   ...props
 }: DefaultProps) => {
   return (
-    <Root {...props}>
+    <Root value={value} onChange={onChange} disabled={disabled} error={error}>
       {label && <Label>{label}</Label>}
       {control && (
         <Control>
-          {control.name === "TextField" && <TextField {...control.props} />}
+          {control.name === "TextField" && (
+            <TextField {...props} {...control.props} />
+          )}
         </Control>
       )}
-      {message && <Message>{message}</Message>}
+      {(message || typeof error === "string") && <Message>{message}</Message>}
     </Root>
   );
 };
