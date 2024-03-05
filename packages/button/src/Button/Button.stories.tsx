@@ -9,7 +9,6 @@ const filteredIcons = Object.keys(icons).filter((icon) => {
   return icon !== "Icon";
 });
 
-
 const meta: Meta<typeof TelegraphButton> = {
   title: "Components/Button",
   component: TelegraphButton,
