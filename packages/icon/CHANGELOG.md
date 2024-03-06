@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.0.5
+
+### Patch Changes
+
+- [`ee35abc`](https://github.com/knocklabs/telegraph/commit/ee35abcb229f15cca8ebac6418c9abddcf2dc97c) Thanks [@kylemcd](https://github.com/kylemcd)! - fix esm export for ionicons with .js extension
+
 ## 0.0.4
 
 ### Patch Changes
