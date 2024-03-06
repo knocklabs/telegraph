@@ -13,7 +13,6 @@ import {
   textSizeMap,
 } from "./Button.constants";
 
-
 // The `as` prop is a generic prop that allows you to change the underlying
 // element of a component. This is useful for creating a component that can
 // be used as a button, link, or any other element.
