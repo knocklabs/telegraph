@@ -1,2 +1,4 @@
 export { Icon } from "./Icon";
-export * from "ionicons/icons";
+
+// Export by ".js" extension to avoid ESM resolution error
+export * from "ionicons/icons/index.js";
