@@ -12,15 +12,19 @@ import { COLOR, SIZE } from "./Tag.constants";
 
 type RootBaseProps = {
   size?: "1" | "2";
-  color?: React.ComponentProps<typeof TelegraphButton>["color"] & "default";
-  variant?: "soft" | "solid";
+  color?: keyof (typeof COLOR.Root)["soft"];
+  variant?: keyof typeof COLOR.Root;
+};
+
+type Required<T> = {
+  [P in keyof T]-?: T[P];
 };
 
 type RootProps = React.HTMLAttributes<RootRef> & RootBaseProps;
 
 type RootRef = HTMLSpanElement;
 
-const TagContext = React.createContext<RootBaseProps>({
+const TagContext = React.createContext<Required<RootBaseProps>>({
   size: "1",
   color: "default",
   variant: "soft",
@@ -134,7 +138,7 @@ const Default = React.forwardRef<DefaultRef, DefaultProps>(
     return (
       <Root color={color} size={size} variant={variant} {...props} ref={ref}>
         {icon && <Icon {...icon} />}
-        <Text>{children}</Text>
+        <Text as="span">{children}</Text>
         {onRemove && (
           <Button
             onClick={onRemove}
