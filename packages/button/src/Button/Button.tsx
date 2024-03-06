@@ -13,6 +13,25 @@ import {
   textSizeMap,
 } from "./Button.constants";
 
+
+// The `as` prop is a generic prop that allows you to change the underlying
+// element of a component. This is useful for creating a component that can
+// be used as a button, link, or any other element.
+type AsProp<C extends React.ElementType> = {
+  as?: C;
+};
+
+// The `PropsWithAs` type is a utility type that allows you to create a
+// component that can be used as a button, link, or any other element.
+// It takes a generic type `C` that extends `React.ElementType` and a
+// generic type `P` that extends `object`. It returns a type that includes
+// the `as` prop and all the props of the underlying element type `C`.
+// This allows you to create a component that can be used as a button, link,
+// or any other element, and pass all the props of the underlying element type.
+type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
+  Omit<React.ComponentProps<C>, keyof AsProp<C>> &
+  P;
+
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "1" | "2" | "3";
@@ -25,19 +44,16 @@ type InternalProps = {
   color: Required<RootBaseProps>["color"] | "disabled";
 };
 
-type RootProps = RootBaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+type RootProps = RootBaseProps;
 
-type RootRef = HTMLButtonElement;
+type RootRef = React.LegacyRef<HTMLButtonElement>;
 
-// Might make sense to move this into a shared
-// package to be used across all components if we
-// start to see more of these kinds of types.
 type Required<T> = {
   [P in keyof T]-?: T[P];
 };
 
 const ButtonContext = React.createContext<
-  Required<Omit<RootBaseProps, "color"> & InternalProps>
+  Required<Omit<RootBaseProps, "color" | "as"> & InternalProps>
 >({
   variant: "solid",
   size: "2",
@@ -46,9 +62,10 @@ const ButtonContext = React.createContext<
   layout: "default",
 });
 
-const Root = React.forwardRef<RootRef, RootProps>(
+const Root = React.forwardRef(
   (
     {
+      as = "button",
       variant = "solid",
       size = "2",
       color: initialColor = "gray",
@@ -56,8 +73,8 @@ const Root = React.forwardRef<RootRef, RootProps>(
       disabled,
       className,
       ...props
-    },
-    forwardedRef,
+    }: PropsWithAs<"button", RootProps>,
+    forwardedRef: RootRef,
   ) => {
     const state = disabled ? "disabled" : initialState;
     const color = state === "disabled" ? "disabled" : initialColor;
@@ -73,12 +90,13 @@ const Root = React.forwardRef<RootRef, RootProps>(
       return "default";
     }, [props?.children]);
 
+    const ButtonComponent = as;
     return (
       <ButtonContext.Provider value={{ variant, size, color, state, layout }}>
-        <button
+        <ButtonComponent
           className={clsx(
             "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
-            "inline-flex items-center justify-center rounded-3 transition-colors",
+            "inline-flex items-center justify-center rounded-3 transition-colors no-underline",
             state === "disabled" && "cursor-not-allowed",
             buttonColorMap[variant][color],
             buttonSizeMap[layout][size],
@@ -91,7 +109,11 @@ const Root = React.forwardRef<RootRef, RootProps>(
       </ButtonContext.Provider>
     );
   },
-);
+  // In order to use generics with forwardRef, you need to recast,
+  // see source: https://fettblog.eu/typescript-react-generic-forward-refs/
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, RootProps> & { ref?: RootRef },
+) => React.ReactElement;
 
 type IconProps = React.ComponentProps<typeof TelegraphIcon>;
 
@@ -132,7 +154,7 @@ type TextProps = Omit<React.ComponentProps<typeof TypographyText>, "as"> & {
 type TextRef = React.ElementRef<typeof TypographyText>;
 
 const Text = React.forwardRef<TextRef, TextProps>(
-  ({ as, color, size, ...props }, forwardedRef) => {
+  ({ as, color, size, className, ...props }, forwardedRef) => {
     Text.displayName = "Text";
 
     const context = React.useContext(ButtonContext);
@@ -145,6 +167,7 @@ const Text = React.forwardRef<TextRef, TextProps>(
     return (
       <TypographyText
         ref={forwardedRef}
+        className={clsx("no-underline", className)}
         data-button-text
         {...props}
         {...textProps}
