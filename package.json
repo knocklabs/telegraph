@@ -9,7 +9,7 @@
   "private": true,
   "packageManager": "yarn@4.1.0",
   "engines": {
-    "node": "20.9.0"
+    "node": "18.x"
   },
   "scripts": {
     "dev:packages": "turbo dev --filter=\"./packages/*\"",
