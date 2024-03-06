@@ -177,36 +177,41 @@ const Text = React.forwardRef<TextRef, TextProps>(
 
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
-type DefaultProps = React.ComponentProps<typeof Root> &
-  (
-    | {
-        leadingIcon?: DefaultIconProps;
-        trailingIcon?: DefaultIconProps;
-        icon?: never;
-      }
-    | {
-        icon?: DefaultIconProps;
-        leadingIcon?: never;
-        trailingIcon?: never;
-      }
-  );
+type DefaultProps =
+  | {
+      leadingIcon?: DefaultIconProps;
+      trailingIcon?: DefaultIconProps;
+      icon?: never;
+    }
+  | {
+      icon?: DefaultIconProps;
+      leadingIcon?: never;
+      trailingIcon?: never;
+    };
 
-const Default = ({
-  leadingIcon,
-  trailingIcon,
-  icon,
-  children,
-  ...props
-}: DefaultProps) => {
-  const combinedLeadingIcon = leadingIcon || icon;
-  return (
-    <Root {...props}>
-      {combinedLeadingIcon && <Icon {...combinedLeadingIcon} />}
-      {children && <Text>{children}</Text>}
-      {trailingIcon && <Icon {...trailingIcon} />}
-    </Root>
-  );
-};
+const Default = React.forwardRef(
+  (
+    {
+      leadingIcon,
+      trailingIcon,
+      icon,
+      children,
+      ...props
+    }: PropsWithAs<"button", DefaultProps & RootProps>,
+    forwardedRef: RootRef,
+  ) => {
+    const combinedLeadingIcon = leadingIcon || icon;
+    return (
+      <Root {...props} ref={forwardedRef}>
+        {combinedLeadingIcon && <Icon {...combinedLeadingIcon} />}
+        {children && <Text>{children}</Text>}
+        {trailingIcon && <Icon {...trailingIcon} />}
+      </Root>
+    );
+  },
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, DefaultProps & RootProps> & { ref?: RootRef },
+) => React.ReactElement;
 
 Object.assign(Default, {
   Root,
