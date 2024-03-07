@@ -59,7 +59,13 @@ const Box = React.forwardRef<BoxRef, BoxProps>(({ className, ...props }) => {
     {} as Record<string, string>,
   );
 
-  return <div className={clsx("tgph-box", className)} ref={boxRef} {...filteredProps} />;
+  return (
+    <div
+      className={clsx("tgph-box", className)}
+      ref={boxRef}
+      {...filteredProps}
+    />
+  );
 });
 
 export { Box };
