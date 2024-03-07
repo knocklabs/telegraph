@@ -1,0 +1,48 @@
+{
+  "name": "@telegraph/compose-refs",
+  "version": "0.0.0",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/button",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "prettier": "@telegraph/prettier-config",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "vite build --watch --emptyOutDir false",
+    "build": "yarn clean && vite build",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
+    "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/prettier-config": "workspace:^",
+    "@telegraph/vite-config": "workspace:^",
+    "@types/react": "^18.2.48",
+    "eslint": "^8.56.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

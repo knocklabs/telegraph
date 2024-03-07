@@ -53,6 +53,7 @@ const Icon = React.forwardRef<IconRef, IconProps>(
           "stroke-[currentColor] fill-[currentColor] inline-block",
           className,
         )}
+        data-tgph-icon
         {...props}
         ref={forwardedRef}
       />

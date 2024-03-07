@@ -3448,7 +3448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-slot@npm:1.0.2":
+"@radix-ui/react-slot@npm:1.0.2, @radix-ui/react-slot@npm:^1.0.2":
   version: 1.0.2
   resolution: "@radix-ui/react-slot@npm:1.0.2"
   dependencies:
@@ -4686,6 +4686,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/compose-refs@workspace:^, @telegraph/compose-refs@workspace:packages/compose-refs":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/compose-refs@workspace:packages/compose-refs"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/icon@workspace:^, @telegraph/icon@workspace:packages/icon":
   version: 0.0.0-use.local
   resolution: "@telegraph/icon@workspace:packages/icon"
@@ -4701,6 +4721,34 @@ __metadata:
     clsx: "npm:^2.1.0"
     eslint: "npm:^8.56.0"
     ionicons: "npm:^7.2.2"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+    vitest: "npm:^1.2.2"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
+"@telegraph/input@workspace:^, @telegraph/input@workspace:packages/input":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/input@workspace:packages/input"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@radix-ui/react-slot": "npm:^1.0.2"
+    "@telegraph/button": "workspace:^"
+    "@telegraph/compose-refs": "workspace:^"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@telegraph/vitest-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    clsx: "npm:^2.1.0"
+    eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
@@ -4732,6 +4780,7 @@ __metadata:
   dependencies:
     "@telegraph/button": "workspace:^"
     "@telegraph/icon": "workspace:^"
+    "@telegraph/input": "workspace:^"
     "@telegraph/nextjs": "workspace:^"
     "@telegraph/tag": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"

@@ -5,6 +5,7 @@
 @import "../packages/button/dist/css/default.css";
 @import "../packages/icon/dist/css/default.css";
 @import "../packages/tag/dist/css/default.css";
+@import "../packages/input/dist/css/default.css";
 
 body {
   font-family: "Inter", sans-serif;
