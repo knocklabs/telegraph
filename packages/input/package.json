@@ -2,7 +2,7 @@
   "name": "@telegraph/input",
   "version": "0.0.0",
   "description": "Input component for Telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/button",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/input",
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

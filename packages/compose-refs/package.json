@@ -1,7 +1,7 @@
 {
   "name": "@telegraph/compose-refs",
   "version": "0.0.0",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/button",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/compose-refs",
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
