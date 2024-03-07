@@ -18,7 +18,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
     const setCssVariables = () => {
       if (!boxRef.current) return;
 
-      const cssVariables = {};
+      const cssVariables: Record<string, string> = {};
 
       // Iterate through each prop and set add the corresponding value
       // to the cssVariables object
@@ -39,7 +39,9 @@ const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
 
       // Add the cssVariables to the boxRef
       Object.entries(cssVariables).forEach(([key, value]) => {
-        boxRef.current.style.setProperty(key, value);
+        if (boxRef.current) {
+          boxRef.current.style.setProperty(key, value);
+        }
       });
     };
     setCssVariables();
@@ -48,7 +50,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
   const filteredProps = Object.keys(props).reduce(
     (acc, key) => {
       if (!validProps.some((prop) => prop.name === key)) {
-        acc[key] = props[key];
+        acc[key] = props[key as keyof typeof props];
       }
       return acc;
     },
