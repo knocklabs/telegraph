@@ -4,7 +4,7 @@ export const SIZE = {
     "2": "h-8 pl-0 rounded-2",
     "3": "h-10 pl-0 rounded-3",
   },
-  Field: {
+  Input: {
     "1": "text-1 px-1",
     "2": "text-2 px-2",
     "3": "text-3 px-3",
