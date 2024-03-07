@@ -46,7 +46,7 @@ const meta: Meta<typeof TelegraphInput> = {
     },
   },
   args: {
-      size: "2",
+    size: "2",
     variant: "outline",
     error: false,
     disabled: false,
