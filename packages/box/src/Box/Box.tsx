@@ -10,7 +10,7 @@ type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 type BoxRef = HTMLDivElement;
 
-const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props } ) => {
+const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
   // TODO: compose this with forrwardRef once @telegraph/composed-ref is published
   const boxRef = React.useRef<HTMLDivElement>(null);
 

@@ -63,5 +63,4 @@ export const deriveSpacing = ({
   }
 
   return `${spacingObject.top} ${spacingObject.right} ${spacingObject.bottom} ${spacingObject.left}`;
-
 };
