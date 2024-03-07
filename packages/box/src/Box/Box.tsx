@@ -1,3 +1,4 @@
+import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
 
@@ -6,11 +7,11 @@ import { deriveSpacing } from "./Box.helpers";
 
 type ValidProp = (typeof validProps)[number]["name"];
 type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
-  [key in ValidProp]?: string;
+  [key in ValidProp]?: `${keyof typeof t.tokens.spacing}`;
 };
 type BoxRef = HTMLDivElement;
 
-const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
+const Box = React.forwardRef<BoxRef, BoxProps>(({ className, ...props }) => {
   // TODO: compose this with forrwardRef once @telegraph/composed-ref is published
   const boxRef = React.useRef<HTMLDivElement>(null);
 
@@ -47,6 +48,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
     setCssVariables();
   }, [props]);
 
+  // Filter out the valid props from the rest of the props
   const filteredProps = Object.keys(props).reduce(
     (acc, key) => {
       if (!validProps.some((prop) => prop.name === key)) {
@@ -57,7 +59,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(({ ...props }) => {
     {} as Record<string, string>,
   );
 
-  return <div className={clsx("tgph-box")} ref={boxRef} {...filteredProps} />;
+  return <div className={clsx("tgph-box", className)} ref={boxRef} {...filteredProps} />;
 });
 
 export { Box };

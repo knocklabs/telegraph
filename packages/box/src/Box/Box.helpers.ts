@@ -1,5 +1,4 @@
 type DeriveSpacingArgs = {
-  name: string;
   value: string;
   type: string;
   currentValue?: string;
@@ -33,7 +32,8 @@ export const deriveSpacing = ({
     if (isNumber) {
       return `var(--tgph-spacing-${trimmedChar})`;
     }
-    return trimmedChar;
+    // If not a valid spacing value return 0 for that direction
+    return 0;
   };
 
   // Apply the spacing value to the correct direction

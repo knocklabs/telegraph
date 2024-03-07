@@ -4668,6 +4668,7 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/tokens": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
