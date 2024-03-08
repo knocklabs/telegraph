@@ -21,7 +21,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
     const boxRef = React.useRef<HTMLDivElement>(null);
 
     // Filter out the box props from the rest of the props
-    const filteredProps = Object.keys(props).reduce(
+    const filteredProps = React.useMemo(() => Object.keys(props).reduce(
       (acc, key) => {
         if (!Object.keys(BOX_PROPS).some((prop) => prop === key)) {
           acc.rest[key] = props[key as keyof typeof props];
@@ -34,7 +34,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
         box: Record<string, string>;
         rest: Record<string, string>;
       },
-    );
+    ), [props]);
 
     React.useLayoutEffect(() => {
       const setCssVariables = () => {
