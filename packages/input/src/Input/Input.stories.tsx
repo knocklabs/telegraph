@@ -22,7 +22,7 @@ const meta: Meta<typeof TelegraphInput> = {
         type: "select",
       },
     },
-    error: {
+    hasError: {
       control: {
         type: "boolean",
       },
@@ -48,7 +48,7 @@ const meta: Meta<typeof TelegraphInput> = {
   args: {
     size: "2",
     variant: "outline",
-    error: false,
+    hasError: false,
     disabled: false,
     LeadingComponent: "",
     TrailingComponent: "",
