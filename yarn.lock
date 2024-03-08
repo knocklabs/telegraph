@@ -4712,6 +4712,32 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/layout@workspace:^, @telegraph/layout@workspace:packages/layout":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/layout@workspace:packages/layout"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/tokens": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@telegraph/vitest-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    clsx: "npm:^2.1.0"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+    vitest: "npm:^1.2.2"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/nextjs@workspace:^, @telegraph/nextjs@workspace:packages/nextjs":
   version: 0.0.0-use.local
   resolution: "@telegraph/nextjs@workspace:packages/nextjs"
@@ -4732,6 +4758,7 @@ __metadata:
   dependencies:
     "@telegraph/button": "workspace:^"
     "@telegraph/icon": "workspace:^"
+    "@telegraph/layout": "workspace:^"
     "@telegraph/nextjs": "workspace:^"
     "@telegraph/tag": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"

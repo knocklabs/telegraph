@@ -1,0 +1,17 @@
+.tgph-box {
+  display: block;
+  padding-top: var(--tgph-padding-top) ;
+  padding-right: var(--tgph-padding-right) ;
+  padding-bottom: var(--tgph-padding-bottom) ;
+  padding-left: var(--tgph-padding-left) ;
+  padding-inline: var(--tgph-padding-inline) ;
+  padding-block: var(--tgph-padding-block) ;
+  padding: var(--tgph-padding) ;
+  margin-top: var(--tgph-margin-top) ;
+  margin-right: var(--tgph-margin-right) ;
+  margin-bottom: var(--tgph-margin-bottom) ;
+  margin-left: var(--tgph-margin-left) ;
+  margin-inline: var(--tgph-margin-inline) ;
+  margin-block: var(--tgph-margin-block) ;
+  margin: var(--tgph-margin) ;
+}
