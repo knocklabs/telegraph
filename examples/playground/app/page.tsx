@@ -3,12 +3,12 @@ import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
 import { Icon, addSharp, chevronDown } from "@telegraph/icon";
 import { Tag } from "@telegraph/tag";
-import { Box } from "@telegraph/box";
+import { Box } from "@telegraph/layout";
 
 export default function Home() {
   return (
     <main className="tgph">
-      <Box px="20" py="10">
+      <Box pl="10" pt="40">
         I am a box
       </Box>
       <div style={{ margin: "80px 200px" }}>

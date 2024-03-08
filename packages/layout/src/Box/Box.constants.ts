@@ -1,82 +1,62 @@
-export const validProps = [
-  {
-    name: "padding",
+export const VARIANT = {
+  ghost: "bg-transparent",
+};
+
+export const BOX_PROPS = {
+  p: {
     rule: "padding",
     type: "spacing",
   },
-  {
-    name: "p",
-    rule: "padding",
+  m: {
+    rule: "margin",
     type: "spacing",
   },
-  {
-    name: "pt",
+  pt: {
     rule: "padding",
     type: "spacing-top",
   },
-  {
-    name: "pl",
+  pl: {
     rule: "padding",
     type: "spacing-left",
   },
-  {
-    name: "pb",
+  pb: {
     rule: "padding",
     type: "spacing-bottom",
   },
-  {
-    name: "pr",
+  pr: {
     rule: "padding",
     type: "spacing-right",
   },
-  {
-    name: "px",
+  px: {
     rule: "padding",
     type: "spacing-x",
   },
-  {
-    name: "py",
+  py: {
     rule: "padding",
     type: "spacing-y",
   },
-  {
-    name: "margin",
-    rule: "margin",
-    type: "spacing",
-  },
-  {
-    name: "m",
-    rule: "margin",
-    type: "spacing",
-  },
-  {
-    name: "mt",
+  mt: {
     rule: "margin",
     type: "spacing-top",
   },
-  {
-    name: "ml",
+  ml: {
     rule: "margin",
     type: "spacing-left",
   },
-  {
-    name: "mb",
+  mb: {
     rule: "margin",
-    type: "spacingbottom",
+    type: "spacing-bottom",
   },
-  {
-    name: "mr",
+  mr: {
     rule: "margin",
     type: "spacing-right",
   },
-  {
-    name: "mx",
+  mx: {
     rule: "margin-inline",
     type: "spacing-x",
   },
-  {
-    name: "my",
+  my: {
     rule: "margin-block",
     type: "spacing-y",
   },
-] as const;
+} as const;

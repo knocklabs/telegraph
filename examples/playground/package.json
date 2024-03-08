@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@telegraph/box": "workspace:^",
     "@telegraph/button": "workspace:^",
     "@telegraph/icon": "workspace:^",
+    "@telegraph/layout": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/tokens": "workspace:^",
