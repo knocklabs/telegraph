@@ -1,3 +1,6 @@
+//
+// Taken from internal utility that Radix uses. Would be unsafe to install directly as it's only used internally, so brought it into our project here instead.
+//
 // From Radix Primitives: https://github.com/radix-ui/primitives/blob/main/packages/react/compose-refs/src/composeRefs.tsx
 import * as React from "react";
 
