@@ -42,7 +42,7 @@ export const getValueForEachBreakpoint = (
 };
 
 export const isResponsiveObject = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any,
 ): value is ResponsiveObject<string> => {
   return (

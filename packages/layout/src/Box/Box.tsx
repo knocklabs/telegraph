@@ -3,14 +3,14 @@ import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
 
-import { propsToCssVariables } from "../helpers/css-variables";
 import { Responsive } from "../helpers/breakpoints";
+import { propsToCssVariables } from "../helpers/css-variables";
 
 import { BOX_PROPS, VARIANT } from "./Box.constants";
 
 type BoxProp = keyof typeof BOX_PROPS;
 type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
-  [key in BoxProp]?: Responsive<`${keyof typeof t.tokens.spacing}`>
+  [key in BoxProp]?: Responsive<`${keyof typeof t.tokens.spacing}`>;
 } & {
   // More variants wil beed added here once
   // they are designed
