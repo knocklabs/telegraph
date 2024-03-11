@@ -8,11 +8,18 @@ import { Box, Stack } from "@telegraph/layout";
 export default function Home() {
   return (
     <main className="tgph">
-      <Box pl="10" pt="40">
-        I am a box
-      </Box>
-      <Stack spacing="10" direction="column">
-        <Box>I am a box</Box>
+      <Box pl={{ sm: "0", lg: "40" }}>I am a box</Box>
+      <Stack
+        spacing="2"
+        align="center"
+        justify="center"
+        p="20"
+        direction={{ md: "column", xxl: "row" }}
+      >
+        <Box>
+          I am a box
+          <br /> I am a box
+        </Box>
         <Box>I am a box</Box>
       </Stack>
       <div style={{ margin: "80px 200px" }}>

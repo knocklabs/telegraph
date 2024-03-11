@@ -21,6 +21,6 @@ export const STACK_PROPS = {
   },
   spacing: {
     rule: "gap",
-    type: "spacing",
+    type: "spacing-gap",
   },
 } as const;

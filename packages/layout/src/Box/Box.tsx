@@ -1,14 +1,16 @@
+import { useComposedRefs } from "@telegraph/compose-refs";
 import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
 
-import { deriveSpacing } from "../helpers/deriveSpacing";
+import { propsToCssVariables } from "../helpers/css-variables";
+import { Responsive } from "../helpers/breakpoints";
 
 import { BOX_PROPS, VARIANT } from "./Box.constants";
 
 type BoxProp = keyof typeof BOX_PROPS;
 type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
-  [key in BoxProp]?: `${keyof typeof t.tokens.spacing}`;
+  [key in BoxProp]?: Responsive<`${keyof typeof t.tokens.spacing}`>
 } & {
   // More variants wil beed added here once
   // they are designed
@@ -17,9 +19,9 @@ type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
 type BoxRef = HTMLDivElement;
 
 const Box = React.forwardRef<BoxRef, BoxProps>(
-  ({ variant = "ghost", className, ...props }) => {
-    // TODO: compose this with forwardRef once @telegraph/composed-ref is published
+  ({ variant = "ghost", className, ...props }, forwardedRef) => {
     const boxRef = React.useRef<HTMLDivElement>(null);
+    const composedRef = useComposedRefs(forwardedRef, boxRef);
 
     // Filter out the box props from the rest of the props
     const filteredProps = React.useMemo(
@@ -42,49 +44,17 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
     );
 
     React.useLayoutEffect(() => {
-      const setCssVariables = () => {
-        if (!boxRef.current) return;
-
-        const cssVariables: Record<string, string> = {};
-
-        // Iterate through each box prop and add
-        // the value to the cssVariables object
-        Object.entries(filteredProps.box).forEach(([key, value]) => {
-          if (value) {
-            const boxProp = BOX_PROPS[key as BoxProp];
-
-            // If the boxProp is a spacing type, derive the value so
-            // that we utilize our telegraph spacing tokens
-            if (boxProp.type.includes("spacing")) {
-              // Get current value so we can merge like values
-              const currentValueOfCssVariable =
-                cssVariables[`--tgph-${boxProp.rule}`] || "";
-
-              cssVariables[`--tgph-${boxProp.rule}`] = deriveSpacing({
-                value,
-                type: boxProp.type,
-                currentValue: currentValueOfCssVariable || "",
-              });
-            } else {
-              cssVariables[`--tgph-${boxProp.rule}`] = value;
-            }
-          }
-        });
-
-        // Add the cssVariables to the boxRef
-        Object.entries(cssVariables).forEach(([key, value]) => {
-          if (boxRef.current) {
-            boxRef.current.style.setProperty(key, value);
-          }
-        });
-      };
-      setCssVariables();
+      propsToCssVariables({
+        props: filteredProps.box,
+        ref: boxRef,
+        propMap: BOX_PROPS,
+      });
     }, [filteredProps.box]);
 
     return (
       <div
         className={clsx("tgph-box", VARIANT[variant], className)}
-        ref={boxRef}
+        ref={composedRef}
         {...filteredProps.rest}
       />
     );

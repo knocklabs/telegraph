@@ -24,6 +24,9 @@
     "./css-variables-map": {
       "import": "./dist/json/tokens.json",
       "default": "./dist/json/tokens.json"
+    },
+    "./breakpoint": {
+      "default": "./dist/css/breakpoint.css"
     }
   },
   "files": [

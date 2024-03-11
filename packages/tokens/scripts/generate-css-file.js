@@ -69,6 +69,10 @@ const tokensToCss = (variables = {}, mode = "tokens") => {
           } else {
             regularVars += `  --${TELEGRAPH_VARIABLE_PREFIX}${currentPrefix}: ${value};`;
           }
+        } else if (mode === "breakpoint") {
+          if (currentPrefix.includes("breakpoint")) {
+            regularVars += `  @custom-media --${TELEGRAPH_VARIABLE_PREFIX}${currentPrefix} (min-width: ${value});`;
+          }
         }
       }
     });
@@ -114,14 +118,17 @@ const main = async () => {
       tgph.tokens,
       "tokens",
     );
+    const [breakpointTokens] = tokensToCss(tgph.tokens, "breakpoint");
 
     const defaultCss = `:root {${lightTokens} ${tokens} @media (prefers-color-scheme: dark) {${darkTokens}}}`;
     const lightCss = `:root {${lightTokens} ${tokens} }`;
     const darkCss = `:root {${darkTokens} ${tokens} }`;
+    const breakpointCss = `${breakpointTokens}`;
 
     saveTokens("default", defaultCss);
     saveTokens("light", lightCss);
     saveTokens("dark", darkCss);
+    saveTokens("breakpoint", breakpointCss);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",
