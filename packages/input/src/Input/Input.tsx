@@ -8,7 +8,7 @@ import { COLOR, SIZE } from "./Input.constants";
 type BaseRootProps = {
   size?: keyof typeof SIZE.Container;
   variant?: keyof typeof COLOR.Container.default;
-  hasError?: boolean;
+  errored?: boolean;
 };
 
 type RootProps = BaseRootProps &
@@ -16,7 +16,7 @@ type RootProps = BaseRootProps &
 
 type RootRef = HTMLInputElement;
 
-type InternalProps = Omit<BaseRootProps, "hasError"> & {
+type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
 };
 
@@ -37,7 +37,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
       variant = "outline",
       className,
       disabled,
-      hasError,
+      errored,
       children,
       ...props
     },
@@ -46,7 +46,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
     const inputRef = React.useRef<HTMLInputElement>(null);
     const composedRefs = useComposedRefs(forwardedRef, inputRef);
 
-    const state = disabled ? "disabled" : hasError ? "error" : "default";
+    const state = disabled ? "disabled" : errored ? "error" : "default";
 
     return (
       <InputContext.Provider value={{ size, variant, state }}>
