@@ -11,6 +11,7 @@
   "dependencies": {
     "@telegraph/button": "workspace:^",
     "@telegraph/icon": "workspace:^",
+    "@telegraph/input": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",

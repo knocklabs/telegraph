@@ -78,7 +78,7 @@ describe("Button", () => {
       <Button icon={{ icon: addSharp, alt: "create" }} />,
     );
     expect(container.firstChild).toHaveAttribute(
-      "data-button-layout",
+      "data-tgph-button-layout",
       "icon-only",
     );
   });
@@ -87,7 +87,7 @@ describe("Button", () => {
       <Button icon={{ icon: addSharp, alt: "create" }}>Button</Button>,
     );
     expect(container.firstChild).toHaveAttribute(
-      "data-button-layout",
+      "data-tgph-button-layout",
       "default",
     );
   });
