@@ -1,0 +1,8 @@
+.tgph-stack {
+  display: var(--tgph-display, flex);
+  flex-direction: var(--tgph-flex-direction, row);
+  align-items: var(--tgph-align-items, stretch);
+  justify-content: var(--tgph-justify-content, flex-start);
+  flex-wrap: var(--tgph-flex-wrap, nowrap);
+  gap: var(--tgph-gap, 0);
+}
