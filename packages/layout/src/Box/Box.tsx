@@ -2,8 +2,9 @@ import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
 
-import { BOX_PROPS, VARIANT } from "./Box.constants";
 import { deriveSpacing } from "../helpers/deriveSpacing";
+
+import { BOX_PROPS, VARIANT } from "./Box.constants";
 
 type BoxProp = keyof typeof BOX_PROPS;
 type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
