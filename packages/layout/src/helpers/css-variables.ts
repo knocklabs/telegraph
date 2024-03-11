@@ -73,7 +73,7 @@ export const propsToCssVariables = ({
         });
       }
     }
-    console.log(cssVariables);
+
     Object.entries(cssVariables).forEach(([cssVar, cssValue]) => {
       if (ref.current) {
         ref.current.style.setProperty(cssVar, cssValue);
