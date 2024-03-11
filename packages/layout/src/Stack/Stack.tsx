@@ -49,7 +49,7 @@ const Stack = React.forwardRef<StackRef, StackProps>(
       propsToCssVariables({
         props: filteredProps.stack,
         ref: stackRef,
-        propMap: STACK_PROPS,
+        propsMap: STACK_PROPS,
       });
     }, [filteredProps.stack, composedRef]);
 

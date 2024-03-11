@@ -47,7 +47,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
       propsToCssVariables({
         props: filteredProps.box,
         ref: boxRef,
-        propMap: BOX_PROPS,
+        propsMap: BOX_PROPS,
       });
     }, [filteredProps.box]);
 
