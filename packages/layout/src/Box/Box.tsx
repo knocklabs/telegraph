@@ -21,7 +21,7 @@ type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
 type BoxRef = HTMLDivElement;
 
 const Box = React.forwardRef<BoxRef, BoxProps>(
-  ({ as ="div", variant = "ghost", className, ...props }, forwardedRef) => {
+  ({ as = "div", variant = "ghost", className, ...props }, forwardedRef) => {
     const boxRef = React.useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, boxRef);
 
@@ -53,7 +53,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
       });
     }, [filteredProps.box]);
 
-    const Component = as
+    const Component = as;
 
     return (
       <Component
