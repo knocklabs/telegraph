@@ -10,11 +10,11 @@ export default function Home() {
     <main className="tgph">
       <Box pl={{ sm: "0", lg: "40" }}>I am a box</Box>
       <Stack
-        spacing="2"
+        gap="2"
         align="center"
         justify="center"
         p="20"
-        direction={{ md: "column", '2xl': "row" }}
+        direction={{ md: "column", "2xl": "row" }}
       >
         <Box>
           I am a box

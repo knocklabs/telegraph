@@ -16,11 +16,12 @@ type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
   // More variants wil beed added here once
   // they are designed
   variant?: "ghost";
+  as?: React.ElementType;
 };
 type BoxRef = HTMLDivElement;
 
 const Box = React.forwardRef<BoxRef, BoxProps>(
-  ({ variant = "ghost", className, ...props }, forwardedRef) => {
+  ({ as ="div", variant = "ghost", className, ...props }, forwardedRef) => {
     const boxRef = React.useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, boxRef);
 
@@ -52,8 +53,10 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
       });
     }, [filteredProps.box]);
 
+    const Component = as
+
     return (
-      <div
+      <Component
         className={clsx("tgph-box", VARIANT[variant], className)}
         ref={composedRef}
         {...filteredProps.rest}
