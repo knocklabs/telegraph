@@ -1,3 +1,5 @@
+// Breakpoint sizes from Tailwind CSS
+// https://tailwindcss.com/docs/screens
 export const breakpoint = {
   sm: "640px",
   md: "768px",
