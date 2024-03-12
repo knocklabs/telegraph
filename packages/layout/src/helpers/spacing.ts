@@ -32,8 +32,8 @@ export const deriveSpacing = ({
       return `var(--tgph-spacing-${trimmedChar})`;
     }
 
-    if(trimmedChar === "auto"){
-        return "auto";
+    if (trimmedChar === "auto") {
+      return "auto";
     }
 
     // If not a valid spacing value return 0 for that direction

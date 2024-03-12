@@ -10,7 +10,8 @@ import { BOX_PROPS, VARIANT } from "./Box.constants";
 
 type BoxProp = keyof typeof BOX_PROPS;
 type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
-  [key in BoxProp]?: Responsive<`${keyof typeof t.tokens.spacing}`> & Responsive<"auto">
+  [key in BoxProp]?: Responsive<`${keyof typeof t.tokens.spacing}`> &
+    Responsive<"auto">;
 } & {
   // More variants wil beed added here once
   // they are designed
