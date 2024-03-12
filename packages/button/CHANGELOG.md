@@ -1,5 +1,15 @@
 # @telegraph/button
 
+## 0.0.7
+
+### Patch Changes
+
+- [`94c879e`](https://github.com/knocklabs/telegraph/commit/94c879ed645a7b9b1385c2232dfc0d182d20dad2) Thanks [@kylemcd](https://github.com/kylemcd)! - supporting layout and input components
+
+- Updated dependencies [[`94c879e`](https://github.com/knocklabs/telegraph/commit/94c879ed645a7b9b1385c2232dfc0d182d20dad2)]:
+  - @telegraph/icon@0.0.6
+  - @telegraph/typography@0.0.8
+
 ## 0.0.6
 
 ### Patch Changes

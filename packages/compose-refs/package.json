@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/compose-refs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/compose-refs",
   "author": "@knocklabs",
   "license": "MIT",
