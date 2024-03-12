@@ -30,9 +30,9 @@
   }
 }
 
-@media (--tgph-breakpoint-xxl) {
+@media (--tgph-breakpoint-2xl) {
   .tgph-box {
-    --tgph-padding: var(--tgph-padding-xxl);
-    --tgph-margin: var(--tgph-margin-xxl);
+    --tgph-padding: var(--tgph-padding-2xl);
+    --tgph-margin: var(--tgph-margin-2xl);
   }
 }

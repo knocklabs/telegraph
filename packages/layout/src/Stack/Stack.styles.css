@@ -29,7 +29,7 @@
 
 @media (--tgph-breakpoint-lg) {
   .tgph-stack {
-      --tgph-display: var(--tgph-display-lg);
+    --tgph-display: var(--tgph-display-lg);
     --tgph-flex-direction: var(--tgph-flex-direction-lg);
     --tgph-align-items: var(--tgph-align-items-lg);
     --tgph-justify-content: var(--tgph-justify-content-lg);
@@ -40,7 +40,7 @@
 
 @media (--tgph-breakpoint-xl) {
   .tgph-stack {
-      --tgph-display: var(--tgph-display-xl);
+    --tgph-display: var(--tgph-display-xl);
     --tgph-flex-direction: var(--tgph-flex-direction-xl);
     --tgph-align-items: var(--tgph-align-items-xl);
     --tgph-justify-content: var(--tgph-justify-content-xl);
@@ -49,14 +49,13 @@
   }
 }
 
-@media (--tgph-breakpoint-xxl) {
+@media (--tgph-breakpoint-2xl) {
   .tgph-stack {
-      --tgph-display: var(--tgph-display-xxl);
-    --tgph-flex-direction: var(--tgph-flex-direction-xxl);
-    --tgph-align-items: var(--tgph-align-items-xxl);
-    --tgph-justify-content: var(--tgph-justify-content-xxl);
-    --flex-wrap: var(--tgph-flex-wrap-xxl);
-    --tgph-gap: var(--tgph-gap-xxl);
-
+    --tgph-display: var(--tgph-display-2xl);
+    --tgph-flex-direction: var(--tgph-flex-direction-2xl);
+    --tgph-align-items: var(--tgph-align-items-2xl);
+    --tgph-justify-content: var(--tgph-justify-content-2xl);
+    --flex-wrap: var(--tgph-flex-wrap-2xl);
+    --tgph-gap: var(--tgph-gap-2xl);
   }
 }

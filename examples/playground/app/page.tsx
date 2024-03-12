@@ -14,7 +14,7 @@ export default function Home() {
         align="center"
         justify="center"
         p="20"
-        direction={{ md: "column", xxl: "row" }}
+        direction={{ md: "column", '2xl': "row" }}
       >
         <Box>
           I am a box

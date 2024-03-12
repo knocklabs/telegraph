@@ -1,7 +1,7 @@
-export type ResponsiveObject<T> = { sm?: T; md?: T; lg?: T; xl?: T; xxl?: T };
+export type ResponsiveObject<T> = { sm?: T; md?: T; lg?: T; xl?: T; '2xl'?: T };
 export type Responsive<T> = T | ResponsiveObject<T>;
 
-export const BREAKPOINTS = ["sm", "md", "lg", "xl", "xxl"];
+export const BREAKPOINTS = ["sm", "md", "lg", "xl", "2xl"];
 export const getValueForEachBreakpoint = (
   breakpoints: ResponsiveObject<string>,
 ) => {
@@ -47,6 +47,6 @@ export const isResponsiveObject = (
 ): value is ResponsiveObject<string> => {
   return (
     typeof value === "object" &&
-    (value.sm || value.md || value.lg || value.xl || value.xxl)
+    (value.sm || value.md || value.lg || value.xl || value["2xl"])
   );
 };
