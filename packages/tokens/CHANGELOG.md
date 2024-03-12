@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.0.6
+
+### Patch Changes
+
+- [`94c879e`](https://github.com/knocklabs/telegraph/commit/94c879ed645a7b9b1385c2232dfc0d182d20dad2) Thanks [@kylemcd](https://github.com/kylemcd)! - supporting layout and input components
+
 ## 0.0.5
 
 ### Patch Changes
