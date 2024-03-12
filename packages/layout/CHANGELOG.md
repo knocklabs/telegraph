@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.2
+
+### Patch Changes
+
+- [`096e735`](https://github.com/knocklabs/telegraph/commit/096e7353f713cd15b424c1a62261c78bc4ac0f35) Thanks [@kylemcd](https://github.com/kylemcd)! - as prop
+
 ## 0.0.1
 
 ### Patch Changes
