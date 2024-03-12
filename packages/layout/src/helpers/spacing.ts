@@ -25,16 +25,24 @@ export const deriveSpacing = ({
   // Replace any standalone numbers with the corresponding spacing variable
   // This still allows for the use of px, em, rem, etc. when needed
   const replaceNumbersWithVariables = (char: string) => {
-    if (!char) return 0;
     const trimmedChar = char.trim();
     const isNumber = /^-?\d+$/.test(trimmedChar);
 
     if (isNumber) {
       return `var(--tgph-spacing-${trimmedChar})`;
     }
+
+    if (trimmedChar === "auto") {
+      return "auto";
+    }
+
     // If not a valid spacing value return 0 for that direction
-    return 0;
+    return "0";
   };
+
+  if (spacingDirection === "gap") {
+    return replaceNumbersWithVariables(value);
+  }
 
   // Apply the spacing value to the correct direction
   if (spacingDirection === "x") {

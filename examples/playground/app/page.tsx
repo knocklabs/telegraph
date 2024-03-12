@@ -3,14 +3,25 @@ import { Heading } from "@telegraph/typography";
 import { Button } from "@telegraph/button";
 import { Icon, addSharp, chevronDown } from "@telegraph/icon";
 import { Tag } from "@telegraph/tag";
-import { Box } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
 
 export default function Home() {
   return (
     <main className="tgph">
-      <Box pl="10" pt="40">
-        I am a box
-      </Box>
+      <Box pl={{ sm: "0", lg: "40" }}>I am a box</Box>
+      <Stack
+        spacing="2"
+        align="center"
+        justify="center"
+        p="20"
+        direction={{ md: "column", '2xl': "row" }}
+      >
+        <Box>
+          I am a box
+          <br /> I am a box
+        </Box>
+        <Box>I am a box</Box>
+      </Stack>
       <div style={{ margin: "80px 200px" }}>
         <div>
           <Tag text="Tag" size="1" color="yellow">

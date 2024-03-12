@@ -34,6 +34,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@telegraph/compose-refs": "workspace:^",
     "@telegraph/tokens": "workspace:^",
     "clsx": "^2.1.0"
   },

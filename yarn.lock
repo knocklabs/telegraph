@@ -2014,6 +2014,51 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@csstools/cascade-layer-name-parser@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@csstools/cascade-layer-name-parser@npm:1.0.8"
+  peerDependencies:
+    "@csstools/css-parser-algorithms": ^2.6.0
+    "@csstools/css-tokenizer": ^2.2.3
+  checksum: 10c0/257c15c07a4170698747baa96495e05820545856cc9d6d7e326944db4b98a04f20754cf3f8c1a89c81ebd633ade29ea26bdfe93c1c803bf128b4b0de1e211238
+  languageName: node
+  linkType: hard
+
+"@csstools/css-parser-algorithms@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "@csstools/css-parser-algorithms@npm:2.6.0"
+  peerDependencies:
+    "@csstools/css-tokenizer": ^2.2.3
+  checksum: 10c0/3f614089a76e7613e50319aafab41a62b0eeaacedb10149e8b560489ac7aef7f8bf99d429837c0dc8eb0ee175d7a244d310dc2ffa9780d8f2bcf440249bc63d4
+  languageName: node
+  linkType: hard
+
+"@csstools/css-tokenizer@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "@csstools/css-tokenizer@npm:2.2.3"
+  checksum: 10c0/557266ec52e8b36c19008a5bbd7151effba085cdd6d68270c01afebf914981caac698eda754b2a530a8a9947a3dd70e3f3a39a5e037c4170bb2a055a92754acb
+  languageName: node
+  linkType: hard
+
+"@csstools/media-query-list-parser@npm:^2.1.8":
+  version: 2.1.8
+  resolution: "@csstools/media-query-list-parser@npm:2.1.8"
+  peerDependencies:
+    "@csstools/css-parser-algorithms": ^2.6.0
+    "@csstools/css-tokenizer": ^2.2.3
+  checksum: 10c0/4e12f2bf7d70eef41861769cef0e3258f57fb6351e42b479a2679a9f95db2c62107b88237fb7e2aa940ac4e2ddcb335ffe6aa197ee9805547486453a72cac315
+  languageName: node
+  linkType: hard
+
+"@csstools/postcss-global-data@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@csstools/postcss-global-data@npm:2.1.1"
+  peerDependencies:
+    postcss: ^8.4
+  checksum: 10c0/bb2ad05d7009d32ca78fd0e53453defeb07bf45c52891ce35dfad233d0bda229cd341523bc50e97605b1f41002348d0c3eb247adbd2687cd3761fd93dfe15aa9
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:^0.5.3":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -4671,6 +4716,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/compose-refs": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
@@ -4734,13 +4780,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@telegraph/postcss-config@workspace:packages/postcss-config"
   dependencies:
+    "@csstools/postcss-global-data": "npm:^2.1.1"
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tokens": "workspace:^"
     autoprefixer: "npm:^10.4.17"
     eslint: "npm:^8.56.0"
     postcss: "npm:^8.4.33"
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
+    postcss-custom-media: "npm:^10.0.3"
     postcss-discard-empty: "npm:^6.0.1"
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:^5.3.3"
@@ -12758,6 +12807,20 @@ __metadata:
   peerDependencies:
     postcss: ^8.1.0
   checksum: 10c0/5dba611597653e0ef3fbeb0988e90bc897c53aa1f918c733e57404d572f4557a45c1de3a346c3296537f2603f6e24ed380fcb708a37f36dc1461a52a9bd9e403
+  languageName: node
+  linkType: hard
+
+"postcss-custom-media@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "postcss-custom-media@npm:10.0.3"
+  dependencies:
+    "@csstools/cascade-layer-name-parser": "npm:^1.0.8"
+    "@csstools/css-parser-algorithms": "npm:^2.6.0"
+    "@csstools/css-tokenizer": "npm:^2.2.3"
+    "@csstools/media-query-list-parser": "npm:^2.1.8"
+  peerDependencies:
+    postcss: ^8.4
+  checksum: 10c0/1e4348272159b686f11544131f58514648db01b721b2122e836f7bdd72e4ee8a1032922ff7d542ddec6faf27f5706836c03293f10cace239cd8541abb0947ae6
   languageName: node
   linkType: hard
 

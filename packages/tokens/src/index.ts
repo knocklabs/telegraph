@@ -1,3 +1,4 @@
+import { breakpoint } from "./tokens/breakpoint";
 import { color } from "./tokens/color";
 import { family } from "./tokens/family";
 import { leading } from "./tokens/leading";
@@ -19,5 +20,6 @@ export default {
     tracking,
     text,
     weight,
+    breakpoint,
   },
 };
