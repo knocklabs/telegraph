@@ -10,7 +10,7 @@ import { propsToCssVariables } from "../helpers/css-variables";
 import { STACK_PROPS } from "./Stack.constants";
 
 type StackProps = React.ComponentPropsWithoutRef<typeof Box> & {
-  gap: Responsive<`${keyof typeof t.tokens.spacing}`>;
+  gap?: Responsive<`${keyof typeof t.tokens.spacing}`>;
   display?: Responsive<"flex" | "inline-flex">;
   align?: Responsive<React.CSSProperties["alignItems"]>;
   direction?: Responsive<React.CSSProperties["flexDirection"]>;
@@ -25,7 +25,7 @@ const Stack = React.forwardRef<StackRef, StackProps>(
     const stackRef = React.useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, stackRef);
 
-    // Filter out the stac props from the rest of the props
+    // Filter out the stack props from the rest of the props
     const filteredProps = React.useMemo(
       () =>
         Object.keys(props).reduce(

@@ -128,7 +128,7 @@ const main = async () => {
     saveTokens("default", defaultCss);
     saveTokens("light", lightCss);
     saveTokens("dark", darkCss);
-    saveTokens("breakpoint", breakpointCss);
+    saveTokens("breakpoints", breakpointCss);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",

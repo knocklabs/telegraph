@@ -31,7 +31,7 @@ const processCssVariableString = ({
   return value;
 };
 
-type PropToCssVariablesArgs = {
+type PropsToCssVariablesArgs = {
   props: Record<string, Responsive<string>>;
   ref: React.RefObject<HTMLElement>;
   propsMap: Record<string, CssVariableProp>;
@@ -41,7 +41,7 @@ export const propsToCssVariables = ({
   props,
   ref,
   propsMap,
-}: PropToCssVariablesArgs) => {
+}: PropsToCssVariablesArgs) => {
   if (!ref.current) return;
 
   const cssVariables: Record<string, string> = {};

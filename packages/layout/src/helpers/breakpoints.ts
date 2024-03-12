@@ -1,4 +1,4 @@
-export type ResponsiveObject<T> = { sm?: T; md?: T; lg?: T; xl?: T; '2xl'?: T };
+export type ResponsiveObject<T> = { sm?: T; md?: T; lg?: T; xl?: T; "2xl"?: T };
 export type Responsive<T> = T | ResponsiveObject<T>;
 
 export const BREAKPOINTS = ["sm", "md", "lg", "xl", "2xl"];

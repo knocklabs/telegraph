@@ -25,8 +25,8 @@
       "import": "./dist/json/tokens.json",
       "default": "./dist/json/tokens.json"
     },
-    "./breakpoint": {
-      "default": "./dist/css/breakpoint.css"
+    "./breakpoints": {
+      "default": "./dist/css/breakpoints.css"
     }
   },
   "files": [

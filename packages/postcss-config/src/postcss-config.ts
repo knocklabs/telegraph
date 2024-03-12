@@ -6,7 +6,7 @@ export default {
     require("autoprefixer"),
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require("@csstools/postcss-global-data")({
-      files: ["../tokens/dist/css/breakpoint.css"],
+      files: ["../tokens/dist/css/breakpoints.css"],
     }),
     require("postcss-custom-media"),
   ],
