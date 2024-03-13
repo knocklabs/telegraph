@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.8
+
+### Patch Changes
+
+- [#70](https://github.com/knocklabs/telegraph/pull/70) [`f9c4802`](https://github.com/knocklabs/telegraph/commit/f9c480297851d52c6526eb7c8072f4b7e8a381f6) Thanks [@kylemcd](https://github.com/kylemcd)! - active states + ghost gray text color fix
+
 ## 0.0.7
 
 ### Patch Changes
