@@ -36,6 +36,7 @@ type RootBaseProps = {
   size?: "1" | "2" | "3";
   color?: "accent" | "gray" | "red" | "green" | "blue" | "yellow";
   state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
+  active?: boolean;
 };
 
 type InternalProps = {
@@ -59,6 +60,7 @@ const ButtonContext = React.createContext<
   color: "gray",
   state: "default",
   layout: "default",
+  active: false,
 });
 
 const Root = React.forwardRef(
@@ -69,6 +71,7 @@ const Root = React.forwardRef(
       size = "2",
       color: initialColor = "gray",
       state: initialState = "default",
+      active = false,
       disabled,
       className,
       ...props
@@ -91,7 +94,9 @@ const Root = React.forwardRef(
 
     const ButtonComponent = as;
     return (
-      <ButtonContext.Provider value={{ variant, size, color, state, layout }}>
+      <ButtonContext.Provider
+        value={{ variant, size, color, state, layout, active }}
+      >
         <ButtonComponent
           className={clsx(
             "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
@@ -103,6 +108,7 @@ const Root = React.forwardRef(
           )}
           data-tgph-button
           data-tgph-button-layout={layout}
+          data-tgph-button-active={active}
           ref={forwardedRef}
           {...props}
         />
