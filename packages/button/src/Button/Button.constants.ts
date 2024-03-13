@@ -2,19 +2,25 @@ export const buttonColorMap = {
   solid: {
     gray: "bg-gray-9 hover:bg-gray-10 focus:bg-gray-11 [data-tgph-button-active='true']:!bg-gray-11",
     red: "bg-red-9 hover:bg-red-10 focus:bg-red-11 [data-tgph-button-active='true']:!bg-red-11",
-    accent: "bg-accent-9 hover:bg-accent-10 focus:bg-accent-11 [data-tgph-button-active='true']:!bg-accent-11",
-    green: "bg-green-9 hover:bg-green-10 focus:bg-green-11 [data-tgph-button-active='true']:!bg-green-11",
+    accent:
+      "bg-accent-9 hover:bg-accent-10 focus:bg-accent-11 [data-tgph-button-active='true']:!bg-accent-11",
+    green:
+      "bg-green-9 hover:bg-green-10 focus:bg-green-11 [data-tgph-button-active='true']:!bg-green-11",
     blue: "bg-blue-9 hover:bg-blue-10 focus:bg-blue-11 [data-tgph-button-active='true']:!bg-blue-11",
-    yellow: "bg-yellow-9 hover:bg-yellow-10 focus:bg-yellow-11 [data-tgph-button-active='true']:!bg-yellow-11",
+    yellow:
+      "bg-yellow-9 hover:bg-yellow-10 focus:bg-yellow-11 [data-tgph-button-active='true']:!bg-yellow-11",
     disabled: "bg-gray-2",
   },
   soft: {
     gray: "bg-gray-3 hover:bg-gray-4 focus:bg-gray-5 [data-tgph-button-active='true']:!bg-gray-5",
     red: "bg-red-3 hover:bg-red-4 focus:bg-red-5 [data-tgph-button-active='true']:!bg-red-5",
-    accent: "bg-accent-3 hover:bg-accent-4 focus:bg-accent-6 [data-tgph-button-active='true']:!bg-accent-6",
-    green: "bg-green-3 hover:bg-green-4 focus:bg-green-5 [data-tgph-button-active='true']:!bg-green-5",
+    accent:
+      "bg-accent-3 hover:bg-accent-4 focus:bg-accent-6 [data-tgph-button-active='true']:!bg-accent-6",
+    green:
+      "bg-green-3 hover:bg-green-4 focus:bg-green-5 [data-tgph-button-active='true']:!bg-green-5",
     blue: "bg-blue-3 hover:bg-blue-4 focus:bg-blue-5 [data-tgph-button-active='true']:!bg-blue-5",
-    yellow: "bg-yellow-3 hover:bg-yellow-4 focus:bg-yellow-5 [data-tgph-button-active='true']:!bg-yellow-5",
+    yellow:
+      "bg-yellow-3 hover:bg-yellow-4 focus:bg-yellow-5 [data-tgph-button-active='true']:!bg-yellow-5",
     disabled: "bg-gray-2",
   },
   outline: {
@@ -32,10 +38,13 @@ export const buttonColorMap = {
   ghost: {
     gray: "bg-transparent hover:bg-gray-3 focus:bg-gray-4 [&[data-tgph-button-active='true']]:!bg-gray-4 [&[data-tgph-button-active='true']>span]:!text-gray-12",
     red: "bg-transparent hover:bg-red-3 focus:bg-red-4 [&[data-tgph-button-active='true']]:!bg-red-4",
-    accent: "bg-transparent hover:bg-accent-3 focus:bg-accent-4 [&[data-tgph-button-active='true']]:!bg-accent-4",
-    green: "bg-transparent hover:bg-green-3 focus:bg-green-4 [&[data-tgph-button-active='true']]:!bg-green-4",
+    accent:
+      "bg-transparent hover:bg-accent-3 focus:bg-accent-4 [&[data-tgph-button-active='true']]:!bg-accent-4",
+    green:
+      "bg-transparent hover:bg-green-3 focus:bg-green-4 [&[data-tgph-button-active='true']]:!bg-green-4",
     blue: "bg-transparent hover:bg-blue-3 focus:bg-blue-4 [&[data-tgph-button-active='true']]:!bg-blue-4",
-    yellow: "bg-transparent hover:bg-yellow-3 focus:bg-yellow-4 [&[data-tgph-button-active='true']]:!bg-yellow-4",
+    yellow:
+      "bg-transparent hover:bg-yellow-3 focus:bg-yellow-4 [&[data-tgph-button-active='true']]:!bg-yellow-4",
     disabled: "bg-transparent",
   },
 } as const;
