@@ -1,5 +1,6 @@
 import { Slot as RadixSlot } from "@radix-ui/react-slot";
 import { useComposedRefs } from "@telegraph/compose-refs";
+import type { Required } from "@telegraph/helpers";
 import clsx from "clsx";
 import React from "react";
 
@@ -18,10 +19,6 @@ type RootRef = HTMLInputElement;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
-};
-
-type Required<T> = {
-  [P in keyof T]-?: T[P];
 };
 
 const InputContext = React.createContext<Required<InternalProps>>({

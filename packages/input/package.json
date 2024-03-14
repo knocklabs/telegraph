@@ -37,6 +37,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
     "@telegraph/compose-refs": "workspace:^",
+    "@telegraph/helpers": "workspace:^",
     "clsx": "^2.1.0"
   },
   "devDependencies": {

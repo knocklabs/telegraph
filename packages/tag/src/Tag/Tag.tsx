@@ -1,4 +1,5 @@
 import { Button as TelegraphButton } from "@telegraph/button";
+import type { Optional, Required } from "@telegraph/helpers";
 import {
   Icon as TelegraphIcon,
   closeSharp,
@@ -14,10 +15,6 @@ type RootBaseProps = {
   size?: "1" | "2";
   color?: keyof (typeof COLOR.Root)["soft"];
   variant?: keyof typeof COLOR.Root;
-};
-
-type Required<T> = {
-  [P in keyof T]-?: T[P];
 };
 
 type RootProps = React.HTMLAttributes<RootRef> & RootBaseProps;
@@ -53,9 +50,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
   },
 );
 
-type TextProps = Omit<React.ComponentProps<typeof TelegraphText>, "as"> & {
-  as: React.ComponentProps<typeof TelegraphText>["as"];
-};
+type TextProps = Optional<React.ComponentProps<typeof TelegraphText>, "as">;
 
 type TextRef = React.ElementRef<typeof TelegraphText>;
 

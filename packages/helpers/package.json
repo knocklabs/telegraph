@@ -1,8 +1,7 @@
 {
-  "name": "@telegraph/button",
-  "version": "0.0.8",
-  "description": "Button component in Telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/button",
+  "name": "@telegraph/helpers",
+  "version": "0.0.0",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/helpers",
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
@@ -12,10 +11,8 @@
     ".": {
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/css/default.css"
-    },
-    "./default.css": "./dist/css/default.css"
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "files": [
     "dist",
@@ -26,8 +23,6 @@
     "clean": "rm -rf dist",
     "dev": "vite build --watch --emptyOutDir false",
     "build": "yarn clean && vite build",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
@@ -37,27 +32,17 @@
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@telegraph/vitest-config": "workspace:^",
     "@types/react": "^18.2.48",
     "eslint": "^8.56.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12",
-    "vitest": "^1.2.2"
+    "vite": "^5.0.12"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "dependencies": {
-    "@telegraph/helpers": "workspace:^",
-    "@telegraph/icon": "workspace:^",
-    "@telegraph/typography": "workspace:^",
-    "clsx": "^2.1.0"
   }
 }

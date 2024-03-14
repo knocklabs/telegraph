@@ -1,3 +1,4 @@
+import type { Optional, PropsWithAs, Required } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Text as TypographyText } from "@telegraph/typography";
 import clsx from "clsx";
@@ -12,24 +13,6 @@ import {
   textColorMap,
   textSizeMap,
 } from "./Button.constants";
-
-// The `as` prop is a generic prop that allows you to change the underlying
-// element of a component. This is useful for creating a component that can
-// be used as a button, link, or any other element.
-type AsProp<C extends React.ElementType> = {
-  as?: C;
-};
-
-// The `PropsWithAs` type is a utility type that allows you to create a
-// component that can be used as a button, link, or any other element.
-// It takes a generic type `C` that extends `React.ElementType` and a
-// generic type `P` that extends `object`. It returns a type that includes
-// the `as` prop and all the props of the underlying element type `C`.
-// This allows you to create a component that can be used as a button, link,
-// or any other element, and pass all the props of the underlying element type.
-type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
-  Omit<React.ComponentProps<C>, keyof AsProp<C>> &
-  P;
 
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
@@ -47,10 +30,6 @@ type InternalProps = {
 type RootProps = RootBaseProps;
 
 type RootRef = React.LegacyRef<HTMLButtonElement>;
-
-type Required<T> = {
-  [P in keyof T]-?: T[P];
-};
 
 const ButtonContext = React.createContext<
   Required<Omit<RootBaseProps, "color" | "as"> & InternalProps>
@@ -153,9 +132,7 @@ const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
   },
 );
 
-type TextProps = Omit<React.ComponentProps<typeof TypographyText>, "as"> & {
-  as?: React.ComponentProps<typeof TypographyText>["as"];
-};
+type TextProps = Optional<React.ComponentProps<typeof TypographyText>, "as">;
 
 type TextRef = React.ElementRef<typeof TypographyText>;
 
