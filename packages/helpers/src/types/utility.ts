@@ -25,4 +25,3 @@ export type AsProp<C extends React.ElementType> = {
 export type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
   Omit<React.ComponentProps<C>, keyof AsProp<C>> &
   P;
-

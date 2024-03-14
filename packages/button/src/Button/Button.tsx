@@ -1,4 +1,4 @@
-import type { PropsWithAs, Required, Optional } from "@telegraph/helpers";
+import type { Optional, PropsWithAs, Required } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Text as TypographyText } from "@telegraph/typography";
 import clsx from "clsx";
@@ -132,7 +132,7 @@ const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
   },
 );
 
-type TextProps = Optional<React.ComponentProps<typeof TypographyText>, "as">
+type TextProps = Optional<React.ComponentProps<typeof TypographyText>, "as">;
 
 type TextRef = React.ElementRef<typeof TypographyText>;
 
