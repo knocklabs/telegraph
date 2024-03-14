@@ -1,5 +1,15 @@
 # @telegraph/playground
 
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies [[`0aa9613`](https://github.com/knocklabs/telegraph/commit/0aa9613512ac4fa6073bcf2542b3f67216ad1e7e)]:
+  - @telegraph/button@0.0.9
+  - @telegraph/layout@0.0.3
+  - @telegraph/input@0.0.2
+  - @telegraph/tag@0.0.6
+
 ## 0.0.21
 
 ### Patch Changes
