@@ -1,5 +1,15 @@
 # @telegraph/tag
 
+## 0.0.6
+
+### Patch Changes
+
+- [#73](https://github.com/knocklabs/telegraph/pull/73) [`0aa9613`](https://github.com/knocklabs/telegraph/commit/0aa9613512ac4fa6073bcf2542b3f67216ad1e7e) Thanks [@kylemcd](https://github.com/kylemcd)! - tag types fixes + helper types
+
+- Updated dependencies [[`0aa9613`](https://github.com/knocklabs/telegraph/commit/0aa9613512ac4fa6073bcf2542b3f67216ad1e7e)]:
+  - @telegraph/helpers@0.0.1
+  - @telegraph/button@0.0.9
+
 ## 0.0.5
 
 ### Patch Changes
