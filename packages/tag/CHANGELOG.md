@@ -1,5 +1,11 @@
 # @telegraph/tag
 
+## 0.0.5
+
+### Patch Changes
+
+- [`2d4ebf4`](https://github.com/knocklabs/telegraph/commit/2d4ebf4244fe044fec07f6b7c4a77f3e6cca73c2) Thanks [@kylemcd](https://github.com/kylemcd)! - remove unused text prop from type
+
 ## 0.0.4
 
 ### Patch Changes
