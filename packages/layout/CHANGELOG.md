@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.4
+
+### Patch Changes
+
+- [`8e32554`](https://github.com/knocklabs/telegraph/commit/8e32554170d6124f51d3f86d471d42105c5a9d8d) Thanks [@kylemcd](https://github.com/kylemcd)! - fix mismatched prop name
+
 ## 0.0.3
 
 ### Patch Changes
