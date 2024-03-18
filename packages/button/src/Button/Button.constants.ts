@@ -9,6 +9,8 @@ export const buttonColorMap = {
     blue: "bg-blue-9 hover:bg-blue-10 focus:bg-blue-11 [data-tgph-button-active='true']:!bg-blue-11",
     yellow:
       "bg-yellow-9 hover:bg-yellow-10 focus:bg-yellow-11 [data-tgph-button-active='true']:!bg-yellow-11",
+    purple:
+      "bg-purple-9 hover:bg-purple-10 focus:bg-purple-11 [data-tgph-button-active='true']:!bg-purple-11",
     disabled: "bg-gray-2",
   },
   soft: {
@@ -21,6 +23,8 @@ export const buttonColorMap = {
     blue: "bg-blue-3 hover:bg-blue-4 focus:bg-blue-5 [data-tgph-button-active='true']:!bg-blue-5",
     yellow:
       "bg-yellow-3 hover:bg-yellow-4 focus:bg-yellow-5 [data-tgph-button-active='true']:!bg-yellow-5",
+    purple:
+      "bg-purple-3 hover:bg-purple-4 focus:bg-purple-5 [data-tgph-button-active='true']:!bg-purple-5",
     disabled: "bg-gray-2",
   },
   outline: {
@@ -33,6 +37,8 @@ export const buttonColorMap = {
     blue: "bg-transparent shadow-[inset_0_0_0_1px] shadow-blue-6 hover:shadow-blue-7 focus:shadow-blue-8 [data-tgph-button-active='true']:!shadow-blue-8",
     yellow:
       "bg-transparent shadow-[inset_0_0_0_1px] shadow-yellow-6 hover:shadow-yellow-7 focus:shadow-yellow-8 [data-tgph-button-active='true']:!shadow-yellow-8",
+    purple:
+      "bg-transparent shadow-[inset_0_0_0_1px] shadow-purple-6 hover:shadow-purple-7 focus:shadow-purple-8 [data-tgph-button-active='true']:!shadow-purple-8",
     disabled: "bg-gray-2",
   },
   ghost: {
@@ -45,6 +51,8 @@ export const buttonColorMap = {
     blue: "bg-transparent hover:bg-blue-3 focus:bg-blue-4 [&[data-tgph-button-active='true']]:!bg-blue-4",
     yellow:
       "bg-transparent hover:bg-yellow-3 focus:bg-yellow-4 [&[data-tgph-button-active='true']]:!bg-yellow-4",
+    purple:
+      "bg-transparent hover:bg-purple-3 focus:bg-purple-4 [&[data-tgph-button-active='true']]:!bg-purple-4",
     disabled: "bg-transparent",
   },
 } as const;
@@ -76,6 +84,7 @@ export const textColorMap = {
     green: "white",
     blue: "white",
     yellow: "white",
+    purple: "white",
     disabled: "disabled",
   },
   soft: {
@@ -85,6 +94,7 @@ export const textColorMap = {
     green: "green",
     blue: "blue",
     yellow: "yellow",
+    purple: "purple",
     disabled: "disabled",
   },
   outline: {
@@ -94,6 +104,7 @@ export const textColorMap = {
     green: "green",
     blue: "blue",
     yellow: "yellow",
+    purple: "purple",
     disabled: "disabled",
   },
   ghost: {
@@ -103,6 +114,7 @@ export const textColorMap = {
     green: "green",
     blue: "blue",
     yellow: "yellow",
+    purple: "purple",
     disabled: "disabled",
   },
 } as const;
@@ -121,6 +133,7 @@ export const iconColorMap = {
     green: "white",
     blue: "white",
     yellow: "white",
+    purple: "white",
     disabled: "disabled",
   },
   soft: {
@@ -130,6 +143,7 @@ export const iconColorMap = {
     green: "green",
     blue: "blue",
     yellow: "yellow",
+    purple: "purple",
     disabled: "disabled",
   },
   outline: {
@@ -139,6 +153,7 @@ export const iconColorMap = {
     green: "green",
     blue: "blue",
     yellow: "yellow",
+    purple: "purple",
     disabled: "disabled",
   },
   ghost: {
@@ -148,6 +163,7 @@ export const iconColorMap = {
     green: "green",
     blue: "blue",
     yellow: "yellow",
+    purple: "purple",
     disabled: "disabled",
   },
 } as const;
