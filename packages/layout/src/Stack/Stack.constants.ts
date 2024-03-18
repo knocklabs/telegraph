@@ -19,7 +19,7 @@ export const STACK_PROPS = {
     rule: "flex-wrap",
     type: "flex-wrap",
   },
-  spacing: {
+  gap: {
     rule: "gap",
     type: "spacing-gap",
   },
