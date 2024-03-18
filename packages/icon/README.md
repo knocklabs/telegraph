@@ -3,8 +3,8 @@
 [![npm version](https://img.shields.io/npm/v/@telegraph/icon.svg)](https://www.npmjs.com/package/@telegraph/icon)
 
 # @telegraph/icon
-> Beautiful icons from the telegraph design system
 
+> Beautiful icons from the telegraph design system
 
 ## Installation Instructions
 
@@ -12,13 +12,11 @@
 npm install @telegraph/icon
 ```
 
-
 ### Add stylesheet
 
 ```
 @import "@telegraph/icon"
 ```
-
 
 ### Usage
 
@@ -34,11 +32,10 @@ import { Icon, checkmark } from "@telegraph/icon"
 
 ##### Props
 
-| Name | Type | Default | Options |
-| ---- | -----| ------- | ------- |
-| icon | string | `undefined` | See package exports |
-| alt | string | `undefined` |  |
-| size | string | "2" | "1" "2" "3" "4" "5" "6" "7" "8" "9" |
-| color | string | "default" | "default" "gray" "red" "beige" "blue" "green" "yellow" "accent" "disabled" "white" |
-| variant | string | "primary" | "primary" "secondary"|
-
+| Name    | Type   | Default     | Options                                                                                     |
+| ------- | ------ | ----------- | ------------------------------------------------------------------------------------------- |
+| icon    | string | `undefined` | See package exports                                                                         |
+| alt     | string | `undefined` |                                                                                             |
+| size    | string | "2"         | "1" "2" "3" "4" "5" "6" "7" "8" "9"                                                         |
+| color   | string | "default"   | "default" "gray" "red" "beige" "blue" "green" "yellow" "purple" "accent" "disabled" "white" |
+| variant | string | "primary"   | "primary" "secondary"                                                                       |

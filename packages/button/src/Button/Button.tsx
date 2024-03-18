@@ -17,7 +17,7 @@ import {
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "1" | "2" | "3";
-  color?: "accent" | "gray" | "red" | "green" | "blue" | "yellow";
+  color?: "accent" | "gray" | "red" | "green" | "blue" | "yellow" | "purple";
   state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
   active?: boolean;
 };

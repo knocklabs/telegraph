@@ -140,4 +140,18 @@ export const color = {
     11: { light: "#ca244d", dark: "#ff949d" },
     12: { light: "#64172b", dark: "#fed2e1" },
   },
+  purple: {
+    1: { light: "#fdfcfe", dark: "#14121f" },
+    2: { light: "#faf8ff", dark: "#1b1525" },
+    3: { light: "#f4f0fe", dark: "#291f43" },
+    4: { light: "#ebe4ff", dark: "#33255b" },
+    5: { light: "#e1d9ff", dark: "#3c2e69" },
+    6: { light: "#d4cafe", dark: "#473876" },
+    7: { light: "#c2b5f5", dark: "#56468b" },
+    8: { light: "#aa99ec", dark: "#6958ad" },
+    9: { light: "#654dc4", dark: "#6e56cf" },
+    10: { light: "#654dc4", dark: "#7d66d9" },
+    11: { light: "#6550b9", dark: "#baa7ff" },
+    12: { light: "#2f265f", dark: "#e2ddfe" },
+  },
 };

@@ -18,7 +18,7 @@ describe("Tag", () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
-  it.each(["default", "accent", "red", "green", "blue", "yellow"])(
+  it.each(["default", "accent", "red", "green", "blue", "yellow", "purple"])(
     "%s background color of tag should match the button color",
     (color) => {
       const { container } = render(

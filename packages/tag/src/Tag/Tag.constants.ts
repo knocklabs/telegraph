@@ -15,6 +15,7 @@ export const COLOR = {
       blue: "bg-blue-9",
       green: "bg-green-9",
       yellow: "bg-yellow-9",
+      purple: "bg-purple-9",
     },
     soft: {
       default: "bg-gray-3",
@@ -24,6 +25,7 @@ export const COLOR = {
       blue: "bg-blue-3",
       green: "bg-green-3",
       yellow: "bg-yellow-3",
+      purple: "bg-purple-3",
     },
   },
   Icon: {
@@ -35,6 +37,7 @@ export const COLOR = {
       blue: "white",
       green: "white",
       yellow: "white",
+      purple: "white",
     },
     soft: {
       default: "default",
@@ -44,6 +47,7 @@ export const COLOR = {
       blue: "blue",
       green: "green",
       yellow: "yellow",
+      purple: "purple",
     },
   },
   Text: {
@@ -55,6 +59,7 @@ export const COLOR = {
       blue: "white",
       green: "white",
       yellow: "white",
+      purple: "white",
     },
     soft: {
       default: "default",
@@ -64,6 +69,7 @@ export const COLOR = {
       blue: "blue",
       green: "green",
       yellow: "yellow",
+      purple: "purple",
     },
   },
   Button: {
@@ -75,6 +81,7 @@ export const COLOR = {
       blue: "blue",
       green: "green",
       yellow: "yellow",
+      purple: "purple",
     },
     soft: {
       default: "gray",
@@ -84,6 +91,7 @@ export const COLOR = {
       blue: "blue",
       green: "green",
       yellow: "yellow",
+      purple: "purple",
     },
   },
 } as const;
