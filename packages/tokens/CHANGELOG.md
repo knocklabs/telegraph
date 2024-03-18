@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.0.7
+
+### Patch Changes
+
+- [#76](https://github.com/knocklabs/telegraph/pull/76) [`10a480f`](https://github.com/knocklabs/telegraph/commit/10a480f1013bcdfb1805012ce503f4bb7b52e724) Thanks [@connorlindsey](https://github.com/connorlindsey)! - feat: add purple color option
+
 ## 0.0.6
 
 ### Patch Changes
