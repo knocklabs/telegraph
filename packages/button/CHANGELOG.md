@@ -1,5 +1,15 @@
 # @telegraph/button
 
+## 0.0.10
+
+### Patch Changes
+
+- [#76](https://github.com/knocklabs/telegraph/pull/76) [`10a480f`](https://github.com/knocklabs/telegraph/commit/10a480f1013bcdfb1805012ce503f4bb7b52e724) Thanks [@connorlindsey](https://github.com/connorlindsey)! - feat: add purple color option
+
+- Updated dependencies [[`10a480f`](https://github.com/knocklabs/telegraph/commit/10a480f1013bcdfb1805012ce503f4bb7b52e724)]:
+  - @telegraph/typography@0.0.9
+  - @telegraph/icon@0.0.7
+
 ## 0.0.9
 
 ### Patch Changes

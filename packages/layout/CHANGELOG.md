@@ -1,5 +1,12 @@
 # @telegraph/layout
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`10a480f`](https://github.com/knocklabs/telegraph/commit/10a480f1013bcdfb1805012ce503f4bb7b52e724)]:
+  - @telegraph/tokens@0.0.7
+
 ## 0.0.4
 
 ### Patch Changes
