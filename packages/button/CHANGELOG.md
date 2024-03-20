@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.11
+
+### Patch Changes
+
+- [`ca299d0`](https://github.com/knocklabs/telegraph/commit/ca299d0868caad117e11b2dc2f880d86cbbd814e) Thanks [@kylemcd](https://github.com/kylemcd)! - fix text color on outline button
+
 ## 0.0.10
 
 ### Patch Changes
