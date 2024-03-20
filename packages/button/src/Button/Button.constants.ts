@@ -148,7 +148,7 @@ export const iconColorMap = {
   },
   outline: {
     accent: "accent",
-    gray: "gray",
+    gray: "default",
     red: "red",
     green: "green",
     blue: "blue",
