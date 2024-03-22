@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.13
+
+### Patch Changes
+
+- [`e5f80d1`](https://github.com/knocklabs/telegraph/commit/e5f80d167af3b4dc89a6c9f5c878a0e9f5f4d497) Thanks [@kylemcd](https://github.com/kylemcd)! - fix disabled state not persisting to button element
+
 ## 0.0.12
 
 ### Patch Changes
