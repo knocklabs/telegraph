@@ -50,7 +50,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
         <div
           className={clsx(
             "box-border flex items-center transition-all",
-            "border-1 border-solid text-gray-12 placeholder:text-gray-10",
+            "border-[1px] border-solid text-gray-12 placeholder:text-gray-10",
             COLOR.Container[state][variant],
             SIZE.Container[size],
           )}
