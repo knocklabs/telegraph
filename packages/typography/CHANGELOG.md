@@ -1,5 +1,11 @@
 # @telegraph/typography
 
+## 0.0.10
+
+### Patch Changes
+
+- [`2a91a9d`](https://github.com/knocklabs/telegraph/commit/2a91a9d77798390afeccbacf9dc1ca232c391668) Thanks [@kylemcd](https://github.com/kylemcd)! - add code typography style + fix design issues
+
 ## 0.0.9
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @telegraph/button
 
+## 0.0.12
+
+### Patch Changes
+
+- [`2a91a9d`](https://github.com/knocklabs/telegraph/commit/2a91a9d77798390afeccbacf9dc1ca232c391668) Thanks [@kylemcd](https://github.com/kylemcd)! - add code typography style + fix design issues
+
+- Updated dependencies [[`2a91a9d`](https://github.com/knocklabs/telegraph/commit/2a91a9d77798390afeccbacf9dc1ca232c391668)]:
+  - @telegraph/typography@0.0.10
+  - @telegraph/icon@0.0.7
+
 ## 0.0.11
 
 ### Patch Changes
