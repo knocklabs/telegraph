@@ -1,5 +1,11 @@
 # @telegraph/input
 
+## 0.0.4
+
+### Patch Changes
+
+- [`e8fe532`](https://github.com/knocklabs/telegraph/commit/e8fe532e2d6c1d9526ff1abc291d17423a462918) Thanks [@kylemcd](https://github.com/kylemcd)! - fix input border
+
 ## 0.0.3
 
 ### Patch Changes
