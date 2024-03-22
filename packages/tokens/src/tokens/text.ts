@@ -9,4 +9,13 @@ export const text = {
   7: "1.875rem",
   8: "2.25rem",
   9: "3rem",
+  "code-0": "0.625rem",
+  "code-1": "0.688rem",
+  "code-2": "0.812rem",
+  "code-4": "1.062rem",
+  "code-5": "1.188rem",
+  "code-6": "1.438rem",
+  "code-7": "1.75rem",
+  "code-8": "2.125rem",
+  "code-9": "2.875rem",
 };

@@ -137,7 +137,10 @@ type TextProps = Optional<React.ComponentProps<typeof TypographyText>, "as">;
 type TextRef = React.ElementRef<typeof TypographyText>;
 
 const Text = React.forwardRef<TextRef, TextProps>(
-  ({ as, color, size, className, ...props }, forwardedRef) => {
+  (
+    { as, color, size, weight = "medium", className, ...props },
+    forwardedRef,
+  ) => {
     Text.displayName = "Text";
 
     const context = React.useContext(ButtonContext);
@@ -145,6 +148,7 @@ const Text = React.forwardRef<TextRef, TextProps>(
       as: as ?? "span",
       color: color ?? textColorMap[context.variant][context.color],
       size: size ?? textSizeMap[context.size],
+      weight,
     };
 
     return (

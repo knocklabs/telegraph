@@ -98,7 +98,7 @@ export const textColorMap = {
     disabled: "disabled",
   },
   outline: {
-    gray: "gray",
+    gray: "default",
     red: "red",
     accent: "accent",
     green: "green",
@@ -148,7 +148,7 @@ export const iconColorMap = {
   },
   outline: {
     accent: "accent",
-    gray: "default",
+    gray: "gray",
     red: "red",
     green: "green",
     blue: "blue",
