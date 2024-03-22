@@ -89,6 +89,7 @@ const Root = React.forwardRef(
           data-tgph-button-layout={layout}
           data-tgph-button-active={active}
           ref={forwardedRef}
+          disabled={disabled}
           {...props}
         />
       </ButtonContext.Provider>
