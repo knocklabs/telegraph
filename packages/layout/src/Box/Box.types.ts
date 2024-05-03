@@ -31,7 +31,10 @@ type RoundedProps = {
 };
 
 type BorderProps = {
-    [key in BorderProp]?: Responsive<`${keyof typeof t.tokens.spacing}`>;
-    };
+  [key in BorderProp]?: Responsive<`${keyof typeof t.tokens.spacing}`>;
+};
 
-export type BoxPropsTokens = SpacingProps & ColorProps & RoundedProps & BorderProps;
+export type BoxPropsTokens = SpacingProps &
+  ColorProps &
+  RoundedProps &
+  BorderProps;

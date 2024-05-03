@@ -20,7 +20,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
 
     // Filter out the box props from the rest of the props
     const filteredProps = React.useMemo(() => {
-        // Set any defaults here
+      // Set any defaults here
       const mergedProps = { bdc: true, ...props };
       return Object.keys(mergedProps).reduce(
         (acc, key) => {
