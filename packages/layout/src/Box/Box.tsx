@@ -1,48 +1,42 @@
 import { useComposedRefs } from "@telegraph/compose-refs";
-import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
 
-import { Responsive } from "../helpers/breakpoints";
 import { propsToCssVariables } from "../helpers/css-variables";
 
-import { BOX_PROPS, VARIANT } from "./Box.constants";
+import { BOX_PROPS } from "./Box.constants";
+import { BoxPropsTokens } from "./Box.types";
 
-type BoxProp = keyof typeof BOX_PROPS;
-type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
-  [key in BoxProp]?: Responsive<`${keyof typeof t.tokens.spacing}` | "auto">;
-} & {
-  // More variants wil beed added here once
-  // they are designed
-  variant?: "ghost";
-  as?: React.ElementType;
-};
+type BoxProps = React.HTMLAttributes<HTMLDivElement> &
+  BoxPropsTokens & {
+    as?: React.ElementType;
+  };
 type BoxRef = HTMLDivElement;
 
 const Box = React.forwardRef<BoxRef, BoxProps>(
-  ({ as = "div", variant = "ghost", className, ...props }, forwardedRef) => {
+  ({ as = "div", className, ...props }, forwardedRef) => {
     const boxRef = React.useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, boxRef);
 
     // Filter out the box props from the rest of the props
-    const filteredProps = React.useMemo(
-      () =>
-        Object.keys(props).reduce(
-          (acc, key) => {
-            if (!Object.keys(BOX_PROPS).some((prop) => prop === key)) {
-              acc.rest[key] = props[key as keyof typeof props];
-            } else {
-              acc.box[key] = props[key as keyof typeof props];
-            }
-            return acc;
-          },
-          { box: {}, rest: {} } as {
-            box: Record<string, string>;
-            rest: Record<string, string>;
-          },
-        ),
-      [props],
-    );
+    const filteredProps = React.useMemo(() => {
+        // Set any defaults here
+      const mergedProps = { bdc: true, ...props };
+      return Object.keys(mergedProps).reduce(
+        (acc, key) => {
+          if (!Object.keys(BOX_PROPS).some((prop) => prop === key)) {
+            acc.rest[key] = mergedProps[key as keyof typeof mergedProps];
+          } else {
+            acc.box[key] = mergedProps[key as keyof typeof mergedProps];
+          }
+          return acc;
+        },
+        { box: {}, rest: {} } as {
+          box: Record<string, string>;
+          rest: Record<string, string>;
+        },
+      );
+    }, [props]);
 
     React.useLayoutEffect(() => {
       propsToCssVariables({
@@ -56,7 +50,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
 
     return (
       <Component
-        className={clsx("tgph-box", VARIANT[variant], className)}
+        className={clsx("tgph-box", className)}
         ref={composedRef}
         {...filteredProps.rest}
       />

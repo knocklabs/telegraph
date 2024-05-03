@@ -2,17 +2,36 @@
   display: block;
   padding: var(--tgph-padding);
   margin: var(--tgph-margin);
+  background-color: var(--tgph-background-color);
+  border-radius: var(--tgph-border-radius);
+  border-width: var(--tgph-border-width, 0);
+  border-color: var(--tgph-border-color);
+  border-style: solid;
+  height: var(--tgph-height, auto);
+  width: var(--tgph-width, auto);
 }
 
 .tgph-box {
   --tgph-padding: var(--tgph-padding-sm);
   --tgph-margin: var(--tgph-margin-sm);
+  --tgph-background-color: var(--tgph-background-color);
+  --tgph-border-radius: var(--tgph-border-radius);
+  --tgph-border-width: var(--tgph-border-width);
+  --tgph-border-color: var(--tgph-border-color);
+  --tgph-height: var(--tgph-height);
+  --tgph-width: var(--tgph-width);
 }
 
 @media (--tgph-breakpoint-md) {
   .tgph-box {
     --tgph-padding: var(--tgph-padding-md);
     --tgph-margin: var(--tgph-margin-md);
+    --tgph-background-color: var(--tgph-background-color-md);
+    --tgph-border-radius: var(--tgph-border-radius-md);
+    --tgph-border-width: var(--tgph-border-width-md);
+    --tgph-border-color: var(--tgph-border-color-md);
+    --tgph-height: var(--tgph-height-md);
+    --tgph-width: var(--tgph-width-md);
   }
 }
 
@@ -20,6 +39,12 @@
   .tgph-box {
     --tgph-padding: var(--tgph-padding-lg);
     --tgph-margin: var(--tgph-margin-lg);
+    --tgph-background-color: var(--tgph-background-color-lg);
+    --tgph-border-radius: var(--tgph-border-radius-lg);
+    --tgph-border-width: var(--tgph-border-width-lg);
+    --tgph-border-color: var(--tgph-border-color-lg);
+    --tgph-height: var(--tgph-height-lg);
+    --tgph-width: var(--tgph-width-lg);
   }
 }
 
@@ -27,6 +52,12 @@
   .tgph-box {
     --tgph-padding: var(--tgph-padding-xl);
     --tgph-margin: var(--tgph-margin-xl);
+    --tgph-background-color: var(--tgph-background-color-xl);
+    --tgph-border-radius: var(--tgph-border-radius-xl);
+    --tgph-border-width: var(--tgph-border-width-xl);
+    --tgph-border-color: var(--tgph-border-color-xl);
+    --tgph-height: var(--tgph-height-xl);
+    --tgph-width: var(--tgph-width-xl);
   }
 }
 
@@ -34,5 +65,11 @@
   .tgph-box {
     --tgph-padding: var(--tgph-padding-2xl);
     --tgph-margin: var(--tgph-margin-2xl);
+    --tgph-background-color: var(--tgph-background-color-2xl);
+    --tgph-border-radius: var(--tgph-border-radius-2xl);
+    --tgph-border-width: var(--tgph-border-width-2xl);
+    --tgph-border-color: var(--tgph-border-color-2xl);
+    --tgph-height: var(--tgph-height-2xl);
+    --tgph-width: var(--tgph-width-2xl);
   }
 }
