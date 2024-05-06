@@ -4,7 +4,7 @@ export const BOX_PROPS = {
     type: "spacing",
   },
   w: {
-    rule: "height",
+    rule: "width",
     type: "spacing",
   },
   p: {
