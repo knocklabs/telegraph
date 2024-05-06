@@ -1,4 +1,3 @@
-
 export const BOX_PROPS = {
   h: {
     rule: "height",

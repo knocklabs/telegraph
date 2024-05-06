@@ -29,7 +29,4 @@ type RoundedProps = {
   [key in RoundedProp]?: Responsive<`${keyof typeof t.tokens.rounded}`>;
 };
 
-
-export type BoxPropsTokens = SpacingProps &
-  ColorProps &
-  RoundedProps
+export type BoxPropsTokens = SpacingProps & ColorProps & RoundedProps;
