@@ -8,9 +8,26 @@ import {
 type CssVariableProp = {
   rule: string;
   type: string;
-  direction?: string;
   default?: string;
-};
+} & (
+  | {
+      ordering?: "trbl";
+      direction?: "all" | "top" | "right" | "bottom" | "left" | "x" | "y";
+    }
+  | {
+      ordering?: "clockwise";
+      direction?:
+        | "all"
+        | "topLeft"
+        | "topRight"
+        | "bottomRight"
+        | "bottomLeft"
+        | "top"
+        | "right"
+        | "bottom"
+        | "left";
+    }
+);
 
 type FormatCssVariableValueArgs = {
   value: string | boolean;
@@ -28,6 +45,20 @@ const formatCssVariableValue = ({
   }
 
   return `var(--tgph${type}-${value})`;
+};
+
+const TRBL_ARRAY_MAP = {
+  top: 0,
+  right: 1,
+  bottom: 2,
+  left: 3,
+};
+
+const CLOCKWISE_ARRAY_MAP = {
+  topLeft: 0,
+  topRight: 1,
+  bottomRight: 2,
+  bottomLeft: 3,
 };
 
 type FormatDirectionalCssVariablesArgs = {
@@ -49,37 +80,119 @@ const formatDirectionalCssVariables = ({
     ? currentValueOfCssVariable.split(" ")
     : [];
 
-  const directionalValues = {
-    top: currentValueArray?.[0] || 0,
-    right: currentValueArray?.[1] || 0,
-    bottom: currentValueArray?.[2] || 0,
-    left: currentValueArray?.[3] || 0,
-  };
+  const directionalValues = [
+    currentValueArray?.[0] || 0,
+    currentValueArray?.[1] || 0,
+    currentValueArray?.[2] || 0,
+    currentValueArray?.[3] || 0,
+  ];
 
   if (direction === "all") {
     return formatCssVariableValue({ value, prop });
   }
 
-  if (direction === "x") {
-    directionalValues.left = formatCssVariableValue({ value, prop });
-    directionalValues.right = formatCssVariableValue({ value, prop });
+  if (prop.ordering === "clockwise") {
+    if (direction === "top") {
+      directionalValues[CLOCKWISE_ARRAY_MAP["topLeft"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+      directionalValues[CLOCKWISE_ARRAY_MAP["topRight"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+    }
+
+    if (direction === "right") {
+      directionalValues[CLOCKWISE_ARRAY_MAP["topRight"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+      directionalValues[CLOCKWISE_ARRAY_MAP["bottomRight"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+    }
+
+    if (direction === "bottom") {
+      directionalValues[CLOCKWISE_ARRAY_MAP["bottomRight"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+      directionalValues[CLOCKWISE_ARRAY_MAP["bottomLeft"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+    }
+
+    if (direction === "left") {
+      directionalValues[CLOCKWISE_ARRAY_MAP["bottomLeft"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+      directionalValues[CLOCKWISE_ARRAY_MAP["topLeft"]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+    }
+
+    if (
+      direction === "topLeft" ||
+      direction === "topRight" ||
+      direction === "bottomRight" ||
+      direction === "bottomLeft"
+    ) {
+      directionalValues[CLOCKWISE_ARRAY_MAP[direction]] =
+        formatCssVariableValue({
+          value,
+          prop,
+        });
+    }
+  } else {
+    if (direction === "x") {
+      directionalValues[TRBL_ARRAY_MAP["left"]] = formatCssVariableValue({
+        value,
+        prop,
+      });
+      directionalValues[TRBL_ARRAY_MAP["right"]] = formatCssVariableValue({
+        value,
+        prop,
+      });
+    }
+
+    if (direction === "y") {
+      directionalValues[TRBL_ARRAY_MAP["top"]] = formatCssVariableValue({
+        value,
+        prop,
+      });
+      directionalValues[TRBL_ARRAY_MAP["bottom"]] = formatCssVariableValue({
+        value,
+        prop,
+      });
+    }
+
+    if (
+      direction === "top" ||
+      direction === "bottom" ||
+      direction === "left" ||
+      direction === "right"
+    ) {
+      directionalValues[TRBL_ARRAY_MAP[direction]] = formatCssVariableValue({
+        value,
+        prop,
+      });
+    }
   }
 
-  if (direction === "y") {
-    directionalValues.top = formatCssVariableValue({ value, prop });
-    directionalValues.bottom = formatCssVariableValue({ value, prop });
-  }
-
-  if (
-    direction === "top" ||
-    direction === "bottom" ||
-    direction === "left" ||
-    direction === "right"
-  ) {
-    directionalValues[direction] = formatCssVariableValue({ value, prop });
-  }
-
-  return `${directionalValues.top} ${directionalValues.right} ${directionalValues.bottom} ${directionalValues.left}`;
+  return directionalValues.join(" ");
 };
 
 type ProcessCssVariableStringArgs = {

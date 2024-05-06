@@ -21,7 +21,7 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
     // Filter out the box props from the rest of the props
     const filteredProps = React.useMemo(() => {
       // Set any defaults here
-      const mergedProps = { bdc: true, ...props };
+      const mergedProps = { borderColor: true, ...props };
       return Object.keys(mergedProps).reduce(
         (acc, key) => {
           if (!Object.keys(BOX_PROPS).some((prop) => prop === key)) {

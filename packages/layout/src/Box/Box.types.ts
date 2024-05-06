@@ -14,11 +14,10 @@ type KeysOfType<KEYS, TYPE> = {
 type SpacingProp = KeysOfType<typeof BOX_PROPS, "spacing">;
 type ColorProp = KeysOfType<typeof BOX_PROPS, "color">;
 type RoundedProp = KeysOfType<typeof BOX_PROPS, "rounded">;
-type BorderProp = KeysOfType<typeof BOX_PROPS, "border">;
 
 type SpacingProps = {
   [key in SpacingProp]?: Responsive<
-    `${keyof typeof t.tokens.spacing}` | "auto"
+    `${keyof typeof t.tokens.spacing}` | "auto" | true
   >;
 };
 
@@ -30,11 +29,7 @@ type RoundedProps = {
   [key in RoundedProp]?: Responsive<`${keyof typeof t.tokens.rounded}`>;
 };
 
-type BorderProps = {
-  [key in BorderProp]?: Responsive<`${keyof typeof t.tokens.spacing}`>;
-};
 
 export type BoxPropsTokens = SpacingProps &
   ColorProps &
-  RoundedProps &
-  BorderProps;
+  RoundedProps

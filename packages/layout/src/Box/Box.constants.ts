@@ -1,3 +1,4 @@
+
 export const BOX_PROPS = {
   h: {
     rule: "height",
@@ -81,84 +82,102 @@ export const BOX_PROPS = {
     rule: "background-color",
     type: "color",
   },
-  r: {
+  rounded: {
     rule: "border-radius",
     type: "rounded",
     direction: "all",
   },
-  rt: {
+  roundedTopLeft: {
+    rule: "border-radius",
+    type: "rounded",
+    direction: "topLeft",
+    ordering: "clockwise",
+  },
+  roundedBottomLeft: {
+    rule: "border-radius",
+    type: "rounded",
+    direction: "bottomLeft",
+    ordering: "clockwise",
+  },
+  roundedBottomRight: {
+    rule: "border-radius",
+    type: "rounded",
+    direction: "bottomRight",
+    ordering: "clockwise",
+  },
+  roundedTopRight: {
+    rule: "border-radius",
+    type: "rounded",
+    direction: "topRight",
+    ordering: "clockwise",
+  },
+  roundedTop: {
     rule: "border-radius",
     type: "rounded",
     direction: "top",
+    ordering: "clockwise",
   },
-  rl: {
-    rule: "border-radius",
-    type: "rounded",
-    direction: "left",
-  },
-  rb: {
+  roundedBottom: {
     rule: "border-radius",
     type: "rounded",
     direction: "bottom",
+    ordering: "clockwise",
   },
-  rr: {
+  roundedLeft: {
+    rule: "border-radius",
+    type: "rounded",
+    direction: "left",
+    ordering: "clockwise",
+  },
+  roundedRight: {
     rule: "border-radius",
     type: "rounded",
     direction: "right",
+    ordering: "clockwise",
   },
-  rx: {
-    rule: "border-radius",
-    type: "rounded",
-    direction: "x",
-  },
-  ry: {
-    rule: "border-radius",
-    type: "rounded",
-    direction: "y",
-  },
-  bd: {
+  border: {
     rule: "border-width",
     type: "spacing",
     direction: "all",
     default: "px",
   },
-  bdt: {
+  borderTop: {
     rule: "border-width",
     type: "spacing",
     direction: "top",
     default: "px",
   },
-  bdl: {
+  borderLeft: {
     rule: "border-width",
     type: "spacing",
     direction: "left",
     default: "px",
   },
-  bdb: {
+  borderBottom: {
     rule: "border-width",
     type: "spacing",
     direction: "bottom",
     default: "px",
   },
-  bdr: {
+  borderRight: {
     rule: "border-width",
     type: "spacing",
     direction: "right",
     default: "px",
   },
-  bdx: {
+  borderX: {
     rule: "border-width",
     type: "spacing",
     direction: "x",
     default: "px",
   },
-  bdy: {
+  borderY: {
     rule: "border-width",
-    type: "border",
+    type: "spacing",
     direction: "y",
     default: "px",
   },
-  bdc: {
+  boreerColor: {
     rule: "border-color",
     type: "color",
     default: "gray-5",
