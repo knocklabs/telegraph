@@ -44,17 +44,13 @@ const formatCssVariableValue = ({
     return value.toString();
   }
 
-  if (prop.valueType === "variable") {
-    const type = prop.type === "color" ? "" : `-${prop.type}`;
+  const type = prop.type === "color" ? "" : `-${prop.type}`;
 
-    if (value === true) {
-      return `var(--tgph${type}-${prop.default})`;
-    }
-
-    return `var(--tgph${type}-${value})`;
+  if (value === true) {
+    return `var(--tgph${type}-${prop.default})`;
   }
 
-  return "";
+  return `var(--tgph${type}-${value})`;
 };
 
 const TRBL_ARRAY_MAP = {
