@@ -9,6 +9,7 @@ type CssVariableProp = {
   rule: string;
   type: string;
   default?: string;
+  valueType?: "static" | "variable";
 } & (
   | {
       ordering?: "trbl";
@@ -38,13 +39,22 @@ const formatCssVariableValue = ({
   prop,
 }: FormatCssVariableValueArgs): string => {
   if (!value) return "";
-  const type = prop.type === "color" ? "" : `-${prop.type}`;
 
-  if (value === true) {
-    return `var(--tgph${type}-${prop.default})`;
+  if (prop.valueType === "static") {
+    return value.toString();
   }
 
-  return `var(--tgph${type}-${value})`;
+  if (prop.valueType === "variable") {
+    const type = prop.type === "color" ? "" : `-${prop.type}`;
+
+    if (value === true) {
+      return `var(--tgph${type}-${prop.default})`;
+    }
+
+    return `var(--tgph${type}-${value})`;
+  }
+
+  return "";
 };
 
 const TRBL_ARRAY_MAP = {
