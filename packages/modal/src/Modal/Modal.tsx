@@ -20,7 +20,7 @@ type RootRef = React.ElementRef<typeof Dialog.Content>;
 const Root = React.forwardRef<RootRef, RootProps>(
   (
     {
-      portal = { enabled: true, container: document.body },
+      portal = { enabled: true},
       open,
       onOpenChange,
       className,
@@ -33,7 +33,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
       <Dialog.Root open={open} onOpenChange={onOpenChange}>
         <AnimatePresence>
           {open && (
-            <Portal container={portal.container} forceMount>
+            <Portal {...portal} forceMount>
               <Dialog.Overlay asChild>
                 <Box
                   as={motion.div}
