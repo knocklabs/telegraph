@@ -176,9 +176,9 @@ export const BOX_PROPS = {
     direction: "y",
     default: "px",
   },
-  boreerColor: {
+  borderColor: {
     rule: "border-color",
     type: "color",
-    default: "gray-5",
+    default: "gray-4",
   },
 } as const;

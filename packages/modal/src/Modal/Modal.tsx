@@ -7,12 +7,13 @@ import React from "react";
 type RootProps = Omit<
   React.ComponentPropsWithoutRef<typeof Dialog.Root>,
   "modal"
-> & React.ComponentPropsWithoutRef<typeof Stack> & {
-  portal?: {
-    enabled?: boolean;
-    container?: HTMLElement;
+> &
+  React.ComponentPropsWithoutRef<typeof Stack> & {
+    portal?: {
+      enabled?: boolean;
+      container?: HTMLElement;
+    };
   };
-};
 
 type RootRef = React.ElementRef<typeof Dialog.Content>;
 
@@ -51,7 +52,10 @@ const Root = React.forwardRef<RootRef, RootProps>(
                 asChild
               >
                 <Stack
-                  className={clsx("absolute z-modal top-0 left-1/2 transform -translate-x-1/2 max-h-[calc(100vh-var(--tgph-spacing-32))] shadow-1", className)}
+                  className={clsx(
+                    "absolute z-modal top-0 left-1/2 transform -translate-x-1/2 max-h-[calc(100vh-var(--tgph-spacing-32))] shadow-1",
+                    className,
+                  )}
                   direction="column"
                   as={motion.div}
                   bg="surface-1"
