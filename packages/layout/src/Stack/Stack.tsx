@@ -1,4 +1,5 @@
 import { useComposedRefs } from "@telegraph/compose-refs";
+import type { PropsWithAs } from "@telegraph/helpers";
 import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
@@ -61,6 +62,8 @@ const Stack = React.forwardRef<StackRef, StackProps>(
       />
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, StackProps>,
+) => React.ReactElement;
 
 export { Stack };

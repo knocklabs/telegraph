@@ -1,4 +1,5 @@
 import { useComposedRefs } from "@telegraph/compose-refs";
+import type { PropsWithAs } from "@telegraph/helpers";
 import clsx from "clsx";
 import React from "react";
 
@@ -11,10 +12,12 @@ type BoxProps = React.HTMLAttributes<HTMLDivElement> &
   BoxPropsTokens & {
     as?: React.ElementType;
   };
-type BoxRef = HTMLDivElement;
 
-const Box = React.forwardRef<BoxRef, BoxProps>(
-  ({ as = "div", className, ...props }, forwardedRef) => {
+const Box = React.forwardRef(
+  (
+    { as = "div", className, ...props }: PropsWithAs<"div", BoxProps>,
+    forwardedRef,
+  ) => {
     const boxRef = React.useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, boxRef);
 
@@ -56,6 +59,8 @@ const Box = React.forwardRef<BoxRef, BoxProps>(
       />
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, BoxProps>,
+) => React.ReactElement;
 
 export { Box };

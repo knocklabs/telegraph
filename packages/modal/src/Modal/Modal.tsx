@@ -20,7 +20,7 @@ type RootRef = React.ElementRef<typeof Dialog.Content>;
 const Root = React.forwardRef<RootRef, RootProps>(
   (
     {
-      portal = { enabled: true, container: null },
+      portal = { enabled: true, container: document.body },
       open,
       onOpenChange,
       className,
@@ -30,7 +30,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
   ) => {
     const Portal = portal.enabled ? Dialog.Portal : React.Fragment;
     return (
-      <Dialog.Root onOpenChange={onOpenChange}>
+      <Dialog.Root open={open} onOpenChange={onOpenChange}>
         <AnimatePresence>
           {open && (
             <Portal container={portal.container} forceMount>
@@ -78,8 +78,8 @@ const Root = React.forwardRef<RootRef, RootProps>(
   },
 );
 
-type ContentProps = React.ComponentPropsWithoutRef<typeof Box>;
-type ContentRef = HTMLDivElement;
+type ContentProps = React.ComponentProps<typeof Box>;
+type ContentRef = React.ElementRef<typeof Box>;
 
 const Content: React.FC<typeof Box> = React.forwardRef<
   ContentRef,

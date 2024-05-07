@@ -68,12 +68,12 @@ export const BOX_PROPS = {
     direction: "right",
   },
   mx: {
-    rule: "margin-inline",
+    rule: "margin",
     type: "spacing",
     direction: "x",
   },
   my: {
-    rule: "margin-block",
+    rule: "margin",
     type: "spacing",
     direction: "y",
   },
