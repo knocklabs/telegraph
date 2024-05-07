@@ -5153,7 +5153,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/modal@workspace:^, @telegraph/modal@workspace:packages/modal":
+"@telegraph/modal@workspace:packages/modal":
   version: 0.0.0-use.local
   resolution: "@telegraph/modal@workspace:packages/modal"
   dependencies:
@@ -5203,7 +5203,6 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/input": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/modal": "workspace:^"
     "@telegraph/nextjs": "workspace:^"
     "@telegraph/tag": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
