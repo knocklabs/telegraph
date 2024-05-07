@@ -19,13 +19,7 @@ type RootRef = React.ElementRef<typeof Dialog.Content>;
 
 const Root = React.forwardRef<RootRef, RootProps>(
   (
-    {
-      portal = { enabled: true},
-      open,
-      onOpenChange,
-      className,
-      ...props
-    },
+    { portal = { enabled: true }, open, onOpenChange, className, ...props },
     forwardedRef,
   ) => {
     const Portal = portal.enabled ? Dialog.Portal : React.Fragment;

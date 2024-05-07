@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@knocklabs/typescript-config/react-library.json",
-  "display": "@telegraph/icon",
+  "display": "@telegraph/modal",
   "compilerOptions": {
     "outDir": "dist",
   },
