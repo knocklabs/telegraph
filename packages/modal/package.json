@@ -1,12 +1,12 @@
 {
-  "name": "@telegraph/layout",
-  "version": "0.0.6",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/layout",
+  "name": "@telegraph/modal",
+  "version": "0.0.0",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/modal",
   "author": "@knocklabs",
   "license": "MIT",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.mjs",
-  "types": "./dist/types/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/esm/index.mjs",
@@ -20,7 +20,7 @@
     "dist",
     "README.md"
   ],
-  "prettier": "@telegraph/prettier-config",
+  "prettier": "@knocklabs/prettier-config",
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "vite build --watch --emptyOutDir false",
@@ -34,16 +34,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@telegraph/compose-refs": "workspace:^",
-    "@telegraph/helpers": "workspace:^",
-    "@telegraph/tokens": "workspace:^",
-    "clsx": "^2.1.0"
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@telegraph/layout": "workspace:^",
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.1.9"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/prettier-config": "^0.0.1",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
-    "@telegraph/prettier-config": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@telegraph/vitest-config": "workspace:^",

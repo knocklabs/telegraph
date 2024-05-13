@@ -53,6 +53,48 @@ const mapCssVarToClassName = (obj, prefix, includeVariableNamePrefix) => {
   return result;
 };
 
+const flattenTokens = (obj) => {
+
+  // Helper function to recursively traverse the object
+  function traverseObject(obj, path = [], result = {}) {
+    for (const key in obj) {
+      // Construct the path for the current key
+      const currentPath = path.concat(key);
+
+      if (
+        typeof obj[key] === "object" &&
+        obj[key] !== null &&
+        !Array.isArray(obj[key])
+      ) {
+        // Recurse into nested objects
+        traverseObject(obj[key], currentPath, result);
+      } else {
+        // Process leaf nodes
+        if (!currentPath.includes(THEME_NAMES[1])) {
+          const filteredPath = currentPath
+            .filter((t) => t && !THEME_NAMES.includes(t) && t !== "color")
+            .join("-");
+
+          // Construct variable name and CSS variable
+          const cssVar = `var(--${TELEGRAPH_VARIABLE_PREFIX}-${filteredPath})`;
+
+          result[filteredPath] = cssVar
+        }
+      }
+    }
+
+      return result
+  }
+
+  const result = {};
+
+  Object.keys(obj).forEach((key) => {
+      result[key] = traverseObject(obj[key], [key])
+  })
+
+  return result;
+};
+
 /**
  * Saves the generated mapping to a JSON file.
  * @param {String} name - The name of the file (without extension).
@@ -99,8 +141,11 @@ const main = async () => {
       }),
     );
 
+    const flattenedTokens = flattenTokens(tgph.tokens);
+
     // Save the generated mappings
     saveMapping("tokens", tokens);
+    saveMapping("flattened-tokens", flattenedTokens);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",

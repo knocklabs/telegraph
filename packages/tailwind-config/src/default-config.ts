@@ -31,6 +31,9 @@ export default {
     fontSize: {
       ...tokens.text,
     },
+    zIndex: {
+      ...tokens.zIndex,
+    },
     extend: {
       height: {
         ...tokens.spacing,

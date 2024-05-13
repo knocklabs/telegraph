@@ -8,6 +8,8 @@ import { spacing } from "./tokens/spacing";
 import { text } from "./tokens/text";
 import { tracking } from "./tokens/tracking";
 import { weight } from "./tokens/weight";
+import { zIndex } from "./tokens/zIndex";
+
 
 export default {
   tokens: {
@@ -21,5 +23,6 @@ export default {
     text,
     weight,
     breakpoint,
+    zIndex,
   },
 };
