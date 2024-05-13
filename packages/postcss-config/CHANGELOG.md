@@ -1,5 +1,12 @@
 # @telegraph/postcss-config
 
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies [[`0944c50`](https://github.com/knocklabs/telegraph/commit/0944c50e3043ab010405db468733a78c618777d0)]:
+  - @telegraph/tokens@0.0.9
+
 ## 0.0.12
 
 ### Patch Changes
