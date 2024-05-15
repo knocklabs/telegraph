@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.8
+
+### Patch Changes
+
+- [#90](https://github.com/knocklabs/telegraph/pull/90) [`f824b03`](https://github.com/knocklabs/telegraph/commit/f824b036d09bae518becb14b409955e9b085a8f3) Thanks [@kylemcd](https://github.com/kylemcd)! - fix gap not using token css variable
+
 ## 0.0.7
 
 ### Patch Changes
