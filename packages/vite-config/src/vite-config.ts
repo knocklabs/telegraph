@@ -22,7 +22,6 @@ const allDependencies = [
   // Need to declare these as external as well since they're
   // not explicitly listed in the package.json
   "react/jsx-runtime",
-  "ionicons/icons",
 ];
 
 const buildTimeInfo = {

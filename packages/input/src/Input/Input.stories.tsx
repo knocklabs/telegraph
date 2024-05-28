@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import { Icon } from "@telegraph/icon";
-import * as icons from "ionicons/icons";
+import { Icon, Lucide } from "@telegraph/icon";
 
 import { Input as TelegraphInput } from "./Input";
 import { COLOR, SIZE } from "./Input.constants";
+
+const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphInput> = {
   title: "Components/Input",
@@ -33,13 +34,13 @@ const meta: Meta<typeof TelegraphInput> = {
       },
     },
     LeadingComponent: {
-      options: Object.keys(icons),
+      options: Object.keys(Icons),
       control: {
         type: "select",
       },
     },
     TrailingComponent: {
-      options: Object.keys(icons),
+      options: Object.keys(Icons),
       control: {
         type: "select",
       },
@@ -65,16 +66,13 @@ export const LeadingIcon: Story = {
   render: ({ LeadingComponent, ...props }) => (
     <TelegraphInput
       LeadingComponent={
-        <Icon
-          icon={icons[LeadingComponent as unknown as keyof typeof icons]}
-          alt="alt"
-        />
+        <Icon icon={Icons[LeadingComponent as keyof typeof Icons]} alt="alt" />
       }
       {...props}
     />
   ),
   args: {
-    LeadingComponent: "searchSharp",
+    LeadingComponent: "Search",
     TrailingComponent: null,
   },
 };
@@ -83,16 +81,13 @@ export const TrailingAction: Story = {
   render: ({ LeadingComponent, TrailingComponent, ...props }) => (
     <TelegraphInput
       LeadingComponent={
-        <Icon
-          icon={icons[LeadingComponent as unknown as keyof typeof icons]}
-          alt="alt"
-        />
+        <Icon icon={Icons[LeadingComponent as keyof typeof Icons]} alt="alt" />
       }
       TrailingComponent={
         <Button
           variant="ghost"
           icon={{
-            icon: icons[TrailingComponent as unknown as keyof typeof icons],
+            icon: Icons[TrailingComponent as keyof typeof Icons],
             alt: "create",
           }}
         />
@@ -102,6 +97,6 @@ export const TrailingAction: Story = {
   ),
   args: {
     LeadingComponent: null,
-    TrailingComponent: "informationCircleSharp",
+    TrailingComponent: "Info",
   },
 };

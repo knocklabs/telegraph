@@ -54,7 +54,8 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@telegraph/layout": "workspace:^",
     "clsx": "^2.1.0",
-    "ionicons": "^7.2.2"
+    "lucide-react": "^0.379.0"
   }
 }
