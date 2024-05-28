@@ -147,11 +147,11 @@ import { Tag } from '@telegraph/tag'
 
 ```
 import { Tag } from "@telegraph/tag"
-import { addSharp, closeSharp } from '@telegraph/icon'
+import { Lucide  } from '@telegraph/icon'
 
 <Tag.Root color="blue" variant="solid" size="2">
-    <Tag.Icon icon={addSharp} alt="Create"/>
+    <Tag.Icon icon={Lucide.Add} alt="Create"/>
     <Tag.Text>Text</Tag.Text>
-    <Tag.Button icon={{ icon: removeSharp, alt: "remove"}} onClick={() => {}}/>
+    <Tag.Button icon={{ icon: Lucide.X, alt: "remove"}} onClick={() => {}}/>
 </Tag.Root>
 ```
