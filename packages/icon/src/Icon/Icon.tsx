@@ -14,8 +14,7 @@ type BaseIconProps = {
   color?: keyof (typeof colorMap)["primary"];
 };
 
-type IconProps = BaseIconProps &
-  Omit<React.ComponentProps<typeof Box>, "size" | "variant">;
+type IconProps = BaseIconProps & React.HTMLAttributes<HTMLDivElement>;
 
 type IconRef = SVGSVGElement;
 
@@ -50,7 +49,7 @@ const Icon = React.forwardRef<IconRef, IconProps>(
           "inline-block",
           className,
         )}
-            data-button-icon
+        data-button-icon
         {...props}
       >
         {IconComponent && (
