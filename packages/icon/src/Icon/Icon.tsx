@@ -12,10 +12,10 @@ type BaseIconProps = {
   size?: keyof (typeof sizeMap)["box"];
   variant?: keyof typeof colorMap;
   color?: keyof (typeof colorMap)["primary"];
-  boxProps: React.ComponentPropsWithRef<typeof Box>;
 };
 
-type IconProps = React.SVGAttributes<SVGSVGElement> & BaseIconProps;
+type IconProps = BaseIconProps &
+  Omit<React.ComponentProps<typeof Box>, "size" | "variant">;
 
 type IconRef = SVGSVGElement;
 
@@ -28,41 +28,42 @@ const Icon = React.forwardRef<IconRef, IconProps>(
       icon,
       alt,
       className,
-      boxProps,
       ...props
     },
     forwardedRef,
   ) => {
-      const IconComponent = icon;
+    const IconComponent = icon;
 
-      if(!IconComponent) {
-          console.error(`@telegraph/icon: icon prop is required`);
-      }
+    if (!IconComponent) {
+      throw new Error(`@telegraph/icon: icon prop is required`);
+    }
 
+    if (!alt) {
+      throw new Error(`@telegraph/icon: alt prop is required`);
+    }
 
     return (
       <Box
         className={clsx(
           size && sizeMap["box"][size],
           color && colorMap[variant][color],
-          boxProps?.className,
+          "inline-block",
+          className,
         )}
-        {...boxProps}
+            data-button-icon
+        {...props}
       >
-      {IconComponent && (
-        <IconComponent
-          aria-label={alt}
-          width="100%"
-          height="100%"
-          className={className}
-          {...props}
-          ref={forwardedRef}
-        />
+        {IconComponent && (
+          <IconComponent
+            aria-label={alt}
+            width="100%"
+            height="100%"
+            ref={forwardedRef}
+          />
         )}
       </Box>
     );
   },
 );
-
 
 export { Icon };

@@ -57,7 +57,7 @@ type Story = StoryObj<StorybookIconType>;
 export const Icon: Story = {
   render: ({ icon, ...props }) => (
     <TelegraphIcon
-    // @ts-expect-error: for illustrative purposes only
+      // @ts-expect-error: for illustrative purposes only
       icon={Icons[icon as keyof typeof Icons]}
       {...props}
       alt="test"

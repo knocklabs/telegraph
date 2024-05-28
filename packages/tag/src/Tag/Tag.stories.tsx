@@ -67,7 +67,7 @@ export const Tag: Story = {
           ...props,
         }
       : props;
-      // @ts-expect-error: for illustration purposes only
+    // @ts-expect-error: for illustration purposes only
     return <TelegraphTag {...mergedProps} />;
   },
   args: {
