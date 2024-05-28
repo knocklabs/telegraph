@@ -34,13 +34,13 @@ const meta: Meta<typeof TelegraphInput> = {
       },
     },
     LeadingComponent: {
-      options: Object.keys(Icons),
+      options: ["", ...Object.keys(Icons)],
       control: {
         type: "select",
       },
     },
     TrailingComponent: {
-      options: Object.keys(Icons),
+      options: ["", ...Object.keys(Icons)],
       control: {
         type: "select",
       },
@@ -60,13 +60,44 @@ export default meta;
 
 type Story = StoryObj<typeof TelegraphInput>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  render: ({ LeadingComponent, TrailingComponent, ...props }) => (
+    <TelegraphInput
+      LeadingComponent={
+        LeadingComponent && (
+          <Icon
+            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
+      }
+      TrailingComponent={
+        TrailingComponent && (
+          <Icon
+            icon={Icons[TrailingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
+      }
+      {...props}
+    />
+  ),
+  args: {
+    LeadingComponent: null,
+    TrailingComponent: null,
+  },
+};
 
 export const LeadingIcon: Story = {
   render: ({ LeadingComponent, ...props }) => (
     <TelegraphInput
       LeadingComponent={
-        <Icon icon={Icons[LeadingComponent as keyof typeof Icons]} alt="alt" />
+        LeadingComponent && (
+          <Icon
+            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
       }
       {...props}
     />
@@ -81,16 +112,23 @@ export const TrailingAction: Story = {
   render: ({ LeadingComponent, TrailingComponent, ...props }) => (
     <TelegraphInput
       LeadingComponent={
-        <Icon icon={Icons[LeadingComponent as keyof typeof Icons]} alt="alt" />
+        LeadingComponent && (
+          <Icon
+            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
       }
       TrailingComponent={
-        <Button
-          variant="ghost"
-          icon={{
-            icon: Icons[TrailingComponent as keyof typeof Icons],
-            alt: "create",
-          }}
-        />
+        TrailingComponent && (
+          <Button
+            variant="ghost"
+            icon={{
+              icon: Icons[TrailingComponent as keyof typeof Icons],
+              alt: "create",
+            }}
+          />
+        )
       }
       {...props}
     />
