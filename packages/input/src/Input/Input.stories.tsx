@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import { Icon } from "@telegraph/icon";
-import * as icons from "ionicons/icons";
+import { Icon, Lucide } from "@telegraph/icon";
 
 import { Input as TelegraphInput } from "./Input";
 import { COLOR, SIZE } from "./Input.constants";
+
+const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphInput> = {
   title: "Components/Input",
@@ -33,13 +34,13 @@ const meta: Meta<typeof TelegraphInput> = {
       },
     },
     LeadingComponent: {
-      options: Object.keys(icons),
+      options: ["", ...Object.keys(Icons)],
       control: {
         type: "select",
       },
     },
     TrailingComponent: {
-      options: Object.keys(icons),
+      options: ["", ...Object.keys(Icons)],
       control: {
         type: "select",
       },
@@ -59,22 +60,50 @@ export default meta;
 
 type Story = StoryObj<typeof TelegraphInput>;
 
-export const Default: Story = {};
-
-export const LeadingIcon: Story = {
-  render: ({ LeadingComponent, ...props }) => (
+export const Default: Story = {
+  render: ({ LeadingComponent, TrailingComponent, ...props }) => (
     <TelegraphInput
       LeadingComponent={
-        <Icon
-          icon={icons[LeadingComponent as unknown as keyof typeof icons]}
-          alt="alt"
-        />
+        LeadingComponent && (
+          <Icon
+            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
+      }
+      TrailingComponent={
+        TrailingComponent && (
+          <Icon
+            icon={Icons[TrailingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
       }
       {...props}
     />
   ),
   args: {
-    LeadingComponent: "searchSharp",
+    LeadingComponent: null,
+    TrailingComponent: null,
+  },
+};
+
+export const LeadingIcon: Story = {
+  render: ({ LeadingComponent, ...props }) => (
+    <TelegraphInput
+      LeadingComponent={
+        LeadingComponent && (
+          <Icon
+            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
+      }
+      {...props}
+    />
+  ),
+  args: {
+    LeadingComponent: "Search",
     TrailingComponent: null,
   },
 };
@@ -83,25 +112,29 @@ export const TrailingAction: Story = {
   render: ({ LeadingComponent, TrailingComponent, ...props }) => (
     <TelegraphInput
       LeadingComponent={
-        <Icon
-          icon={icons[LeadingComponent as unknown as keyof typeof icons]}
-          alt="alt"
-        />
+        LeadingComponent && (
+          <Icon
+            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            alt="alt"
+          />
+        )
       }
       TrailingComponent={
-        <Button
-          variant="ghost"
-          icon={{
-            icon: icons[TrailingComponent as unknown as keyof typeof icons],
-            alt: "create",
-          }}
-        />
+        TrailingComponent && (
+          <Button
+            variant="ghost"
+            icon={{
+              icon: Icons[TrailingComponent as keyof typeof Icons],
+              alt: "create",
+            }}
+          />
+        )
       }
       {...props}
     />
   ),
   args: {
     LeadingComponent: null,
-    TrailingComponent: "informationCircleSharp",
+    TrailingComponent: "Info",
   },
 };

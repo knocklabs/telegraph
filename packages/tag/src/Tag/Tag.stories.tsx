@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import * as icons from "ionicons/icons";
+import { Lucide } from "@telegraph/icon";
 
 import { Tag as TelegraphTag } from "./Tag";
 import { COLOR, SIZE } from "./Tag.constants";
+
+const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphTag> = {
   title: "Components",
@@ -37,7 +39,7 @@ const meta: Meta<typeof TelegraphTag> = {
       },
     },
     icon: {
-      options: Object.keys(icons),
+      options: Object.keys(Icons),
       control: {
         type: "select",
       },
@@ -48,15 +50,26 @@ const meta: Meta<typeof TelegraphTag> = {
 
 export default meta;
 
-type Story = StoryObj<typeof TelegraphTag>;
+type StorybookTagType = Omit<
+  React.ComponentProps<typeof TelegraphTag>,
+  "icon"
+> & {
+  icon?: string;
+};
+
+type Story = StoryObj<StorybookTagType>;
 
 export const Tag: Story = {
-  render: ({ icon, ...props }) => (
-    <TelegraphTag
-      icon={{ icon: icons[icon as unknown as keyof typeof icons], alt: "alt" }}
-      {...props}
-    />
-  ),
+  render: ({ icon, ...props }) => {
+    const mergedProps = icon
+      ? {
+          icon: { icon: Icons[icon as keyof typeof Icons], alt: "description" },
+          ...props,
+        }
+      : props;
+    // @ts-expect-error: for illustration purposes only
+    return <TelegraphTag {...mergedProps} />;
+  },
   args: {
     children: "Tag",
     variant: "soft",

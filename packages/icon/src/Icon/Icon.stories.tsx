@@ -1,15 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import * as icons from "ionicons/icons";
+
+import { Lucide } from "../index";
 
 import { Icon as TelegraphIcon } from "./Icon";
 import { colorMap, sizeMap } from "./Icon.constants";
+
+const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphIcon> = {
   title: "Components",
   component: TelegraphIcon,
   argTypes: {
     icon: {
-      options: Object.keys(icons),
+      options: Object.keys(Icons),
       control: {
         type: "select",
       },
@@ -42,11 +45,23 @@ const meta: Meta<typeof TelegraphIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof TelegraphIcon>;
+type StorybookIconType = Omit<
+  React.ComponentProps<typeof TelegraphIcon>,
+  "icon"
+> & {
+  icon: string;
+};
+
+type Story = StoryObj<StorybookIconType>;
 
 export const Icon: Story = {
   render: ({ icon, ...props }) => (
-    <TelegraphIcon icon={icons[icon as keyof typeof icons]} {...props} />
+    <TelegraphIcon
+      // @ts-expect-error: for illustrative purposes only
+      icon={Icons[icon as keyof typeof Icons]}
+      {...props}
+      alt="test"
+    />
   ),
-  args: { icon: "informationCircleOutline" },
+  args: { icon: "Bell" },
 };

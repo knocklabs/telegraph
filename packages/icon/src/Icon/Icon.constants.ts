@@ -11,18 +11,6 @@ export const sizeMap = {
     "8": "h-9 w-9",
     "9": "h-12 w-12",
   },
-  icon: {
-    "0": "text-[0.8125rem]",
-    "1": "text-2",
-    "2": "text-3",
-    "3": "text-4",
-    "4": "text-5",
-    "5": "text-[1.375rem]",
-    "6": "text-[1.625rem]",
-    "7": "text-[2rem]",
-    "8": "text-8",
-    "9": "text-9",
-  },
 } as const;
 
 export const colorMap = {

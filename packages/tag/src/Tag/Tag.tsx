@@ -1,10 +1,6 @@
 import { Button as TelegraphButton } from "@telegraph/button";
 import type { Optional, Required } from "@telegraph/helpers";
-import {
-  Icon as TelegraphIcon,
-  closeSharp,
-  copyOutline,
-} from "@telegraph/icon";
+import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
 import React from "react";
@@ -81,7 +77,7 @@ const Button = React.forwardRef<ButtonRef, ButtonProps>(
         size={context.size}
         color={COLOR.Button[context.variant][context.color]}
         variant={context.variant}
-        icon={{ icon: closeSharp, alt: "close" }}
+        icon={{ icon: Lucide.X, alt: "close" }}
         className={clsx("rounded-tl-0 rounded-bl-0", className)}
         {...props}
         ref={forwardedRef}
@@ -136,14 +132,11 @@ const Default = React.forwardRef<DefaultRef, DefaultProps>(
         {onRemove && (
           <Button
             onClick={onRemove}
-            icon={{ icon: closeSharp, alt: "Copy Text" }}
+            icon={{ icon: Lucide.Copy, alt: "Copy Text" }}
           />
         )}
         {onCopy && (
-          <Button
-            onClick={onCopy}
-            icon={{ icon: copyOutline, alt: "Remove" }}
-          />
+          <Button onClick={onCopy} icon={{ icon: Lucide.X, alt: "Remove" }} />
         )}
       </Root>
     );

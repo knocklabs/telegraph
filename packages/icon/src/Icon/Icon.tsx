@@ -1,18 +1,22 @@
+import { Box } from "@telegraph/layout";
 import clsx from "clsx";
+// We use "Bell" in place of any icon so we get correct type checking
+import type { Bell } from "lucide-react";
 import React from "react";
 
 import { colorMap, sizeMap } from "./Icon.constants";
-import "./Icon.styles.css";
 
-type IconProps = React.HTMLAttributes<HTMLSpanElement> & {
-  icon: string;
+type BaseIconProps = {
+  icon: typeof Bell;
   alt: string;
   size?: keyof (typeof sizeMap)["box"];
   variant?: keyof typeof colorMap;
   color?: keyof (typeof colorMap)["primary"];
 };
 
-type IconRef = HTMLSpanElement;
+type IconProps = BaseIconProps & React.HTMLAttributes<HTMLDivElement>;
+
+type IconRef = SVGSVGElement;
 
 const Icon = React.forwardRef<IconRef, IconProps>(
   (
@@ -27,36 +31,36 @@ const Icon = React.forwardRef<IconRef, IconProps>(
     },
     forwardedRef,
   ) => {
-    // Get SVG part of the icon
-    const unsafeIconMarkup = icon?.split(",")?.[1];
+    const IconComponent = icon;
 
-    // Replace ionicon classes with telegraph classes
-    const iconMarkup = unsafeIconMarkup
-      ?.replace(/class='ionicon'/g, "")
-      ?.replace(/ionicon-stroke-width/g, "tgph-stroke-width")
-      ?.replace(/ionicon-fill-none/g, "tgph-fill-none");
+    if (!IconComponent) {
+      throw new Error(`@telegraph/icon: icon prop is required`);
+    }
 
-    if (!iconMarkup) {
-      return <></>;
+    if (!alt) {
+      throw new Error(`@telegraph/icon: alt prop is required`);
     }
 
     return (
-      <span
-        role="img"
-        aria-label={alt}
-        dangerouslySetInnerHTML={{ __html: iconMarkup }}
+      <Box
         className={clsx(
-          "box-border",
           size && sizeMap["box"][size],
-          size && sizeMap["icon"][size],
-          variant && color && colorMap[variant][color],
-          "stroke-[currentColor] fill-[currentColor] inline-block",
+          color && colorMap[variant][color],
+          "inline-block",
           className,
         )}
-        data-tgph-icon
+        data-button-icon
         {...props}
-        ref={forwardedRef}
-      />
+      >
+        {IconComponent && (
+          <IconComponent
+            aria-label={alt}
+            width="100%"
+            height="100%"
+            ref={forwardedRef}
+          />
+        )}
+      </Box>
     );
   },
 );

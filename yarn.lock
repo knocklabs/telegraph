@@ -4190,15 +4190,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^4.0.3":
-  version: 4.12.6
-  resolution: "@stencil/core@npm:4.12.6"
-  bin:
-    stencil: bin/stencil
-  checksum: 10c0/5b8d076a2fee512d81f732c2e8c60dce2f5fc3b8ec42e248c7bf922ab4efd19dfa70b3df88ff65c05b36785e85c699ce06b3438fa37d776203feaef6013b59eb
-  languageName: node
-  linkType: hard
-
 "@storybook/addon-actions@npm:7.6.17":
   version: 7.6.17
   resolution: "@storybook/addon-actions@npm:7.6.17"
@@ -5078,6 +5069,7 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
@@ -5085,7 +5077,7 @@ __metadata:
     "@types/react": "npm:^18.2.48"
     clsx: "npm:^2.1.0"
     eslint: "npm:^8.56.0"
-    ionicons: "npm:^7.2.2"
+    lucide-react: "npm:^0.379.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
@@ -10636,15 +10628,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ionicons@npm:^7.2.2":
-  version: 7.2.2
-  resolution: "ionicons@npm:7.2.2"
-  dependencies:
-    "@stencil/core": "npm:^4.0.3"
-  checksum: 10c0/9d5810f1b580756c52e06ba846c6518c91588843273a7b68104c7622f4a82b0f560aa7ef66e06e26e01400cfbe37ba8348731a2bab27a0d86d6d334225735bf3
-  languageName: node
-  linkType: hard
-
 "ip-address@npm:^9.0.5":
   version: 9.0.5
   resolution: "ip-address@npm:9.0.5"
@@ -11981,6 +11964,15 @@ __metadata:
   dependencies:
     yallist: "npm:^4.0.0"
   checksum: 10c0/cb53e582785c48187d7a188d3379c181b5ca2a9c78d2bce3e7dee36f32761d1c42983da3fe12b55cb74e1779fa94cdc2e5367c028a9b35317184ede0c07a30a9
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.379.0":
+  version: 0.379.0
+  resolution: "lucide-react@npm:0.379.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/b2521db4b2329e51f3b31abf5f6e03caa6cc1c736e8dc27e79fd92c09ed2e95bd7d85ea46a765d264ddbafb525c783bd4689ef512434972fdfcd33fa2bdfb1c6
   languageName: node
   linkType: hard
 

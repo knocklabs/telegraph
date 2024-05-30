@@ -23,18 +23,18 @@ npm install @telegraph/icon
 #### `<Icon/>`
 
 ```
-import { Icon, checkmark } from "@telegraph/icon"
+import { Icon, Lucide } from "@telegraph/icon"
 
 ...
 
-<Icon icon={checkmark} alt="item is selected"/>
+<Icon icon={Lucide.Bell} alt="notifications"/>
 ```
 
 ##### Props
 
 | Name    | Type   | Default     | Options                                                                                     |
 | ------- | ------ | ----------- | ------------------------------------------------------------------------------------------- |
-| icon    | string | `undefined` | See package exports                                                                         |
+| icon    | ReactComponent | `undefined` | See package exports                                                                         |
 | alt     | string | `undefined` |                                                                                             |
 | size    | string | "2"         | "1" "2" "3" "4" "5" "6" "7" "8" "9"                                                         |
 | color   | string | "default"   | "default" "gray" "red" "beige" "blue" "green" "yellow" "purple" "accent" "disabled" "white" |

@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import * as icons from "@telegraph/icon";
+import { Lucide } from "@telegraph/icon";
 
 import { Button as TelegraphButton } from "./Button";
 import { buttonColorMap, buttonSizeMap } from "./Button.constants";
 
-// Filter out the main Icon component
-const filteredIcons = Object.keys(icons).filter((icon) => {
-  return icon !== "Icon";
-});
+const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphButton> = {
   title: "Components/Button",
@@ -32,7 +29,19 @@ const meta: Meta<typeof TelegraphButton> = {
       },
     },
     leadingIcon: {
-      options: filteredIcons,
+      options: ["", ...Object.keys(Icons)],
+      control: {
+        type: "select",
+      },
+    },
+    trailingIcon: {
+      options: ["", ...Object.keys(Icons)],
+      control: {
+        type: "select",
+      },
+    },
+    icon: {
+      options: ["", ...Object.keys(Icons)],
       control: {
         type: "select",
       },
@@ -52,38 +61,72 @@ type StorybookButtonType = Omit<
   React.ComponentProps<typeof TelegraphButton>,
   "leadingIcon"
 > & {
-  leadingIcon: string;
+  leadingIcon?: string;
+  trailingIcon?: string;
+  icon?: string;
 };
 
 type Story = StoryObj<StorybookButtonType>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  render: ({ leadingIcon, trailingIcon, icon, ...args }) => {
+    const mergedProps = {
+      leadingIcon: leadingIcon
+        ? { icon: Icons[leadingIcon as keyof typeof Icons], alt: "description" }
+        : null,
+      trailingIcon: trailingIcon
+        ? {
+            icon: Icons[trailingIcon as keyof typeof Icons],
+            alt: "description",
+          }
+        : null,
+      icon: icon
+        ? {
+            icon: Icons[icon as keyof typeof Icons],
+            alt: "description",
+          }
+        : null,
+      ...args,
+    };
+    console.log(mergedProps);
+    return <TelegraphButton {...mergedProps} />;
+  },
+  args: {
+    leadingIcon: "",
+    trailingIcon: "",
+    icon: "",
+  },
+};
 
 export const WithIcon: Story = {
   render: ({ leadingIcon, ...args }) => {
-    const formattedLeadingIcon = {
-      icon: icons[leadingIcon as keyof typeof icons],
-      alt: "description",
-    };
+    const formattedLeadingIcon = leadingIcon
+      ? {
+          icon: Icons[leadingIcon as keyof typeof Icons],
+          alt: "description",
+        }
+      : null;
     // @ts-expect-error: overriding the leadingIcon to make it better UX in storybook
     return <TelegraphButton leadingIcon={formattedLeadingIcon} {...args} />;
   },
   args: {
-    leadingIcon: "informationCircleOutline",
+    leadingIcon: "Info",
   },
 };
 
 export const IconOnly: Story = {
   render: ({ leadingIcon, ...args }) => {
-    const formattedLeadingIcon = {
-      icon: icons[leadingIcon as keyof typeof icons],
-      alt: "description",
-    };
+    const formattedLeadingIcon = leadingIcon
+      ? {
+          icon: Icons[leadingIcon as keyof typeof Icons],
+          alt: "description",
+        }
+      : null;
     // @ts-expect-error: overriding the leadingIcon to make it better UX in storybook
     return <TelegraphButton icon={formattedLeadingIcon} {...args} />;
   },
   args: {
-    leadingIcon: "informationCircleOutline",
+    leadingIcon: "Info",
     children: null,
   },
 };
