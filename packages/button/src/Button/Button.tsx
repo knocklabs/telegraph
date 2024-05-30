@@ -155,7 +155,7 @@ const Text = React.forwardRef<TextRef, TextProps>(
     return (
       <TypographyText
         ref={forwardedRef}
-        className={clsx("no-underline", className)}
+        className={clsx("no-underline whitespace-nowrap", className)}
         data-button-text
         {...props}
         {...textProps}
