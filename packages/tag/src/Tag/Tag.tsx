@@ -130,13 +130,13 @@ const Default = React.forwardRef<DefaultRef, DefaultProps>(
         {icon && <Icon {...icon} />}
         <Text as="span">{children}</Text>
         {onRemove && (
-          <Button
-            onClick={onRemove}
-            icon={{ icon: Lucide.Copy, alt: "Copy Text" }}
-          />
+          <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
         )}
         {onCopy && (
-          <Button onClick={onCopy} icon={{ icon: Lucide.X, alt: "Remove" }} />
+          <Button
+            onClick={onCopy}
+            icon={{ icon: Lucide.Copy, alt: "Copy text" }}
+          />
         )}
       </Root>
     );
