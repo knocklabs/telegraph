@@ -1,5 +1,11 @@
 # @telegraph/tag
 
+## 0.0.13
+
+### Patch Changes
+
+- [`9d9d7d3`](https://github.com/knocklabs/telegraph/commit/9d9d7d36c2aa5ec887262fcef6be4c379b83d423) Thanks [@kylemcd](https://github.com/kylemcd)! - fix incorrect icons on tag actions
+
 ## 0.0.12
 
 ### Patch Changes
