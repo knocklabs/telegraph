@@ -1,5 +1,15 @@
 # @telegraph/input
 
+## 0.0.5
+
+### Patch Changes
+
+- [#92](https://github.com/knocklabs/telegraph/pull/92) [`efbea6a`](https://github.com/knocklabs/telegraph/commit/efbea6a62e1f783a6dc3d2799a0aaab1a34d5e90) Thanks [@kylemcd](https://github.com/kylemcd)! - Updates to support lucide icon
+
+- Updated dependencies []:
+  - @telegraph/compose-refs@0.0.1
+  - @telegraph/helpers@0.0.1
+
 ## 0.0.4
 
 ### Patch Changes
