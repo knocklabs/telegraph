@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.15
+
+### Patch Changes
+
+- [#94](https://github.com/knocklabs/telegraph/pull/94) [`492be94`](https://github.com/knocklabs/telegraph/commit/492be943f4b403e9d590449a3af60f3d495d1f46) Thanks [@connorlindsey](https://github.com/connorlindsey)! - fix: add whitespace-nowrap to default button text
+
 ## 0.0.14
 
 ### Patch Changes
