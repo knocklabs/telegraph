@@ -1,5 +1,14 @@
 # @telegraph/icon
 
+## 0.0.8
+
+### Patch Changes
+
+- [#92](https://github.com/knocklabs/telegraph/pull/92) [`efbea6a`](https://github.com/knocklabs/telegraph/commit/efbea6a62e1f783a6dc3d2799a0aaab1a34d5e90) Thanks [@kylemcd](https://github.com/kylemcd)! - Updates to support lucide icon
+
+- Updated dependencies []:
+  - @telegraph/layout@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes
