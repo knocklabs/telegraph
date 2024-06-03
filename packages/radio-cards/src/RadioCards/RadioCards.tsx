@@ -37,7 +37,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
   },
 );
 
-type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>
+type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>;
 type ItemRef = React.ElementRef<typeof RadioGroup.Item>;
 
 const Item = React.forwardRef<ItemRef, ItemProps>(

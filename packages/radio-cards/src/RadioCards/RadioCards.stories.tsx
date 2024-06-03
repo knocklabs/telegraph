@@ -14,7 +14,7 @@ type StorybookRadioCardsType = StoryObj<typeof TelegraphRadioCards>;
 
 export const RadioCards: StorybookRadioCardsType = {
   render: () => {
-      //eslint-disable-next-line
+    //eslint-disable-next-line
     const [value, setValue] = React.useState("1");
     return (
       <TelegraphRadioCards
