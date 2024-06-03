@@ -8,6 +8,7 @@
 @import "../packages/input/dist/css/default.css";
 @import "../packages/layout/dist/css/default.css";
 @import "../packages/modal/dist/css/default.css";
+@import "../packages/radio/dist/css/default.css";
 
 body {
   font-family: "Inter", sans-serif;
