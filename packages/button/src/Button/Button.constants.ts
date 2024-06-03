@@ -1,7 +1,7 @@
 export const buttonColorMap = {
   solid: {
     gray: "bg-gray-9 hover:bg-gray-10 focus:bg-gray-11 data-[tgph-button-active=true]:!bg-gray-11",
-    red: "bg-red-9 hover:bg-red-10 focus:bg-red-11 data-[data-tgph-button-active=true]:!bg-red-11",
+    red: "bg-red-9 hover:bg-red-10 focus:bg-red-11 data-[tgph-button-active=true]:!bg-red-11",
     accent:
       "bg-accent-9 hover:bg-accent-10 focus:bg-accent-11 data-[tgph-button-active=true]:!bg-accent-11",
     green:
