@@ -3879,7 +3879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-visually-hidden@npm:1.0.3":
+"@radix-ui/react-visually-hidden@npm:1.0.3, @radix-ui/react-visually-hidden@npm:^1.0.3":
   version: 1.0.3
   resolution: "@radix-ui/react-visually-hidden@npm:1.0.3"
   dependencies:
@@ -5145,7 +5145,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/modal@workspace:packages/modal":
+"@telegraph/modal@workspace:^, @telegraph/modal@workspace:packages/modal":
   version: 0.0.0-use.local
   resolution: "@telegraph/modal@workspace:packages/modal"
   dependencies:
@@ -5153,6 +5153,9 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-dialog": "npm:^1.0.5"
+    "@radix-ui/react-visually-hidden": "npm:^1.0.3"
+    "@telegraph/button": "workspace:^"
+    "@telegraph/icon": "workspace:^"
     "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
@@ -5195,6 +5198,7 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/input": "workspace:^"
     "@telegraph/layout": "workspace:^"
+    "@telegraph/modal": "workspace:^"
     "@telegraph/nextjs": "workspace:^"
     "@telegraph/tag": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"

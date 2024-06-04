@@ -7,6 +7,14 @@ export const BOX_PROPS = {
     rule: "width",
     type: "spacing",
   },
+  maxH: {
+    rule: "max-height",
+    type: "spacing",
+  },
+  maxW: {
+    rule: "max-width",
+    type: "spacing",
+  },
   p: {
     rule: "padding",
     type: "spacing",

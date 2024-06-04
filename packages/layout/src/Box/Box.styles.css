@@ -9,6 +9,8 @@
   border-style: solid;
   height: var(--tgph-height, auto);
   width: var(--tgph-width, auto);
+  max-width: var(--tgph-max-width, auto);
+  max-height: var(--tgph-max-height, auto);
 }
 
 .tgph-box {
@@ -20,6 +22,8 @@
   --tgph-border-color: var(--tgph-border-color);
   --tgph-height: var(--tgph-height);
   --tgph-width: var(--tgph-width);
+  --tgph-max-width: var(--tgph-max-width);
+  --tgph-max-height: var(--tgph-max-height);
 }
 
 @media (--tgph-breakpoint-md) {
@@ -32,6 +36,8 @@
     --tgph-border-color: var(--tgph-border-color-md);
     --tgph-height: var(--tgph-height-md);
     --tgph-width: var(--tgph-width-md);
+    --tgph-max-width: var(--tgph-max-width-md);
+    --tgph-max-height: var(--tgph-max-height-md);
   }
 }
 
@@ -45,6 +51,8 @@
     --tgph-border-color: var(--tgph-border-color-lg);
     --tgph-height: var(--tgph-height-lg);
     --tgph-width: var(--tgph-width-lg);
+    --tgph-max-width: var(--tgph-max-width-lg);
+    --tgph-max-height: var(--tgph-max-height-lg);
   }
 }
 
@@ -58,6 +66,8 @@
     --tgph-border-color: var(--tgph-border-color-xl);
     --tgph-height: var(--tgph-height-xl);
     --tgph-width: var(--tgph-width-xl);
+    --tgph-max-width: var(--tgph-max-width-xl);
+    --tgph-max-height: var(--tgph-max-height-xl);
   }
 }
 
@@ -71,5 +81,7 @@
     --tgph-border-color: var(--tgph-border-color-2xl);
     --tgph-height: var(--tgph-height-2xl);
     --tgph-width: var(--tgph-width-2xl);
+    --tgph-max-width: var(--tgph-max-width-2xl);
+    --tgph-max-height: var(--tgph-max-height-2xl);
   }
 }
