@@ -1,4 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { Button } from "@telegraph/button";
+import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,25 +12,41 @@ type RootProps = Omit<
   "modal"
 > &
   React.ComponentPropsWithoutRef<typeof Stack> & {
-    portal?: {
-      enabled?: boolean;
-      container?: HTMLElement;
-    };
+    a11yTitle: string;
+    a11yDescription?: string;
   };
 
-type RootRef = React.ElementRef<typeof Dialog.Content>;
+type RootRef = HTMLDivElement;
 
 const Root = React.forwardRef<RootRef, RootProps>(
   (
-    { portal = { enabled: true }, open, onOpenChange, className, ...props },
+    {
+      defaultOpen,
+      open,
+      onOpenChange,
+      a11yTitle,
+      a11yDescription,
+      className,
+      children,
+      ...props
+    },
     forwardedRef,
   ) => {
-    const Portal = portal.enabled ? Dialog.Portal : React.Fragment;
     return (
-      <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Root
+        open={open}
+        onOpenChange={onOpenChange}
+        defaultOpen={defaultOpen}
+      >
+        <VisuallyHidden.Root>
+          <Dialog.Title>{a11yTitle}</Dialog.Title>
+          {a11yDescription && (
+            <Dialog.Description>{a11yDescription}</Dialog.Description>
+          )}
+        </VisuallyHidden.Root>
         <AnimatePresence>
           {open && (
-            <Portal {...portal} forceMount>
+            <>
               <Dialog.Overlay asChild>
                 <Box
                   as={motion.div}
@@ -39,32 +58,30 @@ const Root = React.forwardRef<RootRef, RootProps>(
                   className="fixed inset-0 bg-alpha-black-4 z-overlay"
                 />
               </Dialog.Overlay>
-              <Dialog.Content
-                onEscapeKeyDown={() => onOpenChange?.(false)}
-                onPointerDownOutside={() => onOpenChange?.(false)}
+              <Stack
+                className={clsx(
+                  "absolute z-modal top-0 left-1/2 -translate-x-1/2",
+                  "max-h-[calc(100vh-var(--tgph-spacing-32))] shadow-1",
+                  className,
+                )}
+                direction="column"
+                as={motion.div}
+                my="16"
+                initial={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
+                animate={{ scale: 1, opacity: 1, y: 0, x: "-50%" }}
+                exit={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
+                transition={{ duration: 0.2, bounce: 0, type: "spring" }}
+                maxW={props.maxW ?? "140"}
+                w={props.w ?? "full"}
+                bg="surface-1"
+                border
+                rounded="4"
+                {...props}
                 ref={forwardedRef}
-                asChild
               >
-                <Stack
-                  className={clsx(
-                    "absolute z-modal top-0 left-1/2 transform -translate-x-1/2 max-h-[calc(100vh-var(--tgph-spacing-32))] shadow-1",
-                    className,
-                  )}
-                  direction="column"
-                  as={motion.div}
-                  bg="surface-1"
-                  rounded="4"
-                  my="16"
-                  initial={{ scale: 0.8, opacity: 0, y: -20 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  exit={{ scale: 0.8, opacity: 0, y: -20 }}
-                  transition={{ duration: 0.2, bounce: 0, type: "spring" }}
-                  border
-                >
-                  {props.children}
-                </Stack>
-              </Dialog.Content>
-            </Portal>
+                {children}
+              </Stack>
+            </>
           )}
         </AnimatePresence>
       </Dialog.Root>
@@ -72,31 +89,115 @@ const Root = React.forwardRef<RootRef, RootProps>(
   },
 );
 
-type ContentProps = React.ComponentProps<typeof Box>;
-type ContentRef = React.ElementRef<typeof Box>;
+type ContentProps = React.ComponentPropsWithoutRef<typeof Dialog.Content>;
+type ContentRef = React.ElementRef<typeof Dialog.Content>;
 
-const Content: React.FC<typeof Box> = React.forwardRef<
-  ContentRef,
-  ContentProps
->(({ p = "4", className, ...props }, forwardedRef) => {
-  return (
-    <Box
-      className={clsx(className, "overflow-y-auto")}
-      p={p}
-      {...props}
-      ref={forwardedRef}
-    />
-  );
-});
+const Content = React.forwardRef<ContentRef, ContentProps>(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <Dialog.Content ref={forwardedRef} {...props} asChild>
+        <Stack direction="column">{children}</Stack>
+      </Dialog.Content>
+    );
+  },
+);
+
+type CloseProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Dialog.Close>,
+  "color"
+> &
+  React.ComponentPropsWithoutRef<typeof Button>;
+type CloseRef = React.ElementRef<typeof Button>;
+
+const Close = React.forwardRef<CloseRef, CloseProps>(
+  ({ variant = "ghost", ...props }, forwardedRef) => {
+    return (
+      <Dialog.Close asChild>
+        <Button
+          icon={{ icon: Lucide.X, alt: "Close Modal" }}
+          variant={variant}
+          {...props}
+          ref={forwardedRef}
+        />
+      </Dialog.Close>
+    );
+  },
+);
+
+type BodyProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type BodyRef = React.ElementRef<typeof Stack>;
+
+const Body: React.FC<BodyProps> = React.forwardRef<BodyRef, BodyProps>(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <Stack direction="column" px="6" py="4" {...props} ref={forwardedRef}>
+        {children}
+      </Stack>
+    );
+  },
+);
+
+type HeaderProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type HeaderRef = React.ElementRef<typeof Stack>;
+
+const Header: React.FC<HeaderProps> = React.forwardRef<HeaderRef, HeaderProps>(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <Stack
+        direction="row"
+        justify="space-between"
+        align="center"
+        px="6"
+        py="4"
+        borderBottom
+        {...props}
+        ref={forwardedRef}
+      >
+        {children}
+      </Stack>
+    );
+  },
+);
+
+type FooterProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type FooterRef = React.ElementRef<typeof Stack>;
+
+const Footer: React.FC<FooterProps> = React.forwardRef<FooterRef, FooterProps>(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <Stack
+        direction="row"
+        align="center"
+        justify="end"
+        gap="2"
+        px="6"
+        py="4"
+        borderTop
+        {...props}
+        ref={forwardedRef}
+      >
+        {children}
+      </Stack>
+    );
+  },
+);
 
 const Modal = {} as {
   Root: typeof Root;
   Content: typeof Content;
+  Close: typeof Close;
+  Body: typeof Body;
+  Header: typeof Header;
+  Footer: typeof Footer;
 };
 
 Object.assign(Modal, {
   Root,
   Content,
+  Close,
+  Body,
+  Header,
+  Footer,
 });
 
 export { Modal };
