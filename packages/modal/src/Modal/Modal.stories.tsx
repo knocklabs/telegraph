@@ -1,4 +1,4 @@
-import type { Meta  } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import { Heading } from "@telegraph/typography";
 
