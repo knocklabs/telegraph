@@ -1,5 +1,16 @@
 # @telegraph/modal
 
+## 0.0.3
+
+### Patch Changes
+
+- [#98](https://github.com/knocklabs/telegraph/pull/98) [`1e06a4e`](https://github.com/knocklabs/telegraph/commit/1e06a4e505ec5a2d6bdebf3d6355fa9c7f8d12fa) Thanks [@kylemcd](https://github.com/kylemcd)! - updates to modal component for production use
+
+- Updated dependencies [[`1e06a4e`](https://github.com/knocklabs/telegraph/commit/1e06a4e505ec5a2d6bdebf3d6355fa9c7f8d12fa)]:
+  - @telegraph/layout@0.0.9
+  - @telegraph/icon@0.0.9
+  - @telegraph/button@0.0.16
+
 ## 0.0.2
 
 ### Patch Changes
