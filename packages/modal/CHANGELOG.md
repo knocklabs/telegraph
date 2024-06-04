@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.4
+
+### Patch Changes
+
+- [#100](https://github.com/knocklabs/telegraph/pull/100) [`3bd1027`](https://github.com/knocklabs/telegraph/commit/3bd102788a44385cd9c5804511bd1610f4f57b6a) Thanks [@kylemcd](https://github.com/kylemcd)! - update modal button sizes to match design system correctly
+
 ## 0.0.3
 
 ### Patch Changes
