@@ -110,12 +110,13 @@ type CloseProps = Omit<
 type CloseRef = React.ElementRef<typeof Button>;
 
 const Close = React.forwardRef<CloseRef, CloseProps>(
-  ({ variant = "ghost", ...props }, forwardedRef) => {
+  ({ size = "1", variant = "ghost", ...props }, forwardedRef) => {
     return (
       <Dialog.Close asChild>
         <Button
           icon={{ icon: Lucide.X, alt: "Close Modal" }}
           variant={variant}
+          size={size}
           {...props}
           ref={forwardedRef}
         />

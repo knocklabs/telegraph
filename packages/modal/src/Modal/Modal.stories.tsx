@@ -31,8 +31,12 @@ export const Modal: Story = {
             </TelegraphModal.Header>
             <TelegraphModal.Body>Modal body</TelegraphModal.Body>
             <TelegraphModal.Footer>
-              <Button variant="outline">Cancel</Button>
-              <Button color="accent">Save</Button>
+              <Button variant="outline" size="1">
+                Cancel
+              </Button>
+              <Button color="accent" size="1">
+                Save
+              </Button>
             </TelegraphModal.Footer>
           </TelegraphModal.Content>
         </TelegraphModal.Root>
