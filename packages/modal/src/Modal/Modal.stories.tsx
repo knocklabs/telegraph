@@ -1,18 +1,26 @@
-import type { Meta } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
+import React from "react";
 import { Heading } from "@telegraph/typography";
 
 import { Modal as TelegraphModal } from "./Modal";
 
-const meta: Meta<typeof TelegraphModal> = {
+const meta: Meta<typeof TelegraphModal.Root> = {
   title: "Components/Modal",
-  // component: TelegraphModal,
+  component: TelegraphModal.Root,
 };
+
 export default meta;
 
-export const Modal = {
-  render: () => (
-    <TelegraphModal.Root open={true}>
+type Story = StoryObj<typeof TelegraphModal.Root>;
+
+export const Modal: Story = {
+  render: () => {
+      const [open, setOpen] = React.useState(true)
+      return(
+      <>
+      <Button onClick={() => setOpen(true)}>Open Modal</Button>
+    <TelegraphModal.Root open={open} onOpenChange={setOpen}>
       <TelegraphModal.Content>
         <TelegraphModal.Header>
           <Heading as="h2" size="3">
@@ -27,5 +35,7 @@ export const Modal = {
         </TelegraphModal.Footer>
       </TelegraphModal.Content>
     </TelegraphModal.Root>
-  ),
+    </>
+    )
+  },
 };
