@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.5
+
+### Patch Changes
+
+- [`eef3c48`](https://github.com/knocklabs/telegraph/commit/eef3c48dccd0ebcbe00227639216ceabb7424830) Thanks [@kylemcd](https://github.com/kylemcd)! - make modal fixed position instead of absolute
+
 ## 0.0.4
 
 ### Patch Changes
