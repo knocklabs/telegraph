@@ -5228,7 +5228,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5249,7 +5249,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -5269,7 +5269,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -5295,7 +5295,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5323,7 +5323,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5351,7 +5351,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5382,7 +5382,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5400,7 +5400,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^8.56.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
   languageName: unknown
   linkType: soft
 
@@ -5458,7 +5458,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5487,7 +5487,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -5507,7 +5507,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
   languageName: unknown
   linkType: soft
 
@@ -5522,7 +5522,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     lightningcss: "npm:^1.23.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
   languageName: unknown
   linkType: soft
 
@@ -5543,7 +5543,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.7"
+    vite: "npm:^5.2.12"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -16468,46 +16468,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10c0/b935527544741d9313143a77f811d97b8b094757e42f9c02b7aca6294a4912674dbad5379e4759629b6ba895c93b5020cc7594f74b37846715336837fdce850a
-  languageName: node
-  linkType: hard
-
-"vite@npm:^5.1.7":
-  version: 5.2.11
-  resolution: "vite@npm:5.2.11"
-  dependencies:
-    esbuild: "npm:^0.20.1"
-    fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.38"
-    rollup: "npm:^4.13.0"
-  peerDependencies:
-    "@types/node": ^18.0.0 || >=20.0.0
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10c0/664b8d68e4f5152ae16bd2041af1bbaf11c43630ac461835bc31ff7d019913b33e465386e09f66dc1037d7aeefbb06939e0173787c063319bc2bd30c3b9ad8e4
   languageName: node
   linkType: hard
 
