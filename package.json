@@ -15,8 +15,6 @@
     "dev:packages": "turbo dev --filter=\"./packages/*\" --concurrency=100",
     "build:packages": "turbo build --filter=\"./packages/*\" --filter=\"!config\"",
     "build:config": "turbo build --filter=\"./packages/*-config\"",
-    "dev:examples": "turbo dev:examples --filter=\"./examples/*\"",
-    "build:examples": "turbo build:examples --filter=\"./examples/*\"",
     "test": "turbo test --filter=\"./packages/*\"",
     "test:watch": "turbo test:watch --filter=\"./packages/*\"",
     "coverage": "turbo coverage --filter=\"./packages/*\"",
@@ -31,8 +29,7 @@
     "prepare": "husky"
   },
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "manypkg": {
     "defaultBranch": "main",
