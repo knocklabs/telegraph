@@ -1,3 +1,4 @@
+import { borderStyle } from "./tokens/border-style";
 import { breakpoint } from "./tokens/breakpoint";
 import { color } from "./tokens/color";
 import { family } from "./tokens/family";
@@ -10,9 +11,9 @@ import { tracking } from "./tokens/tracking";
 import { weight } from "./tokens/weight";
 import { zIndex } from "./tokens/zIndex";
 
-
 export default {
   tokens: {
+    "border-style": borderStyle,
     color,
     rounded,
     shadow,

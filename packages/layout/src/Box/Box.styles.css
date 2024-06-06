@@ -11,6 +11,7 @@
   width: var(--tgph-width, auto);
   max-width: var(--tgph-max-width, auto);
   max-height: var(--tgph-max-height, auto);
+  border-style: var(--tgph-border-style, var(--tgph-border-style-solid, solid));
 }
 
 .tgph-box {
@@ -24,6 +25,7 @@
   --tgph-width: var(--tgph-width);
   --tgph-max-width: var(--tgph-max-width);
   --tgph-max-height: var(--tgph-max-height);
+  --tgph-border-style: var(--tgph-border-style);
 }
 
 @media (--tgph-breakpoint-md) {
@@ -38,6 +40,7 @@
     --tgph-width: var(--tgph-width-md);
     --tgph-max-width: var(--tgph-max-width-md);
     --tgph-max-height: var(--tgph-max-height-md);
+    --tgph-border-style: var(--tgph-border-style-md);
   }
 }
 
@@ -53,6 +56,7 @@
     --tgph-width: var(--tgph-width-lg);
     --tgph-max-width: var(--tgph-max-width-lg);
     --tgph-max-height: var(--tgph-max-height-lg);
+    --tgph-border-style: var(--tgph-border-style-lg);
   }
 }
 
@@ -68,6 +72,7 @@
     --tgph-width: var(--tgph-width-xl);
     --tgph-max-width: var(--tgph-max-width-xl);
     --tgph-max-height: var(--tgph-max-height-xl);
+    --tgph-border-style: var(--tgph-border-style-xl);
   }
 }
 
@@ -83,5 +88,6 @@
     --tgph-width: var(--tgph-width-2xl);
     --tgph-max-width: var(--tgph-max-width-2xl);
     --tgph-max-height: var(--tgph-max-height-2xl);
+    --tgph-border-style: var(--tgph-border-style-2xl);
   }
 }
