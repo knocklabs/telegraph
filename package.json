@@ -12,7 +12,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "dev:packages": "turbo dev --filter=\"./packages/*\" --concurrency=100%",
+    "dev:packages": "turbo dev --filter=\"./packages/*\" --concurrency=100",
     "build:packages": "turbo build --filter=\"./packages/*\" --filter=\"!config\"",
     "build:config": "turbo build --filter=\"./packages/*-config\"",
     "dev:examples": "turbo dev:examples --filter=\"./examples/*\"",

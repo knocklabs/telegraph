@@ -66,7 +66,8 @@ export const Default: Story = {
       LeadingComponent={
         LeadingComponent && (
           <Icon
-            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            // @ts-expect-error: For the sake of the example, we are assuming that the icon is a valid key
+            icon={Icons[LeadingComponent]}
             alt="alt"
           />
         )
@@ -74,7 +75,8 @@ export const Default: Story = {
       TrailingComponent={
         TrailingComponent && (
           <Icon
-            icon={Icons[TrailingComponent as keyof typeof Icons]}
+            // @ts-expect-error: For the sake of the example, we are assuming that the icon is a valid key
+            icon={Icons[TrailingComponent]}
             alt="alt"
           />
         )
@@ -94,7 +96,8 @@ export const LeadingIcon: Story = {
       LeadingComponent={
         LeadingComponent && (
           <Icon
-            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            // @ts-expect-error: For the sake of the example, we are assuming that the icon is a valid key
+            icon={Icons[LeadingComponent]}
             alt="alt"
           />
         )
@@ -114,7 +117,8 @@ export const TrailingAction: Story = {
       LeadingComponent={
         LeadingComponent && (
           <Icon
-            icon={Icons[LeadingComponent as keyof typeof Icons]}
+            // @ts-expect-error: For the sake of the example, we are assuming that the icon is a valid key
+            icon={Icons[LeadingComponent]}
             alt="alt"
           />
         )
@@ -124,7 +128,8 @@ export const TrailingAction: Story = {
           <Button
             variant="ghost"
             icon={{
-              icon: Icons[TrailingComponent as keyof typeof Icons],
+              // @ts-expect-error: For the sake of the example, we are assuming that the icon is a valid key
+              icon: Icons[TrailingComponent],
               alt: "create",
             }}
           />

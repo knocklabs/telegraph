@@ -63,7 +63,13 @@ const Root = React.forwardRef(
     const layout = React.useMemo<InternalProps["layout"]>(() => {
       const children = React.Children.toArray(props?.children);
       if (children?.length === 1 && React.isValidElement(children[0])) {
-        const child = children[0] as React.ReactComponentElement<typeof Icon>;
+        const child = children[0] as
+          | React.ReactComponentElement<typeof Icon>
+          | {
+              props: {
+                icon: undefined;
+              };
+            };
         if (child?.props?.icon) {
           return "icon-only";
         }

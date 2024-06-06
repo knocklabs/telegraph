@@ -88,7 +88,7 @@ export const Default: Story = {
         : null,
       ...args,
     };
-    console.log(mergedProps);
+    // @ts-expect-error: just for an example
     return <TelegraphButton {...mergedProps} />;
   },
   args: {
