@@ -5275,9 +5275,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/radio-cards@workspace:packages/radio-cards":
+"@telegraph/radio@workspace:packages/radio":
   version: 0.0.0-use.local
-  resolution: "@telegraph/radio-cards@workspace:packages/radio-cards"
+  resolution: "@telegraph/radio@workspace:packages/radio"
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/prettier-config": "npm:^0.0.1"

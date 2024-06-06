@@ -1,7 +1,7 @@
 {
-  "name": "@telegraph/radio-cards",
+  "name": "@telegraph/radio",
   "version": "0.0.0",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/radio-cards",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/radio",
   "author": "@knocklabs",
   "license": "MIT",
   "main": "dist/cjs/index.js",

@@ -1,14 +1,10 @@
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { Button } from "@telegraph/button";
-import type { Bell } from "@telegraph/icon";
+import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
 
-type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> & {
-  onChange?: React.ComponentPropsWithoutRef<
-    typeof RadioGroup.Root
-  >["onValueChange"];
-};
+type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root>;
 type RootRef = React.ElementRef<typeof RadioGroup.Root>;
 
 type RadioButtonInternalContext = {
@@ -20,12 +16,12 @@ const RadioButtonContext = React.createContext<RadioButtonInternalContext>({
 });
 
 const Root = React.forwardRef<RootRef, RootProps>(
-  ({ value, children, onChange, ...props }, forwardedRef) => {
+  ({ value, children, onValueChange, ...props }, forwardedRef) => {
     return (
       <RadioButtonContext.Provider value={{ value }}>
         <RadioGroup.Root
           value={value}
-          onValueChange={onChange}
+          onValueChange={onValueChange}
           asChild
           {...props}
           ref={forwardedRef}
@@ -66,8 +62,10 @@ type ItemTitleProps = Omit<
 type ItemTitleRef = React.ElementRef<typeof Button.Text>;
 
 const ItemTitle = React.forwardRef<ItemTitleRef, ItemTitleProps>(
-  ({ as = "span", size = "2", ...props }, forwardedRef) => {
-    return <Button.Text as={as} size={size} {...props} ref={forwardedRef} />;
+  ({ size = "2", ...props }, forwardedRef) => {
+    return (
+      <Button.Text as={"span"} size={size} {...props} ref={forwardedRef} />
+    );
   },
 );
 
@@ -80,8 +78,8 @@ type ItemDescriptionRef = React.ElementRef<typeof Button.Text>;
 const ItemDescription = React.forwardRef<
   ItemDescriptionRef,
   ItemDescriptionProps
->(({ as = "span", size = "0", ...props }, forwardedRef) => {
-  return <Button.Text as={as} size={size} {...props} ref={forwardedRef} />;
+>(({ size = "0", ...props }, forwardedRef) => {
+  return <Button.Text as={"span"} size={size} {...props} ref={forwardedRef} />;
 });
 
 type ItemIconProps = React.ComponentPropsWithoutRef<typeof Button.Icon>;
@@ -93,12 +91,14 @@ const ItemIcon = React.forwardRef<ItemIconRef, ItemIconProps>(
   },
 );
 
+type DefaultIconProps = React.ComponentProps<typeof Icon>;
+
 type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
   options: Array<
     {
       title?: string;
       description?: string;
-      icon?: typeof Bell;
+      icon?: DefaultIconProps;
     } & React.ComponentPropsWithoutRef<typeof Item>
   >;
 };

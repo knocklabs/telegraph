@@ -19,7 +19,7 @@ export const RadioCards: StorybookRadioCardsType = {
     return (
       <TelegraphRadioCards
         value={value}
-        onChange={setValue}
+        onValueChange={(value) => setValue(value)}
         options={[
           {
             icon: { icon: Lucide.Bell, alt: "Bell" },
