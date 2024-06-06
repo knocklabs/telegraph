@@ -1,5 +1,14 @@
 # @telegraph/layout
 
+## 0.0.10
+
+### Patch Changes
+
+- [#111](https://github.com/knocklabs/telegraph/pull/111) [`aa7b43d`](https://github.com/knocklabs/telegraph/commit/aa7b43d6a43aadab268abb2d93c67ad2c9dd981a) Thanks [@kylemcd](https://github.com/kylemcd)! - add border style to tokens and support to layout components
+
+- Updated dependencies [[`aa7b43d`](https://github.com/knocklabs/telegraph/commit/aa7b43d6a43aadab268abb2d93c67ad2c9dd981a)]:
+  - @telegraph/tokens@0.0.11
+
 ## 0.0.9
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @telegraph/icon
 
+## 0.0.10
+
+### Patch Changes
+
+- [#109](https://github.com/knocklabs/telegraph/pull/109) [`a93cecc`](https://github.com/knocklabs/telegraph/commit/a93cecce8fd3723759c340812bbd2fd71aa57644) Thanks [@kylemcd](https://github.com/kylemcd)! - When aria-hidden prop is preset on `<Icon/>`, alt prop is optional
+
+- Updated dependencies [[`aa7b43d`](https://github.com/knocklabs/telegraph/commit/aa7b43d6a43aadab268abb2d93c67ad2c9dd981a)]:
+  - @telegraph/layout@0.0.10
+
 ## 0.0.9
 
 ### Patch Changes
