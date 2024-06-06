@@ -189,4 +189,9 @@ export const BOX_PROPS = {
     type: "color",
     default: "gray-4",
   },
+  borderStyle: {
+    rule: "border-style",
+    type: "border-style",
+    default: "solid",
+  },
 } as const;
