@@ -1,8 +1,11 @@
-const { argv } = require("node:process");
-const { parse, format, normalize } = require("node:path");
-const path = require("node:path");
-const { writeFile, mkdir } = require("node:fs/promises");
-const { transform } = require("lightningcss");
+import { transform } from "lightningcss";
+import { mkdir, writeFile } from "node:fs/promises";
+import { format, normalize } from "node:path";
+import path from "node:path";
+
+import { loadModule } from "./helpers";
+
+// const { argv } = require("node:process");
 
 // Constant for the prefix used in CSS variables
 const TELEGRAPH_VARIABLE_PREFIX = "tgph";
@@ -108,11 +111,11 @@ const saveTokens = async (name, tokens) => {
  * Main function to read design tokens from a file, convert them to CSS,
  * and save the resulting CSS in different themes (default, light, dark).
  */
-const main = async () => {
+const main = async (funcArgs) => {
   try {
-    const args = argv.slice(2);
-    const tokensPath = format({ root: "./", base: normalize(args[0]) });
-    const tgph = require(tokensPath);
+    const path = funcArgs?.tokensPath;
+    const tokensPath = format({ root: "./", base: normalize(path) });
+    const tgph = await loadModule(tokensPath);
 
     const [tokens, lightTokens, darkTokens] = tokensToCss(
       tgph.tokens,
@@ -137,4 +140,4 @@ const main = async () => {
   }
 };
 
-main();
+export default main;

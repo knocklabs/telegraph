@@ -1,7 +1,8 @@
-const { argv } = require("node:process"); // For accessing command line arguments
-const { format, normalize } = require("node:path"); // For path manipulation
-const path = require("node:path"); // For path operations
-const { writeFile, mkdir } = require("node:fs/promises"); // For file system operations (async)
+import { mkdir, writeFile } from "node:fs/promises";
+import { format, normalize } from "node:path";
+import path from "node:path";
+
+import { loadModule } from "./helpers";
 
 // Constant for the prefix used in CSS variables
 const TELEGRAPH_VARIABLE_PREFIX = "tgph";
@@ -54,7 +55,6 @@ const mapCssVarToClassName = (obj, prefix, includeVariableNamePrefix) => {
 };
 
 const flattenTokens = (obj) => {
-
   // Helper function to recursively traverse the object
   function traverseObject(obj, path = [], result = {}) {
     for (const key in obj) {
@@ -78,19 +78,19 @@ const flattenTokens = (obj) => {
           // Construct variable name and CSS variable
           const cssVar = `var(--${TELEGRAPH_VARIABLE_PREFIX}-${filteredPath})`;
 
-          result[filteredPath] = cssVar
+          result[filteredPath] = cssVar;
         }
       }
     }
 
-      return result
+    return result;
   }
 
   const result = {};
 
   Object.keys(obj).forEach((key) => {
-      result[key] = traverseObject(obj[key], [key])
-  })
+    result[key] = traverseObject(obj[key], [key]);
+  });
 
   return result;
 };
@@ -120,12 +120,14 @@ const saveMapping = async (name, tokens) => {
  * The main function that orchestrates reading command line arguments,
  * processing tokens, and saving mappings.
  */
-const main = async () => {
+const main = async (funcArgs) => {
   try {
-    // Process command line arguments
-    const args = argv.slice(2);
-    const tokensPath = format({ root: "./", base: normalize(args[0]) });
-    const tgph = require(tokensPath);
+    const path = funcArgs?.tokensPath;
+    const tokensPath = format({
+      root: "./",
+      base: normalize(path),
+    });
+    const tgph = await loadModule(tokensPath);
 
     // Generate mappings for tokens
     const tokens = Object.assign(
@@ -154,4 +156,4 @@ const main = async () => {
   }
 };
 
-main();
+export default main;
