@@ -75,6 +75,7 @@ export default {
   plugins: [
     dts({
       include: ["src/**/*"],
+      exclude: ["src/**/*.stories.tsx"],
       outDir: "dist/types",
     }),
     react(),
