@@ -8,11 +8,19 @@ import { colorMap, sizeMap } from "./Icon.constants";
 
 type BaseIconProps = {
   icon: typeof Bell;
-  alt: string;
   size?: keyof (typeof sizeMap)["box"];
   variant?: keyof typeof colorMap;
   color?: keyof (typeof colorMap)["primary"];
-};
+} & (
+  | {
+      alt: string;
+      ["aria-hidden"]?: boolean;
+    }
+  | {
+      alt?: string;
+      ["aria-hidden"]: true;
+    }
+);
 
 type IconProps = BaseIconProps & React.HTMLAttributes<HTMLDivElement>;
 
