@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
-@import "../packages/tokens/dist/css/light.css";
+@import "../packages/tokens/dist/css/default.css";
 @import "../packages/typography/dist/css/default.css";
 @import "../packages/button/dist/css/default.css";
 @import "../packages/icon/dist/css/default.css";
@@ -12,4 +12,6 @@
 
 body {
   font-family: "Inter", sans-serif;
+  background-color: var(--tgph-surface-1);
+  color: var(--tgph-gray-12);
 }
