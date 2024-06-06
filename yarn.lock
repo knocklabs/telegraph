@@ -3115,6 +3115,7 @@ __metadata:
     "@commitlint/cli": "npm:^18.6.0"
     "@commitlint/config-conventional": "npm:^18.6.0"
     "@manypkg/cli": "npm:^0.21.2"
+    "@moonrepo/cli": "npm:^1.25.2"
     "@storybook/addon-essentials": "npm:^7.6.17"
     "@storybook/addon-interactions": "npm:^7.6.17"
     "@storybook/addon-links": "npm:^7.6.17"
@@ -3288,6 +3289,88 @@ __metadata:
   version: 0.14.2
   resolution: "@microsoft/tsdoc@npm:0.14.2"
   checksum: 10c0/c018857ad439144559ce34a397a29ace7cf5b24b999b8e3c1b88d878338088b3a453eaac4435beaf2c7eae13c4c0aac81e42f96f0f1d48e8d4eeb438eb3bb82f
+  languageName: node
+  linkType: hard
+
+"@moonrepo/cli@npm:^1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/cli@npm:1.25.2"
+  dependencies:
+    "@moonrepo/core-linux-arm64-gnu": "npm:1.25.2"
+    "@moonrepo/core-linux-arm64-musl": "npm:1.25.2"
+    "@moonrepo/core-linux-x64-gnu": "npm:1.25.2"
+    "@moonrepo/core-linux-x64-musl": "npm:1.25.2"
+    "@moonrepo/core-macos-arm64": "npm:1.25.2"
+    "@moonrepo/core-macos-x64": "npm:1.25.2"
+    "@moonrepo/core-windows-x64-msvc": "npm:1.25.2"
+    detect-libc: "npm:^2.0.3"
+  dependenciesMeta:
+    "@moonrepo/core-linux-arm64-gnu":
+      optional: true
+    "@moonrepo/core-linux-arm64-musl":
+      optional: true
+    "@moonrepo/core-linux-x64-gnu":
+      optional: true
+    "@moonrepo/core-linux-x64-musl":
+      optional: true
+    "@moonrepo/core-macos-arm64":
+      optional: true
+    "@moonrepo/core-macos-x64":
+      optional: true
+    "@moonrepo/core-windows-x64-msvc":
+      optional: true
+  bin:
+    moon: moon.js
+  checksum: 10c0/88c1531c4d6287e9d53b8f55ac6449f6cfc349bff91dbc9d443e2b0beedb69f5fdd825cf3403cbe03d205dd04f982efe986af93a48045dce50752ff3caa6846c
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-linux-arm64-gnu@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-linux-arm64-gnu@npm:1.25.2"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-linux-arm64-musl@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-linux-arm64-musl@npm:1.25.2"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-linux-x64-gnu@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-linux-x64-gnu@npm:1.25.2"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-linux-x64-musl@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-linux-x64-musl@npm:1.25.2"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-macos-arm64@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-macos-arm64@npm:1.25.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-macos-x64@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-macos-x64@npm:1.25.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-windows-x64-msvc@npm:1.25.2":
+  version: 1.25.2
+  resolution: "@moonrepo/core-windows-x64-msvc@npm:1.25.2"
+  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -8424,6 +8507,13 @@ __metadata:
   bin:
     detect-libc: ./bin/detect-libc.js
   checksum: 10c0/4da0deae9f69e13bc37a0902d78bf7169480004b1fed3c19722d56cff578d16f0e11633b7fbf5fb6249181236c72e90024cbd68f0b9558ae06e281f47326d50d
+  languageName: node
+  linkType: hard
+
+"detect-libc@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "detect-libc@npm:2.0.3"
+  checksum: 10c0/88095bda8f90220c95f162bf92cad70bd0e424913e655c20578600e35b91edc261af27531cf160a331e185c0ced93944bc7e09939143225f56312d7fd800fdb7
   languageName: node
   linkType: hard
 
