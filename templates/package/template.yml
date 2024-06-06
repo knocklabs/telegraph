@@ -1,0 +1,11 @@
+title: 'package'
+description: Scaffolds the initial structure of a new package
+variables:
+  package_name:
+    type: 'string'
+    required: true
+    prompt: "Package name: @telegraph/"
+  package_description:
+    type: 'string'
+    required: false
+    prompt: "A short description of the package"
