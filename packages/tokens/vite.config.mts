@@ -1,4 +1,24 @@
 import { viteConfig } from "@telegraph/vite-config";
-import { defineConfig } from "vite";
+import { mergeConfig } from "vite";
 
-export default defineConfig(viteConfig);
+import generateCssVarMap from "./scripts/generate-css-var-map";
+import generateCssFile from "./scripts/generate-css-file";
+
+export default mergeConfig(viteConfig, {
+  plugins: [
+    {
+      name: "postbuild",
+      enforce: "post",
+
+      closeBundle: async () => {
+          const tokensPath = "./dist/cjs/index.js";
+        await generateCssVarMap({
+          tokensPath
+        });
+        await generateCssFile({
+          tokensPath
+        });
+      },
+    },
+  ],
+});
