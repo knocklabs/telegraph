@@ -1,4 +1,4 @@
 // Post CSS Config that Storybook uses
-export default {
+module.exports = {
   plugins: [require("postcss-import-ext-glob"), require("postcss-import")],
 };
