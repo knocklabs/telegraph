@@ -4,7 +4,8 @@ export default {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "storybook-addon-render-modes",
+    "@storybook/addon-postcss",
+    "storybook-addon-render-modes"
   ],
   core: {
     builder: "@storybook/builder-vite", // 👈 The builder enabled here.
