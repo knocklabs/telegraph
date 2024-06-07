@@ -10,7 +10,7 @@ import { propsToCssVariables } from "../helpers/css-variables";
 
 import { STACK_PROPS } from "./Stack.constants";
 
-type StackProps = React.ComponentPropsWithoutRef<typeof Box> & {
+type StackProps = React.ComponentProps<typeof Box> & {
   gap?: Responsive<`${keyof typeof t.tokens.spacing}`>;
   display?: Responsive<"flex" | "inline-flex">;
   align?: Responsive<React.CSSProperties["alignItems"]>;
