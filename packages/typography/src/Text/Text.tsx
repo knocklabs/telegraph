@@ -2,7 +2,6 @@ import type {
   ComponentPropsWithRequiredAs,
   PropsWithRequiredAs,
   RefWithAs,
-
 } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
 import clsx from "clsx";

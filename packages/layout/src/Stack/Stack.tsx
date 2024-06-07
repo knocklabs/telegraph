@@ -1,5 +1,9 @@
 import { useComposedRefs } from "@telegraph/compose-refs";
-import type { PropsWithAs, ComponentPropsWithAs, RefWithAs } from "@telegraph/helpers";
+import type {
+  ComponentPropsWithAs,
+  PropsWithAs,
+  RefWithAs,
+} from "@telegraph/helpers";
 import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
@@ -10,14 +14,17 @@ import { propsToCssVariables } from "../helpers/css-variables";
 
 import { STACK_PROPS } from "./Stack.constants";
 
-type StackProps = ComponentPropsWithAs<typeof Box, {
-  gap?: Responsive<`${keyof typeof t.tokens.spacing}`>;
-  display?: Responsive<"flex" | "inline-flex">;
-  align?: Responsive<React.CSSProperties["alignItems"]>;
-  direction?: Responsive<React.CSSProperties["flexDirection"]>;
-  justify?: Responsive<React.CSSProperties["justifyContent"]>;
-  wrap?: Responsive<React.CSSProperties["flexWrap"]>;
-}>
+type StackProps = ComponentPropsWithAs<
+  typeof Box,
+  {
+    gap?: Responsive<`${keyof typeof t.tokens.spacing}`>;
+    display?: Responsive<"flex" | "inline-flex">;
+    align?: Responsive<React.CSSProperties["alignItems"]>;
+    direction?: Responsive<React.CSSProperties["flexDirection"]>;
+    justify?: Responsive<React.CSSProperties["justifyContent"]>;
+    wrap?: Responsive<React.CSSProperties["flexWrap"]>;
+  }
+>;
 
 type StackRef = RefWithAs<typeof Box>;
 

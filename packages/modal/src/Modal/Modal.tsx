@@ -107,7 +107,6 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
   },
 );
 
-
 type CloseProps = Omit<ComponentPropsWithAs<typeof Button>, "icon"> & {
   icon?: ComponentPropsWithAs<typeof Lucide.X>["icon"];
 };

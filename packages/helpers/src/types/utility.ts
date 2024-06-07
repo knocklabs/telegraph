@@ -59,4 +59,3 @@ export type ComponentPropsWithRequiredAs<
 //  component type `P` by using `React.ElementRef`. This ensures the ref type
 // is correctly associated with the component's underlying element type.
 export type RefWithAs<P extends React.ElementType> = React.ElementRef<P>;
-

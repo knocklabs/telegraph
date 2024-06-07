@@ -59,7 +59,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
   props: PropsWithAs<T, RootProps> & { ref?: RootRef },
 ) => React.ReactElement;
 
-type TextProps = Omit<ComponentPropsWithAs<typeof TelegraphText>, 'as'> & {
+type TextProps = Omit<ComponentPropsWithAs<typeof TelegraphText>, "as"> & {
   as?: React.ElementType;
 };
 type TextRef = RefWithAs<typeof TelegraphText>;
@@ -211,13 +211,13 @@ type DefaultProps = ComponentPropsWithAs<
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
-      onCopy: () => void;
-      textToCopy?: string;
-    }
+        onCopy: () => void;
+        textToCopy?: string;
+      }
     | {
-      onCopy?: never;
-      textToCopy?: never;
-    }
+        onCopy?: never;
+        textToCopy?: never;
+      }
   )
 >;
 
@@ -268,6 +268,5 @@ const Tag = Default as typeof Default & {
   Icon: typeof Icon;
   CopyButton: typeof CopyButton;
 };
-
 
 export { Tag };
