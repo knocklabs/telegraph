@@ -21,7 +21,7 @@
     "@csstools/postcss-global-data": "^2.1.1",
     "@telegraph/tokens": "workspace:^",
     "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.33",
+    "postcss": "^8.4.36",
     "postcss-combine-duplicated-selectors": "^10.0.3",
     "postcss-custom-media": "^10.0.3",
     "postcss-discard-empty": "^6.0.1",
