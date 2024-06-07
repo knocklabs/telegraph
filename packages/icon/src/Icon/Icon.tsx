@@ -1,3 +1,8 @@
+import type {
+  ComponentPropsWithAs,
+  PropsWithAs,
+  RefWithAs,
+} from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
 import clsx from "clsx";
 // We use "Bell" in place of any icon so we get correct type checking
@@ -22,9 +27,8 @@ type BaseIconProps = {
     }
 );
 
-type IconProps = BaseIconProps & React.HTMLAttributes<HTMLDivElement>;
-
-type IconRef = SVGSVGElement;
+type IconProps = ComponentPropsWithAs<typeof Box, BaseIconProps>;
+type IconRef = RefWithAs<typeof Bell>;
 
 const Icon = React.forwardRef<IconRef, IconProps>(
   (
@@ -71,6 +75,8 @@ const Icon = React.forwardRef<IconRef, IconProps>(
       </Box>
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, IconProps>,
+) => React.ReactElement;
 
 export { Icon };

@@ -1,5 +1,10 @@
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { Button } from "@telegraph/button";
+import type {
+  ComponentPropsWithAs,
+  PropsWithAs,
+  RefWithAs,
+} from "@telegraph/helpers";
 import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
@@ -55,11 +60,8 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
   },
 );
 
-type ItemTitleProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Button.Text>,
-  "as"
->;
-type ItemTitleRef = React.ElementRef<typeof Button.Text>;
+type ItemTitleProps = ComponentPropsWithAs<typeof Button.Text>;
+type ItemTitleRef = RefWithAs<typeof Button.Text>;
 
 const ItemTitle = React.forwardRef<ItemTitleRef, ItemTitleProps>(
   ({ size = "2", ...props }, forwardedRef) => {
@@ -67,31 +69,34 @@ const ItemTitle = React.forwardRef<ItemTitleRef, ItemTitleProps>(
       <Button.Text as={"span"} size={size} {...props} ref={forwardedRef} />
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, ItemTitleProps> & { ref?: ItemTitleRef },
+) => React.ReactElement;
 
-type ItemDescriptionProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Button.Text>,
-  "as"
->;
-type ItemDescriptionRef = React.ElementRef<typeof Button.Text>;
+type ItemDescriptionProps = ComponentPropsWithAs<typeof Button.Text>;
+type ItemDescriptionRef = RefWithAs<typeof Button.Text>;
 
 const ItemDescription = React.forwardRef<
   ItemDescriptionRef,
   ItemDescriptionProps
 >(({ size = "0", ...props }, forwardedRef) => {
   return <Button.Text as={"span"} size={size} {...props} ref={forwardedRef} />;
-});
+}) as <T extends React.ElementType>(
+  props: PropsWithAs<T, ItemDescriptionProps> & { ref?: ItemDescriptionRef },
+) => React.ReactElement;
 
-type ItemIconProps = React.ComponentPropsWithoutRef<typeof Button.Icon>;
-type ItemIconRef = React.ElementRef<typeof Button.Icon>;
+type ItemIconProps = ComponentPropsWithAs<typeof Button.Icon>;
+type ItemIconRef = RefWithAs<typeof Button.Icon>;
 
 const ItemIcon = React.forwardRef<ItemIconRef, ItemIconProps>(
   (props, forwardedRef) => {
     return <Button.Icon {...props} ref={forwardedRef} />;
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, ItemIconProps> & { ref?: ItemIconRef },
+) => React.ReactElement;
 
-type DefaultIconProps = React.ComponentProps<typeof Icon>;
+type DefaultIconProps = ComponentPropsWithAs<typeof Icon>;
 
 type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
   options: Array<
@@ -142,5 +147,6 @@ const RadioCards = Default as typeof Default & {
   ItemDescription: typeof ItemDescription;
   ItemIcon: typeof ItemIcon;
 };
+
 
 export { RadioCards };

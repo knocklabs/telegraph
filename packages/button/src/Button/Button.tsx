@@ -1,4 +1,9 @@
-import type { Optional, PropsWithAs, Required } from "@telegraph/helpers";
+import type {
+  ComponentPropsWithAs,
+  PropsWithAs,
+  RefWithAs,
+  Required,
+} from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Text as TypographyText } from "@telegraph/typography";
 import clsx from "clsx";
@@ -101,26 +106,15 @@ const Root = React.forwardRef(
       </ButtonContext.Provider>
     );
   },
-  // In order to use generics with forwardRef, you need to recast,
-  // see source: https://fettblog.eu/typescript-react-generic-forward-refs/
 ) as <T extends React.ElementType>(
-  props: PropsWithAs<T, RootProps> & { ref?: RootRef },
+  props: PropsWithAs<T, RootProps>,
 ) => React.ReactElement;
 
-type IconProps = React.ComponentProps<typeof TelegraphIcon>;
+type IconProps = ComponentPropsWithAs<typeof TelegraphIcon>;
+type IconRef = RefWithAs<typeof TelegraphIcon>;
 
-type IconRef = React.ElementRef<typeof TelegraphIcon>;
-
-// Need to expilictly define the Icon type to avoid portable reference
-// error when using the Icon component in the Button component. Should
-// look for an alternative solution to avoid this error and remove the
-// explicit type definition.
-//
-// See source: https://typescript.tv/errors/#ts2742
-const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
+const Icon = React.forwardRef<IconRef, IconProps>(
   ({ size, color, variant, ...props }, forwardedRef) => {
-    Icon.displayName = "Icon";
-
     const context = React.useContext(ButtonContext);
     const iconProps = {
       size: size ?? iconSizeMap[context.size],
@@ -137,22 +131,22 @@ const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
       />
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, IconProps> & { ref?: IconRef },
+) => React.ReactElement;
 
-type TextProps = Optional<React.ComponentProps<typeof TypographyText>, "as">;
-
-type TextRef = React.ElementRef<typeof TypographyText>;
+type TextProps = Omit<ComponentPropsWithAs<typeof TypographyText>, "as"> & {
+  as?: React.ElementType;
+};
+type TextRef = RefWithAs<typeof TypographyText>;
 
 const Text = React.forwardRef<TextRef, TextProps>(
   (
-    { as, color, size, weight = "medium", className, ...props },
+    { as = "span", color, size, weight = "medium", className, ...props },
     forwardedRef,
   ) => {
-    Text.displayName = "Text";
-
     const context = React.useContext(ButtonContext);
     const textProps = {
-      as: as ?? "span",
       color: color ?? textColorMap[context.variant][context.color],
       size: size ?? textSizeMap[context.size],
       weight,
@@ -160,6 +154,7 @@ const Text = React.forwardRef<TextRef, TextProps>(
 
     return (
       <TypographyText
+        as={as}
         ref={forwardedRef}
         className={clsx("no-underline whitespace-nowrap", className)}
         data-button-text
@@ -168,11 +163,13 @@ const Text = React.forwardRef<TextRef, TextProps>(
       />
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, TextProps>,
+) => React.ReactElement;
 
-type DefaultIconProps = React.ComponentProps<typeof Icon>;
+type DefaultIconProps = ComponentPropsWithAs<typeof Icon>;
 
-type DefaultProps =
+type DefaultBaseProps =
   | {
       leadingIcon?: DefaultIconProps;
       trailingIcon?: DefaultIconProps;
@@ -184,17 +181,11 @@ type DefaultProps =
       trailingIcon?: never;
     };
 
-const Default = React.forwardRef(
-  (
-    {
-      leadingIcon,
-      trailingIcon,
-      icon,
-      children,
-      ...props
-    }: PropsWithAs<"button", DefaultProps & RootProps>,
-    forwardedRef: RootRef,
-  ) => {
+type DefaultProps = ComponentPropsWithAs<typeof Root, DefaultBaseProps>;
+type DefaultRef = RefWithAs<typeof Root>;
+
+const Default = React.forwardRef<DefaultRef, DefaultProps>(
+  ({ leadingIcon, trailingIcon, icon, children, ...props }, forwardedRef) => {
     const combinedLeadingIcon = leadingIcon || icon;
     return (
       <Root {...props} ref={forwardedRef}>
@@ -205,7 +196,7 @@ const Default = React.forwardRef(
     );
   },
 ) as <T extends React.ElementType>(
-  props: PropsWithAs<T, DefaultProps & RootProps> & { ref?: RootRef },
+  props: PropsWithAs<T, DefaultProps> & { ref?: RootRef },
 ) => React.ReactElement;
 
 Object.assign(Default, {

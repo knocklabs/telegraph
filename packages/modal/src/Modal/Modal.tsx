@@ -1,6 +1,11 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
+import type {
+  ComponentPropsWithAs,
+  PropsWithAs,
+  RefWithAs,
+} from "@telegraph/helpers";
 import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import clsx from "clsx";
@@ -102,12 +107,12 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
   },
 );
 
-type CloseProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Dialog.Close>,
-  "color"
-> &
-  React.ComponentPropsWithoutRef<typeof Button>;
-type CloseRef = React.ElementRef<typeof Button>;
+
+type CloseProps = Omit<ComponentPropsWithAs<typeof Button>, "icon"> & {
+  icon?: ComponentPropsWithAs<typeof Lucide.X>["icon"];
+};
+
+type CloseRef = RefWithAs<typeof Button>;
 
 const Close = React.forwardRef<CloseRef, CloseProps>(
   ({ size = "1", variant = "ghost", ...props }, forwardedRef) => {
@@ -123,7 +128,9 @@ const Close = React.forwardRef<CloseRef, CloseProps>(
       </Dialog.Close>
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithAs<T, CloseProps>,
+) => React.ReactElement;
 
 type BodyProps = React.ComponentPropsWithoutRef<typeof Stack>;
 type BodyRef = React.ElementRef<typeof Stack>;

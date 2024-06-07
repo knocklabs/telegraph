@@ -1,3 +1,10 @@
+import type {
+  ComponentPropsWithRequiredAs,
+  PropsWithRequiredAs,
+  RefWithAs,
+
+} from "@telegraph/helpers";
+import { Box } from "@telegraph/layout";
 import clsx from "clsx";
 import React from "react";
 
@@ -8,29 +15,17 @@ import {
   weightMap,
 } from "../helpers/prop-mappings";
 
-type TextProps = React.HTMLAttributes<TextRef> & {
-  as:
-    | "p"
-    | "span"
-    | "div"
-    | "label"
-    | "em"
-    | "strong"
-    | "b"
-    | "i"
-    | "pre"
-    | "code";
-  align?: keyof typeof alignMap;
-  size?: keyof typeof sizeMap;
-  color?: keyof typeof colorMap;
-  weight?: keyof typeof weightMap;
-};
+type TextProps = ComponentPropsWithRequiredAs<
+  typeof Box,
+  {
+    align?: keyof typeof alignMap;
+    size?: keyof typeof sizeMap;
+    color?: keyof typeof colorMap;
+    weight?: keyof typeof weightMap;
+  }
+>;
 
-type TextRef = HTMLParagraphElement &
-  HTMLSpanElement &
-  HTMLDivElement &
-  HTMLLabelElement &
-  HTMLPreElement;
+type TextRef = RefWithAs<typeof Box>;
 
 const Text = React.forwardRef<TextRef, TextProps>(
   (
@@ -47,9 +42,11 @@ const Text = React.forwardRef<TextRef, TextProps>(
   ) => {
     if (!Component) throw new Error("as prop is required");
     return (
-      <Component
+      <Box
+        as={Component}
+        m="0"
         className={clsx(
-          "m-0 box-border",
+          "box-border",
           align && alignMap[align],
           color && colorMap[color],
           size && sizeMap[size],
@@ -61,6 +58,8 @@ const Text = React.forwardRef<TextRef, TextProps>(
       />
     );
   },
-);
+) as <T extends React.ElementType>(
+  props: PropsWithRequiredAs<T, TextProps>,
+) => React.ReactElement;
 
 export { Text };

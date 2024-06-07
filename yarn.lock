@@ -5313,7 +5313,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5334,7 +5334,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
   peerDependencies:
     react: ^18.2.0
@@ -5354,7 +5354,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
   peerDependencies:
     react: ^18.2.0
@@ -5369,6 +5369,7 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/helpers": "workspace:^"
     "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
@@ -5380,7 +5381,7 @@ __metadata:
     lucide-react: "npm:^0.379.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5408,7 +5409,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5436,7 +5437,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5467,7 +5468,7 @@ __metadata:
     framer-motion: "npm:^11.1.9"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5485,7 +5486,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^8.56.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
   languageName: unknown
   linkType: soft
@@ -5506,7 +5507,7 @@ __metadata:
     postcss-custom-media: "npm:^10.0.3"
     postcss-discard-empty: "npm:^6.0.1"
     tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft
 
@@ -5517,7 +5518,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     prettier: "npm:^3.2.4"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft
 
@@ -5543,7 +5544,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5562,6 +5563,7 @@ __metadata:
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
+    "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
@@ -5570,9 +5572,10 @@ __metadata:
     "@types/react": "npm:^18.2.48"
     clsx: "npm:^2.1.0"
     eslint: "npm:^8.56.0"
+    framer-motion: "npm:^11.2.10"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5592,7 +5595,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^8.56.0"
     tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
   languageName: unknown
   linkType: soft
@@ -5607,7 +5610,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^8.56.0"
     lightningcss: "npm:^1.23.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
   languageName: unknown
   linkType: soft
@@ -5628,7 +5631,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vitest: "npm:^1.2.2"
   peerDependencies:
@@ -5646,7 +5649,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^4.3.0"
     eslint: "npm:^8.56.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
     vite-plugin-dts: "npm:^3.9.1"
   languageName: unknown
@@ -5668,7 +5671,7 @@ __metadata:
     jsdom: "npm:^24.0.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:^5.4.5"
     vitest: "npm:^1.2.2"
     vitest-axe: "npm:^0.1.0"
   peerDependencies:
@@ -10085,6 +10088,26 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10c0/c1bbadb5f5c324de0473f3fb2c3d0180fc5239335f49b536dc827dff27c87d749af402d1c1fbe7081fbc15b816e32fadf66e24970476f98b2934464f8df9bdb0
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^11.2.10":
+  version: 11.2.10
+  resolution: "framer-motion@npm:11.2.10"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/b28a906f16c23b2ae14aedcee5a292364fa4ccab129efd86a163da8fd95533bcc6604e9636a4d3727278a7ad0866a69fba3c8884554e67d15722abe1f3c05744
   languageName: node
   linkType: hard
 
@@ -16184,7 +16207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.4.2, typescript@npm:^5.2.2, typescript@npm:^5.3.3":
+"typescript@npm:5.4.2, typescript@npm:^5.2.2":
   version: 5.4.2
   resolution: "typescript@npm:5.4.2"
   bin:
@@ -16194,13 +16217,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.4.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
+"typescript@npm:^5.4.5":
+  version: 5.4.5
+  resolution: "typescript@npm:5.4.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/2954022ada340fd3d6a9e2b8e534f65d57c92d5f3989a263754a78aba549f7e6529acc1921913560a4b816c46dce7df4a4d29f9f11a3dc0d4213bb76d043251e
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.4.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
   version: 5.4.2
   resolution: "typescript@patch:typescript@npm%3A5.4.2#optional!builtin<compat/typescript>::version=5.4.2&hash=d69c25"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/22e2f213c3ffe5960c5eaec6c95c04e01858fed57a94be250746f540b935b2c18c3c3fc80d3ab65d28c0aba1eb76284557ba3bf521d28caee811c44ba2b648f9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.4.5#optional!builtin<compat/typescript>":
+  version: 5.4.5
+  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=d69c25"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/9cf4c053893bcf327d101b6c024a55baf05430dc30263f9adb1bf354aeffc11306fe1f23ba2f9a0209674359f16219b5b7d229e923477b94831d07d5a33a4217
   languageName: node
   linkType: hard
 

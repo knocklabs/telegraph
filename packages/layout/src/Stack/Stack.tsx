@@ -1,5 +1,5 @@
 import { useComposedRefs } from "@telegraph/compose-refs";
-import type { PropsWithAs } from "@telegraph/helpers";
+import type { PropsWithAs, ComponentPropsWithAs, RefWithAs } from "@telegraph/helpers";
 import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
@@ -10,16 +10,16 @@ import { propsToCssVariables } from "../helpers/css-variables";
 
 import { STACK_PROPS } from "./Stack.constants";
 
-type StackProps = React.ComponentPropsWithoutRef<typeof Box> & {
+type StackProps = ComponentPropsWithAs<typeof Box, {
   gap?: Responsive<`${keyof typeof t.tokens.spacing}`>;
   display?: Responsive<"flex" | "inline-flex">;
   align?: Responsive<React.CSSProperties["alignItems"]>;
   direction?: Responsive<React.CSSProperties["flexDirection"]>;
   justify?: Responsive<React.CSSProperties["justifyContent"]>;
   wrap?: Responsive<React.CSSProperties["flexWrap"]>;
-};
+}>
 
-type StackRef = React.ElementRef<typeof Box>;
+type StackRef = RefWithAs<typeof Box>;
 
 const Stack = React.forwardRef<StackRef, StackProps>(
   ({ className, ...props }, forwardedRef) => {

@@ -3,7 +3,7 @@
   "extends": "@knocklabs/typescript-config/react-library.json",
   "display": "@telegraph/icon",
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "dist", "node_modules"],

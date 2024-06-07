@@ -37,8 +37,10 @@
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
+    "@telegraph/layout": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.2.10"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
@@ -52,7 +54,7 @@
     "eslint": "^8.56.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.5",
     "vite": "^5.2.13",
     "vitest": "^1.2.2"
   },
