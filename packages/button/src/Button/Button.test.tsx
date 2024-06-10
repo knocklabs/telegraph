@@ -24,8 +24,18 @@ describe("Button", () => {
   });
   it("icon button without alt is inaccessible", async () => {
     expect(() =>
+      // @ts-expect-error Testing error case
       render(<Button leadingIcon={{ icon: Lucide.Bell }}>Click me</Button>),
     ).toThrow("@telegraph/icon: alt prop is required");
+  });
+  it("alt text is optional if icon is aria hidden", async () => {
+    const { container } = render(
+      <Button leadingIcon={{ icon: Lucide.Bell, "aria-hidden": true }}>
+        Click me
+      </Button>,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
   });
   it("icon in text button icon has correct text color", async () => {
     const { container } = render(

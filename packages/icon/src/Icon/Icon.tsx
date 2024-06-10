@@ -45,7 +45,7 @@ const Icon = React.forwardRef<IconRef, IconProps>(
       throw new Error(`@telegraph/icon: icon prop is required`);
     }
 
-    if (!alt) {
+    if (!alt && !props["aria-hidden"]) {
       throw new Error(`@telegraph/icon: alt prop is required`);
     }
 
