@@ -1,5 +1,14 @@
 # @telegraph/icon
 
+## 0.0.11
+
+### Patch Changes
+
+- [#118](https://github.com/knocklabs/telegraph/pull/118) [`33a183c`](https://github.com/knocklabs/telegraph/commit/33a183cb834e3553251ab855c30ab93d512a3e38) Thanks [@connorlindsey](https://github.com/connorlindsey)! - fix: don't throw error if alt text is missing for aria hidden icon
+
+- Updated dependencies [[`c0647b8`](https://github.com/knocklabs/telegraph/commit/c0647b81149fbeae8d0a35629e04c2b95bd74d80)]:
+  - @telegraph/layout@0.0.11
+
 ## 0.0.10
 
 ### Patch Changes

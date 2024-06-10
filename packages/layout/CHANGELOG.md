@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.11
+
+### Patch Changes
+
+- [#113](https://github.com/knocklabs/telegraph/pull/113) [`c0647b8`](https://github.com/knocklabs/telegraph/commit/c0647b81149fbeae8d0a35629e04c2b95bd74d80) Thanks [@kylemcd](https://github.com/kylemcd)! - fix box props not being inherited through stack component in typescript
+
 ## 0.0.10
 
 ### Patch Changes
