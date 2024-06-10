@@ -45,7 +45,7 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
           <Button.Root
             variant="outline"
             active={props.value === contextValue}
-            className="data-[tgph-button-active=true]:!shadow-blue-8 data-[tgph-button-active=true]:!shadow-[inset_0_0_0_2px] !h-auto !p-0"
+            className="data-[tgph-button-active=true]:!shadow-blue-8 data-[tgph-button-active=true]:!shadow-[inset_0_0_0_2px] !p-0 !h-full !w-full"
           >
             {children}
           </Button.Root>
@@ -108,7 +108,7 @@ const Default = ({ options, ...props }: DefaultProps) => {
     <Root {...props}>
       {options.map((option) => (
         <Item value={option.value}>
-          <Stack direction="column" align="flex-start" p="3">
+          <Stack direction="column" align="flex-start" p="3" w="full">
             {option.icon && (
               <Box mb="2">
                 <ItemIcon {...option.icon} />
