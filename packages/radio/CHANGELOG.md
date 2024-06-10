@@ -1,5 +1,11 @@
 # @telegraph/radio
 
+## 0.0.4
+
+### Patch Changes
+
+- [#121](https://github.com/knocklabs/telegraph/pull/121) [`d24b05d`](https://github.com/knocklabs/telegraph/commit/d24b05d821e35c24e87da2908f88a7ec26b1a8fd) Thanks [@connorlindsey](https://github.com/connorlindsey)! - fix: tweak radio card styles
+
 ## 0.0.3
 
 ### Patch Changes
