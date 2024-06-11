@@ -39,7 +39,7 @@ const Text = <T extends TgphElement>({
   ...props
 }: TextProps<T>) => {
   if (!as) throw new Error("as prop is required");
-  const Component: TgphElement = as
+  const Component: TgphElement = as;
   return (
     <Component
       className={clsx(

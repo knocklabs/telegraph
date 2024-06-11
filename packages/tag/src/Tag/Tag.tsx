@@ -174,5 +174,4 @@ const Tag = Default as typeof Default & {
   Icon: typeof Icon;
 };
 
-
 export { Tag };

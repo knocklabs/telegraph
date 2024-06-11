@@ -72,10 +72,10 @@ const Root = <T extends TgphElement>({
       const child = children[0] as
         | React.ReactComponentElement<typeof Icon>
         | {
-          props: {
-            icon: undefined;
+            props: {
+              icon: undefined;
+            };
           };
-        };
       if (child?.props?.icon) {
         return "icon-only";
       }
@@ -176,15 +176,15 @@ type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
 type BaseDefaultProps =
   | {
-    leadingIcon?: DefaultIconProps;
-    trailingIcon?: DefaultIconProps;
-    icon?: never;
-  }
+      leadingIcon?: DefaultIconProps;
+      trailingIcon?: DefaultIconProps;
+      icon?: never;
+    }
   | {
-    icon?: DefaultIconProps;
-    leadingIcon?: never;
-    trailingIcon?: never;
-  };
+      icon?: DefaultIconProps;
+      leadingIcon?: never;
+      trailingIcon?: never;
+    };
 type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root> &
   BaseDefaultProps;
@@ -217,6 +217,5 @@ const Button = Default as typeof Default & {
   Icon: typeof Icon;
   Text: typeof Text;
 };
-
 
 export { Button };

@@ -19,7 +19,6 @@ type BaseRootProps = {
   errored?: boolean;
 };
 
-
 type RootProps<T extends TgphElement> = Omit<
   PolymorphicPropsWithTgphRef<T, HTMLInputElement>,
   "size"
@@ -37,7 +36,7 @@ const InputContext = React.createContext<Required<InternalProps>>({
 });
 
 const Root = <T extends TgphElement>({
-    as = "input" as T,
+  as = "input" as T,
   size = "2",
   variant = "outline",
   className,
@@ -47,7 +46,7 @@ const Root = <T extends TgphElement>({
   tgphRef,
   ...props
 }: RootProps<T>) => {
-    const Component = as;
+  const Component = as;
   const inputRef = React.useRef<HTMLInputElement>(null);
   const composedRefs = useComposedRefs(tgphRef, inputRef);
 
@@ -98,7 +97,6 @@ const Root = <T extends TgphElement>({
   );
 };
 
-
 type SlotProps = React.ComponentPropsWithoutRef<typeof RadixSlot> & {
   size?: keyof typeof SIZE.Slot;
   position?: "leading" | "trailing";
@@ -132,13 +130,13 @@ const Slot = React.forwardRef<SlotRef, SlotProps>(
   },
 );
 
-
-type DefaultProps<T extends TgphElement> = PolymorphicProps<T> & TgphComponentProps<typeof Root> & {
+type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
+  TgphComponentProps<typeof Root> & {
     LeadingComponent?: React.ReactNode;
     TrailingComponent?: React.ReactNode;
-}
+  };
 
-const Default =<T extends TgphElement> ({
+const Default = <T extends TgphElement>({
   LeadingComponent,
   TrailingComponent,
   ...props
