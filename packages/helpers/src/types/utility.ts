@@ -1,3 +1,5 @@
+import type React from "react";
+
 // If only T is passed, make all properties required, if K is passed, make only those properties required
 export type Required<T, K = Record<string, unknown>> = K extends keyof T
   ? Omit<T, K> & Required<Pick<T, K>>
@@ -15,6 +17,12 @@ export type AsProp<C extends React.ElementType> = {
   as?: C;
 };
 
+// Allow for internal config of the as prop for use
+// when extending this component
+export type OptionalAsPropConfig<E extends React.ElementType> =
+  | { as?: E; internal_optionalAs: true }
+  | { as: E; internal_optionalAs?: never };
+
 // The `PropsWithAs` type is a utility type that allows you to create a
 // component that can be used as a button, link, or any other element.
 // It takes a generic type `C` that extends `React.ElementType` and a
@@ -25,3 +33,36 @@ export type AsProp<C extends React.ElementType> = {
 export type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
   Omit<React.ComponentProps<C>, keyof AsProp<C>> &
   P;
+
+// The `PolymorphicProps` type is a utility type that allows you to create a
+// component that can be used as a button, link, or any other element via
+// the `as` prop. It takes a generic type `E` that extends `React.ElementType`.
+// It returns a type that includes the `as` prop and all the props of the
+// underlying element type `E`.
+export type PolymorphicProps<E extends React.ElementType> = Omit<
+  React.ComponentProps<E>,
+  "as"
+> & {
+  as?: E;
+  children?: React.ReactNode;
+};
+
+// The `PolymorphicPropsWithTgphRef` type is a utility type that allows you to create a
+// component that can be used as a button, link, or any other element via
+// the `as` prop. It takes a generic type `E` that extends `React.ElementType`.
+// It returns a type that includes the `as` prop and all the props of the
+// underlying element type `E`. It also includes a `tgpRef` prop that allows you to
+// pass a ref to the component.
+export type PolymorphicPropsWithTgphRef<
+  E extends React.ElementType,
+  R extends HTMLElement | React.ElementType,
+> = {
+  tgphRef?: React.Ref<R>;
+} & PolymorphicProps<E>;
+
+export type TgphComponentProps<T extends React.ElementType> =
+  React.ComponentProps<T>;
+
+// The `TgphElement` is a wrapper on the React.ElementType type that allows you to
+// pass a component as a prop to another component.
+export type TgphElement = React.ElementType;

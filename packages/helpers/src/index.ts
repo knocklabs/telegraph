@@ -1,1 +1,11 @@
-export type { Required, AsProp, PropsWithAs, Optional } from "./types/utility";
+export type {
+  Required,
+  AsProp,
+  PropsWithAs,
+  Optional,
+  PolymorphicProps,
+  PolymorphicPropsWithTgphRef,
+  TgphElement,
+  TgphComponentProps,
+  OptionalAsPropConfig,
+} from "./types/utility";

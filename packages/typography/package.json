@@ -55,6 +55,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@telegraph/helpers": "workspace:^",
     "clsx": "^2.1.0"
   }
 }

@@ -4,8 +4,14 @@ import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
 
+import type {
+  TgphComponentProps,
+  TgphElement,
+} from "@telegraph/helpers";
+
 type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root>;
 type RootRef = React.ElementRef<typeof RadioGroup.Root>;
+
 
 type RadioButtonInternalContext = {
   value?: string;
@@ -55,41 +61,29 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
   },
 );
 
-type ItemTitleProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Button.Text>,
-  "as"
->;
-type ItemTitleRef = React.ElementRef<typeof Button.Text>;
 
-const ItemTitle = React.forwardRef<ItemTitleRef, ItemTitleProps>(
-  ({ size = "2", ...props }, forwardedRef) => {
+type ItemTitleProps<T extends TgphElement> = TgphComponentProps<typeof Button.Text<T>>
+
+const ItemTitle =
+  <T extends TgphElement>({ size = "2", ...props }: ItemTitleProps<T>) => {
     return (
-      <Button.Text as={"span"} size={size} {...props} ref={forwardedRef} />
+      <Button.Text as={"span"} size={size} {...props}/>
     );
-  },
-);
+  }
 
-type ItemDescriptionProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Button.Text>,
-  "as"
->;
-type ItemDescriptionRef = React.ElementRef<typeof Button.Text>;
 
-const ItemDescription = React.forwardRef<
-  ItemDescriptionRef,
-  ItemDescriptionProps
->(({ size = "0", ...props }, forwardedRef) => {
-  return <Button.Text as={"span"} size={size} {...props} ref={forwardedRef} />;
-});
+type ItemDescriptionProps<T extends TgphElement> = TgphComponentProps<typeof Button.Text<T>>
+const ItemDescription = <T extends TgphElement>({ size = "0", ...props }: ItemDescriptionProps<T> ) => {
+  return <Button.Text as={"span"} size={size} {...props} />;
+};
 
-type ItemIconProps = React.ComponentPropsWithoutRef<typeof Button.Icon>;
-type ItemIconRef = React.ElementRef<typeof Button.Icon>;
 
-const ItemIcon = React.forwardRef<ItemIconRef, ItemIconProps>(
-  (props, forwardedRef) => {
-    return <Button.Icon {...props} ref={forwardedRef} />;
-  },
-);
+type ItemIconProps<T extends TgphElement> = TgphComponentProps<typeof Button.Icon<T>>
+
+const ItemIcon =
+  <T extends TgphElement>(props: ItemIconProps<T> ) => {
+    return <Button.Icon {...props} />;
+  }
 
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
 

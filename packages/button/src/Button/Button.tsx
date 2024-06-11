@@ -1,6 +1,13 @@
-import type { Optional, PropsWithAs, Required } from "@telegraph/helpers";
+import type {
+  PolymorphicProps,
+  PolymorphicPropsWithTgphRef,
+  Required,
+  TgphComponentProps,
+  TgphElement,
+} from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
-import { Text as TypographyText } from "@telegraph/typography";
+import { Box } from "@telegraph/layout";
+import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
 import React from "react";
 
@@ -27,9 +34,12 @@ type InternalProps = {
   color: Required<RootBaseProps>["color"] | "disabled";
 };
 
-type RootProps = RootBaseProps;
-
-type RootRef = React.LegacyRef<HTMLButtonElement>;
+type RootProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
+  T,
+  HTMLButtonElement
+> &
+  TgphComponentProps<typeof Box> &
+  RootBaseProps;
 
 const ButtonContext = React.createContext<
   Required<Omit<RootBaseProps, "color" | "as"> & InternalProps>
@@ -42,171 +52,159 @@ const ButtonContext = React.createContext<
   active: false,
 });
 
-const Root = React.forwardRef(
-  (
-    {
-      as = "button",
-      variant = "solid",
-      size = "2",
-      color: initialColor = "gray",
-      state: initialState = "default",
-      active = false,
-      disabled,
-      className,
-      ...props
-    }: PropsWithAs<"button", RootProps>,
-    forwardedRef: RootRef,
-  ) => {
-    const state = disabled ? "disabled" : initialState;
-    const color = state === "disabled" ? "disabled" : initialColor;
+const Root = <T extends TgphElement>({
+  as,
+  variant = "solid",
+  size = "2",
+  color: initialColor = "gray",
+  state: initialState = "default",
+  active = false,
+  disabled,
+  className,
+  ...props
+}: RootProps<T>) => {
+  const state = disabled ? "disabled" : initialState;
+  const color = state === "disabled" ? "disabled" : initialColor;
 
-    const layout = React.useMemo<InternalProps["layout"]>(() => {
-      const children = React.Children.toArray(props?.children);
-      if (children?.length === 1 && React.isValidElement(children[0])) {
-        const child = children[0] as
-          | React.ReactComponentElement<typeof Icon>
-          | {
-              props: {
-                icon: undefined;
-              };
-            };
-        if (child?.props?.icon) {
-          return "icon-only";
-        }
+  const layout = React.useMemo<InternalProps["layout"]>(() => {
+    const children = React.Children.toArray(props?.children);
+    if (children?.length === 1 && React.isValidElement(children[0])) {
+      const child = children[0] as
+        | React.ReactComponentElement<typeof Icon>
+        | {
+          props: {
+            icon: undefined;
+          };
+        };
+      if (child?.props?.icon) {
+        return "icon-only";
       }
-      return "default";
-    }, [props?.children]);
+    }
+    return "default";
+  }, [props?.children]);
 
-    const ButtonComponent = as;
-    return (
-      <ButtonContext.Provider
-        value={{ variant, size, color, state, layout, active }}
-      >
-        <ButtonComponent
-          className={clsx(
-            "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
-            "inline-flex items-center justify-center rounded-3 transition-colors no-underline",
-            state === "disabled" && "cursor-not-allowed",
-            buttonColorMap[variant][color],
-            buttonSizeMap[layout][size],
-            className,
-          )}
-          data-tgph-button
-          data-tgph-button-layout={layout}
-          data-tgph-button-active={active}
-          ref={forwardedRef}
-          disabled={disabled}
-          {...props}
-        />
-      </ButtonContext.Provider>
-    );
-  },
-  // In order to use generics with forwardRef, you need to recast,
-  // see source: https://fettblog.eu/typescript-react-generic-forward-refs/
-) as <T extends React.ElementType>(
-  props: PropsWithAs<T, RootProps> & { ref?: RootRef },
-) => React.ReactElement;
-
-type IconProps = React.ComponentProps<typeof TelegraphIcon>;
-
-type IconRef = React.ElementRef<typeof TelegraphIcon>;
-
-// Need to expilictly define the Icon type to avoid portable reference
-// error when using the Icon component in the Button component. Should
-// look for an alternative solution to avoid this error and remove the
-// explicit type definition.
-//
-// See source: https://typescript.tv/errors/#ts2742
-const Icon: typeof TelegraphIcon = React.forwardRef<IconRef, IconProps>(
-  ({ size, color, variant, ...props }, forwardedRef) => {
-    Icon.displayName = "Icon";
-
-    const context = React.useContext(ButtonContext);
-    const iconProps = {
-      size: size ?? iconSizeMap[context.size],
-      color: color ?? iconColorMap[context.variant][context.color],
-      variant: variant ?? iconVariantMap[context.layout],
-    };
-
-    return (
-      <TelegraphIcon
-        ref={forwardedRef}
-        data-button-icon
+  return (
+    <ButtonContext.Provider
+      value={{ variant, size, color, state, layout, active }}
+    >
+      <Box
+        as={as || "button"}
+        className={clsx(
+          "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
+          "inline-flex items-center justify-center rounded-3 transition-colors no-underline",
+          state === "disabled" && "cursor-not-allowed",
+          buttonColorMap[variant][color],
+          buttonSizeMap[layout][size],
+          className,
+        )}
+        data-tgph-button
+        data-tgph-button-layout={layout}
+        data-tgph-button-active={active}
+        disabled={disabled}
         {...props}
-        {...iconProps}
       />
-    );
-  },
-);
+    </ButtonContext.Provider>
+  );
+};
 
-type TextProps = Optional<React.ComponentProps<typeof TypographyText>, "as">;
+type IconProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphIcon<T>
+>;
 
-type TextRef = React.ElementRef<typeof TypographyText>;
+const Icon = <T extends TgphElement>({
+  size,
+  color,
+  variant,
+  icon,
+  alt,
+  "aria-hidden": ariaHidden,
+  ...props
+}: IconProps<T>) => {
+  const context = React.useContext(ButtonContext);
 
-const Text = React.forwardRef<TextRef, TextProps>(
-  (
-    { as, color, size, weight = "medium", className, ...props },
-    forwardedRef,
-  ) => {
-    Text.displayName = "Text";
+  const iconProps = {
+    size: size ?? iconSizeMap[context.size],
+    color: color ?? iconColorMap[context.variant][context.color],
+    variant: variant ?? iconVariantMap[context.layout],
+  };
 
-    const context = React.useContext(ButtonContext);
-    const textProps = {
-      as: as ?? "span",
-      color: color ?? textColorMap[context.variant][context.color],
-      size: size ?? textSizeMap[context.size],
-      weight,
-    };
+  const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
 
-    return (
-      <TypographyText
-        ref={forwardedRef}
-        className={clsx("no-underline whitespace-nowrap", className)}
-        data-button-text
-        {...props}
-        {...textProps}
-      />
-    );
-  },
-);
+  return (
+    <TelegraphIcon
+      icon={icon}
+      data-button-icon
+      {...a11yProps}
+      {...iconProps}
+      {...props}
+    />
+  );
+};
+
+type TextProps<T extends TgphElement> = Omit<
+  TgphComponentProps<typeof TelegraphText<T>>,
+  "as"
+> & {
+  as?: T;
+};
+
+const Text = <T extends TgphElement>({
+  as,
+  color,
+  size,
+  weight = "medium",
+  className,
+  ...props
+}: TextProps<T>) => {
+  const context = React.useContext(ButtonContext);
+
+  return (
+    <TelegraphText
+      as={(as || "span") as T}
+      color={color ?? textColorMap[context.variant][context.color]}
+      size={size ?? textSizeMap[context.size]}
+      weight={weight}
+      className={clsx("no-underline whitespace-nowrap", className)}
+      internal_optionalAs={true}
+      data-button-text
+      {...props}
+    />
+  );
+};
 
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
-type DefaultProps =
+type BaseDefaultProps =
   | {
-      leadingIcon?: DefaultIconProps;
-      trailingIcon?: DefaultIconProps;
-      icon?: never;
-    }
+    leadingIcon?: DefaultIconProps;
+    trailingIcon?: DefaultIconProps;
+    icon?: never;
+  }
   | {
-      icon?: DefaultIconProps;
-      leadingIcon?: never;
-      trailingIcon?: never;
-    };
+    icon?: DefaultIconProps;
+    leadingIcon?: never;
+    trailingIcon?: never;
+  };
+type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
+  TgphComponentProps<typeof Root> &
+  BaseDefaultProps;
 
-const Default = React.forwardRef(
-  (
-    {
-      leadingIcon,
-      trailingIcon,
-      icon,
-      children,
-      ...props
-    }: PropsWithAs<"button", DefaultProps & RootProps>,
-    forwardedRef: RootRef,
-  ) => {
-    const combinedLeadingIcon = leadingIcon || icon;
-    return (
-      <Root {...props} ref={forwardedRef}>
-        {combinedLeadingIcon && <Icon {...combinedLeadingIcon} />}
-        {children && <Text>{children}</Text>}
-        {trailingIcon && <Icon {...trailingIcon} />}
-      </Root>
-    );
-  },
-) as <T extends React.ElementType>(
-  props: PropsWithAs<T, DefaultProps & RootProps> & { ref?: RootRef },
-) => React.ReactElement;
+const Default = <T extends TgphElement>({
+  leadingIcon,
+  trailingIcon,
+  icon,
+  children,
+  ...props
+}: DefaultProps<T>) => {
+  const combinedLeadingIcon = leadingIcon || icon;
+  return (
+    <Root {...props}>
+      {combinedLeadingIcon && <Icon {...combinedLeadingIcon} />}
+      {children && <Text>{children}</Text>}
+      {trailingIcon && <Icon {...trailingIcon} />}
+    </Root>
+  );
+};
 
 Object.assign(Default, {
   Root,
@@ -219,5 +217,6 @@ const Button = Default as typeof Default & {
   Icon: typeof Icon;
   Text: typeof Text;
 };
+
 
 export { Button };

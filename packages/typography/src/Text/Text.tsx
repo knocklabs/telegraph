@@ -1,5 +1,9 @@
+import {
+  OptionalAsPropConfig,
+  PolymorphicPropsWithTgphRef,
+  TgphElement,
+} from "@telegraph/helpers";
 import clsx from "clsx";
-import React from "react";
 
 import {
   alignMap,
@@ -8,59 +12,48 @@ import {
   weightMap,
 } from "../helpers/prop-mappings";
 
-type TextProps = React.HTMLAttributes<TextRef> & {
-  as:
-    | "p"
-    | "span"
-    | "div"
-    | "label"
-    | "em"
-    | "strong"
-    | "b"
-    | "i"
-    | "pre"
-    | "code";
+type BaseTextProps = {
   align?: keyof typeof alignMap;
   size?: keyof typeof sizeMap;
   color?: keyof typeof colorMap;
   weight?: keyof typeof weightMap;
 };
 
-type TextRef = HTMLParagraphElement &
-  HTMLSpanElement &
-  HTMLDivElement &
-  HTMLLabelElement &
-  HTMLPreElement;
+type TextProps<T extends TgphElement> = Omit<
+  PolymorphicPropsWithTgphRef<T, HTMLElement>,
+  keyof BaseTextProps
+> &
+  BaseTextProps &
+  OptionalAsPropConfig<T>;
 
-const Text = React.forwardRef<TextRef, TextProps>(
-  (
-    {
-      as: Component,
-      color = "default",
-      size = "2",
-      weight = "regular",
-      align,
-      className,
-      ...props
-    },
-    forwardedRef,
-  ) => {
-    if (!Component) throw new Error("as prop is required");
-    return (
-      <Component
-        className={clsx(
-          "m-0 box-border",
-          align && alignMap[align],
-          color && colorMap[color],
-          size && sizeMap[size],
-          weight && weightMap[weight],
-          className,
-        )}
-        ref={forwardedRef}
-        {...props}
-      />
-    );
-  },
-);
+const Text = <T extends TgphElement>({
+  as,
+  color = "default",
+  size = "2",
+  weight = "regular",
+  align,
+  className,
+  tgphRef,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  internal_optionalAs: _internal_optionalAs,
+  ...props
+}: TextProps<T>) => {
+  if (!as) throw new Error("as prop is required");
+  const Component: TgphElement = as
+  return (
+    <Component
+      className={clsx(
+        "m-0 box-border",
+        align && alignMap[align],
+        color && colorMap[color],
+        size && sizeMap[size],
+        weight && weightMap[weight],
+        className,
+      )}
+      ref={tgphRef}
+      {...props}
+    />
+  );
+};
 
 export { Text };
