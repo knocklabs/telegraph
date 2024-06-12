@@ -14,14 +14,14 @@ const meta: Meta = {
       },
     },
     side: {
-        options: ["top", "bottom", "left", "right"],
+      options: ["top", "bottom", "left", "right"],
       control: {
         type: "select",
       },
     },
 
     align: {
-        options: ["start", "center", "end"],
+      options: ["start", "center", "end"],
       control: {
         type: "select",
       },
