@@ -30,8 +30,7 @@ const Box = <T extends TgphElement>({
   // Filter out the box props from the rest of the props
   const filteredProps = React.useMemo(() => {
     // Set any defaults here
-    // const mergedProps = { borderColor: true, ...props };
-    const mergedProps = { ...props };
+    const mergedProps = { borderColor: true, ...props };
     return Object.keys(mergedProps).reduce(
       (acc, key) => {
         if (!Object.keys(BOX_PROPS).some((prop) => prop === key)) {
