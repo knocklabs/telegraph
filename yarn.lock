@@ -5561,6 +5561,7 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/button": "workspace:^"
+    "@telegraph/compose-refs": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
