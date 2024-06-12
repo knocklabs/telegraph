@@ -34,7 +34,10 @@ type InternalProps = {
   color: Required<RootBaseProps>["color"] | "disabled";
 };
 
-type RootProps<T extends TgphElement> = Omit<TgphComponentProps<typeof Stack>, 'tgphRef'> &
+type RootProps<T extends TgphElement> = Omit<
+  TgphComponentProps<typeof Stack>,
+  "tgphRef"
+> &
   PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
   RootBaseProps;
 

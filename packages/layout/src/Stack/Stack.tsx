@@ -71,5 +71,4 @@ const Stack = <T extends TgphElement>({
   );
 };
 
-
 export { Stack };

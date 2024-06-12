@@ -77,7 +77,9 @@ export const Tag: Story = {
           ...props,
         }
       : props;
-    return <TelegraphTag {...mergedProps} onCopy={onCopy ? () => {} : undefined} />;
+    return (
+      <TelegraphTag {...mergedProps} onCopy={onCopy ? () => {} : undefined} />
+    );
   },
   args: {
     children: "Tag",
