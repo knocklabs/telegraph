@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@telegraph/button": "workspace:^",
+    "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/typography": "workspace:^",
