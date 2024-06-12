@@ -1,6 +1,13 @@
 import { Button as TelegraphButton } from "@telegraph/button";
-import type { Optional, Required } from "@telegraph/helpers";
+import type {
+  PolymorphicProps,
+  PolymorphicPropsWithTgphRef,
+  Required,
+  TgphComponentProps,
+  TgphElement,
+} from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
+import { Box } from "@telegraph/layout";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
 import React from "react";
@@ -13,9 +20,12 @@ type RootBaseProps = {
   variant?: keyof typeof COLOR.Root;
 };
 
-type RootProps = React.HTMLAttributes<RootRef> & RootBaseProps;
-
-type RootRef = HTMLSpanElement;
+type RootProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
+  T,
+  HTMLSpanElement
+> &
+  TgphComponentProps<typeof Box> &
+  RootBaseProps;
 
 const TagContext = React.createContext<Required<RootBaseProps>>({
   size: "1",
@@ -23,125 +33,132 @@ const TagContext = React.createContext<Required<RootBaseProps>>({
   variant: "soft",
 });
 
-const Root = React.forwardRef<RootRef, RootProps>(
-  (
-    { size = "1", color = "default", variant = "soft", className, ...props },
-    forwardedRef,
-  ) => {
-    return (
-      <TagContext.Provider value={{ size, color, variant }}>
-        <span
-          className={clsx(
-            "inline-flex items-center rounded-3 pl-2",
-            SIZE.Root[size],
-            COLOR.Root[variant][color],
-            className,
-          )}
-          {...props}
-          ref={forwardedRef}
-          data-tag
-        />
-      </TagContext.Provider>
-    );
-  },
-);
-
-type TextProps = Optional<React.ComponentProps<typeof TelegraphText>, "as">;
-
-type TextRef = React.ElementRef<typeof TelegraphText>;
-
-const Text = React.forwardRef<TextRef, TextProps>(
-  ({ as = "span", className, ...props }, forwardedRef) => {
-    const context = React.useContext(TagContext);
-    return (
-      <TelegraphText
+const Root = <T extends TgphElement>({
+  as = "span" as T,
+  size = "1",
+  color = "default",
+  variant = "soft",
+  className,
+  ...props
+}: RootProps<T>) => {
+  return (
+    <TagContext.Provider value={{ size, color, variant }}>
+      <Box
         as={as}
-        size={context.size}
-        color={COLOR.Text[context.variant][context.color]}
-        className={clsx("rounded-tl-0 rounded-bl-0 mr-2", className)}
+        className={clsx(
+          "inline-flex items-center rounded-3 pl-2",
+          SIZE.Root[size],
+          COLOR.Root[variant][color],
+          className,
+        )}
         {...props}
-        ref={forwardedRef}
+        data-tag
       />
-    );
-  },
-);
-
-type ButtonProps = React.ComponentProps<typeof TelegraphButton.Root>;
-type ButtonRef = React.ElementRef<typeof TelegraphButton.Root>;
-
-const Button = React.forwardRef<ButtonRef, ButtonProps>(
-  ({ className, ...props }, forwardedRef) => {
-    const context = React.useContext(TagContext);
-    return (
-      <TelegraphButton
-        size={context.size}
-        color={COLOR.Button[context.variant][context.color]}
-        variant={context.variant}
-        icon={{ icon: Lucide.X, alt: "close" }}
-        className={clsx("rounded-tl-0 rounded-bl-0", className)}
-        {...props}
-        ref={forwardedRef}
-      />
-    );
-  },
-);
-
-type IconProps = React.ComponentProps<typeof TelegraphIcon>;
-type IconRef = React.ElementRef<typeof TelegraphIcon>;
-
-const Icon = React.forwardRef<IconRef, IconProps>(
-  ({ className, ...props }, forwardedRef) => {
-    const context = React.useContext(TagContext);
-    return (
-      <TelegraphIcon
-        size={context.size}
-        color={COLOR.Icon[context.variant][context.color]}
-        className={clsx("rounded-tl-0 rounded-bl-0 mr-1", className)}
-        {...props}
-        ref={forwardedRef}
-      />
-    );
-  },
-);
-
-type DefaultProps = React.ComponentProps<typeof Root> & {
-  icon?: React.ComponentProps<typeof TelegraphIcon>;
-  onCopy?: () => void;
-  onRemove?: () => void;
+    </TagContext.Provider>
+  );
 };
-type DefaultRef = React.ElementRef<typeof Root>;
 
-const Default = React.forwardRef<DefaultRef, DefaultProps>(
-  (
-    {
-      color = "default",
-      size = "1",
-      variant = "soft",
-      icon,
-      onRemove,
-      onCopy,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
-    return (
-      <Root color={color} size={size} variant={variant} {...props} ref={ref}>
-        {icon && <Icon {...icon} />}
-        <Text as="span">{children}</Text>
-        {onRemove && (
-          <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
-        )}
-        {onCopy && (
-          <Button
-            onClick={onCopy}
-            icon={{ icon: Lucide.Copy, alt: "Copy text" }}
-          />
-        )}
-      </Root>
-    );
-  },
-);
+type TextProps<T extends TgphElement> = Omit<
+  TgphComponentProps<typeof TelegraphText<T>>,
+  "as"
+> & {
+  as?: T;
+};
+
+const Text = <T extends TgphElement>({
+  as = "span" as T,
+  className,
+  ...props
+}: TextProps<T>) => {
+  const context = React.useContext(TagContext);
+  return (
+    <TelegraphText
+      as={as}
+      size={context.size}
+      color={COLOR.Text[context.variant][context.color]}
+      className={clsx("rounded-tl-0 rounded-bl-0 mr-2", className)}
+      {...props}
+    />
+  );
+};
+type ButtonProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphButton<T>
+>;
+
+const Button = <T extends TgphElement>({
+  className,
+  ...props
+}: ButtonProps<T>) => {
+  const context = React.useContext(TagContext);
+  return (
+    <TelegraphButton
+      size={context.size}
+      color={COLOR.Button[context.variant][context.color]}
+      variant={context.variant}
+      icon={{ icon: Lucide.X, alt: "close" }}
+      className={clsx("rounded-tl-0 rounded-bl-0", className)}
+      {...props}
+    />
+  );
+};
+type IconProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphIcon<T>
+>;
+
+const Icon = <T extends TgphElement>({
+  icon,
+  alt,
+  "aria-hidden": ariaHidden,
+  className,
+  ...props
+}: IconProps<T>) => {
+  const context = React.useContext(TagContext);
+  const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
+  return (
+    <TelegraphIcon
+      icon={icon}
+      size={context.size}
+      color={COLOR.Icon[context.variant][context.color]}
+      className={clsx("rounded-tl-0 rounded-bl-0 mr-1", className)}
+      {...a11yProps}
+      {...props}
+    />
+  );
+};
+
+type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
+  TgphComponentProps<typeof Root> & {
+    icon?: React.ComponentProps<typeof TelegraphIcon>;
+    onCopy?: () => void;
+    onRemove?: () => void;
+  };
+
+const Default = <T extends TgphElement>({
+  color = "default",
+  size = "1",
+  variant = "soft",
+  icon,
+  onRemove,
+  onCopy,
+  children,
+  ...props
+}: DefaultProps<T>) => {
+  return (
+    <Root color={color} size={size} variant={variant} {...props}>
+      {icon && <Icon {...icon} />}
+      <Text as="span">{children}</Text>
+      {onRemove && (
+        <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
+      )}
+      {onCopy && (
+        <Button
+          onClick={onCopy}
+          icon={{ icon: Lucide.Copy, alt: "Copy text" }}
+        />
+      )}
+    </Root>
+  );
+};
 
 Object.assign(Default, {
   Root,
