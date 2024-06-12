@@ -38,7 +38,8 @@
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.1.9"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",

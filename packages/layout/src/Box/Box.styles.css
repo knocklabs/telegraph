@@ -1,5 +1,5 @@
 .tgph-box {
-  display: block;
+  display: var(--tgph-display, block);
   padding: var(--tgph-padding);
   margin: var(--tgph-margin);
   background-color: var(--tgph-background-color);
@@ -15,6 +15,7 @@
 }
 
 .tgph-box {
+  --tgph-display: var(--tgph-display-sm);
   --tgph-padding: var(--tgph-padding-sm);
   --tgph-margin: var(--tgph-margin-sm);
   --tgph-background-color: var(--tgph-background-color);
@@ -30,6 +31,7 @@
 
 @media (--tgph-breakpoint-md) {
   .tgph-box {
+    --tgph-display: var(--tgph-display-md);
     --tgph-padding: var(--tgph-padding-md);
     --tgph-margin: var(--tgph-margin-md);
     --tgph-background-color: var(--tgph-background-color-md);
@@ -46,6 +48,7 @@
 
 @media (--tgph-breakpoint-lg) {
   .tgph-box {
+    --tgph-display: var(--tgph-display-lg);
     --tgph-padding: var(--tgph-padding-lg);
     --tgph-margin: var(--tgph-margin-lg);
     --tgph-background-color: var(--tgph-background-color-lg);
@@ -62,6 +65,7 @@
 
 @media (--tgph-breakpoint-xl) {
   .tgph-box {
+    --tgph-display: var(--tgph-display-xl);
     --tgph-padding: var(--tgph-padding-xl);
     --tgph-margin: var(--tgph-margin-xl);
     --tgph-background-color: var(--tgph-background-color-xl);
@@ -78,6 +82,7 @@
 
 @media (--tgph-breakpoint-2xl) {
   .tgph-box {
+    --tgph-display: var(--tgph-display-2xl);
     --tgph-padding: var(--tgph-padding-2xl);
     --tgph-margin: var(--tgph-margin-2xl);
     --tgph-background-color: var(--tgph-background-color-2xl);

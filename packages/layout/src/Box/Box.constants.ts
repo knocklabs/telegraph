@@ -1,4 +1,9 @@
 export const BOX_PROPS = {
+  display: {
+    rule: "display",
+    type: "block-display",
+    valueType: "static",
+  },
   h: {
     rule: "height",
     type: "spacing",

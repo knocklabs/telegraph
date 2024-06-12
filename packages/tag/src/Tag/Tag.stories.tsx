@@ -44,6 +44,16 @@ const meta: Meta<typeof TelegraphTag> = {
         type: "select",
       },
     },
+    textToCopy: {
+      control: {
+        type: "text",
+        defaultValue: "Text to copy",
+      },
+      if: {
+        arg: "onCopy",
+        equals: true,
+      },
+    },
   },
   args: {},
 };
@@ -60,23 +70,20 @@ type StorybookTagType = Omit<
 type Story = StoryObj<StorybookTagType>;
 
 export const Tag: Story = {
-  render: ({ icon, ...props }) => {
+  render: ({ icon, onCopy, ...props }) => {
     const mergedProps = icon
       ? {
           icon: { icon: Icons[icon as keyof typeof Icons], alt: "description" },
           ...props,
         }
       : props;
-    // @ts-expect-error: for illustration purposes only
-    return <TelegraphTag {...mergedProps} />;
+    return <TelegraphTag {...mergedProps} onCopy={onCopy ? () => {} : undefined} />;
   },
   args: {
     children: "Tag",
     variant: "soft",
     size: "2",
-    // @ts-expect-error: for illustration purposes, can be boolean
     onCopy: false,
-    // @ts-expect-error: for illustration purposes, can be boolean
     onRemove: false,
   },
 };

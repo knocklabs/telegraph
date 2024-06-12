@@ -1,25 +1,22 @@
 import {
   OptionalAsPropConfig,
-  PolymorphicPropsWithTgphRef,
+  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
+import { Box } from "@telegraph/layout";
 import clsx from "clsx";
 
 import { CODE_PROPS } from "./Code.constants";
 
 type BaseCodeProps = {
-  as: "span" | "div" | "pre" | "code";
   size?: keyof typeof CODE_PROPS.size;
   weight?: keyof typeof CODE_PROPS.weight;
   variant?: keyof typeof CODE_PROPS.variant;
   color?: keyof typeof CODE_PROPS.variant.soft;
 };
 
-type CodeProps<T extends TgphElement> = Omit<
-  PolymorphicPropsWithTgphRef<T, HTMLElement>,
-  keyof BaseCodeProps
-> &
-  BaseCodeProps &
+type CodeProps<T extends TgphElement> = BaseCodeProps &
+  Omit<TgphComponentProps<typeof Box<T>>, keyof BaseCodeProps> &
   OptionalAsPropConfig<T>;
 
 const Code = <T extends TgphElement>({
@@ -29,24 +26,26 @@ const Code = <T extends TgphElement>({
   variant = "soft",
   color = "default",
   className,
-  tgphRef,
   // Remove this from props to avoid passing to DOM element
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: CodeProps<T>) => {
   if (!as) throw new Error("as prop is required");
-  const Component: TgphElement = as;
   return (
-    <Component
+    <Box
+      as={as as TgphElement}
       className={clsx(
-        "m-0 box-border font-mono px-1 rounded-1",
+        "box-border font-mono",
         color && CODE_PROPS.variant[variant][color],
         size && CODE_PROPS.size[size],
         weight && CODE_PROPS.weight[weight],
         className,
       )}
-      ref={tgphRef}
+      display="inline"
+      m="0"
+      px="1"
+      rounded="1"
       {...props}
     />
   );
