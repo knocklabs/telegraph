@@ -1,5 +1,6 @@
 import type t from "@telegraph/tokens";
 import type flattenedTokens from "@telegraph/tokens/flattened-css-variables-map";
+import type React from "react";
 
 import { Responsive } from "../helpers/breakpoints";
 
@@ -29,4 +30,11 @@ type RoundedProps = {
   [key in RoundedProp]?: Responsive<`${keyof typeof t.tokens.rounded}`>;
 };
 
-export type BoxPropsTokens = SpacingProps & ColorProps & RoundedProps;
+type DisplayProps = {
+  display?: Responsive<React.CSSProperties["display"]>;
+};
+
+export type BoxPropsTokens = SpacingProps &
+  ColorProps &
+  RoundedProps &
+  DisplayProps;

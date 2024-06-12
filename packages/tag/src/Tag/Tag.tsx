@@ -1,4 +1,5 @@
 import { Button as TelegraphButton } from "@telegraph/button";
+import { useComposedRefs } from "@telegraph/compose-refs";
 import type {
   PolymorphicProps,
   PolymorphicPropsWithTgphRef,
@@ -7,9 +8,10 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import { COLOR, SIZE } from "./Tag.constants";
@@ -24,7 +26,7 @@ type RootProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
   T,
   HTMLSpanElement
 > &
-  TgphComponentProps<typeof Box> &
+  TgphComponentProps<typeof Stack> &
   RootBaseProps;
 
 const TagContext = React.createContext<Required<RootBaseProps>>({
@@ -43,14 +45,13 @@ const Root = <T extends TgphElement>({
 }: RootProps<T>) => {
   return (
     <TagContext.Provider value={{ size, color, variant }}>
-      <Box
+      <Stack
         as={as}
-        className={clsx(
-          "inline-flex items-center rounded-3 pl-2",
-          SIZE.Root[size],
-          COLOR.Root[variant][color],
-          className,
-        )}
+        display="inline-flex"
+        align="center"
+        rounded="3"
+        pl="2"
+        className={clsx(SIZE.Root[size], COLOR.Root[variant][color], className)}
         {...props}
         data-tag
       />
@@ -67,7 +68,6 @@ type TextProps<T extends TgphElement> = Omit<
 
 const Text = <T extends TgphElement>({
   as = "span" as T,
-  className,
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(TagContext);
@@ -76,7 +76,7 @@ const Text = <T extends TgphElement>({
       as={as}
       size={context.size}
       color={COLOR.Text[context.variant][context.color]}
-      className={clsx("rounded-tl-0 rounded-bl-0 mr-2", className)}
+      mr="2"
       {...props}
     />
   );
@@ -84,6 +84,89 @@ const Text = <T extends TgphElement>({
 type ButtonProps<T extends TgphElement> = TgphComponentProps<
   typeof TelegraphButton<T>
 >;
+
+type CopyButtonProps = TgphComponentProps<typeof TelegraphButton.Root> & {
+  textToCopy?: string;
+};
+
+const CopyButton = ({
+  onClick,
+  textToCopy,
+  className,
+  tgphRef,
+  ...props
+}: CopyButtonProps) => {
+  const context = React.useContext(TagContext);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const composedRef = useComposedRefs(tgphRef, buttonRef);
+
+  const [copied, setCopied] = React.useState(false);
+  const [buttonHeight, setButtonHeight] = React.useState(0);
+
+  React.useEffect(() => {
+    if (copied) {
+      const timeout = setTimeout(() => setCopied(false), 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [copied]);
+
+  // Use button height to calculate the offset of the icon animation
+  React.useEffect(() => {
+    if (buttonRef?.current) {
+      const buttonHeight = buttonRef.current.getBoundingClientRect().height;
+      setButtonHeight(buttonHeight - buttonHeight / 4);
+    }
+  }, [buttonRef]);
+
+  // TODO: Add tooltip upon completion of KNO-5405
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <TelegraphButton.Root
+        onClick={(event: MouseEvent) => {
+          // Still run onClick incase the consumer wants to do something else
+          onClick?.(event);
+          setCopied(true);
+          textToCopy && navigator.clipboard.writeText(textToCopy);
+          buttonRef.current?.blur();
+        }}
+        size={context.size}
+        color={COLOR.Button[context.variant][context.color]}
+        variant={context.variant}
+        className={clsx("overflow-hidden", className)}
+        roundedTopRight="3"
+        roundedBottomRight="3"
+        roundedTopLeft="0"
+        roundedBottomLeft="0"
+        tgphRef={composedRef}
+        {...props}
+      >
+        {copied ? (
+          <TelegraphButton.Icon
+            as={motion.span}
+            initial={{ y: buttonHeight }}
+            animate={{ y: 0 }}
+            exit={{ y: buttonHeight }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            icon={Lucide.Check}
+            alt="Copied text"
+            key={"check icon"}
+          />
+        ) : (
+          <TelegraphButton.Icon
+            as={motion.span}
+            initial={{ y: -buttonHeight }}
+            animate={{ y: 0 }}
+            exit={{ y: -buttonHeight }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            icon={Lucide.Copy}
+            alt="Copy text"
+            key={"copy icon"}
+          />
+        )}
+      </TelegraphButton.Root>
+    </AnimatePresence>
+  );
+};
 
 const Button = <T extends TgphElement>({
   className,
@@ -129,9 +212,17 @@ const Icon = <T extends TgphElement>({
 type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root> & {
     icon?: React.ComponentProps<typeof TelegraphIcon>;
-    onCopy?: () => void;
     onRemove?: () => void;
-  };
+  } & ( // Optionally allow textToCopy only when onCopy is defined
+    | {
+        onCopy: () => void;
+        textToCopy?: string;
+      }
+    | {
+        onCopy?: never;
+        textToCopy?: never;
+      }
+  );
 
 const Default = <T extends TgphElement>({
   color = "default",
@@ -140,6 +231,7 @@ const Default = <T extends TgphElement>({
   icon,
   onRemove,
   onCopy,
+  textToCopy,
   children,
   ...props
 }: DefaultProps<T>) => {
@@ -150,12 +242,7 @@ const Default = <T extends TgphElement>({
       {onRemove && (
         <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
       )}
-      {onCopy && (
-        <Button
-          onClick={onCopy}
-          icon={{ icon: Lucide.Copy, alt: "Copy text" }}
-        />
-      )}
+      {onCopy && <CopyButton onClick={onCopy} textToCopy={textToCopy} />}
     </Root>
   );
 };
@@ -165,6 +252,7 @@ Object.assign(Default, {
   Button,
   Text,
   Icon,
+  CopyButton,
 });
 
 const Tag = Default as typeof Default & {
@@ -172,6 +260,7 @@ const Tag = Default as typeof Default & {
   Button: typeof Button;
   Text: typeof Text;
   Icon: typeof Icon;
+  CopyButton: typeof CopyButton;
 };
 
 export { Tag };

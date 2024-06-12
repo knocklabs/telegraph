@@ -65,7 +65,7 @@ const Stack = <T extends TgphElement>({
   return (
     <Box
       className={clsx("tgph-stack", className)}
-      ref={composedRef}
+      tgphRef={composedRef}
       {...filteredProps.rest}
     />
   );

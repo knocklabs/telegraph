@@ -1,23 +1,21 @@
 import {
   OptionalAsPropConfig,
-  PolymorphicPropsWithTgphRef,
+  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
+import { Box } from "@telegraph/layout";
 import clsx from "clsx";
 
 import { alignMap, colorMap, sizeMap } from "../helpers/prop-mappings";
 
 type BaseHeadingProps = {
-  as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   align?: keyof typeof alignMap;
   size?: keyof typeof sizeMap;
   color?: keyof typeof colorMap;
 };
-type HeadingProps<T extends TgphElement> = Omit<
-  PolymorphicPropsWithTgphRef<T, HTMLElement>,
-  keyof BaseHeadingProps
-> &
-  BaseHeadingProps &
+
+type HeadingProps<T extends TgphElement> = BaseHeadingProps &
+  Omit<TgphComponentProps<typeof Box<T>>, keyof BaseHeadingProps> &
   OptionalAsPropConfig<T>;
 
 const Heading = <T extends TgphElement>({
@@ -26,24 +24,24 @@ const Heading = <T extends TgphElement>({
   size = "2",
   align,
   className,
-  tgphRef,
   // Remove this from props to avoid passing to DOM element
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: HeadingProps<T>) => {
   if (!as) throw new Error("as prop is required");
-  const Component: TgphElement = as;
   return (
-    <Component
+    <Box
+      as={as as TgphElement}
       className={clsx(
-        "m-0 box-border font-semi-bold",
+        "box-border font-semi-bold",
         align && alignMap[align],
         color && colorMap[color],
         size && sizeMap[size],
         className,
       )}
-      ref={tgphRef}
+      display="inline"
+      m="0"
       {...props}
     />
   );

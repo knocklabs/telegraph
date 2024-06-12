@@ -6,7 +6,7 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
 import React from "react";
@@ -34,11 +34,11 @@ type InternalProps = {
   color: Required<RootBaseProps>["color"] | "disabled";
 };
 
-type RootProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
-  T,
-  HTMLButtonElement
+type RootProps<T extends TgphElement> = Omit<
+  TgphComponentProps<typeof Stack>,
+  "tgphRef"
 > &
-  TgphComponentProps<typeof Box> &
+  PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
   RootBaseProps;
 
 const ButtonContext = React.createContext<
@@ -87,16 +87,20 @@ const Root = <T extends TgphElement>({
     <ButtonContext.Provider
       value={{ variant, size, color, state, layout, active }}
     >
-      <Box
+      <Stack
         as={as || "button"}
         className={clsx(
           "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
-          "inline-flex items-center justify-center rounded-3 transition-colors no-underline",
+          "transition-colors no-underline",
           state === "disabled" && "cursor-not-allowed",
           buttonColorMap[variant][color],
           buttonSizeMap[layout][size],
           className,
         )}
+        display="inline-flex"
+        align="center"
+        justify="center"
+        rounded="3"
         data-tgph-button
         data-tgph-button-layout={layout}
         data-tgph-button-active={active}

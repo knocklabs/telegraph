@@ -1,8 +1,9 @@
 import {
   OptionalAsPropConfig,
-  PolymorphicPropsWithTgphRef,
+  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
+import { Box } from "@telegraph/layout";
 import clsx from "clsx";
 
 import {
@@ -19,11 +20,8 @@ type BaseTextProps = {
   weight?: keyof typeof weightMap;
 };
 
-type TextProps<T extends TgphElement> = Omit<
-  PolymorphicPropsWithTgphRef<T, HTMLElement>,
-  keyof BaseTextProps
-> &
-  BaseTextProps &
+type TextProps<T extends TgphElement> = BaseTextProps &
+  Omit<TgphComponentProps<typeof Box<T>>, keyof BaseTextProps> &
   OptionalAsPropConfig<T>;
 
 const Text = <T extends TgphElement>({
@@ -33,24 +31,24 @@ const Text = <T extends TgphElement>({
   weight = "regular",
   align,
   className,
-  tgphRef,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: TextProps<T>) => {
   if (!as) throw new Error("as prop is required");
-  const Component: TgphElement = as;
   return (
-    <Component
+    <Box
+      as={as as TgphElement}
       className={clsx(
-        "m-0 box-border",
+        "box-border",
         align && alignMap[align],
         color && colorMap[color],
         size && sizeMap[size],
         weight && weightMap[weight],
         className,
       )}
-      ref={tgphRef}
+      display="inline"
+      m="0"
       {...props}
     />
   );
