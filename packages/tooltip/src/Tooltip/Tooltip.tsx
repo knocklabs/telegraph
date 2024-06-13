@@ -1,6 +1,10 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 import { InvertedAppearance } from "@telegraph/appearance";
-import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
+import {
+  RefToTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+} from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { motion } from "framer-motion";
@@ -24,7 +28,6 @@ const Tooltip = <T extends TgphElement>({
   delayDuration = 0,
   skipDelayDuration,
   disableHoverableContent,
-  triggerAsChild,
   // Radix Tooltip Root Props
   defaultOpen,
   open,
@@ -86,8 +89,8 @@ const Tooltip = <T extends TgphElement>({
         open={open}
         onOpenChange={onOpenChange}
       >
-        <RadixTooltip.Trigger asChild={triggerAsChild}>
-          {children}
+        <RadixTooltip.Trigger asChild={true}>
+          <RefToTgphRef>{children}</RefToTgphRef>
         </RadixTooltip.Trigger>
         <RadixTooltip.Portal>
           <InvertedAppearance asChild>
