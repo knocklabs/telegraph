@@ -123,7 +123,7 @@ const main = async (funcArgs) => {
     );
     const [breakpointTokens] = tokensToCss(tgph.tokens, "breakpoint");
 
-    const defaultCss = `:root {${lightTokens} ${tokens} @media (prefers-color-scheme: dark) {${darkTokens}}}`;
+    const defaultCss = `:root {${tokens}} [data-tgph-appearance="light"]{${lightTokens}} [data-tgph-appearance="dark"]{${darkTokens}}`;
     const lightCss = `:root {${lightTokens} ${tokens} }`;
     const darkCss = `:root {${darkTokens} ${tokens} }`;
     const breakpointCss = `${breakpointTokens}`;

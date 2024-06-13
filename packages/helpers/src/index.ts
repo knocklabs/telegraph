@@ -9,3 +9,5 @@ export type {
   TgphComponentProps,
   OptionalAsPropConfig,
 } from "./types/utility";
+
+export { RefToTgphRef } from "./components/RefToTgphRef";
