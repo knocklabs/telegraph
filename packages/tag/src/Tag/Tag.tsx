@@ -115,7 +115,7 @@ const CopyButton = ({
             onClick?.(event);
             setCopied(true);
             textToCopy && navigator.clipboard.writeText(textToCopy);
-            buttonRef.current?.blur();
+            event.target?.blur();
           }}
           size={context.size}
           color={COLOR.Button[context.variant][context.color]}
@@ -125,7 +125,6 @@ const CopyButton = ({
           roundedBottomRight="3"
           roundedTopLeft="0"
           roundedBottomLeft="0"
-          mr="8"
           {...props}
         >
           {copied ? (
