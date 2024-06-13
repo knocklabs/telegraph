@@ -13,7 +13,6 @@ import React from "react";
 type TooltipBaseProps<T extends TgphElement> = {
   label: string | React.ReactNode;
   labelProps?: TgphComponentProps<typeof Box<T>>;
-  triggerAsChild?: boolean;
 };
 
 type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
