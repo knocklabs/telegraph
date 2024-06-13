@@ -5453,6 +5453,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@radix-ui/react-slot": "npm:^1.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
