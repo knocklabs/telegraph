@@ -107,6 +107,9 @@ const Tooltip = <T extends TgphElement>({
             arrowPadding={arrowPadding}
             sticky={sticky}
             hideWhenDetached={hideWhenDetached}
+            style={{
+                zIndex: `var(--tgph-zIndex-tooltip)`,
+            }}
           >
             <InvertedAppearance>
               <Stack
