@@ -92,23 +92,23 @@ const Tooltip = <T extends TgphElement>({
           <RefToTgphRef>{children}</RefToTgphRef>
         </RadixTooltip.Trigger>
         <RadixTooltip.Portal>
-          <InvertedAppearance asChild>
-            <RadixTooltip.Content
-              aria-label={ariaLabel}
-              onEscapeKeyDown={onEscapeKeyDown}
-              onPointerDownOutside={onPointerDownOutside}
-              forceMount={forceMount}
-              side={side}
-              sideOffset={sideOffset}
-              align={align}
-              alignOffset={alignOffset}
-              avoidCollisions={avoidCollisions}
-              collisionBoundary={collisionBoundary}
-              collisionPadding={collisionPadding}
-              arrowPadding={arrowPadding}
-              sticky={sticky}
-              hideWhenDetached={hideWhenDetached}
-            >
+          <RadixTooltip.Content
+            aria-label={ariaLabel}
+            onEscapeKeyDown={onEscapeKeyDown}
+            onPointerDownOutside={onPointerDownOutside}
+            forceMount={forceMount}
+            side={side}
+            sideOffset={sideOffset}
+            align={align}
+            alignOffset={alignOffset}
+            avoidCollisions={avoidCollisions}
+            collisionBoundary={collisionBoundary}
+            collisionPadding={collisionPadding}
+            arrowPadding={arrowPadding}
+            sticky={sticky}
+            hideWhenDetached={hideWhenDetached}
+          >
+            <InvertedAppearance>
               <Stack
                 as={motion.div}
                 // Add tgph class so that this always works in portals
@@ -146,8 +146,8 @@ const Tooltip = <T extends TgphElement>({
                   label
                 )}
               </Stack>
-            </RadixTooltip.Content>
-          </InvertedAppearance>
+            </InvertedAppearance>
+          </RadixTooltip.Content>
         </RadixTooltip.Portal>
       </RadixTooltip.Root>
     </RadixTooltip.Provider>

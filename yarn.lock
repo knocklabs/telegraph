@@ -5672,6 +5672,7 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/tooltip": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
@@ -5724,7 +5725,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/tooltip@workspace:packages/tooltip":
+"@telegraph/tooltip@workspace:^, @telegraph/tooltip@workspace:packages/tooltip":
   version: 0.0.0-use.local
   resolution: "@telegraph/tooltip@workspace:packages/tooltip"
   dependencies:

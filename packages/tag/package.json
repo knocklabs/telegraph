@@ -38,6 +38,7 @@
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
+    "@telegraph/tooltip": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.0",
     "framer-motion": "^11.1.9"
