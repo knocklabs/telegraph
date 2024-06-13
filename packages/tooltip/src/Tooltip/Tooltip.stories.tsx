@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
+import { Stack } from "@telegraph/layout";
 
 import { Tooltip as TelegraphTooltip } from "./Tooltip";
 
@@ -41,9 +42,11 @@ type Story = StoryObj<TgphComponentProps<typeof TelegraphTooltip>>;
 export const Default: Story = {
   render: ({ ...args }) => {
     return (
-      <TelegraphTooltip {...args}>
-        <Button color="blue">Hover me</Button>
-      </TelegraphTooltip>
+      <Stack w="full" my="10" align="center" justify="center">
+        <TelegraphTooltip {...args}>
+          <Button color="blue">Hover me</Button>
+        </TelegraphTooltip>
+      </Stack>
     );
   },
 };

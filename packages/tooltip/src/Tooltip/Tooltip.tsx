@@ -5,14 +5,14 @@ import {
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { motion } from "framer-motion";
 import React from "react";
 
 type TooltipBaseProps<T extends TgphElement> = {
   label: string | React.ReactNode;
-  labelProps?: TgphComponentProps<typeof Box<T>>;
+  labelProps?: TgphComponentProps<typeof Stack<T>>;
 };
 
 type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
@@ -46,7 +46,7 @@ const Tooltip = <T extends TgphElement>({
   arrowPadding,
   sticky,
   hideWhenDetached,
-  // Box Props
+  // Label Props
   label,
   labelProps,
   children,
@@ -109,7 +109,7 @@ const Tooltip = <T extends TgphElement>({
               sticky={sticky}
               hideWhenDetached={hideWhenDetached}
             >
-              <Box
+              <Stack
                 as={motion.div}
                 // Add tgph class so that this always works in portals
                 className="tgph"
@@ -129,6 +129,8 @@ const Tooltip = <T extends TgphElement>({
                 rounded="3"
                 py="2"
                 px="3"
+                align="center"
+                justify="center"
                 style={{
                   transformOrigin:
                     "var(--radix-tooltip-content-transform-origin)",
@@ -143,7 +145,7 @@ const Tooltip = <T extends TgphElement>({
                 ) : (
                   label
                 )}
-              </Box>
+              </Stack>
             </RadixTooltip.Content>
           </InvertedAppearance>
         </RadixTooltip.Portal>
