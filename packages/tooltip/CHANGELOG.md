@@ -1,5 +1,11 @@
 # @telegraph/tooltip
 
+## 0.0.2
+
+### Patch Changes
+
+- [#128](https://github.com/knocklabs/telegraph/pull/128) [`0d709cc`](https://github.com/knocklabs/telegraph/commit/0d709cca3708aa976daa78added35260e9c02834) Thanks [@kylemcd](https://github.com/kylemcd)! - adds tooltip to copy button + fixes small fixes
+
 ## 0.0.1
 
 ### Patch Changes
