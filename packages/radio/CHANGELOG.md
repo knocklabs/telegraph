@@ -1,5 +1,18 @@
 # @telegraph/radio
 
+## 0.0.5
+
+### Patch Changes
+
+- [#124](https://github.com/knocklabs/telegraph/pull/124) [`def3d89`](https://github.com/knocklabs/telegraph/commit/def3d89056aa54c0d24f74e33bc04df8efc712d9) Thanks [@kylemcd](https://github.com/kylemcd)! - better ts support for as prop with custom tgphRef
+
+- Updated dependencies [[`04e1459`](https://github.com/knocklabs/telegraph/commit/04e14597ed2148354923023b3668f63387ce63c4), [`def3d89`](https://github.com/knocklabs/telegraph/commit/def3d89056aa54c0d24f74e33bc04df8efc712d9), [`790c5e0`](https://github.com/knocklabs/telegraph/commit/790c5e0626c9b99451214f892def9807165d9572)]:
+  - @telegraph/typography@0.0.11
+  - @telegraph/button@0.0.20
+  - @telegraph/layout@0.0.12
+  - @telegraph/helpers@0.0.2
+  - @telegraph/icon@0.0.12
+
 ## 0.0.4
 
 ### Patch Changes
