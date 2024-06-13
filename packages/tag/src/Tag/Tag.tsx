@@ -1,5 +1,4 @@
 import { Button as TelegraphButton } from "@telegraph/button";
-import { useComposedRefs } from "@telegraph/compose-refs";
 import type {
   PolymorphicProps,
   PolymorphicPropsWithTgphRef,
@@ -9,6 +8,7 @@ import type {
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
@@ -93,15 +93,11 @@ const CopyButton = ({
   onClick,
   textToCopy,
   className,
-  tgphRef,
   ...props
 }: CopyButtonProps) => {
   const context = React.useContext(TagContext);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const composedRef = useComposedRefs(tgphRef, buttonRef);
 
   const [copied, setCopied] = React.useState(false);
-  const [buttonHeight, setButtonHeight] = React.useState(0);
 
   React.useEffect(() => {
     if (copied) {
@@ -110,60 +106,53 @@ const CopyButton = ({
     }
   }, [copied]);
 
-  // Use button height to calculate the offset of the icon animation
-  React.useEffect(() => {
-    if (buttonRef?.current) {
-      const buttonHeight = buttonRef.current.getBoundingClientRect().height;
-      setButtonHeight(buttonHeight - buttonHeight / 4);
-    }
-  }, [buttonRef]);
-
-  // TODO: Add tooltip upon completion of KNO-5405
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <TelegraphButton.Root
-        onClick={(event: MouseEvent) => {
-          // Still run onClick incase the consumer wants to do something else
-          onClick?.(event);
-          setCopied(true);
-          textToCopy && navigator.clipboard.writeText(textToCopy);
-          buttonRef.current?.blur();
-        }}
-        size={context.size}
-        color={COLOR.Button[context.variant][context.color]}
-        variant={context.variant}
-        className={clsx("overflow-hidden", className)}
-        roundedTopRight="3"
-        roundedBottomRight="3"
-        roundedTopLeft="0"
-        roundedBottomLeft="0"
-        tgphRef={composedRef}
-        {...props}
-      >
-        {copied ? (
-          <TelegraphButton.Icon
-            as={motion.span}
-            initial={{ y: buttonHeight }}
-            animate={{ y: 0 }}
-            exit={{ y: buttonHeight }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-            icon={Lucide.Check}
-            alt="Copied text"
-            key={"check icon"}
-          />
-        ) : (
-          <TelegraphButton.Icon
-            as={motion.span}
-            initial={{ y: -buttonHeight }}
-            animate={{ y: 0 }}
-            exit={{ y: -buttonHeight }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-            icon={Lucide.Copy}
-            alt="Copy text"
-            key={"copy icon"}
-          />
-        )}
-      </TelegraphButton.Root>
+      <Tooltip label="Copy text">
+        <TelegraphButton.Root
+          onClick={(event: MouseEvent) => {
+            // Still run onClick incase the consumer wants to do something else
+            onClick?.(event);
+            setCopied(true);
+            textToCopy && navigator.clipboard.writeText(textToCopy);
+            buttonRef.current?.blur();
+          }}
+          size={context.size}
+          color={COLOR.Button[context.variant][context.color]}
+          variant={context.variant}
+          className={clsx("overflow-hidden", className)}
+          roundedTopRight="3"
+          roundedBottomRight="3"
+          roundedTopLeft="0"
+          roundedBottomLeft="0"
+          mr="8"
+          {...props}
+        >
+          {copied ? (
+            <TelegraphButton.Icon
+              as={motion.span}
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+              icon={Lucide.Check}
+              alt="Copied text"
+              key={"check icon"}
+            />
+          ) : (
+            <TelegraphButton.Icon
+              as={motion.span}
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+              icon={Lucide.Copy}
+              alt="Copy text"
+              key={"copy icon"}
+            />
+          )}
+        </TelegraphButton.Root>
+      </Tooltip>
     </AnimatePresence>
   );
 };
