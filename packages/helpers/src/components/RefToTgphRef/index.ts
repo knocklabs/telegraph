@@ -1,1 +1,1 @@
-export { RefToTgphRef} from './RefToTgphRef'
+export { RefToTgphRef } from "./RefToTgphRef";
