@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.21
+
+### Patch Changes
+
+- [`2c8206f`](https://github.com/knocklabs/telegraph/commit/2c8206f4f5e8850c0a64eee578fad8cf0b0d7634) Thanks [@kylemcd](https://github.com/kylemcd)! - fix ghost active state
+
 ## 0.0.20
 
 ### Patch Changes
