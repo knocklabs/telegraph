@@ -42,17 +42,17 @@ export const buttonColorMap = {
     disabled: "bg-gray-2",
   },
   ghost: {
-    gray: "bg-transparent hover:bg-gray-3 focus:bg-gray-4 [&data-[tgph-button-active=true]]:!bg-gray-4 [&data-[tgph-button-active=true]>span]:!text-gray-12",
-    red: "bg-transparent hover:bg-red-3 focus:bg-red-4 [&data-[tgph-button-active=true]]:!bg-red-4",
+    gray: "bg-transparent hover:bg-gray-3 focus:bg-gray-4 data-[tgph-button-active=true]:!bg-gray-4 [&data-[tgph-button-active=true]>span]:!text-gray-12",
+    red: "bg-transparent hover:bg-red-3 focus:bg-red-4 data-[tgph-button-active=true]:!bg-red-4",
     accent:
-      "bg-transparent hover:bg-accent-3 focus:bg-accent-4 [&data-[tgph-button-active=true]]:!bg-accent-4",
+      "bg-transparent hover:bg-accent-3 focus:bg-accent-4 data-[tgph-button-active=true]:!bg-accent-4",
     green:
-      "bg-transparent hover:bg-green-3 focus:bg-green-4 [&data-[tgph-button-active=true]]:!bg-green-4",
-    blue: "bg-transparent hover:bg-blue-3 focus:bg-blue-4 [&data-[tgph-button-active=true]]:!bg-blue-4",
+      "bg-transparent hover:bg-green-3 focus:bg-green-4 data-[tgph-button-active=true]:!bg-green-4",
+    blue: "bg-transparent hover:bg-blue-3 focus:bg-blue-4 data-[tgph-button-active=true]:!bg-blue-4",
     yellow:
-      "bg-transparent hover:bg-yellow-3 focus:bg-yellow-4 [&data-[tgph-button-active=true]]:!bg-yellow-4",
+      "bg-transparent hover:bg-yellow-3 focus:bg-yellow-4 data-[tgph-button-active=true]:!bg-yellow-4",
     purple:
-      "bg-transparent hover:bg-purple-3 focus:bg-purple-4 [&data-[tgph-button-active=true]]:!bg-purple-4",
+      "bg-transparent hover:bg-purple-3 focus:bg-purple-4 data-[tgph-button-active=true]:!bg-purple-4",
     disabled: "bg-transparent",
   },
 } as const;
