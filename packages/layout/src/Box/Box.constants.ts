@@ -199,4 +199,8 @@ export const BOX_PROPS = {
     type: "border-style",
     default: "solid",
   },
+  shadow: {
+    rule: "box-shadow",
+    type: "shadow",
+  },
 } as const;

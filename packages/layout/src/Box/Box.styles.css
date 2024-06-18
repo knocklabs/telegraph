@@ -1,7 +1,8 @@
 .tgph-box {
   display: var(--tgph-display, block);
   padding: var(--tgph-padding);
-  margin: var(--tgph-margin);
+  /* Tailwind css reset overrides this, so we need important specificity */
+  margin: var(--tgph-margin) !important;
   background-color: var(--tgph-background-color);
   border-radius: var(--tgph-border-radius);
   border-width: var(--tgph-border-width, 0);
@@ -12,6 +13,7 @@
   max-width: var(--tgph-max-width, auto);
   max-height: var(--tgph-max-height, auto);
   border-style: var(--tgph-border-style, var(--tgph-border-style-solid, solid));
+  box-shadow: var(--tgph-box-shadow, none);
 }
 
 .tgph-box {
@@ -27,6 +29,7 @@
   --tgph-max-width: var(--tgph-max-width);
   --tgph-max-height: var(--tgph-max-height);
   --tgph-border-style: var(--tgph-border-style);
+  --tgph-box-shadow: var(--tgph-box-shadow);
 }
 
 @media (--tgph-breakpoint-md) {
@@ -43,6 +46,7 @@
     --tgph-max-width: var(--tgph-max-width-md);
     --tgph-max-height: var(--tgph-max-height-md);
     --tgph-border-style: var(--tgph-border-style-md);
+    --tgph-box-shadow: var(--tgph-box-shadow-md);
   }
 }
 
@@ -60,6 +64,7 @@
     --tgph-max-width: var(--tgph-max-width-lg);
     --tgph-max-height: var(--tgph-max-height-lg);
     --tgph-border-style: var(--tgph-border-style-lg);
+    --tgph-box-shadow: var(--tgph-box-shadow-lg);
   }
 }
 
@@ -77,6 +82,7 @@
     --tgph-max-width: var(--tgph-max-width-xl);
     --tgph-max-height: var(--tgph-max-height-xl);
     --tgph-border-style: var(--tgph-border-style-xl);
+    --tgph-box-shadow: var(--tgph-box-shadow-xl);
   }
 }
 
@@ -94,5 +100,6 @@
     --tgph-max-width: var(--tgph-max-width-2xl);
     --tgph-max-height: var(--tgph-max-height-2xl);
     --tgph-border-style: var(--tgph-border-style-2xl);
+    --tgph-box-shadow: var(--tgph-box-shadow-2xl);
   }
 }
