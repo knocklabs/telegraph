@@ -36,10 +36,10 @@
   },
   "dependencies": {
     "@radix-ui/react-menu": "^2.0.6",
-    "@telegraph/button": "^workspace:^",
-    "@telegraph/helpers": "^workspace:^",
-    "@telegraph/icon": "^workspace:^",
-    "@telegraph/layout": "^workspace:^"
+    "@telegraph/button": "workspace:^",
+    "@telegraph/helpers": "workspace:^",
+    "@telegraph/icon": "workspace:^",
+    "@telegraph/layout": "workspace:^"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
