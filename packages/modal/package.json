@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/modal",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/modal",
   "author": "@knocklabs",
   "license": "MIT",
