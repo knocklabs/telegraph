@@ -19,6 +19,7 @@ export const Default: Story = {
   render: ({ ...args }) => {
     return (
       <TelegraphMenu.Root {...args}>
+      <TelegraphMenu.Anchor/>
         <TelegraphMenu.Content m="20">
           <TelegraphMenu.Button
             leadingIcon={{ icon: Lucide.Cog, "aria-hidden": true }}

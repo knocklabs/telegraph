@@ -13,7 +13,7 @@ type RootProps = React.ComponentProps<typeof RadixMenu.Root>;
 
 const Root = ({
   open = true,
-  onOpenChange = () => {},
+  onOpenChange = () => { },
   modal = true,
   children,
   ...props
@@ -25,10 +25,17 @@ const Root = ({
       modal={modal}
       {...props}
     >
-      <RadixMenu.Anchor style={{ display: "none" }} />
       {children}
     </RadixMenu.Root>
   );
+};
+
+type Anchor = React.ComponentProps<typeof RadixMenu.Anchor> & {
+  tgphRef?: React.LegacyRef<HTMLDivElement>;
+};
+
+const Anchor = ({ tgphRef, ...props }: Anchor) => {
+  return <RadixMenu.Anchor {...props} ref={tgphRef} />;
 };
 
 type ContentProps = React.ComponentProps<typeof RadixMenu.Content> &
@@ -44,10 +51,20 @@ const Content = ({
   border = true,
   shadow = "2",
   children,
+  onInteractOutside,
+  onKeyDown,
+  onCloseAutoFocus,
+  tgphRef,
   ...props
 }: ContentProps) => {
   return (
-    <RadixMenu.Content {...props} asChild>
+    <RadixMenu.Content
+      onInteractOutside={onInteractOutside}
+      onKeyDown={onKeyDown}
+      onCloseAutoFocus={onCloseAutoFocus}
+      asChild
+      ref={tgphRef}
+    >
       <RefToTgphRef>
         <Stack
           direction={direction}
@@ -56,6 +73,11 @@ const Content = ({
           border={border}
           py={py}
           shadow={shadow}
+
+          style={{
+            overflowY: "auto",
+
+          }}
           {...props}
         >
           {children}
@@ -81,13 +103,10 @@ const Button = <T extends TgphElement>({
   leadingIcon,
   trailingIcon,
   selected,
+  "aria-activedescendant": ariaActivedescendant,
   ...props
 }: ButtonProps<T>) => {
-  const combinedLeadingIcon = selected
-    ? ({ icon: Lucide.Check, "aria-hidden": true } as TgphComponentProps<
-        typeof TelegraphButton.Icon
-      >)
-    : leadingIcon || icon;
+  const combinedLeadingIcon = leadingIcon || icon;
 
   return (
     <RadixMenu.Item {...props} asChild>
@@ -96,11 +115,31 @@ const Button = <T extends TgphElement>({
           variant={variant}
           size={size}
           mx={mx}
-          {...props}
+          data-focused={ariaActivedescendant === "true" ? "" : undefined}
+          aria-activedescendant={ariaActivedescendant}
           data-tgph-menu-button
+          style={{
+            flexShrink: 0,
+          }}
         >
           <Stack align="center" justify="space-between" gap="3" w="full">
             <Stack gap="3" align="center">
+              {selected === true || selected === false ? (
+                selected === true ? (
+                  <TelegraphButton.Icon
+                    variant="primary"
+                    icon={Lucide.Check}
+                    aria-hidden={true}
+                  />
+                ) : (
+                  <TelegraphButton.Icon
+                    variant="primary"
+                    icon={Lucide.Check}
+                    aria-hidden={true}
+                    style={{ opacity: 0 }}
+                  />
+                )
+              ) : null}
               {combinedLeadingIcon && (
                 <TelegraphButton.Icon
                   variant="primary"
@@ -129,6 +168,7 @@ const Divider = ({
 
 const Menu = {} as {
   Root: typeof Root;
+  Anchor: typeof Anchor;
   Content: typeof Content;
   Button: typeof Button;
   Divider: typeof Divider;
@@ -141,6 +181,7 @@ Divider.displayName = "Menu.Divider";
 
 Object.assign(Menu, {
   Root,
+  Anchor,
   Content,
   Button,
   Divider,

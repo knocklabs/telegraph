@@ -4179,6 +4179,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-use-callback-ref@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@radix-ui/react-use-callback-ref@npm:1.1.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/e954863f3baa151faf89ac052a5468b42650efca924417470efd1bd254b411a94c69c30de2fdbb90187b38cb984795978e12e30423dc41e4309d93d53b66d819
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-use-controllable-state@npm:1.0.1":
   version: 1.0.1
   resolution: "@radix-ui/react-use-controllable-state@npm:1.0.1"
@@ -4192,6 +4205,21 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/29b069dbf09e48bca321af6272574ad0fc7283174e7d092731a10663fe00c0e6b4bde5e1b5ea67725fe48dcbe8026e7ff0d69d42891c62cbb9ca408498171fbe
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-use-controllable-state@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@radix-ui/react-use-controllable-state@npm:1.1.0"
+  dependencies:
+    "@radix-ui/react-use-callback-ref": "npm:1.1.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/2af883b5b25822ac226e60a6bfde647c0123a76345052a90219026059b3f7225844b2c13a9a16fba859c1cda5fb3d057f2a04503f71780e607516492db4eb3a1
   languageName: node
   linkType: hard
 
@@ -5464,6 +5492,37 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/combobox@workspace:packages/combobox":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/combobox@workspace:packages/combobox"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@radix-ui/react-use-controllable-state": "npm:^1.1.0"
+    "@telegraph/compose-refs": "workspace:^"
+    "@telegraph/helpers": "workspace:^"
+    "@telegraph/icon": "workspace:^"
+    "@telegraph/input": "workspace:^"
+    "@telegraph/menu": "workspace:^"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@telegraph/vitest-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    eslint: "npm:^8.56.0"
+    framer-motion: "npm:^11.1.9"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.3.0"
+    vitest: "npm:^1.2.2"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/compose-refs@workspace:^, @telegraph/compose-refs@workspace:packages/compose-refs":
   version: 0.0.0-use.local
   resolution: "@telegraph/compose-refs@workspace:packages/compose-refs"
@@ -5532,7 +5591,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/input@workspace:packages/input":
+"@telegraph/input@workspace:^, @telegraph/input@workspace:packages/input":
   version: 0.0.0-use.local
   resolution: "@telegraph/input@workspace:packages/input"
   dependencies:
@@ -5589,7 +5648,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/menu@workspace:packages/menu":
+"@telegraph/menu@workspace:^, @telegraph/menu@workspace:packages/menu":
   version: 0.0.0-use.local
   resolution: "@telegraph/menu@workspace:packages/menu"
   dependencies:
