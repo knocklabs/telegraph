@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.12
+
+### Patch Changes
+
+- [#136](https://github.com/knocklabs/telegraph/pull/136) [`89ad0f4`](https://github.com/knocklabs/telegraph/commit/89ad0f4b72a3d5e4f60dfda2a7352da1117e69cc) Thanks [@kylemcd](https://github.com/kylemcd)! - fix modal not being able to scroll
+
 ## 0.0.11
 
 ### Patch Changes
