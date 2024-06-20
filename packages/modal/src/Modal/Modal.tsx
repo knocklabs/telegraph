@@ -46,7 +46,7 @@ const Root = ({
       <AnimatePresence>
         {open && (
           <>
-            <Dialog.Overlay asChild>
+            <Dialog.Overlay>
               <Box
                 as={motion.div}
                 onClick={() => onOpenChange?.(false)}
@@ -56,7 +56,6 @@ const Root = ({
                 transition={{ duration: 0.3, bounce: 0, type: "spring" }}
                 className="fixed inset-0 bg-alpha-black-4 z-overlay"
               />
-            </Dialog.Overlay>
             <Stack
               className={clsx(
                 "fixed z-modal top-0 left-1/2 -translate-x-1/2",
@@ -79,6 +78,7 @@ const Root = ({
             >
               {children}
             </Stack>
+            </Dialog.Overlay>
           </>
         )}
       </AnimatePresence>
