@@ -46,7 +46,7 @@ const Root = ({
       <AnimatePresence>
         {open && (
           <>
-            <Dialog.Overlay asChild>
+            <Dialog.Overlay>
               <Box
                 as={motion.div}
                 onClick={() => onOpenChange?.(false)}
@@ -56,29 +56,29 @@ const Root = ({
                 transition={{ duration: 0.3, bounce: 0, type: "spring" }}
                 className="fixed inset-0 bg-alpha-black-4 z-overlay"
               />
+              <Stack
+                className={clsx(
+                  "fixed z-modal top-0 left-1/2 -translate-x-1/2",
+                  "max-h-[calc(100vh-var(--tgph-spacing-32))] shadow-1",
+                  className,
+                )}
+                direction="column"
+                as={motion.div}
+                my="16"
+                initial={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
+                animate={{ scale: 1, opacity: 1, y: 0, x: "-50%" }}
+                exit={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
+                transition={{ duration: 0.2, bounce: 0, type: "spring" }}
+                maxW={props.maxW ?? "140"}
+                w={props.w ?? "full"}
+                bg="surface-1"
+                border
+                rounded="4"
+                {...props}
+              >
+                {children}
+              </Stack>
             </Dialog.Overlay>
-            <Stack
-              className={clsx(
-                "fixed z-modal top-0 left-1/2 -translate-x-1/2",
-                "max-h-[calc(100vh-var(--tgph-spacing-32))] shadow-1",
-                className,
-              )}
-              direction="column"
-              as={motion.div}
-              my="16"
-              initial={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
-              animate={{ scale: 1, opacity: 1, y: 0, x: "-50%" }}
-              exit={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
-              transition={{ duration: 0.2, bounce: 0, type: "spring" }}
-              maxW={props.maxW ?? "140"}
-              w={props.w ?? "full"}
-              bg="surface-1"
-              border
-              rounded="4"
-              {...props}
-            >
-              {children}
-            </Stack>
           </>
         )}
       </AnimatePresence>
