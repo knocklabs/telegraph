@@ -73,10 +73,12 @@ const Content = ({
           border={border}
           py={py}
           shadow={shadow}
-
           style={{
             overflowY: "auto",
+<<<<<<< HEAD
 
+=======
+>>>>>>> 12481bb (chore: format)
           }}
           {...props}
         >
