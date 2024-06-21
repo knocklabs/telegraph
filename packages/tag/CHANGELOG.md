@@ -1,5 +1,17 @@
 # @telegraph/tag
 
+## 0.0.23
+
+### Patch Changes
+
+- [#138](https://github.com/knocklabs/telegraph/pull/138) [`b7d93db`](https://github.com/knocklabs/telegraph/commit/b7d93dbb58de35c0be3b78c067d93f695955a5bf) Thanks [@kylemcd](https://github.com/kylemcd)! - fix complex type error when using tag component
+
+- Updated dependencies []:
+  - @telegraph/icon@0.0.14
+  - @telegraph/tooltip@0.0.5
+  - @telegraph/typography@0.0.13
+  - @telegraph/button@0.0.23
+
 ## 0.0.22
 
 ### Patch Changes
