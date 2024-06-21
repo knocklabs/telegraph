@@ -1,8 +1,7 @@
 .tgph-box {
   display: var(--tgph-display, block);
   padding: var(--tgph-padding);
-  /* Tailwind css reset overrides this, so we need important specificity */
-  margin: var(--tgph-margin) !important;
+  margin: var(--tgph-margin);
   background-color: var(--tgph-background-color);
   border-radius: var(--tgph-border-radius);
   border-width: var(--tgph-border-width, 0);

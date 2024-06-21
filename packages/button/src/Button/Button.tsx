@@ -97,6 +97,10 @@ const Root = <T extends TgphElement>({
           buttonSizeMap[layout][size],
           className,
         )}
+        h={buttonSizeMap[layout][size].h}
+        w={buttonSizeMap[layout][size].w}
+        gap={buttonSizeMap[layout][size].gap}
+        px={buttonSizeMap[layout][size].px}
         display="inline-flex"
         align="center"
         justify="center"

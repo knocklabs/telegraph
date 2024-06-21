@@ -41,6 +41,7 @@
     "@telegraph/icon": "workspace:^",
     "@telegraph/input": "workspace:^",
     "@telegraph/menu": "workspace:^",
+    "@telegraph/typography": "workspace:^",
     "framer-motion": "^11.1.9"
   },
   "devDependencies": {

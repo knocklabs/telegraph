@@ -1,19 +1,19 @@
 import * as RadixMenu from "@radix-ui/react-menu";
-import { Button as TelegraphButton } from "@telegraph/button";
 import {
   RefToTgphRef,
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
+
+import { MenuItem } from "../MenuItem";
 
 type RootProps = React.ComponentProps<typeof RadixMenu.Root>;
 
 const Root = ({
   open = true,
-  onOpenChange = () => { },
+  onOpenChange = () => {},
   modal = true,
   children,
   ...props
@@ -38,8 +38,10 @@ const Anchor = ({ tgphRef, ...props }: Anchor) => {
   return <RadixMenu.Anchor {...props} ref={tgphRef} />;
 };
 
-type ContentProps<T extends TgphElement> = React.ComponentProps<typeof RadixMenu.Content> &
-  TgphComponentProps<typeof Stack<T>>
+type ContentProps<T extends TgphElement> = React.ComponentProps<
+  typeof RadixMenu.Content
+> &
+  TgphComponentProps<typeof Stack<T>>;
 
 const Content = <T extends TgphElement>({
   direction = "column",
@@ -85,20 +87,19 @@ const Content = <T extends TgphElement>({
 };
 
 type ButtonProps<T extends TgphElement> = TgphComponentProps<
-  typeof TelegraphButton<T>
+  typeof MenuItem<T>
 > &
   React.ComponentProps<typeof RadixMenu.Item> & {
     selected?: boolean;
   };
 
 const Button = <T extends TgphElement>({
-  size = "2",
-  variant = "ghost",
   mx = "1",
-  children,
   icon,
   leadingIcon,
   trailingIcon,
+  leadingComponent,
+  trailingComponent,
   selected,
   "aria-activedescendant": ariaActivedescendant,
   ...props
@@ -107,47 +108,22 @@ const Button = <T extends TgphElement>({
 
   return (
     <RadixMenu.Item {...props} asChild>
-      <RefToTgphRef>
-        <TelegraphButton.Root
-          variant={variant}
-          size={size}
-          mx={mx}
+      <RefToTgphRef {...props}>
+        <MenuItem
+          selected={selected}
+          leadingIcon={combinedLeadingIcon}
+          trailingIcon={trailingIcon}
+          leadingComponent={leadingComponent}
+          trailingComponent={trailingComponent}
           data-focused={ariaActivedescendant === "true" ? "" : undefined}
           aria-activedescendant={ariaActivedescendant}
           data-tgph-menu-button
+          mx={mx}
           style={{
             flexShrink: 0,
           }}
-        >
-          <Stack align="center" justify="space-between" gap="3" w="full">
-            <Stack gap="3" align="center">
-              {selected === true || selected === false ? (
-                selected === true ? (
-                  <TelegraphButton.Icon
-                    variant="primary"
-                    icon={Lucide.Check}
-                    aria-hidden={true}
-                  />
-                ) : (
-                  <TelegraphButton.Icon
-                    variant="primary"
-                    icon={Lucide.Check}
-                    aria-hidden={true}
-                    style={{ opacity: 0 }}
-                  />
-                )
-              ) : null}
-              {combinedLeadingIcon && (
-                <TelegraphButton.Icon
-                  variant="primary"
-                  {...combinedLeadingIcon}
-                />
-              )}
-              <TelegraphButton.Text>{children}</TelegraphButton.Text>
-            </Stack>
-            {trailingIcon && <TelegraphButton.Icon {...trailingIcon} />}
-          </Stack>
-        </TelegraphButton.Root>
+          {...props}
+        />
       </RefToTgphRef>
     </RadixMenu.Item>
   );

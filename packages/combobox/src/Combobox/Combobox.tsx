@@ -1,11 +1,16 @@
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
-import { RefToTgphRef, type TgphElement, type TgphComponentProps } from "@telegraph/helpers";
+import {
+  RefToTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+} from "@telegraph/helpers";
 import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
-import { Box } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
+import { Text } from "@telegraph/typography";
 import { motion } from "framer-motion";
 import React from "react";
 
@@ -33,16 +38,16 @@ const ComboboxContext = React.createContext<
     setSearchQuery?: (query: string) => void;
     triggerRef?: React.RefObject<HTMLDivElement>;
     searchRef?: React.RefObject<HTMLInputElement>;
-    contentRef?: React.RefObject<HTMLDivElement>
+    contentRef?: React.RefObject<HTMLDivElement>;
   }
 >({
   value: "",
-  onValueChange: () => { },
+  onValueChange: () => {},
   contentId: "",
   triggerId: "",
   open: false,
-  setOpen: () => { },
-  onOpenToggle: () => { },
+  setOpen: () => {},
+  onOpenToggle: () => {},
 });
 
 const Root = ({
@@ -110,6 +115,9 @@ const Trigger = ({ ...props }: TriggerProps) => {
       {...props}
       asChild
       id={context.triggerId}
+      role="combobox"
+      aria-controls={context.contentId}
+      aria-expanded={context.open}
       onClick={(event) => {
         event.preventDefault();
         context.onOpenToggle();
@@ -147,21 +155,34 @@ const Trigger = ({ ...props }: TriggerProps) => {
   );
 };
 
-type ContentProps<T extends TgphElement> = TgphComponentProps<typeof TelegraphMenu.Content<T>>
+type ContentProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphMenu.Content<T>
+>;
 
-const Content = <T extends TgphElement>({ tgphRef, style, ...props }: ContentProps<T>) => {
+const Content = <T extends TgphElement>({
+  tgphRef,
+  style,
+  children,
+  ...props
+}: ContentProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const hasInteractedOutside = React.useRef(false);
   const composedRef = useComposedRefs(tgphRef, context.contentRef);
+
+  // TODO: Smoothly animate height of the content as items are added/removed
   return (
     <TelegraphMenu.Content
       as={motion.div}
-      key={"content"}
-      mt="1"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0 }}
       id={context.contentId}
+      role="listbox"
+      mt="1"
+      initial={{ opacity: 0, scale: 0.8, height: "auto" }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        height: "100%",
+      }}
+      exit={{ opacity: 0, scale: 0 }}
       onInteractOutside={() => {
         context.setOpen(false);
         hasInteractedOutside.current = true;
@@ -173,6 +194,8 @@ const Content = <T extends TgphElement>({ tgphRef, style, ...props }: ContentPro
         event.preventDefault();
       }}
       onKeyDown={(event) => {
+        // If the first option is focused and the user presses the up
+        // arrow key, focus the search input
         const options = context.contentRef?.current?.querySelectorAll(
           "[data-tgph-combobox-option]",
         );
@@ -184,14 +207,15 @@ const Content = <T extends TgphElement>({ tgphRef, style, ...props }: ContentPro
           context.searchRef?.current?.focus();
         }
 
+        // Close the combobox if the user presses the escape key
         if (event.key === "Escape") {
           context.setOpen(false);
         }
       }}
       style={{
         ...style,
-        maxHeight: "var(--tgph-combobox-content-available-height)",
         minHeight: "40px",
+
         overflowY: "auto",
         ...{
           "--tgph-comobobox-content-transform-origin":
@@ -208,15 +232,23 @@ const Content = <T extends TgphElement>({ tgphRef, style, ...props }: ContentPro
       // TODO: Fix this type casting
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tgphRef={composedRef as any}
-    />
+    >
+      {children}
+    </TelegraphMenu.Content>
   );
 };
 
-type OptionProps = TgphComponentProps<typeof TelegraphMenu.Button> & {
+type OptionProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphMenu.Button<T>
+> & {
   value: string;
 };
 
-const Option = ({ value, children, ...props }: OptionProps) => {
+const Option = <T extends TgphElement>({
+  value,
+  children,
+  ...props
+}: OptionProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const [isFocused, setIsFocused] = React.useState(false);
 
@@ -237,7 +269,6 @@ const Option = ({ value, children, ...props }: OptionProps) => {
         aria-activedescendant={isFocused ? "true" : undefined}
         data-tgph-combobox-option
         {...props}
-        key={value}
       >
         {children || value}
       </TelegraphMenu.Button>
@@ -284,6 +315,20 @@ const Search = ({ tgphRef, ...props }: SearchProps) => {
           context?.setSearchQuery?.(event.target.value);
         }}
         LeadingComponent={<Icon icon={Lucide.Search} alt="Search Icon" />}
+        TrailingComponent={
+          context?.searchQuery && context?.searchQuery?.length > 0 ? (
+            <TelegraphButton
+              as={motion.button}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+              variant="ghost"
+              color="gray"
+              icon={{ icon: Lucide.X, alt: "Clear Search Query" }}
+              onClick={() => context.setSearchQuery?.("")}
+            />
+          ) : null
+        }
         {...props}
         tgphRef={composedRef}
         autoFocus
@@ -292,12 +337,49 @@ const Search = ({ tgphRef, ...props }: SearchProps) => {
   );
 };
 
+type EmptyProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>> & {
+  icon?: TgphComponentProps<typeof Icon> | null;
+  message?: string | null;
+};
+
+const Empty = <T extends TgphElement>({
+  icon = { icon: Lucide.Search, alt: "Search Icon" },
+  message = "No results found",
+  children,
+  ...props
+}: EmptyProps<T>) => {
+  const context = React.useContext(ComboboxContext);
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const options = context.contentRef?.current?.querySelectorAll(
+      "[data-tgph-combobox-option]",
+    );
+
+    if (options?.length === 0) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  }, [context.searchQuery, context.contentRef, children]);
+
+  if (isVisible) {
+    return (
+      <Stack gap="1" align="center" justify="center" h="20" {...props}>
+        {icon === null ? <></> : <Icon {...icon} />}
+        {message === null ? <></> : <Text as="span">{message}</Text>}
+      </Stack>
+    );
+  }
+};
+
 const Combobox = {} as {
   Root: typeof Root;
   Trigger: typeof Trigger;
   Content: typeof Content;
   Option: typeof Option;
   Search: typeof Search;
+  Empty: typeof Empty;
 };
 
 Object.assign(Combobox, {
@@ -306,6 +388,7 @@ Object.assign(Combobox, {
   Content,
   Option,
   Search,
+  Empty,
 });
 
 export { Combobox };
