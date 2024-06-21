@@ -198,18 +198,18 @@ const Icon = <T extends TgphElement>({
 };
 
 type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root> & {
+  TgphComponentProps<typeof Root<T>> & {
     icon?: React.ComponentProps<typeof TelegraphIcon>;
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
-        onCopy: () => void;
-        textToCopy?: string;
-      }
+      onCopy: () => void;
+      textToCopy?: string;
+    }
     | {
-        onCopy?: never;
-        textToCopy?: never;
-      }
+      onCopy?: never;
+      textToCopy?: never;
+    }
   );
 
 const Default = <T extends TgphElement>({
