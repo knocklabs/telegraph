@@ -110,12 +110,12 @@ const CopyButton = ({
     <AnimatePresence mode="wait" initial={false}>
       <Tooltip label="Copy text">
         <TelegraphButton.Root
-          onClick={(event: MouseEvent) => {
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
             // Still run onClick incase the consumer wants to do something else
             onClick?.(event);
             setCopied(true);
             textToCopy && navigator.clipboard.writeText(textToCopy);
-            event.target?.blur();
+            event.currentTarget?.blur();
           }}
           size={context.size}
           color={COLOR.Button[context.variant][context.color]}
