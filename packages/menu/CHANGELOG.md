@@ -1,5 +1,16 @@
 # @telegraph/menu
 
+## 0.0.2
+
+### Patch Changes
+
+- [#138](https://github.com/knocklabs/telegraph/pull/138) [`b7d93db`](https://github.com/knocklabs/telegraph/commit/b7d93dbb58de35c0be3b78c067d93f695955a5bf) Thanks [@kylemcd](https://github.com/kylemcd)! - type issues from build
+
+- Updated dependencies [[`b7d93db`](https://github.com/knocklabs/telegraph/commit/b7d93dbb58de35c0be3b78c067d93f695955a5bf)]:
+  - @telegraph/layout@0.0.14
+  - @telegraph/icon@0.0.14
+  - @telegraph/button@0.0.23
+
 ## 0.0.1
 
 ### Patch Changes
