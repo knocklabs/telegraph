@@ -13,7 +13,7 @@ type RootProps = React.ComponentProps<typeof RadixMenu.Root>;
 
 const Root = ({
   open = true,
-  onOpenChange = () => {},
+  onOpenChange = () => { },
   modal = true,
   children,
   ...props
@@ -31,19 +31,17 @@ const Root = ({
 };
 
 type Anchor = React.ComponentProps<typeof RadixMenu.Anchor> & {
-  tgphRef?: React.LegacyRef<HTMLDivElement>;
+  tgphRef?: React.RefObject<HTMLDivElement>;
 };
 
 const Anchor = ({ tgphRef, ...props }: Anchor) => {
   return <RadixMenu.Anchor {...props} ref={tgphRef} />;
 };
 
-type ContentProps = React.ComponentProps<typeof RadixMenu.Content> &
-  TgphComponentProps<typeof Stack> & {
-    tgphRef?: React.Ref<HTMLDivElement>;
-  };
+type ContentProps<T extends TgphElement> = React.ComponentProps<typeof RadixMenu.Content> &
+  TgphComponentProps<typeof Stack<T>>
 
-const Content = ({
+const Content = <T extends TgphElement>({
   direction = "column",
   gap = "1",
   rounded = "4",
@@ -56,14 +54,15 @@ const Content = ({
   onCloseAutoFocus,
   tgphRef,
   ...props
-}: ContentProps) => {
+}: ContentProps<T>) => {
   return (
     <RadixMenu.Content
       onInteractOutside={onInteractOutside}
       onKeyDown={onKeyDown}
       onCloseAutoFocus={onCloseAutoFocus}
       asChild
-      ref={tgphRef}
+      // Need to cast this type since RadixMenu.Content doesn't accept tgphRef
+      ref={tgphRef as React.LegacyRef<HTMLDivElement>}
     >
       <RefToTgphRef>
         <Stack

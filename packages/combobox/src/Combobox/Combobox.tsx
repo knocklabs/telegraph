@@ -1,7 +1,7 @@
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
-import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
+import { RefToTgphRef, type TgphElement, type TgphComponentProps } from "@telegraph/helpers";
 import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box } from "@telegraph/layout";
@@ -31,18 +31,18 @@ const ComboboxContext = React.createContext<
     onOpenToggle: () => void;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
-    triggerRef?: React.RefObject<HTMLElement>;
+    triggerRef?: React.RefObject<HTMLDivElement>;
     searchRef?: React.RefObject<HTMLInputElement>;
-    contentRef?: React.RefObject<HTMLDivElement>;
+    contentRef?: React.RefObject<HTMLDivElement>
   }
 >({
   value: "",
-  onValueChange: () => {},
+  onValueChange: () => { },
   contentId: "",
   triggerId: "",
   open: false,
-  setOpen: () => {},
-  onOpenToggle: () => {},
+  setOpen: () => { },
+  onOpenToggle: () => { },
 });
 
 const Root = ({
@@ -137,9 +137,9 @@ const Trigger = ({ ...props }: TriggerProps) => {
           <TelegraphButton.Icon
             as={motion.div}
             icon={Lucide.ChevronDown}
-            aria-hidden="true"
             animate={{ rotate: context.open ? "180deg" : "0deg" }}
             transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            aria-hidden
           />
         </TelegraphButton.Root>
       </RefToTgphRef>
@@ -147,9 +147,9 @@ const Trigger = ({ ...props }: TriggerProps) => {
   );
 };
 
-type ContentProps = TgphComponentProps<typeof TelegraphMenu.Content>;
+type ContentProps<T extends TgphElement> = TgphComponentProps<typeof TelegraphMenu.Content<T>>
 
-const Content = ({ tgphRef, style, ...props }: ContentProps) => {
+const Content = <T extends TgphElement>({ tgphRef, style, ...props }: ContentProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const hasInteractedOutside = React.useRef(false);
   const composedRef = useComposedRefs(tgphRef, context.contentRef);
@@ -166,14 +166,14 @@ const Content = ({ tgphRef, style, ...props }: ContentProps) => {
         context.setOpen(false);
         hasInteractedOutside.current = true;
       }}
-      onCloseAutoFocus={(event: MouseEvent) => {
+      onCloseAutoFocus={(event: Event) => {
         if (!hasInteractedOutside.current) context.triggerRef?.current?.focus();
         hasInteractedOutside.current = false;
 
         event.preventDefault();
       }}
       onKeyDown={(event) => {
-        const options = context.contentRef.current?.querySelectorAll(
+        const options = context.contentRef?.current?.querySelectorAll(
           "[data-tgph-combobox-option]",
         );
 
@@ -181,7 +181,7 @@ const Content = ({ tgphRef, style, ...props }: ContentProps) => {
           document.activeElement === options?.[0] &&
           LAST_KEYS.includes(event.key)
         ) {
-          context.searchRef.current?.focus();
+          context.searchRef?.current?.focus();
         }
 
         if (event.key === "Escape") {
@@ -205,7 +205,9 @@ const Content = ({ tgphRef, style, ...props }: ContentProps) => {
         },
       }}
       {...props}
-      tgphRef={composedRef}
+      // TODO: Fix this type casting
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      tgphRef={composedRef as any}
     />
   );
 };
@@ -224,7 +226,7 @@ const Option = ({ value, children, ...props }: OptionProps) => {
   ) {
     return (
       <TelegraphMenu.Button
-        onSelect={(event: MouseEvent) => {
+        onSelect={(event: Event) => {
           context.closeOnSelect && event.preventDefault();
           context.onValueChange(value);
           context.triggerRef?.current?.focus();
@@ -252,7 +254,7 @@ const Search = ({ tgphRef, ...props }: SearchProps) => {
   React.useEffect(() => {
     const handleSearchKeyDown = (event: KeyboardEvent) => {
       if (FIRST_KEYS.includes(event.key)) {
-        context.contentRef.current?.focus({ preventScroll: true });
+        context.contentRef?.current?.focus({ preventScroll: true });
       }
 
       if (event.key === "Escape") {
@@ -278,8 +280,8 @@ const Search = ({ tgphRef, ...props }: SearchProps) => {
         variant="ghost"
         placeholder="Search"
         value={context.searchQuery}
-        onChange={(event) => {
-          context.setSearchQuery(event.target.value);
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          context?.setSearchQuery?.(event.target.value);
         }}
         LeadingComponent={<Icon icon={Lucide.Search} alt="Search Icon" />}
         {...props}
