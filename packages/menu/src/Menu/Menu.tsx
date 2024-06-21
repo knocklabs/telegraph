@@ -13,7 +13,7 @@ type RootProps = React.ComponentProps<typeof RadixMenu.Root>;
 
 const Root = ({
   open = true,
-  onOpenChange = () => { },
+  onOpenChange = () => {},
   modal = true,
   children,
   ...props
