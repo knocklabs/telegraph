@@ -31,7 +31,7 @@ const Stack = <T extends TgphElement>({
   tgphRef,
   ...props
 }: StackProps<T>) => {
-  const stackRef = React.useRef<HTMLDivElement>(null);
+  const stackRef = React.useRef<StackProps<T>["tgphRef"]>(null);
   const composedRef = useComposedRefs(tgphRef, stackRef);
 
   // Filter out the stack props from the rest of the props

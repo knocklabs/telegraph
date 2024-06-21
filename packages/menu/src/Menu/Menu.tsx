@@ -1,6 +1,10 @@
 import * as RadixMenu from "@radix-ui/react-menu";
 import { Button as TelegraphButton } from "@telegraph/button";
-import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
+import {
+  RefToTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+} from "@telegraph/helpers";
 import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
@@ -61,12 +65,14 @@ const Content = ({
   );
 };
 
-type ButtonProps = TgphComponentProps<typeof TelegraphButton> &
+type ButtonProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphButton<T>
+> &
   React.ComponentProps<typeof RadixMenu.Item> & {
     selected?: boolean;
   };
 
-const Button = ({
+const Button = <T extends TgphElement>({
   size = "2",
   variant = "ghost",
   mx = "1",
@@ -76,9 +82,11 @@ const Button = ({
   trailingIcon,
   selected,
   ...props
-}: ButtonProps) => {
+}: ButtonProps<T>) => {
   const combinedLeadingIcon = selected
-    ? { icon: Lucide.Check, "aria-hidden": true }
+    ? ({ icon: Lucide.Check, "aria-hidden": true } as TgphComponentProps<
+        typeof TelegraphButton.Icon
+      >)
     : leadingIcon || icon;
 
   return (
@@ -113,7 +121,7 @@ type DividerProps = TgphComponentProps<typeof Box>;
 
 const Divider = ({
   w = "full",
-  borderBottom = "true",
+  borderBottom = "px",
   ...props
 }: DividerProps) => {
   return <Box as="hr" w={w} borderBottom={borderBottom} {...props} />;
