@@ -41,7 +41,9 @@ const Anchor = ({ tgphRef, ...props }: Anchor) => {
 type ContentProps<T extends TgphElement> = React.ComponentProps<
   typeof RadixMenu.Content
 > &
-  TgphComponentProps<typeof Stack<T>>;
+  TgphComponentProps<typeof Stack<T>> & {
+    contentStackRef?: React.RefObject<HTMLDivElement>;
+  };
 
 const Content = <T extends TgphElement>({
   direction = "column",
@@ -101,7 +103,6 @@ const Button = <T extends TgphElement>({
   leadingComponent,
   trailingComponent,
   selected,
-  "aria-activedescendant": ariaActivedescendant,
   ...props
 }: ButtonProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
@@ -115,8 +116,6 @@ const Button = <T extends TgphElement>({
           trailingIcon={trailingIcon}
           leadingComponent={leadingComponent}
           trailingComponent={trailingComponent}
-          data-focused={ariaActivedescendant === "true" ? "" : undefined}
-          aria-activedescendant={ariaActivedescendant}
           data-tgph-menu-button
           mx={mx}
           style={{
@@ -146,11 +145,6 @@ const Menu = {} as {
   Button: typeof Button;
   Divider: typeof Divider;
 };
-
-Root.displayName = "Menu.Root";
-Content.displayName = "Menu.Content";
-Button.displayName = "Menu.Button";
-Divider.displayName = "Menu.Divider";
 
 Object.assign(Menu, {
   Root,

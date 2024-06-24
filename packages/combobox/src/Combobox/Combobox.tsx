@@ -78,6 +78,14 @@ const Root = ({
     setOpen((prevOpen) => !prevOpen);
   }, [setOpen]);
 
+  React.useEffect(() => {
+    // If the combobox is closed clear
+    // the search query
+    if (!open) {
+      setSearchQuery("");
+    }
+  }, [open]);
+
   return (
     <ComboboxContext.Provider
       value={{
@@ -118,12 +126,12 @@ const Trigger = ({ ...props }: TriggerProps) => {
       role="combobox"
       aria-controls={context.contentId}
       aria-expanded={context.open}
-      onClick={(event) => {
+      onClick={(event: React.MouseEvent) => {
         event.preventDefault();
         context.onOpenToggle();
         context.triggerRef?.current?.focus();
       }}
-      onKeyDown={(event) => {
+      onKeyDown={(event: React.KeyboardEvent) => {
         if (event.key === "ArrowDown") {
           context.onOpenToggle();
         }
@@ -167,18 +175,52 @@ const Content = <T extends TgphElement>({
 }: ContentProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const hasInteractedOutside = React.useRef(false);
-  const composedRef = useComposedRefs(tgphRef, context.contentRef);
-  // const internalContentRef = React.useRef<HTMLElement>(null);
+  const composedRef = useComposedRefs<unknown>(tgphRef, context.contentRef);
 
-  // const [bounds, setBounds] = React.useState<DOMRect | null>(null);
+  const internalContentRef = React.useRef(null);
 
-  // React.useEffect(() => {
-  //   if (context.open && internalContentRef?.current) {
-  //     setBounds(internalContentRef?.current?.getBoundingClientRect());
-  //   }
-  // }, [context.open, internalContentRef?.current, context.searchQuery]);
+  const [height, setHeight] = React.useState(0);
+  const [initialAnimationComplete, setInitialAnimationComplete] =
+    React.useState(false);
 
-  // TODO: Smoothly animate height of the content as items are added/removed
+  const setHeightFromContent = React.useCallback(
+    (element: Element) => {
+      // Set the initial height of the content after the animation completes
+      const rect = element.getBoundingClientRect();
+      if (rect) {
+        setHeight(rect.height);
+      }
+
+      if (!initialAnimationComplete) {
+        setInitialAnimationComplete(true);
+      }
+    },
+    [initialAnimationComplete],
+  );
+
+  React.useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const element = entry.target;
+        setHeightFromContent(element);
+      }
+    });
+    // Attatch the observer once the initial animation completes
+    // and the content ref is available
+    if (internalContentRef.current && initialAnimationComplete) {
+      observer.observe(internalContentRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [initialAnimationComplete, setHeightFromContent]);
+
+  // Reset the animation complete state when the combobox is closed
+  React.useEffect(() => {
+    if (initialAnimationComplete === true && context.open === false) {
+      setInitialAnimationComplete(false);
+    }
+  }, [context.open, initialAnimationComplete]);
+
   return (
     <TelegraphMenu.Content
       as={motion.div}
@@ -193,12 +235,23 @@ const Content = <T extends TgphElement>({
       animate={{
         opacity: 1,
         scale: 1,
-        // height: `${bounds?.height}px` || "100%",
+        // Set height based on the internalContentRef so that
+        // we get smooth animations when the content changes
+        height: height ? `${height}px` : "auto",
       }}
       exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.2, type: "spring", bounce: 0 }}
       onInteractOutside={() => {
         context.setOpen(false);
         hasInteractedOutside.current = true;
+      }}
+      onAnimationComplete={() => {
+        // Set height when the initial animation for
+        // displaying the content completes
+        if (!initialAnimationComplete && internalContentRef) {
+          const element = internalContentRef.current as unknown as Element;
+          setHeightFromContent(element);
+        }
       }}
       onCloseAutoFocus={(event: Event) => {
         if (!hasInteractedOutside.current) context.triggerRef?.current?.focus();
@@ -206,7 +259,7 @@ const Content = <T extends TgphElement>({
 
         event.preventDefault();
       }}
-      onKeyDown={(event) => {
+      onKeyDown={(event: React.KeyboardEvent) => {
         // If the first option is focused and the user presses the up
         // arrow key, focus the search input
         const options = context.contentRef?.current?.querySelectorAll(
@@ -240,15 +293,9 @@ const Content = <T extends TgphElement>({
         },
       }}
       {...props}
-      // TODO: Fix this type casting
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      tgphRef={composedRef as any}
+      tgphRef={composedRef}
     >
-      <Stack
-        direction="column"
-
-        // tgphRef={internalContentRef}
-      >
+      <Stack direction="column" gap="1" tgphRef={internalContentRef}>
         {children}
       </Stack>
     </TelegraphMenu.Content>

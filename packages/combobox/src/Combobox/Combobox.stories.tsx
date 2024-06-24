@@ -39,6 +39,7 @@ export const Default: Story = {
             <TelegraphCombobox.Option value="Email 2" key="email2" />
             <TelegraphCombobox.Option value="Email 3" key="email3" />
             <TelegraphCombobox.Option value="In-app" key="in-app" />
+            <TelegraphCombobox.Empty />
           </TelegraphCombobox.Content>
         </TelegraphCombobox.Root>
       </Box>
