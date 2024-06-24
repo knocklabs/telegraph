@@ -5506,7 +5506,9 @@ __metadata:
     "@telegraph/menu": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tag": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
+    "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
@@ -5784,7 +5786,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/tag@workspace:packages/tag":
+"@telegraph/tag@workspace:^, @telegraph/tag@workspace:packages/tag":
   version: 0.0.0-use.local
   resolution: "@telegraph/tag@workspace:packages/tag"
   dependencies:

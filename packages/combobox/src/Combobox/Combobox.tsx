@@ -10,22 +10,37 @@ import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
+import { Tag } from "@telegraph/tag";
 import { Text } from "@telegraph/typography";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
+
+import { type Option, isMultiSelect, isSingleSelect } from "./Combobox.helpers";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 
-type RootProps = React.PropsWithChildren<{
-  value: string;
-  onValueChange: (value: string) => void;
+type RootProps = (
+  | {
+      value?: Array<Option>;
+      onValueChange: (value: Array<Option>) => void;
+      layout?: "truncate" | "wrap";
+    }
+  | {
+      value?: Option;
+      onValueChange: (value: Option) => void;
+      layout?: never;
+    }
+) & {
   open?: boolean;
   defaultOpen?: boolean;
+  errored?: boolean;
+  placeholder?: string;
   onOpenChange?: (open: boolean) => void;
   modal?: boolean;
   closeOnSelect?: boolean;
-}>;
+  children?: React.ReactNode;
+};
 
 const ComboboxContext = React.createContext<
   Omit<RootProps, "children"> & {
@@ -41,7 +56,6 @@ const ComboboxContext = React.createContext<
     contentRef?: React.RefObject<HTMLDivElement>;
   }
 >({
-  value: "",
   onValueChange: () => {},
   contentId: "",
   triggerId: "",
@@ -52,19 +66,22 @@ const ComboboxContext = React.createContext<
 
 const Root = ({
   modal = true,
+  closeOnSelect = true,
   open: openProp,
   onOpenChange: onOpenChangeProp,
   defaultOpen: defaultOpenProp,
   value,
   onValueChange,
-  closeOnSelect,
+  errored,
+  placeholder,
+  layout,
   ...props
 }: RootProps) => {
   const contentId = React.useId();
   const triggerId = React.useId();
   const triggerRef = React.useRef(null);
   const searchRef = React.useRef(null);
-  const contentRef = React.useRef(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
@@ -93,6 +110,7 @@ const Root = ({
         triggerId,
         value,
         onValueChange,
+        placeholder,
         open,
         setOpen,
         onOpenToggle,
@@ -102,6 +120,8 @@ const Root = ({
         triggerRef,
         searchRef,
         contentRef,
+        errored,
+        layout,
       }}
     >
       <TelegraphMenu.Root
@@ -114,9 +134,171 @@ const Root = ({
   );
 };
 
-type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Anchor>;
+type TriggerTagProps = {
+  value: string;
+  label?: string;
+};
 
-const Trigger = ({ ...props }: TriggerProps) => {
+const TriggerTag = ({ label, value }: TriggerTagProps) => {
+  const context = React.useContext(ComboboxContext);
+
+  return (
+    <Tag.Root
+      size="1"
+      as={motion.span}
+      layout="position"
+      initial={{ opacity: 0, transform: "scale(0.8)" }}
+      animate={{ opacity: 1, transform: "scale(1)" }}
+      exit={{ opacity: 0, transform: "scale(0.8)" }}
+      transition={{
+        transform: {
+          duration: 0.2,
+          type: "spring",
+          bounce: 0,
+        },
+        opacity: {
+          duration: 0.2,
+          type: "spring",
+          bounce: 0,
+        },
+        layout: {
+          duration: 0.1,
+          type: "spring",
+          bounce: 0,
+        },
+      }}
+      key={value}
+    >
+      <Tag.Text>{label || value}</Tag.Text>
+      <Tag.Button
+        icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
+        onClick={(event: React.MouseEvent) => {
+          const onValueChange = context.onValueChange as (
+            v: Array<Option>,
+          ) => void;
+          const contextValue = context.value as Array<Option>;
+          const newValue = contextValue.filter((v) => v.value !== value);
+          onValueChange(newValue);
+          event.stopPropagation();
+        }}
+      />
+    </Tag.Root>
+  );
+};
+type TriggerValueProps<T extends TgphElement> = {
+  size?: TgphComponentProps<typeof TelegraphButton.Root<T>>["size"];
+};
+const TriggerValue = <T extends TgphElement>({
+  size = "1",
+}: TriggerValueProps<T>) => {
+  const context = React.useContext(ComboboxContext);
+
+  const height = size === "1" ? "6" : size === "2" ? "8" : "10";
+
+  if (context.value && isMultiSelect(context.value)) {
+    const contextValue = context.value as Array<Option>;
+    const layout = context.layout || "truncate";
+    const truncatedLength = contextValue.length - 2;
+    const truncatedLengthStringArray = truncatedLength.toString().split("");
+
+    if (contextValue.length === 0) {
+      return (
+        <Stack h={height} align="center">
+          <TelegraphButton.Text color="gray">
+            {context.placeholder}
+          </TelegraphButton.Text>
+        </Stack>
+      );
+    }
+
+    return (
+      <Stack
+        gap="1"
+        w="full"
+        my="1"
+        wrap={layout === "wrap" ? "wrap" : "nowrap"}
+        align="center"
+        style={{
+          position: "relative",
+          flexGrow: 1,
+        }}
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          {contextValue.map((v, i) => {
+            if ((layout === "truncate" && i <= 1) || layout === "wrap") {
+              return <TriggerTag {...v} />;
+            }
+          })}
+        </AnimatePresence>
+        <AnimatePresence>
+          {layout === "truncate" && contextValue.length > 2 && (
+            <Stack
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+              h="full"
+              pr="1"
+              pl="8"
+              align="center"
+              aria-label={`${truncatedLength} more selected`}
+              style={{
+                position: "absolute",
+                right: 0,
+                backgroundImage:
+                  "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
+              }}
+              key="truncated text"
+            >
+              <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
+                +
+                <AnimatePresence mode="wait" initial={false}>
+                  {truncatedLengthStringArray.map((n) => (
+                    <Box
+                      as={motion.span}
+                      w="2"
+                      display="inline-block"
+                      initial={{
+                        opacity: 0.5,
+                      }}
+                      animate={{
+                        opacity: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                      }}
+                      transition={{ duration: 0.1, type: "spring", bounce: 0 }}
+                      key={n}
+                    >
+                      {n}
+                    </Box>
+                  ))}
+                </AnimatePresence>{" "}
+                more
+              </Text>
+            </Stack>
+          )}
+        </AnimatePresence>
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack h={height} align="center" my="1">
+      <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
+        {context?.value?.label || context?.value?.value || context.placeholder}
+      </TelegraphButton.Text>
+    </Stack>
+  );
+};
+
+type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Anchor> & {
+  placeholder?: string;
+  size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
+};
+
+const Trigger = ({ size = "1", ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
   return (
     <TelegraphMenu.Anchor
@@ -145,11 +327,13 @@ const Trigger = ({ ...props }: TriggerProps) => {
         <TelegraphButton.Root
           variant="outline"
           w="full"
+          h="full"
+          color={context.errored ? "red" : "gray"}
           justify="space-between"
           role="combobox"
           aria-expanded={context.open}
         >
-          <TelegraphButton.Text>{context.value}</TelegraphButton.Text>
+          <TriggerValue size={size} />
           <TelegraphButton.Icon
             as={motion.div}
             icon={Lucide.ChevronDown}
@@ -306,35 +490,60 @@ type OptionProps<T extends TgphElement> = TgphComponentProps<
   typeof TelegraphMenu.Button<T>
 > & {
   value: string;
+  label?: string;
 };
 
 const Option = <T extends TgphElement>({
   value,
-  children,
+  label,
   ...props
 }: OptionProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const [isFocused, setIsFocused] = React.useState(false);
-  const isVisible =
-    !context.searchQuery ||
-    value.toLowerCase().includes(context.searchQuery.toLowerCase());
+  const contextValue = context.value ?? [];
+
+  const isVisible = isMultiSelect(contextValue)
+    ? !context.searchQuery || value.includes(context.searchQuery.toLowerCase())
+    : !context.searchQuery ||
+      value.toLowerCase().includes(context.searchQuery.toLowerCase());
+
+  const isSelected = isMultiSelect(contextValue)
+    ? contextValue.some((v) => v.value === value)
+    : contextValue.value === value;
 
   if (isVisible) {
     return (
       <TelegraphMenu.Button
         onSelect={(event: Event) => {
-          context.closeOnSelect && event.preventDefault();
-          context.onValueChange(value);
+          !context.closeOnSelect && event.preventDefault();
+
+          if (isMultiSelect(contextValue)) {
+            const onValueChange = context.onValueChange as (
+              v: Array<Option>,
+            ) => void;
+
+            const newValue = isSelected
+              ? contextValue.filter((v) => v.value !== value)
+              : [...contextValue, { value, label }];
+
+            onValueChange(newValue);
+          } else if (isSingleSelect(contextValue)) {
+            const onValueChange = context.onValueChange as (v: Option) => void;
+            onValueChange({ value, label });
+          }
+
           context.triggerRef?.current?.focus();
         }}
-        selected={context.value === value}
+        selected={isSelected}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         aria-activedescendant={isFocused ? "true" : undefined}
         data-tgph-combobox-option
+        data-tgph-combobox-option-value={value}
+        data-tgph-combobox-option-label={label}
         {...props}
       >
-        {children || value}
+        {label || value}
       </TelegraphMenu.Button>
     );
   }
