@@ -168,6 +168,15 @@ const Content = <T extends TgphElement>({
   const context = React.useContext(ComboboxContext);
   const hasInteractedOutside = React.useRef(false);
   const composedRef = useComposedRefs(tgphRef, context.contentRef);
+  // const internalContentRef = React.useRef<HTMLElement>(null);
+
+  // const [bounds, setBounds] = React.useState<DOMRect | null>(null);
+
+  // React.useEffect(() => {
+  //   if (context.open && internalContentRef?.current) {
+  //     setBounds(internalContentRef?.current?.getBoundingClientRect());
+  //   }
+  // }, [context.open, internalContentRef?.current, context.searchQuery]);
 
   // TODO: Smoothly animate height of the content as items are added/removed
   return (
@@ -176,11 +185,15 @@ const Content = <T extends TgphElement>({
       id={context.contentId}
       role="listbox"
       mt="1"
-      initial={{ opacity: 0, scale: 0.8, height: "auto" }}
+      initial={{
+        opacity: 0,
+        scale: 0.8,
+        height: "auto",
+      }}
       animate={{
         opacity: 1,
         scale: 1,
-        height: "100%",
+        // height: `${bounds?.height}px` || "100%",
       }}
       exit={{ opacity: 0, scale: 0 }}
       onInteractOutside={() => {
@@ -214,8 +227,6 @@ const Content = <T extends TgphElement>({
       }}
       style={{
         ...style,
-        minHeight: "40px",
-
         overflowY: "auto",
         ...{
           "--tgph-comobobox-content-transform-origin":
@@ -233,7 +244,13 @@ const Content = <T extends TgphElement>({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tgphRef={composedRef as any}
     >
-      {children}
+      <Stack
+        direction="column"
+
+        // tgphRef={internalContentRef}
+      >
+        {children}
+      </Stack>
     </TelegraphMenu.Content>
   );
 };
@@ -251,11 +268,11 @@ const Option = <T extends TgphElement>({
 }: OptionProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const [isFocused, setIsFocused] = React.useState(false);
-
-  if (
+  const isVisible =
     !context.searchQuery ||
-    value.toLowerCase().includes(context.searchQuery.toLowerCase())
-  ) {
+    value.toLowerCase().includes(context.searchQuery.toLowerCase());
+
+  if (isVisible) {
     return (
       <TelegraphMenu.Button
         onSelect={(event: Event) => {
