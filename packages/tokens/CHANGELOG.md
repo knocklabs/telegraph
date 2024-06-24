@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.0.13
+
+### Patch Changes
+
+- [#142](https://github.com/knocklabs/telegraph/pull/142) [`76d97da`](https://github.com/knocklabs/telegraph/commit/76d97daac50c92ad6a1e59fcaa73c98728266297) Thanks [@connorlindsey](https://github.com/connorlindsey)! - feat: update default font family stacks
+
 ## 0.0.12
 
 ### Patch Changes
