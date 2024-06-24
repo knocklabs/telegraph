@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.14
+
+### Patch Changes
+
+- [#140](https://github.com/knocklabs/telegraph/pull/140) [`d159e89`](https://github.com/knocklabs/telegraph/commit/d159e899e898e97552f8c7efadf0f78b7ed5f5a6) Thanks [@kylemcd](https://github.com/kylemcd)! - Allow for full width modal without bleeding to the edges
+
 ## 0.0.13
 
 ### Patch Changes
