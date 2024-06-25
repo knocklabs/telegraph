@@ -480,8 +480,9 @@ const Content = <T extends TgphElement>({
         }
       }}
       style={{
-        ...style,
         overflowY: "auto",
+        width: "var(--tgph-comobobox-trigger-width)",
+        ...style,
         ...{
           "--tgph-comobobox-content-transform-origin":
             "var(--radix-popper-transform-origin)",

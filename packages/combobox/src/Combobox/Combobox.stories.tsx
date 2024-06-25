@@ -42,11 +42,7 @@ export const SingleSelect: Story = {
           placeholder={"Select a channel"}
         >
           <TelegraphCombobox.Trigger />
-          <TelegraphCombobox.Content
-            style={{
-              width: "var(--tgph-comobobox-trigger-width)",
-            }}
-          >
+          <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {values.map((v) => (
                 <TelegraphCombobox.Option value={v.value} label={v.label} />
@@ -73,11 +69,7 @@ export const SingleSelectWithSearch: Story = {
           placeholder={"Select a channel"}
         >
           <TelegraphCombobox.Trigger />
-          <TelegraphCombobox.Content
-            style={{
-              width: "var(--tgph-comobobox-trigger-width)",
-            }}
-          >
+          <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {values.map((v) => (
@@ -142,15 +134,13 @@ export const MultiSelectWithWrapLayout: Story = {
           closeOnSelect={false}
         >
           <TelegraphCombobox.Trigger />
-          <TelegraphCombobox.Content
-            style={{
-              width: "var(--tgph-comobobox-trigger-width)",
-            }}
-          >
+          <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
-            {values.map((v) => (
-              <TelegraphCombobox.Option value={v.value} label={v.label} />
-            ))}
+            <TelegraphCombobox.Options>
+              {values.map((v) => (
+                <TelegraphCombobox.Option value={v.value} label={v.label} />
+              ))}
+            </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
           </TelegraphCombobox.Content>
         </TelegraphCombobox.Root>
