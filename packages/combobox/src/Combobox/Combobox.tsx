@@ -164,6 +164,8 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
     >
       <Tag.Text>{label || value}</Tag.Text>
       <Tag.Button
+        as="span"
+        role="button"
         icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
         onClick={(event: React.MouseEvent) => {
           const onValueChange = context.onValueChange as (
@@ -221,7 +223,11 @@ const TriggerValue = <T extends TgphElement>({
         <AnimatePresence initial={false} mode="popLayout">
           {contextValue.map((v, i) => {
             if ((layout === "truncate" && i <= 1) || layout === "wrap") {
-              return <TriggerTag {...v} key={v.value} />;
+              return (
+                <RefToTgphRef key={v.value}>
+                  <TriggerTag {...v} />
+                </RefToTgphRef>
+              );
             }
           })}
         </AnimatePresence>
@@ -295,14 +301,24 @@ type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Anchor> & {
 
 const Trigger = ({ size = "1", ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
+
+  const getLabelString = React.useCallback(() => {
+    if (!context.value) return context.placeholder;
+    if (isSingleSelect(context.value)) {
+      return (
+        context.value?.label || context.value?.value || context.placeholder
+      );
+    } else {
+      return (
+        context.value?.map((v) => v.label).join(", ") || context.placeholder
+      );
+    }
+  }, [context.value, context.placeholder]);
+
   return (
     <TelegraphMenu.Anchor
       {...props}
       asChild
-      id={context.triggerId}
-      role="combobox"
-      aria-controls={context.contentId}
-      aria-expanded={context.open}
       onClick={(event: React.MouseEvent) => {
         event.preventDefault();
         context.onOpenToggle();
@@ -320,13 +336,21 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
     >
       <RefToTgphRef>
         <TelegraphButton.Root
+          id={context.triggerId}
           variant="outline"
           w="full"
           h="full"
           color={context.errored ? "red" : "gray"}
           justify="space-between"
+          // Accessibility attributes
           role="combobox"
+          aria-label={getLabelString()}
+          aria-controls={context.contentId}
           aria-expanded={context.open}
+          aria-haspopup="listbox"
+          // Custom attributes
+          data-tgph-combobox-trigger
+          data-tgph-comobox-trigger-open={context.open}
         >
           <TriggerValue size={size} />
           <TelegraphButton.Icon
@@ -403,8 +427,6 @@ const Content = <T extends TgphElement>({
   return (
     <TelegraphMenu.Content
       as={motion.div}
-      id={context.contentId}
-      role="listbox"
       mt="1"
       initial={{
         opacity: 0,
@@ -473,11 +495,32 @@ const Content = <T extends TgphElement>({
       }}
       {...props}
       tgphRef={composedRef}
+      data-tgph-combobox-content
+      data-tgph-combobox-content-open={initialAnimationComplete}
+      // Cancel out accessibility attirbutes related to aria menu
+      role={undefined}
+      aria-orientation={undefined}
     >
       <Stack direction="column" gap="1" tgphRef={internalContentRef}>
         {children}
       </Stack>
     </TelegraphMenu.Content>
+  );
+};
+
+type OptionsProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>>;
+
+const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
+  const context = React.useContext(ComboboxContext);
+  return (
+    <Stack
+      id={context.contentId}
+      direction="column"
+      gap="1"
+      // Accessibility attributes
+      role="listbox"
+      {...props}
+    />
   );
 };
 
@@ -532,8 +575,12 @@ const Option = <T extends TgphElement>({
         selected={isSelected}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        aria-activedescendant={isFocused ? "true" : undefined}
+        // Accessibility attributes
+        role="option"
+        aria-selected={isSelected ? "true" : "false"}
+        // Custom attributes
         data-tgph-combobox-option
+        data-tgph-combobox-option-focused={isFocused}
         data-tgph-combobox-option-value={value}
         data-tgph-combobox-option-label={label}
         {...props}
@@ -611,9 +658,11 @@ const Search = ({
             />
           ) : null
         }
+        autoFocus
+        data-tgph-combobox-search
+        aria-controls={context.contentId}
         {...props}
         tgphRef={composedRef}
-        autoFocus
       />
     </Box>
   );
@@ -657,6 +706,7 @@ const Empty = <T extends TgphElement>({
         justify="center"
         w="full"
         my="8"
+        data-tgph-combobox-empty
         {...props}
       >
         {icon === null ? <></> : <Icon {...icon} />}
@@ -670,6 +720,7 @@ const Combobox = {} as {
   Root: typeof Root;
   Trigger: typeof Trigger;
   Content: typeof Content;
+  Options: typeof Options;
   Option: typeof Option;
   Search: typeof Search;
   Empty: typeof Empty;
@@ -679,6 +730,7 @@ Object.assign(Combobox, {
   Root,
   Trigger,
   Content,
+  Options,
   Option,
   Search,
   Empty,

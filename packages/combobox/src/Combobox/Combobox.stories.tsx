@@ -47,9 +47,11 @@ export const SingleSelect: Story = {
               width: "var(--tgph-comobobox-trigger-width)",
             }}
           >
-            {values.map((v) => (
-              <TelegraphCombobox.Option value={v.value} label={v.label} />
-            ))}
+            <TelegraphCombobox.Options>
+              {values.map((v) => (
+                <TelegraphCombobox.Option value={v.value} label={v.label} />
+              ))}
+            </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
           </TelegraphCombobox.Content>
         </TelegraphCombobox.Root>
@@ -77,9 +79,11 @@ export const SingleSelectWithSearch: Story = {
             }}
           >
             <TelegraphCombobox.Search />
-            {values.map((v) => (
-              <TelegraphCombobox.Option value={v.value} label={v.label} />
-            ))}
+            <TelegraphCombobox.Options>
+              {values.map((v) => (
+                <TelegraphCombobox.Option value={v.value} label={v.label} />
+              ))}
+            </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
           </TelegraphCombobox.Content>
         </TelegraphCombobox.Root>
@@ -109,9 +113,11 @@ export const MultiSelect: Story = {
             }}
           >
             <TelegraphCombobox.Search />
-            {values.map((v) => (
-              <TelegraphCombobox.Option value={v.value} label={v.label} />
-            ))}
+            <TelegraphCombobox.Options>
+              {values.map((v) => (
+                <TelegraphCombobox.Option value={v.value} label={v.label} />
+              ))}
+            </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
           </TelegraphCombobox.Content>
         </TelegraphCombobox.Root>
