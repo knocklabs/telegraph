@@ -8,17 +8,8 @@ import { Combobox as TelegraphCombobox } from "../Combobox";
 const meta: Meta = {
   title: "Components/Combobox",
   component: TelegraphCombobox.Root,
-  argTypes: {
-    layout: {
-      options: ["truncate", "wrap"],
-      control: {
-        type: "select",
-      },
-    },
-  },
-  args: {
-    layout: "truncate",
-  },
+  argTypes: {},
+  args: {},
 };
 
 export default meta;
@@ -56,6 +47,35 @@ export const SingleSelect: Story = {
               width: "var(--tgph-comobobox-trigger-width)",
             }}
           >
+            {values.map((v) => (
+              <TelegraphCombobox.Option value={v.value} label={v.label} />
+            ))}
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+export const SingleSelectWithSearch: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState<Option>(firstValue);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a channel"}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content
+            style={{
+              width: "var(--tgph-comobobox-trigger-width)",
+            }}
+          >
             <TelegraphCombobox.Search />
             {values.map((v) => (
               <TelegraphCombobox.Option value={v.value} label={v.label} />
@@ -68,7 +88,7 @@ export const SingleSelect: Story = {
   },
 };
 
-export const Multiselect: Story = {
+export const MultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
     const [value, setValue] = React.useState<Array<Option>>([firstValue]);
@@ -80,6 +100,39 @@ export const Multiselect: Story = {
           value={value}
           onValueChange={setValue}
           placeholder={"Select a channel"}
+          closeOnSelect={false}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content
+            style={{
+              width: "var(--tgph-comobobox-trigger-width)",
+            }}
+          >
+            <TelegraphCombobox.Search />
+            {values.map((v) => (
+              <TelegraphCombobox.Option value={v.value} label={v.label} />
+            ))}
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+export const MultiSelectWithWrapLayout: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState<Array<Option>>([firstValue]);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a channel"}
+          layout="wrap"
           closeOnSelect={false}
         >
           <TelegraphCombobox.Trigger />

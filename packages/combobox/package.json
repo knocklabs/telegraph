@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@radix-ui/react-use-controllable-state": "^1.1.0",
+    "@radix-ui/react-visually-hidden": "^1.1.0",
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",

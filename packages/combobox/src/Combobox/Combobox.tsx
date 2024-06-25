@@ -1,4 +1,5 @@
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
@@ -23,12 +24,12 @@ const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 type RootProps = (
   | {
       value?: Array<Option>;
-      onValueChange: (value: Array<Option>) => void;
+      onValueChange?: (value: Array<Option>) => void;
       layout?: "truncate" | "wrap";
     }
   | {
       value?: Option;
-      onValueChange: (value: Option) => void;
+      onValueChange?: (value: Option) => void;
       layout?: never;
     }
 ) & {
@@ -83,13 +84,12 @@ const Root = ({
   const searchRef = React.useRef(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: defaultOpenProp,
     onChange: onOpenChangeProp,
   });
-
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   const onOpenToggle = React.useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
@@ -139,35 +139,28 @@ type TriggerTagProps = {
   label?: string;
 };
 
-const TriggerTag = ({ label, value }: TriggerTagProps) => {
+const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
   const context = React.useContext(ComboboxContext);
 
   return (
     <Tag.Root
       size="1"
       as={motion.span}
-      layout="position"
       initial={{ opacity: 0, transform: "scale(0.8)" }}
       animate={{ opacity: 1, transform: "scale(1)" }}
-      exit={{ opacity: 0, transform: "scale(0.8)" }}
+      exit={{ opacity: 0, transform: "scale(0.5)" }}
+      layout="position"
       transition={{
-        transform: {
-          duration: 0.2,
-          type: "spring",
-          bounce: 0,
-        },
-        opacity: {
-          duration: 0.2,
-          type: "spring",
-          bounce: 0,
-        },
+        duration: 0.2,
+        type: "spring",
+        bounce: 0,
         layout: {
-          duration: 0.1,
+          duration: 0.05,
           type: "spring",
           bounce: 0,
         },
       }}
-      key={value}
+      {...props}
     >
       <Tag.Text>{label || value}</Tag.Text>
       <Tag.Button
@@ -185,9 +178,11 @@ const TriggerTag = ({ label, value }: TriggerTagProps) => {
     </Tag.Root>
   );
 };
+
 type TriggerValueProps<T extends TgphElement> = {
   size?: TgphComponentProps<typeof TelegraphButton.Root<T>>["size"];
 };
+
 const TriggerValue = <T extends TgphElement>({
   size = "1",
 }: TriggerValueProps<T>) => {
@@ -223,10 +218,10 @@ const TriggerValue = <T extends TgphElement>({
           flexGrow: 1,
         }}
       >
-        <AnimatePresence mode="popLayout" initial={false}>
+        <AnimatePresence initial={false} mode="popLayout">
           {contextValue.map((v, i) => {
             if ((layout === "truncate" && i <= 1) || layout === "wrap") {
-              return <TriggerTag {...v} />;
+              return <TriggerTag {...v} key={v.value} />;
             }
           })}
         </AnimatePresence>
@@ -266,7 +261,7 @@ const TriggerValue = <T extends TgphElement>({
                         opacity: 1,
                       }}
                       exit={{
-                        opacity: 0,
+                        opacity: 0.5,
                       }}
                       transition={{ duration: 0.1, type: "spring", bounce: 0 }}
                       key={n}
@@ -549,9 +544,17 @@ const Option = <T extends TgphElement>({
   }
 };
 
-type SearchProps = TgphComponentProps<typeof TelegraphInput>;
+type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
+  label?: string;
+};
 
-const Search = ({ tgphRef, ...props }: SearchProps) => {
+const Search = ({
+  label = "Search",
+  placeholder = "Search",
+  tgphRef,
+  ...props
+}: SearchProps) => {
+  const id = React.useId();
   const context = React.useContext(ComboboxContext);
   const composedRef = useComposedRefs(tgphRef, context.searchRef);
 
@@ -580,9 +583,15 @@ const Search = ({ tgphRef, ...props }: SearchProps) => {
 
   return (
     <Box borderBottom px="1" pb="1">
+      <VisuallyHidden.Root>
+        <Text as="label" htmlFor={id}>
+          {label}
+        </Text>
+      </VisuallyHidden.Root>
       <TelegraphInput
+        id={id}
         variant="ghost"
-        placeholder="Search"
+        placeholder={placeholder}
         value={context.searchQuery}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           context?.setSearchQuery?.(event.target.value);
@@ -638,7 +647,18 @@ const Empty = <T extends TgphElement>({
 
   if (isVisible) {
     return (
-      <Stack gap="1" align="center" justify="center" h="20" {...props}>
+      <Stack
+        as={motion.div}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+        gap="1"
+        align="center"
+        justify="center"
+        w="full"
+        my="8"
+        {...props}
+      >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
       </Stack>
