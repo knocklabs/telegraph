@@ -4348,7 +4348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-visually-hidden@npm:1.0.3, @radix-ui/react-visually-hidden@npm:^1.0.3":
+"@radix-ui/react-visually-hidden@npm:1.0.3":
   version: 1.0.3
   resolution: "@radix-ui/react-visually-hidden@npm:1.0.3"
   dependencies:
@@ -5754,7 +5754,7 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-dialog": "npm:^1.0.5"
-    "@radix-ui/react-visually-hidden": "npm:^1.0.3"
+    "@radix-ui/react-visually-hidden": "npm:^1.1.0"
     "@telegraph/button": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/layout": "workspace:^"

@@ -302,7 +302,7 @@ type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Anchor> & {
 const Trigger = ({ size = "1", ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
 
-  const getLabelString = React.useCallback(() => {
+  const getAriaLabelString = React.useCallback(() => {
     if (!context.value) return context.placeholder;
     if (isSingleSelect(context.value)) {
       return (
@@ -344,7 +344,7 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
           justify="space-between"
           // Accessibility attributes
           role="combobox"
-          aria-label={getLabelString()}
+          aria-label={getAriaLabelString()}
           aria-controls={context.contentId}
           aria-expanded={context.open}
           aria-haspopup="listbox"
