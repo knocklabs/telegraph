@@ -530,11 +530,14 @@ type OptionProps<T extends TgphElement> = TgphComponentProps<
 > & {
   value: string;
   label?: string;
+  selected?: boolean | null;
 };
 
 const Option = <T extends TgphElement>({
   value,
   label,
+  selected,
+  onSelect,
   ...props
 }: OptionProps<T>) => {
   const context = React.useContext(ComboboxContext);
@@ -556,6 +559,10 @@ const Option = <T extends TgphElement>({
         onSelect={(event: Event) => {
           !context.closeOnSelect && event.preventDefault();
 
+          if (onSelect) {
+            return onSelect(event);
+          }
+
           if (isMultiSelect(contextValue)) {
             const onValueChange = context.onValueChange as (
               v: Array<Option>,
@@ -573,7 +580,9 @@ const Option = <T extends TgphElement>({
 
           context.triggerRef?.current?.focus();
         }}
-        selected={isSelected}
+        // Force null if selected equals null so we
+        // can override the icon of the button
+        selected={selected === null ? null : selected ?? isSelected}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         // Accessibility attributes
@@ -717,6 +726,56 @@ const Empty = <T extends TgphElement>({
   }
 };
 
+type CreateProps<T extends TgphElement> = TgphComponentProps<
+  typeof TelegraphMenu.Button<T>
+> & {
+  leadingText?: string;
+  values?: Array<Option>;
+  onCreate?: (value: Option) => void;
+};
+
+const Create = <T extends TgphElement>({
+  leadingText = "Create",
+  values,
+  onCreate,
+  selected = null,
+  ...props
+}: CreateProps<T>) => {
+  const context = React.useContext(ComboboxContext);
+
+  const variableAlreadyExists = React.useCallback(
+    (searchQuery: string | undefined) => {
+      if (!values || values?.length === 0) return true;
+      return values.some((v) => v.value === searchQuery);
+    },
+    [values],
+  );
+
+  if (context.searchQuery && !variableAlreadyExists(context.searchQuery)) {
+    return (
+      <Option
+        leadingIcon={{ icon: Lucide.Plus, "aria-hidden": true }}
+        mx="1"
+        value={context.searchQuery}
+        label={`${leadingText} "${context.searchQuery}"`}
+        selected={selected}
+        onSelect={() => {
+          if (onCreate && context.value && context.searchQuery) {
+            if (isSingleSelect(context.value)) {
+              onCreate({ value: context.searchQuery });
+            }
+
+            if (isMultiSelect(context.value)) {
+              onCreate({ value: context.searchQuery });
+            }
+          }
+        }}
+        {...props}
+      />
+    );
+  }
+};
+
 const Combobox = {} as {
   Root: typeof Root;
   Trigger: typeof Trigger;
@@ -725,6 +784,7 @@ const Combobox = {} as {
   Option: typeof Option;
   Search: typeof Search;
   Empty: typeof Empty;
+  Create: typeof Create;
 };
 
 Object.assign(Combobox, {
@@ -735,6 +795,7 @@ Object.assign(Combobox, {
   Option,
   Search,
   Empty,
+  Create,
 });
 
 export { Combobox };

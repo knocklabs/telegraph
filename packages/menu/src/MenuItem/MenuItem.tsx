@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   typeof Button<T>
 > & {
-  selected?: boolean;
+  selected?: boolean | null;
   leadingComponent?: React.ReactNode;
   trailingComponent?: React.ReactNode;
 };

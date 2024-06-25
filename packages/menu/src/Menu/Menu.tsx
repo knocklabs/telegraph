@@ -91,9 +91,7 @@ const Content = <T extends TgphElement>({
 type ButtonProps<T extends TgphElement> = TgphComponentProps<
   typeof MenuItem<T>
 > &
-  React.ComponentProps<typeof RadixMenu.Item> & {
-    selected?: boolean;
-  };
+  React.ComponentProps<typeof RadixMenu.Item>;
 
 const Button = <T extends TgphElement>({
   mx = "1",
