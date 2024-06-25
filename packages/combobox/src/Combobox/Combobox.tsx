@@ -745,7 +745,7 @@ const Create = <T extends TgphElement>({
 
   const variableAlreadyExists = React.useCallback(
     (searchQuery: string | undefined) => {
-      if (!values || values?.length === 0) return true;
+      if (!values || values?.length === 0) return false;
       return values.some((v) => v.value === searchQuery);
     },
     [values],
