@@ -140,7 +140,6 @@ const Tooltip = <T extends TgphElement>({
                 }}
                 {...(labelProps ? { labelProps } : {})}
               >
-                <RadixTooltip.Arrow fill="var(--tgph-gray-1)" />
                 {typeof label === "string" ? (
                   <Text as="span" size="1">
                     {label}
