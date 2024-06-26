@@ -1,5 +1,15 @@
 # @telegraph/tooltip
 
+## 0.0.7
+
+### Patch Changes
+
+- [#145](https://github.com/knocklabs/telegraph/pull/145) [`2598aea`](https://github.com/knocklabs/telegraph/commit/2598aea515597299b20c4c869e9d397137b32e8f) Thanks [@kylemcd](https://github.com/kylemcd)! - remove arrow from the tooltip
+
+- Updated dependencies [[`7763f43`](https://github.com/knocklabs/telegraph/commit/7763f43a9db615f3dfa958a09dd1cbd6c8c4a906)]:
+  - @telegraph/layout@0.0.16
+  - @telegraph/typography@0.0.15
+
 ## 0.0.6
 
 ### Patch Changes
