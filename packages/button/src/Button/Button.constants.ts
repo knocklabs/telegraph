@@ -59,14 +59,44 @@ export const buttonColorMap = {
 
 export const buttonSizeMap = {
   default: {
-    "1": "h-6 px-2 gap-1",
-    "2": "h-8 px-3 gap-2",
-    "3": "h-10 px-4 gap-3",
+    "1": {
+      w: "auto",
+      h: "6",
+      gap: "1",
+      px: "2",
+    },
+    "2": {
+      w: "auto",
+      h: "8",
+      gap: "2",
+      px: "3",
+    },
+    "3": {
+      w: "auto",
+      h: "10",
+      gap: "3",
+      px: "4",
+    },
   },
   "icon-only": {
-    "1": "h-6 w-6",
-    "2": "h-8 w-8",
-    "3": "h-10 w-10",
+    "1": {
+      w: "6",
+      h: "6",
+      gap: "0",
+      px: "0",
+    },
+    "2": {
+      w: "8",
+      h: "8",
+      gap: "0",
+      px: "0",
+    },
+    "3": {
+      w: "10",
+      h: "10",
+      gap: "0",
+      px: "0",
+    },
   },
 } as const;
 
@@ -158,7 +188,7 @@ export const iconColorMap = {
   },
   ghost: {
     accent: "accent",
-    gray: "gray",
+    gray: "default",
     red: "red",
     green: "green",
     blue: "blue",

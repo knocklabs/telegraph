@@ -1,13 +1,13 @@
 import * as RadixMenu from "@radix-ui/react-menu";
-import { Button as TelegraphButton } from "@telegraph/button";
 import {
   RefToTgphRef,
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
+
+import { MenuItem } from "../MenuItem";
 
 type RootProps = React.ComponentProps<typeof RadixMenu.Root>;
 
@@ -25,18 +25,27 @@ const Root = ({
       modal={modal}
       {...props}
     >
-      <RadixMenu.Anchor style={{ display: "none" }} />
       {children}
     </RadixMenu.Root>
   );
 };
 
-type ContentProps = React.ComponentProps<typeof RadixMenu.Content> &
-  TgphComponentProps<typeof Stack> & {
-    tgphRef?: React.Ref<HTMLDivElement>;
+type Anchor = React.ComponentProps<typeof RadixMenu.Anchor> & {
+  tgphRef?: React.RefObject<HTMLDivElement>;
+};
+
+const Anchor = ({ tgphRef, ...props }: Anchor) => {
+  return <RadixMenu.Anchor {...props} ref={tgphRef} />;
+};
+
+type ContentProps<T extends TgphElement> = React.ComponentProps<
+  typeof RadixMenu.Content
+> &
+  TgphComponentProps<typeof Stack<T>> & {
+    contentStackRef?: React.RefObject<HTMLDivElement>;
   };
 
-const Content = ({
+const Content = <T extends TgphElement>({
   direction = "column",
   gap = "1",
   rounded = "4",
@@ -44,10 +53,21 @@ const Content = ({
   border = true,
   shadow = "2",
   children,
+  onInteractOutside,
+  onKeyDown,
+  onCloseAutoFocus,
+  tgphRef,
   ...props
-}: ContentProps) => {
+}: ContentProps<T>) => {
   return (
-    <RadixMenu.Content {...props} asChild>
+    <RadixMenu.Content
+      onInteractOutside={onInteractOutside}
+      onKeyDown={onKeyDown}
+      onCloseAutoFocus={onCloseAutoFocus}
+      asChild
+      // Need to cast this type since RadixMenu.Content doesn't accept tgphRef
+      ref={tgphRef as React.LegacyRef<HTMLDivElement>}
+    >
       <RefToTgphRef>
         <Stack
           direction={direction}
@@ -56,6 +76,9 @@ const Content = ({
           border={border}
           py={py}
           shadow={shadow}
+          style={{
+            overflowY: "auto",
+          }}
           {...props}
         >
           {children}
@@ -66,52 +89,38 @@ const Content = ({
 };
 
 type ButtonProps<T extends TgphElement> = TgphComponentProps<
-  typeof TelegraphButton<T>
+  typeof MenuItem<T>
 > &
-  React.ComponentProps<typeof RadixMenu.Item> & {
-    selected?: boolean;
-  };
+  React.ComponentProps<typeof RadixMenu.Item>;
 
 const Button = <T extends TgphElement>({
-  size = "2",
-  variant = "ghost",
   mx = "1",
-  children,
   icon,
   leadingIcon,
   trailingIcon,
+  leadingComponent,
+  trailingComponent,
   selected,
   ...props
 }: ButtonProps<T>) => {
-  const combinedLeadingIcon = selected
-    ? ({ icon: Lucide.Check, "aria-hidden": true } as TgphComponentProps<
-        typeof TelegraphButton.Icon
-      >)
-    : leadingIcon || icon;
+  const combinedLeadingIcon = leadingIcon || icon;
 
   return (
     <RadixMenu.Item {...props} asChild>
-      <RefToTgphRef>
-        <TelegraphButton.Root
-          variant={variant}
-          size={size}
-          mx={mx}
-          {...props}
+      <RefToTgphRef {...props}>
+        <MenuItem
+          selected={selected}
+          leadingIcon={combinedLeadingIcon}
+          trailingIcon={trailingIcon}
+          leadingComponent={leadingComponent}
+          trailingComponent={trailingComponent}
           data-tgph-menu-button
-        >
-          <Stack align="center" justify="space-between" gap="3" w="full">
-            <Stack gap="3" align="center">
-              {combinedLeadingIcon && (
-                <TelegraphButton.Icon
-                  variant="primary"
-                  {...combinedLeadingIcon}
-                />
-              )}
-              <TelegraphButton.Text>{children}</TelegraphButton.Text>
-            </Stack>
-            {trailingIcon && <TelegraphButton.Icon {...trailingIcon} />}
-          </Stack>
-        </TelegraphButton.Root>
+          mx={mx}
+          style={{
+            flexShrink: 0,
+          }}
+          {...props}
+        />
       </RefToTgphRef>
     </RadixMenu.Item>
   );
@@ -129,18 +138,15 @@ const Divider = ({
 
 const Menu = {} as {
   Root: typeof Root;
+  Anchor: typeof Anchor;
   Content: typeof Content;
   Button: typeof Button;
   Divider: typeof Divider;
 };
 
-Root.displayName = "Menu.Root";
-Content.displayName = "Menu.Content";
-Button.displayName = "Menu.Button";
-Divider.displayName = "Menu.Divider";
-
 Object.assign(Menu, {
   Root,
+  Anchor,
   Content,
   Button,
   Divider,
