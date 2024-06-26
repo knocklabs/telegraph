@@ -480,7 +480,6 @@ const Content = <T extends TgphElement>({
         }
       }}
       style={{
-        overflowY: "auto",
         width: "var(--tgph-comobobox-trigger-width)",
         ...style,
         ...{
@@ -518,6 +517,9 @@ const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
       id={context.contentId}
       direction="column"
       gap="1"
+      style={{
+        overflowY: "auto",
+      }}
       // Accessibility attributes
       role="listbox"
       {...props}
