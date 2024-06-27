@@ -20,6 +20,7 @@ import { type Option, isMultiSelect, isSingleSelect } from "./Combobox.helpers";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
+const SELECT_KEYS = ["Enter", " "];
 
 type RootProps = (
   | {
@@ -164,8 +165,6 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
     >
       <Tag.Text>{label || value}</Tag.Text>
       <Tag.Button
-        as="span"
-        role="button"
         icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
         onClick={(event: React.MouseEvent) => {
           const onValueChange = context.onValueChange as (
@@ -174,7 +173,10 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
           const contextValue = context.value as Array<Option>;
           const newValue = contextValue.filter((v) => v.value !== value);
           onValueChange(newValue);
+          // Stop click event from bubbling up
           event.stopPropagation();
+          // Stop the button "submit" action from triggering
+          event.preventDefault();
         }}
       />
     </Tag.Root>
@@ -200,7 +202,7 @@ const TriggerValue = <T extends TgphElement>({
 
     if (contextValue.length === 0) {
       return (
-        <Stack h={height} align="center">
+        <Stack h={height} align="center" my="1">
           <TelegraphButton.Text color="gray">
             {context.placeholder}
           </TelegraphButton.Text>
@@ -325,11 +327,19 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
         context.triggerRef?.current?.focus();
       }}
       onKeyDown={(event: React.KeyboardEvent) => {
+        // Lets the user tab in and out of the combobox as usual
+        if (event.key === "Tab") {
+          event.stopPropagation();
+          return;
+        }
+        if (SELECT_KEYS.includes(event.key)) {
+          event.preventDefault();
+          return;
+        }
+
         if (event.key === "ArrowDown") {
           context.onOpenToggle();
-        }
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
+          return;
         }
       }}
       tgphRef={context.triggerRef}
@@ -337,6 +347,7 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
       <RefToTgphRef>
         <TelegraphButton.Root
           id={context.triggerId}
+          bg="surface-1"
           variant="outline"
           w="full"
           h="full"
@@ -438,7 +449,7 @@ const Content = <T extends TgphElement>({
         scale: 1,
         // Set height based on the internalContentRef so that
         // we get smooth animations when the content changes
-        height: height ? `${height}px` : "auto",
+        minHeight: height ? `${height}px` : "0",
       }}
       exit={{ opacity: 0, scale: 0 }}
       transition={{ duration: 0.2, type: "spring", bounce: 0 }}
@@ -478,7 +489,10 @@ const Content = <T extends TgphElement>({
         if (event.key === "Escape") {
           context.setOpen(false);
         }
+
+        event.stopPropagation();
       }}
+      bg="surface-1"
       style={{
         width: "var(--tgph-comobobox-trigger-width)",
         ...style,
@@ -519,6 +533,9 @@ const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
       gap="1"
       style={{
         overflowY: "auto",
+        // Available Height - Padding from edge of screen
+        maxHeight:
+          "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))",
       }}
       // Accessibility attributes
       role="listbox"
@@ -547,7 +564,8 @@ const Option = <T extends TgphElement>({
   const contextValue = context.value ?? [];
 
   const isVisible = isMultiSelect(contextValue)
-    ? !context.searchQuery || value.includes(context.searchQuery.toLowerCase())
+    ? !context.searchQuery ||
+      value.toLowerCase().includes(context.searchQuery.toLowerCase())
     : !context.searchQuery ||
       value.toLowerCase().includes(context.searchQuery.toLowerCase());
 
@@ -555,33 +573,46 @@ const Option = <T extends TgphElement>({
     ? contextValue.some((v) => v.value === value)
     : contextValue.value === value;
 
+  const handleSelection = (event: React.KeyboardEvent) => {
+    // Don't do anything if the key isn't a selection key
+    if (!SELECT_KEYS.includes(event.key)) return;
+
+    // Don't bubble up the event
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (context.closeOnSelect === true) {
+      context.setOpen(false);
+    }
+
+    if (onSelect) {
+      // Need to convert to non keyboard type event
+      // since onSelect is expecting a mouse event
+      // and we've handled the keyboard event already
+      const onSelectEvent = event as unknown as Event;
+      return onSelect(onSelectEvent);
+    }
+
+    if (isMultiSelect(contextValue)) {
+      const onValueChange = context.onValueChange as (v: Array<Option>) => void;
+
+      const newValue = isSelected
+        ? contextValue.filter((v) => v.value !== value)
+        : [...contextValue, { value, label }];
+
+      onValueChange(newValue);
+    } else if (isSingleSelect(contextValue)) {
+      const onValueChange = context.onValueChange as (v: Option) => void;
+      onValueChange({ value, label });
+    }
+
+    context.triggerRef?.current?.focus();
+  };
+
   if (isVisible) {
     return (
       <TelegraphMenu.Button
-        onSelect={(event: Event) => {
-          !context.closeOnSelect && event.preventDefault();
-
-          if (onSelect) {
-            return onSelect(event);
-          }
-
-          if (isMultiSelect(contextValue)) {
-            const onValueChange = context.onValueChange as (
-              v: Array<Option>,
-            ) => void;
-
-            const newValue = isSelected
-              ? contextValue.filter((v) => v.value !== value)
-              : [...contextValue, { value, label }];
-
-            onValueChange(newValue);
-          } else if (isSingleSelect(contextValue)) {
-            const onValueChange = context.onValueChange as (v: Option) => void;
-            onValueChange({ value, label });
-          }
-
-          context.triggerRef?.current?.focus();
-        }}
+        onKeyDown={handleSelection}
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : selected ?? isSelected}
@@ -770,6 +801,8 @@ const Create = <T extends TgphElement>({
             if (isMultiSelect(context.value)) {
               onCreate({ value: context.searchQuery });
             }
+
+            context.setSearchQuery?.("");
           }
         }}
         {...props}
