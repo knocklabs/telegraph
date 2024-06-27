@@ -612,6 +612,7 @@ const Option = <T extends TgphElement>({
   if (isVisible) {
     return (
       <TelegraphMenu.Button
+        type="button"
         onSelect={handleSelection}
         onKeyDown={handleSelection}
         // Force null if selected equals null so we
