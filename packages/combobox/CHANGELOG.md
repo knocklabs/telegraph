@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.4
+
+### Patch Changes
+
+- [`97e5911`](https://github.com/knocklabs/telegraph/commit/97e591137b2feec044e8a33086b4fc64c140ec53) Thanks [@kylemcd](https://github.com/kylemcd)! - patch enter keydown bubbling
+
 ## 0.0.3
 
 ### Patch Changes
