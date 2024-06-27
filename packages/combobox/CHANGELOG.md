@@ -1,5 +1,15 @@
 # @telegraph/combobox
 
+## 0.0.2
+
+### Patch Changes
+
+- [#146](https://github.com/knocklabs/telegraph/pull/146) [`4de8bd8`](https://github.com/knocklabs/telegraph/commit/4de8bd8b310a82f710e0c03662461738337c10e9) Thanks [@kylemcd](https://github.com/kylemcd)! - fixes and improvments to combobox
+
+- Updated dependencies []:
+  - @telegraph/menu@0.0.5
+  - @telegraph/tag@0.0.26
+
 ## 0.0.1
 
 ### Patch Changes
