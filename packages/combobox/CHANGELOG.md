@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.3
+
+### Patch Changes
+
+- [`c6f1c55`](https://github.com/knocklabs/telegraph/commit/c6f1c55e095340fcb332180f823884f6c3d88194) Thanks [@kylemcd](https://github.com/kylemcd)! - patch click not working on combobox option
+
 ## 0.0.2
 
 ### Patch Changes
