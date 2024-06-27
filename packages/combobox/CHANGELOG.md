@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.5
+
+### Patch Changes
+
+- [`6675b48`](https://github.com/knocklabs/telegraph/commit/6675b48d44f9ac929f518c0f4ea167ccbf7d825d) Thanks [@kylemcd](https://github.com/kylemcd)! - fix option button default not being type button
+
 ## 0.0.4
 
 ### Patch Changes
