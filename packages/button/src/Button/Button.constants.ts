@@ -28,17 +28,17 @@ export const buttonColorMap = {
     disabled: "bg-gray-2",
   },
   outline: {
-    gray: "bg-transparent shadow-[inset_0_0_0_1px] shadow-gray-6 hover:shadow-gray-7 focus:shadow-gray-8 data-[tgph-button-active=true]:!shadow-gray-8",
-    red: "bg-transparent shadow-[inset_0_0_0_1px] shadow-red-6 hover:shadow-red-7 focus:shadow-red-8 data-[tgph-button-active=true]:!shadow-red-8",
+    gray: "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-gray-6 hover:shadow-gray-7 focus:shadow-gray-8 data-[tgph-button-active=true]:!shadow-gray-8",
+    red: "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-red-6 hover:shadow-red-7 focus:shadow-red-8 data-[tgph-button-active=true]:!shadow-red-8",
     accent:
-      "bg-transparent shadow-[inset_0_0_0_1px] shadow-accent-6 hover:shadow-accent-7 focus:shadow-accent-8  data-[tgph-button-active=true]:!shadow-accent-8",
+      "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-accent-6 hover:shadow-accent-7 focus:shadow-accent-8  data-[tgph-button-active=true]:!shadow-accent-8",
     green:
-      "bg-transparent shadow-[inset_0_0_0_1px] shadow-green-6 hover:shadow-green-7 focus:shadow-green-8 data-[tgph-button-active=true]:!shadow-green-8",
-    blue: "bg-transparent shadow-[inset_0_0_0_1px] shadow-blue-6 hover:shadow-blue-7 focus:shadow-blue-8 data-[tgph-button-active=true]:!shadow-blue-8",
+      "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-green-6 hover:shadow-green-7 focus:shadow-green-8 data-[tgph-button-active=true]:!shadow-green-8",
+    blue: "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-blue-6 hover:shadow-blue-7 focus:shadow-blue-8 data-[tgph-button-active=true]:!shadow-blue-8",
     yellow:
-      "bg-transparent shadow-[inset_0_0_0_1px] shadow-yellow-6 hover:shadow-yellow-7 focus:shadow-yellow-8 data-[tgph-button-active=true]:!shadow-yellow-8",
+      "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-yellow-6 hover:shadow-yellow-7 focus:shadow-yellow-8 data-[tgph-button-active=true]:!shadow-yellow-8",
     purple:
-      "bg-transparent shadow-[inset_0_0_0_1px] shadow-purple-6 hover:shadow-purple-7 focus:shadow-purple-8 data-[tgph-button-active=true]:!shadow-purple-8",
+      "bg-surface-1 shadow-[inset_0_0_0_1px] shadow-purple-6 hover:shadow-purple-7 focus:shadow-purple-8 data-[tgph-button-active=true]:!shadow-purple-8",
     disabled: "bg-gray-2",
   },
   ghost: {
