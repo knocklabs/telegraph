@@ -613,6 +613,7 @@ const Option = <T extends TgphElement>({
     return (
       <TelegraphMenu.Button
         onSelect={handleSelection}
+        onKeyDown={handleSelection}
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : selected ?? isSelected}
