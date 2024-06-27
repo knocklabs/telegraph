@@ -575,7 +575,7 @@ const Option = <T extends TgphElement>({
 
   const handleSelection = (event: React.KeyboardEvent) => {
     // Don't do anything if the key isn't a selection key
-    if (!SELECT_KEYS.includes(event.key)) return;
+    if (event.key && !SELECT_KEYS.includes(event.key)) return;
 
     // Don't bubble up the event
     event.stopPropagation();
@@ -612,7 +612,7 @@ const Option = <T extends TgphElement>({
   if (isVisible) {
     return (
       <TelegraphMenu.Button
-        onKeyDown={handleSelection}
+        onSelect={handleSelection}
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : selected ?? isSelected}
