@@ -6,6 +6,19 @@ export const SIZE = {
   },
 } as const;
 
+export const SPACING = {
+  Root: {
+    "0": "1",
+    "1": "2",
+    "2": "2",
+  },
+  Text: {
+    "0": "1",
+    "1": "2",
+    "2": "2",
+  },
+} as const;
+
 export const COLOR = {
   Root: {
     solid: {
