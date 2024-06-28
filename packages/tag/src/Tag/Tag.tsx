@@ -76,6 +76,7 @@ const Text = <T extends TgphElement>({
       as={as}
       size={context.size}
       color={COLOR.Text[context.variant][context.color]}
+      weight="medium"
       mr="2"
       {...props}
     />
