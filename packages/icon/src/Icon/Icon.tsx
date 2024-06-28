@@ -64,7 +64,12 @@ const Icon = <T extends TgphElement>({
       {...props}
     >
       {IconComponent && (
-        <IconComponent aria-label={alt} width="100%" height="100%" />
+        <IconComponent
+          aria-label={alt}
+          width="100%"
+          height="100%"
+          display="block"
+        />
       )}
     </Box>
   );

@@ -59,6 +59,12 @@ export const buttonColorMap = {
 
 export const buttonSizeMap = {
   default: {
+    "0": {
+      w: "auto",
+      h: "5",
+      gap: "1",
+      px: "1",
+    },
     "1": {
       w: "auto",
       h: "6",
@@ -79,6 +85,12 @@ export const buttonSizeMap = {
     },
   },
   "icon-only": {
+    "0": {
+      w: "5",
+      h: "5",
+      gap: "0",
+      px: "0",
+    },
     "1": {
       w: "6",
       h: "6",
@@ -101,6 +113,7 @@ export const buttonSizeMap = {
 } as const;
 
 export const textSizeMap = {
+  "0": "0",
   "1": "1",
   "2": "2",
   "3": "3",
@@ -150,6 +163,7 @@ export const textColorMap = {
 } as const;
 
 export const iconSizeMap = {
+  "0": "0",
   "1": "1",
   "2": "2",
   "3": "3",

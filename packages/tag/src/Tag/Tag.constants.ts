@@ -1,7 +1,21 @@
 export const SIZE = {
   Root: {
+    "0": "h-5",
     "1": "h-6",
     "2": "h-8",
+  },
+} as const;
+
+export const SPACING = {
+  Root: {
+    "0": "1",
+    "1": "2",
+    "2": "2",
+  },
+  Text: {
+    "0": "1",
+    "1": "2",
+    "2": "2",
   },
 } as const;
 

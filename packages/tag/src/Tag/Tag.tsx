@@ -14,10 +14,10 @@ import { clsx } from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
-import { COLOR, SIZE } from "./Tag.constants";
+import { COLOR, SIZE, SPACING } from "./Tag.constants";
 
 type RootBaseProps = {
-  size?: "1" | "2";
+  size?: "0" | "1" | "2";
   color?: keyof (typeof COLOR.Root)["soft"];
   variant?: keyof typeof COLOR.Root;
 };
@@ -50,7 +50,7 @@ const Root = <T extends TgphElement>({
         display="inline-flex"
         align="center"
         rounded="3"
-        pl="2"
+        pl={SPACING.Root[size]}
         className={clsx(SIZE.Root[size], COLOR.Root[variant][color], className)}
         {...props}
         data-tag
@@ -76,7 +76,8 @@ const Text = <T extends TgphElement>({
       as={as}
       size={context.size}
       color={COLOR.Text[context.variant][context.color]}
-      mr="2"
+      weight="medium"
+      mr={SPACING.Text[context.size]}
       {...props}
     />
   );

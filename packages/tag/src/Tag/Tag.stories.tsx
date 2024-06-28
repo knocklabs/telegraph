@@ -51,7 +51,7 @@ const meta: Meta<typeof TelegraphTag> = {
       },
       if: {
         arg: "onCopy",
-        equals: true,
+        eq: true,
       },
     },
   },
