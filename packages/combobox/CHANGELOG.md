@@ -1,5 +1,13 @@
 # @telegraph/combobox
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/menu@0.0.9
+  - @telegraph/tag@0.0.29
+
 ## 0.0.8
 
 ### Patch Changes
