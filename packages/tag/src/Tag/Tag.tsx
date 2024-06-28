@@ -17,7 +17,7 @@ import React from "react";
 import { COLOR, SIZE } from "./Tag.constants";
 
 type RootBaseProps = {
-  size?: "1" | "2";
+  size?: "0" | "1" | "2";
   color?: keyof (typeof COLOR.Root)["soft"];
   variant?: keyof typeof COLOR.Root;
 };
@@ -50,7 +50,7 @@ const Root = <T extends TgphElement>({
         display="inline-flex"
         align="center"
         rounded="3"
-        pl="2"
+        pl={size === "0" ? "1" : "2"}
         className={clsx(SIZE.Root[size], COLOR.Root[variant][color], className)}
         {...props}
         data-tag
@@ -227,10 +227,12 @@ const Default = <T extends TgphElement>({
     <Root color={color} size={size} variant={variant} {...props}>
       {icon && <Icon {...icon} />}
       <Text as="span">{children}</Text>
-      {onRemove && (
+      {onRemove && size !== "0" && (
         <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
       )}
-      {onCopy && <CopyButton onClick={onCopy} textToCopy={textToCopy} />}
+      {onCopy && size !== "0" && (
+        <CopyButton onClick={onCopy} textToCopy={textToCopy} />
+      )}
     </Root>
   );
 };

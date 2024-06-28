@@ -1,5 +1,6 @@
 export const SIZE = {
   Root: {
+    "0": "h-5",
     "1": "h-6",
     "2": "h-8",
   },

@@ -32,10 +32,18 @@ const meta: Meta<typeof TelegraphTag> = {
       control: {
         type: "boolean",
       },
+      if: {
+        arg: "size",
+        neq: "0",
+      },
     },
     onRemove: {
       control: {
         type: "boolean",
+      },
+      if: {
+        arg: "size",
+        neq: "0",
       },
     },
     icon: {
