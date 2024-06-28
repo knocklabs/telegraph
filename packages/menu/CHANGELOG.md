@@ -1,5 +1,11 @@
 # @telegraph/menu
 
+## 0.0.8
+
+### Patch Changes
+
+- [`d6690c9`](https://github.com/knocklabs/telegraph/commit/d6690c9402281e4cd6172a73039399c2fe2313da) Thanks [@kylemcd](https://github.com/kylemcd)! - patch ref transfer
+
 ## 0.0.7
 
 ### Patch Changes
