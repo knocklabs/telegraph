@@ -1,5 +1,15 @@
 # @telegraph/combobox
 
+## 0.0.6
+
+### Patch Changes
+
+- [#151](https://github.com/knocklabs/telegraph/pull/151) [`65ec224`](https://github.com/knocklabs/telegraph/commit/65ec2240453e263acdd80a278de66c5f980ca1dc) Thanks [@kylemcd](https://github.com/kylemcd)! - update menu anchor to menu trigger, enabled prop on tooltip, combobox updated to support new menu
+
+- Updated dependencies [[`65ec224`](https://github.com/knocklabs/telegraph/commit/65ec2240453e263acdd80a278de66c5f980ca1dc)]:
+  - @telegraph/menu@0.0.6
+  - @telegraph/tag@0.0.27
+
 ## 0.0.5
 
 ### Patch Changes
