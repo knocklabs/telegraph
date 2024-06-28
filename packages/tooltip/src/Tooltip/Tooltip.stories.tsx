@@ -27,11 +27,17 @@ const meta: Meta = {
         type: "select",
       },
     },
+    enabled: {
+      control: {
+        type: "boolean",
+      },
+    },
   },
   args: {
     label: "Tooltip",
     side: "bottom",
     align: "center",
+    enabled: true,
   },
 };
 
