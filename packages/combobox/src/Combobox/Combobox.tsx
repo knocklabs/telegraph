@@ -296,7 +296,7 @@ const TriggerValue = <T extends TgphElement>({
   );
 };
 
-type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Anchor> & {
+type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
   placeholder?: string;
   size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
 };
@@ -318,7 +318,7 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
   }, [context.value, context.placeholder]);
 
   return (
-    <TelegraphMenu.Anchor
+    <TelegraphMenu.Trigger
       {...props}
       asChild
       onClick={(event: React.MouseEvent) => {
@@ -344,36 +344,34 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
       }}
       tgphRef={context.triggerRef}
     >
-      <RefToTgphRef>
-        <TelegraphButton.Root
-          id={context.triggerId}
-          bg="surface-1"
-          variant="outline"
-          w="full"
-          h="full"
-          color={context.errored ? "red" : "gray"}
-          justify="space-between"
-          // Accessibility attributes
-          role="combobox"
-          aria-label={getAriaLabelString()}
-          aria-controls={context.contentId}
-          aria-expanded={context.open}
-          aria-haspopup="listbox"
-          // Custom attributes
-          data-tgph-combobox-trigger
-          data-tgph-comobox-trigger-open={context.open}
-        >
-          <TriggerValue size={size} />
-          <TelegraphButton.Icon
-            as={motion.div}
-            icon={Lucide.ChevronDown}
-            animate={{ rotate: context.open ? "180deg" : "0deg" }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-            aria-hidden
-          />
-        </TelegraphButton.Root>
-      </RefToTgphRef>
-    </TelegraphMenu.Anchor>
+      <TelegraphButton.Root
+        id={context.triggerId}
+        bg="surface-1"
+        variant="outline"
+        w="full"
+        h="full"
+        color={context.errored ? "red" : "gray"}
+        justify="space-between"
+        // Accessibility attributes
+        role="combobox"
+        aria-label={getAriaLabelString()}
+        aria-controls={context.contentId}
+        aria-expanded={context.open}
+        aria-haspopup="listbox"
+        // Custom attributes
+        data-tgph-combobox-trigger
+        data-tgph-comobox-trigger-open={context.open}
+      >
+        <TriggerValue size={size} />
+        <TelegraphButton.Icon
+          as={motion.div}
+          icon={Lucide.ChevronDown}
+          animate={{ rotate: context.open ? "180deg" : "0deg" }}
+          transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+          aria-hidden
+        />
+      </TelegraphButton.Root>
+    </TelegraphMenu.Trigger>
   );
 };
 
@@ -573,9 +571,10 @@ const Option = <T extends TgphElement>({
     ? contextValue.some((v) => v.value === value)
     : contextValue.value === value;
 
-  const handleSelection = (event: React.KeyboardEvent) => {
+  const handleSelection = (event: Event | React.KeyboardEvent) => {
     // Don't do anything if the key isn't a selection key
-    if (event.key && !SELECT_KEYS.includes(event.key)) return;
+    const keyboardEvent = event as React.KeyboardEvent;
+    if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) return;
 
     // Don't bubble up the event
     event.stopPropagation();

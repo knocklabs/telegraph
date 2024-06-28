@@ -1,4 +1,5 @@
 import * as RadixMenu from "@radix-ui/react-menu";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import {
   RefToTgphRef,
   type TgphComponentProps,
@@ -9,24 +10,44 @@ import React from "react";
 
 import { MenuItem } from "../MenuItem";
 
-type RootProps = React.ComponentProps<typeof RadixMenu.Root>;
+type RootProps = React.ComponentProps<typeof RadixMenu.Root> & {
+  defaultOpen?: boolean;
+};
+
+type MenuContextProps = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
+
+const MenuContext = React.createContext<MenuContextProps>({
+  open: false,
+  setOpen: () => {},
+});
 
 const Root = ({
-  open = true,
-  onOpenChange = () => {},
+  open: openProp,
+  onOpenChange: onOpenChangeProp,
+  defaultOpen: defaultOpenProp,
   modal = true,
   children,
   ...props
 }: RootProps) => {
+  const [open = false, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpenProp,
+    onChange: onOpenChangeProp,
+  });
   return (
-    <RadixMenu.Root
-      open={open}
-      onOpenChange={onOpenChange}
-      modal={modal}
-      {...props}
-    >
-      {children}
-    </RadixMenu.Root>
+    <MenuContext.Provider value={{ open, setOpen }}>
+      <RadixMenu.Root
+        open={open}
+        onOpenChange={setOpen}
+        modal={modal}
+        {...props}
+      >
+        {children}
+      </RadixMenu.Root>
+    </MenuContext.Provider>
   );
 };
 
@@ -34,8 +55,20 @@ type Anchor = React.ComponentProps<typeof RadixMenu.Anchor> & {
   tgphRef?: React.RefObject<HTMLDivElement>;
 };
 
-const Anchor = ({ tgphRef, ...props }: Anchor) => {
-  return <RadixMenu.Anchor {...props} ref={tgphRef} />;
+const Trigger = ({ asChild = true, tgphRef, children, ...props }: Anchor) => {
+  const context = React.useContext(MenuContext);
+  return (
+    <RadixMenu.Anchor
+      onClick={() => {
+        context.setOpen(!context.open);
+      }}
+      asChild={asChild}
+      {...props}
+      ref={tgphRef}
+    >
+      <RefToTgphRef>{children}</RefToTgphRef>
+    </RadixMenu.Anchor>
+  );
 };
 
 type ContentProps<T extends TgphElement> = React.ComponentProps<
@@ -52,6 +85,7 @@ const Content = <T extends TgphElement>({
   py = "1",
   border = true,
   shadow = "2",
+  sideOffset = 4,
   children,
   onInteractOutside,
   onKeyDown,
@@ -65,21 +99,24 @@ const Content = <T extends TgphElement>({
       onKeyDown={onKeyDown}
       onCloseAutoFocus={onCloseAutoFocus}
       asChild
+      sideOffset={sideOffset}
+      {...props}
       // Need to cast this type since RadixMenu.Content doesn't accept tgphRef
       ref={tgphRef as React.LegacyRef<HTMLDivElement>}
     >
       <RefToTgphRef>
         <Stack
+          bg="surface-1"
           direction={direction}
           gap={gap}
           rounded={rounded}
           border={border}
           py={py}
           shadow={shadow}
+          zIndex="popover"
           style={{
             overflowY: "auto",
           }}
-          {...props}
         >
           {children}
         </Stack>
@@ -138,7 +175,7 @@ const Divider = ({
 
 const Menu = {} as {
   Root: typeof Root;
-  Anchor: typeof Anchor;
+  Trigger: typeof Trigger;
   Content: typeof Content;
   Button: typeof Button;
   Divider: typeof Divider;
@@ -146,7 +183,7 @@ const Menu = {} as {
 
 Object.assign(Menu, {
   Root,
-  Anchor,
+  Trigger,
   Content,
   Button,
   Divider,
