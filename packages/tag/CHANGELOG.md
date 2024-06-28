@@ -1,5 +1,16 @@
 # @telegraph/tag
 
+## 0.0.28
+
+### Patch Changes
+
+- [#152](https://github.com/knocklabs/telegraph/pull/152) [`387998b`](https://github.com/knocklabs/telegraph/commit/387998b7b6acc57d93d9c296d107c46ac27774ed) Thanks [@cjbell](https://github.com/cjbell)! - feat: add tag 0 and button 0 sizes
+
+- Updated dependencies [[`67c68cf`](https://github.com/knocklabs/telegraph/commit/67c68cf18f25d508129aa823d3b9c10b7358e0ba), [`387998b`](https://github.com/knocklabs/telegraph/commit/387998b7b6acc57d93d9c296d107c46ac27774ed)]:
+  - @telegraph/tooltip@0.0.9
+  - @telegraph/button@0.0.27
+  - @telegraph/icon@0.0.17
+
 ## 0.0.27
 
 ### Patch Changes
