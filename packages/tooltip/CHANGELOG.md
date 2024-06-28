@@ -1,5 +1,11 @@
 # @telegraph/tooltip
 
+## 0.0.9
+
+### Patch Changes
+
+- [`67c68cf`](https://github.com/knocklabs/telegraph/commit/67c68cf18f25d508129aa823d3b9c10b7358e0ba) Thanks [@kylemcd](https://github.com/kylemcd)! - fix return type on tooltip
+
 ## 0.0.8
 
 ### Patch Changes

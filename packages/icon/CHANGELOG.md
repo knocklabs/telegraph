@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.0.17
+
+### Patch Changes
+
+- [#152](https://github.com/knocklabs/telegraph/pull/152) [`387998b`](https://github.com/knocklabs/telegraph/commit/387998b7b6acc57d93d9c296d107c46ac27774ed) Thanks [@cjbell](https://github.com/cjbell)! - feat: add tag 0 and button 0 sizes
+
 ## 0.0.16
 
 ### Patch Changes
