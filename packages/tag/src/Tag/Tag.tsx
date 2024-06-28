@@ -228,12 +228,10 @@ const Default = <T extends TgphElement>({
     <Root color={color} size={size} variant={variant} {...props}>
       {icon && <Icon {...icon} />}
       <Text as="span">{children}</Text>
-      {onRemove && size !== "0" && (
+      {onRemove && (
         <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
       )}
-      {onCopy && size !== "0" && (
-        <CopyButton onClick={onCopy} textToCopy={textToCopy} />
-      )}
+      {onCopy && <CopyButton onClick={onCopy} textToCopy={textToCopy} />}
     </Root>
   );
 };
