@@ -34,7 +34,12 @@ type DisplayProps = {
   display?: Responsive<React.CSSProperties["display"]>;
 };
 
+type ZIndexProps = {
+  zIndex?: Responsive<`${keyof typeof t.tokens.zIndex}`>;
+};
+
 export type BoxPropsTokens = SpacingProps &
   ColorProps &
   RoundedProps &
-  DisplayProps;
+  DisplayProps &
+  ZIndexProps;

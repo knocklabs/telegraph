@@ -13,6 +13,7 @@
   max-height: var(--tgph-max-height, auto);
   border-style: var(--tgph-border-style, var(--tgph-border-style-solid, solid));
   box-shadow: var(--tgph-box-shadow, none);
+  z-index: var(--tgph-z-index, auto);
 }
 
 .tgph-box {
@@ -29,6 +30,7 @@
   --tgph-max-height: var(--tgph-max-height);
   --tgph-border-style: var(--tgph-border-style);
   --tgph-box-shadow: var(--tgph-box-shadow);
+  --tgph-z-index: var(--tgph-z-index);
 }
 
 @media (--tgph-breakpoint-md) {
@@ -46,6 +48,7 @@
     --tgph-max-height: var(--tgph-max-height-md);
     --tgph-border-style: var(--tgph-border-style-md);
     --tgph-box-shadow: var(--tgph-box-shadow-md);
+    --tgph-z-index: var(--tgph-z-index-md);
   }
 }
 
@@ -64,6 +67,7 @@
     --tgph-max-height: var(--tgph-max-height-lg);
     --tgph-border-style: var(--tgph-border-style-lg);
     --tgph-box-shadow: var(--tgph-box-shadow-lg);
+    --tgph-z-index: var(--tgph-z-index-lg);
   }
 }
 
@@ -82,6 +86,7 @@
     --tgph-max-height: var(--tgph-max-height-xl);
     --tgph-border-style: var(--tgph-border-style-xl);
     --tgph-box-shadow: var(--tgph-box-shadow-xl);
+    --tgpz-index: var(--tgph-z-index-xl);
   }
 }
 
@@ -100,5 +105,6 @@
     --tgph-max-height: var(--tgph-max-height-2xl);
     --tgph-border-style: var(--tgph-border-style-2xl);
     --tgph-box-shadow: var(--tgph-box-shadow-2xl);
+    --tgph-z-index: var(--tgph-z-index-2xl);
   }
 }
