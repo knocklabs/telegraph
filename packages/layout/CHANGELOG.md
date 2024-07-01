@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.17
+
+### Patch Changes
+
+- [#157](https://github.com/knocklabs/telegraph/pull/157) [`2c2f92d`](https://github.com/knocklabs/telegraph/commit/2c2f92d5533d555b425d42bd996142845123b745) Thanks [@kylemcd](https://github.com/kylemcd)! - add z-index prop to layout components
+
 ## 0.0.16
 
 ### Patch Changes

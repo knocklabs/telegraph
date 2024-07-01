@@ -1,5 +1,16 @@
 # @telegraph/menu
 
+## 0.0.10
+
+### Patch Changes
+
+- [#157](https://github.com/knocklabs/telegraph/pull/157) [`2c2f92d`](https://github.com/knocklabs/telegraph/commit/2c2f92d5533d555b425d42bd996142845123b745) Thanks [@kylemcd](https://github.com/kylemcd)! - add z-index prop to layout components
+
+- Updated dependencies [[`2c2f92d`](https://github.com/knocklabs/telegraph/commit/2c2f92d5533d555b425d42bd996142845123b745)]:
+  - @telegraph/layout@0.0.17
+  - @telegraph/icon@0.0.18
+  - @telegraph/button@0.0.29
+
 ## 0.0.9
 
 ### Patch Changes
