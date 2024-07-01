@@ -1,6 +1,4 @@
 import type {
-  PolymorphicProps,
-  PolymorphicPropsWithTgphRef,
   Required,
   TgphComponentProps,
   TgphElement,
@@ -35,11 +33,7 @@ type InternalProps = {
   color: Required<RootBaseProps>["color"] | "disabled";
 };
 
-type RootProps<T extends TgphElement> = Omit<
-  TgphComponentProps<typeof Stack>,
-  "tgphRef"
-> &
-  PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
+type RootProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>> &
   RootBaseProps;
 
 const ButtonContext = React.createContext<
@@ -54,7 +48,6 @@ const ButtonContext = React.createContext<
 });
 
 const Root = <T extends TgphElement>({
-  as,
   variant = "solid",
   size = "2",
   color = "gray",
@@ -65,7 +58,6 @@ const Root = <T extends TgphElement>({
   ...props
 }: RootProps<T>) => {
   const state = disabled ? "disabled" : initialState;
-  // const color = state === "disabled" ? "disabled" : initialColor;
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const children = React.Children.toArray(props?.children);
@@ -124,7 +116,6 @@ const Root = <T extends TgphElement>({
       };
     }
   }, [variant, color]);
-  console.log("STYLE_PROPS", styleProps);
 
   const { style, componentProps } = useStyleEngine({
     props: {
@@ -134,14 +125,20 @@ const Root = <T extends TgphElement>({
     propsMap: BUTTON_STYLE_PROPS,
   });
 
-  console.log("BUTTON", style, componentProps);
-
   return (
     <ButtonContext.Provider
-      value={{ variant, size, color, state, layout, active }}
+      value={{
+        // Set text / icon color to disabled color if button is disabled
+        color: disabled ? "disabled" : color,
+        variant,
+        size,
+        state,
+        layout,
+        active,
+      }}
     >
       <Stack
-        as={as || "button"}
+        as="button"
         className={clsx(
           "tgph-button",
           state === "disabled" && "tgph-button--disabled",
@@ -244,8 +241,8 @@ type BaseDefaultProps =
       leadingIcon?: never;
       trailingIcon?: never;
     };
-type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root> &
+
+type DefaultProps<T extends TgphElement> = TgphComponentProps<typeof Root<T>> &
   BaseDefaultProps;
 
 const Default = <T extends TgphElement>({
