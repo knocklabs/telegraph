@@ -1,18 +1,17 @@
 import type {
-  PolymorphicProps,
-  PolymorphicPropsWithTgphRef,
   Required,
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { useStyleEngine } from "@telegraph/style-engine";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
 import React from "react";
 
 import {
-  buttonColorMap,
+  BUTTON_STYLE_PROPS,
   buttonSizeMap,
   iconColorMap,
   iconSizeMap,
@@ -34,11 +33,7 @@ type InternalProps = {
   color: Required<RootBaseProps>["color"] | "disabled";
 };
 
-type RootProps<T extends TgphElement> = Omit<
-  TgphComponentProps<typeof Stack>,
-  "tgphRef"
-> &
-  PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
+type RootProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>> &
   RootBaseProps;
 
 const ButtonContext = React.createContext<
@@ -53,10 +48,9 @@ const ButtonContext = React.createContext<
 });
 
 const Root = <T extends TgphElement>({
-  as,
   variant = "solid",
   size = "2",
-  color: initialColor = "gray",
+  color = "gray",
   state: initialState = "default",
   active = false,
   disabled,
@@ -64,7 +58,6 @@ const Root = <T extends TgphElement>({
   ...props
 }: RootProps<T>) => {
   const state = disabled ? "disabled" : initialState;
-  const color = state === "disabled" ? "disabled" : initialColor;
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const children = React.Children.toArray(props?.children);
@@ -83,20 +76,75 @@ const Root = <T extends TgphElement>({
     return "default";
   }, [props?.children]);
 
+  const styleProps = React.useMemo(() => {
+    if (variant === "solid") {
+      return {
+        background: `${color}-9`,
+        "background:hover": `${color}-10`,
+        "background:focus": `${color}-11`,
+        "background:active": `${color}-11`,
+        "background:disabled": `gray-2`,
+      };
+    }
+    if (variant === "soft") {
+      return {
+        background: `${color}-3`,
+        "background:hover": `${color}-4`,
+        "background:focus": `${color}-5`,
+        "background:active": `${color}-5`,
+        "background:disabled": `gray-2`,
+      };
+    }
+    if (variant === "outline") {
+      return {
+        background: "surface-1",
+        "background:disabled": "gray-2",
+        "shadow-color": `${color}-6`,
+        "shadow-color:hover": `${color}-7`,
+        "shadow-color:focus": `${color}-8`,
+        "shadow-color:active": `${color}-8`,
+        "shadow-color:disabled": `transparent`,
+      };
+    }
+    if (variant === "ghost") {
+      return {
+        background: "transparent",
+        "background:hover": `${color}-3`,
+        "background:focus": `${color}-4`,
+        "background:active": `${color}-4`,
+        "background:disabled": `transparent`,
+      };
+    }
+  }, [variant, color]);
+
+  const { style, componentProps } = useStyleEngine({
+    props: {
+      ...styleProps,
+      ...props,
+    },
+    propsMap: BUTTON_STYLE_PROPS,
+  });
+
   return (
     <ButtonContext.Provider
-      value={{ variant, size, color, state, layout, active }}
+      value={{
+        // Set text / icon color to disabled color if button is disabled
+        color: disabled ? "disabled" : color,
+        variant,
+        size,
+        state,
+        layout,
+        active,
+      }}
     >
       <Stack
-        as={as || "button"}
+        as="button"
         className={clsx(
-          "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
-          "transition-colors no-underline",
-          state === "disabled" && "cursor-not-allowed",
-          buttonColorMap[variant][color],
-          buttonSizeMap[layout][size],
+          "tgph-button",
+          state === "disabled" && "tgph-button--disabled",
           className,
         )}
+        disabled={disabled}
         h={buttonSizeMap[layout][size].h}
         w={buttonSizeMap[layout][size].w}
         gap={buttonSizeMap[layout][size].gap}
@@ -108,8 +156,8 @@ const Root = <T extends TgphElement>({
         data-tgph-button
         data-tgph-button-layout={layout}
         data-tgph-button-active={active}
-        disabled={disabled}
-        {...props}
+        style={style}
+        {...componentProps}
       />
     </ButtonContext.Provider>
   );
@@ -193,8 +241,8 @@ type BaseDefaultProps =
       leadingIcon?: never;
       trailingIcon?: never;
     };
-type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root> &
+
+type DefaultProps<T extends TgphElement> = TgphComponentProps<typeof Root<T>> &
   BaseDefaultProps;
 
 const Default = <T extends TgphElement>({

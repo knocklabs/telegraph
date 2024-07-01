@@ -1,0 +1,46 @@
+/* Default Reset */
+.tgph-button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
+  text-decoration: none;
+  --tgph-button-box-shadow: 0 0 0 1px;
+}
+
+.tgph-button--disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tgph-button {
+  background-color: var(--tgph-background-color);
+  box-shadow: var(--tgph-button-box-shadow) var(--tgph-box-shadow-color) !important; /* Important is used to override <Box/> shadow */
+}
+
+.tgph-button:hover {
+  background-color: var(--tgph-background-color--hover);
+  box-shadow: var(--tgph-button-box-shadow) var(--tgph-box-shadow-color--hover) !important; /* Important is used to override <Box/> shadow */
+}
+
+.tgph-button:focus {
+  background-color: var(--tgph-background-color--focus);
+  box-shadow: var(--tgph-button-box-shadow) var(--tgph-box-shadow-color--focus) !important; /* Important is used to override <Box/> shadow */
+}
+
+.tgph-button[data-tgph-button-active="true"] {
+  background-color: var(--tgph-background-color--active);
+  box-shadow: var(--tgph-button-box-shadow) var(--tgph-box-shadow-color--active) !important; /* Important is used to override <Box/> shadow */
+}
+
+.tgph-button:disabled {
+  background-color: var(--tgph-background-color--disabled);
+  box-shadow: var(--tgph-button-box-shadow)
+    var(--tgph-box-shadow-color--disabled) !important; /* Important is used to override <Box/> shadow */
+}
