@@ -1,11 +1,7 @@
 import { BREAKPOINTS } from "../constants";
-import type { CssVariableProp } from "../types";
+import type { CssVariableProp, Responsive } from "../types";
 
-import {
-  Responsive,
-  getValueForEachBreakpoint,
-  isResponsiveObject,
-} from "./breakpoints";
+import { getValueForEachBreakpoint, isResponsiveObject } from "./breakpoints";
 
 type FormatCssVariableValueArgs = {
   value: string | boolean;

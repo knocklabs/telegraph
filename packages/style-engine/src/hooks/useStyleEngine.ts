@@ -14,8 +14,8 @@ export const useStyleEngine = ({ props, propsMap }: UseStyleEngineParams) => {
     const { style = {}, ...rest } = props;
 
     const { style: styleProps, component } = organizeComponentAndStyleProps({
-      props,
-      propsMap: rest,
+      props: rest,
+      propsMap,
     });
 
     const styleVariables = propsToCssVariables({

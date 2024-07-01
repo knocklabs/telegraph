@@ -2,13 +2,12 @@ import type {
   PolymorphicPropsWithTgphRef,
   TgphElement,
 } from "@telegraph/helpers";
-import { useStyleEngine } from "@telegraph/style-engine";
+import { type Responsive, useStyleEngine } from "@telegraph/style-engine";
 import type t from "@telegraph/tokens";
 import clsx from "clsx";
 import React from "react";
 
 import { Box } from "../Box";
-import { type Responsive } from "../helpers/breakpoints";
 
 import { STACK_PROPS } from "./Stack.constants";
 

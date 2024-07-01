@@ -27,13 +27,14 @@ const Box = <T extends TgphElement>({
     propsMap: BOX_PROPS,
   });
 
+  console.log(props, componentProps);
+
   return (
     <Component
       className={clsx("tgph-box", className)}
-      ref={tgphRef}
       style={style}
-      children={props.children}
       {...componentProps}
+      ref={tgphRef}
     />
   );
 };

@@ -1,7 +1,5 @@
 import { BREAKPOINTS } from "../constants";
-
-export type ResponsiveObject<T> = { sm?: T; md?: T; lg?: T; xl?: T; "2xl"?: T };
-export type Responsive<T> = T | ResponsiveObject<T>;
+import type { ResponsiveObject } from "../types";
 
 export const getValueForEachBreakpoint = (
   breakpoints: ResponsiveObject<string>,

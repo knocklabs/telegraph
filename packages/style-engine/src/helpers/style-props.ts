@@ -1,11 +1,8 @@
-// Move this
-import type { Responsive } from "../helpers/breakpoints";
-
-type Props = Record<string, unknown>;
+import type { Responsive } from "../types";
 
 type OrganizeComponentAndStylePropsArgs = {
-  props: Props;
-  propsMap: Props;
+  props: Record<string, unknown>;
+  propsMap: Record<string, unknown>;
 };
 
 export const organizeComponentAndStyleProps = ({
