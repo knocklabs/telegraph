@@ -203,4 +203,8 @@ export const BOX_PROPS = {
     rule: "box-shadow",
     type: "shadow",
   },
+  zIndex: {
+    rule: "z-index",
+    type: "zIndex",
+  },
 } as const;

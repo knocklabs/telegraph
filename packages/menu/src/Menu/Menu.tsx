@@ -113,10 +113,10 @@ const Content = <T extends TgphElement>({
           border={border}
           py={py}
           shadow={shadow}
-          zIndex="popover"
           style={{
             overflowY: "auto",
           }}
+          zIndex="popover"
         >
           {children}
         </Stack>
