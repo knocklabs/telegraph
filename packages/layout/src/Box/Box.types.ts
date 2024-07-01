@@ -15,7 +15,6 @@ type KeysOfType<KEYS, TYPE> = {
 type SpacingProp = KeysOfType<typeof BOX_PROPS, "spacing">;
 type ColorProp = KeysOfType<typeof BOX_PROPS, "color">;
 type RoundedProp = KeysOfType<typeof BOX_PROPS, "rounded">;
-type ZIndexProp = KeysOfType<typeof BOX_PROPS, "zIndex">;
 
 type SpacingProps = {
   [key in SpacingProp]?: Responsive<
