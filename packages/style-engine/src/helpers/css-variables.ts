@@ -1,34 +1,11 @@
+import { BREAKPOINTS } from "../constants";
+import type { CssVariableProp } from "../types";
+
 import {
-  BREAKPOINTS,
   Responsive,
   getValueForEachBreakpoint,
   isResponsiveObject,
 } from "./breakpoints";
-
-type CssVariableProp = {
-  rule: string;
-  type: string;
-  default?: string;
-  valueType?: "static" | "variable";
-} & (
-  | {
-      ordering?: "trbl";
-      direction?: "all" | "top" | "right" | "bottom" | "left" | "x" | "y";
-    }
-  | {
-      ordering?: "clockwise";
-      direction?:
-        | "all"
-        | "topLeft"
-        | "topRight"
-        | "bottomRight"
-        | "bottomLeft"
-        | "top"
-        | "right"
-        | "bottom"
-        | "left";
-    }
-);
 
 type FormatCssVariableValueArgs = {
   value: string | boolean;
@@ -228,17 +205,13 @@ const processCssVariableString = ({
 
 type PropsToCssVariablesArgs = {
   props: Record<string, Responsive<string>>;
-  // ref: React.RefObject<HTMLElement>;
   propsMap: Record<string, CssVariableProp>;
 };
 
 export const propsToCssVariables = ({
   props,
-  // ref,
   propsMap,
 }: PropsToCssVariablesArgs) => {
-  // if (!ref.current) return;
-
   const cssVariables: Record<string, string> = {};
 
   Object.entries(props).forEach(([key, value]) => {
@@ -268,12 +241,7 @@ export const propsToCssVariables = ({
         });
       }
     }
-
-    // Object.entries(cssVariables).forEach(([cssVar, cssValue]) => {
-    //   if (ref.current) {
-    //     ref.current.style.setProperty(cssVar, cssValue);
-    //   }
-    // });
   });
+
   return cssVariables;
 };

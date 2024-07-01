@@ -30,7 +30,8 @@
     "prepare": "husky"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "playground/*"
   ],
   "manypkg": {
     "defaultBranch": "main",

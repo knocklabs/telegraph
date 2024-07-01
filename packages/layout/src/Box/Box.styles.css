@@ -1,4 +1,18 @@
 .tgph-box {
+  background-color: var(--tgph-background-color);
+}
+
+.tgph-box {
+  --tgph-background-color: var(--tgph-background-color-sm);
+}
+
+@media (--tgph-breakpoint-md) {
+  .tgph-box {
+    --tgph-background-color: var(--tgph-background-color-md);
+  }
+}
+
+/* .tgph-box {
   display: var(--tgph-display, block);
   padding: var(--tgph-padding);
   margin: var(--tgph-margin);
@@ -107,4 +121,4 @@
     --tgph-box-shadow: var(--tgph-box-shadow-2xl);
     --tgph-z-index: var(--tgph-z-index-2xl);
   }
-}
+} */
