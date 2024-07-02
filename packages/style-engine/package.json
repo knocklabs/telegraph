@@ -1,7 +1,8 @@
 {
-  "name": "@telegraph/layout",
-  "version": "0.0.17",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/layout",
+  "name": "@telegraph/style-engine",
+  "version": "0.0.0",
+  "description": "A wrappar around vanilla extract to style telegraph",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/style-engine",
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
@@ -25,8 +26,8 @@
     "clean": "rm -rf dist",
     "dev": "vite build --watch --emptyOutDir false",
     "build": "yarn clean && vite build",
-    "//test": "vitest run",
-    "//test:watch": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
@@ -34,27 +35,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@telegraph/compose-refs": "workspace:^",
-    "@telegraph/helpers": "workspace:^",
     "@telegraph/tokens": "workspace:^",
-    "clsx": "^2.1.0"
+    "@vanilla-extract/css": "^1.15.3",
+    "@vanilla-extract/recipes": "^0.5.3",
+    "@vanilla-extract/sprinkles": "^1.6.2",
+    "@vanilla-extract/vite-plugin": "^4.0.12"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
-    "@telegraph/style-engine": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@telegraph/vitest-config": "workspace:^",
     "@types/react": "^18.2.48",
-    "@vanilla-extract/vite-plugin": "^4.0.12",
     "eslint": "^8.56.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.3.0",
+    "vite": "^5.2.12",
     "vitest": "^1.2.2"
   },
   "peerDependencies": {
