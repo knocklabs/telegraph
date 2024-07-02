@@ -1,5 +1,13 @@
 # @telegraph/button
 
+## 0.0.29
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/icon@0.0.18
+  - @telegraph/typography@0.0.16
+
 ## 0.0.28
 
 ### Patch Changes
