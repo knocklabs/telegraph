@@ -16,10 +16,11 @@ type StackProps<T extends TgphElement> = PolymorphicProps<T> &
 
 const Stack = <T extends TgphElement>({
   className,
+  display = "flex",
   ...props
 }: StackProps<T>) => {
   const { styleClassName, componentProps } = useStyleProps({
-    props,
+    props: { ...props, display },
     stylePropsFn,
   });
 
