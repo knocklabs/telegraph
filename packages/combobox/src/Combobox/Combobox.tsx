@@ -673,7 +673,7 @@ const Search = ({
   }, [context]);
 
   return (
-    <Box borderBottom px="1" pb="1">
+    <Box borderBottom="px" px="1" pb="1">
       <VisuallyHidden.Root>
         <Text as="label" htmlFor={id}>
           {label}
