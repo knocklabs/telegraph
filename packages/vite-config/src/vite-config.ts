@@ -48,7 +48,6 @@ export default {
       external: [...allDependencies],
       output: {
         assetFileNames: (assetInfo: PreRenderedAsset) => {
-          console.log(assetInfo.name);
           if (assetInfo?.name?.endsWith(".css")) {
             return "css/[name].css";
           }
