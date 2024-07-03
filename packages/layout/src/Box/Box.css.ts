@@ -1,4 +1,5 @@
 import {
+  RESPONSIVE_STYLE_PROPS,
   createStyleProps,
   defineStyleProps,
   tokens,
@@ -82,7 +83,8 @@ const boxProperties = defineStyleProps({
     shadow: ["boxShadow"],
     w: ["width"],
   },
+  ...RESPONSIVE_STYLE_PROPS,
 });
 
-export const styleProps = createStyleProps(boxProperties);
-export type StyleProps = Parameters<typeof styleProps>[0];
+export const stylePropsFn = createStyleProps(boxProperties);
+export type StyleProps = Parameters<typeof stylePropsFn>[0];

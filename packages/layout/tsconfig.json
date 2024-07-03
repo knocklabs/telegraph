@@ -3,7 +3,8 @@
   "extends": "@knocklabs/typescript-config/react-library.json",
   "display": "@telegraph/layout",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "noErrorTruncation": true
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "dist", "node_modules"]

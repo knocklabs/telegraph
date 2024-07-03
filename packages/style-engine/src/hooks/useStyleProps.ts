@@ -1,75 +1,75 @@
-import { type SprinklesProperties as StylePropsProperties } from "@vanilla-extract/sprinkles";
+import { type SprinklesProperties as StyleProperties } from "@vanilla-extract/sprinkles";
 import React from "react";
 
 import { type createStyleProps } from "../index";
 
-// Get the props that are not part of the style props
-// so that thoes are still type safe
-type PickComponentProps<
-  StyleProps extends StylePropsProperties[],
-  ComponentProps extends Record<string, unknown>,
-> = Omit<ComponentProps, keyof StylePropsFnProperties<StyleProps>>;
-
-// The function returned by `createStyleProps`
-type StylePropsFn<StyleProps extends StylePropsProperties[]> = ReturnType<
-  typeof createStyleProps<StyleProps>
+type StylePropFn<StylePropFnProperties extends StyleProperties[]> = ReturnType<
+  typeof createStyleProps<StylePropFnProperties>
 >;
 
-// The properties that were defined in `defineStyleProps`
-type StylePropsFnProperties<StyleProps extends StylePropsProperties[]> =
-  Parameters<StylePropsFn<StyleProps>>[0];
+type StyleProps<StylePropFnProperties extends StyleProperties[]> = Parameters<
+  StylePropFn<StylePropFnProperties>
+>[0];
+
+type ComponentProps<
+  Props,
+  StylePropFnProperties extends StyleProperties[],
+> = Omit<Props, keyof StyleProps<StylePropFnProperties>>;
 
 type UseStylePropsParams<
-  StyleProps extends StylePropsProperties[],
-  ComponentProps extends Record<string, unknown>,
+  Props,
+  StylePropFnProperties extends StyleProperties[],
 > = {
-  // The properties defined in `defineStyleProps` and the rest of the component's props
-  props: StylePropsFnProperties<StyleProps> & ComponentProps;
-  // The function returned by `createStyleProps` which contains the properties
-  styleProps: StylePropsFn<StyleProps>;
+  props: Props;
+  stylePropsFn: StylePropFn<StylePropFnProperties>;
 };
 
 export const useStyleProps = <
-  StyleProps extends StylePropsProperties[],
-  ComponentProps extends Record<string, unknown>,
+  Props,
+  StylePropFnProperties extends StyleProperties[],
 >({
   props,
-  styleProps: stylePropsFn,
-}: UseStylePropsParams<StyleProps, ComponentProps>) => {
-  const memoizedProps = React.useMemo(() => props, [props]);
+  stylePropsFn,
+}: UseStylePropsParams<Props, StylePropFnProperties>) => {
+  // Keep this memoed to prevent unnecessary re-renders
+  const memoizedProps = React.useMemo<Props>(() => props, [props]);
+
+  // Filter the props into styleProps and componentProps so that we can
+  // pass styleProps to the stylePropsFn and componentProps to the component
   const filteredProps = React.useMemo(() => {
-    const stylePropKeys = stylePropsFn.properties;
-    const styleProps = {} as StylePropsFnProperties<StyleProps>;
-    const componentProps = {} as PickComponentProps<StyleProps, ComponentProps>;
+    const stylePropFnProperties = stylePropsFn.properties;
 
-    if (stylePropKeys) {
-      Object.keys(memoizedProps).forEach((_key) => {
-        const key = _key as keyof StylePropsFnProperties<StyleProps> &
-          ComponentProps;
+    const styleProps = {} as StyleProps<StylePropFnProperties>;
+    const componentProps = {} as ComponentProps<Props, StylePropFnProperties>;
 
-        if (stylePropKeys.has(key)) {
-          Object.assign(styleProps, {
-            [key]: memoizedProps[key],
-          });
-        }
-        if (!stylePropKeys.has(key)) {
-          Object.assign(componentProps, {
-            [key]: memoizedProps[key],
-          });
-        }
-      });
-    }
+    // If there are no memoized props, return the empty styleProps and componentProps objects
+    if (!memoizedProps) return { styleProps, componentProps };
+
+    Object.keys(memoizedProps).forEach((_key) => {
+      const key = _key as keyof StyleProps<StylePropFnProperties> & keyof Props;
+      if (stylePropFnProperties.has(key)) {
+        Object.assign(styleProps, {
+          [key]: memoizedProps[key],
+        });
+      }
+      if (!stylePropFnProperties.has(key)) {
+        Object.assign(componentProps, {
+          [key]: memoizedProps[key],
+        });
+      }
+    });
 
     return { styleProps, componentProps };
-  }, [memoizedProps, stylePropsFn]);
+  }, [memoizedProps, stylePropsFn?.properties]);
 
+  // Generate the style class name that we can apply to the component
   const styleClassName = React.useMemo(() => {
     return stylePropsFn(filteredProps.styleProps);
   }, [filteredProps.styleProps, stylePropsFn]);
 
   return {
-    styleClassName,
-    props: filteredProps.componentProps,
     styleProps: filteredProps.styleProps,
+    componentProps: filteredProps.componentProps,
+    styleClassName,
   };
 };

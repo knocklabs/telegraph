@@ -1,10 +1,11 @@
 import {
+  RESPONSIVE_STYLE_PROPS,
   createStyleProps,
   defineStyleProps,
   tokens,
 } from "@telegraph/style-engine";
 
-const stackProperties = defineStyleProps({
+export const stackProperties = defineStyleProps({
   properties: {
     alignItems: ["flex-start", "center", "flex-end", "stretch"],
     flexDirection: ["row", "row-reverse", "column", "column-reverse"],
@@ -23,8 +24,7 @@ const stackProperties = defineStyleProps({
     justify: ["justifyContent"],
     direction: ["flexDirection"],
   },
+  ...RESPONSIVE_STYLE_PROPS,
 });
-
-export const styleProps = createStyleProps(stackProperties);
-
-export type StyleProps = Parameters<typeof styleProps>[0];
+export const stylePropsFn = createStyleProps(stackProperties);
+export type StyleProps = Parameters<typeof stylePropsFn>[0];

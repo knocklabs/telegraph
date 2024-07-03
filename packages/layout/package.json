@@ -45,7 +45,6 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/style-engine": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@telegraph/vitest-config": "workspace:^",
     "@types/react": "^18.2.48",

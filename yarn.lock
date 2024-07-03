@@ -5707,7 +5707,6 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/style-engine": "workspace:^"
-    "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
@@ -5870,18 +5869,17 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tokens": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
-    "@vanilla-extract/css": "npm:^1.15.3"
     "@vanilla-extract/recipes": "npm:^0.5.3"
     "@vanilla-extract/sprinkles": "npm:^1.6.2"
-    "@vanilla-extract/vite-plugin": "npm:^4.0.12"
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.2.12"
+    vite: "npm:^5.3.0"
     vitest: "npm:^1.2.2"
   peerDependencies:
     react: ^18.2.0
@@ -6020,6 +6018,7 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
+    "@vanilla-extract/vite-plugin": "npm:^4.0.13"
     "@vitejs/plugin-react": "npm:^4.3.0"
     eslint: "npm:^8.56.0"
     typescript: "npm:^5.3.3"
@@ -6904,6 +6903,17 @@ __metadata:
   peerDependencies:
     vite: ^4.0.3 || ^5.0.0
   checksum: 10c0/7c91707c76be40531b479733140139c3c8fdb6f3874f09749a5de2a0a45380379300cdcf646f44c6b4e873752f390b746d897df8495ca1bb954cb0553f9ccb38
+  languageName: node
+  linkType: hard
+
+"@vanilla-extract/vite-plugin@npm:^4.0.13":
+  version: 4.0.13
+  resolution: "@vanilla-extract/vite-plugin@npm:4.0.13"
+  dependencies:
+    "@vanilla-extract/integration": "npm:^7.1.7"
+  peerDependencies:
+    vite: ^4.0.3 || ^5.0.0
+  checksum: 10c0/89b49b0734cbd7b57ac91d1528ecf0dd4999e67ef1c020e7fceb27bea13a277a03149c8500401a0a84259aac1f989a4838ea2a82be37d618209cdd0095c3d8aa
   languageName: node
   linkType: hard
 
@@ -17152,7 +17162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.11, vite@npm:^5.2.12":
+"vite@npm:^5.0.11":
   version: 5.3.2
   resolution: "vite@npm:5.3.2"
   dependencies:
