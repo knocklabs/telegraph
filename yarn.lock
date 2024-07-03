@@ -5711,7 +5711,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
-    "@vanilla-extract/vite-plugin": "npm:^4.0.12"
+    "@vanilla-extract/vite-plugin": "npm:^4.0.13"
     clsx: "npm:^2.1.0"
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
@@ -6892,17 +6892,6 @@ __metadata:
   peerDependencies:
     "@vanilla-extract/css": ^1.0.0
   checksum: 10c0/c9b648f7641e443492f45299d06d8cef1a50bc3615ff95b0bf60d5ac2249a774e58a559c537d7c3c7f9fe8a2e154bb198daee94fe64d37f7ec4057e3ff20f195
-  languageName: node
-  linkType: hard
-
-"@vanilla-extract/vite-plugin@npm:^4.0.12":
-  version: 4.0.12
-  resolution: "@vanilla-extract/vite-plugin@npm:4.0.12"
-  dependencies:
-    "@vanilla-extract/integration": "npm:^7.1.7"
-  peerDependencies:
-    vite: ^4.0.3 || ^5.0.0
-  checksum: 10c0/7c91707c76be40531b479733140139c3c8fdb6f3874f09749a5de2a0a45380379300cdcf646f44c6b4e873752f390b746d897df8495ca1bb954cb0553f9ccb38
   languageName: node
   linkType: hard
 
