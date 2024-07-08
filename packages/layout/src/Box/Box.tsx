@@ -18,11 +18,13 @@ const Box = <T extends TgphElement>({
   className,
   tgphRef,
   borderColor = "gray-4",
+  borderStyle = "solid",
+  borderWidth = "0",
   ...props
 }: BoxProps<T>) => {
   const Component = (as || "div") as TgphElement;
   const { styleClassName, componentProps } = useStyleProps({
-    props: { borderColor, ...props },
+    props: { ...props, borderColor, borderStyle, borderWidth },
     stylePropsFn,
   });
   return (

@@ -8,18 +8,18 @@ import {
 const boxProperties = defineStyleProps({
   properties: {
     backgroundColor: tokens.color,
+    borderWidth: tokens.spacing,
     borderBottomWidth: tokens.spacing,
-    borderColor: tokens.color,
     borderLeftWidth: tokens.spacing,
+    borderRightWidth: tokens.spacing,
+    borderTopWidth: tokens.spacing,
+    borderColor: tokens.color,
+    borderStyle: tokens["border-style"],
     borderRadius: tokens.rounded,
     borderRadiusBottomLeft: tokens.rounded,
     borderRadiusBottomRight: tokens.rounded,
     borderRadiusTopLeft: tokens.rounded,
     borderRadiusTopRight: tokens.rounded,
-    borderRightWidth: tokens.spacing,
-    borderStyle: tokens["border-style"],
-    borderTopWidth: tokens.spacing,
-    borderWidth: tokens.spacing,
     boxShadow: tokens.shadow,
     display: [
       "block",

@@ -123,7 +123,7 @@ const Close = <T extends TgphElement>({
 };
 
 type BodyProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack<T>>;
+  TgphComponentProps<typeof Stack>;
 
 const Body = <T extends TgphElement>({ children, ...props }: BodyProps<T>) => {
   return (
@@ -134,7 +134,7 @@ const Body = <T extends TgphElement>({ children, ...props }: BodyProps<T>) => {
 };
 
 type HeaderProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack<T>>;
+  TgphComponentProps<typeof Stack>;
 
 const Header = <T extends TgphElement>({
   children,
@@ -147,7 +147,7 @@ const Header = <T extends TgphElement>({
       align="center"
       px="6"
       py="4"
-      borderBottom
+      borderBottom="px"
       {...props}
     >
       {children}
@@ -156,7 +156,7 @@ const Header = <T extends TgphElement>({
 };
 
 type FooterProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack<T>>;
+  TgphComponentProps<typeof Stack>;
 
 const Footer = <T extends TgphElement>({
   children,
@@ -166,11 +166,11 @@ const Footer = <T extends TgphElement>({
     <Stack
       direction="row"
       align="center"
-      justify="end"
+      justify="flex-end"
       gap="2"
       px="6"
       py="4"
-      borderTop
+      borderTop="px"
       {...props}
     >
       {children}
