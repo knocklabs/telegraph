@@ -1,5 +1,8 @@
 export { style } from "@vanilla-extract/css";
-export { recipe, type RecipeVariants } from "@vanilla-extract/recipes";
+export {
+  recipe as variant,
+  type RecipeVariants as StyleVariant,
+} from "@vanilla-extract/recipes";
 export {
   defineProperties as defineStyleProps,
   createSprinkles as createStyleProps,
