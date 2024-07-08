@@ -1,5 +1,20 @@
 # @telegraph/combobox
 
+## 0.0.11
+
+### Patch Changes
+
+- [#162](https://github.com/knocklabs/telegraph/pull/162) [`5baffd9`](https://github.com/knocklabs/telegraph/commit/5baffd925a0abcd5c1cc0cbe75ec865271c30375) Thanks [@kylemcd](https://github.com/kylemcd)! - fixes issues stemming from the change to the new style engine
+
+- Updated dependencies []:
+  - @telegraph/compose-refs@0.0.1
+  - @telegraph/helpers@0.0.3
+  - @telegraph/icon@0.0.19
+  - @telegraph/input@0.0.12
+  - @telegraph/menu@0.0.11
+  - @telegraph/tag@0.0.31
+  - @telegraph/typography@0.0.17
+
 ## 0.0.10
 
 ### Patch Changes
