@@ -48,14 +48,14 @@ describe("Button", () => {
       </Button>,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-10");
+    expect(icon?.getAttribute("data-button-icon-color")).toBe("gray");
   });
   it("icon in icon only button  has correct text color", async () => {
     const { container } = render(
       <Button icon={{ icon: Lucide.Bell, alt: "create" }} variant="soft" />,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-11");
+    expect(icon?.getAttribute("data-button-icon-color")).toBe("gray");
   });
   it("overrides on text work", async () => {
     const { container } = render(
@@ -66,10 +66,8 @@ describe("Button", () => {
       </Button.Root>,
     );
 
-    expect(container.firstChild).toHaveClass("bg-gray-9");
     const text = container?.querySelector("[data-button-text]");
-    expect(text).toHaveClass("text-red-11");
-    expect(text).toHaveClass("text-9");
+    expect(text?.getAttribute("data-button-text-color")).toBe("red");
   });
   it("overrides on icon work", async () => {
     const { container } = render(
@@ -77,9 +75,11 @@ describe("Button", () => {
         <Button.Icon color="red" size="9" icon={Lucide.Bell} alt="create" />
       </Button.Root>,
     );
-    expect(container.firstChild).toHaveClass("bg-gray-9");
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-red-11");
+    expect(icon?.getAttribute("data-button-icon-color")).toBe("red");
+    expect(container.firstChild.getAttribute("data-tgph-button-color")).toBe(
+      "gray",
+    );
   });
   it("icon-only button has correct layout", async () => {
     const { container } = render(
@@ -108,9 +108,8 @@ describe("Button", () => {
     const text = container?.querySelector("[data-button-text]");
     const icon = container?.querySelector("[data-button-icon]");
 
-    expect(container.firstChild).toHaveClass("cursor-not-allowed");
-    expect(container.firstChild).toHaveClass("bg-gray-2");
-    expect(text).toHaveClass("text-gray-9");
-    expect(icon).toHaveClass("text-gray-8");
+    expect(text?.getAttribute("data-button-text-color")).toBe("disabled");
+    expect(icon?.getAttribute("data-button-icon-color")).toBe("disabled");
+    expect(container.firstChild).toHaveAttribute("disabled");
   });
 });

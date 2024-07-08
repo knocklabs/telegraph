@@ -126,6 +126,8 @@ const Root = <T extends TgphElement>({
         data-tgph-button
         data-tgph-button-layout={layout}
         data-tgph-button-active={active}
+        data-tgph-button-color={color}
+        data-tgph-button-variant={variant}
         disabled={disabled}
         {...props}
       />
@@ -164,6 +166,7 @@ const Icon = <T extends TgphElement>({
     <TelegraphIcon
       icon={icon}
       data-button-icon
+      data-button-icon-color={iconProps.color}
       {...a11yProps}
       {...iconProps}
       {...props}
@@ -187,21 +190,21 @@ const Text = <T extends TgphElement>({
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(ButtonContext);
-
+  const derivedColor =
+    color ??
+    textColorMap[context.variant][
+      context.state === "disabled" ? "disabled" : context.color
+    ];
   return (
     <TelegraphText
       as={(as || "span") as T}
-      color={
-        color ??
-        textColorMap[context.variant][
-          context.state === "disabled" ? "disabled" : context.color
-        ]
-      }
+      color={derivedColor}
       size={size ?? textSizeMap[context.size]}
       weight={weight}
       className={clsx("no-underline whitespace-nowrap", className)}
       internal_optionalAs={true}
       data-button-text
+      data-button-text-color={derivedColor}
       {...props}
     />
   );
