@@ -5873,6 +5873,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@telegraph/vitest-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
+    "@vanilla-extract/css": "npm:^1.15.3"
     "@vanilla-extract/recipes": "npm:^0.5.3"
     "@vanilla-extract/sprinkles": "npm:^1.6.2"
     eslint: "npm:^8.56.0"

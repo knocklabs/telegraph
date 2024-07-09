@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@telegraph/tokens": "workspace:^",
+    "@vanilla-extract/css": "^1.15.3",
     "@vanilla-extract/recipes": "^0.5.3",
     "@vanilla-extract/sprinkles": "^1.6.2"
   },
