@@ -53,6 +53,7 @@
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/typography": "workspace:^",
+    "@telegraph/style-engine": "workspace:^",
     "clsx": "^2.1.0"
   }
 }

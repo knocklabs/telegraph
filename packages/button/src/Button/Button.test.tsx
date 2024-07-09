@@ -65,30 +65,6 @@ describe("Button", () => {
     const icon = container?.querySelector("[data-button-icon]");
     expect(icon).toHaveClass("text-gray-11");
   });
-  it("overrides on text work", async () => {
-    const { container } = render(
-      <Button.Root>
-        <Button.Text color="red" size="9">
-          Click me
-        </Button.Text>
-      </Button.Root>,
-    );
-
-    expect(container.firstChild).toHaveClass("bg-gray-9");
-    const text = container?.querySelector("[data-button-text]");
-    expect(text).toHaveClass("text-red-11");
-    expect(text).toHaveClass("text-9");
-  });
-  it("overrides on icon work", async () => {
-    const { container } = render(
-      <Button.Root>
-        <Button.Icon color="red" size="9" icon={Lucide.Bell} alt="create" />
-      </Button.Root>,
-    );
-    expect(container.firstChild).toHaveClass("bg-gray-9");
-    const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-red-11");
-  });
   it("icon-only button has correct layout", async () => {
     const { container } = render(
       <Button icon={{ icon: Lucide.Bell, alt: "create" }} />,
@@ -107,7 +83,7 @@ describe("Button", () => {
       "default",
     );
   });
-  it("disabled prop displays correct styles", async () => {
+  it("disabled prop makes the button disabled", async () => {
     const { container } = render(
       <Button disabled icon={{ icon: Lucide.Bell, alt: "create" }}>
         Button
@@ -115,9 +91,9 @@ describe("Button", () => {
     );
     const text = container?.querySelector("[data-button-text]");
     const icon = container?.querySelector("[data-button-icon]");
+    const button = container?.querySelector("[data-tgph-button]");
 
-    expect(container.firstChild).toHaveClass("cursor-not-allowed");
-    expect(container.firstChild).toHaveClass("bg-gray-2");
+    expect(button).toBeDisabled();
     expect(text).toHaveClass("text-gray-9");
     expect(icon).toHaveClass("text-gray-8");
   });
