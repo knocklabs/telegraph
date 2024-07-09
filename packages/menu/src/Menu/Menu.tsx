@@ -74,7 +74,7 @@ const Trigger = ({ asChild = true, tgphRef, children, ...props }: Anchor) => {
 type ContentProps<T extends TgphElement> = React.ComponentProps<
   typeof RadixMenu.Content
 > &
-  TgphComponentProps<typeof Stack<T>> & {
+  Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
     contentStackRef?: React.RefObject<HTMLDivElement>;
   };
 
@@ -83,7 +83,7 @@ const Content = <T extends TgphElement>({
   gap = "1",
   rounded = "4",
   py = "1",
-  border = true,
+  border = "px",
   shadow = "2",
   sideOffset = 4,
   children,
