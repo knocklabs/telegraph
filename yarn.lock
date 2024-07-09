@@ -3135,6 +3135,7 @@ __metadata:
     "@storybook/test": "npm:^7.6.17"
     "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
     "@typescript-eslint/parser": "npm:^6.20.0"
+    "@vanilla-extract/vite-plugin": "npm:^4.0.13"
     eslint-plugin-turbo: "npm:^1.12.2"
     husky: "npm:^9.0.6"
     postcss-import: "npm:^16.1.0"

@@ -3,6 +3,7 @@ import { mergeConfig } from "vite";
 
 const viteFinal: ViteFinal = (config) => {
   return mergeConfig(config, {
+    plugins: [require("@vanilla-extract/vite-plugin").vanillaExtractPlugin()],
     css: {
       postcss: {
         // Define postcss config inline so we don't need to create a postcss.config.js file
