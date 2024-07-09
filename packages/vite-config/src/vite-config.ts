@@ -4,6 +4,8 @@ import { resolve } from "path";
 import { type PreRenderedAsset } from "rollup";
 import dts from "vite-plugin-dts";
 
+import { getTelegraphPackages } from "./helpers.js";
+
 const require = createRequire(import.meta.url);
 const pkg = require(resolve(process.cwd(), "package.json"));
 
@@ -15,10 +17,13 @@ const dependencies = Object.keys(pkg.dependencies || {});
 const devDependencies = Object.keys(pkg.devDependencies || {});
 const peerDependencies = Object.keys(pkg.peerDependencies || {});
 
+const telegraphPackages = await getTelegraphPackages();
+
 const allDependencies = [
   ...dependencies,
   ...devDependencies,
   ...peerDependencies,
+  ...telegraphPackages,
   // Need to declare these as external as well since they're
   // not explicitly listed in the package.json
   "react/jsx-runtime",
