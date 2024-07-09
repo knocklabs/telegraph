@@ -5,6 +5,11 @@ const sharedConfig = defineConfig({
   // @ts-expect-error -- Not sure, this is valid
   plugins: [tsconfigPaths()],
   test: {
+    coverage: {
+      enabled: true,
+      all: false,
+      provider: "v8",
+    },
     globals: true,
     setupFiles: ["../../vitest/setup"],
     environment: "jsdom",
