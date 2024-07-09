@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tag",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tag",
   "author": "@knocklabs",
   "license": "MIT",

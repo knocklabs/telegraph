@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.0.2
+
+### Patch Changes
+
+- [`df23265`](https://github.com/knocklabs/telegraph/commit/df23265ac0781c62ed70404458ff10091fe0701f) Thanks [@kylemcd](https://github.com/kylemcd)! - add correct vanilla extract deps
+
 ## 0.0.1
 
 ### Patch Changes
