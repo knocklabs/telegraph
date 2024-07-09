@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MotionGlobalConfig } from "framer-motion";
 import React from "react";
 import { beforeAll, describe, expect, it } from "vitest";
-import { axe } from "vitest-axe";
+import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
 
@@ -30,7 +30,7 @@ const values: Array<Option> = [
 ];
 
 const ComboboxSingleSelect = () => {
-  const [value, setValue] = React.useState<Option[]>(values[0]);
+  const [value, setValue] = React.useState<Option>(values[0]!);
   return (
     <Combobox.Root value={value} onValueChange={setValue}>
       <Combobox.Trigger />
@@ -46,7 +46,10 @@ const ComboboxSingleSelect = () => {
   );
 };
 const ComboboxMultiSelect = () => {
-  const [value, setValue] = React.useState<Option[]>([values[0], values[1]]);
+  const [value, setValue] = React.useState<Array<Option>>([
+    values[0]!,
+    values[1]!,
+  ]);
   return (
     <Combobox.Root value={value} onValueChange={setValue}>
       <Combobox.Trigger />
@@ -68,11 +71,11 @@ describe("Combobox", () => {
     it("combobox is accessible", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
-      expect(await axe(container)).toHaveNoViolations();
+      expectToHaveNoViolations(await axe(container));
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
-      expect(await axe(container)).toHaveNoViolations();
+      expectToHaveNoViolations(await axe(container));
     });
     it("pressing the down arrow key should open the combobox", async () => {
       const user = userEvent.setup();
@@ -125,11 +128,11 @@ describe("Combobox", () => {
     it("combobox is accessible", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
-      expect(await axe(container)).toHaveNoViolations();
+      expectToHaveNoViolations(await axe(container));
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
-      expect(await axe(container)).toHaveNoViolations();
+      expectToHaveNoViolations(await axe(container));
     });
     it("search is automatically focused on open", async () => {
       const user = userEvent.setup();

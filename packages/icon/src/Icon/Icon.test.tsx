@@ -1,28 +1,39 @@
 import { render } from "@testing-library/react";
-import React from "react";
-import { describe, expect, it } from "vitest";
-import { axe } from "vitest-axe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Lucide } from "../index";
 
 import { Icon } from "./Icon";
 
-describe("Heading", () => {
+// Surpress error from showing in console as we are testing for it
+const consoleError = console.error;
+beforeEach(() => {
+  console.error = vi.fn();
+});
+
+afterEach(() => {
+  console.error = consoleError;
+});
+
+describe("Icon", () => {
   it("should render without a11y issues", async () => {
     const { container } = render(
       <Icon icon={Lucide.Bell} alt="Create a workflow" />,
     );
-    expect(await axe(container)).toHaveNoViolations();
+    expectToHaveNoViolations(await axe(container));
   });
   it("icon without icon prop throws error", async () => {
-    expect(() => render(<Icon alt="description" />)).toThrow(
+    // @ts-expect-error Testing error case
+    expect(() => render(<Icon alt="description" />)).toThrowError(
       "@telegraph/icon: icon prop is required",
     );
   });
   it("icon without alt prop throws error", async () => {
-    expect(() => render(<Icon icon={{ icon: Lucide.Bell }} />)).toThrow(
-      "@telegraph/icon: alt prop is required",
-    );
+    expect(() =>
+      // @ts-expect-error Testing error case
+      render(<Icon icon={{ icon: Lucide.Bell }} />),
+    ).toThrowError("@telegraph/icon: alt prop is required");
   });
   it("default props applies correct className", () => {
     const { container } = render(

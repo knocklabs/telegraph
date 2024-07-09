@@ -3,8 +3,12 @@
   "extends": "@knocklabs/typescript-config/react-library.json",
   "display": "@telegraph/combobox",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "vitest.*": ["../../vitest/*"]
+    },
+    "types": ["@testing-library/jest-dom", "node"]
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "dist", "node_modules"]
+  "exclude": ["dist", "node_modules"]
 }
