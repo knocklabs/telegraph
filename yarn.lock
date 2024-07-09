@@ -5552,6 +5552,7 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/style-engine": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
