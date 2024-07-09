@@ -57,6 +57,7 @@
     "@storybook/test": "^7.6.17",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
+    "@vanilla-extract/vite-plugin": "^4.0.13",
     "eslint-plugin-turbo": "^1.12.2",
     "husky": "^9.0.6",
     "postcss-import": "^16.1.0",
