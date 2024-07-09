@@ -36,6 +36,7 @@
   "dependencies": {
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
+    "@telegraph/style-engine": "workspace:^",
     "@telegraph/tokens": "workspace:^",
     "clsx": "^2.1.0"
   },
@@ -44,7 +45,6 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
-    "@telegraph/style-engine": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@telegraph/vitest-config": "workspace:^",
     "@types/react": "^18.2.48",
