@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.19
+
+### Patch Changes
+
+- [#165](https://github.com/knocklabs/telegraph/pull/165) [`29d94d5`](https://github.com/knocklabs/telegraph/commit/29d94d5dba8a085363db70f8979a6687fc2fd33d) Thanks [@kylemcd](https://github.com/kylemcd)! - add style-engine as dep
+
 ## 0.0.18
 
 ### Patch Changes
