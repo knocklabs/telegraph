@@ -1,11 +1,8 @@
 import { defineConfig } from "vitest/config";
-// import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
-// import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const sharedConfig = defineConfig({
-  // @ts-ignore
-  // plugins: [react(), vanillaExtractPlugin()],
+  // @ts-expect-error -- Not sure, this is valid
   plugins: [tsconfigPaths()],
   test: {
     globals: true,
