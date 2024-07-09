@@ -2,7 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Lucide } from "@telegraph/icon";
 
 import { Button as TelegraphButton } from "./Button";
-import { buttonColorMap, buttonSizeMap } from "./Button.constants";
+import { buttonSizeMap } from "./Button.constants";
+
+const buttonColorMap = [
+  "gray",
+  "red",
+  "accent",
+  "green",
+  "blue",
+  "yellow",
+  "purple",
+];
+const buttonVariantMap = ["solid", "soft", "outline", "ghost"];
 
 const Icons = { ...Lucide };
 
@@ -11,13 +22,13 @@ const meta: Meta<typeof TelegraphButton> = {
   component: TelegraphButton,
   argTypes: {
     color: {
-      options: Object.keys(buttonColorMap.solid),
+      options: buttonColorMap,
       control: {
         type: "select",
       },
     },
     variant: {
-      options: Object.keys(buttonColorMap),
+      options: buttonVariantMap,
       control: {
         type: "select",
       },
@@ -46,12 +57,24 @@ const meta: Meta<typeof TelegraphButton> = {
         type: "select",
       },
     },
+    disabled: {
+      control: {
+        type: "boolean",
+      },
+    },
+    active: {
+      control: {
+        type: "boolean",
+      },
+    },
   },
   args: {
     size: "2",
     color: "accent",
     variant: "solid",
     children: "Button",
+    disabled: false,
+    active: false,
   },
 };
 
