@@ -2,12 +2,9 @@ import fs from "fs/promises";
 import path from "path";
 import core from "@actions/core";
 
-const bytesToKilobytes = (bytes: number) =>
-  parseFloat((bytes / 1024).toFixed(2));
+const bytesToKilobytes = (bytes) => parseFloat((bytes / 1024).toFixed(2));
 
-const getAllFilesInDirectory = async (
-  directory: string
-): Promise<Array<string>> => {
+const getAllFilesInDirectory = async (directory) => {
   const files = await fs.readdir(directory, { withFileTypes: true });
   const filesPaths = files.map((file) => {
     const filePath = path.join(directory, file.name);
@@ -16,7 +13,7 @@ const getAllFilesInDirectory = async (
   return (await Promise.all(filesPaths)).flat();
 };
 
-const getDistFolderSize = async (packageName: string) => {
+const getDistFolderSize = async (packageName) => {
   const directory = path.join("./packages", packageName, "dist");
   const files = await getAllFilesInDirectory(directory);
   const stats = files.map((file) => fs.stat(file));
