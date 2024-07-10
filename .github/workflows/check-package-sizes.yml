@@ -25,6 +25,5 @@ jobs:
       - name: Check Package Sizes
         uses: ./
         id: check-package-sizes-action
-        outputs:
-          packageSizes: ${{ steps.check-package-sizes.outputs.packageSizes }}
-          totalSize: ${{ steps.check-package-sizes.outputs.totalSize }}
+      - name: Show outputs
+        run: echo "Package sizes: ${{ steps.check-package-sizes-action.outputs.packageSizes }}"
