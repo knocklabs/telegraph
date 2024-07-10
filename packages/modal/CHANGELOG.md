@@ -1,5 +1,12 @@
 # @telegraph/modal
 
+## 0.0.25
+
+### Patch Changes
+
+- Updated dependencies [[`8ffea36`](https://github.com/knocklabs/telegraph/commit/8ffea3699aaba5fdfb011f4249d9237d38a36dc6)]:
+  - @telegraph/button@0.0.34
+
 ## 0.0.24
 
 ### Patch Changes
