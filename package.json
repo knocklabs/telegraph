@@ -25,7 +25,7 @@
     "build:storybook": "storybook build",
     "release": "yarn build:packages && yarn release:publish && yarn changeset tag",
     "release:publish": "yarn workspaces foreach -Rpt --no-private --from '@telegraph/*' npm publish --access public --tolerate-republish",
-    "check-package-sizes": "ts-node ./scripts/check-package-sizes.ts",
+    "check-package-sizes": "ts-node ./scripts/check-package-sizes.mjs",
     "postinstall": "manypkg check",
     "prepare": "husky"
   },
