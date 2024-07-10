@@ -43,3 +43,22 @@ jobs:
           current-package-sizes: ${{ steps.current-package-sizes.outputs.package-sizes }}
           previous-package-sizes: ${{ steps.main-package-sizes.outputs.package-sizes }}
         id: compare-package-sizes
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: ### Package size differences
+      - name: Create comment
+        if: steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.compare-package-sizes.outputs.pr-comment }}
+      - name: Update comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          body: ${{ steps.compare-package-sizes.outputs.pr-comment }}

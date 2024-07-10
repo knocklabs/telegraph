@@ -1,5 +1,7 @@
 import core from "@actions/core";
 
+const SIZE_THRESHOLD = 20;
+
 const main = async () => {
   const currentPackageSizes = JSON.parse(
     core.getInput("current-package-sizes")
@@ -18,15 +20,36 @@ const main = async () => {
     };
   });
 
-  console.log(
-    "Package size differences:" +
-      JSON.stringify(packageSizeDifferences, null, 2)
+  const packagesWithThreshold = packageSizeDifferences.filter(
+    (pkg) => Math.abs(pkg.size) > SIZE_THRESHOLD
   );
 
-  core.setOutput(
-    "package-size-differences",
-    JSON.stringify(packageSizeDifferences)
-  );
+  const prComment = `
+    #### Package size differences
+
+    ${
+      packagesWithThreshold.length > 0 &&
+      `
+        The following packages have size differences greater than 20KB
+        ${packagesWithThreshold.map(
+          (pkg) => `
+            - ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size}KB
+          `
+        )}
+    `
+    }
+    
+    <details>
+        <summary>All package size differences</summary>
+        ${packageSizeDifferences.map(
+          (pkg) => `
+                - ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size}KB
+            `
+        )}
+    </details>
+  `;
+
+  core.setOutput("pr-comment", prComment);
 };
 
 main();

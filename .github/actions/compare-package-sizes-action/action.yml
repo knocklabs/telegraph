@@ -8,8 +8,8 @@ inputs:
     description: The sizes of the main packages
     required: true
 outputs:
-  differences:
-    description: The differences between the current and main package sizes
+  pr-comment:
+    description: The comment to post on the PR
 runs:
   using: "node20"
   main: "index.mjs"
