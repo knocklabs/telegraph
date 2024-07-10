@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.34
+
+### Patch Changes
+
+- [`8ffea36`](https://github.com/knocklabs/telegraph/commit/8ffea3699aaba5fdfb011f4249d9237d38a36dc6) Thanks [@kylemcd](https://github.com/kylemcd)! - simplify color & variant types
+
 ## 0.0.33
 
 ### Patch Changes
