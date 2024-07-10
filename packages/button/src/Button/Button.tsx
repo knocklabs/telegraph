@@ -36,20 +36,10 @@ type RootBaseProps = {
   size?: "0" | "1" | "2" | "3";
   state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
   active?: boolean;
-} & (
-  | ({
-      variant?: "solid";
-    } & SolidVariant)
-  | ({
-      variant?: "soft";
-    } & SoftVariant)
-  | ({
-      variant?: "outline";
-    } & OutlineVariant)
-  | ({
-      variant?: "ghost";
-    } & GhostVariant)
-);
+} & SolidVariant &
+  SoftVariant &
+  OutlineVariant &
+  GhostVariant;
 
 type InternalProps = {
   layout: "default" | "icon-only";
