@@ -126,8 +126,6 @@ const Root = <T extends TgphElement>({
         data-tgph-button
         data-tgph-button-layout={layout}
         data-tgph-button-active={active}
-        data-tgph-button-color={color}
-        data-tgph-button-variant={variant}
         disabled={disabled}
         {...props}
       />
