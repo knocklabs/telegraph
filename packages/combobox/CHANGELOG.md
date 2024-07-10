@@ -1,5 +1,24 @@
 # @telegraph/combobox
 
+## 0.0.14
+
+### Patch Changes
+
+- [#174](https://github.com/knocklabs/telegraph/pull/174) [`9ab56ad`](https://github.com/knocklabs/telegraph/commit/9ab56ad877b964e1f21ff24312957cc6df519756) Thanks [@kylemcd](https://github.com/kylemcd)! - audit and fix dependencies
+
+- [#172](https://github.com/knocklabs/telegraph/pull/172) [`96ac617`](https://github.com/knocklabs/telegraph/commit/96ac61740a39fa8f769946afdf16e02434c39770) Thanks [@kylemcd](https://github.com/kylemcd)! - button style-engine migration
+
+- Updated dependencies [[`a7ce58f`](https://github.com/knocklabs/telegraph/commit/a7ce58fa7b7f34edf7186a36a3c82a50623a0e2e), [`9ab56ad`](https://github.com/knocklabs/telegraph/commit/9ab56ad877b964e1f21ff24312957cc6df519756), [`96ac617`](https://github.com/knocklabs/telegraph/commit/96ac61740a39fa8f769946afdf16e02434c39770)]:
+  - @telegraph/menu@0.0.14
+  - @telegraph/compose-refs@0.0.2
+  - @telegraph/typography@0.0.20
+  - @telegraph/helpers@0.0.4
+  - @telegraph/button@0.0.33
+  - @telegraph/layout@0.0.21
+  - @telegraph/input@0.0.15
+  - @telegraph/icon@0.0.22
+  - @telegraph/tag@0.0.34
+
 ## 0.0.13
 
 ### Patch Changes
