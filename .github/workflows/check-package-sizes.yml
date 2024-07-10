@@ -22,8 +22,6 @@ jobs:
         run: yarn --immutable
       - name: Build Current Branch
         run: yarn build:packages
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Check Package Sizes
         uses: ./.github/actions/check-package-sizes-action
         id: check-package-sizes-action
