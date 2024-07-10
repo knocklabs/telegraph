@@ -28,23 +28,23 @@ const main = async () => {
     #### Package size differences
 
     ${
-      packagesWithThreshold.length > 0 &&
-      `
-        The following packages have size differences greater than 20KB
+      packagesWithThreshold.length > 0
+        ? `
+        The following packages have size differences greater than 20 KB
         ${packagesWithThreshold.map(
           (pkg) => `
-            - ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size}KB
+            - ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB
           `
         )}
     `
+        : ""
     }
     
     <details>
         <summary>All package size differences</summary>
         ${packageSizeDifferences.map(
-          (pkg) => `
-                - ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size}KB
-            `
+          (pkg) =>
+            `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
         )}
     </details>
   `;
