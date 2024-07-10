@@ -25,5 +25,3 @@ jobs:
       - name: Check Package Sizes
         uses: ./.github/actions/check-package-sizes-action
         id: check-package-sizes-action
-      - name: Show outputs
-        run: echo "Package sizes: \${{ steps.check-package-sizes-action.outputs.packageSizes }}"
