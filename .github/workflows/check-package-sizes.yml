@@ -1,0 +1,29 @@
+name: Check Package Sizes
+
+on:
+  pull_request:
+
+concurrency:
+  group: check-package-sizes-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-package-sizes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+          cache: "yarn"
+      - name: Install Dependencies
+        run: yarn --immutable
+      - name: Build Current Branch
+        run: yarn build:packages
+      - name: Check Package Sizes
+        run: yarn check-package-sizes
+        outputs:
+          packageSizes: ${{ steps.check-package-sizes.outputs.packageSizes }}
+          totalSize: ${{ steps.check-package-sizes.outputs.totalSize }}
