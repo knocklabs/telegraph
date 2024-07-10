@@ -34,10 +34,12 @@
   "dependencies": {
     "@radix-ui/react-use-controllable-state": "^1.1.0",
     "@radix-ui/react-visually-hidden": "^1.1.0",
+    "@telegraph/button": "workspace:^",
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/input": "workspace:^",
+    "@telegraph/layout": "workspace:^",
     "@telegraph/menu": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/typography": "workspace:^",
