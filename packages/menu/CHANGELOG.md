@@ -1,5 +1,21 @@
 # @telegraph/menu
 
+## 0.0.14
+
+### Patch Changes
+
+- [#168](https://github.com/knocklabs/telegraph/pull/168) [`a7ce58f`](https://github.com/knocklabs/telegraph/commit/a7ce58fa7b7f34edf7186a36a3c82a50623a0e2e) Thanks [@kylemcd](https://github.com/kylemcd)! - fix aign prop + border prop
+
+- [#174](https://github.com/knocklabs/telegraph/pull/174) [`9ab56ad`](https://github.com/knocklabs/telegraph/commit/9ab56ad877b964e1f21ff24312957cc6df519756) Thanks [@kylemcd](https://github.com/kylemcd)! - audit and fix dependencies
+
+- [#172](https://github.com/knocklabs/telegraph/pull/172) [`96ac617`](https://github.com/knocklabs/telegraph/commit/96ac61740a39fa8f769946afdf16e02434c39770) Thanks [@kylemcd](https://github.com/kylemcd)! - button style-engine migration
+
+- Updated dependencies [[`9ab56ad`](https://github.com/knocklabs/telegraph/commit/9ab56ad877b964e1f21ff24312957cc6df519756), [`96ac617`](https://github.com/knocklabs/telegraph/commit/96ac61740a39fa8f769946afdf16e02434c39770)]:
+  - @telegraph/helpers@0.0.4
+  - @telegraph/button@0.0.33
+  - @telegraph/layout@0.0.21
+  - @telegraph/icon@0.0.22
+
 ## 0.0.13
 
 ### Patch Changes
