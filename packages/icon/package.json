@@ -30,6 +30,12 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@telegraph/helpers": "workspace:^",
+    "@telegraph/layout": "workspace:^",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.379.0"
+  },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/prettier-config": "^0.0.1",
@@ -47,10 +53,5 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "dependencies": {
-    "@telegraph/layout": "workspace:^",
-    "clsx": "^2.1.0",
-    "lucide-react": "^0.379.0"
   }
 }

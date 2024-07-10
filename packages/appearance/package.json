@@ -31,6 +31,9 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2"
+  },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
