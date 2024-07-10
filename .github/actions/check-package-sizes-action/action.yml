@@ -1,4 +1,4 @@
-name: Check Package Sizes Actions
+name: Check Package Sizes Action
 description: Get the sizes of the built packages in the repo
 outputs:
   package-sizes:

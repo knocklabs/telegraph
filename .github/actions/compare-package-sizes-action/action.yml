@@ -1,0 +1,15 @@
+name: Compare Package Sizes Action
+description: Compare the sizes and output any differences
+inputs:
+  current-package-sizes:
+    description: The sizes of the current packages
+    required: true
+  main-package-sizes:
+    description: The sizes of the main packages
+    required: true
+outputs:
+  differences:
+    description: The differences between the current and main package sizes
+runs:
+  using: "node20"
+  main: "index.mjs"

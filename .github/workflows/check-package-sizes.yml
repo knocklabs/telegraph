@@ -22,6 +22,23 @@ jobs:
         run: yarn --immutable
       - name: Build Current Branch
         run: yarn build:packages
-      - name: Check Package Sizes
+      - name: Get Current Package Sizes
         uses: ./.github/actions/check-package-sizes-action
-        id: check-package-sizes-action
+        id: current-package-sizes
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install Dependencies
+        run: yarn --immutable
+      - name: Build Current Branch
+        run: yarn build:packages
+      - name: Get Main Package Sizes
+        uses: ./.github/actions/check-package-sizes-action
+        id: main-package-sizes
+      - name: Compare Package Sizes
+        uses: ./.github/actions/compare-package-sizes-action
+        with:
+          current-package-sizes: ${{ steps.current-package-sizes.outputs.package-sizes }}
+          main-package-sizes: ${{ steps.main-package-sizes.outputs.package-sizes }}
+        id: compare-package-sizes
