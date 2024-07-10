@@ -32,7 +32,7 @@ jobs:
       #     ref: main
       - name: Install Dependencies
         run: yarn --immutable
-      - name: Build Current Branch
+      - name: Build Main Branch
         run: yarn build:packages
       - name: Get Main Package Sizes
         uses: ./.github/actions/check-package-sizes-action
