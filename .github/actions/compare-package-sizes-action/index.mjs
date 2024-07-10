@@ -34,21 +34,25 @@ ${
         ${packagesWithThreshold
           .map(
             (pkg) =>
-              `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
+              `- \`@telegraph/${pkg.packageName}\`: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
           )
           .join("\n")}
     `
     : `No package size differences greater than ${SIZE_THRESHOLD} KB 🚀`
 }
 
-    #### All package size differences
+
+<details>
+<summary>All package size differences</summary>
 
 ${packageSizeDifferences
   .map(
-    (pkg) => `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
+    (pkg) =>
+      `- \`@telegraph/${pkg.packageName}\`: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
   )
   .join("\n")}
 
+</details>
 
   `;
 
