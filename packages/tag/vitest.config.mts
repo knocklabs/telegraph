@@ -1,2 +1,13 @@
-import { vitestConfig } from "@telegraph/vitest-config";
-export default vitestConfig;
+import { defineProject, mergeConfig } from "vitest/config";
+
+import { sharedConfig } from "../../vitest/config";
+
+export default mergeConfig(
+  { ...sharedConfig },
+  defineProject({
+    test: {
+      name: "tag",
+      environment: "jsdom",
+    },
+  }),
+);

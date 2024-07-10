@@ -16,9 +16,8 @@
     "dev:packages": "turbo dev --filter=\"./packages/*\" --concurrency=100",
     "build:packages": "turbo build --filter=\"./packages/*\" --filter=\"!config\"",
     "build:config": "turbo build --filter=\"./packages/*-config\"",
-    "test": "turbo test --filter=\"./packages/*\"",
-    "test:watch": "turbo test:watch --filter=\"./packages/*\"",
-    "coverage": "turbo coverage --filter=\"./packages/*\"",
+    "test": "vitest run --workspace=./vitest/workspace.ts",
+    "test:watch": "vitest watch --workspace=./vitest/workspace.ts",
     "lint": "turbo lint",
     "format": "turbo format",
     "format:check": "turbo format:check",
@@ -55,11 +54,14 @@
     "@storybook/react": "^7.6.17",
     "@storybook/react-vite": "^7.6.17",
     "@storybook/test": "^7.6.17",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
-    "@vanilla-extract/vite-plugin": "^4.0.13",
     "eslint-plugin-turbo": "^1.12.2",
     "husky": "^9.0.6",
+    "jsdom": "^24.1.0",
     "postcss-import": "^16.1.0",
     "postcss-import-ext-glob": "^2.1.1",
     "prettier": "^3.2.4",
@@ -68,6 +70,9 @@
     "react-dom": "^18.2.0",
     "storybook": "^7.6.17",
     "storybook-addon-render-modes": "^0.0.11",
-    "turbo": "^1.11.3"
+    "turbo": "^1.11.3",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "2.0.1",
+    "vitest-axe": "0.1.0"
   }
 }

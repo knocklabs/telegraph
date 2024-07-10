@@ -1,15 +1,24 @@
 import { Lucide } from "@telegraph/icon";
 import { render } from "@testing-library/react";
-import React from "react";
-import { describe, expect, it } from "vitest";
-import { axe } from "vitest-axe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Button } from "./Button";
+
+// Suppress error from showing in console as we are testing for it
+const consoleError = console.error;
+beforeEach(() => {
+  console.error = vi.fn();
+});
+
+afterEach(() => {
+  console.error = consoleError;
+});
 
 describe("Button", () => {
   it("text button is accessible", async () => {
     const { container } = render(<Button>Click me</Button>);
-    expect(await axe(container)).toHaveNoViolations();
+    expectToHaveNoViolations(await axe(container));
   });
   it("icon button is accessible", async () => {
     const { container } = render(
@@ -20,7 +29,7 @@ describe("Button", () => {
         Click me
       </Button>,
     );
-    expect(await axe(container)).toHaveNoViolations();
+    expectToHaveNoViolations(await axe(container));
   });
   it("icon button without alt is inaccessible", async () => {
     expect(() =>
@@ -34,8 +43,7 @@ describe("Button", () => {
         Click me
       </Button>,
     );
-
-    expect(await axe(container)).toHaveNoViolations();
+    expectToHaveNoViolations(await axe(container));
   });
   it("icon in text button icon has correct text color", async () => {
     const { container } = render(

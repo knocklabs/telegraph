@@ -1,14 +1,14 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { axe } from "vitest-axe";
+import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Heading } from "./Heading";
 
 describe("Heading", () => {
   it("should render without a11y issues", async () => {
     const { container } = render(<Heading as="h1">Heading</Heading>);
-    expect(await axe(container)).toHaveNoViolations();
+    expectToHaveNoViolations(await axe(container));
   });
   it("size props applies correct className", () => {
     const { container } = render(

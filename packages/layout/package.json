@@ -25,9 +25,6 @@
     "clean": "rm -rf dist",
     "dev": "vite build --watch --emptyOutDir false",
     "build": "yarn clean && vite build",
-    "//test": "vitest run",
-    "//test:watch": "vitest",
-    "coverage": "vitest run --coverage",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
@@ -46,15 +43,13 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@telegraph/vitest-config": "workspace:^",
     "@types/react": "^18.2.48",
     "@vanilla-extract/vite-plugin": "^4.0.13",
     "eslint": "^8.56.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.3.0",
-    "vitest": "^1.2.2"
+    "vite": "^5.3.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",

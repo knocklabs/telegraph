@@ -4,7 +4,11 @@
   "display": "@telegraph/button",
   "compilerOptions": {
     "outDir": "dist",
+    "paths": {
+      "vitest.*": ["../../vitest/*"]
+    },
+    "types": ["@testing-library/jest-dom", "node"]
   },
   "include": ["src/**/*"],
-  "exclude": [ "src/**/*.test.tsx", "src/**/*.test.ts", "dist", "node_modules" ],
+  "exclude": ["dist", "node_modules"]
 }
