@@ -23,9 +23,8 @@ jobs:
       - name: Build Current Branch
         run: yarn build:packages
       - name: Check Package Sizes
-        runs:
-          using: "node20"
-          main: "../../scripts/check-package-sizes.js"
+        uses: ./
+        id: check-package-sizes-action
         outputs:
           packageSizes: ${{ steps.check-package-sizes.outputs.packageSizes }}
           totalSize: ${{ steps.check-package-sizes.outputs.totalSize }}

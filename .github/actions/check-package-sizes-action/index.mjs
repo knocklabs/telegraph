@@ -14,7 +14,7 @@ const getAllFilesInDirectory = async (directory) => {
 };
 
 const getDistFolderSize = async (packageName) => {
-  const directory = path.join("./packages", packageName, "dist");
+  const directory = path.join("../../packages", packageName, "dist");
   const files = await getAllFilesInDirectory(directory);
   const stats = files.map((file) => fs.stat(file));
   const sizes = (await Promise.all(stats)).reduce(
@@ -25,7 +25,7 @@ const getDistFolderSize = async (packageName) => {
 };
 
 const getAllPackages = async () => {
-  const packages = await fs.readdir(path.join("./packages"));
+  const packages = await fs.readdir(path.join("../..//packages"));
   const filteredPackages = packages.filter((pkg) => !pkg.startsWith("."));
   return filteredPackages;
 };
