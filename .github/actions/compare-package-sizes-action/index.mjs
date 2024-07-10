@@ -43,11 +43,11 @@ ${
     <details>
         <summary>All package size differences</summary>
 
-${packageSizeDifferences.map(
-  (pkg) =>
-    `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB
+        ${packageSizeDifferences.map(
+          (pkg) =>
+            `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB
           `
-)}
+        )}
 
     </details>
 
