@@ -25,10 +25,11 @@ jobs:
       - name: Get Current Package Sizes
         uses: ./.github/actions/check-package-sizes-action
         id: current-package-sizes
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main
+      # Adds this in once merged to main
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: main
       - name: Install Dependencies
         run: yarn --immutable
       - name: Build Current Branch
