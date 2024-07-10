@@ -34,21 +34,19 @@ ${
         ${packagesWithThreshold
           .map(
             (pkg) =>
-              `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB
-          `
+              `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
           )
           .join("\n")}
     `
     : `No package size differences greater than ${SIZE_THRESHOLD} KB 🚀`
 }
-    #### All package size differences
 
+    #### All package size differences
 
         ${packageSizeDifferences
           .map(
             (pkg) =>
-              `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB
-          `
+              `- ${pkg.packageName}: ${pkg.size > 0 ? "+" : ""}${pkg.size} KB`
           )
           .join("\n")}
 
