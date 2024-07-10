@@ -52,6 +52,8 @@
   "dependencies": {
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
+    "@telegraph/layout": "workspace:^",
+    "@telegraph/style-engine": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.0"
   }

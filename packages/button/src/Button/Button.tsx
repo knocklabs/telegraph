@@ -12,7 +12,6 @@ import clsx from "clsx";
 import React from "react";
 
 import {
-  buttonColorMap,
   buttonSizeMap,
   iconColorMap,
   iconSizeMap,
@@ -20,18 +19,41 @@ import {
   textColorMap,
   textSizeMap,
 } from "./Button.constants";
+import {
+  type GhostVariant,
+  type OutlineVariant,
+  type SoftVariant,
+  type SolidVariant,
+  baseStyles,
+  ghostVariant,
+  outlineVariant,
+  softVariant,
+  solidVariant,
+} from "./Button.css";
 
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "0" | "1" | "2" | "3";
-  color?: "accent" | "gray" | "red" | "green" | "blue" | "yellow" | "purple";
   state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
   active?: boolean;
-};
+} & (
+  | ({
+      variant?: "solid";
+    } & SolidVariant)
+  | ({
+      variant?: "soft";
+    } & SoftVariant)
+  | ({
+      variant?: "outline";
+    } & OutlineVariant)
+  | ({
+      variant?: "ghost";
+    } & GhostVariant)
+);
 
 type InternalProps = {
   layout: "default" | "icon-only";
-  color: Required<RootBaseProps>["color"] | "disabled";
+  color: Required<RootBaseProps>["color"];
 };
 
 type RootProps<T extends TgphElement> = Omit<
@@ -56,7 +78,7 @@ const Root = <T extends TgphElement>({
   as,
   variant = "solid",
   size = "2",
-  color: initialColor = "gray",
+  color = "gray",
   state: initialState = "default",
   active = false,
   disabled,
@@ -64,7 +86,6 @@ const Root = <T extends TgphElement>({
   ...props
 }: RootProps<T>) => {
   const state = disabled ? "disabled" : initialState;
-  const color = state === "disabled" ? "disabled" : initialColor;
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const children = React.Children.toArray(props?.children);
@@ -90,17 +111,14 @@ const Root = <T extends TgphElement>({
       <Stack
         as={as || "button"}
         className={clsx(
-          "appearance-none border-0 cursor-pointer bg-none box-border [font-family:inherit]",
-          "transition-colors no-underline",
-          state === "disabled" && "cursor-not-allowed",
-          buttonColorMap[variant][color],
-          buttonSizeMap[layout][size],
+          baseStyles,
+          variant === "solid" && solidVariant({ color }),
+          variant === "soft" && softVariant({ color }),
+          variant === "outline" && outlineVariant({ color }),
+          variant === "ghost" && ghostVariant({ color }),
           className,
         )}
-        h={buttonSizeMap[layout][size].h}
-        w={buttonSizeMap[layout][size].w}
-        gap={buttonSizeMap[layout][size].gap}
-        px={buttonSizeMap[layout][size].px}
+        {...buttonSizeMap[layout][size]}
         display="inline-flex"
         align="center"
         justify="center"
@@ -132,7 +150,11 @@ const Icon = <T extends TgphElement>({
 
   const iconProps = {
     size: size ?? iconSizeMap[context.size],
-    color: color ?? iconColorMap[context.variant][context.color],
+    color:
+      color ??
+      iconColorMap[context.variant][
+        context.state === "disabled" ? "disabled" : context.color
+      ],
     variant: variant ?? iconVariantMap[context.layout],
   };
 
@@ -142,6 +164,7 @@ const Icon = <T extends TgphElement>({
     <TelegraphIcon
       icon={icon}
       data-button-icon
+      data-button-icon-color={iconProps.color}
       {...a11yProps}
       {...iconProps}
       {...props}
@@ -165,16 +188,21 @@ const Text = <T extends TgphElement>({
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(ButtonContext);
-
+  const derivedColor =
+    color ??
+    textColorMap[context.variant][
+      context.state === "disabled" ? "disabled" : context.color
+    ];
   return (
     <TelegraphText
       as={(as || "span") as T}
-      color={color ?? textColorMap[context.variant][context.color]}
+      color={derivedColor}
       size={size ?? textSizeMap[context.size]}
       weight={weight}
       className={clsx("no-underline whitespace-nowrap", className)}
       internal_optionalAs={true}
       data-button-text
+      data-button-text-color={derivedColor}
       {...props}
     />
   );
