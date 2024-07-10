@@ -6,7 +6,7 @@ import { Lucide } from "../index";
 
 import { Icon } from "./Icon";
 
-// Surpress error from showing in console as we are testing for it
+// Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
 beforeEach(() => {
   console.error = vi.fn();
