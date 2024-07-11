@@ -1,0 +1,10 @@
+name: Check Package Sizes Action
+description: Get the sizes of the built packages in the repo
+outputs:
+  package-sizes:
+    description: All of the package sizes
+  total-size:
+    description: The total size of all the packages
+runs:
+  using: "node20"
+  main: "index.mjs"
