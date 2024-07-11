@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.22
+
+### Patch Changes
+
+- [#177](https://github.com/knocklabs/telegraph/pull/177) [`c137373`](https://github.com/knocklabs/telegraph/commit/c13737376b8f0a3087aa73ce9befc0bd8b465ec5) Thanks [@kylemcd](https://github.com/kylemcd)! - fix directional border radius
+
 ## 0.0.21
 
 ### Patch Changes
