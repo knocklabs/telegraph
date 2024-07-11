@@ -1,5 +1,16 @@
 # @telegraph/button
 
+## 0.0.36
+
+### Patch Changes
+
+- [#179](https://github.com/knocklabs/telegraph/pull/179) [`8861157`](https://github.com/knocklabs/telegraph/commit/8861157ed25d0f1cf35f0ecd233b8cfdbeeb80f3) Thanks [@kylemcd](https://github.com/kylemcd)! - add style engine post css config to allow for nesting in compiled css
+
+- Updated dependencies [[`8861157`](https://github.com/knocklabs/telegraph/commit/8861157ed25d0f1cf35f0ecd233b8cfdbeeb80f3)]:
+  - @telegraph/layout@0.0.23
+  - @telegraph/icon@0.0.24
+  - @telegraph/typography@0.0.22
+
 ## 0.0.35
 
 ### Patch Changes
