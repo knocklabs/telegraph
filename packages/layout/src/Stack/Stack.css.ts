@@ -10,7 +10,7 @@ export const stackProperties = defineStyleProps({
     alignItems: ["flex-start", "center", "flex-end", "stretch"],
     flexDirection: ["row", "row-reverse", "column", "column-reverse"],
     gap: tokens.spacing,
-    wrap: ["nowrap", "wrap", "wrap-reverse"],
+    flexWrap: ["nowrap", "wrap", "wrap-reverse"],
     justifyContent: [
       "flex-start",
       "center",
@@ -23,6 +23,7 @@ export const stackProperties = defineStyleProps({
     align: ["alignItems"],
     justify: ["justifyContent"],
     direction: ["flexDirection"],
+    wrap: ["flexWrap"],
   },
   ...RESPONSIVE_STYLE_PROPS,
 });
