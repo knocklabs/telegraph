@@ -48,7 +48,7 @@ jobs:
         with:
           token: ${{ secrets.KNOCK_ENG_BOT_GITHUB_TOKEN }} 
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: "github-actions[bot]"
+          comment-author: "knock-eng-bot"
           body-includes: ### Package size differences
       - name: Create comment
         if: steps.fc.outputs.comment-id == ''
