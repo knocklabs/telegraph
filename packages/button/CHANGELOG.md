@@ -1,5 +1,16 @@
 # @telegraph/button
 
+## 0.0.37
+
+### Patch Changes
+
+- [#181](https://github.com/knocklabs/telegraph/pull/181) [`1197f66`](https://github.com/knocklabs/telegraph/commit/1197f6683e3a278c3f5ba241fe9750d7c268819a) Thanks [@kylemcd](https://github.com/kylemcd)! - fix button active state css selectors + remove post css combine classes config
+
+- Updated dependencies []:
+  - @telegraph/icon@0.0.24
+  - @telegraph/layout@0.0.23
+  - @telegraph/typography@0.0.22
+
 ## 0.0.36
 
 ### Patch Changes

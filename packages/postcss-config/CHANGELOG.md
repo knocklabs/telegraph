@@ -1,5 +1,11 @@
 # @telegraph/postcss-config
 
+## 0.0.20
+
+### Patch Changes
+
+- [#181](https://github.com/knocklabs/telegraph/pull/181) [`1197f66`](https://github.com/knocklabs/telegraph/commit/1197f6683e3a278c3f5ba241fe9750d7c268819a) Thanks [@kylemcd](https://github.com/kylemcd)! - fix button active state css selectors + remove post css combine classes config
+
 ## 0.0.19
 
 ### Patch Changes
