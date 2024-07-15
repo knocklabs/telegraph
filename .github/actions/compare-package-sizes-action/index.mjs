@@ -25,13 +25,13 @@ const main = async () => {
   );
 
   const prComment = `
-    ### Package size differences
+### Package size differences
 
 ${
   packagesWithThreshold.length > 0
     ? `The following packages have size differences greater than 20 KB
-
-        ${packagesWithThreshold
+    
+${packagesWithThreshold
           .map(
             (pkg) =>
               `- \`@telegraph/${pkg.packageName}\`: ${pkg.size > 0 ? "+" : ""}${parseFloat(pkg.size).toFixed(2)} KB`,
