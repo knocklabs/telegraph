@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.38
+
+### Patch Changes
+
+- [`ff27b63`](https://github.com/knocklabs/telegraph/commit/ff27b639bf322ebbade79971285075fbc0193f91) Thanks [@kylemcd](https://github.com/kylemcd)! - fix css selector in button
+
 ## 0.0.37
 
 ### Patch Changes
