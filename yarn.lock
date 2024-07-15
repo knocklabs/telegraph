@@ -3154,7 +3154,7 @@ __metadata:
     "@storybook/addon-essentials": "npm:^7.6.17"
     "@storybook/addon-interactions": "npm:^7.6.17"
     "@storybook/addon-links": "npm:^7.6.17"
-    "@storybook/addon-onboarding": "npm:^1.0.11"
+    "@storybook/addon-onboarding": "npm:^8.2.3"
     "@storybook/addon-themes": "npm:^8.1.7"
     "@storybook/blocks": "npm:^7.6.17"
     "@storybook/icons": "npm:^1.2.9"
@@ -4873,16 +4873,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-onboarding@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "@storybook/addon-onboarding@npm:1.0.11"
+"@storybook/addon-onboarding@npm:^8.2.3":
+  version: 8.2.3
+  resolution: "@storybook/addon-onboarding@npm:8.2.3"
   dependencies:
-    "@storybook/telemetry": "npm:^7.1.0"
     react-confetti: "npm:^6.1.0"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/ca3de3eb85fb6d04309dbc07c26956777c064bb5032fb99aca3e43361b0816ac4326183aac99204d795fdc2010aa69c4978353c70a42926e9da0819343fcd2a0
+    storybook: ^8.2.3
+  checksum: 10c0/9d99998ba7730c2291149cbecfc6b66b7b1da768a3e65ea4d88014b39fd8635f430494f34569be8f6676c0c244ab03007030c2566f9d38b2162fcb8dec161cb4
   languageName: node
   linkType: hard
 
@@ -5476,7 +5474,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/telemetry@npm:7.6.17, @storybook/telemetry@npm:^7.1.0":
+"@storybook/telemetry@npm:7.6.17":
   version: 7.6.17
   resolution: "@storybook/telemetry@npm:7.6.17"
   dependencies:
