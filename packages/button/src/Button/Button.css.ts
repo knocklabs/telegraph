@@ -26,7 +26,7 @@ export const solidVariant = variant({
         ":disabled": {
           backgroundColor: tokens.color["gray-2"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["accent-11"],
         },
         disabled: {
@@ -41,7 +41,7 @@ export const solidVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["red-11"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["red-11"],
         },
         disabled: {
@@ -56,7 +56,7 @@ export const solidVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["gray-11"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["gray-11"],
         },
         disabled: {
@@ -71,7 +71,7 @@ export const solidVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["green-11"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["green-11"],
         },
         disabled: {
@@ -86,7 +86,7 @@ export const solidVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["blue-11"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["blue-11"],
         },
         disabled: {
@@ -101,7 +101,7 @@ export const solidVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["yellow-11"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["yellow-11"],
         },
         disabled: {
@@ -116,7 +116,7 @@ export const solidVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["purple-11"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["purple-11"],
         },
         disabled: {
@@ -138,7 +138,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["gray-5"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["gray-5"],
         },
         disabled: {
@@ -153,7 +153,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["red-5"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["red-5"],
         },
         disabled: {
@@ -168,7 +168,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["accent-6"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["accent-6"],
         },
         disabled: {
@@ -183,7 +183,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["green-5"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["green-5"],
         },
         disabled: {
@@ -198,7 +198,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["blue-5"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["blue-5"],
         },
         disabled: {
@@ -213,7 +213,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["yellow-5"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["yellow-5"],
         },
         disabled: {
@@ -228,7 +228,7 @@ export const softVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["purple-5"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["purple-5"],
         },
         disabled: {
@@ -258,7 +258,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-8"]}`,
         },
         ":disabled": {
@@ -274,7 +274,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["red-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["red-8"]}`,
         },
         ":disabled": {
@@ -290,7 +290,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["accent-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["accent-8"]}`,
         },
         ":disabled": {
@@ -306,7 +306,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["green-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["green-8"]}`,
         },
         ":disabled": {
@@ -322,7 +322,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["blue-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["blue-8"]}`,
         },
         ":disabled": {
@@ -338,7 +338,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["yellow-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["yellow-8"]}`,
         },
         ":disabled": {
@@ -354,7 +354,7 @@ export const outlineVariant = variant({
         ":focus": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["purple-8"]}`,
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           boxShadow: `var(--tgph-button-shadow) ${tokens.color["purple-8"]}`,
         },
         ":disabled": {
@@ -379,7 +379,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["gray-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["gray-4"],
         },
         "[data-tgph-button-active=true] > span": {
@@ -396,7 +396,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["red-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["red-4"],
         },
         ":disabled": {
@@ -410,7 +410,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["accent-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["accent-4"],
         },
         ":disabled": {
@@ -424,7 +424,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["green-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["green-4"],
         },
         ":disabled": {
@@ -438,7 +438,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["blue-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["blue-4"],
         },
         ":disabled": {
@@ -452,7 +452,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["yellow-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["yellow-4"],
         },
         ":disabled": {
@@ -466,7 +466,7 @@ export const ghostVariant = variant({
         ":focus": {
           backgroundColor: tokens.color["purple-4"],
         },
-        "[data-tgph-button-active=true]": {
+        "&[data-tgph-button-active=true]": {
           backgroundColor: tokens.color["purple-4"],
         },
         ":disabled": {
