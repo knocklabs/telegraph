@@ -204,7 +204,6 @@ const TriggerValue = () => {
       <Stack
         gap="1"
         w="full"
-        h="full"
         wrap={layout === "wrap" ? "wrap" : "nowrap"}
         align="center"
         style={{
