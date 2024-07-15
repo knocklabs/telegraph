@@ -27,7 +27,7 @@ export const solidVariant = variant({
           backgroundColor: tokens.color["gray-2"],
         },
         "[data-tgph-button-active=true]": {
-          backgroundColor: tokens.color["green-11"],
+          backgroundColor: tokens.color["accent-11"],
         },
         disabled: {
           backgroundColor: tokens.color["gray-2"],
