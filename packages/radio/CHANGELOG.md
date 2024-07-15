@@ -1,5 +1,12 @@
 # @telegraph/radio
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`ff27b63`](https://github.com/knocklabs/telegraph/commit/ff27b639bf322ebbade79971285075fbc0193f91)]:
+  - @telegraph/button@0.0.38
+
 ## 0.0.22
 
 ### Patch Changes
