@@ -291,7 +291,7 @@ type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
 const Trigger = ({ size = "2", ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
 
-  const height =
+  const minH =
     size === "0" ? "5" : size === "1" ? "6" : size === "2" ? "8" : "10";
 
   const getAriaLabelString = React.useCallback(() => {
@@ -339,7 +339,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         bg="surface-1"
         variant="outline"
         align="center"
-        minH={height}
+        minH={minH}
         h="full"
         w="full"
         py="1"
