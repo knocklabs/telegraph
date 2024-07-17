@@ -16,6 +16,7 @@ import { Text } from "@telegraph/typography";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
+import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import { type Option, isMultiSelect, isSingleSelect } from "./Combobox.helpers";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
@@ -183,16 +184,8 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
   );
 };
 
-type TriggerValueProps<T extends TgphElement> = {
-  size?: TgphComponentProps<typeof TelegraphButton.Root<T>>["size"];
-};
-
-const TriggerValue = <T extends TgphElement>({
-  size = "1",
-}: TriggerValueProps<T>) => {
+const TriggerValue = () => {
   const context = React.useContext(ComboboxContext);
-
-  const height = size === "1" ? "6" : size === "2" ? "8" : "10";
 
   if (context.value && isMultiSelect(context.value)) {
     const contextValue = context.value as Array<Option>;
@@ -202,11 +195,9 @@ const TriggerValue = <T extends TgphElement>({
 
     if (contextValue.length === 0) {
       return (
-        <Stack h={height} align="center" my="1">
-          <TelegraphButton.Text color="gray">
-            {context.placeholder}
-          </TelegraphButton.Text>
-        </Stack>
+        <TelegraphButton.Text color="gray">
+          {context.placeholder}
+        </TelegraphButton.Text>
       );
     }
 
@@ -214,7 +205,6 @@ const TriggerValue = <T extends TgphElement>({
       <Stack
         gap="1"
         w="full"
-        my="1"
         wrap={layout === "wrap" ? "wrap" : "nowrap"}
         align="center"
         style={{
@@ -288,11 +278,9 @@ const TriggerValue = <T extends TgphElement>({
   }
 
   return (
-    <Stack h={height} align="center" my="1">
-      <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
-        {context?.value?.label || context?.value?.value || context.placeholder}
-      </TelegraphButton.Text>
-    </Stack>
+    <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
+      {context?.value?.label || context?.value?.value || context.placeholder}
+    </TelegraphButton.Text>
   );
 };
 
@@ -301,7 +289,7 @@ type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
   size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
 };
 
-const Trigger = ({ size = "1", ...props }: TriggerProps) => {
+const Trigger = ({ size = "2", ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
 
   const getAriaLabelString = React.useCallback(() => {
@@ -348,8 +336,12 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
         id={context.triggerId}
         bg="surface-1"
         variant="outline"
-        w="full"
+        align="center"
+        minH={TRIGGER_MIN_HEIGHT[size]}
         h="full"
+        w="full"
+        py="1"
+        size={size}
         color={context.errored ? "red" : "gray"}
         justify="space-between"
         // Accessibility attributes
@@ -362,7 +354,7 @@ const Trigger = ({ size = "1", ...props }: TriggerProps) => {
         data-tgph-combobox-trigger
         data-tgph-comobox-trigger-open={context.open}
       >
-        <TriggerValue size={size} />
+        <TriggerValue />
         <TelegraphButton.Icon
           as={motion.div}
           icon={Lucide.ChevronDown}
@@ -451,10 +443,6 @@ const Content = <T extends TgphElement>({
       }}
       exit={{ opacity: 0, scale: 0 }}
       transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-      onInteractOutside={() => {
-        context.setOpen(false);
-        hasInteractedOutside.current = true;
-      }}
       onAnimationComplete={() => {
         // Set height when the initial animation for
         // displaying the content completes
