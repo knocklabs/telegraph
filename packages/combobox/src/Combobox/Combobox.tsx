@@ -16,6 +16,7 @@ import { Text } from "@telegraph/typography";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
+import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import { type Option, isMultiSelect, isSingleSelect } from "./Combobox.helpers";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
@@ -291,9 +292,6 @@ type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
 const Trigger = ({ size = "2", ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
 
-  const minH =
-    size === "0" ? "5" : size === "1" ? "6" : size === "2" ? "8" : "10";
-
   const getAriaLabelString = React.useCallback(() => {
     if (!context.value) return context.placeholder;
     if (isSingleSelect(context.value)) {
@@ -339,7 +337,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         bg="surface-1"
         variant="outline"
         align="center"
-        minH={minH}
+        minH={TRIGGER_MIN_HEIGHT[size]}
         h="full"
         w="full"
         py="1"
