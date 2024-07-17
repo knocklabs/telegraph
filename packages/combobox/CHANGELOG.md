@@ -1,5 +1,20 @@
 # @telegraph/combobox
 
+## 0.0.20
+
+### Patch Changes
+
+- [#185](https://github.com/knocklabs/telegraph/pull/185) [`f59e54f`](https://github.com/knocklabs/telegraph/commit/f59e54f3eff21ba71b2795518d5cf2921bc2c4ee) Thanks [@kylemcd](https://github.com/kylemcd)! - Adds additional prop values to layout components + fixes combobox height issues
+
+- Updated dependencies [[`f59e54f`](https://github.com/knocklabs/telegraph/commit/f59e54f3eff21ba71b2795518d5cf2921bc2c4ee)]:
+  - @telegraph/layout@0.0.24
+  - @telegraph/button@0.0.39
+  - @telegraph/icon@0.0.25
+  - @telegraph/input@0.0.18
+  - @telegraph/menu@0.0.20
+  - @telegraph/tag@0.0.40
+  - @telegraph/typography@0.0.23
+
 ## 0.0.19
 
 ### Patch Changes

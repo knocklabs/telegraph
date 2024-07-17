@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.24
+
+### Patch Changes
+
+- [#185](https://github.com/knocklabs/telegraph/pull/185) [`f59e54f`](https://github.com/knocklabs/telegraph/commit/f59e54f3eff21ba71b2795518d5cf2921bc2c4ee) Thanks [@kylemcd](https://github.com/kylemcd)! - Adds additional prop values to layout components + fixes combobox height issues
+
 ## 0.0.23
 
 ### Patch Changes

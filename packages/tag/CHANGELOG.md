@@ -1,5 +1,16 @@
 # @telegraph/tag
 
+## 0.0.40
+
+### Patch Changes
+
+- Updated dependencies [[`f59e54f`](https://github.com/knocklabs/telegraph/commit/f59e54f3eff21ba71b2795518d5cf2921bc2c4ee)]:
+  - @telegraph/layout@0.0.24
+  - @telegraph/button@0.0.39
+  - @telegraph/icon@0.0.25
+  - @telegraph/tooltip@0.0.17
+  - @telegraph/typography@0.0.23
+
 ## 0.0.39
 
 ### Patch Changes
