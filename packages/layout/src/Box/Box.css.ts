@@ -50,6 +50,7 @@ const boxProperties = defineStyleProps({
   },
   shorthands: {
     bg: ["backgroundColor"],
+    border: ["borderWidth"],
     borderBottom: ["borderBottomWidth"],
     borderLeft: ["borderLeftWidth"],
     borderRight: ["borderRightWidth"],
