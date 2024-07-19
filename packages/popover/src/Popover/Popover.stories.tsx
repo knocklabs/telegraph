@@ -9,6 +9,17 @@ import { Popover } from "./Popover";
 const meta: Meta = {
   title: "Components/Popover",
   component: Popover.Root,
+  argTypes: {
+    side: {
+      options: ["top", "bottom", "left", "right"],
+      control: {
+        type: "select",
+      },
+    },
+  },
+  args: {
+    side: "bottom",
+  },
 };
 
 export default meta;
@@ -26,36 +37,8 @@ export const Default: Story = {
               leadingIcon={{ icon: Lucide.Ellipsis, "aria-hidden": true }}
             />
           </Popover.Trigger>
-          <Popover.Content>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <p className="Text" style={{ marginBottom: 10 }}>
-                Dimensions
-              </p>
-              <fieldset className="Fieldset">
-                <label className="Label" htmlFor="width">
-                  Width
-                </label>
-                <input className="Input" id="width" defaultValue="100%" />
-              </fieldset>
-              <fieldset className="Fieldset">
-                <label className="Label" htmlFor="maxWidth">
-                  Max. width
-                </label>
-                <input className="Input" id="maxWidth" defaultValue="300px" />
-              </fieldset>
-              <fieldset className="Fieldset">
-                <label className="Label" htmlFor="height">
-                  Height
-                </label>
-                <input className="Input" id="height" defaultValue="25px" />
-              </fieldset>
-              <fieldset className="Fieldset">
-                <label className="Label" htmlFor="maxHeight">
-                  Max. height
-                </label>
-                <input className="Input" id="maxHeight" defaultValue="none" />
-              </fieldset>
-            </div>
+          <Popover.Content {...args} px="4">
+            <p>Test popover content</p>
           </Popover.Content>
         </Popover.Root>
       </Stack>

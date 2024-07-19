@@ -20,7 +20,6 @@ const meta: Meta = {
         type: "select",
       },
     },
-
     align: {
       options: ["start", "center", "end"],
       control: {

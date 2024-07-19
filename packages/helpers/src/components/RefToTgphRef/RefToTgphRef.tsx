@@ -13,7 +13,7 @@ import React from "react";
 //
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RefToTgphRef = React.forwardRef<any, any>((props, ref) => {
-  return <Slot {...props} tgphRef={ref} />;
+  return <Slot {...props} ref={ref} tgphRef={ref} />;
 });
 
 export { RefToTgphRef };

@@ -35,7 +35,8 @@
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-use-controllable-state": "^1.1.0",
     "@telegraph/helpers": "workspace:^",
-    "@telegraph/layout": "workspace:^"
+    "@telegraph/layout": "workspace:^",
+    "framer-motion": "^11.3.8"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",

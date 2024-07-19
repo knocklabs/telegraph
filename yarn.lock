@@ -6110,12 +6110,15 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-popover": "npm:^1.1.1"
     "@radix-ui/react-use-controllable-state": "npm:^1.1.0"
+    "@telegraph/helpers": "workspace:^"
+    "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
     eslint: "npm:^8.56.0"
+    framer-motion: "npm:^11.3.8"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
@@ -10923,6 +10926,26 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10c0/c1bbadb5f5c324de0473f3fb2c3d0180fc5239335f49b536dc827dff27c87d749af402d1c1fbe7081fbc15b816e32fadf66e24970476f98b2934464f8df9bdb0
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^11.3.8":
+  version: 11.3.8
+  resolution: "framer-motion@npm:11.3.8"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/71c7ff866694f531d01d4d6f44c2eef620abab1acf52436716b3c82e5ae45be544b4cf45b1a15686e17daa214a89fae3523077624919e6f9df9a53d3c46509f0
   languageName: node
   linkType: hard
 
