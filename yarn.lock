@@ -6114,7 +6114,6 @@ __metadata:
     "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
-    "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
     eslint: "npm:^8.56.0"
