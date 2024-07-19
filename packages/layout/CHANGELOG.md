@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.0.25
+
+### Patch Changes
+
+- [#193](https://github.com/knocklabs/telegraph/pull/193) [`8e0c74d`](https://github.com/knocklabs/telegraph/commit/8e0c74d9acbf4db303096fd932bb5c7831d58e6e) Thanks [@kylemcd](https://github.com/kylemcd)! - add border shorthand to box
+
 ## 0.0.24
 
 ### Patch Changes
