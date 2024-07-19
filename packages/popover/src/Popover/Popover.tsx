@@ -88,6 +88,7 @@ const Content = <T extends TgphElement>({
   side = "bottom",
   sideOffset = 4,
   align = "center",
+  bg = "surface-1",
   alignOffset,
   tgphRef,
   children,
@@ -148,7 +149,7 @@ const Content = <T extends TgphElement>({
               y: 0,
             }}
             transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-            bg="surface-1"
+            bg={bg}
             direction={direction}
             gap={gap}
             rounded={rounded}
