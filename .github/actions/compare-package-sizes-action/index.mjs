@@ -14,9 +14,13 @@ const main = async () => {
     const previousPackage = previousPackageSizes.find(
       (pkg) => pkg.packageName === currentPackage.packageName,
     );
+
+    // Previous package may be undefined, for example if a new package was added
+    const previousPackageSize = previousPackage ? previousPackage.size : 0;
+
     return {
       packageName: currentPackage.packageName,
-      size: currentPackage.size - previousPackage.size,
+      size: currentPackage.size - previousPackageSize,
     };
   });
 
