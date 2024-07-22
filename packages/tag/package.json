@@ -38,7 +38,7 @@
     "@telegraph/layout": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "framer-motion": "^11.1.9"
   },
   "devDependencies": {
