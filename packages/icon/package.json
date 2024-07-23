@@ -33,7 +33,7 @@
   "dependencies": {
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.379.0"
   },
   "devDependencies": {
