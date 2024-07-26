@@ -1,0 +1,57 @@
+{
+  "name": "@telegraph/segmented-control",
+  "version": "0.0.0",
+  "description": "A segmented selection between as set of options.",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/segmented-control",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/css/default.css"
+    },
+    "./default.css": "./dist/css/default.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "prettier": "@telegraph/prettier-config",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "vite build --watch --emptyOutDir false",
+    "build": "yarn clean && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
+    "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@telegraph/button": "workspace:^",
+    "@telegraph/helpers": "workspace:^",
+    "@telegraph/layout": "workspace:^"
+  },
+  "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/postcss-config": "workspace:^",
+    "@telegraph/prettier-config": "workspace:^",
+    "@telegraph/vite-config": "workspace:^",
+    "@types/react": "^18.2.48",
+    "eslint": "^8.56.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
