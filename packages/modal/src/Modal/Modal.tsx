@@ -90,14 +90,17 @@ const Root = ({
   );
 };
 
-type ContentProps = React.ComponentPropsWithoutRef<typeof Dialog.Content>;
+type ContentProps = React.ComponentPropsWithoutRef<typeof Dialog.Content> &
+  TgphComponentProps<typeof Stack>;
 type ContentRef = React.ElementRef<typeof Dialog.Content>;
 
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
       <Dialog.Content ref={forwardedRef} {...props} asChild>
-        <Stack direction="column">{children}</Stack>
+        <Stack direction="column" h="full" {...props}>
+          {children}
+        </Stack>
       </Dialog.Content>
     );
   },
