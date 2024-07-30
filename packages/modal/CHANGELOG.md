@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.33
+
+### Patch Changes
+
+- [`fcf5b5d`](https://github.com/knocklabs/telegraph/commit/fcf5b5d8ca887ec2a091642c838978e3c79c890f) Thanks [@kylemcd](https://github.com/kylemcd)! - add height to content and allow for stack props
+
 ## 0.0.32
 
 ### Patch Changes
