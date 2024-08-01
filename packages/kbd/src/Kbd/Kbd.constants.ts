@@ -1,3 +1,7 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
+import type { Stack } from "@telegraph/layout";
+import type { Text } from "@telegraph/typography";
+
 export const sizeMap = {
   "1": {
     stack: {
@@ -26,89 +30,70 @@ export const sizeMap = {
   },
 } as const;
 
-export const colorMap = {
+type StackColor = {
+  borderColor: TgphComponentProps<typeof Stack>["borderColor"];
+  bg: TgphComponentProps<typeof Stack>["bg"];
+  bgPressed: TgphComponentProps<typeof Stack>["bg"];
+};
+
+type TextColor = {
+  color: TgphComponentProps<typeof Text>["color"];
+};
+
+export type Appearance = "light" | "dark";
+export type Contrast = "default" | "contrast";
+export type ColorMap = {
+  [key in Appearance]: {
+    [key in Contrast]: {
+      stack: StackColor;
+      text: TextColor;
+    };
+  };
+};
+
+export const colorMap: ColorMap = {
   light: {
     default: {
-      default: {
-        stack: {
-          borderColor: "gray-3",
-          bg: "surface-1",
-        },
-        text: {
-          color: "default",
-        },
+      stack: {
+        borderColor: "gray-3",
+        bg: "surface-1",
+        bgPressed: "gray-4",
       },
-      pressed: {
-        stack: {
-          borderColor: "gray-3",
-          bg: "gray-4",
-        },
-        text: {
-          color: "default",
-        },
+      text: {
+        color: "default",
       },
-      contrast: {
-        default: {
-          stack: {
-            borderColor: "gray-3",
-            bg: "transparent",
-          },
-          text: {
-            color: "white",
-          },
-        },
-        pressed: {
-          stack: {
-            borderColor: "gray-3",
-            bg: "alpha-black-2",
-          },
-          text: {
-            color: "default",
-          },
-        },
+    },
+    contrast: {
+      stack: {
+        borderColor: "gray-3",
+        bg: "transparent",
+        bgPressed: "alpha-black-2",
+      },
+      text: {
+        color: "white",
       },
     },
   },
   dark: {
     default: {
-      default: {
-        stack: {
-          borderColor: "gray-3",
-          bg: "surface-1",
-        },
-        text: {
-          color: "default",
-        },
+      stack: {
+        borderColor: "gray-3",
+        bg: "surface-1",
+        bgPressed: "gray-4",
       },
-      pressed: {
-        stack: {
-          borderColor: "gray-3",
-          bg: "gray-4",
-        },
-        text: {
-          color: "default",
-        },
+      text: {
+        color: "default",
       },
     },
     contrast: {
-      default: {
-        stack: {
-          borderColor: "black",
-          bg: "transparent",
-        },
-        text: {
-          color: "black",
-        },
+      stack: {
+        borderColor: "black",
+        bg: "transparent",
+        bgPressed: "alpha-black-2",
       },
-      pressed: {
-        stack: {
-          borderColor: "gray-3",
-          bg: "alpha-black-2",
-        },
-        text: {
-          color: "default",
-        },
+      text: {
+        color: "black",
       },
     },
   },
-} as const;
+};

@@ -1,69 +1,54 @@
 import { useAppearance } from "@telegraph/appearance";
 import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
-import { useEffect, useState } from "react";
 
 import { colorMap, sizeMap } from "./Kbd.constants";
+import { usePressed } from "./Kbd.hooks";
 
 type KbdProps = {
   size?: keyof typeof sizeMap;
   contrast?: boolean;
   label: string;
-  eventKey?: string;
+  eventKey?: KeyboardEvent["key"];
 };
 
-const Kbd = (props: KbdProps) => {
-  const { size = "1", contrast = false, label } = props;
+const Kbd = ({
+  size = "1",
+  contrast: contrastProp = false,
+  label,
+  ...props
+}: KbdProps) => {
   const { appearance } = useAppearance();
-  const [pressedState, setPressedState] = useState(false);
 
-  const key = props.eventKey || label;
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.key, key);
-      if (event.key === key) {
-        setPressedState(true);
-      }
-    };
-
-    const handleKeyUp = (event: KeyboardEvent) => {
-      if (event.key === key) {
-        setPressedState(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [key]);
+  const contrast = contrastProp ? "contrast" : "default";
+  const { pressed } = usePressed({ key: props.eventKey || label });
 
   return (
     <Stack
-      {...colorMap[appearance][contrast ? "contrast" : "default"][
-        pressedState ? "pressed" : "default"
-      ].stack}
       {...sizeMap[size].stack}
+      bg={
+        pressed
+          ? colorMap[appearance][contrast].stack.bgPressed
+          : colorMap[appearance][contrast].stack.bg
+      }
+      shadow={pressed ? "inner" : "0"}
+      borderColor={colorMap[appearance][contrast].stack.borderColor}
       border="px"
       rounded="1"
       align="center"
       justify="center"
+      style={{
+        transition: "background-color 0.2s ease-in-out",
+      }}
     >
       <Text
         as="span"
-        {...colorMap[appearance][contrast ? "contrast" : "default"][
-          pressedState ? "pressed" : "default"
-        ].text}
         {...sizeMap[size].text}
+        color={colorMap[appearance][contrast].text.color}
       >
         {label}
       </Text>
     </Stack>
   );
 };
-
 export { Kbd };

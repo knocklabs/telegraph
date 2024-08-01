@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 
 import { Kbd as TelegraphKbd } from "./Kbd";
 import { sizeMap } from "./Kbd.constants";
+import { KbdProvider } from "./Kbd.hooks";
 
 const meta: Meta = {
   title: "Components/Kbd",
@@ -29,7 +30,7 @@ const meta: Meta = {
       control: {
         type: "text",
       },
-    }
+    },
   },
   args: {
     size: "1",
@@ -46,9 +47,12 @@ type Story = StoryObj<TgphComponentProps<typeof TelegraphKbd>>;
 export const Default: Story = {
   render: ({ ...args }) => {
     return (
-      <Box bg={args.contrast ? "accent-9" : "surface-2"} p="20">
-        <TelegraphKbd {...args} />
-      </Box>
+      <KbdProvider>
+        <Stack bg={args.contrast ? "accent-9" : "surface-2"} p="20" gap="1">
+          <TelegraphKbd eventKey="Meta" label="⌘" />
+          <TelegraphKbd {...args} />
+        </Stack>
+      </KbdProvider>
     );
   },
 };
