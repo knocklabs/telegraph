@@ -27,6 +27,7 @@ export const colorMap = {
   purple: "text-purple-11",
   accent: "text-accent-11",
   white: "text-white",
+  black: "text-black",
   disabled: "text-gray-9",
 } as const;
 
