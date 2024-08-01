@@ -10,12 +10,13 @@ type KbdProps = {
   contrast?: boolean;
   label: string;
   eventKey?: KeyboardEvent["key"];
-};
+} & React.ComponentProps<typeof Stack>;
 
 const Kbd = ({
   size = "1",
   contrast: contrastProp = false,
   label,
+  style,
   ...props
 }: KbdProps) => {
   const { appearance } = useAppearance();
@@ -39,7 +40,9 @@ const Kbd = ({
       justify="center"
       style={{
         transition: "background-color 0.2s ease-in-out",
+        ...style,
       }}
+      {...props}
     >
       <Text
         as="span"
