@@ -6151,6 +6151,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@telegraph/kbd@workspace:packages/kbd":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/kbd@workspace:packages/kbd"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/helpers": "workspace:^"
+    "@telegraph/layout": "workspace:^"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/typography": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.3.0"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@telegraph/layout@workspace:^, @telegraph/layout@workspace:packages/layout":
   version: 0.0.0-use.local
   resolution: "@telegraph/layout@workspace:packages/layout"

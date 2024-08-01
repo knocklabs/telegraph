@@ -3,13 +3,11 @@ import React from "react";
 
 type Appearance = "light" | "dark";
 
-type UseAppearanceParams =
-  | {
-      appearanceOverride?: Appearance;
-    }
-  | undefined;
+type UseAppearanceParams = {
+  appearanceOverride?: Appearance;
+};
 
-const useAppearance = (params: UseAppearanceParams) => {
+const useAppearance = (params: UseAppearanceParams = {}) => {
   const [appearance, setAppearance] = React.useState<Appearance>(
     params?.appearanceOverride || "light",
   );
