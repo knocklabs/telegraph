@@ -69,7 +69,7 @@ const KbdProvider = ({ children }: KbdProviderProps) => {
     PressedContextState["currentlyPressedKeys"]
   >([]);
 
-  // Brodcast the the keys currently being pressed, passing
+  // Broadcast the the keys currently being pressed, passing
   // as an array so we can check for multiple keys being pressed
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
