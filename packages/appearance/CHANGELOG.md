@@ -1,5 +1,11 @@
 # @telegraph/appearance
 
+## 0.0.3
+
+### Patch Changes
+
+- [#208](https://github.com/knocklabs/telegraph/pull/208) [`048788f`](https://github.com/knocklabs/telegraph/commit/048788fd8bacb03307af9ef86b5289429d19363d) Thanks [@kylemcd](https://github.com/kylemcd)! - new kbd component
+
 ## 0.0.2
 
 ### Patch Changes
