@@ -49,7 +49,7 @@ const Root = <T extends TgphElement>({
         as={as}
         display="inline-flex"
         align="center"
-        rounded="3"
+        rounded="2"
         pl={SPACING.Root[size]}
         className={clsx(SIZE.Root[size], COLOR.Root[variant][color], className)}
         {...props}

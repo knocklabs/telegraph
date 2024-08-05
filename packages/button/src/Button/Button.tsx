@@ -16,6 +16,7 @@ import {
   iconColorMap,
   iconSizeMap,
   iconVariantMap,
+  roundedMap,
   textColorMap,
   textSizeMap,
 } from "./Button.constants";
@@ -112,7 +113,7 @@ const Root = <T extends TgphElement>({
         display="inline-flex"
         align="center"
         justify="center"
-        rounded="3"
+        rounded={roundedMap[size]}
         data-tgph-button
         data-tgph-button-layout={layout}
         data-tgph-button-active={active}
