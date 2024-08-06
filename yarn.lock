@@ -6480,6 +6480,7 @@ __metadata:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-tooltip": "npm:^1.1.2"
+    "@radix-ui/react-use-controllable-state": "npm:^1.1.0"
     "@telegraph/appearance": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/layout": "workspace:^"

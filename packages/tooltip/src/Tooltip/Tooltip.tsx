@@ -1,4 +1,5 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { InvertedAppearance } from "@telegraph/appearance";
 import {
   RefToTgphRef,
@@ -9,6 +10,8 @@ import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { motion } from "framer-motion";
 import React from "react";
+
+import { useTooltipGroup } from "./Tooltip.hooks";
 
 type TooltipBaseProps<T extends TgphElement> = {
   label: string | React.ReactNode;
@@ -25,13 +28,13 @@ type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
 
 const Tooltip = <T extends TgphElement>({
   // Radix Tooltip Provider Props
-  delayDuration = 0,
+  delayDuration = 600,
   skipDelayDuration,
   disableHoverableContent,
   // Radix Tooltip Root Props
-  defaultOpen,
-  open,
-  onOpenChange,
+  defaultOpen: defaultOpenProp,
+  open: openProp,
+  onOpenChange: onOpenChangeProp,
   // Radix Tooltip Content Props
   "aria-label": ariaLabel,
   onEscapeKeyDown,
@@ -54,6 +57,16 @@ const Tooltip = <T extends TgphElement>({
   enabled = true,
   children,
 }: TooltipProps<T>) => {
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    onChange: onOpenChangeProp,
+    defaultProp: defaultOpenProp,
+  });
+  const { groupOpen } = useTooltipGroup({ open: !!open, delay: delayDuration });
+
+  const derivedDelayDuration = groupOpen ? 0 : delayDuration;
+  const shouldAnimate = !groupOpen;
+
   const deriveAnimationBasedOnSide = (side: TooltipProps<T>["side"]) => {
     const ANIMATION_OFFSET = 5;
     if (side === "top") {
@@ -84,15 +97,11 @@ const Tooltip = <T extends TgphElement>({
   if (enabled) {
     return (
       <RadixTooltip.Provider
-        delayDuration={delayDuration}
+        delayDuration={derivedDelayDuration}
         skipDelayDuration={skipDelayDuration}
         disableHoverableContent={disableHoverableContent}
       >
-        <RadixTooltip.Root
-          defaultOpen={defaultOpen}
-          open={open}
-          onOpenChange={onOpenChange}
-        >
+        <RadixTooltip.Root open={open} onOpenChange={setOpen}>
           <RadixTooltip.Trigger asChild={true}>
             <RefToTgphRef>{children}</RefToTgphRef>
           </RadixTooltip.Trigger>
@@ -121,11 +130,15 @@ const Tooltip = <T extends TgphElement>({
                   as={motion.div}
                   // Add tgph class so that this always works in portals
                   className="tgph"
-                  initial={{
-                    opacity: 0.5,
-                    scale: 0.6,
-                    ...deriveAnimationBasedOnSide(side),
-                  }}
+                  initial={
+                    shouldAnimate
+                      ? {
+                          opacity: 0.5,
+                          scale: 0.6,
+                          ...deriveAnimationBasedOnSide(side),
+                        }
+                      : {}
+                  }
                   animate={{
                     opacity: 1,
                     scale: 1,
