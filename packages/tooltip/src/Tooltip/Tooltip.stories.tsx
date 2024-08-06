@@ -4,6 +4,7 @@ import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 
 import { Tooltip as TelegraphTooltip } from "./Tooltip";
+import { TooltipGroupProvider } from "./Tooltip.hooks";
 
 const meta: Meta = {
   title: "Components/Tooltip",
@@ -51,6 +52,23 @@ export const Default: Story = {
         <TelegraphTooltip {...args}>
           <Button color="blue">Hover me</Button>
         </TelegraphTooltip>
+      </Stack>
+    );
+  },
+};
+
+export const Group: Story = {
+  render: ({ ...args }) => {
+    return (
+      <Stack w="full" my="10" align="center" justify="center" gap="2">
+        <TooltipGroupProvider>
+          <TelegraphTooltip {...args}>
+            <Button color="blue">Hover me</Button>
+          </TelegraphTooltip>
+          <TelegraphTooltip {...args}>
+            <Button color="blue">Hover me</Button>
+          </TelegraphTooltip>
+        </TooltipGroupProvider>
       </Stack>
     );
   },
