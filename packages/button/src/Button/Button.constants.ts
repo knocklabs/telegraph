@@ -110,6 +110,13 @@ export const iconSizeMap = {
   "3": "3",
 } as const;
 
+export const roundedMap = {
+  "0": "2",
+  "1": "2",
+  "2": "2",
+  "3": "3",
+} as const;
+
 export const iconColorMap = {
   solid: {
     gray: "white",
