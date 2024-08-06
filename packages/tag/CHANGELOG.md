@@ -1,5 +1,14 @@
 # @telegraph/tag
 
+## 0.0.44
+
+### Patch Changes
+
+- [#212](https://github.com/knocklabs/telegraph/pull/212) [`4d642b2`](https://github.com/knocklabs/telegraph/commit/4d642b2e06fc6b11accc71493f3cc34208204043) Thanks [@cjbell](https://github.com/cjbell)! - feat: fix rounded dim on button and tag
+
+- Updated dependencies [[`4d642b2`](https://github.com/knocklabs/telegraph/commit/4d642b2e06fc6b11accc71493f3cc34208204043)]:
+  - @telegraph/button@0.0.43
+
 ## 0.0.43
 
 ### Patch Changes
