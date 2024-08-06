@@ -1,0 +1,13 @@
+.tgph-radio-card-description,
+.tgph-radio-card-icon {
+  transition: color 0.2s ease-in-out;
+}
+
+/* Style hovered or active radio card elements */
+.tgph-radio-card-root:hover .tgph-radio-card-description,
+.tgph-radio-card-root[data-tgph-button-active="true"]
+  .tgph-radio-card-description,
+.tgph-radio-card-root:hover .tgph-radio-card-icon,
+.tgph-radio-card-root[data-tgph-button-active="true"] .tgph-radio-card-icon {
+  color: var(--tgph-gray-12) !important;
+}

@@ -3,6 +3,7 @@ import { Button } from "@telegraph/button";
 import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
+import clsx from "clsx";
 import React from "react";
 
 type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root>;
@@ -27,7 +28,7 @@ const Root = React.forwardRef<RootRef, RootProps>(
           {...props}
           ref={forwardedRef}
         >
-          <Stack gap="2">{children}</Stack>
+          <Stack gap="1">{children}</Stack>
         </RadioGroup.Root>
       </RadioButtonContext.Provider>
     );
@@ -46,7 +47,7 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
           <Button.Root
             variant="outline"
             active={props.value === contextValue}
-            className="data-[tgph-button-active=true]:!shadow-blue-8 data-[tgph-button-active=true]:!shadow-[inset_0_0_0_2px] !p-0 !h-full !w-full"
+            className="tgph-radio-card-root data-[tgph-button-active=true]:!shadow-blue-8 data-[tgph-button-active=true]:!shadow-[inset_0_0_0_2px] !p-0 !h-full !w-full"
           >
             {children}
           </Button.Root>
@@ -72,9 +73,18 @@ type ItemDescriptionProps<T extends TgphElement> = TgphComponentProps<
 >;
 const ItemDescription = <T extends TgphElement>({
   size = "0",
+  className,
   ...props
 }: ItemDescriptionProps<T>) => {
-  return <Button.Text as={"span"} size={size} {...props} />;
+  return (
+    <Button.Text
+      className={clsx("tgph-radio-card-description", className)}
+      as={"span"}
+      size={size}
+      color="gray"
+      {...props}
+    />
+  );
 };
 
 type ItemIconProps<T extends TgphElement> = TgphComponentProps<
@@ -82,7 +92,13 @@ type ItemIconProps<T extends TgphElement> = TgphComponentProps<
 >;
 
 const ItemIcon = <T extends TgphElement>(props: ItemIconProps<T>) => {
-  return <Button.Icon {...props} />;
+  return (
+    <Button.Icon
+      color="gray"
+      {...props}
+      className={clsx("tgph-radio-card-icon", props.className)}
+    />
+  );
 };
 
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
