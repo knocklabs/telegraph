@@ -5,10 +5,11 @@ import type {
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Icon as TelegraphIcon } from "@telegraph/icon";
+import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import React from "react";
 
 import {
@@ -27,6 +28,7 @@ import {
   type SolidVariant,
   baseStyles,
   ghostVariant,
+  loadingIconStyles,
   outlineVariant,
   softVariant,
   solidVariant,
@@ -35,7 +37,7 @@ import {
 type RootBaseProps = {
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "0" | "1" | "2" | "3";
-  state?: "default" | "loading" | "disabled" | "error" | "success" | "warning";
+  state?: "default" | "loading";
   active?: boolean;
 } & SolidVariant &
   SoftVariant &
@@ -45,6 +47,7 @@ type RootBaseProps = {
 type InternalProps = {
   layout: "default" | "icon-only";
   color: Required<RootBaseProps>["color"];
+  state: Required<RootBaseProps>["state"] | "disabled";
 };
 
 type RootProps<T extends TgphElement> = Omit<
@@ -55,7 +58,7 @@ type RootProps<T extends TgphElement> = Omit<
   RootBaseProps;
 
 const ButtonContext = React.createContext<
-  Required<Omit<RootBaseProps, "color" | "as"> & InternalProps>
+  Required<Omit<RootBaseProps, "color" | "as" | "state"> & InternalProps>
 >({
   variant: "solid",
   size: "2",
@@ -221,12 +224,30 @@ const Default = <T extends TgphElement>({
   trailingIcon,
   icon,
   children,
+  state = "default",
   ...props
 }: DefaultProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   return (
-    <Root {...props}>
-      {combinedLeadingIcon && <Icon {...combinedLeadingIcon} />}
+    <Root state={state} {...props}>
+      {state === "default" && combinedLeadingIcon && (
+        <Icon {...combinedLeadingIcon} />
+      )}
+      {state === "loading" && (
+        <Icon
+          as={motion.span}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+          className={loadingIconStyles}
+          icon={Lucide.LoaderCircle}
+          aria-hidden={true}
+        />
+      )}
       {children && <Text>{children}</Text>}
       {trailingIcon && <Icon {...trailingIcon} />}
     </Root>

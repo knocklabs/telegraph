@@ -1,4 +1,26 @@
-import { StyleVariant, style, tokens, variant } from "@telegraph/style-engine";
+import {
+  StyleVariant,
+  keyframes,
+  style,
+  tokens,
+  variant,
+} from "@telegraph/style-engine";
+
+const rotate = keyframes({
+  "0%": {
+    transform: "rotate(0deg)",
+  },
+  "100%": {
+    transform: "rotate(360deg)",
+  },
+});
+
+export const loadingIconStyles = style({
+  animationName: rotate,
+  animationDuration: "1s",
+  animationIterationCount: "infinite",
+  animationTimingFunction: "linear",
+});
 
 export const baseStyles = style({
   appearance: "none",

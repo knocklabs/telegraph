@@ -67,6 +67,12 @@ const meta: Meta<typeof TelegraphButton> = {
         type: "boolean",
       },
     },
+    state: {
+      options: ["default", "loading"],
+      control: {
+        type: "select",
+      },
+    },
   },
   args: {
     size: "2",
