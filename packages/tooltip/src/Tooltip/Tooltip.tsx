@@ -137,7 +137,7 @@ const Tooltip = <T extends TgphElement>({
                           scale: 0.6,
                           ...deriveAnimationBasedOnSide(side),
                         }
-                      : null
+                      : {}
                   }
                   animate={{
                     opacity: 1,
