@@ -1,5 +1,17 @@
 # @telegraph/button
 
+## 0.0.44
+
+### Patch Changes
+
+- [#216](https://github.com/knocklabs/telegraph/pull/216) [`e30e06a`](https://github.com/knocklabs/telegraph/commit/e30e06a7e6bafc6b7aefcf26228e432f2e3906c9) Thanks [@kylemcd](https://github.com/kylemcd)! - button loading state
+
+- Updated dependencies [[`e30e06a`](https://github.com/knocklabs/telegraph/commit/e30e06a7e6bafc6b7aefcf26228e432f2e3906c9)]:
+  - @telegraph/style-engine@0.0.4
+  - @telegraph/layout@0.0.27
+  - @telegraph/icon@0.0.28
+  - @telegraph/typography@0.0.27
+
 ## 0.0.43
 
 ### Patch Changes

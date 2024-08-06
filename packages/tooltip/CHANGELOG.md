@@ -1,5 +1,15 @@
 # @telegraph/tooltip
 
+## 0.0.21
+
+### Patch Changes
+
+- [#214](https://github.com/knocklabs/telegraph/pull/214) [`e51c8ec`](https://github.com/knocklabs/telegraph/commit/e51c8ec8fc4c7de82f2f1829ada1225c23116088) Thanks [@kylemcd](https://github.com/kylemcd)! - add tooltip group hover functionality
+
+- Updated dependencies []:
+  - @telegraph/layout@0.0.27
+  - @telegraph/typography@0.0.27
+
 ## 0.0.20
 
 ### Patch Changes

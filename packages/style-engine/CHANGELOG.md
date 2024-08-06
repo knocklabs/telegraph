@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.0.4
+
+### Patch Changes
+
+- [#216](https://github.com/knocklabs/telegraph/pull/216) [`e30e06a`](https://github.com/knocklabs/telegraph/commit/e30e06a7e6bafc6b7aefcf26228e432f2e3906c9) Thanks [@kylemcd](https://github.com/kylemcd)! - button loading state
+
 ## 0.0.3
 
 ### Patch Changes
