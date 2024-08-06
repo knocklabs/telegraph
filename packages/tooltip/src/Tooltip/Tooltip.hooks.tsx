@@ -15,7 +15,7 @@ type UseTooltipGroupParams = {
   delay?: number;
 };
 
-const useTooltipGroup = ({ open, delay = 800 }: UseTooltipGroupParams) => {
+const useTooltipGroup = ({ open, delay = 600 }: UseTooltipGroupParams) => {
   const context = React.useContext(TooltipContext);
 
   // If the open prop is set to true, we set the groupOpen state to true

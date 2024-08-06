@@ -28,7 +28,7 @@ type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
 
 const Tooltip = <T extends TgphElement>({
   // Radix Tooltip Provider Props
-  delayDuration = 800,
+  delayDuration = 600,
   skipDelayDuration,
   disableHoverableContent,
   // Radix Tooltip Root Props
@@ -62,7 +62,7 @@ const Tooltip = <T extends TgphElement>({
     onChange: onOpenChangeProp,
     defaultProp: defaultOpenProp,
   });
-  const { groupOpen } = useTooltipGroup({ open: !!open });
+  const { groupOpen } = useTooltipGroup({ open: !!open, delay: delayDuration });
 
   const derivedDelayDuration = groupOpen ? 0 : delayDuration;
   const shouldAnimate = !groupOpen;
