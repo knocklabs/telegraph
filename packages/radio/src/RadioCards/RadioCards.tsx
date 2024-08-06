@@ -3,6 +3,7 @@ import { Button } from "@telegraph/button";
 import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
+import clsx from "clsx";
 import React from "react";
 
 type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root>;
@@ -72,11 +73,12 @@ type ItemDescriptionProps<T extends TgphElement> = TgphComponentProps<
 >;
 const ItemDescription = <T extends TgphElement>({
   size = "0",
+  className,
   ...props
 }: ItemDescriptionProps<T>) => {
   return (
     <Button.Text
-      className="tgph-radio-card-description"
+      className={clsx("tgph-radio-card-description", className)}
       as={"span"}
       size={size}
       color="gray"
@@ -91,7 +93,11 @@ type ItemIconProps<T extends TgphElement> = TgphComponentProps<
 
 const ItemIcon = <T extends TgphElement>(props: ItemIconProps<T>) => {
   return (
-    <Button.Icon className="tgph-radio-card-icon" color="gray" {...props} />
+    <Button.Icon
+      color="gray"
+      {...props}
+      className={clsx("tgph-radio-card-icon", props.className)}
+    />
   );
 };
 
