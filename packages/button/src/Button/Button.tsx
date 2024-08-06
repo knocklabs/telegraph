@@ -47,7 +47,7 @@ type RootBaseProps = {
 type InternalProps = {
   layout: "default" | "icon-only";
   color: Required<RootBaseProps>["color"];
-  state: Required<RootBaseProps>["state"] | "disabled";
+  state: Required<RootBaseProps>["state"] | "disabled" | "active";
 };
 
 type RootProps<T extends TgphElement> = Omit<
@@ -68,18 +68,32 @@ const ButtonContext = React.createContext<
   active: false,
 });
 
+type DeriveStateParams = {
+  state: Required<RootBaseProps>["state"];
+  disabled?: boolean;
+  active?: boolean;
+};
+
+// Derive the state of the button based on the html button props in
+const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
+  if (params.disabled) return "disabled";
+  if (params.state === "loading") return "loading";
+  if (params.active) return "active";
+  return params.state;
+};
+
 const Root = <T extends TgphElement>({
   as,
   variant = "solid",
   size = "2",
   color = "gray",
-  state: initialState = "default",
+  state: stateProp = "default",
   active = false,
   disabled,
   className,
   ...props
 }: RootProps<T>) => {
-  const state = disabled ? "disabled" : initialState;
+  const state = deriveState({ state: stateProp, disabled, active });
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const children = React.Children.toArray(props?.children);
@@ -119,8 +133,8 @@ const Root = <T extends TgphElement>({
         rounded={roundedMap[size]}
         data-tgph-button
         data-tgph-button-layout={layout}
-        data-tgph-button-active={active}
-        disabled={disabled}
+        data-tgph-button-state={state}
+        disabled={state === "disabled" || state === "loading"}
         {...props}
       />
     </ButtonContext.Provider>
