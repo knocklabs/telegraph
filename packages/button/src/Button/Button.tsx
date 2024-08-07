@@ -1,9 +1,10 @@
-import type {
-  PolymorphicProps,
-  PolymorphicPropsWithTgphRef,
-  Required,
-  TgphComponentProps,
-  TgphElement,
+import {
+  type PolymorphicProps,
+  type PolymorphicPropsWithTgphRef,
+  type Required,
+  type TgphComponentProps,
+  type TgphElement,
+  useDeterminateState,
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
@@ -238,9 +239,15 @@ const Default = <T extends TgphElement>({
   trailingIcon,
   icon,
   children,
-  state = "default",
+  state: stateProp = "default",
   ...props
 }: DefaultProps<T>) => {
+  const state = useDeterminateState<DefaultProps<T>["state"]>({
+    value: stateProp,
+    determinateValue: "loading",
+    minDurationMs: 1200,
+  });
+
   const combinedLeadingIcon = leadingIcon || icon;
   return (
     <Root state={state} {...props}>
