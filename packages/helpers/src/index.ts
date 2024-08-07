@@ -11,3 +11,5 @@ export type {
 } from "./types/utility";
 
 export { RefToTgphRef } from "./components/RefToTgphRef";
+
+export { useDeterminateState } from "./hooks/useDeterminateState";
