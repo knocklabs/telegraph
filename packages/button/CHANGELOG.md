@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.47
+
+### Patch Changes
+
+- [#223](https://github.com/knocklabs/telegraph/pull/223) [`ddd7880`](https://github.com/knocklabs/telegraph/commit/ddd7880d56f0bfd05712722febd778b6ad69c651) Thanks [@kylemcd](https://github.com/kylemcd)! - button loading state refactor
+
 ## 0.0.46
 
 ### Patch Changes
