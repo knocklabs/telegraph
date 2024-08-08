@@ -92,14 +92,20 @@ const Root = <T extends TgphElement>({
   active = false,
   disabled,
   className,
+  children,
   ...props
 }: RootProps<T>) => {
-  const state = deriveState({ state: stateProp, disabled, active });
+  const derivedState = deriveState({ state: stateProp, disabled, active });
+  const state = useDeterminateState<DefaultProps<T>["state"]>({
+    value: derivedState,
+    determinateValue: "loading",
+    minDurationMs: 1200,
+  });
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
-    const children = React.Children.toArray(props?.children);
-    if (children?.length === 1 && React.isValidElement(children[0])) {
-      const child = children[0] as
+    const childrenArray = React.Children.toArray(children);
+    if (childrenArray?.length === 1 && React.isValidElement(childrenArray[0])) {
+      const child = childrenArray[0] as
         | React.ReactComponentElement<typeof Icon>
         | {
             props: {
@@ -111,7 +117,7 @@ const Root = <T extends TgphElement>({
       }
     }
     return "default";
-  }, [props?.children]);
+  }, [children]);
 
   return (
     <ButtonContext.Provider
@@ -137,14 +143,33 @@ const Root = <T extends TgphElement>({
         data-tgph-button-state={state}
         disabled={state === "disabled" || state === "loading"}
         {...props}
-      />
+      >
+        {state === "loading" && (
+          <Icon
+            as={motion.span}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            className={loadingIconStyles}
+            icon={Lucide.LoaderCircle}
+            aria-hidden={true}
+          />
+        )}
+        {children}
+      </Stack>
     </ButtonContext.Provider>
   );
 };
 
 type IconProps<T extends TgphElement> = TgphComponentProps<
   typeof TelegraphIcon<T>
->;
+> & {
+  internal_iconType?: "leading" | "trailing";
+};
 
 const Icon = <T extends TgphElement>({
   size,
@@ -153,6 +178,7 @@ const Icon = <T extends TgphElement>({
   icon,
   alt,
   "aria-hidden": ariaHidden,
+  internal_iconType,
   ...props
 }: IconProps<T>) => {
   const context = React.useContext(ButtonContext);
@@ -168,6 +194,15 @@ const Icon = <T extends TgphElement>({
   };
 
   const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
+
+  // If the button is set to loading and this icon is identified as leading,
+  // we don't want to render this icon and instead the loading icon which
+  // is managed in the root component. We choose to render the loading icon
+  // in the root component so that it displays when there is no icon already
+  // inside of the button.
+  if (context.state === "loading" && internal_iconType === "leading") {
+    return null;
+  }
 
   return (
     <TelegraphIcon
@@ -239,38 +274,16 @@ const Default = <T extends TgphElement>({
   trailingIcon,
   icon,
   children,
-  state: stateProp = "default",
   ...props
 }: DefaultProps<T>) => {
-  const state = useDeterminateState<DefaultProps<T>["state"]>({
-    value: stateProp,
-    determinateValue: "loading",
-    minDurationMs: 1200,
-  });
-
   const combinedLeadingIcon = leadingIcon || icon;
   return (
-    <Root state={state} {...props}>
-      {state === "default" && combinedLeadingIcon && (
-        <Icon {...combinedLeadingIcon} />
-      )}
-      {state === "loading" && (
-        <Icon
-          as={motion.span}
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-          className={loadingIconStyles}
-          icon={Lucide.LoaderCircle}
-          aria-hidden={true}
-        />
+    <Root {...props}>
+      {combinedLeadingIcon && (
+        <Icon {...combinedLeadingIcon} internal_iconType="leading" />
       )}
       {children && <Text>{children}</Text>}
-      {trailingIcon && <Icon {...trailingIcon} />}
+      {trailingIcon && <Icon {...trailingIcon} internal_iconType="trailing" />}
     </Root>
   );
 };
