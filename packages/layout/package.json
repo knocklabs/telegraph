@@ -45,7 +45,7 @@
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^18.2.48",
     "@vanilla-extract/vite-plugin": "^4.0.13",
-    "eslint": "^8.56.0",
+    "eslint": "^9.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
     "typescript": "^5.3.3",
