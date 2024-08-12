@@ -3166,7 +3166,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.5.2"
     "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
     "@typescript-eslint/parser": "npm:^6.20.0"
-    eslint-plugin-turbo: "npm:^1.12.2"
+    eslint-plugin-turbo: "npm:^2.0.12"
     husky: "npm:^9.0.6"
     jsdom: "npm:^24.1.0"
     postcss-import: "npm:^16.1.0"
@@ -10496,7 +10496,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-turbo@npm:1.12.5, eslint-plugin-turbo@npm:^1.12.2":
+"eslint-plugin-turbo@npm:1.12.5":
   version: 1.12.5
   resolution: "eslint-plugin-turbo@npm:1.12.5"
   dependencies:
@@ -10504,6 +10504,17 @@ __metadata:
   peerDependencies:
     eslint: ">6.6.0"
   checksum: 10c0/9a18aa276e9f3bbd6b8624919557daa527c464ae502963aa80bc6c87b9809690094a0f58d3e91011f4cbb4096b8a2136d791e3e2cf6afb51c1269c96cd6a2b8c
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-turbo@npm:^2.0.12":
+  version: 2.0.12
+  resolution: "eslint-plugin-turbo@npm:2.0.12"
+  dependencies:
+    dotenv: "npm:16.0.3"
+  peerDependencies:
+    eslint: ">6.6.0"
+  checksum: 10c0/b8a79f667f14fe30185450599b5d8091f9742411fc2c390241ae6f90cbceb1826b6e7e8017147a2765160a1f80670894ebc2665de20148e125ce6b384dd6fc3a
   languageName: node
   linkType: hard
 
