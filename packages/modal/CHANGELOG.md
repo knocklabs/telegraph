@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.40
+
+### Patch Changes
+
+- [#230](https://github.com/knocklabs/telegraph/pull/230) [`975c1c6`](https://github.com/knocklabs/telegraph/commit/975c1c6041924492b6945e7fee92d563fc077011) Thanks [@connorlindsey](https://github.com/connorlindsey)! - fix: update default modal max width
+
 ## 0.0.39
 
 ### Patch Changes
