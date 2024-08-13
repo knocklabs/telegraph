@@ -72,10 +72,10 @@ const Root = ({
                   animate={{ scale: 1, opacity: 1, y: 0, x: "-50%" }}
                   exit={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
                   transition={{ duration: 0.2, bounce: 0, type: "spring" }}
-                  maxW={props.maxW ?? "140"}
+                  maxW={props.maxW ?? "160"}
                   w={props.w ?? "full"}
                   bg="surface-1"
-                  border
+                  border="px"
                   rounded="4"
                   {...props}
                 >
