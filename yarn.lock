@@ -3157,7 +3157,7 @@ __metadata:
     "@storybook/addon-onboarding": "npm:^1.0.11"
     "@storybook/addon-themes": "npm:^8.1.7"
     "@storybook/blocks": "npm:^8.2.8"
-    "@storybook/icons": "npm:^1.2.9"
+    "@storybook/icons": "npm:^1.2.10"
     "@storybook/react": "npm:^7.6.17"
     "@storybook/react-vite": "npm:^7.6.17"
     "@storybook/test": "npm:^7.6.17"
@@ -5720,7 +5720,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/icons@npm:^1.2.5, @storybook/icons@npm:^1.2.9":
+"@storybook/icons@npm:^1.2.10":
+  version: 1.2.10
+  resolution: "@storybook/icons@npm:1.2.10"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/aadde2efd5c471b78096f29a6393db111ee95174cab94ade0d2859d476262f080aa8ffb414f82932afd81d5c57bed813193a04e92086962bde2224774dac9060
+  languageName: node
+  linkType: hard
+
+"@storybook/icons@npm:^1.2.5":
   version: 1.2.9
   resolution: "@storybook/icons@npm:1.2.9"
   peerDependencies:
