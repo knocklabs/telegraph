@@ -18,7 +18,7 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "dependencies": {
-    "@csstools/postcss-global-data": "^2.1.1",
+    "@csstools/postcss-global-data": "^3.0.0",
     "@telegraph/tokens": "workspace:^",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.36",
