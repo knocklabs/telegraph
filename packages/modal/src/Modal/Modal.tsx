@@ -8,7 +8,6 @@ import type {
 } from "@telegraph/helpers";
 import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
-import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
@@ -27,7 +26,6 @@ const Root = ({
   onOpenChange,
   a11yTitle,
   a11yDescription,
-  className,
   children,
   ...props
 }: RootProps) => {
@@ -50,21 +48,29 @@ const Root = ({
               <Box
                 as={motion.div}
                 onClick={() => onOpenChange?.(false)}
-                initial={{ backdropFilter: "blur(0px)", opacity: 0 }}
-                animate={{ backdropFilter: "blur(4px)", opacity: 1 }}
-                exit={{ backdropFilter: "blur(0px)", opacity: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, bounce: 0, type: "spring" }}
-                className="fixed inset-0 bg-alpha-black-4 z-overlay"
+                bg="alpha-black-6"
+                zIndex="overlay"
+                style={{
+                  position: "fixed",
+                  inset: "0px",
+                }}
               />
               <Stack
-                className={clsx(
-                  "fixed z-modal top-0 left-1/2 -translate-x-1/2",
-                  "w-full",
-                  "max-h-[calc(100vh-var(--tgph-spacing-32))] max-w-[calc(100vw-var(--tgph-spacing-8))]",
-                )}
+                zIndex="modal"
+                w="full"
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: "50%",
+                  maxHeight: "calc(100vh - var(--tgph-spacing-32))",
+                  maxWidth: "calc(100vw - var(--tgph-spacing-8))",
+                }}
               >
                 <Stack
-                  className={clsx("shadow-1", className)}
                   direction="column"
                   as={motion.div}
                   my="16"
@@ -77,6 +83,7 @@ const Root = ({
                   bg="surface-1"
                   border="px"
                   rounded="4"
+                  shadow="1"
                   {...props}
                 >
                   {children}
