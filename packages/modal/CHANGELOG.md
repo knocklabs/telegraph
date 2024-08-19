@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.41
+
+### Patch Changes
+
+- [#232](https://github.com/knocklabs/telegraph/pull/232) [`1248714`](https://github.com/knocklabs/telegraph/commit/1248714f5af3a1315bc8ae79fa5517cb5cf8fad2) Thanks [@kylemcd](https://github.com/kylemcd)! - update modal background + style engine migration
+
 ## 0.0.40
 
 ### Patch Changes
