@@ -11,10 +11,8 @@
     ".": {
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/css/default.css"
-    },
-    "./default.css": "./dist/css/default.css"
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "files": [
     "dist",
@@ -37,7 +35,7 @@
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "clsx": "^2.1.1",
+    "@telegraph/style-engine": "workspace:^",
     "framer-motion": "^11.1.9"
   },
   "devDependencies": {
@@ -45,7 +43,6 @@
     "@knocklabs/prettier-config": "^0.0.1",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^18.2.48",
     "eslint": "^8.56.0",
