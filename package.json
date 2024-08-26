@@ -73,7 +73,7 @@
     "storybook-addon-render-modes": "^0.0.11",
     "turbo": "^1.11.3",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "2.0.1",
+    "vitest": "2.0.5",
     "vitest-axe": "0.1.0"
   }
 }
