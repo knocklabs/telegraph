@@ -6124,7 +6124,7 @@ __metadata:
     "@types/react": "npm:^18.2.48"
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.379.0"
+    lucide-react: "npm:^0.436.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -13254,12 +13254,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.379.0":
-  version: 0.379.0
-  resolution: "lucide-react@npm:0.379.0"
+"lucide-react@npm:^0.436.0":
+  version: 0.436.0
+  resolution: "lucide-react@npm:0.436.0"
   peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/b2521db4b2329e51f3b31abf5f6e03caa6cc1c736e8dc27e79fd92c09ed2e95bd7d85ea46a765d264ddbafb525c783bd4689ef512434972fdfcd33fa2bdfb1c6
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+  checksum: 10c0/4cf3dd21de9ab955dd5c4557e0798eb6c780d1df0d4a1f766e89faa88c1a6798da512f29ae2a61577c2d62f1945b9abd1a1108a41f1eb9d7d1cceca79a5e1622
   languageName: node
   linkType: hard
 
