@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.0.30
+
+### Patch Changes
+
+- [#242](https://github.com/knocklabs/telegraph/pull/242) [`2057be9`](https://github.com/knocklabs/telegraph/commit/2057be911a46aa77bb252e62cd86ce737b20b309) Thanks [@dependabot](https://github.com/apps/dependabot)! - update lucide icons
+
 ## 0.0.29
 
 ### Patch Changes
