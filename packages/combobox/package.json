@@ -42,6 +42,7 @@
     "@telegraph/layout": "workspace:^",
     "@telegraph/menu": "workspace:^",
     "@telegraph/tag": "workspace:^",
+    "@telegraph/tooltip": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "framer-motion": "^11.1.9"
   },

@@ -29,10 +29,10 @@ const values: Array<Option> = [
   { value: "webhook", label: "Webhook" },
 ];
 
-const ComboboxSingleSelect = () => {
+const ComboboxSingleSelect = ({ ...props }) => {
   const [value, setValue] = React.useState<Option>(values[0]!);
   return (
-    <Combobox.Root value={value} onValueChange={setValue}>
+    <Combobox.Root value={value} onValueChange={setValue} {...props}>
       <Combobox.Trigger />
       <Combobox.Content>
         <Combobox.Options>
@@ -55,6 +55,27 @@ const ComboboxMultiSelect = () => {
       <Combobox.Trigger />
       <Combobox.Content>
         <Combobox.Search />
+        <Combobox.Options>
+          {values.map((option) => (
+            <Combobox.Option key={option.value} {...option} />
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+const ComboboxMultiSelectControlledSearch = () => {
+  const [value, setValue] = React.useState<Array<Option>>([
+    values[0]!,
+    values[1]!,
+  ]);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  return (
+    <Combobox.Root value={value} onValueChange={setValue}>
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Search vaue={searchQuery} onValueChange={setSearchQuery} />
         <Combobox.Options>
           {values.map((option) => (
             <Combobox.Option key={option.value} {...option} />
@@ -123,6 +144,18 @@ describe("Combobox", () => {
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("SMS");
     });
+    it("clear button should clear the field", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect clearable />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await user.keyboard("[Enter]");
+      expect(trigger?.textContent).toBe("Email");
+      const clearButton = container.querySelector("[data-tgph-combobox-clear]");
+      await user.click(clearButton!);
+      expect(trigger?.textContent).toBe("");
+    });
   });
   describe("Multi Select", () => {
     it("combobox is accessible", async () => {
@@ -156,6 +189,16 @@ describe("Combobox", () => {
       const options = container.querySelectorAll("[data-tgph-combobox-option]");
       expect(options.length).toBe(1);
     });
+    it("searching for an option in a controlled search should filter the options", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelectControlledSearch />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await user.keyboard("Email");
+      const options = container.querySelectorAll("[data-tgph-combobox-option]");
+      expect(options.length).toBe(values.length);
+    });
     it("empty state should show when there are no results", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
@@ -183,6 +226,18 @@ describe("Combobox", () => {
       await user.keyboard("[ArrowDown]");
       await user.keyboard("[Enter]");
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+    });
+    it("clear button should clear the field", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect clearable />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await user.keyboard("[Enter]");
+      expect(trigger?.textContent).toBe("Email");
+      const clearButton = container.querySelector("[data-tgph-combobox-clear]");
+      await user.click(clearButton!);
+      expect(trigger?.textContent).toBe("");
     });
   });
 });

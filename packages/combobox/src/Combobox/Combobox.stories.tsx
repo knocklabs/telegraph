@@ -185,3 +185,41 @@ export const MultiSelectWithCreate: Story = {
     );
   },
 };
+
+export const MultiSelectWithClear: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState<Array<Option>>([firstValue]);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a channel"}
+          layout="wrap"
+          closeOnSelect={false}
+          clearable
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.Options>
+              {values.map((v) => (
+                <TelegraphCombobox.Option value={v.value} label={v.label} />
+              ))}
+              <TelegraphCombobox.Create
+                values={values}
+                onCreate={(createdValue) => {
+                  values.push(createdValue);
+                  setValue((prevValue) => [createdValue, ...prevValue]);
+                }}
+              />
+            </TelegraphCombobox.Options>
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
