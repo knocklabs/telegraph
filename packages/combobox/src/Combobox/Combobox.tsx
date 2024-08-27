@@ -18,21 +18,36 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
-import { type Option, isMultiSelect, isSingleSelect } from "./Combobox.helpers";
+import {
+  type DefinedOption,
+  type Option,
+  isMultiSelect,
+  isSingleSelect,
+} from "./Combobox.helpers";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 const SELECT_KEYS = ["Enter", " "];
 
+type SingleSelect = {
+  value?: Option;
+  onValueChange?: (value: Option) => void;
+};
+
+type MultiSelect = {
+  value?: Array<Option>;
+  onValueChange?: (value: Array<Option>) => void;
+};
+
 type RootProps = (
   | {
-      value?: Array<Option>;
-      onValueChange?: (value: Array<Option> | undefined) => void;
+      value?: MultiSelect["value"];
+      onValueChange?: MultiSelect["onValueChange"];
       layout?: "truncate" | "wrap";
     }
   | {
-      value?: Option;
-      onValueChange?: (value: Option | undefined) => void;
+      value?: SingleSelect["value"];
+      onValueChange?: SingleSelect["onValueChange"];
       layout?: never;
     }
 ) & {
@@ -173,12 +188,12 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
       <Tag.Button
         icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
         onClick={(event: React.MouseEvent) => {
-          const onValueChange = context.onValueChange as (
-            v: Array<Option>,
-          ) => void;
+          if (!context.onValueChange) return;
+          const onValueChange =
+            context.onValueChange as MultiSelect["onValueChange"];
           const contextValue = context.value as Array<Option>;
-          const newValue = contextValue.filter((v) => v.value !== value);
-          onValueChange(newValue);
+          const newValue = contextValue.filter((v) => v?.value !== value);
+          onValueChange?.(newValue);
           // Stop click event from bubbling up
           event.stopPropagation();
           // Stop the button "submit" action from triggering
@@ -193,19 +208,17 @@ const TriggerValue = () => {
   const context = React.useContext(ComboboxContext);
 
   if (context.value && isMultiSelect(context.value)) {
-    const contextValue = context.value as Array<Option>;
     const layout = context.layout || "truncate";
-    const truncatedLength = contextValue.length - 2;
+    const truncatedLength = context.value.length - 2;
     const truncatedLengthStringArray = truncatedLength.toString().split("");
 
-    if (contextValue.length === 0) {
+    if (context.value.length === 0) {
       return (
         <TelegraphButton.Text color="gray">
           {context.placeholder}
         </TelegraphButton.Text>
       );
     }
-
     return (
       <Stack
         gap="1"
@@ -218,8 +231,11 @@ const TriggerValue = () => {
         }}
       >
         <AnimatePresence initial={false} mode="popLayout">
-          {contextValue.map((v, i) => {
-            if ((layout === "truncate" && i <= 1) || layout === "wrap") {
+          {context.value.map((v, i) => {
+            if (
+              v?.value &&
+              ((layout === "truncate" && i <= 1) || layout === "wrap")
+            ) {
               return (
                 <RefToTgphRef key={v.value}>
                   <TriggerTag {...v} />
@@ -229,7 +245,7 @@ const TriggerValue = () => {
           })}
         </AnimatePresence>
         <AnimatePresence>
-          {layout === "truncate" && contextValue.length > 2 && (
+          {layout === "truncate" && context.value.length > 2 && (
             <Stack
               as={motion.div}
               initial={{ opacity: 0 }}
@@ -305,10 +321,35 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
       );
     } else {
       return (
-        context.value?.map((v) => v.label).join(", ") || context.placeholder
+        context.value?.map((v) => v?.label).join(", ") || context.placeholder
       );
     }
   }, [context.value, context.placeholder]);
+
+  const shouldShowClearable = React.useMemo(() => {
+    if (isMultiSelect(context.value)) {
+      return context.clearable && context.value?.length > 0;
+    }
+
+    if (isSingleSelect(context.value)) {
+      return context.clearable && context.value;
+    }
+  }, [context.clearable, context.value]);
+
+  const handleClear = () => {
+    if (isMultiSelect(context.value)) {
+      const onValueChange =
+        context.onValueChange as MultiSelect["onValueChange"];
+      onValueChange?.([]);
+    }
+
+    if (isSingleSelect(context.value)) {
+      const onValueChange =
+        context.onValueChange as SingleSelect["onValueChange"];
+      onValueChange?.(undefined);
+    }
+    context.triggerRef?.current?.focus();
+  };
 
   return (
     <TelegraphMenu.Trigger
@@ -361,7 +402,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
       >
         <TriggerValue />
         <Stack align="center" gap="1">
-          {context.clearable && context.value && (
+          {shouldShowClearable && (
             <Tooltip label="Clear field">
               <TelegraphButton
                 type="button"
@@ -371,15 +412,21 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
                 onClick={(event: React.MouseEvent) => {
                   if (!context.value) return;
                   event.stopPropagation();
-                  context?.onValueChange?.(undefined);
+                  handleClear();
                 }}
                 onKeyDown={(event: React.KeyboardEvent) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.stopPropagation();
-                    context?.onValueChange?.(undefined);
+                    handleClear();
                   }
                 }}
                 data-tgph-combobox-clear
+                style={{
+                  // Remove margin to make the clear button flush
+                  // with the trigger button
+                  marginTop: "calc(-1 * var(--tgph-spacing-1)",
+                  marginBottom: "calc(-1 * var(--tgph-spacing-1)",
+                }}
               />
             </Tooltip>
           )}
@@ -576,7 +623,7 @@ const Option = <T extends TgphElement>({
 }: OptionProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const [isFocused, setIsFocused] = React.useState(false);
-  const contextValue = context.value ?? [];
+  const contextValue = context.value;
 
   const isVisible = isMultiSelect(contextValue)
     ? !context.searchQuery ||
@@ -585,8 +632,8 @@ const Option = <T extends TgphElement>({
       value.toLowerCase().includes(context.searchQuery.toLowerCase());
 
   const isSelected = isMultiSelect(contextValue)
-    ? contextValue.some((v) => v.value === value)
-    : contextValue.value === value;
+    ? contextValue.some((v) => v?.value === value)
+    : contextValue?.value === value;
 
   const handleSelection = (event: Event | React.KeyboardEvent) => {
     // Don't do anything if the key isn't a selection key
@@ -609,17 +656,19 @@ const Option = <T extends TgphElement>({
       return onSelect(onSelectEvent);
     }
 
-    if (isMultiSelect(contextValue)) {
-      const onValueChange = context.onValueChange as (v: Array<Option>) => void;
+    if (isSingleSelect(contextValue)) {
+      const onValueChange =
+        context.onValueChange as SingleSelect["onValueChange"];
+      onValueChange?.({ value, label });
+    } else if (isMultiSelect(contextValue)) {
+      const onValueChange =
+        context.onValueChange as MultiSelect["onValueChange"];
 
       const newValue = isSelected
-        ? contextValue.filter((v) => v.value !== value)
+        ? contextValue.filter((v) => v?.value !== value)
         : [...contextValue, { value, label }];
 
-      onValueChange(newValue);
-    } else if (isSingleSelect(contextValue)) {
-      const onValueChange = context.onValueChange as (v: Option) => void;
-      onValueChange({ value, label });
+      onValueChange?.(newValue);
     }
 
     context.triggerRef?.current?.focus();
@@ -787,7 +836,7 @@ type CreateProps<T extends TgphElement> = TgphComponentProps<
 > & {
   leadingText?: string;
   values?: Array<Option>;
-  onCreate?: (value: Option) => void;
+  onCreate?: (value: DefinedOption) => void;
 };
 
 const Create = <T extends TgphElement>({
@@ -802,7 +851,7 @@ const Create = <T extends TgphElement>({
   const variableAlreadyExists = React.useCallback(
     (searchQuery: string | undefined) => {
       if (!values || values?.length === 0) return false;
-      return values.some((v) => v.value === searchQuery);
+      return values.some((v) => v?.value === searchQuery);
     },
     [values],
   );

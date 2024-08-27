@@ -1,4 +1,5 @@
-export type Option = { value: string; label?: string };
+export type DefinedOption = { value: string; label?: string };
+export type Option = DefinedOption | undefined;
 export const isMultiSelect = (
   value: Option | Array<Option>,
 ): value is Array<Option> => {
@@ -8,5 +9,5 @@ export const isMultiSelect = (
 export const isSingleSelect = (
   value: Option | Array<Option>,
 ): value is Option => {
-  return typeof value === "object" && !Array.isArray(value);
+  return (typeof value === "object" && !Array.isArray(value)) || !value;
 };

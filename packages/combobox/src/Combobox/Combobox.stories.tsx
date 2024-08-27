@@ -31,7 +31,7 @@ const firstValue = values[0];
 export const SingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Option>(firstValue);
+    const [value, setValue] = React.useState(firstValue);
 
     return (
       <Box w="80">
@@ -40,8 +40,9 @@ export const SingleSelect: Story = {
           value={value}
           onValueChange={setValue}
           placeholder={"Select a channel"}
+          clearable
         >
-          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Trigger size="1" />
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {values.map((v) => (
@@ -58,7 +59,7 @@ export const SingleSelect: Story = {
 export const SingleSelectWithSearch: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Option>(firstValue);
+    const [value, setValue] = React.useState(firstValue);
 
     return (
       <Box w="80">
@@ -87,7 +88,7 @@ export const SingleSelectWithSearch: Story = {
 export const MultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Array<Option>>([firstValue]);
+    const [value, setValue] = React.useState([firstValue]);
 
     return (
       <Box w="80">
@@ -121,7 +122,7 @@ export const MultiSelect: Story = {
 export const MultiSelectWithWrapLayout: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Array<Option>>([firstValue]);
+    const [value, setValue] = React.useState([firstValue]);
 
     return (
       <Box w="80">
@@ -152,7 +153,7 @@ export const MultiSelectWithWrapLayout: Story = {
 export const MultiSelectWithCreate: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Array<Option>>([firstValue]);
+    const [value, setValue] = React.useState([firstValue]);
 
     return (
       <Box w="80">
@@ -189,7 +190,7 @@ export const MultiSelectWithCreate: Story = {
 export const MultiSelectWithClear: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Array<Option>>([firstValue]);
+    const [value, setValue] = React.useState([firstValue]);
 
     return (
       <Box w="80">
