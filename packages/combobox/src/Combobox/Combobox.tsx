@@ -12,6 +12,7 @@ import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Tag } from "@telegraph/tag";
+import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
@@ -26,12 +27,12 @@ const SELECT_KEYS = ["Enter", " "];
 type RootProps = (
   | {
       value?: Array<Option>;
-      onValueChange?: (value: Array<Option>) => void;
+      onValueChange?: (value: Array<Option> | undefined) => void;
       layout?: "truncate" | "wrap";
     }
   | {
       value?: Option;
-      onValueChange?: (value: Option) => void;
+      onValueChange?: (value: Option | undefined) => void;
       layout?: never;
     }
 ) & {
@@ -42,6 +43,7 @@ type RootProps = (
   onOpenChange?: (open: boolean) => void;
   modal?: boolean;
   closeOnSelect?: boolean;
+  clearable?: boolean;
   children?: React.ReactNode;
 };
 
@@ -65,11 +67,13 @@ const ComboboxContext = React.createContext<
   open: false,
   setOpen: () => {},
   onOpenToggle: () => {},
+  clearable: false,
 });
 
 const Root = ({
   modal = true,
   closeOnSelect = true,
+  clearable = false,
   open: openProp,
   onOpenChange: onOpenChangeProp,
   defaultOpen: defaultOpenProp,
@@ -117,6 +121,7 @@ const Root = ({
         setOpen,
         onOpenToggle,
         closeOnSelect,
+        clearable,
         searchQuery,
         setSearchQuery,
         triggerRef,
@@ -355,13 +360,37 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         data-tgph-comobox-trigger-open={context.open}
       >
         <TriggerValue />
-        <TelegraphButton.Icon
-          as={motion.div}
-          icon={Lucide.ChevronDown}
-          animate={{ rotate: context.open ? "180deg" : "0deg" }}
-          transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-          aria-hidden
-        />
+        <Stack align="center" gap="1">
+          {context.clearable && context.value && (
+            <Tooltip label="Clear field">
+              <TelegraphButton
+                type="button"
+                icon={{ icon: Lucide.X, alt: "Clear field" }}
+                size="1"
+                variant="ghost"
+                onClick={(event: React.MouseEvent) => {
+                  if (!context.value) return;
+                  event.stopPropagation();
+                  context?.onValueChange?.(undefined);
+                }}
+                onKeyDown={(event: React.KeyboardEvent) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.stopPropagation();
+                    context?.onValueChange?.(undefined);
+                  }
+                }}
+                data-tgph-combobox-clear
+              />
+            </Tooltip>
+          )}
+          <TelegraphButton.Icon
+            as={motion.div}
+            icon={Lucide.ChevronDown}
+            animate={{ rotate: context.open ? "180deg" : "0deg" }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            aria-hidden
+          />
+        </Stack>
       </TelegraphButton.Root>
     </TelegraphMenu.Trigger>
   );
@@ -631,11 +660,16 @@ const Search = ({
   label = "Search",
   placeholder = "Search",
   tgphRef,
+  value: controlledValueProp,
+  onValueChange: onValueChangeProp,
   ...props
 }: SearchProps) => {
   const id = React.useId();
   const context = React.useContext(ComboboxContext);
   const composedRef = useComposedRefs(tgphRef, context.searchRef);
+
+  const value = controlledValueProp ?? context.searchQuery;
+  const onValueChange = onValueChangeProp ?? context.setSearchQuery;
 
   React.useEffect(() => {
     const handleSearchKeyDown = (event: KeyboardEvent) => {
@@ -671,9 +705,9 @@ const Search = ({
         id={id}
         variant="ghost"
         placeholder={placeholder}
-        value={context.searchQuery}
+        value={value}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          context?.setSearchQuery?.(event.target.value);
+          onValueChange(event.target.value);
         }}
         LeadingComponent={<Icon icon={Lucide.Search} alt="Search Icon" />}
         TrailingComponent={
