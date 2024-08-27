@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/kbd",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Styled element for keyboard input or hotkey.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/kbd",
   "author": "@knocklabs",

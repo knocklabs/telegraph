@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/helpers",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/helpers",
   "author": "@knocklabs",
   "license": "MIT",
