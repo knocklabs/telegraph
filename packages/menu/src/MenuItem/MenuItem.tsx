@@ -37,7 +37,7 @@ const MenuItem = <T extends TgphElement>({
       w={w}
       {...props}
     >
-      <Stack gap={gap} align="center">
+      <Stack gap={gap} align="center" w="full">
         <MenuItemLeading
           icon={icon}
           selected={selected}
