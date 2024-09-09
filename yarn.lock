@@ -6484,7 +6484,7 @@ __metadata:
     "@types/react": "npm:^18.2.48"
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
+    framer-motion: "npm:^11.5.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -6519,7 +6519,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
+    framer-motion: "npm:^11.5.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -6720,7 +6720,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
+    framer-motion: "npm:^11.5.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -6760,7 +6760,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
+    framer-motion: "npm:^11.5.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -6899,7 +6899,7 @@ __metadata:
     "@types/react": "npm:^18.2.48"
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
+    framer-motion: "npm:^11.5.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -6962,7 +6962,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
+    framer-motion: "npm:^11.5.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
@@ -11556,9 +11556,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.1.9":
-  version: 11.1.9
-  resolution: "framer-motion@npm:11.1.9"
+"framer-motion@npm:^11.5.4":
+  version: 11.5.4
+  resolution: "framer-motion@npm:11.5.4"
   dependencies:
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -11572,7 +11572,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/c1bbadb5f5c324de0473f3fb2c3d0180fc5239335f49b536dc827dff27c87d749af402d1c1fbe7081fbc15b816e32fadf66e24970476f98b2934464f8df9bdb0
+  checksum: 10c0/2405aad0ed3cbd2ad6ab2dedec5146483feb8e67f6f3d16f38bfea23f0e31a4fad5f1660f307767a5e9c27b40c708b64c0ba65841824a38144e401f3bab31566
   languageName: node
   linkType: hard
 
