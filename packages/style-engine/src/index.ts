@@ -1,4 +1,4 @@
-export { style, keyframes } from "@vanilla-extract/css";
+export { style, keyframes, globalStyle } from "@vanilla-extract/css";
 export {
   recipe as variant,
   type RecipeVariants as StyleVariant,
