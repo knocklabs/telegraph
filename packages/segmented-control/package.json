@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/segmented-control",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A segmented selection between as set of options.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/segmented-control",
   "author": "@knocklabs",
