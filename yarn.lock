@@ -3475,7 +3475,7 @@ __metadata:
     "@commitlint/cli": "npm:^18.6.0"
     "@commitlint/config-conventional": "npm:^18.6.0"
     "@manypkg/cli": "npm:^0.21.2"
-    "@moonrepo/cli": "npm:^1.25.2"
+    "@moonrepo/cli": "npm:^1.28.2"
     "@storybook/addon-essentials": "npm:^7.6.17"
     "@storybook/addon-interactions": "npm:^7.6.17"
     "@storybook/addon-links": "npm:^7.6.17"
@@ -3663,17 +3663,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@moonrepo/cli@npm:^1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/cli@npm:1.25.2"
+"@moonrepo/cli@npm:^1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/cli@npm:1.28.2"
   dependencies:
-    "@moonrepo/core-linux-arm64-gnu": "npm:1.25.2"
-    "@moonrepo/core-linux-arm64-musl": "npm:1.25.2"
-    "@moonrepo/core-linux-x64-gnu": "npm:1.25.2"
-    "@moonrepo/core-linux-x64-musl": "npm:1.25.2"
-    "@moonrepo/core-macos-arm64": "npm:1.25.2"
-    "@moonrepo/core-macos-x64": "npm:1.25.2"
-    "@moonrepo/core-windows-x64-msvc": "npm:1.25.2"
+    "@moonrepo/core-linux-arm64-gnu": "npm:1.28.2"
+    "@moonrepo/core-linux-arm64-musl": "npm:1.28.2"
+    "@moonrepo/core-linux-x64-gnu": "npm:1.28.2"
+    "@moonrepo/core-linux-x64-musl": "npm:1.28.2"
+    "@moonrepo/core-macos-arm64": "npm:1.28.2"
+    "@moonrepo/core-macos-x64": "npm:1.28.2"
+    "@moonrepo/core-windows-x64-msvc": "npm:1.28.2"
     detect-libc: "npm:^2.0.3"
   dependenciesMeta:
     "@moonrepo/core-linux-arm64-gnu":
@@ -3692,55 +3692,55 @@ __metadata:
       optional: true
   bin:
     moon: moon.js
-  checksum: 10c0/88c1531c4d6287e9d53b8f55ac6449f6cfc349bff91dbc9d443e2b0beedb69f5fdd825cf3403cbe03d205dd04f982efe986af93a48045dce50752ff3caa6846c
+  checksum: 10c0/d056462fff1aeca58d307477082fc049bbdeed09f00a558dbb38fcef4eb5959c3ed20c53279af49679dcebe72a5b2f2384c8ee008e2fe38dbb648fdfc0dabb0e
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-arm64-gnu@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-linux-arm64-gnu@npm:1.25.2"
+"@moonrepo/core-linux-arm64-gnu@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-linux-arm64-gnu@npm:1.28.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-arm64-musl@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-linux-arm64-musl@npm:1.25.2"
+"@moonrepo/core-linux-arm64-musl@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-linux-arm64-musl@npm:1.28.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-x64-gnu@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-linux-x64-gnu@npm:1.25.2"
+"@moonrepo/core-linux-x64-gnu@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-linux-x64-gnu@npm:1.28.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-x64-musl@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-linux-x64-musl@npm:1.25.2"
+"@moonrepo/core-linux-x64-musl@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-linux-x64-musl@npm:1.28.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@moonrepo/core-macos-arm64@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-macos-arm64@npm:1.25.2"
+"@moonrepo/core-macos-arm64@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-macos-arm64@npm:1.28.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@moonrepo/core-macos-x64@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-macos-x64@npm:1.25.2"
+"@moonrepo/core-macos-x64@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-macos-x64@npm:1.28.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@moonrepo/core-windows-x64-msvc@npm:1.25.2":
-  version: 1.25.2
-  resolution: "@moonrepo/core-windows-x64-msvc@npm:1.25.2"
+"@moonrepo/core-windows-x64-msvc@npm:1.28.2":
+  version: 1.28.2
+  resolution: "@moonrepo/core-windows-x64-msvc@npm:1.28.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
