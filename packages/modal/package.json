@@ -36,7 +36,7 @@
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/style-engine": "workspace:^",
-    "framer-motion": "^11.1.9"
+    "framer-motion": "^11.5.6"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
