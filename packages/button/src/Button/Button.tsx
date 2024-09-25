@@ -63,7 +63,7 @@ const ButtonContext = React.createContext<
 >({
   variant: "solid",
   size: "2",
-  color: "gray",
+  color: "default",
   state: "default",
   layout: "default",
   active: false,
@@ -87,7 +87,7 @@ const Root = <T extends TgphElement>({
   as,
   variant = "solid",
   size = "2",
-  color = "gray",
+  color = "default",
   state: stateProp = "default",
   active = false,
   disabled,

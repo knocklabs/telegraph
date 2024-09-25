@@ -5,6 +5,7 @@ import { Button as TelegraphButton } from "./Button";
 import { buttonSizeMap } from "./Button.constants";
 
 const buttonColorMap = [
+  "default",
   "gray",
   "red",
   "accent",

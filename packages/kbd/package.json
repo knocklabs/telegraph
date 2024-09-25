@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@telegraph/helpers": "workspace:^",
+    "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/typography": "workspace:^"
   },

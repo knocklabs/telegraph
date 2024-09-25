@@ -56,14 +56,14 @@ describe("Button", () => {
       </Button>,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-10");
+    expect(icon).toHaveClass("text-gray-11");
   });
   it("icon in icon only button  has correct text color", async () => {
     const { container } = render(
       <Button icon={{ icon: Lucide.Bell, alt: "create" }} variant="soft" />,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-11");
+    expect(icon).toHaveClass("text-gray-12");
   });
   it("icon-only button has correct layout", async () => {
     const { container } = render(

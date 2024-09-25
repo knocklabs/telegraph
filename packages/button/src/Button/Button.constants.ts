@@ -62,6 +62,7 @@ export const textSizeMap = {
 
 export const textColorMap = {
   solid: {
+    default: "white",
     gray: "white",
     red: "white",
     accent: "white",
@@ -72,7 +73,8 @@ export const textColorMap = {
     disabled: "disabled",
   },
   soft: {
-    gray: "default",
+    default: "default",
+    gray: "gray",
     red: "red",
     accent: "accent",
     green: "green",
@@ -82,7 +84,8 @@ export const textColorMap = {
     disabled: "disabled",
   },
   outline: {
-    gray: "default",
+    default: "default",
+    gray: "gray",
     red: "red",
     accent: "accent",
     green: "green",
@@ -92,7 +95,8 @@ export const textColorMap = {
     disabled: "disabled",
   },
   ghost: {
-    gray: "default",
+    default: "default",
+    gray: "gray",
     red: "red",
     accent: "accent",
     green: "green",
@@ -119,6 +123,7 @@ export const roundedMap = {
 
 export const iconColorMap = {
   solid: {
+    default: "white",
     gray: "white",
     red: "white",
     accent: "white",
@@ -129,6 +134,7 @@ export const iconColorMap = {
     disabled: "disabled",
   },
   soft: {
+    default: "default",
     accent: "accent",
     gray: "gray",
     red: "red",
@@ -139,6 +145,7 @@ export const iconColorMap = {
     disabled: "disabled",
   },
   outline: {
+    default: "default",
     accent: "accent",
     gray: "gray",
     red: "red",
@@ -149,6 +156,7 @@ export const iconColorMap = {
     disabled: "disabled",
   },
   ghost: {
+    default: "gray",
     accent: "accent",
     gray: "gray",
     red: "red",
