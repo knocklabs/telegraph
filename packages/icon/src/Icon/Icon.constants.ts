@@ -26,6 +26,7 @@ export const colorMap = {
     red: "text-red-11",
     white: "text-white",
     disabled: "text-gray-9",
+    black: "text-black",
   },
   secondary: {
     default: "text-gray-11",
@@ -39,5 +40,6 @@ export const colorMap = {
     red: "text-red-10",
     white: "text-white",
     disabled: "text-gray-8",
+    black: "text-black",
   },
 } as const;

@@ -49,7 +49,8 @@ export const Default: Story = {
     return (
       <KbdProvider>
         <Stack bg={args.contrast ? "accent-9" : "surface-2"} p="20" gap="1">
-          <TelegraphKbd eventKey="Meta" label="⌘" />
+          <TelegraphKbd {...args} label="Control" />
+          <TelegraphKbd {...args} label="Shift" />
           <TelegraphKbd {...args} />
         </Stack>
       </KbdProvider>

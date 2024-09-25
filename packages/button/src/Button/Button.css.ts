@@ -38,6 +38,21 @@ export const baseStyles = style({
 export const solidVariant = variant({
   variants: {
     color: {
+      default: {
+        backgroundColor: tokens.color["gray-12"],
+        ":hover": {
+          backgroundColor: tokens.color["gray-11"],
+        },
+        ":focus": {
+          backgroundColor: tokens.color["gray-10"],
+        },
+        "&[data-tgph-button-state=active]": {
+          backgroundColor: tokens.color["gray-10"],
+        },
+        "&[data-tgph-button-state=disabled]": {
+          backgroundColor: tokens.color["gray-2"],
+        },
+      },
       accent: {
         backgroundColor: tokens.color["accent-9"],
         ":hover": {
@@ -150,6 +165,21 @@ export const solidVariant = variant({
 export const softVariant = variant({
   variants: {
     color: {
+      default: {
+        backgroundColor: tokens.color["gray-3"],
+        ":hover": {
+          backgroundColor: tokens.color["gray-4"],
+        },
+        ":focus": {
+          backgroundColor: tokens.color["gray-5"],
+        },
+        "&[data-tgph-button-state=active]": {
+          backgroundColor: tokens.color["gray-5"],
+        },
+        "&[data-tgph-button-state=disabled]": {
+          backgroundColor: tokens.color["gray-2"],
+        },
+      },
       gray: {
         backgroundColor: tokens.color["gray-3"],
         ":hover": {
@@ -270,6 +300,22 @@ export const outlineVariant = variant({
   },
   variants: {
     color: {
+      default: {
+        boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-6"]}`,
+        ":hover": {
+          boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-7"]}`,
+        },
+        ":focus": {
+          boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-8"]}`,
+        },
+        "&[data-tgph-button-state=active]": {
+          boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-8"]}`,
+        },
+        "&[data-tgph-button-state=disabled]": {
+          backgroundColor: tokens.color["gray-2"],
+          boxShadow: "none",
+        },
+      },
       gray: {
         boxShadow: `var(--tgph-button-shadow) ${tokens.color["gray-6"]}`,
         ":hover": {
@@ -392,6 +438,20 @@ export const ghostVariant = variant({
   },
   variants: {
     color: {
+      default: {
+        ":hover": {
+          backgroundColor: tokens.color["gray-3"],
+        },
+        ":focus": {
+          backgroundColor: tokens.color["gray-4"],
+        },
+        "&[data-tgph-button-state=active]": {
+          backgroundColor: tokens.color["gray-4"],
+        },
+        "&[data-tgph-button-state=disabled]": {
+          backgroundColor: "transparent",
+        },
+      },
       gray: {
         ":hover": {
           backgroundColor: tokens.color["gray-3"],

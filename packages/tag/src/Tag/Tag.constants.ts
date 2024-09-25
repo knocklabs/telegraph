@@ -88,7 +88,7 @@ export const COLOR = {
   },
   Button: {
     solid: {
-      default: "gray",
+      default: "default",
       gray: "gray",
       accent: "accent",
       red: "red",

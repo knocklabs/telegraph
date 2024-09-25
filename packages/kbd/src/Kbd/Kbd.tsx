@@ -1,8 +1,10 @@
 import { useAppearance } from "@telegraph/appearance";
+import { Icon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 
 import { colorMap, sizeMap } from "./Kbd.constants";
+import { getIconOrKey } from "./Kbd.helpers";
 import { usePressed } from "./Kbd.hooks";
 
 type KbdProps = {
@@ -21,6 +23,7 @@ const Kbd = ({
 }: KbdProps) => {
   const { appearance } = useAppearance();
   const { pressed } = usePressed({ key: props.eventKey || label });
+  const key = getIconOrKey(label);
 
   const contrast = contrastProp ? "contrast" : "default";
 
@@ -44,13 +47,22 @@ const Kbd = ({
       }}
       {...props}
     >
-      <Text
-        as="span"
-        {...sizeMap[size].text}
-        color={colorMap[appearance][contrast].text.color}
-      >
-        {label}
-      </Text>
+      {typeof key === "string" ? (
+        <Text
+          as="span"
+          {...sizeMap[size].text}
+          {...colorMap[appearance][contrast].text}
+        >
+          {key}
+        </Text>
+      ) : (
+        <Icon
+          icon={key}
+          alt={label}
+          {...sizeMap[size].icon}
+          {...colorMap[appearance][contrast].icon}
+        />
+      )}
     </Stack>
   );
 };
