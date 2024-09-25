@@ -22,7 +22,7 @@ export const SPACING = {
 export const COLOR = {
   Root: {
     solid: {
-      default: "bg-gray-9",
+      default: "bg-gray-12",
       accent: "bg-accent-9",
       gray: "bg-gray-9",
       red: "bg-red-9",
