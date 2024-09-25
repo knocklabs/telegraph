@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.0.33
+
+### Patch Changes
+
+- [#273](https://github.com/knocklabs/telegraph/pull/273) [`fcfcda8`](https://github.com/knocklabs/telegraph/commit/fcfcda8072122e994563889ee739bc6952175cc1) Thanks [@kylemcd](https://github.com/kylemcd)! - various bug fixes, improvements and consitency
+
 ## 0.0.32
 
 ### Patch Changes
