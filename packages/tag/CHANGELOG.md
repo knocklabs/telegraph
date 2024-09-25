@@ -1,5 +1,11 @@
 # @telegraph/tag
 
+## 0.0.52
+
+### Patch Changes
+
+- [`c93a4fe`](https://github.com/knocklabs/telegraph/commit/c93a4fe4db7969cf239f8d37fa6aa1ba59a5e151) Thanks [@kylemcd](https://github.com/kylemcd)! - Change tag default solid color to gray-12 to align with design system
+
 ## 0.0.51
 
 ### Patch Changes
