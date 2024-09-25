@@ -32,8 +32,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@telegraph/icon": "workspace:^",
     "@telegraph/helpers": "workspace:^",
+    "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/typography": "workspace:^"
   },
