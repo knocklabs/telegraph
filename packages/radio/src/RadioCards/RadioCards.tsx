@@ -103,6 +103,7 @@ const ItemIcon = <T extends TgphElement>(props: ItemIconProps<T>) => {
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
 type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
+  align?: "horizontal" | "vertical";
   options: Array<
     {
       title?: string;
