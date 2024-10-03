@@ -8,15 +8,15 @@ const meta: Meta<typeof TelegraphRadioCards> = {
   title: "Components/RadioCards",
   component: TelegraphRadioCards,
   argTypes: {
-    align: {
-      options: ["horizontal", "vertical"],
+    direction: {
+      options: ["row", "row-reverse", "column", "column-reverse"],
       control: {
         type: "select",
       },
     },
   },
   args: {
-    align: "horizontal",
+    direction: "row",
   },
 };
 
@@ -25,14 +25,14 @@ export default meta;
 type StorybookRadioCardsType = StoryObj<typeof TelegraphRadioCards>;
 
 export const RadioCards: StorybookRadioCardsType = {
-  render: ({ align }) => {
+  render: ({ direction }) => {
     //eslint-disable-next-line
     const [value, setValue] = React.useState("1");
     return (
       <TelegraphRadioCards
         value={value}
         onValueChange={(value) => setValue(value)}
-        align={align}
+        direction={direction}
         options={[
           {
             icon: { icon: Lucide.Bell, alt: "Bell" },

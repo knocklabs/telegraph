@@ -8,7 +8,8 @@ import React from "react";
 
 import { baseStyles } from "./RadioCards.css";
 
-type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root>;
+type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
+  TgphComponentProps<typeof Stack>;
 type RootRef = React.ElementRef<typeof RadioGroup.Root>;
 
 type RadioButtonInternalContext = {
@@ -103,7 +104,6 @@ const ItemIcon = <T extends TgphElement>(props: ItemIconProps<T>) => {
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
 type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
-  align?: "horizontal" | "vertical";
   options: Array<
     {
       title?: string;
@@ -113,7 +113,7 @@ type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
   >;
 };
 
-const Default = ({ options, align = "horizontal", ...props }: DefaultProps) => {
+const Default = ({ options, ...props }: DefaultProps) => {
   return (
     <Root {...props}>
       {options.map((option) => (
