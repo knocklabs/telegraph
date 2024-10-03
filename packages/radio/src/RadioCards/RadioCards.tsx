@@ -113,7 +113,7 @@ type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
   >;
 };
 
-const Default = ({ options, ...props }: DefaultProps) => {
+const Default = ({ options, align = "horizontal", ...props }: DefaultProps) => {
   return (
     <Root {...props}>
       {options.map((option) => (
