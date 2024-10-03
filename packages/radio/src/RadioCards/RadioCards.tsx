@@ -9,8 +9,7 @@ import React from "react";
 import { baseStyles } from "./RadioCards.css";
 
 type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
-  Omit<TgphComponentProps<typeof Stack>, "tgphRef">;
-type RootRef = React.ElementRef<typeof RadioGroup.Root>;
+  TgphComponentProps<typeof Stack>;
 
 type RadioButtonInternalContext = {
   value?: string;
@@ -20,23 +19,20 @@ const RadioButtonContext = React.createContext<RadioButtonInternalContext>({
   value: "",
 });
 
-const Root = React.forwardRef<RootRef, RootProps>(
-  ({ value, children, onValueChange, ...props }, forwardedRef) => {
-    return (
-      <RadioButtonContext.Provider value={{ value }}>
-        <RadioGroup.Root
-          value={value}
-          onValueChange={onValueChange}
-          asChild
-          {...props}
-          ref={forwardedRef}
-        >
-          <Stack gap="1">{children}</Stack>
-        </RadioGroup.Root>
-      </RadioButtonContext.Provider>
-    );
-  },
-);
+const Root = ({ value, children, onValueChange, ...props }: RootProps) => {
+  return (
+    <RadioButtonContext.Provider value={{ value }}>
+      <RadioGroup.Root
+        value={value}
+        onValueChange={onValueChange}
+        asChild
+        {...props}
+      >
+        <Stack gap="1">{children}</Stack>
+      </RadioGroup.Root>
+    </RadioButtonContext.Provider>
+  );
+};
 
 type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>;
 type ItemRef = React.ElementRef<typeof RadioGroup.Item>;
