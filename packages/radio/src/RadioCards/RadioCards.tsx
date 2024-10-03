@@ -114,22 +114,22 @@ type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
 };
 
 const Default = ({ options, direction = "row", ...props }: DefaultProps) => {
-  const isHorizontal = direction === "row" || direction === "row-reverse";
+  const isGroupHorizontal = direction === "row" || direction === "row-reverse";
   return (
     <Root direction={direction} {...props}>
       {options.map((option) => (
         <Item key={option.value} value={option.value}>
           <Stack
-            direction={isHorizontal ? "column" : "row"}
-            align={isHorizontal ? "flex-start" : "center"}
+            direction={isGroupHorizontal ? "column" : "row"}
+            align={isGroupHorizontal ? "flex-start" : "center"}
             p="3"
             w="full"
           >
             {option.icon && (
               <Box
-                mb={isHorizontal ? "2" : "0"}
-                mr={isHorizontal ? "0" : "4"}
-                ml={isHorizontal ? "0" : "1"}
+                mb={isGroupHorizontal ? "2" : "0"}
+                mr={isGroupHorizontal ? "0" : "4"}
+                ml={isGroupHorizontal ? "0" : "1"}
               >
                 <ItemIcon {...option.icon} />
               </Box>
