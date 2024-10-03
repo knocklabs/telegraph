@@ -9,7 +9,7 @@ import React from "react";
 import { baseStyles } from "./RadioCards.css";
 
 type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
-  TgphComponentProps<typeof Stack>;
+  Omit<TgphComponentProps<typeof Stack>, "tgphRef">;
 type RootRef = React.ElementRef<typeof RadioGroup.Root>;
 
 type RadioButtonInternalContext = {
