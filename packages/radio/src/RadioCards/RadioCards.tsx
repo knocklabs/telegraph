@@ -118,7 +118,7 @@ const Default = ({ options, direction = "row", ...props }: DefaultProps) => {
   return (
     <Root direction={direction} {...props}>
       {options.map((option) => (
-        <Item value={option.value}>
+        <Item key={option.value} value={option.value}>
           <Stack
             direction={isHorizontal ? "column" : "row"}
             align={isHorizontal ? "flex-start" : "center"}
