@@ -1,5 +1,11 @@
 # @telegraph/radio
 
+## 0.0.37
+
+### Patch Changes
+
+- [#278](https://github.com/knocklabs/telegraph/pull/278) [`2f04e4e`](https://github.com/knocklabs/telegraph/commit/2f04e4ed5f413229433dfcbb8f51eb64ff8729fe) Thanks [@mattmikolay](https://github.com/mattmikolay)! - allow direction props to be passed into the radio card component
+
 ## 0.0.36
 
 ### Patch Changes
