@@ -8,8 +8,8 @@ import React from "react";
 
 import { baseStyles } from "./RadioCards.css";
 
-type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root>;
-type RootRef = React.ElementRef<typeof RadioGroup.Root>;
+type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
+  TgphComponentProps<typeof Stack>;
 
 type RadioButtonInternalContext = {
   value?: string;
@@ -19,23 +19,20 @@ const RadioButtonContext = React.createContext<RadioButtonInternalContext>({
   value: "",
 });
 
-const Root = React.forwardRef<RootRef, RootProps>(
-  ({ value, children, onValueChange, ...props }, forwardedRef) => {
-    return (
-      <RadioButtonContext.Provider value={{ value }}>
-        <RadioGroup.Root
-          value={value}
-          onValueChange={onValueChange}
-          asChild
-          {...props}
-          ref={forwardedRef}
-        >
-          <Stack gap="1">{children}</Stack>
-        </RadioGroup.Root>
-      </RadioButtonContext.Provider>
-    );
-  },
-);
+const Root = ({ value, children, onValueChange, ...props }: RootProps) => {
+  return (
+    <RadioButtonContext.Provider value={{ value }}>
+      <RadioGroup.Root
+        value={value}
+        onValueChange={onValueChange}
+        asChild
+        {...props}
+      >
+        <Stack gap="1">{children}</Stack>
+      </RadioGroup.Root>
+    </RadioButtonContext.Provider>
+  );
+};
 
 type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>;
 type ItemRef = React.ElementRef<typeof RadioGroup.Item>;
@@ -112,14 +109,24 @@ type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
   >;
 };
 
-const Default = ({ options, ...props }: DefaultProps) => {
+const Default = ({ options, direction = "row", ...props }: DefaultProps) => {
+  const isGroupHorizontal = direction === "row" || direction === "row-reverse";
   return (
-    <Root {...props}>
+    <Root direction={direction} {...props}>
       {options.map((option) => (
-        <Item value={option.value}>
-          <Stack direction="column" align="flex-start" p="3" w="full">
+        <Item key={option.value} value={option.value}>
+          <Stack
+            direction={isGroupHorizontal ? "column" : "row"}
+            align={isGroupHorizontal ? "flex-start" : "center"}
+            p="3"
+            w="full"
+          >
             {option.icon && (
-              <Box mb="2">
+              <Box
+                mb={isGroupHorizontal ? "2" : "0"}
+                mr={isGroupHorizontal ? "0" : "4"}
+                ml={isGroupHorizontal ? "0" : "1"}
+              >
                 <ItemIcon {...option.icon} />
               </Box>
             )}
