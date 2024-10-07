@@ -380,6 +380,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
     >
       <TelegraphButton.Root
         id={context.triggerId}
+        type="button"
         bg="surface-1"
         variant="outline"
         align="center"
