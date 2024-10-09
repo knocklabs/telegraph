@@ -4,6 +4,19 @@ import type { Stack } from "@telegraph/layout";
 import type { Text } from "@telegraph/typography";
 
 export const sizeMap = {
+  "0": {
+    stack: {
+      minW: "4",
+      h: "4",
+    },
+    text: {
+      size: "0",
+      px: "1",
+    },
+    icon: {
+      size: "0",
+    },
+  },
   "1": {
     stack: {
       minW: "5",
