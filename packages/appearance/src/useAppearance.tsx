@@ -112,6 +112,22 @@ const Appearance = ({
   return <Component {...derivedAppearanceProps} {...props} />;
 };
 
+// Helper component used to explicitly set the appearance of a component
+// used in places like the Tooltip component.
+const OverrideAppearance = ({
+  appearance,
+  asChild,
+  ...props
+}: AppearanceProps) => {
+  const { lightAppearanceProps, darkAppearanceProps } = useAppearance();
+
+  const derivedAppearanceProps =
+    appearance === "light" ? lightAppearanceProps : darkAppearanceProps;
+
+  const Component = asChild ? Slot : "div";
+  return <Component {...derivedAppearanceProps} {...props} />;
+};
+
 // Helper component to apply the inverted appearance
 const InvertedAppearance = ({
   appearance,
@@ -123,4 +139,4 @@ const InvertedAppearance = ({
   );
 };
 
-export { useAppearance, Appearance, InvertedAppearance };
+export { useAppearance, Appearance, InvertedAppearance, OverrideAppearance };

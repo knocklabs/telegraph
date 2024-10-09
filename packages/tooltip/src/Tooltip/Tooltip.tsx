@@ -1,6 +1,6 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { InvertedAppearance } from "@telegraph/appearance";
+import { OverrideAppearance } from "@telegraph/appearance";
 import {
   RefToTgphRef,
   type TgphComponentProps,
@@ -11,12 +11,14 @@ import { Text } from "@telegraph/typography";
 import { motion } from "framer-motion";
 import React from "react";
 
+import { TooltipContentProps } from "./Tooltip.constants";
 import { useTooltipGroup } from "./Tooltip.hooks";
 
 type TooltipBaseProps<T extends TgphElement> = {
   label: string | React.ReactNode;
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
+  appearance?: TgphComponentProps<typeof OverrideAppearance>["appearance"];
 };
 
 type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
@@ -28,7 +30,7 @@ type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
 
 const Tooltip = <T extends TgphElement>({
   // Radix Tooltip Provider Props
-  delayDuration = 600,
+  delayDuration = 400,
   skipDelayDuration,
   disableHoverableContent,
   // Radix Tooltip Root Props
@@ -55,6 +57,7 @@ const Tooltip = <T extends TgphElement>({
   labelProps,
   // Telegraph Props
   enabled = true,
+  appearance = "dark",
   children,
 }: TooltipProps<T>) => {
   const [open, setOpen] = useControllableState({
@@ -64,7 +67,12 @@ const Tooltip = <T extends TgphElement>({
   });
   const { groupOpen } = useTooltipGroup({ open: !!open, delay: delayDuration });
 
-  const derivedDelayDuration = groupOpen ? 0 : delayDuration;
+  const areAnyChildrenElementsDisabled = React.Children.toArray(children).some(
+    (child) => (child as React.ReactElement).props.disabled,
+  );
+
+  const derivedDelayDuration =
+    groupOpen || areAnyChildrenElementsDisabled ? 0 : delayDuration;
   const shouldAnimate = !groupOpen;
 
   const deriveAnimationBasedOnSide = (side: TooltipProps<T>["side"]) => {
@@ -125,7 +133,7 @@ const Tooltip = <T extends TgphElement>({
                 zIndex: `var(--tgph-zIndex-tooltip)`,
               }}
             >
-              <InvertedAppearance>
+              <OverrideAppearance appearance={appearance} asChild>
                 <Stack
                   as={motion.div}
                   // Add tgph class so that this always works in portals
@@ -157,6 +165,7 @@ const Tooltip = <T extends TgphElement>({
                       "var(--radix-tooltip-content-transform-origin)",
                   }}
                   {...(labelProps ? { labelProps } : {})}
+                  {...TooltipContentProps[appearance]}
                 >
                   {typeof label === "string" ? (
                     <Text as="span" size="1">
@@ -166,7 +175,7 @@ const Tooltip = <T extends TgphElement>({
                     label
                   )}
                 </Stack>
-              </InvertedAppearance>
+              </OverrideAppearance>
             </RadixTooltip.Content>
           </RadixTooltip.Portal>
         </RadixTooltip.Root>

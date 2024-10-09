@@ -27,6 +27,12 @@ const meta: Meta = {
         type: "select",
       },
     },
+    appearance: {
+      options: ["light", "dark"],
+      control: {
+        type: "select",
+      },
+    },
     enabled: {
       control: {
         type: "boolean",
@@ -38,6 +44,7 @@ const meta: Meta = {
     side: "bottom",
     align: "center",
     enabled: true,
+    appearance: "dark",
   },
 };
 
@@ -67,6 +74,46 @@ export const Group: Story = {
           </TelegraphTooltip>
           <TelegraphTooltip {...args}>
             <Button color="blue">Hover me</Button>
+          </TelegraphTooltip>
+        </TooltipGroupProvider>
+      </Stack>
+    );
+  },
+};
+
+export const DisabledButtonTrigger: Story = {
+  render: ({ ...args }) => {
+    return (
+      <Stack w="full" my="10" align="center" justify="center" gap="2">
+        <TooltipGroupProvider>
+          <TelegraphTooltip {...args}>
+            <Button
+              color="blue"
+              onClick={() => console.log("clicked")}
+              disabled
+            >
+              Hover me
+            </Button>
+          </TelegraphTooltip>
+        </TooltipGroupProvider>
+      </Stack>
+    );
+  },
+};
+export const DisabledAnchorTrigger: Story = {
+  render: ({ ...args }) => {
+    return (
+      <Stack w="full" my="10" align="center" justify="center" gap="2">
+        <TooltipGroupProvider>
+          <TelegraphTooltip {...args}>
+            <Button
+              as="a"
+              color="blue"
+              onClick={() => console.log("clicked")}
+              disabled
+            >
+              Hover me
+            </Button>
           </TelegraphTooltip>
         </TooltipGroupProvider>
       </Stack>

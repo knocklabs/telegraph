@@ -31,7 +31,14 @@ export const baseStyles = style({
   textDecoration: "none",
   ":disabled": {
     cursor: "not-allowed",
-    pointerEvents: "none",
+  },
+  selectors: {
+    "&[data-tgph-button-state=disabled]:hover": {
+      // Revert background color on hover for disabled buttons.
+      // This ensures the button doesn't change background
+      // color when hovered over in a disabled state.
+      backgroundColor: "revert",
+    },
   },
 });
 

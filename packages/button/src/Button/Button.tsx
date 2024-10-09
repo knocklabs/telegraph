@@ -102,6 +102,12 @@ const Root = <T extends TgphElement>({
     minDurationMs: 1200,
   });
 
+  // If the button is in a disabled state, we don't want any clicks to fire.
+  // To do this reliably, we convert the element back to a button if it is
+  // disabled. We do this so we can use the native button element's disabled
+  // state to prevent clicks.
+  const derivedAs = disabled ? "button" : as;
+
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const childrenArray = React.Children.toArray(children);
     if (childrenArray?.length === 1 && React.isValidElement(childrenArray[0])) {
@@ -124,7 +130,7 @@ const Root = <T extends TgphElement>({
       value={{ variant, size, color, state, layout, active }}
     >
       <Stack
-        as={as || "button"}
+        as={derivedAs || "button"}
         className={clsx(
           baseStyles,
           variant === "solid" && solidVariant({ color }),
