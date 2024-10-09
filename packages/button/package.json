@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/button",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "Button component in Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/button",
   "author": "@knocklabs",
