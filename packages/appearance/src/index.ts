@@ -1,1 +1,6 @@
-export { useAppearance, Appearance, InvertedAppearance } from "./useAppearance";
+export {
+  useAppearance,
+  Appearance,
+  InvertedAppearance,
+  OverrideAppearance,
+} from "./useAppearance";

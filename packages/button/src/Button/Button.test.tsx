@@ -97,4 +97,12 @@ describe("Button", () => {
     expect(text).toHaveClass("text-gray-9");
     expect(icon).toHaveClass("text-gray-8");
   });
+  it("if a button set to an anchor is disabled, it turns into a button", () => {
+    const { container } = render(
+      <Button as="a" disabled>
+        Button
+      </Button>,
+    );
+    expect(container.firstChild?.nodeName).toBe("BUTTON");
+  });
 });
