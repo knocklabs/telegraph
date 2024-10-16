@@ -183,7 +183,7 @@ const Tooltip = <T extends TgphElement>({
     );
   }
 
-  return <span>{children}</span>;
+  return <>{children}</>;
 };
 
 export { Tooltip };
