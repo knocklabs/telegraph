@@ -1,6 +1,10 @@
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { Button } from "@telegraph/button";
-import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
+import {
+  RefToTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+} from "@telegraph/helpers";
 import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import clsx from "clsx";
@@ -28,7 +32,9 @@ const Root = ({ value, children, onValueChange, ...props }: RootProps) => {
         asChild
         {...props}
       >
-        <Stack gap="1">{children}</Stack>
+        <RefToTgphRef>
+          <Stack gap="1">{children}</Stack>
+        </RefToTgphRef>
       </RadioGroup.Root>
     </RadioButtonContext.Provider>
   );
@@ -43,17 +49,19 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
     return (
       <>
         <RadioGroup.Item {...props} ref={forwardedRef} asChild>
-          <Button.Root
-            variant="outline"
-            active={props.value === contextValue}
-            className={clsx(className, baseStyles)}
-            h="full"
-            w="full"
-            px="0"
-            py="0"
-          >
-            {children}
-          </Button.Root>
+          <RefToTgphRef>
+            <Button.Root
+              variant="outline"
+              active={props.value === contextValue}
+              className={clsx(className, baseStyles)}
+              h="full"
+              w="full"
+              px="0"
+              py="0"
+            >
+              {children}
+            </Button.Root>
+          </RefToTgphRef>
         </RadioGroup.Item>
       </>
     );
