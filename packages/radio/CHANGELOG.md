@@ -1,5 +1,11 @@
 # @telegraph/radio
 
+## 0.0.39
+
+### Patch Changes
+
+- [#288](https://github.com/knocklabs/telegraph/pull/288) [`238c81c`](https://github.com/knocklabs/telegraph/commit/238c81c6379affff2791a0d2eb9132a5b820b846) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Fix radio card keyboard interactions
+
 ## 0.0.38
 
 ### Patch Changes
