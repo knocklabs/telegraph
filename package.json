@@ -9,7 +9,7 @@
   "private": true,
   "packageManager": "yarn@4.1.0",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "scripts": {
     "generate:package": "moon generate package",
