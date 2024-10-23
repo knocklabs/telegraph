@@ -45,7 +45,7 @@
     "@commitlint/config-conventional": "^19.5.0",
     "@manypkg/cli": "^0.21.2",
     "@moonrepo/cli": "^1.28.2",
-    "@storybook/addon-essentials": "^7.6.17",
+    "@storybook/addon-essentials": "^7.6.20",
     "@storybook/addon-interactions": "^7.6.17",
     "@storybook/addon-links": "^7.6.17",
     "@storybook/addon-onboarding": "^1.0.11",
