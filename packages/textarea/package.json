@@ -32,6 +32,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/style-engine": "workspace:^",
     "clsx": "^2.1.1"
@@ -39,7 +40,6 @@
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
-    "@telegraph/helpers": "workspace:^",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
@@ -52,6 +52,6 @@
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.3.1"
   }
 }
