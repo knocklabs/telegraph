@@ -1,3 +1,4 @@
+import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
@@ -503,85 +504,92 @@ const Content = <T extends TgphElement>({
   }, [context.open, initialAnimationComplete]);
 
   return (
-    <TelegraphMenu.Content
-      as={motion.div}
-      mt="1"
-      initial={{
-        opacity: 0,
-        scale: 0.8,
-        height: "auto",
-      }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-        // Set height based on the internalContentRef so that
-        // we get smooth animations when the content changes
-        minHeight: height ? `${height}px` : "0",
-      }}
-      exit={{ opacity: 0, scale: 0 }}
-      transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-      onAnimationComplete={() => {
-        // Set height when the initial animation for
-        // displaying the content completes
-        if (!initialAnimationComplete && internalContentRef) {
-          const element = internalContentRef.current as unknown as Element;
-          setHeightFromContent(element);
-        }
-      }}
-      onCloseAutoFocus={(event: Event) => {
-        if (!hasInteractedOutside.current) context.triggerRef?.current?.focus();
-        hasInteractedOutside.current = false;
-
-        event.preventDefault();
-      }}
-      onKeyDown={(event: React.KeyboardEvent) => {
-        // If the first option is focused and the user presses the up
-        // arrow key, focus the search input
-        const options = context.contentRef?.current?.querySelectorAll(
-          "[data-tgph-combobox-option]",
-        );
-
-        if (
-          document.activeElement === options?.[0] &&
-          LAST_KEYS.includes(event.key)
-        ) {
-          context.searchRef?.current?.focus();
-        }
-
-        // Close the combobox if the user presses the escape key
-        if (event.key === "Escape") {
+    // We add radix's dismissable layer here so that we can swallow any escape key
+    // presses to prevent cases like a modal closing when we close the combobox
+    <DismissableLayer
+      onEscapeKeyDown={(event) => {
+        if (context.open) {
+          event.preventDefault();
           context.setOpen(false);
         }
-
-        event.stopPropagation();
       }}
-      bg="surface-1"
-      style={{
-        width: "var(--tgph-comobobox-trigger-width)",
-        ...style,
-        ...{
-          "--tgph-comobobox-content-transform-origin":
-            "var(--radix-popper-transform-origin)",
-          "--tgph-combobox-content-available-width":
-            "var(--radix-popper-available-width)",
-          "--tgph-combobox-content-available-height":
-            "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-          "--tgph-comobobox-trigger-width": "var(--radix-popper-anchor-width)",
-          "--tgph-combobox-trigger-height": "var(--radix-popper-anchor-height)",
-        },
-      }}
-      {...props}
-      tgphRef={composedRef}
-      data-tgph-combobox-content
-      data-tgph-combobox-content-open={initialAnimationComplete}
-      // Cancel out accessibility attirbutes related to aria menu
-      role={undefined}
-      aria-orientation={undefined}
     >
-      <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-        {children}
-      </Stack>
-    </TelegraphMenu.Content>
+      <TelegraphMenu.Content
+        as={motion.div}
+        mt="1"
+        initial={{
+          opacity: 0,
+          scale: 0.8,
+          height: "auto",
+        }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          // Set height based on the internalContentRef so that
+          // we get smooth animations when the content changes
+          minHeight: height ? `${height}px` : "0",
+        }}
+        exit={{ opacity: 0, scale: 0 }}
+        transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+        onAnimationComplete={() => {
+          // Set height when the initial animation for
+          // displaying the content completes
+          if (!initialAnimationComplete && internalContentRef) {
+            const element = internalContentRef.current as unknown as Element;
+            setHeightFromContent(element);
+          }
+        }}
+        onCloseAutoFocus={(event: Event) => {
+          if (!hasInteractedOutside.current)
+            context.triggerRef?.current?.focus();
+          hasInteractedOutside.current = false;
+
+          event.preventDefault();
+        }}
+        onKeyDown={(event: React.KeyboardEvent) => {
+          // If the first option is focused and the user presses the up
+          // arrow key, focus the search input
+          const options = context.contentRef?.current?.querySelectorAll(
+            "[data-tgph-combobox-option]",
+          );
+
+          if (
+            document.activeElement === options?.[0] &&
+            LAST_KEYS.includes(event.key)
+          ) {
+            context.searchRef?.current?.focus();
+          }
+        }}
+        bg="surface-1"
+        style={{
+          width: "var(--tgph-comobobox-trigger-width)",
+          ...style,
+          ...{
+            "--tgph-comobobox-content-transform-origin":
+              "var(--radix-popper-transform-origin)",
+            "--tgph-combobox-content-available-width":
+              "var(--radix-popper-available-width)",
+            "--tgph-combobox-content-available-height":
+              "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
+            "--tgph-comobobox-trigger-width":
+              "var(--radix-popper-anchor-width)",
+            "--tgph-combobox-trigger-height":
+              "var(--radix-popper-anchor-height)",
+          },
+        }}
+        {...props}
+        tgphRef={composedRef}
+        data-tgph-combobox-content
+        data-tgph-combobox-content-open={initialAnimationComplete}
+        // Cancel out accessibility attirbutes related to aria menu
+        role={undefined}
+        aria-orientation={undefined}
+      >
+        <Stack direction="column" gap="1" tgphRef={internalContentRef}>
+          {children}
+        </Stack>
+      </TelegraphMenu.Content>
+    </DismissableLayer>
   );
 };
 

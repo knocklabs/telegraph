@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
+import { Modal } from "@telegraph/modal";
 import React from "react";
 
 import { Combobox as TelegraphCombobox } from "../Combobox";
@@ -221,6 +223,65 @@ export const MultiSelectWithClear: Story = {
           </TelegraphCombobox.Content>
         </TelegraphCombobox.Root>
       </Box>
+    );
+  },
+};
+
+export const ComboboxInModal: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState([firstValue]);
+    // eslint-disable-next-line
+    const [open, setOpen] = React.useState(false);
+    return (
+      <>
+        <Button size="1" variant="outline" onClick={() => setOpen(true)}>
+          Open modal
+        </Button>
+        <Modal.Root
+          a11yTitle="Combobox in modal"
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Modal.Content>
+            <Modal.Header>
+              <div />
+              <Modal.Close />
+            </Modal.Header>
+            <Modal.Body>
+              <TelegraphCombobox.Root
+                {...args}
+                value={value}
+                onValueChange={setValue}
+                placeholder={"Select a channel"}
+                layout="wrap"
+                closeOnSelect={false}
+                clearable
+              >
+                <TelegraphCombobox.Trigger />
+                <TelegraphCombobox.Content>
+                  <TelegraphCombobox.Search />
+                  <TelegraphCombobox.Options>
+                    {values.map((v) => (
+                      <TelegraphCombobox.Option
+                        value={v.value}
+                        label={v.label}
+                      />
+                    ))}
+                    <TelegraphCombobox.Create
+                      values={values}
+                      onCreate={(createdValue) => {
+                        values.push(createdValue);
+                        setValue((prevValue) => [createdValue, ...prevValue]);
+                      }}
+                    />
+                  </TelegraphCombobox.Options>
+                </TelegraphCombobox.Content>
+              </TelegraphCombobox.Root>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal.Root>
+      </>
     );
   },
 };
