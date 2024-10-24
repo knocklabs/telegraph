@@ -1,4 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
 import type {
@@ -20,80 +22,163 @@ type RootProps = Omit<
     a11yDescription?: string;
   };
 
+type Child = {
+  id?: string;
+  open?: boolean;
+};
+
+const ModalContext = React.createContext<{
+  child?: Child;
+  setChild: (child: Child) => void;
+}>({
+  child: undefined,
+  setChild: () => {},
+});
+
 const Root = ({
-  defaultOpen,
-  open,
-  onOpenChange,
+  defaultOpen: defaultOpenProp,
+  open: openProp,
+  onOpenChange: onOpenChangeProp,
   a11yTitle,
   a11yDescription,
   children,
   ...props
 }: RootProps) => {
+  const id = React.useId();
+  const [child, setChild] = React.useState<Child | undefined>(undefined);
+
+  const [open, onOpenChange] = useControllableState({
+    defaultProp: defaultOpenProp,
+    prop: openProp,
+    onChange: onOpenChangeProp,
+  });
+
+  const parentContext = React.useContext(ModalContext);
+
+  React.useEffect(() => {
+    if (parentContext) {
+      parentContext.setChild({
+        id,
+        open,
+        // depth: !child?.depth ? 1 : child?.depth + 1,
+        // depth: !parentContext.child?.depth
+        //   ? 1
+        //   : parentContext?.child?.depth + 1,
+      });
+    }
+  }, [parentContext, id, open]);
+
+  const isStacked = !!child?.id && child?.open === true;
+  const isChild = parentContext?.child;
+  const isParent = parentContext?.child === undefined;
+
+  const DerivedOverlayComponent = isChild ? React.Fragment : Overlay;
+
   return (
-    <Dialog.Root
-      open={open}
-      onOpenChange={onOpenChange}
-      defaultOpen={defaultOpen}
-    >
-      <VisuallyHidden.Root>
-        <Dialog.Title>{a11yTitle}</Dialog.Title>
-        {a11yDescription && (
-          <Dialog.Description>{a11yDescription}</Dialog.Description>
-        )}
-      </VisuallyHidden.Root>
-      <AnimatePresence>
-        {open && (
-          <>
-            <Dialog.Overlay>
-              <Box
-                as={motion.div}
-                onClick={() => onOpenChange?.(false)}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, bounce: 0, type: "spring" }}
-                bg="alpha-black-6"
-                zIndex="overlay"
-                style={{
-                  position: "fixed",
-                  inset: "0px",
-                }}
-              />
-              <Stack
-                zIndex="modal"
-                w="full"
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: "50%",
-                  maxHeight: "calc(100vh - var(--tgph-spacing-32))",
-                  maxWidth: "calc(100vw - var(--tgph-spacing-8))",
-                }}
-              >
+    <ModalContext.Provider value={{ child, setChild }}>
+      <DismissableLayer
+        onEscapeKeyDown={(event) => {
+          if (open) {
+            event.preventDefault();
+            onOpenChange?.(false);
+          }
+        }}
+      >
+        <Dialog.Root open={open} onOpenChange={onOpenChange}>
+          <VisuallyHidden.Root>
+            <Dialog.Title>{a11yTitle}</Dialog.Title>
+            {a11yDescription && (
+              <Dialog.Description>{a11yDescription}</Dialog.Description>
+            )}
+          </VisuallyHidden.Root>
+          <AnimatePresence>
+            {open && (
+              <DerivedOverlayComponent>
                 <Stack
-                  direction="column"
                   as={motion.div}
-                  my="16"
-                  initial={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
-                  animate={{ scale: 1, opacity: 1, y: 0, x: "-50%" }}
-                  exit={{ scale: 0.8, opacity: 0, y: -20, x: "-50%" }}
-                  transition={{ duration: 0.2, bounce: 0, type: "spring" }}
-                  maxW={props.maxW ?? "160"}
-                  w={props.w ?? "full"}
-                  bg="surface-1"
-                  border="px"
-                  rounded="4"
-                  shadow="1"
-                  {...props}
+                  initial={{ top: isParent ? "var(--tgph-spacing-4)" : 0 }}
+                  animate={{ top: isStacked ? "0" : "var(--tgph-spacing-4)" }}
+                  exit={{ top: "var(--tgph-spacing-4)" }}
+                  transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                  zIndex="modal"
+                  w="full"
+                  justify="center"
+                  // align="flex-start"
+                  style={{
+                    position: "fixed",
+                    left: 0,
+                    // right: 0,
+                    // bottom: 0,
+                    // top: 0,
+                    // left: "50%",
+                    top: isParent ? "var(--tgph-spacing-12)" : 0,
+                    maxHeight: "calc(100vh - var(--tgph-spacing-32))",
+                    maxWidth: "calc(100vw - var(--tgph-spacing-8))",
+                  }}
+                  key={"container" + id}
                 >
-                  {children}
+                  <Stack
+                    direction="column"
+                    as={motion.div}
+                    // my={isChild ? "4" : "16"}
+                    animate={{
+                      scale: isChild ? 1.02 : 0.98,
+                      y: isStacked ? "calc(var(--tgph-spacing-4) * 1)" : "0",
+                      // marginTop: "var(--tgph-spacing-3)",
+                      // transform: isChild
+                      //   ? "scale(1.02) "
+                      //   : " scale(0.98) translateY(16px)",
+
+                      transformOrigin: "center center",
+                    }}
+                    // initial={{ scale: 0.8, opacity: 0, y: -20 }}
+                    // animate={{ scale: 1, opacity: 1, y: 0 }}
+                    // exit={{ scale: 0.8, opacity: 0, y: -20 }}
+                    transition={{ duration: 0.2, bounce: 0, type: "spring" }}
+                    maxW={props.maxW ?? "160"}
+                    w={props.w ?? "full"}
+                    bg="surface-1"
+                    border="px"
+                    rounded="4"
+                    shadow="3"
+                    key={"content" + id}
+                    {...props}
+                  >
+                    {children}
+                  </Stack>
                 </Stack>
-              </Stack>
-            </Dialog.Overlay>
-          </>
-        )}
-      </AnimatePresence>
-    </Dialog.Root>
+              </DerivedOverlayComponent>
+            )}
+          </AnimatePresence>
+        </Dialog.Root>
+      </DismissableLayer>
+    </ModalContext.Provider>
+  );
+};
+
+type OverlayProps = TgphComponentProps<typeof Box>;
+
+const Overlay = ({ children }: OverlayProps) => {
+  return (
+    <Dialog.Overlay>
+      <Box
+        as={motion.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3, bounce: 0, type: "spring" }}
+        bg="alpha-black-6"
+        zIndex="overlay"
+        w="full"
+        h="full"
+        style={{
+          position: "fixed",
+          cursor: "pointer",
+          inset: "0px",
+        }}
+      />
+      {children}
+    </Dialog.Overlay>
   );
 };
 
