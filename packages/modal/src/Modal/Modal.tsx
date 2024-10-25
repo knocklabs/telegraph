@@ -1,8 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
+import type { Required } from "@telegraph/helpers";
 import type {
   PolymorphicProps,
   TgphComponentProps,
@@ -13,6 +13,9 @@ import { Box, Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
+import { DismissableWrapper } from "./Modal.helpers";
+import { useModalStacking } from "./ModalStacking";
+
 type RootProps = Omit<
   React.ComponentPropsWithoutRef<typeof Dialog.Root>,
   "modal"
@@ -20,145 +23,153 @@ type RootProps = Omit<
   TgphComponentProps<typeof Stack> & {
     a11yTitle: string;
     a11yDescription?: string;
+    layer?: number;
   };
-
-type Child = {
-  id?: string;
-  open?: boolean;
-};
-
-const ModalContext = React.createContext<{
-  child?: Child;
-  setChild: (child: Child) => void;
-}>({
-  child: undefined,
-  setChild: () => {},
-});
 
 const Root = ({
   defaultOpen: defaultOpenProp,
   open: openProp,
   onOpenChange: onOpenChangeProp,
+  ...props
+}: RootProps) => {
+  const [open, onOpenChange] = useControllableState({
+    prop: openProp,
+    onChange: onOpenChangeProp,
+    defaultProp: defaultOpenProp,
+  });
+
+  // Prevent rendering anything within the modal if it is not open
+  if (!open) return;
+
+  return <RootComponent open={open} onOpenChange={onOpenChange} {...props} />;
+};
+
+const RootComponent = ({
+  open,
+  onOpenChange,
   a11yTitle,
   a11yDescription,
   children,
+  layer: layerProp,
   ...props
-}: RootProps) => {
+}: Required<RootProps, "open" | "onOpenChange">) => {
   const id = React.useId();
-  const [child, setChild] = React.useState<Child | undefined>(undefined);
-
-  const [open, onOpenChange] = useControllableState({
-    defaultProp: defaultOpenProp,
-    prop: openProp,
-    onChange: onOpenChangeProp,
-  });
-
-  const parentContext = React.useContext(ModalContext);
+  const stacking = useModalStacking();
 
   React.useEffect(() => {
-    if (parentContext) {
-      parentContext.setChild({
-        id,
-        open,
-        // depth: !child?.depth ? 1 : child?.depth + 1,
-        // depth: !parentContext.child?.depth
-        //   ? 1
-        //   : parentContext?.child?.depth + 1,
-      });
-    }
-  }, [parentContext, id, open]);
+    if (!stacking || !open || stacking.layers.includes(id)) return;
+    stacking.addLayer(id, { layer: layerProp });
+  }, [id, layerProp, stacking, open]);
 
-  const isStacked = !!child?.id && child?.open === true;
-  const isChild = parentContext?.child;
-  const isParent = parentContext?.child === undefined;
-
-  const DerivedOverlayComponent = isChild ? React.Fragment : Overlay;
+  const layer = stacking.layers?.indexOf(id) || 0;
+  const layersLength = stacking.layers?.length || 0;
+  const isStacked = layer !== 0;
 
   return (
-    <ModalContext.Provider value={{ child, setChild }}>
-      <DismissableLayer
-        onEscapeKeyDown={(event) => {
-          if (open) {
-            event.preventDefault();
-            onOpenChange?.(false);
-          }
-        }}
-      >
-        <Dialog.Root open={open} onOpenChange={onOpenChange}>
-          <VisuallyHidden.Root>
-            <Dialog.Title>{a11yTitle}</Dialog.Title>
-            {a11yDescription && (
-              <Dialog.Description>{a11yDescription}</Dialog.Description>
-            )}
-          </VisuallyHidden.Root>
-          <AnimatePresence>
-            {open && (
-              <DerivedOverlayComponent>
-                <Stack
-                  as={motion.div}
-                  initial={{ top: isParent ? "var(--tgph-spacing-4)" : 0 }}
-                  animate={{ top: isStacked ? "0" : "var(--tgph-spacing-4)" }}
-                  exit={{ top: "var(--tgph-spacing-4)" }}
-                  transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-                  zIndex="modal"
-                  w="full"
-                  justify="center"
-                  // align="flex-start"
-                  style={{
-                    position: "fixed",
-                    left: 0,
-                    // right: 0,
-                    // bottom: 0,
-                    // top: 0,
-                    // left: "50%",
-                    top: isParent ? "var(--tgph-spacing-12)" : 0,
-                    maxHeight: "calc(100vh - var(--tgph-spacing-32))",
-                    maxWidth: "calc(100vw - var(--tgph-spacing-8))",
-                  }}
-                  key={"container" + id}
-                >
-                  <Stack
-                    direction="column"
-                    as={motion.div}
-                    // my={isChild ? "4" : "16"}
-                    animate={{
-                      scale: isChild ? 1.02 : 0.98,
-                      y: isStacked ? "calc(var(--tgph-spacing-4) * 1)" : "0",
-                      // marginTop: "var(--tgph-spacing-3)",
-                      // transform: isChild
-                      //   ? "scale(1.02) "
-                      //   : " scale(0.98) translateY(16px)",
+    <DismissableWrapper
+      id={id}
+      layers={stacking.layers}
+      onEscapeKeyDown={(event) => {
+        event.preventDefault();
+        stacking.removeTopLayer();
+        onOpenChange(false);
+      }}
+      onPointerDownOutside={(event) => {
+        event.preventDefault();
+        stacking.removeTopLayer();
+        onOpenChange(false);
+      }}
+    >
+      <Dialog.Root
+        open={open}
+        onOpenChange={(value) => {
+          const hasStacking = !!stacking;
 
-                      transformOrigin: "center center",
-                    }}
-                    // initial={{ scale: 0.8, opacity: 0, y: -20 }}
-                    // animate={{ scale: 1, opacity: 1, y: 0 }}
-                    // exit={{ scale: 0.8, opacity: 0, y: -20 }}
-                    transition={{ duration: 0.2, bounce: 0, type: "spring" }}
-                    maxW={props.maxW ?? "160"}
-                    w={props.w ?? "full"}
-                    bg="surface-1"
-                    border="px"
-                    rounded="4"
-                    shadow="3"
-                    key={"content" + id}
-                    {...props}
-                  >
-                    {children}
-                  </Stack>
+          if (hasStacking) {
+            if (
+              value === false &&
+              id === stacking.layers[stacking.layers.length - 1]
+            ) {
+              stacking.removeLayer(id);
+              return onOpenChange(false);
+            }
+            // If the modal is not the top layer, do not call onOpenChange
+            // when we are stacking the modals
+            return;
+          }
+
+          onOpenChange(value);
+        }}
+        key={id}
+      >
+        <VisuallyHidden.Root>
+          <Dialog.Title>{a11yTitle}</Dialog.Title>
+          {a11yDescription && (
+            <Dialog.Description>{a11yDescription}</Dialog.Description>
+          )}
+        </VisuallyHidden.Root>
+        <AnimatePresence>
+          {open && (
+            <Overlay layer={layer}>
+              <Stack
+                as={motion.div}
+                initial={{
+                  top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
+                }}
+                animate={{
+                  top: isStacked
+                    ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
+                    : "var(--tgph-spacing-16)",
+                }}
+                exit={{ top: 0 }}
+                transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                w="full"
+                justify="center"
+                style={{
+                  position: "fixed",
+                  left: 0,
+                  maxHeight: "calc(100vh - var(--tgph-spacing-32))",
+                  maxWidth: "calc(100vw - var(--tgph-spacing-8))",
+                  zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
+                }}
+                key={`container-${id}`}
+              >
+                <Stack
+                  direction="column"
+                  as={motion.div}
+                  animate={{
+                    scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
+                    transformOrigin: "center center",
+                  }}
+                  transition={{ duration: 0.2, bounce: 0, type: "spring" }}
+                  maxW={props.maxW ?? "160"}
+                  w={props.w ?? "full"}
+                  bg="surface-1"
+                  border="px"
+                  rounded="4"
+                  shadow="3"
+                  key={`content-${id}`}
+                  {...props}
+                >
+                  {children}
                 </Stack>
-              </DerivedOverlayComponent>
-            )}
-          </AnimatePresence>
-        </Dialog.Root>
-      </DismissableLayer>
-    </ModalContext.Provider>
+              </Stack>
+            </Overlay>
+          )}
+        </AnimatePresence>
+      </Dialog.Root>
+    </DismissableWrapper>
   );
 };
 
-type OverlayProps = TgphComponentProps<typeof Box>;
+type OverlayProps = TgphComponentProps<typeof Box> & {
+  layer: number;
+};
 
-const Overlay = ({ children }: OverlayProps) => {
+const Overlay = ({ layer, children }: OverlayProps) => {
+  // If the layer is greater than 0, we don't want to show this
+  // overlay as to not stack the overlays on top of each other.
+  if (layer > 0) return children;
   return (
     <Dialog.Overlay>
       <Box
@@ -168,9 +179,9 @@ const Overlay = ({ children }: OverlayProps) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3, bounce: 0, type: "spring" }}
         bg="alpha-black-6"
-        zIndex="overlay"
         w="full"
         h="full"
+        zIndex="overlay"
         style={{
           position: "fixed",
           cursor: "pointer",
@@ -189,7 +200,7 @@ type ContentRef = React.ElementRef<typeof Dialog.Content>;
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
-      <Dialog.Content ref={forwardedRef} {...props} asChild>
+      <Dialog.Content ref={forwardedRef} asChild {...props}>
         <Stack direction="column" h="full" {...props}>
           {children}
         </Stack>
