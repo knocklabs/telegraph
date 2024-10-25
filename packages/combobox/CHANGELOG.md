@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.39
+
+### Patch Changes
+
+- [#294](https://github.com/knocklabs/telegraph/pull/294) [`03a6d5f`](https://github.com/knocklabs/telegraph/commit/03a6d5f6a8e2b57be6c63a8cf1dfaa284033a989) Thanks [@kylemcd](https://github.com/kylemcd)! - fix combobox escape key interactions
+
 ## 0.0.28
 
 ### Patch Changes
