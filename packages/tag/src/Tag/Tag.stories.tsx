@@ -7,7 +7,8 @@ import { COLOR, SIZE } from "./Tag.constants";
 const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphTag> = {
-  title: "Components",
+  tags: ["autodocs"],
+  title: "Components/Tag",
   component: TelegraphTag,
   argTypes: {
     size: {

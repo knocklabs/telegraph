@@ -8,6 +8,7 @@ import React from "react";
 import { Combobox as TelegraphCombobox } from "../Combobox";
 
 const meta: Meta = {
+  tags: ["autodocs"],
   title: "Components/Combobox",
   component: TelegraphCombobox.Root,
   argTypes: {},

@@ -8,6 +8,7 @@ import { COLOR, SIZE } from "./Input.constants";
 const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphInput> = {
+  tags: ["autodocs"],
   title: "Components/Input",
   component: TelegraphInput,
   argTypes: {

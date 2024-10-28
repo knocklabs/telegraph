@@ -21,6 +21,7 @@ const Icons = { ...Lucide };
 const meta: Meta<typeof TelegraphButton> = {
   title: "Components/Button",
   component: TelegraphButton,
+  tags: ["autodocs"],
   argTypes: {
     color: {
       options: buttonColorMap,

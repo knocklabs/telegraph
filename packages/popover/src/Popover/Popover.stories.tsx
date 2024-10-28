@@ -7,6 +7,7 @@ import { Stack } from "@telegraph/layout";
 import { Popover } from "./Popover";
 
 const meta: Meta = {
+  tags: ["autodocs"],
   title: "Components/Popover",
   component: Popover.Root,
   argTypes: {
