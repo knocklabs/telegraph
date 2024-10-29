@@ -4,20 +4,36 @@ import React from "react";
 
 type Option = TgphComponentProps<typeof Combobox.Option>;
 
+type SingleValue = string;
+type MultipleValue = Array<string>;
+
 type RootProps = Omit<
   TgphComponentProps<typeof Combobox.Root>,
   "value" | "onValueChange" | "layout"
 > & {
-  value?: Option["value"];
-  onValueChange?: (value: Option["value"]) => void;
   size?: TgphComponentProps<typeof Combobox.Trigger>["size"];
   triggerProps?: TgphComponentProps<typeof Combobox.Trigger>;
   contentProps?: TgphComponentProps<typeof Combobox.Content>;
   optionsProps?: TgphComponentProps<typeof Combobox.Options>;
-};
+  multiple?: boolean;
+} & (
+    | {
+        multiple?: true;
+        value?: MultipleValue;
+        onValueChange?: (value: MultipleValue) => void;
+        layout?: TgphComponentProps<typeof Combobox.Root>["layout"];
+      }
+    | {
+        multiple?: false | undefined;
+        value?: SingleValue;
+        onValueChange?: (value: SingleValue) => void;
+        layout?: never;
+      }
+  );
 
 const Root = ({
   size = "1",
+  multiple = false,
   value,
   onValueChange,
   triggerProps,
@@ -52,12 +68,36 @@ const Root = ({
     setOptions(options);
   }, [children]);
 
-  const label = options.find((option) => option.value === value)?.label;
+  const derivedValue = React.useMemo(() => {
+    if (multiple && value && Array.isArray(value)) {
+      return value.map((v) => ({
+        value: v,
+        label: options.find((o) => o.value === v)?.label,
+      }));
+    }
+    return value
+      ? {
+          value: value as string,
+          label: options.find((o) => o.value === value)?.label,
+        }
+      : undefined;
+  }, [multiple, value, options]);
 
   return (
     <Combobox.Root
-      value={value ? { value, label } : undefined}
-      onValueChange={(value) => onValueChange?.(value.value)}
+      value={derivedValue}
+      onValueChange={(value) => {
+        if (multiple && value && Array.isArray(value)) {
+          const changeFn = onValueChange as (value: MultipleValue) => void;
+          changeFn?.(value.map((v) => v.value));
+          return;
+        }
+
+        const changeFn = onValueChange as (value: SingleValue) => void;
+        const valueString = (value as { value: string }).value;
+        changeFn(valueString);
+      }}
+      closeOnSelect={!multiple}
       {...props}
     >
       <Combobox.Trigger size={size} {...triggerProps} />
