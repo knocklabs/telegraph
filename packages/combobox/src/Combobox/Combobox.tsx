@@ -56,6 +56,7 @@ type RootProps<O extends Option | Array<Option>> = {
   modal?: boolean;
   closeOnSelect?: boolean;
   clearable?: boolean;
+  disabled?: boolean;
   children?: React.ReactNode;
 };
 
@@ -81,12 +82,14 @@ const ComboboxContext = React.createContext<
   setOpen: () => {},
   onOpenToggle: () => {},
   clearable: false,
+  disabled: false,
 });
 
 const Root = <O extends Option | Array<Option>>({
   modal = true,
   closeOnSelect = true,
   clearable = false,
+  disabled = false,
   open: openProp,
   onOpenChange: onOpenChangeProp,
   defaultOpen: defaultOpenProp,
@@ -138,6 +141,7 @@ const Root = <O extends Option | Array<Option>>({
         onOpenToggle,
         closeOnSelect,
         clearable,
+        disabled,
         searchQuery,
         setSearchQuery,
         triggerRef,
@@ -401,6 +405,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         // Custom attributes
         data-tgph-combobox-trigger
         data-tgph-comobox-trigger-open={context.open}
+        disabled={context.disabled}
       >
         <TriggerValue />
         <Stack align="center" gap="1">
