@@ -24,7 +24,7 @@ type RootProps = Omit<
         layout?: TgphComponentProps<typeof Combobox.Root>["layout"];
       }
     | {
-        multiple?: false | undefined;
+        multiple?: false;
         value?: SingleValue;
         onValueChange?: (value: SingleValue) => void;
         layout?: never;
@@ -42,12 +42,9 @@ const Root = ({
   children,
   ...props
 }: RootProps) => {
-  const [options, setOptions] = React.useState<Array<Option>>([]);
-
   // Get all of the options passed into Select so that we can display
   // the label of the selected option in the trigger.
-  React.useEffect(() => {
-    if (!children) return;
+  const options = React.useMemo(() => {
     const options = React.Children.toArray(children)
       // Filter down to the components that are Option components
       .filter((child) => {
@@ -65,7 +62,7 @@ const Root = ({
         };
       });
 
-    setOptions(options);
+    return options;
   }, [children]);
 
   const derivedValue = React.useMemo(() => {
