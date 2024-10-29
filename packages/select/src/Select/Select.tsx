@@ -108,7 +108,7 @@ const Root = ({
   );
 };
 
-type OptionProps = TgphComponentProps<typeof Combobox.Option>;
+type OptionProps = Omit<TgphComponentProps<typeof Combobox.Option>, "label">;
 
 const Option = ({ value, children, ...props }: OptionProps) => {
   return <Combobox.Option value={value} label={children} {...props} />;
