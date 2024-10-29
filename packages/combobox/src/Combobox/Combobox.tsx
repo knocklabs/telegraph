@@ -40,18 +40,14 @@ type MultiSelect = {
   onValueChange?: (value: Array<Option>) => void;
 };
 
-type RootProps = (
-  | {
-      value?: MultiSelect["value"];
-      onValueChange?: MultiSelect["onValueChange"];
-      layout?: "truncate" | "wrap";
-    }
-  | {
-      value?: SingleSelect["value"];
-      onValueChange?: SingleSelect["onValueChange"];
-      layout?: never;
-    }
-) & {
+type LayoutValue<O extends Option | Array<Option>> = O extends Option
+  ? never
+  : "truncate" | "wrap";
+
+type RootProps<O extends Option | Array<Option>> = {
+  value?: O;
+  onValueChange?: (value: O) => void;
+  layout?: LayoutValue<O>;
   open?: boolean;
   defaultOpen?: boolean;
   errored?: boolean;
@@ -64,7 +60,7 @@ type RootProps = (
 };
 
 const ComboboxContext = React.createContext<
-  Omit<RootProps, "children"> & {
+  Omit<RootProps<Option | Array<Option>>, "children"> & {
     contentId: string;
     triggerId: string;
     open: boolean;
@@ -77,6 +73,7 @@ const ComboboxContext = React.createContext<
     contentRef?: React.RefObject<HTMLDivElement>;
   }
 >({
+  value: undefined,
   onValueChange: () => {},
   contentId: "",
   triggerId: "",
@@ -86,7 +83,7 @@ const ComboboxContext = React.createContext<
   clearable: false,
 });
 
-const Root = ({
+const Root = <O extends Option | Array<Option>>({
   modal = true,
   closeOnSelect = true,
   clearable = false,
@@ -99,7 +96,7 @@ const Root = ({
   placeholder,
   layout,
   ...props
-}: RootProps) => {
+}: RootProps<O>) => {
   const contentId = React.useId();
   const triggerId = React.useId();
   const triggerRef = React.useRef(null);
@@ -131,7 +128,10 @@ const Root = ({
         contentId,
         triggerId,
         value,
-        onValueChange,
+        // Need to cast this to avoid type errors
+        // because the type of onValueChange is not
+        // consistent with the value type
+        onValueChange: onValueChange as (value: Option | Array<Option>) => void,
         placeholder,
         open,
         setOpen,
@@ -158,8 +158,8 @@ const Root = ({
 };
 
 type TriggerTagProps = {
-  value: string;
-  label?: string;
+  value: DefinedOption["value"];
+  label?: DefinedOption["label"];
 };
 
 const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
@@ -618,8 +618,8 @@ const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
 type OptionProps<T extends TgphElement> = TgphComponentProps<
   typeof TelegraphMenu.Button<T>
 > & {
-  value: string;
-  label?: string;
+  value: DefinedOption["value"];
+  label?: DefinedOption["label"];
   selected?: boolean | null;
 };
 
