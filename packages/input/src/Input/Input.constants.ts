@@ -9,6 +9,11 @@ export const SIZE = {
     "2": "text-2 px-2",
     "3": "text-3 px-3",
   },
+  Text: {
+    "1": "1",
+    "2": "2",
+    "3": "3",
+  },
   Slot: {
     "1": "[&>[data-tgph-button]]:rounded-1",
     "2": "[&>[data-tgph-button]]:rounded-1",

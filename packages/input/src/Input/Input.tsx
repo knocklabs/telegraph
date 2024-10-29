@@ -8,6 +8,7 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
+import { Text } from "@telegraph/typography";
 import clsx from "clsx";
 import React from "react";
 
@@ -23,7 +24,9 @@ type RootProps<T extends TgphElement> = Omit<
   PolymorphicPropsWithTgphRef<T, HTMLInputElement>,
   "size"
 > &
-  BaseRootProps;
+  BaseRootProps & {
+    textProps?: Omit<React.ComponentProps<typeof Text<"input">>, "as">;
+  };
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
@@ -39,6 +42,7 @@ const Root = <T extends TgphElement>({
   as = "input" as T,
   size = "2",
   variant = "outline",
+  textProps = { size: SIZE.Text[size], color: "default" },
   className,
   disabled,
   errored,
@@ -79,9 +83,14 @@ const Root = <T extends TgphElement>({
           });
         }}
       >
-        <Component
+        {/* 
+          We choose to use the `<Text/>` component as a base here so that we can 
+          configure the text inside of the input to match the design system font sizes
+        */}
+        <Text
+          as={Component}
           className={clsx(
-            "appearance-none text-gray-12 border-none shadow-0 outline-0 bg-transparent",
+            "appearance-none border-none shadow-0 outline-0 bg-transparent",
             "[font-family:inherit] h-full w-full",
             "order-2",
             SIZE.Input[size],
@@ -89,6 +98,7 @@ const Root = <T extends TgphElement>({
           )}
           disabled={disabled}
           {...props}
+          {...textProps}
           ref={composedRefs}
         />
         {children}

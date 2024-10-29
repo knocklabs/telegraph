@@ -1,33 +1,42 @@
 import type { TgphComponentProps } from "@telegraph/helpers";
-import type { Box } from "@telegraph/layout";
+import type { Text } from "@telegraph/typography";
 
 export type Size = "1" | "2" | "3";
 export type Variant = "outline" | "ghost";
 export type State = "default" | "disabled" | "error";
 
 type SizeMap = {
-  [key in Size]: TgphComponentProps<typeof Box>;
+  [key in Size]: Partial<
+    Pick<TgphComponentProps<typeof Text>, "p" | "size" | "px" | "py">
+  >;
 };
 
 type VariantMap = {
-  [key in Variant]: TgphComponentProps<typeof Box>;
+  [key in Variant]: Partial<
+    Pick<TgphComponentProps<typeof Text>, "border" | "borderColor">
+  >;
 };
 
 type StateMap = {
-  [key in State]: TgphComponentProps<typeof Box>;
+  [key in State]: Partial<
+    Pick<TgphComponentProps<typeof Text>, "bg" | "borderColor">
+  >;
 };
 
 export const sizeMap: SizeMap = {
   "1": {
     p: "1",
+    size: "1",
   },
   "2": {
     px: "2",
     py: "1",
+    size: "2",
   },
   "3": {
     px: "3",
     py: "2",
+    size: "3",
   },
 };
 
