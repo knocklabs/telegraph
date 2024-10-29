@@ -5,9 +5,14 @@ export const SIZE = {
     "3": "h-10 pl-0 rounded-3",
   },
   Input: {
-    "1": "text-1 px-1",
-    "2": "text-2 px-2",
-    "3": "text-3 px-3",
+    "1": "px-1",
+    "2": "px-2",
+    "3": "px-3",
+  },
+  Text: {
+    "1": "1",
+    "2": "2",
+    "3": "3",
   },
   Slot: {
     "1": "[&>[data-tgph-button]]:rounded-1",

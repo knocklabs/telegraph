@@ -1,5 +1,5 @@
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Text } from "@telegraph/typography";
 import { clsx } from "clsx";
 import React from "react";
 
@@ -25,10 +25,11 @@ type TextAreaBaseProps = {
   errored?: boolean;
   disabled?: boolean;
   resize?: "both" | "vertical" | "horizontal" | "none";
+  textProps?: Omit<React.ComponentProps<typeof Text>, "as">;
 };
 
 type TextAreaProps = TextAreaBaseProps &
-  TgphComponentProps<typeof Box> &
+  TgphComponentProps<typeof Text> &
   React.ComponentPropsWithoutRef<"textarea">;
 
 const TextArea = ({
@@ -39,12 +40,13 @@ const TextArea = ({
   disabled,
   errored,
   className,
+  textProps,
   ...props
 }: TextAreaProps) => {
   const derivedState = deriveState({ disabled, errored });
 
   return (
-    <Box
+    <Text
       as="textarea"
       className={clsx(
         baseStyles,
@@ -56,6 +58,7 @@ const TextArea = ({
       {...sizeMap[size]}
       {...variantMap[variant]}
       {...stateMap[derivedState]}
+      {...textProps}
       {...props}
     />
   );
