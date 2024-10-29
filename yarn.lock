@@ -6626,7 +6626,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/combobox@workspace:packages/combobox":
+"@telegraph/combobox@workspace:*, @telegraph/combobox@workspace:packages/combobox":
   version: 0.0.0-use.local
   resolution: "@telegraph/combobox@workspace:packages/combobox"
   dependencies:
@@ -6682,7 +6682,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/helpers@workspace:^, @telegraph/helpers@workspace:packages/helpers":
+"@telegraph/helpers@workspace:*, @telegraph/helpers@workspace:^, @telegraph/helpers@workspace:packages/helpers":
   version: 0.0.0-use.local
   resolution: "@telegraph/helpers@workspace:packages/helpers"
   dependencies:
@@ -6985,6 +6985,29 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.3.1
+  languageName: unknown
+  linkType: soft
+
+"@telegraph/select@workspace:packages/select":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/select@workspace:packages/select"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/combobox": "workspace:*"
+    "@telegraph/helpers": "workspace:*"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@types/react": "npm:^18.2.48"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.3.1"
+    typescript: "npm:^5.5.4"
+    vite: "npm:^5.3.6"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 

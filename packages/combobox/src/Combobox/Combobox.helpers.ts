@@ -1,4 +1,4 @@
-export type DefinedOption = { value: string; label?: string };
+export type DefinedOption = { value: string; label?: string | React.ReactNode };
 export type Option = DefinedOption | undefined;
 export const isMultiSelect = (
   value: Option | Array<Option>,

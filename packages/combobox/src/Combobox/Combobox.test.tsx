@@ -156,6 +156,14 @@ describe("Combobox", () => {
       await user.click(clearButton!);
       expect(trigger?.textContent).toBe("");
     });
+    it("should not be able to open when disabled", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect disabled />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "false");
+      expect(trigger?.getAttribute("aria-expanded")).toBe("false");
+    });
   });
   describe("Multi Select", () => {
     it("combobox is accessible", async () => {
