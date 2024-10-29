@@ -97,9 +97,9 @@ const Root = <T extends TgphElement>({
             className,
           )}
           disabled={disabled}
-          {...props}
           {...textProps}
-          ref={composedRefs}
+          {...props}
+          tgphRef={composedRefs}
         />
         {children}
       </Box>
