@@ -5,6 +5,7 @@ import { Lucide } from "@telegraph/icon";
 import { MenuItem as TelegraphMenuItem } from "./MenuItem";
 
 const meta: Meta = {
+  tags: ["autodocs"],
   title: "Components/Menu/MenuItem",
   component: TelegraphMenuItem,
   argTypes: {

@@ -9,6 +9,7 @@ import { TooltipGroupProvider } from "./Tooltip.hooks";
 const meta: Meta = {
   title: "Components/Tooltip",
   component: TelegraphTooltip,
+  tags: ["autodocs"],
   argTypes: {
     label: {
       control: {

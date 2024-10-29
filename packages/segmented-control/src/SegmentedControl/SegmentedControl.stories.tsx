@@ -8,6 +8,7 @@ import { SegmentedControl as TelegraphSegmentedControl } from "./SegmentedContro
 const meta: Meta<typeof TelegraphSegmentedControl> = {
   title: "Components/SegmentedControl",
   component: TelegraphSegmentedControl.Root,
+  tags: ["autodocs"],
 };
 
 type Story = StoryObj<typeof TelegraphSegmentedControl.Root>;

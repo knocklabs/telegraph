@@ -7,9 +7,31 @@ import { colorMap, sizeMap } from "./Icon.constants";
 
 const Icons = { ...Lucide };
 
+type StorybookTelegraphIconType = React.ComponentProps<typeof TelegraphIcon>;
+
+const StorybookTelegraphIcon = ({
+  icon,
+  ...props
+}: StorybookTelegraphIconType) => {
+  return (
+    <TelegraphIcon
+      // @ts-expect-error: for illustrative purposes only
+      icon={Icons[icon as keyof typeof Icons]}
+      {...props}
+      alt="test"
+    />
+  );
+};
+
 const meta: Meta<typeof TelegraphIcon> = {
-  title: "Components",
-  component: TelegraphIcon,
+  tags: ["autodocs"],
+  title: "Components/Icon",
+  component: StorybookTelegraphIcon,
+};
+
+export default meta;
+
+export const Default: Story = {
   argTypes: {
     icon: {
       options: Object.keys(Icons),
@@ -39,11 +61,11 @@ const meta: Meta<typeof TelegraphIcon> = {
   args: {
     color: "default",
     size: "3",
+    icon: "Bell",
+    alt: "Bell",
     variant: "primary",
   },
 };
-
-export default meta;
 
 type StorybookIconType = Omit<
   React.ComponentProps<typeof TelegraphIcon>,
@@ -53,15 +75,3 @@ type StorybookIconType = Omit<
 };
 
 type Story = StoryObj<StorybookIconType>;
-
-export const Icon: Story = {
-  render: ({ icon, ...props }) => (
-    <TelegraphIcon
-      // @ts-expect-error: for illustrative purposes only
-      icon={Icons[icon as keyof typeof Icons]}
-      {...props}
-      alt="test"
-    />
-  ),
-  args: { icon: "Bell" },
-};

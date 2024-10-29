@@ -7,6 +7,7 @@ import { Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "./Menu";
 
 const meta: Meta = {
+  tags: ["autodocs"],
   title: "Components/Menu",
   component: TelegraphMenu.Root,
   argTypes: {

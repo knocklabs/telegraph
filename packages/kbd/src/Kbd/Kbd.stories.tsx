@@ -7,6 +7,7 @@ import { sizeMap } from "./Kbd.constants";
 import { KbdProvider } from "./Kbd.hooks";
 
 const meta: Meta = {
+  tags: ["autodocs"],
   title: "Components/Kbd",
   component: TelegraphKbd,
   argTypes: {

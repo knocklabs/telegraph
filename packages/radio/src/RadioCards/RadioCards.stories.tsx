@@ -5,6 +5,7 @@ import React from "react";
 import { RadioCards as TelegraphRadioCards } from "./RadioCards";
 
 const meta: Meta<typeof TelegraphRadioCards> = {
+  tags: ["autodocs"],
   title: "Components/RadioCards",
   component: TelegraphRadioCards,
   argTypes: {
