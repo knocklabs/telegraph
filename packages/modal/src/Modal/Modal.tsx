@@ -1,4 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { FocusScope } from "@radix-ui/react-focus-scope";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
@@ -200,11 +201,13 @@ type ContentRef = React.ElementRef<typeof Dialog.Content>;
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
-      <Dialog.Content ref={forwardedRef} asChild {...props}>
-        <Stack direction="column" h="full" {...props}>
-          {children}
-        </Stack>
-      </Dialog.Content>
+      <FocusScope trapped={true}>
+        <Dialog.Content ref={forwardedRef} asChild {...props}>
+          <Stack direction="column" h="full" {...props}>
+            {children}
+          </Stack>
+        </Dialog.Content>
+      </FocusScope>
     );
   },
 );
