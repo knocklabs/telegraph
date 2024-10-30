@@ -84,9 +84,9 @@ const RootComponent = ({
       <Dialog.Root
         open={open}
         onOpenChange={(value) => {
-          const hasStacking = !!stacking;
+          const hasLayers = stacking?.layers?.length > 0;
 
-          if (hasStacking) {
+          if (hasLayers) {
             if (
               value === false &&
               id === stacking.layers[stacking.layers.length - 1]

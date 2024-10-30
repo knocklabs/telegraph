@@ -21,9 +21,8 @@ const DismissableWrapper = ({
   ...props
 }: DismissableWrapperProps) => {
   const isTopLayer = id === layers[layers.length - 1];
-  const hasMultipleLayers = layers?.length > 1;
 
-  if (isTopLayer && hasMultipleLayers) {
+  if (isTopLayer) {
     return <DismissableLayer {...props}>{children}</DismissableLayer>;
   }
 
