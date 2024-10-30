@@ -4,6 +4,7 @@ import { Heading } from "@telegraph/typography";
 import React from "react";
 
 import { Modal as TelegraphModal } from "./Modal";
+import { ModalStackingProvider } from "./ModalStacking";
 
 const meta: Meta<typeof TelegraphModal.Root> = {
   title: "Components/Modal",
@@ -57,6 +58,86 @@ export const Modal: Story = {
             </Modal.Footer>
           </Modal.Content>
         </Modal.Root>
+      </>
+    );
+  },
+};
+
+type NestedModalProps = {
+  open: boolean;
+  onOpenChange: (value: boolean) => void;
+  depth: number;
+  onClick: () => void;
+};
+
+const NestedModal = ({
+  open,
+  depth,
+  onOpenChange,
+  onClick,
+}: NestedModalProps) => {
+  return (
+    <>
+      <TelegraphModal.Root
+        a11yTitle={`Nested Modal ${depth}`}
+        open={open}
+        onOpenChange={onOpenChange}
+      >
+        <TelegraphModal.Content>
+          <TelegraphModal.Header>
+            <Heading as="h2" size="3">
+              Nested Modal {depth}
+            </Heading>
+            <TelegraphModal.Close />
+          </TelegraphModal.Header>
+          <TelegraphModal.Body>
+            <Button variant="outline" size="1" onClick={onClick}>
+              Open Nested Modal {depth + 1}
+            </Button>
+          </TelegraphModal.Body>
+        </TelegraphModal.Content>
+      </TelegraphModal.Root>
+    </>
+  );
+};
+
+export const NestedModals: Story = {
+  render: () => {
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const [modal1Open, setModal1Open] = React.useState(false);
+    const [modal2Open, setModal2Open] = React.useState(false);
+    const [modal3Open, setModal3Open] = React.useState(false);
+    const [modal4Open, setModal4Open] = React.useState(false);
+    /* eslint-enable react-hooks/rules-of-hooks */
+    return (
+      <>
+        <ModalStackingProvider>
+          <Button onClick={() => setModal1Open(true)}>Open Modal</Button>
+          <NestedModal
+            open={modal1Open}
+            onOpenChange={setModal1Open}
+            onClick={() => setModal2Open(true)}
+            depth={0}
+          />
+          <NestedModal
+            open={modal2Open}
+            onOpenChange={setModal2Open}
+            onClick={() => setModal3Open(true)}
+            depth={1}
+          />
+          <NestedModal
+            open={modal3Open}
+            onOpenChange={setModal3Open}
+            onClick={() => setModal4Open(true)}
+            depth={2}
+          />
+          <NestedModal
+            open={modal4Open}
+            onOpenChange={setModal4Open}
+            onClick={() => {}}
+            depth={3}
+          />
+        </ModalStackingProvider>
       </>
     );
   },

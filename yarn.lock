@@ -4243,7 +4243,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-focus-scope@npm:1.1.0":
+"@radix-ui/react-focus-scope@npm:1.1.0, @radix-ui/react-focus-scope@npm:^1.1.0":
   version: 1.1.0
   resolution: "@radix-ui/react-focus-scope@npm:1.1.0"
   dependencies:
@@ -6676,6 +6676,7 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-dialog": "npm:^1.1.1"
+    "@radix-ui/react-focus-scope": "npm:^1.1.0"
     "@radix-ui/react-visually-hidden": "npm:^1.1.0"
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
@@ -6837,7 +6838,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.4"
-    vite: "npm:^5.3.6"
+    vite: "npm:^5.4.7"
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
