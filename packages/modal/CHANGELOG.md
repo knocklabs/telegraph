@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.47
+
+### Patch Changes
+
+- [#295](https://github.com/knocklabs/telegraph/pull/295) [`17d9d04`](https://github.com/knocklabs/telegraph/commit/17d9d0468df142513e6ef49d7adfe18b25e2fb79) Thanks [@kylemcd](https://github.com/kylemcd)! - modal stacking
+
 ## 0.0.46
 
 ### Patch Changes
