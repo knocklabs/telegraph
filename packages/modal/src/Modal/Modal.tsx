@@ -3,7 +3,7 @@ import { FocusScope } from "@radix-ui/react-focus-scope";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
-import type { Required } from "@telegraph/helpers";
+import { RefToTgphRef, type Required } from "@telegraph/helpers";
 import type {
   PolymorphicProps,
   TgphComponentProps,
@@ -203,9 +203,11 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
     return (
       <FocusScope trapped={true} asChild>
         <Dialog.Content ref={forwardedRef} asChild {...props}>
-          <Stack direction="column" h="full" {...props}>
-            {children}
-          </Stack>
+          <RefToTgphRef>
+            <Stack direction="column" h="full" {...props}>
+              {children}
+            </Stack>
+          </RefToTgphRef>
         </Dialog.Content>
       </FocusScope>
     );
