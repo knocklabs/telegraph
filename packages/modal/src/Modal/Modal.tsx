@@ -201,7 +201,7 @@ type ContentRef = React.ElementRef<typeof Dialog.Content>;
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
-      <FocusScope trapped={true}>
+      <FocusScope trapped={true} asChild>
         <Dialog.Content ref={forwardedRef} asChild {...props}>
           <Stack direction="column" h="full" {...props}>
             {children}
@@ -234,9 +234,22 @@ const Close = <T extends TgphElement>({
 type BodyProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Stack>;
 
-const Body = <T extends TgphElement>({ children, ...props }: BodyProps<T>) => {
+const Body = <T extends TgphElement>({
+  style,
+  children,
+  ...props
+}: BodyProps<T>) => {
   return (
-    <Stack direction="column" px="6" py="4" {...props}>
+    <Stack
+      direction="column"
+      px="6"
+      py="4"
+      style={{
+        overflowY: "auto",
+        ...style,
+      }}
+      {...props}
+    >
       {children}
     </Stack>
   );
