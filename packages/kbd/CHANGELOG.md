@@ -1,5 +1,11 @@
 # @telegraph/kbd
 
+## 0.0.8
+
+### Patch Changes
+
+- [#305](https://github.com/knocklabs/telegraph/pull/305) [`6e64eb0`](https://github.com/knocklabs/telegraph/commit/6e64eb0487d509866242fc668a27caf6368e7958) Thanks [@kylemcd](https://github.com/kylemcd)! - add directional arrow keys to kbd
+
 ## 0.0.3
 
 ### Patch Changes
