@@ -202,13 +202,13 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
       <FocusScope trapped={true} asChild>
-        <Dialog.Content ref={forwardedRef} asChild {...props}>
-          <RefToTgphRef>
+        <RefToTgphRef>
+          <Dialog.Content ref={forwardedRef} asChild {...props}>
             <Stack direction="column" h="full" {...props}>
               {children}
             </Stack>
-          </RefToTgphRef>
-        </Dialog.Content>
+          </Dialog.Content>
+        </RefToTgphRef>
       </FocusScope>
     );
   },
