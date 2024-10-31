@@ -31,5 +31,21 @@ export const getIconOrKey = (key: string) => {
     return "Ctrl";
   }
 
+  if (key === "ArrowRight") {
+    return Lucide.ArrowRight;
+  }
+
+  if (key === "ArrowLeft") {
+    return Lucide.ArrowLeft;
+  }
+
+  if (key === "ArrowDown") {
+    return Lucide.ArrowDown;
+  }
+
+  if (key === "ArrowUp") {
+    return Lucide.ArrowUp;
+  }
+
   return key.length === 1 ? key.toUpperCase() : key;
 };
