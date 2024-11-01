@@ -3,7 +3,7 @@ import { FocusScope } from "@radix-ui/react-focus-scope";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
-import type { Required } from "@telegraph/helpers";
+import { RefToTgphRef, type Required } from "@telegraph/helpers";
 import type {
   PolymorphicProps,
   TgphComponentProps,
@@ -201,12 +201,14 @@ type ContentRef = React.ElementRef<typeof Dialog.Content>;
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
-      <FocusScope trapped={true}>
-        <Dialog.Content ref={forwardedRef} asChild {...props}>
-          <Stack direction="column" h="full" {...props}>
-            {children}
-          </Stack>
-        </Dialog.Content>
+      <FocusScope trapped={true} asChild>
+        <RefToTgphRef>
+          <Dialog.Content ref={forwardedRef} asChild {...props}>
+            <Stack direction="column" h="full" {...props}>
+              {children}
+            </Stack>
+          </Dialog.Content>
+        </RefToTgphRef>
       </FocusScope>
     );
   },
@@ -234,9 +236,22 @@ const Close = <T extends TgphElement>({
 type BodyProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Stack>;
 
-const Body = <T extends TgphElement>({ children, ...props }: BodyProps<T>) => {
+const Body = <T extends TgphElement>({
+  style,
+  children,
+  ...props
+}: BodyProps<T>) => {
   return (
-    <Stack direction="column" px="6" py="4" {...props}>
+    <Stack
+      direction="column"
+      px="6"
+      py="4"
+      style={{
+        overflowY: "auto",
+        ...style,
+      }}
+      {...props}
+    >
       {children}
     </Stack>
   );
