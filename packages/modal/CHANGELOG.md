@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.48
+
+### Patch Changes
+
+- [#304](https://github.com/knocklabs/telegraph/pull/304) [`5406a48`](https://github.com/knocklabs/telegraph/commit/5406a48748577104a9cdcad5bbb46b617bb6b8cb) Thanks [@kylemcd](https://github.com/kylemcd)! - fix modal overflow issue
+
 ## 0.0.47
 
 ### Patch Changes
