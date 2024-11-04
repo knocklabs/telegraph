@@ -43,7 +43,7 @@
     "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
-    "@manypkg/cli": "^0.21.2",
+    "@manypkg/cli": "^0.22.0",
     "@moonrepo/cli": "^1.28.2",
     "@storybook/addon-essentials": "^7.6.20",
     "@storybook/addon-interactions": "^7.6.17",
