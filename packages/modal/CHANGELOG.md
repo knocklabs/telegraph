@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.50
+
+### Patch Changes
+
+- [`9d28f9c`](https://github.com/knocklabs/telegraph/commit/9d28f9ca6024e20b8bf4e537dab53aa9f9d127a3) Thanks [@kylemcd](https://github.com/kylemcd)! - Remove layer concept because of modal re-rendering issues
+
 ## 0.0.49
 
 ### Patch Changes
