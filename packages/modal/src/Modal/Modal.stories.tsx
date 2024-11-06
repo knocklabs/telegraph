@@ -34,7 +34,7 @@ type Story = StoryObj<typeof TelegraphModal.Root>;
 export const Modal: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const Modal = TelegraphModal;
     return (
       <>
@@ -66,7 +66,7 @@ export const Modal: Story = {
 export const ScrollingModal: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const Modal = TelegraphModal;
     return (
       <>
@@ -204,12 +204,19 @@ const NestedModal = ({
   onOpenChange,
   onClick,
 }: NestedModalProps) => {
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
       <TelegraphModal.Root
         a11yTitle={`Nested Modal ${depth}`}
         open={open}
         onOpenChange={onOpenChange}
+        onMountAutoFocus={(event) => {
+          // Demonstrate focusing on a specific element
+          // when the modal is opened
+          event.preventDefault();
+          buttonRef.current?.focus();
+        }}
       >
         <TelegraphModal.Content>
           <TelegraphModal.Header>
@@ -219,7 +226,12 @@ const NestedModal = ({
             <TelegraphModal.Close />
           </TelegraphModal.Header>
           <TelegraphModal.Body>
-            <Button variant="outline" size="1" onClick={onClick}>
+            <Button
+              variant="outline"
+              size="1"
+              onClick={onClick}
+              tgphRef={buttonRef}
+            >
               Open Nested Modal {depth + 1}
             </Button>
           </TelegraphModal.Body>
