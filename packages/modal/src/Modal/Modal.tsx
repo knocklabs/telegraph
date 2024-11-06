@@ -41,6 +41,16 @@ const Root = ({
     defaultProp: defaultOpenProp,
   });
 
+  const stacking = useModalStacking();
+  const id = props.a11yTitle;
+
+  React.useEffect(() => {
+    if (!open && stacking.layers.includes(id)) {
+      console.log("HERE REMOVE", id, open);
+      stacking.removeLayer(id);
+    }
+  }, [id, stacking, open]);
+
   // Prevent rendering anything within the modal if it is not open
   if (!open) return;
 
@@ -83,11 +93,13 @@ const RootComponent = ({
   return (
     <DismissableLayer
       onEscapeKeyDown={(event) => {
+        if (!isTopLayer) return;
         event.preventDefault();
         stacking.removeTopLayer();
         onOpenChange(false);
       }}
       onPointerDownOutside={(event) => {
+        if (!isTopLayer) return;
         event.preventDefault();
         stacking.removeTopLayer();
         onOpenChange(false);
