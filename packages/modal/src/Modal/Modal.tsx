@@ -1,4 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { FocusScope } from "@radix-ui/react-focus-scope";
 import * as Portal from "@radix-ui/react-portal";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
@@ -15,7 +16,6 @@ import { Box, Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
-import { DismissableWrapper } from "./Modal.helpers";
 import { useModalStacking } from "./ModalStacking";
 
 type RootProps = Omit<
@@ -58,7 +58,6 @@ const RootComponent = ({
   a11yTitle,
   a11yDescription,
   children,
-  layer: layerProp,
   // Focus scope props
   trapped,
   onMountAutoFocus,
@@ -73,8 +72,8 @@ const RootComponent = ({
   const stacking = useModalStacking();
   React.useEffect(() => {
     if (!stacking || !open || stacking.layers.includes(id)) return;
-    stacking.addLayer(id, { layer: layerProp });
-  }, [id, layerProp, stacking, open]);
+    stacking.addLayer(id);
+  }, [id, stacking, open]);
 
   const layer = stacking.layers?.indexOf(id) || 0;
   const layersLength = stacking.layers?.length || 0;
@@ -82,9 +81,7 @@ const RootComponent = ({
   const isTopLayer = id === stacking.layers[stacking.layers.length - 1];
 
   return (
-    <DismissableWrapper
-      id={id}
-      layers={stacking.layers}
+    <DismissableLayer
       onEscapeKeyDown={(event) => {
         event.preventDefault();
         stacking.removeTopLayer();
@@ -191,7 +188,7 @@ const RootComponent = ({
           )}
         </AnimatePresence>
       </Dialog.Root>
-    </DismissableWrapper>
+    </DismissableLayer>
   );
 };
 
