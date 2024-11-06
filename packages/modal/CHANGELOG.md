@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.51
+
+### Patch Changes
+
+- [`952961b`](https://github.com/knocklabs/telegraph/commit/952961b06e5aab097df4b4fe79f7ae51a5a06f1a) Thanks [@kylemcd](https://github.com/kylemcd)! - respect top layer logic in dismissable layer + remove from layers if closed outside of component
+
 ## 0.0.50
 
 ### Patch Changes
