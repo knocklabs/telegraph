@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.49
+
+### Patch Changes
+
+- [#313](https://github.com/knocklabs/telegraph/pull/313) [`0b3a8f0`](https://github.com/knocklabs/telegraph/commit/0b3a8f0a4350851709edb63edc192793a87c249a) Thanks [@kylemcd](https://github.com/kylemcd)! - fix some modal stacking issues by making modals exist in portals
+
 ## 0.0.48
 
 ### Patch Changes
