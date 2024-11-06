@@ -1,9 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { FocusScope } from "@radix-ui/react-focus-scope";
+import * as Portal from "@radix-ui/react-portal";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
-import { RefToTgphRef, type Required } from "@telegraph/helpers";
+import { RefToTgphRef } from "@telegraph/helpers";
 import type {
   PolymorphicProps,
   TgphComponentProps,
@@ -21,6 +22,7 @@ type RootProps = Omit<
   React.ComponentPropsWithoutRef<typeof Dialog.Root>,
   "modal"
 > &
+  React.ComponentPropsWithoutRef<typeof FocusScope> &
   TgphComponentProps<typeof Stack> & {
     a11yTitle: string;
     a11yDescription?: string;
@@ -45,6 +47,11 @@ const Root = ({
   return <RootComponent open={open} onOpenChange={onOpenChange} {...props} />;
 };
 
+type RootComponentProps = RootProps & {
+  open: boolean;
+  onOpenChange: (value: boolean) => void;
+};
+
 const RootComponent = ({
   open,
   onOpenChange,
@@ -52,11 +59,18 @@ const RootComponent = ({
   a11yDescription,
   children,
   layer: layerProp,
+  // Focus scope props
+  trapped,
+  onMountAutoFocus,
+  onUnmountAutoFocus,
   ...props
-}: Required<RootProps, "open" | "onOpenChange">) => {
-  const id = React.useId();
+}: RootComponentProps) => {
+  // We use the a11yTitle as the id for the modal as it is unique
+  // and can be used to identify the modal in the stacking context.
+  // Without the need to generate a random id and manage between
+  // different modal rendering patterns.
+  const id = a11yTitle;
   const stacking = useModalStacking();
-
   React.useEffect(() => {
     if (!stacking || !open || stacking.layers.includes(id)) return;
     stacking.addLayer(id, { layer: layerProp });
@@ -65,6 +79,7 @@ const RootComponent = ({
   const layer = stacking.layers?.indexOf(id) || 0;
   const layersLength = stacking.layers?.length || 0;
   const isStacked = layer !== 0;
+  const isTopLayer = id === stacking.layers[stacking.layers.length - 1];
 
   return (
     <DismissableWrapper
@@ -111,51 +126,68 @@ const RootComponent = ({
         </VisuallyHidden.Root>
         <AnimatePresence>
           {open && (
-            <Overlay layer={layer}>
-              <Stack
-                as={motion.div}
-                initial={{
-                  top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
-                }}
-                animate={{
-                  top: isStacked
-                    ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
-                    : "var(--tgph-spacing-16)",
-                }}
-                exit={{ top: 0 }}
-                transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-                w="full"
-                justify="center"
-                style={{
-                  position: "fixed",
-                  left: 0,
-                  maxHeight: "calc(100vh - var(--tgph-spacing-32))",
-                  maxWidth: "calc(100vw - var(--tgph-spacing-8))",
-                  zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
-                }}
-                key={`container-${id}`}
-              >
-                <Stack
-                  direction="column"
-                  as={motion.div}
-                  animate={{
-                    scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
-                    transformOrigin: "center center",
-                  }}
-                  transition={{ duration: 0.2, bounce: 0, type: "spring" }}
-                  maxW={props.maxW ?? "160"}
-                  w={props.w ?? "full"}
-                  bg="surface-1"
-                  border="px"
-                  rounded="4"
-                  shadow="3"
-                  key={`content-${id}`}
-                  {...props}
+            // We add the className "tgph" here so that styles within
+            // the portal get scoped properly to telegraph
+            <Portal.Root className="tgph">
+              <Overlay layer={layer}>
+                <FocusScope
+                  trapped={typeof trapped === "boolean" ? trapped : isTopLayer}
+                  onMountAutoFocus={onMountAutoFocus}
+                  onUnmountAutoFocus={onUnmountAutoFocus}
+                  asChild
                 >
-                  {children}
-                </Stack>
-              </Stack>
-            </Overlay>
+                  <RefToTgphRef>
+                    <Stack
+                      as={motion.div}
+                      initial={{
+                        top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
+                      }}
+                      animate={{
+                        top: isStacked
+                          ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
+                          : "var(--tgph-spacing-16)",
+                      }}
+                      exit={{ top: 0 }}
+                      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                      w="full"
+                      justify="center"
+                      style={{
+                        position: "fixed",
+                        left: 0,
+                        maxHeight: "calc(100vh - var(--tgph-spacing-32))",
+                        maxWidth: "calc(100vw - var(--tgph-spacing-8))",
+                        zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
+                      }}
+                      key={`container-${id}`}
+                    >
+                      <Stack
+                        direction="column"
+                        as={motion.div}
+                        animate={{
+                          scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
+                          transformOrigin: "center center",
+                        }}
+                        transition={{
+                          duration: 0.2,
+                          bounce: 0,
+                          type: "spring",
+                        }}
+                        maxW={props.maxW ?? "160"}
+                        w={props.w ?? "full"}
+                        bg="surface-1"
+                        border="px"
+                        rounded="4"
+                        shadow="3"
+                        key={`content-${id}`}
+                        {...props}
+                      >
+                        {children}
+                      </Stack>
+                    </Stack>
+                  </RefToTgphRef>
+                </FocusScope>
+              </Overlay>
+            </Portal.Root>
           )}
         </AnimatePresence>
       </Dialog.Root>
@@ -201,15 +233,11 @@ type ContentRef = React.ElementRef<typeof Dialog.Content>;
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
-      <FocusScope trapped={true} asChild>
-        <RefToTgphRef>
-          <Dialog.Content ref={forwardedRef} asChild {...props}>
-            <Stack direction="column" h="full" {...props}>
-              {children}
-            </Stack>
-          </Dialog.Content>
-        </RefToTgphRef>
-      </FocusScope>
+      <Dialog.Content ref={forwardedRef} asChild {...props}>
+        <Stack direction="column" h="full" {...props}>
+          {children}
+        </Stack>
+      </Dialog.Content>
     );
   },
 );
