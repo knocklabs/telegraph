@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.53
+
+### Patch Changes
+
+- [#317](https://github.com/knocklabs/telegraph/pull/317) [`fe1a1fb`](https://github.com/knocklabs/telegraph/commit/fe1a1fb882e50e551d3f00a201057b040ed28559) Thanks [@kylemcd](https://github.com/kylemcd)! - fix button text wrapping
+
 ## 0.0.47
 
 ### Patch Changes
