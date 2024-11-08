@@ -234,7 +234,7 @@ const Text = <T extends TgphElement>({
   color,
   size,
   weight = "medium",
-  className,
+  style,
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(ButtonContext);
@@ -249,10 +249,14 @@ const Text = <T extends TgphElement>({
       color={derivedColor}
       size={size ?? textSizeMap[context.size]}
       weight={weight}
-      className={clsx("no-underline whitespace-nowrap", className)}
       internal_optionalAs={true}
       data-button-text
       data-button-text-color={derivedColor}
+      style={{
+        textDecoration: "none",
+        whiteSpace: "nowrap",
+        ...style,
+      }}
       {...props}
     />
   );
