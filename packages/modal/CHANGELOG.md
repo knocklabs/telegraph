@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.53
+
+### Patch Changes
+
+- [#322](https://github.com/knocklabs/telegraph/pull/322) [`edfaa7d`](https://github.com/knocklabs/telegraph/commit/edfaa7d0d5c1e2b0b2104746954af98b4196e439) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Remove console.log in Modal component
+
 ## 0.0.52
 
 ### Patch Changes
