@@ -46,7 +46,6 @@ const Root = ({
 
   React.useEffect(() => {
     if (!open && stacking.layers.includes(id)) {
-      console.log("HERE REMOVE", id, open);
       stacking.removeLayer(id);
     }
   }, [id, stacking, open]);
