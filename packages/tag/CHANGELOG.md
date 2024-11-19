@@ -1,5 +1,11 @@
 # @telegraph/tag
 
+## 0.0.57
+
+### Patch Changes
+
+- [#324](https://github.com/knocklabs/telegraph/pull/324) [`3f8386f`](https://github.com/knocklabs/telegraph/commit/3f8386f22691d19560a3c64a376eeca0bc0667a6) Thanks [@kylemcd](https://github.com/kylemcd)! - max width wrapping for tag
+
 ## 0.0.56
 
 ### Patch Changes
