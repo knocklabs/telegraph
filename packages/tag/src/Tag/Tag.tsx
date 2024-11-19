@@ -68,6 +68,8 @@ type TextProps<T extends TgphElement> = Omit<
 
 const Text = <T extends TgphElement>({
   as = "span" as T,
+  maxW = "40",
+  style,
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(TagContext);
@@ -78,6 +80,13 @@ const Text = <T extends TgphElement>({
       color={COLOR.Text[context.variant][context.color]}
       weight="medium"
       mr={SPACING.Text[context.size]}
+      maxW={maxW}
+      style={{
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        ...style,
+      }}
       {...props}
     />
   );
@@ -201,6 +210,7 @@ const Icon = <T extends TgphElement>({
 type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root<T>> & {
     icon?: React.ComponentProps<typeof TelegraphIcon>;
+    textProps?: React.ComponentProps<typeof Text>;
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
@@ -221,13 +231,16 @@ const Default = <T extends TgphElement>({
   onRemove,
   onCopy,
   textToCopy,
+  textProps = { maxW: "40" },
   children,
   ...props
 }: DefaultProps<T>) => {
   return (
     <Root color={color} size={size} variant={variant} {...props}>
       {icon && <Icon {...icon} />}
-      <Text as="span">{children}</Text>
+      <Text as="span" {...textProps}>
+        {children}
+      </Text>
       {onRemove && (
         <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
       )}
