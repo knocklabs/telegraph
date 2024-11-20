@@ -377,6 +377,9 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         }
 
         if (event.key === "ArrowDown") {
+          // Don't allow the event to bubble up outside of the menu
+          event.stopPropagation();
+          event.preventDefault();
           context.onOpenToggle();
           return;
         }
@@ -514,6 +517,8 @@ const Content = <T extends TgphElement>({
     <DismissableLayer
       onEscapeKeyDown={(event) => {
         if (context.open) {
+          // Don't allow the event to bubble up outside of the menu
+          event.stopPropagation();
           event.preventDefault();
           context.setOpen(false);
         }
@@ -552,6 +557,9 @@ const Content = <T extends TgphElement>({
           event.preventDefault();
         }}
         onKeyDown={(event: React.KeyboardEvent) => {
+          // Don't allow the event to bubble up outside of the menu
+          event.stopPropagation();
+
           // If the first option is focused and the user presses the up
           // arrow key, focus the search input
           const options = context.contentRef?.current?.querySelectorAll(
@@ -650,12 +658,14 @@ const Option = <T extends TgphElement>({
     : contextValue?.value === value;
 
   const handleSelection = (event: Event | React.KeyboardEvent) => {
+    // Don't allow the event to bubble up outside of the menu
+    event.stopPropagation();
+
     // Don't do anything if the key isn't a selection key
     const keyboardEvent = event as React.KeyboardEvent;
     if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) return;
 
     // Don't bubble up the event
-    event.stopPropagation();
     event.preventDefault();
 
     if (context.closeOnSelect === true) {
