@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.44
+
+### Patch Changes
+
+- [`2ed88f4`](https://github.com/knocklabs/telegraph/commit/2ed88f4870c33b755409c965f189caec29d77c80) Thanks [@kylemcd](https://github.com/kylemcd)! - fix events from bubbling in combobox
+
 ## 0.0.43
 
 ### Patch Changes
