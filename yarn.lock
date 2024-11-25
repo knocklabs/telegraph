@@ -3343,19 +3343,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/types@npm:^27.5.1":
-  version: 27.5.1
-  resolution: "@jest/types@npm:27.5.1"
-  dependencies:
-    "@types/istanbul-lib-coverage": "npm:^2.0.0"
-    "@types/istanbul-reports": "npm:^3.0.0"
-    "@types/node": "npm:*"
-    "@types/yargs": "npm:^16.0.0"
-    chalk: "npm:^4.0.0"
-  checksum: 10c0/4598b302398db0eb77168b75a6c58148ea02cc9b9f21c5d1bbe985c1c9257110a5653cf7b901c3cab87fba231e3fed83633687f1c0903b4bc6939ab2a8452504
-  languageName: node
-  linkType: hard
-
 "@jest/types@npm:^29.6.3":
   version: 29.6.3
   resolution: "@jest/types@npm:29.6.3"
@@ -3474,7 +3461,7 @@ __metadata:
     "@manypkg/cli": "npm:^0.21.2"
     "@moonrepo/cli": "npm:^1.28.2"
     "@storybook/addon-essentials": "npm:^7.6.20"
-    "@storybook/addon-interactions": "npm:^7.6.17"
+    "@storybook/addon-interactions": "npm:^8.4.5"
     "@storybook/addon-links": "npm:^7.6.17"
     "@storybook/addon-onboarding": "npm:^1.0.11"
     "@storybook/addon-themes": "npm:^8.1.7"
@@ -5491,16 +5478,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-interactions@npm:^7.6.17":
-  version: 7.6.17
-  resolution: "@storybook/addon-interactions@npm:7.6.17"
+"@storybook/addon-interactions@npm:^8.4.5":
+  version: 8.4.5
+  resolution: "@storybook/addon-interactions@npm:8.4.5"
   dependencies:
     "@storybook/global": "npm:^5.0.0"
-    "@storybook/types": "npm:7.6.17"
-    jest-mock: "npm:^27.0.6"
+    "@storybook/instrumenter": "npm:8.4.5"
+    "@storybook/test": "npm:8.4.5"
     polished: "npm:^4.2.2"
     ts-dedent: "npm:^2.2.0"
-  checksum: 10c0/f0910e8db378f502270747508c42174bdb75671620d24868264638a2693c60b35f088e4c06cb2239a69f4aa176f8dc8cf9e215f872d5aeefec933643225b66b8
+  peerDependencies:
+    storybook: ^8.4.5
+  checksum: 10c0/cbf639389a1d72bc17164eb273b69f76f245dfff242e6fbcad039faaf3a1f5bf770bc39ab02f826c04ab921d7a3cc1a4147223bd57da01bb453ea054f3fdbce5
   languageName: node
   linkType: hard
 
@@ -6035,7 +6024,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/csf@npm:0.1.11":
+"@storybook/csf@npm:0.1.11, @storybook/csf@npm:^0.1.11":
   version: 0.1.11
   resolution: "@storybook/csf@npm:0.1.11"
   dependencies:
@@ -6129,6 +6118,18 @@ __metadata:
     "@vitest/utils": "npm:^0.34.6"
     util: "npm:^0.12.4"
   checksum: 10c0/f472e067b5fee42b637c24e1b109cab5c0741022c44485be2bfba1536f4a8e638258c649203f030a8c3cf461d312e1eb30e6eb326329a39280064d45cd7bd00d
+  languageName: node
+  linkType: hard
+
+"@storybook/instrumenter@npm:8.4.5":
+  version: 8.4.5
+  resolution: "@storybook/instrumenter@npm:8.4.5"
+  dependencies:
+    "@storybook/global": "npm:^5.0.0"
+    "@vitest/utils": "npm:^2.1.1"
+  peerDependencies:
+    storybook: ^8.4.5
+  checksum: 10c0/8fcebc70c5818182c81c8361e4e82ceb75978366d66a6c02a423b2c0efc7cf30c68addc9fd87c2801ee92664962eb0091c324c74eb3ba6dc7514e529d37d3d42
   languageName: node
   linkType: hard
 
@@ -6355,6 +6356,24 @@ __metadata:
     fs-extra: "npm:^11.1.0"
     read-pkg-up: "npm:^7.0.1"
   checksum: 10c0/2d13afef0fd73982c1efec1598583ed592bd608bbc61f9c4d96c47be9202d80043041764e00ea3b10b0636417cfbfe7b3d13c6898187a09554c8a696f89ac226
+  languageName: node
+  linkType: hard
+
+"@storybook/test@npm:8.4.5":
+  version: 8.4.5
+  resolution: "@storybook/test@npm:8.4.5"
+  dependencies:
+    "@storybook/csf": "npm:^0.1.11"
+    "@storybook/global": "npm:^5.0.0"
+    "@storybook/instrumenter": "npm:8.4.5"
+    "@testing-library/dom": "npm:10.4.0"
+    "@testing-library/jest-dom": "npm:6.5.0"
+    "@testing-library/user-event": "npm:14.5.2"
+    "@vitest/expect": "npm:2.0.5"
+    "@vitest/spy": "npm:2.0.5"
+  peerDependencies:
+    storybook: ^8.4.5
+  checksum: 10c0/2e52d7a7f1da506bae551a1242152d2d6ac0d5415fee0b39c583c02537b4931cb73937b482d8529ad6c8847ca6b28838cb2b421c809fb9d7057ae0a05b005bda
   languageName: node
   linkType: hard
 
@@ -7050,6 +7069,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@testing-library/dom@npm:10.4.0":
+  version: 10.4.0
+  resolution: "@testing-library/dom@npm:10.4.0"
+  dependencies:
+    "@babel/code-frame": "npm:^7.10.4"
+    "@babel/runtime": "npm:^7.12.5"
+    "@types/aria-query": "npm:^5.0.1"
+    aria-query: "npm:5.3.0"
+    chalk: "npm:^4.1.0"
+    dom-accessibility-api: "npm:^0.5.9"
+    lz-string: "npm:^1.5.0"
+    pretty-format: "npm:^27.0.2"
+  checksum: 10c0/0352487720ecd433400671e773df0b84b8268fb3fe8e527cdfd7c11b1365b398b4e0eddba6e7e0c85e8d615f48257753283fccec41f6b986fd6c85f15eb5f84f
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^9.3.1":
   version: 9.3.4
   resolution: "@testing-library/dom@npm:9.3.4"
@@ -7063,6 +7098,21 @@ __metadata:
     lz-string: "npm:^1.5.0"
     pretty-format: "npm:^27.0.2"
   checksum: 10c0/147da340e8199d7f98f3a4ad8aa22ed55b914b83957efa5eb22bfea021a979ebe5a5182afa9c1e5b7a5f99a7f6744a5a4d9325ae46ec3b33b5a15aed8750d794
+  languageName: node
+  linkType: hard
+
+"@testing-library/jest-dom@npm:6.5.0":
+  version: 6.5.0
+  resolution: "@testing-library/jest-dom@npm:6.5.0"
+  dependencies:
+    "@adobe/css-tools": "npm:^4.4.0"
+    aria-query: "npm:^5.0.0"
+    chalk: "npm:^3.0.0"
+    css.escape: "npm:^1.5.1"
+    dom-accessibility-api: "npm:^0.6.3"
+    lodash: "npm:^4.17.21"
+    redent: "npm:^3.0.0"
+  checksum: 10c0/fd5936a547f04608d8de15a7de3ae26516f21023f8f45169b10c8c8847015fd20ec259b7309f08aa1031bcbc37c6e5e6f532d1bb85ef8f91bad654193ec66a4c
   languageName: node
   linkType: hard
 
@@ -7144,7 +7194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/user-event@npm:^14.5.2":
+"@testing-library/user-event@npm:14.5.2, @testing-library/user-event@npm:^14.5.2":
   version: 14.5.2
   resolution: "@testing-library/user-event@npm:14.5.2"
   peerDependencies:
@@ -7624,15 +7674,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^16.0.0":
-  version: 16.0.9
-  resolution: "@types/yargs@npm:16.0.9"
-  dependencies:
-    "@types/yargs-parser": "npm:*"
-  checksum: 10c0/be24bd9a56c97ddb2964c1c18f5b9fe8271a50e100dc6945989901aae58f7ce6fb8f3a591c749a518401b6301358dbd1997e83c36138a297094feae7f9ac8211
-  languageName: node
-  linkType: hard
-
 "@types/yargs@npm:^17.0.8":
   version: 17.0.32
   resolution: "@types/yargs@npm:17.0.32"
@@ -8022,6 +8063,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vitest/pretty-format@npm:2.1.5":
+  version: 2.1.5
+  resolution: "@vitest/pretty-format@npm:2.1.5"
+  dependencies:
+    tinyrainbow: "npm:^1.2.0"
+  checksum: 10c0/d6667f1e5d272f557f8cca440af65645346b5aa74a04041466859087f14a78a296e3f1928caa05de0cc558880cc8a49ce14696fef7b8f5dbc3eb856d672b0abf
+  languageName: node
+  linkType: hard
+
 "@vitest/runner@npm:2.0.5":
   version: 2.0.5
   resolution: "@vitest/runner@npm:2.0.5"
@@ -8081,6 +8131,17 @@ __metadata:
     loupe: "npm:^3.1.1"
     tinyrainbow: "npm:^1.2.0"
   checksum: 10c0/0d1de748298f07a50281e1ba058b05dcd58da3280c14e6f016265e950bd79adab6b97822de8f0ea82d3070f585654801a9b1bcf26db4372e51cf7746bf86d73b
+  languageName: node
+  linkType: hard
+
+"@vitest/utils@npm:^2.1.1":
+  version: 2.1.5
+  resolution: "@vitest/utils@npm:2.1.5"
+  dependencies:
+    "@vitest/pretty-format": "npm:2.1.5"
+    loupe: "npm:^3.1.2"
+    tinyrainbow: "npm:^1.2.0"
+  checksum: 10c0/3d1e65025e418948b215b8856548a91856522660d898b872485a91acf397e085e90968ee9c3f521589b5274717da32e954ef8a549aa60cc1c3338224fdfb4c5e
   languageName: node
   linkType: hard
 
@@ -8433,7 +8494,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aria-query@npm:^5.0.0, aria-query@npm:^5.3.0":
+"aria-query@npm:5.3.0, aria-query@npm:^5.0.0, aria-query@npm:^5.3.0":
   version: 5.3.0
   resolution: "aria-query@npm:5.3.0"
   dependencies:
@@ -12970,16 +13031,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-mock@npm:^27.0.6":
-  version: 27.5.1
-  resolution: "jest-mock@npm:27.5.1"
-  dependencies:
-    "@jest/types": "npm:^27.5.1"
-    "@types/node": "npm:*"
-  checksum: 10c0/6ad58454b37ee3f726930b07efbf40a7c79d2d2d9c7b226708b4b550bc0904de93bcacf714105d11952a5c0bc855e5d59145c8c9dbbb4e69b46e7367abf53b52
-  languageName: node
-  linkType: hard
-
 "jest-regex-util@npm:^29.6.3":
   version: 29.6.3
   resolution: "jest-regex-util@npm:29.6.3"
@@ -13655,6 +13706,13 @@ __metadata:
   dependencies:
     get-func-name: "npm:^2.0.1"
   checksum: 10c0/99f88badc47e894016df0c403de846fedfea61154aadabbf776c8428dd59e8d8378007135d385d737de32ae47980af07d22ba7bec5ef7beebd721de9baa0a0af
+  languageName: node
+  linkType: hard
+
+"loupe@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "loupe@npm:3.1.2"
+  checksum: 10c0/b13c02e3ddd6a9d5f8bf84133b3242de556512d824dddeea71cce2dbd6579c8f4d672381c4e742d45cf4423d0701765b4a6e5fbc24701def16bc2b40f8daa96a
   languageName: node
   linkType: hard
 
