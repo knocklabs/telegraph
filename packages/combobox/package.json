@@ -45,7 +45,7 @@
     "@telegraph/tag": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "framer-motion": "^11.1.9"
+    "framer-motion": "^11.15.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
