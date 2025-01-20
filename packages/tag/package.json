@@ -39,7 +39,7 @@
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.1.9"
+    "framer-motion": "^11.18.1"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
