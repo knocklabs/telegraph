@@ -24,7 +24,6 @@ const Box = <T extends TgphElement>({
   const Component = (as || "div") as TgphElement;
 
   const { styleProps, otherProps } = useCssVars({ props, cssVars });
-  console.log("HERE BOX", styleProps, otherProps);
 
   return (
     <Component

@@ -10,7 +10,8 @@ import clsx from "clsx";
 import { COLOR_MAP, type StyleProps, cssVars } from "../constants";
 
 type BaseTextProps = Omit<StyleProps, "color"> & {
-  color: keyof typeof COLOR_MAP;
+  color?: keyof typeof COLOR_MAP;
+  size?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 };
 
 type TextProps<T extends TgphElement> = BaseTextProps &

@@ -16,7 +16,9 @@ describe("Text", () => {
         Text
       </Text>,
     );
-    expect(container.firstChild).toHaveClass("text-9");
+    expect(container.firstChild).toHaveStyle({
+      "--font-size": "var(--tgph-text-9)",
+    });
   });
   it("color props applies correct className", () => {
     const { container } = render(
@@ -24,7 +26,9 @@ describe("Text", () => {
         Text
       </Text>,
     );
-    expect(container.firstChild).toHaveClass("text-red-11");
+    expect(container.firstChild).toHaveStyle({
+      "--color": "var(--tgph-red-11)",
+    });
   });
   it("align props applies correct className", () => {
     const { container } = render(
@@ -32,7 +36,9 @@ describe("Text", () => {
         Text
       </Text>,
     );
-    expect(container.firstChild).toHaveClass("text-left");
+    expect(container.firstChild).toHaveStyle({
+      "--text-align": "left",
+    });
   });
   it("weight props applies correct className", () => {
     const { container } = render(
@@ -40,14 +46,18 @@ describe("Text", () => {
         Text
       </Text>,
     );
-    expect(container.firstChild).toHaveClass("font-medium");
+    expect(container.firstChild).toHaveStyle({
+      "--weight": "var(--tgph-weight-medium)",
+    });
   });
   it("default props applies correct className", () => {
     const { container } = render(<Text as="p">Text</Text>);
-    expect(container.firstChild).toHaveClass("text-gray-12");
-    expect(container.firstChild).toHaveClass("text-2");
-    expect(container.firstChild).toHaveClass("leading-2");
-    expect(container.firstChild).toHaveClass("tracking-2");
-    expect(container.firstChild).toHaveClass("font-regular");
+    expect(container.firstChild).toHaveStyle({
+      "--color": "var(--tgph-gray-12)",
+      "--font-size": "var(--tgph-text-2)",
+      "--leading": "var(--tgph-leading-2)",
+      "--tracking": "var(--tgph-tracking-2)",
+      "--weight": "var(--tgph-weight-regular)",
+    });
   });
 });

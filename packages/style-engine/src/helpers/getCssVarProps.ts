@@ -111,8 +111,6 @@ export const getCssVarProps = <T>(params: GetCssVarProps<T>) => {
     return { styleProps: {}, otherProps: {} };
   }
 
-  console.log("HERE PROPS", props);
-
   const allProps = Object.entries(props).reduce(
     (acc, [key, value]) => {
       const cssVarKey = key as keyof typeof cssVars;
