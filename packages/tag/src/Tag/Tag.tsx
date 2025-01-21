@@ -73,6 +73,7 @@ const Text = <T extends TgphElement>({
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(TagContext);
+
   return (
     <TelegraphText
       as={as}

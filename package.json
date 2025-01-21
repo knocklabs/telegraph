@@ -21,7 +21,7 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "format:check": "turbo format:check",
-    "dev:storybook": "storybook dev",
+    "dev:storybook": "storybook dev --port 3005",
     "build:storybook": "storybook build",
     "release": "yarn release:publish && yarn changeset tag",
     "release:publish": "yarn workspaces foreach -Rpt --no-private --from '@telegraph/*' npm publish --access public --tolerate-republish",

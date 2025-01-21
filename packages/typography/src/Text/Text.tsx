@@ -4,20 +4,13 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
+import { useCssVars } from "@telegraph/style-engine";
 import clsx from "clsx";
 
-import {
-  alignMap,
-  colorMap,
-  sizeMap,
-  weightMap,
-} from "../helpers/prop-mappings";
+import { COLOR_MAP, type StyleProps, cssVars } from "../constants";
 
-type BaseTextProps = {
-  align?: keyof typeof alignMap;
-  size?: keyof typeof sizeMap;
-  color?: keyof typeof colorMap;
-  weight?: keyof typeof weightMap;
+type BaseTextProps = Omit<StyleProps, "color"> & {
+  color: keyof typeof COLOR_MAP;
 };
 
 type TextProps<T extends TgphElement> = BaseTextProps &
@@ -29,27 +22,37 @@ const Text = <T extends TgphElement>({
   color = "default",
   size = "2",
   weight = "regular",
-  align,
+  align = "left",
   className,
+  style,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: TextProps<T>) => {
   if (!as) throw new Error("as prop is required");
+
+  const { styleProps, otherProps } = useCssVars({
+    props: {
+      color: COLOR_MAP[color as keyof typeof COLOR_MAP],
+      fontSize: size,
+      tracking: size,
+      leading: size,
+      weight,
+      align,
+      ...props,
+    },
+    cssVars,
+  });
   return (
     <Box
       as={as as TgphElement}
-      className={clsx(
-        "box-border",
-        align && alignMap[align],
-        color && colorMap[color],
-        size && sizeMap[size],
-        weight && weightMap[weight],
-        className,
-      )}
+      className={clsx("tgph-text", className)}
+      style={{
+        ...styleProps,
+        ...style,
+      }}
       display="inline"
-      m="0"
-      {...props}
+      {...otherProps}
     />
   );
 };

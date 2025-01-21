@@ -10,3 +10,7 @@ export {
 export { default as tokens } from "@telegraph/tokens/css-variables-map";
 export { useStyleProps } from "./hooks/useStyleProps";
 export { RESPONSIVE_STYLE_PROPS } from "./constants/responsive-style-props";
+
+/* NEW STYLE ENGINE EXPORTS - REST TO BE DEPRECATED */
+export { getCssVarProps, type CssVarProp } from "./helpers/getCssVarProps";
+export { useCssVars } from "./hooks/useCssVars";

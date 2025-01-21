@@ -1,4 +1,20 @@
-/* Including just "@tailwind utilities;" will build only the classnames within the package */
-@tailwind utilities;
+.tgph-text,
+.tgph-heading,
+.tgph-code {
+  --color: var(--tgph-gray-12);
+  --font-size: var(--tgph-text-2);
+  --weight: var(--tgph-weight-regular);
+  --leading: var(--tgph-leading-2);
+  --tracking: var(--tgph-tracking-2);
+  --text-align: left;
+  --font-family: var(--tgph-family-sans);
 
-@config "../tailwind.config.mts";
+  color: var(--color);
+  font-size: var(--font-size);
+  font-weight: var(--weight);
+  line-height: var(--leading);
+  letter-spacing: var(--tracking);
+  text-align: var(--text-align);
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
