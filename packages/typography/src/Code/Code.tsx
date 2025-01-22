@@ -4,7 +4,7 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
-import { useCssVars } from "@telegraph/style-engine";
+import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
 import { COLOR_MAP, type StyleProps, cssVars } from "../constants";
@@ -30,7 +30,6 @@ const Code = <T extends TgphElement>({
   align = "left",
   family = "mono",
   className,
-  style,
   // Remove this from props to avoid passing to DOM element
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
@@ -38,7 +37,7 @@ const Code = <T extends TgphElement>({
 }: CodeProps<T>) => {
   if (!as) throw new Error("as prop is required");
 
-  const { styleProps, otherProps } = useCssVars({
+  const { styleProp, otherProps } = useStyleEngine({
     props: {
       color: COLOR_MAP[color as keyof typeof COLOR_MAP],
       fontSize: `code-${size}`,
@@ -50,19 +49,23 @@ const Code = <T extends TgphElement>({
     },
     cssVars,
   });
+
   return (
     <Box
       as={as as TgphElement}
       className={clsx("tgph-code", className)}
-      bg={variant === "soft" ? SOFT_VARIANT_BG_COLOR_MAP[color] : "transparent"}
+      bg={
+        variant === "soft"
+          ? SOFT_VARIANT_BG_COLOR_MAP[
+              color as keyof typeof SOFT_VARIANT_BG_COLOR_MAP
+            ]
+          : "transparent"
+      }
       display="inline"
       m="0"
       px="1"
       rounded="1"
-      style={{
-        ...styleProps,
-        ...style,
-      }}
+      style={styleProp}
       {...otherProps}
     />
   );

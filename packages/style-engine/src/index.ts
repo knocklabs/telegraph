@@ -12,5 +12,5 @@ export { useStyleProps } from "./hooks/useStyleProps";
 export { RESPONSIVE_STYLE_PROPS } from "./constants/responsive-style-props";
 
 /* NEW STYLE ENGINE EXPORTS - REST TO BE DEPRECATED */
-export { getCssVarProps, type CssVarProp } from "./helpers/getCssVarProps";
-export { useCssVars } from "./hooks/useCssVars";
+export { getStyleProp, type CssVarProp } from "./helpers/getStyleProp";
+export { useStyleEngine } from "./hooks/useStyleEngine";

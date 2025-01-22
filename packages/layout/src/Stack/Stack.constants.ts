@@ -25,44 +25,44 @@ type ShorthandStyleProps = {
 const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   flexDirection: {
     cssVar: "--direction",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   flexWrap: {
     cssVar: "--wrap",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   justifyContent: {
     cssVar: "--justify",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   alignItems: {
     cssVar: "--align",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   gap: {
     cssVar: "--gap",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
-};
+} as const;
 
 const shorthandCssVars: Record<keyof ShorthandStyleProps, CssVarProp> = {
   direction: {
     cssVar: "--direction",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   align: {
     cssVar: "--align",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   justify: {
     cssVar: "--justify",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   wrap: {
     cssVar: "--wrap",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
-};
+} as const;
 
 export const cssVars = {
   ...baseCssVars,

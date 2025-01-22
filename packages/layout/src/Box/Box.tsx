@@ -2,7 +2,7 @@ import type {
   PolymorphicPropsWithTgphRef,
   TgphElement,
 } from "@telegraph/helpers";
-import { useCssVars } from "@telegraph/style-engine";
+import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
 import { StyleProps, cssVars } from "./Box.constants";
@@ -18,20 +18,16 @@ const Box = <T extends TgphElement>({
   className,
   tgphRef,
   children,
-  style,
   ...props
 }: BoxProps<T>) => {
   const Component = (as || "div") as TgphElement;
 
-  const { styleProps, otherProps } = useCssVars({ props, cssVars });
+  const { styleProp, otherProps } = useStyleEngine({ props, cssVars });
 
   return (
     <Component
       className={clsx("tgph-box", className)}
-      style={{
-        ...styleProps,
-        ...style,
-      }}
+      style={styleProp}
       {...otherProps}
       ref={tgphRef}
     >

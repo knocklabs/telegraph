@@ -4,7 +4,7 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
-import { useCssVars } from "@telegraph/style-engine";
+import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
 import { COLOR_MAP, type StyleProps, cssVars } from "../constants";
@@ -25,14 +25,13 @@ const Heading = <T extends TgphElement>({
   weight = "semi-bold",
   align,
   className,
-  style,
   // Remove this from props to avoid passing to DOM element
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: HeadingProps<T>) => {
   if (!as) throw new Error("as prop is required");
-  const { styleProps, otherProps } = useCssVars({
+  const { styleProp, otherProps } = useStyleEngine({
     props: {
       color: COLOR_MAP[color as keyof typeof COLOR_MAP],
       fontSize: size,
@@ -50,10 +49,7 @@ const Heading = <T extends TgphElement>({
       className={clsx("tgph-heading", className)}
       display="inline"
       m="0"
-      style={{
-        ...styleProps,
-        ...style,
-      }}
+      style={styleProp}
       {...otherProps}
     />
   );

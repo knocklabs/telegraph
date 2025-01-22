@@ -3,7 +3,7 @@ import type {
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { useCssVars } from "@telegraph/style-engine";
+import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
 import { Box } from "../Box";
@@ -16,10 +16,9 @@ type StackProps<T extends TgphElement> = PolymorphicProps<T> &
 
 const Stack = <T extends TgphElement>({
   className,
-  style,
   ...props
 }: StackProps<T>) => {
-  const { styleProps, otherProps } = useCssVars({
+  const { styleProp, otherProps } = useStyleEngine({
     props,
     cssVars,
   });
@@ -27,10 +26,7 @@ const Stack = <T extends TgphElement>({
   return (
     <Box
       className={clsx("tgph-stack", className)}
-      style={{
-        ...styleProps,
-        ...style,
-      }}
+      style={styleProp}
       {...otherProps}
     />
   );

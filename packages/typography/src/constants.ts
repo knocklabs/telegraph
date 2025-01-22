@@ -14,31 +14,31 @@ export type BaseStyleProps = {
 const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   color: {
     cssVar: "--color",
-    tgphVar: "var(--tgph-VARIABLE)",
+    value: "var(--tgph-VARIABLE)",
   },
   fontSize: {
     cssVar: "--font-size",
-    tgphVar: "var(--tgph-text-VARIABLE)",
+    value: "var(--tgph-text-VARIABLE)",
   },
   weight: {
     cssVar: "--weight",
-    tgphVar: "var(--tgph-weight-VARIABLE)",
+    value: "var(--tgph-weight-VARIABLE)",
   },
   leading: {
     cssVar: "--leading",
-    tgphVar: "var(--tgph-leading-VARIABLE)",
+    value: "var(--tgph-leading-VARIABLE)",
   },
   tracking: {
     cssVar: "--tracking",
-    tgphVar: "var(--tgph-tracking-VARIABLE)",
+    value: "var(--tgph-tracking-VARIABLE)",
   },
   align: {
     cssVar: "--text-align",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   family: {
     cssVar: "--font-family",
-    tgphVar: "var(--tgph-family-VARIABLE)",
+    value: "var(--tgph-family-VARIABLE)",
   },
 };
 
@@ -56,4 +56,5 @@ export const COLOR_MAP = {
   yellow: "yellow-11",
   purple: "purple-11",
   accent: "accent-11",
+  white: "white",
 } as const;

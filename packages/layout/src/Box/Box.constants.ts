@@ -83,183 +83,183 @@ type ShorthandStyleProps = {
 const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   display: {
     cssVar: "--display",
-    tgphVar: "VARIABLE",
+    value: "VARIABLE",
   },
   backgroundColor: {
     cssVar: "--background-color",
-    tgphVar: "var(--tgph-VARIABLE)",
+    value: "var(--tgph-VARIABLE)",
   },
   borderStyle: {
     cssVar: "--border-style",
-    tgphVar: "var(--tgph-border-style-VARIABLE)",
+    value: "var(--tgph-border-style-VARIABLE)",
   },
   padding: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all",
   },
   paddingX: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "x",
   },
   paddingY: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "y",
   },
   paddingTop: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "top",
   },
   paddingBottom: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "bottom",
   },
   paddingLeft: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "left",
   },
   paddingRight: {
     cssVar: "--padding",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "right",
   },
   margin: {
     cssVar: "--margin",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   marginX: {
     cssVar: "--margin",
-    tgphVar: "0 var(--tgph-spacing-VARIABLE)",
+    value: "0 var(--tgph-spacing-VARIABLE)",
   },
   marginY: {
     cssVar: "--margin",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "y",
   },
   marginTop: {
     cssVar: "--margin",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "top",
   },
   marginBottom: {
     cssVar: "--margin",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "bottom",
   },
   marginLeft: {
     cssVar: "--margin",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "left",
   },
   marginRight: {
     cssVar: "--margin",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "right",
   },
   borderColor: {
     cssVar: "--border-color",
-    tgphVar: "var(--tgph-VARIABLE)",
+    value: "var(--tgph-VARIABLE)",
   },
   borderWidth: {
     cssVar: "--border-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   borderTopWidth: {
     cssVar: "--border-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "top",
   },
   borderBottomWidth: {
     cssVar: "--border-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "bottom",
   },
   borderLeftWidth: {
     cssVar: "--border-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "left",
   },
   borderRightWidth: {
     cssVar: "--border-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "right",
   },
   borderRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
   },
   borderTopLeftRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "top",
   },
   borderTopRightRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "right",
   },
   borderBottomLeftRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "bottom",
   },
   borderBottomRightRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "right",
   },
   borderTopRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "side-top",
   },
   borderBottomRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "side-bottom",
   },
   borderLeftRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "side-left",
   },
   borderRightRadius: {
     cssVar: "--border-radius",
-    tgphVar: "var(--tgph-rounded-VARIABLE)",
+    value: "var(--tgph-rounded-VARIABLE)",
     direction: "side-right",
   },
   boxShadow: {
     cssVar: "--box-shadow",
-    tgphVar: "var(--tgph-shadow-VARIABLE)",
+    value: "var(--tgph-shadow-VARIABLE)",
   },
   width: {
     cssVar: "--width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   height: {
     cssVar: "--height",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   minWidth: {
     cssVar: "--min-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   minHeight: {
     cssVar: "--min-height",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   maxWidth: {
     cssVar: "--max-width",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
   maxHeight: {
     cssVar: "--max-height",
-    tgphVar: "var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
   },
 } as const;
 
@@ -298,7 +298,7 @@ const shorthandCssVars: Record<keyof ShorthandStyleProps, CssVarProp> = {
   roundedBottom: baseCssVars.borderBottomRadius,
   roundedLeft: baseCssVars.borderLeftRadius,
   roundedRight: baseCssVars.borderRightRadius,
-};
+} as const;
 
 export const cssVars = {
   ...baseCssVars,
