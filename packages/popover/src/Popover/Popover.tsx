@@ -6,7 +6,7 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { motion } from "framer-motion";
+import { Motion } from "@telegraph/motion";
 import React from "react";
 
 type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
@@ -133,8 +133,8 @@ const Content = <T extends TgphElement>({
         ref={tgphRef}
       >
         <RefToTgphRef>
-          <Stack
-            as={motion.div}
+          <Motion
+            as={Stack}
             // Add tgph class so that this always works in portals
             className="tgph"
             initial={{
@@ -148,7 +148,11 @@ const Content = <T extends TgphElement>({
               x: 0,
               y: 0,
             }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            transition={{
+              duration: 200,
+              // type: "spring",
+              // bounce: 0,
+            }}
             bg={bg}
             direction={direction}
             gap={gap}
@@ -163,7 +167,7 @@ const Content = <T extends TgphElement>({
             zIndex="popover"
           >
             {children}
-          </Stack>
+          </Motion>
         </RefToTgphRef>
       </RadixPopover.Content>
     </RadixPopover.Portal>

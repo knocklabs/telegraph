@@ -8,9 +8,9 @@ import {
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { Motion } from "@telegraph/motion";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
-import { motion } from "framer-motion";
 import React from "react";
 
 import {
@@ -151,15 +151,15 @@ const Root = <T extends TgphElement>({
         {...props}
       >
         {state === "loading" && (
-          <Icon
-            as={motion.span}
+          <Motion
+            as={Icon}
             initial={{
               opacity: 0,
             }}
             animate={{
               opacity: 1,
             }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            transition={{ duration: 150 }}
             className={loadingIconStyles}
             icon={Lucide.LoaderCircle}
             aria-hidden={true}
