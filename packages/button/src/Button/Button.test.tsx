@@ -94,7 +94,9 @@ describe("Button", () => {
     const button = container?.querySelector("[data-tgph-button]");
 
     expect(button).toBeDisabled();
-    expect(text).toHaveClass("text-gray-9");
+    expect(text).toHaveStyle({
+      "--color": "var(--tgph-gray-9)",
+    });
     expect(icon).toHaveClass("text-gray-8");
   });
   it("if a button set to an anchor is disabled, it turns into a button", () => {
