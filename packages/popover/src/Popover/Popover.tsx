@@ -170,7 +170,6 @@ const Content = <T extends TgphElement>({
             border={border}
             py={py}
             shadow={shadow}
-            hello="WHAT"
             style={{
               overflowY: "auto",
               transformOrigin: "var(--radix-tooltip-content-transform-origin)",
