@@ -8,9 +8,9 @@ import {
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
-import { Motion } from "@telegraph/motion";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import React from "react";
 
 import {
@@ -151,8 +151,8 @@ const Root = <T extends TgphElement>({
         {...props}
       >
         {state === "loading" && (
-          <Motion
-            as={Icon}
+          <Icon
+            as={motion.span}
             initial={{
               opacity: 0,
             }}

@@ -12,11 +12,10 @@ import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
-// import { AnimatePresence, motion } from "framer-motion";
-import { AnimatePresence, Motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
@@ -171,22 +170,22 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
   const context = React.useContext(ComboboxContext);
 
   return (
-    <Motion
+    <Tag.Root
       size="1"
-      as={Tag.Root}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.5 }}
+      as={motion.span}
+      initial={{ opacity: 0, transform: "scale(0.8)" }}
+      animate={{ opacity: 1, transform: "scale(1)" }}
+      exit={{ opacity: 0, transform: "scale(0.5)" }}
       layout="position"
       transition={{
         duration: 0.2,
-        // type: "spring",
-        // bounce: 0,
-        // layout: {
-        //   duration: 0.05,
-        //   type: "spring",
-        //   bounce: 0,
-        // },
+        type: "spring",
+        bounce: 0,
+        layout: {
+          duration: 0.05,
+          type: "spring",
+          bounce: 0,
+        },
       }}
       {...props}
     >
@@ -206,7 +205,7 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
           event.preventDefault();
         }}
       />
-    </Motion>
+    </Tag.Root>
   );
 };
 
@@ -252,8 +251,8 @@ const TriggerValue = () => {
         </AnimatePresence>
         <AnimatePresence>
           {layout === "truncate" && context.value.length > 2 && (
-            <Motion
-              as={Stack}
+            <Stack
+              as={motion.div}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -275,8 +274,8 @@ const TriggerValue = () => {
                 +
                 <AnimatePresence mode="wait" initial={false}>
                   {truncatedLengthStringArray.map((n) => (
-                    <Motion
-                      as={Box}
+                    <Box
+                      as={motion.span}
                       w="2"
                       display="inline-block"
                       initial={{
@@ -292,12 +291,12 @@ const TriggerValue = () => {
                       key={n}
                     >
                       {n}
-                    </Motion>
+                    </Box>
                   ))}
                 </AnimatePresence>{" "}
                 more
               </Text>
-            </Motion>
+            </Stack>
           )}
         </AnimatePresence>
       </Stack>
@@ -441,11 +440,11 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
               />
             </Tooltip>
           )}
-          <Motion
-            as={TelegraphButton.Icon}
+          <TelegraphButton.Icon
+            as={motion.div}
             icon={Lucide.ChevronDown}
-            animate={{ rotate: context.open ? 180 : 0 }}
-            transition={{ duration: 2000, type: "spring", bounce: 0 }}
+            animate={{ rotate: context.open ? "180deg" : "0deg" }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
             aria-hidden
           />
         </Stack>
@@ -525,8 +524,8 @@ const Content = <T extends TgphElement>({
         }
       }}
     >
-      <Motion
-        as={TelegraphMenu.Content}
+      <TelegraphMenu.Content
+        as={motion.div}
         mt="1"
         initial={{
           opacity: 0,
@@ -602,7 +601,7 @@ const Content = <T extends TgphElement>({
         <Stack direction="column" gap="1" tgphRef={internalContentRef}>
           {children}
         </Stack>
-      </Motion>
+      </TelegraphMenu.Content>
     </DismissableLayer>
   );
 };
@@ -786,8 +785,8 @@ const Search = ({
         LeadingComponent={<Icon icon={Lucide.Search} alt="Search Icon" />}
         TrailingComponent={
           context?.searchQuery && context?.searchQuery?.length > 0 ? (
-            <Motion
-              as={TelegraphButton}
+            <TelegraphButton
+              as={motion.button}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, type: "spring", bounce: 0 }}
@@ -836,8 +835,8 @@ const Empty = <T extends TgphElement>({
 
   if (isVisible) {
     return (
-      <Motion
-        as={Stack}
+      <Stack
+        as={motion.div}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, type: "spring", bounce: 0 }}
@@ -851,7 +850,7 @@ const Empty = <T extends TgphElement>({
       >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
-      </Motion>
+      </Stack>
     );
   }
 };
