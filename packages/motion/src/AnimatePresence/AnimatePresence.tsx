@@ -48,9 +48,7 @@ export const useAnimatePresence = ({
     return () => {
       setMotionElements((existingMotionElements: Array<MotionElement>) => {
         const matchingMotionElements = existingMotionElements.filter(
-          (element) => {
-            motionKey === element.motionKey;
-          },
+          (element) => returnmotionKey === element.motionKey,
         );
 
         return matchingMotionElements;
