@@ -159,7 +159,7 @@ const Root = <T extends TgphElement>({
             animate={{
               opacity: 1,
             }}
-            transition={{ duration: 150 }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
             className={loadingIconStyles}
             icon={Lucide.LoaderCircle}
             aria-hidden={true}
