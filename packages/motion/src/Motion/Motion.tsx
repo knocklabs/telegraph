@@ -47,7 +47,7 @@ const Motion = <T extends TgphElement>({
   const [currentValues, setCurrentValues] = React.useState(initial);
   const [internalStatus, setInternalStatus] = React.useState("initial");
 
-  // If the motion elements is within the <AnimatePresence/> component,
+  // If the motion element is within the <AnimatePresence/> component,
   // this component needs to respond too the presence change by changing
   // the internalStatus to "exit"
   const { presence } = useAnimatePresence({
@@ -62,7 +62,7 @@ const Motion = <T extends TgphElement>({
   }, [presence, internalStatus]);
 
   // Sync the internalStatus with the external status prop.
-  // We do this so we can dervie internalStatus
+  // We do this so we can derive internalStatus
   React.useEffect(() => {
     if (status === "initial") {
       setInternalStatus("animate");
