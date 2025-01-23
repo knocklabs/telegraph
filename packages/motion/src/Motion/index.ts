@@ -1,1 +1,1 @@
-export { Motion } from "./Motion";
+export { Motion, motion } from "./Motion";

@@ -1,1 +1,1 @@
-export { AnimatePresence } from "./AnimatePresence";
+export { AnimatePresence, useAnimatePresence } from "./AnimatePresence";

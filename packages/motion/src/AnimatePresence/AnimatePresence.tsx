@@ -1,138 +1,128 @@
 import React from "react";
 
-const recursivelyGetMotionElements = (
-  children: React.ReactNode,
-  elements: Array<React.ReactNode> = [],
-) => {
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child)) {
-      if ((child.type as React.ComponentType<unknown>).name === "Motion") {
-        elements.push(child);
-      }
-
-      const childElements = React.Children.toArray(child.props.children);
-
-      childElements.forEach((childElement) => {
-        if (React.isValidElement(childElement)) {
-          recursivelyGetMotionElements(childElement, elements);
-        }
-      });
-    }
-  });
-
-  return elements;
+type MotionElement = {
+  motionKey: string;
+  exitDuration: number;
 };
 
-const recursivleySetStatusProp = (
-  status: "initial" | "animate" | "exit",
-  children: React.ReactElement | React.ReactNode,
-  keys: Array<string> = [],
-  duration: number = 0,
-) => {
-  const isValidElement = (
-    child: React.ReactNode,
-  ): child is React.ReactElement => React.isValidElement(child);
+type AnimatePresenceContextType = {
+  presence?: boolean | undefined;
+  motionKeys: Array<string>;
+  motionElements: Array<MotionElement>;
+  setMotionElements: React.Dispatch<React.SetStateAction<Array<MotionElement>>>;
+};
 
-  const traverse = (node: React.ReactNode): React.ReactNode => {
-    if (Array.isArray(node)) {
-      // If the node is an array, map through its children
-      return node.map(traverse);
+const AnimatePresenceContext = React.createContext<AnimatePresenceContextType>({
+  presence: undefined,
+  motionKeys: [],
+  motionElements: [],
+  setMotionElements: () => {},
+});
+
+type UseAnimatePresenceProps = {
+  motionKey?: string;
+  exitDuration?: number;
+};
+
+export const useAnimatePresence = ({
+  motionKey,
+  exitDuration,
+}: UseAnimatePresenceProps) => {
+  const { presence, setMotionElements, motionKeys } = React.useContext(
+    AnimatePresenceContext,
+  );
+
+  React.useEffect(() => {
+    if (!motionKey || !exitDuration) return;
+
+    setMotionElements((existingMotionElements: Array<MotionElement>) => {
+      const matchingMotionElements = existingMotionElements.filter(
+        (element) => {
+          motionKey === element.motionKey;
+        },
+      );
+
+      if (matchingMotionElements.length > 0) return existingMotionElements;
+
+      return [...existingMotionElements, { motionKey, exitDuration }];
+    });
+
+    return () => {
+      setMotionElements((existingMotionElements: Array<MotionElement>) => {
+        const matchingMotionElements = existingMotionElements.filter(
+          (element) => {
+            motionKey === element.motionKey;
+          },
+        );
+
+        return matchingMotionElements;
+      });
+    };
+  }, [exitDuration, motionKey, setMotionElements]);
+
+  const derivedMotionPresence = React.useMemo(() => {
+    if (presence === false && motionKey && motionKeys.includes(motionKey)) {
+      return false;
     }
 
-    if (isValidElement(node)) {
-      const formattedKey = `.$${node.key}`;
-      const bareKey = node.key;
+    return true;
+  }, [presence, motionKeys, motionKey]);
 
-      // If the key is in the keys array, update the status prop
-      if (
-        (bareKey !== null && keys.includes(bareKey)) ||
-        (formattedKey !== null && keys.includes(formattedKey))
-      ) {
-        const nodeTransitionDuration = node?.props?.transition?.duration;
-        if (nodeTransitionDuration > duration) {
-          duration = nodeTransitionDuration;
-        }
-        return React.cloneElement(node, { status });
-      }
-
-      // Recursively traverse the children
-      if (node.props.children) {
-        const updatedChildren = traverse(node.props.children);
-        return React.cloneElement(node, { children: updatedChildren });
-      }
-    }
-
-    // If it's not a React element, return it as is
-    return node;
+  return {
+    presence: derivedMotionPresence,
   };
-
-  return { children: traverse(children), duration };
 };
 
 type AnimatePresenceProps = {
+  presence?: boolean;
+  "tgph-motion-keys"?: Array<string>;
   children: React.ReactNode;
 };
 
-const AnimatePresence = ({ children }: AnimatePresenceProps) => {
-  const [allChildren, setAllChildren] = React.useState(children);
+const AnimatePresence = ({
+  presence,
+  "tgph-motion-keys": motionKeys = [],
+  children,
+}: AnimatePresenceProps) => {
+  const [managedChildren, setManagedChildren] = React.useState(children);
+
+  const [motionElements, setMotionElements] = React.useState<
+    Array<MotionElement>
+  >([]);
+  const [previousPresence, setPreviousPresence] = React.useState(presence);
 
   React.useEffect(() => {
-    const newMotionElements = recursivelyGetMotionElements(children);
-    const oldMotionElements = recursivelyGetMotionElements(allChildren);
+    const newPresence = presence;
+    let timeout: NodeJS.Timeout;
 
-    const addedMotionElementsKeys = newMotionElements
-      .filter((element) => {
-        if (React.isValidElement(element)) {
-          const hasKey = element.key !== null;
-          const includesMotionElements = oldMotionElements.includes(element);
-          return hasKey && !includesMotionElements;
-        }
-        return false;
-      })
-      .map((element) => (element as React.ReactElement)?.key as string);
-
-    if (addedMotionElementsKeys.length > 0) {
-      const { children: newChildren } = recursivleySetStatusProp(
-        "initial",
-        children,
-        addedMotionElementsKeys,
+    // If the presence is false and the previous presence was true, we need to animate the children out.
+    if (newPresence === false && previousPresence === true) {
+      // We need to find the highest duration of the motion elements to animate the children out without
+      // interrupting the animation of the other children.
+      const highestDuration = Math.max(
+        ...motionElements.map((element) => element.exitDuration),
       );
 
-      setAllChildren(newChildren);
+      // Freeze the children until the animation is complete.
+      timeout = setTimeout(() => {
+        setPreviousPresence(false);
+        setManagedChildren(children);
+      }, highestDuration);
+    } else {
+      setManagedChildren(children);
+      setPreviousPresence(newPresence);
     }
 
-    const removedMotionElementsKeys = oldMotionElements
-      .filter((element) => {
-        if (React.isValidElement(element)) {
-          const hasKey = element.key !== null;
-          const includesMotionElements = newMotionElements.includes(element);
-          return hasKey && !includesMotionElements;
-        }
-        return false;
-      })
-      .map((element) => (element as React.ReactElement)?.key as string);
+    return () => timeout && clearTimeout(timeout);
+  }, [presence, children, motionElements, previousPresence]);
 
-    if (removedMotionElementsKeys.length > 0) {
-      const { children: newChildren, duration } = recursivleySetStatusProp(
-        "exit",
-        allChildren,
-        removedMotionElementsKeys,
-      );
-
-      setAllChildren(newChildren);
-
-      const timeout = setTimeout(() => {
-        setAllChildren(children);
-      }, duration);
-
-      return () => clearTimeout(timeout);
-    }
-
-    // If we add `allChildren` to the dependency array, we will get a infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [children]);
-
-  return <>{allChildren}</>;
+  return (
+    <AnimatePresenceContext.Provider
+      value={{ presence, motionKeys, motionElements, setMotionElements }}
+    >
+      {managedChildren}
+    </AnimatePresenceContext.Provider>
+  );
 };
 
 export { AnimatePresence };

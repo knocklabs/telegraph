@@ -1,6 +1,11 @@
-import type { PolymorphicProps, TgphElement } from "@telegraph/helpers";
+import { type PolymorphicProps, type TgphElement } from "@telegraph/helpers";
 import { clsx } from "clsx";
 import React from "react";
+
+import { useAnimatePresence } from "../AnimatePresence";
+
+import type { TransitionType } from "./Motion.constants";
+import { getAnimationTimingFunction } from "./Motion.helpers";
 
 type MotionValues = {
   opacity?: number;
@@ -12,7 +17,7 @@ type MotionValues = {
 
 type Transition = {
   duration?: number;
-  type?: "ease-in-out" | "ease-in" | "ease-out" | "linear";
+  type?: TransitionType;
 };
 
 type MotionProps<T extends TgphElement> = PolymorphicProps<T> & {
@@ -32,8 +37,9 @@ const Motion = <T extends TgphElement>({
   animate,
   exit,
   transition,
-  children,
   style,
+  children,
+  "tgph-motion-key": motionKey,
   ...props
 }: MotionProps<T>) => {
   const Component = as || "div";
@@ -41,24 +47,34 @@ const Motion = <T extends TgphElement>({
   const [currentValues, setCurrentValues] = React.useState(initial);
   const [internalStatus, setInternalStatus] = React.useState("initial");
 
-  React.useEffect(() => {
-    let timeout: NodeJS.Timeout;
+  // If the motion elements is within the <AnimatePresence/> component,
+  // this component needs to respond too the presence change by changing
+  // the internalStatus to "exit"
+  const { presence } = useAnimatePresence({
+    motionKey,
+    exitDuration: transition?.duration,
+  });
 
+  React.useEffect(() => {
+    if (presence === false) {
+      setInternalStatus("exit");
+    }
+  }, [presence, internalStatus]);
+
+  // Sync the internalStatus with the external status prop.
+  // We do this so we can dervie internalStatus
+  React.useEffect(() => {
     if (status === "initial") {
-      timeout = setTimeout(() => {
-        setInternalStatus("animate");
-      }, 10);
+      setInternalStatus("animate");
     }
 
     if (status === "exit") {
-      timeout = setTimeout(() => {
-        setInternalStatus("exit");
-      }, 10);
+      setInternalStatus("exit");
     }
-
-    return () => clearTimeout(timeout);
   }, [status]);
 
+  // When the internalStatus changes, we update the currentValues
+  // to the corresponding values
   React.useEffect(() => {
     if (internalStatus === "initial") {
       setCurrentValues(initial);
@@ -72,9 +88,6 @@ const Motion = <T extends TgphElement>({
       setCurrentValues(exit);
     }
   }, [internalStatus, status, initial, animate, exit]);
-
-  console.log("HERE ANIMATE", animate);
-  console.log("HERE INTERNAL STATUS", internalStatus);
 
   return (
     // @ts-expect-error - CSS variables inline throws a type error, but it's valid HTML.
@@ -92,7 +105,9 @@ const Motion = <T extends TgphElement>({
             ? `${currentValues?.rotate}deg`
             : null,
         "--motion-transition-duration": `${transition?.duration}ms`,
-        "--motion-transition-type": transition?.type,
+        "--motion-transition-type": getAnimationTimingFunction(
+          transition?.type,
+        ),
         ...style,
       }}
       {...props}
@@ -102,4 +117,11 @@ const Motion = <T extends TgphElement>({
   );
 };
 
-export { Motion };
+Motion.displayName = "Motion";
+
+const motion = {
+  div: (props: MotionProps<"div">) => <Motion as="div" {...props} />,
+  span: (props: MotionProps<"span">) => <Motion as="span" {...props} />,
+};
+
+export { Motion, motion };
