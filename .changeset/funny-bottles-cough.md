@@ -1,7 +1,7 @@
 ---
 "@telegraph/style-engine": minor
 "@telegraph/typography": minor
-"@telegraph/button": minor
+"@telegraph/button": patch
 "@telegraph/layout": minor
 ---
 
