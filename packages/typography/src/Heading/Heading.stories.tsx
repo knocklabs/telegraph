@@ -1,12 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { tokens } from "@telegraph/style-engine";
 
-import { alignMap, colorMap, sizeMap } from "../helpers/prop-mappings";
+import { COLOR_MAP } from "../constants";
 
 import { Heading as TelegraphHeading } from "./Heading";
 
 const meta: Meta<typeof TelegraphHeading> = {
   title: "Components/Typography",
   component: TelegraphHeading,
+  parameters: {
+    controls: {
+      exclude: [
+        "internal_optionalAs",
+        "fontSize",
+        "leading",
+        "tracking",
+        "family",
+      ],
+    },
+  },
   argTypes: {
     as: {
       options: ["h1", "h2", "h3", "h4", "h5", "h6"],
@@ -15,19 +27,21 @@ const meta: Meta<typeof TelegraphHeading> = {
       },
     },
     size: {
-      options: Object.keys(sizeMap),
+      options: Object.keys(tokens.text).filter(
+        (key) => !key.startsWith("code-"),
+      ),
       control: {
         type: "select",
       },
     },
     color: {
-      options: Object.keys(colorMap),
+      options: Object.keys(COLOR_MAP),
       control: {
         type: "select",
       },
     },
     align: {
-      options: Object.keys(alignMap),
+      options: ["left", "center", "right"],
       control: {
         type: "select",
       },

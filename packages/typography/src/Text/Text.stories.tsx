@@ -1,17 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { tokens } from "@telegraph/style-engine";
 
-import {
-  alignMap,
-  colorMap,
-  sizeMap,
-  weightMap,
-} from "../helpers/prop-mappings";
+import { COLOR_MAP } from "../constants";
 
 import { Text as TelegraphText } from "./Text";
 
 const meta: Meta<typeof TelegraphText> = {
   title: "Components/Typography",
   component: TelegraphText,
+  parameters: {
+    controls: {
+      exclude: [
+        "internal_optionalAs",
+        "fontSize",
+        "leading",
+        "tracking",
+        "family",
+      ],
+    },
+  },
   argTypes: {
     as: {
       options: ["p", "span", "div", "label"],
@@ -20,25 +27,27 @@ const meta: Meta<typeof TelegraphText> = {
       },
     },
     size: {
-      options: Object.keys(sizeMap),
+      options: Object.keys(tokens.text).filter(
+        (key) => !key.startsWith("code-"),
+      ),
       control: {
         type: "select",
       },
     },
     weight: {
-      options: Object.keys(weightMap),
+      options: Object.keys(tokens.weight),
       control: {
         type: "select",
       },
     },
     color: {
-      options: Object.keys(colorMap),
+      options: Object.keys(COLOR_MAP),
       control: {
         type: "select",
       },
     },
     align: {
-      options: Object.keys(alignMap),
+      options: ["left", "center", "right"],
       control: {
         type: "select",
       },

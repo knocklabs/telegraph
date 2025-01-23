@@ -1,0 +1,27 @@
+.tgph-box {
+  --background-color: transparent;
+  --border-color: var(--tgph-gray-6);
+  --border-style: solid;
+  --border-width: 0;
+  --padding: 0;
+  --margin: 0;
+  --border-radius: 0;
+  --width: auto;
+  --max-width: auto;
+  --min-width: auto;
+  --height: auto;
+  --max-height: auto;
+  --min-height: auto;
+
+  background-color: var(--background-color);
+  border: var(--border-width) var(--border-style) var(--border-color);
+  padding: var(--padding);
+  margin: var(--margin);
+  border-radius: var(--border-radius);
+  width: var(--width);
+  max-width: var(--max-width);
+  min-width: var(--min-width);
+  height: var(--height);
+  max-height: var(--max-height);
+  min-height: var(--min-height);
+}

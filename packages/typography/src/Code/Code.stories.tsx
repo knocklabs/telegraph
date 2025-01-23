@@ -1,11 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { tokens } from "@telegraph/style-engine";
+
+import { COLOR_MAP } from "../constants";
 
 import { Code as TelegraphCode } from "./Code";
-import { CODE_PROPS } from "./Code.constants";
 
 const meta: Meta<typeof TelegraphCode> = {
   title: "Components/Typography",
   component: TelegraphCode,
+  parameters: {
+    controls: {
+      exclude: [
+        "internal_optionalAs",
+        "fontSize",
+        "leading",
+        "tracking",
+        "family",
+      ],
+    },
+  },
   argTypes: {
     as: {
       options: ["span", "div", "pre", "code"],
@@ -14,25 +27,27 @@ const meta: Meta<typeof TelegraphCode> = {
       },
     },
     size: {
-      options: Object.keys(CODE_PROPS.size),
+      options: Object.keys(tokens.text)
+        .filter((key) => key.startsWith("code-"))
+        .map((key) => key.replace("code-", "")),
       control: {
         type: "select",
       },
     },
     weight: {
-      options: Object.keys(CODE_PROPS.weight),
+      options: Object.keys(tokens.weight),
       control: {
         type: "select",
       },
     },
     color: {
-      options: Object.keys(CODE_PROPS.variant.soft),
+      options: Object.keys(COLOR_MAP),
       control: {
         type: "select",
       },
     },
     variant: {
-      options: Object.keys(CODE_PROPS.variant),
+      options: ["soft", "ghost"],
       control: {
         type: "select",
       },
