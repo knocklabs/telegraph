@@ -39,11 +39,7 @@ const Root = ({
   return (
     <AnimatePresence presence={open} tgph-motion-keys={["popover-content"]}>
       <PopoverContext.Provider value={{ open, setOpen }}>
-        <RadixPopover.Root
-          open={open}
-          onOpenChange={onOpenChangeProp}
-          {...props}
-        >
+        <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
           {children}
         </RadixPopover.Root>
       </PopoverContext.Provider>
