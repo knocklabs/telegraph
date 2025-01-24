@@ -1,5 +1,14 @@
 # @telegraph/typography
 
+## 0.1.1
+
+### Patch Changes
+
+- [#357](https://github.com/knocklabs/telegraph/pull/357) [`6a9c100`](https://github.com/knocklabs/telegraph/commit/6a9c10012e435b297756adff6b89976453e5d890) Thanks [@kylemcd](https://github.com/kylemcd)! - fix regressions found in use case of telegraph
+
+- Updated dependencies [[`6a9c100`](https://github.com/knocklabs/telegraph/commit/6a9c10012e435b297756adff6b89976453e5d890)]:
+  - @telegraph/layout@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
