@@ -12,6 +12,7 @@
   --height: auto;
   --max-height: auto;
   --min-height: auto;
+  --z-index: auto;
 
   background-color: var(--background-color);
   border: var(--border-width) var(--border-style) var(--border-color);
@@ -24,4 +25,5 @@
   height: var(--height);
   max-height: var(--max-height);
   min-height: var(--min-height);
+  z-index: var(--z-index);
 }

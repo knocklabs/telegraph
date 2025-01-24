@@ -41,6 +41,7 @@ export type BaseStyleProps = {
   minHeight: keyof typeof tokens.spacing;
   maxWidth: keyof typeof tokens.spacing;
   maxHeight: keyof typeof tokens.spacing;
+  zIndex: keyof (typeof tokens)["zIndex"];
 };
 
 type ShorthandStyleProps = {
@@ -78,6 +79,10 @@ type ShorthandStyleProps = {
   roundedBottom: keyof typeof tokens.rounded;
   roundedLeft: keyof typeof tokens.rounded;
   roundedRight: keyof typeof tokens.rounded;
+  borderTop: keyof typeof tokens.spacing;
+  borderBottom: keyof typeof tokens.spacing;
+  borderLeft: keyof typeof tokens.spacing;
+  borderRight: keyof typeof tokens.spacing;
 };
 
 const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
@@ -261,6 +266,10 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     cssVar: "--max-height",
     value: "var(--tgph-spacing-VARIABLE)",
   },
+  zIndex: {
+    cssVar: "--z-index",
+    value: "var(--tgph-zIndex-VARIABLE)",
+  },
 } as const;
 
 const shorthandCssVars: Record<keyof ShorthandStyleProps, CssVarProp> = {
@@ -298,6 +307,10 @@ const shorthandCssVars: Record<keyof ShorthandStyleProps, CssVarProp> = {
   roundedBottom: baseCssVars.borderBottomRadius,
   roundedLeft: baseCssVars.borderLeftRadius,
   roundedRight: baseCssVars.borderRightRadius,
+  borderTop: baseCssVars.borderTopWidth,
+  borderBottom: baseCssVars.borderBottomWidth,
+  borderLeft: baseCssVars.borderLeftWidth,
+  borderRight: baseCssVars.borderRightWidth,
 } as const;
 
 export const cssVars = {
