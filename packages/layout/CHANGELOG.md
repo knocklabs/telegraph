@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.1.2
+
+### Patch Changes
+
+- [`a9ece46`](https://github.com/knocklabs/telegraph/commit/a9ece460f0b90927e3808c83d6c90eabb118aed0) Thanks [@kylemcd](https://github.com/kylemcd)! - fix border issue
+
 ## 0.1.1
 
 ### Patch Changes

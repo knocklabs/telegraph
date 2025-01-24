@@ -1,5 +1,13 @@
 # @telegraph/segmented-control
 
+## 0.0.16
+
+### Patch Changes
+
+- Updated dependencies [[`a9ece46`](https://github.com/knocklabs/telegraph/commit/a9ece460f0b90927e3808c83d6c90eabb118aed0)]:
+  - @telegraph/layout@0.1.2
+  - @telegraph/button@0.0.56
+
 ## 0.0.15
 
 ### Patch Changes
