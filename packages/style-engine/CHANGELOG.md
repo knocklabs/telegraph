@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.1.0
+
+### Minor Changes
+
+- [#351](https://github.com/knocklabs/telegraph/pull/351) [`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad) Thanks [@kylemcd](https://github.com/kylemcd)! - create new style-engine and implement it in layout and typography packages
+
 ## 0.0.4
 
 ### Patch Changes

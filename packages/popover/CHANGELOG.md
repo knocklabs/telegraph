@@ -1,5 +1,15 @@
 # @telegraph/popover
 
+## 0.0.6
+
+### Patch Changes
+
+- [#352](https://github.com/knocklabs/telegraph/pull/352) [`aae39d2`](https://github.com/knocklabs/telegraph/commit/aae39d2b088730f91bba0ce417d85af4a1a5b7f8) Thanks [@kylemcd](https://github.com/kylemcd)! - @telegraph/motion and integration into @telegraph/popover
+
+- Updated dependencies [[`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad), [`aae39d2`](https://github.com/knocklabs/telegraph/commit/aae39d2b088730f91bba0ce417d85af4a1a5b7f8)]:
+  - @telegraph/layout@0.1.0
+  - @telegraph/motion@0.0.1
+
 ## 0.0.3
 
 ### Patch Changes

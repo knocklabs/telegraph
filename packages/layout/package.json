@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/layout",
-  "version": "0.0.30",
+  "version": "0.1.0",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/layout",
   "author": "@knocklabs",
   "license": "MIT",

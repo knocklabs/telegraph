@@ -1,5 +1,19 @@
 # @telegraph/typography
 
+## 0.1.0
+
+### Minor Changes
+
+- [#351](https://github.com/knocklabs/telegraph/pull/351) [`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad) Thanks [@kylemcd](https://github.com/kylemcd)! - create new style-engine and implement it in layout and typography packages
+
+### Patch Changes
+
+- [#355](https://github.com/knocklabs/telegraph/pull/355) [`8f5a797`](https://github.com/knocklabs/telegraph/commit/8f5a797d9d4a02b7477ae8851057d92d09ff0fa3) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Fix /default.css export in package.json
+
+- Updated dependencies [[`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad)]:
+  - @telegraph/style-engine@0.1.0
+  - @telegraph/layout@0.1.0
+
 ## 0.0.28
 
 ### Patch Changes
