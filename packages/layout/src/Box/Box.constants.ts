@@ -4,6 +4,9 @@ import type { CssVarProp } from "@telegraph/style-engine";
 export type BaseStyleProps = {
   display: "block" | "inline-block" | "inline" | "flex" | "inline-flex";
   backgroundColor: keyof typeof tokens.color;
+  hover_backgroundColor: keyof typeof tokens.color;
+  focus_backgroundColor: keyof typeof tokens.color;
+  active_backgroundColor: keyof typeof tokens.color;
   borderColor: keyof typeof tokens.color;
   borderWidth: keyof typeof tokens.spacing;
   borderTopWidth: keyof typeof tokens.spacing;
@@ -92,6 +95,18 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   backgroundColor: {
     cssVar: "--background-color",
+    value: "var(--tgph-VARIABLE)",
+  },
+  hover_backgroundColor: {
+    cssVar: "--hover_backgroundColor",
+    value: "var(--tgph-VARIABLE)",
+  },
+  focus_backgroundColor: {
+    cssVar: "--focus_backgroundColor",
+    value: "var(--tgph-VARIABLE)",
+  },
+  active_backgroundColor: {
+    cssVar: "--active_backgroundColor",
     value: "var(--tgph-VARIABLE)",
   },
   borderStyle: {
