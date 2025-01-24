@@ -20,9 +20,9 @@ type HeadingProps<T extends TgphElement> = BaseHeadingProps &
 
 const Heading = <T extends TgphElement>({
   as,
-  color = "default",
   size = "2",
   weight = "semi-bold",
+  color,
   align,
   className,
   // Remove this from props to avoid passing to DOM element
