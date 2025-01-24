@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Lucide } from "../index";
 
 import { Icon as TelegraphIcon } from "./Icon";
-import { colorMap, sizeMap } from "./Icon.constants";
+import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
 
 const Icons = { ...Lucide };
 
@@ -40,19 +40,19 @@ export const Default: Story = {
       },
     },
     size: {
-      options: Object.keys(sizeMap.box),
+      options: Object.keys(SIZE_MAP),
       control: {
         type: "select",
       },
     },
     color: {
-      options: Object.keys(colorMap.primary),
+      options: Object.keys(COLOR_MAP.primary),
       control: {
         type: "select",
       },
     },
     variant: {
-      options: Object.keys(colorMap),
+      options: Object.keys(COLOR_MAP),
       control: {
         type: "select",
       },

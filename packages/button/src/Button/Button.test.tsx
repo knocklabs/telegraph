@@ -56,14 +56,18 @@ describe("Button", () => {
       </Button>,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-11");
+    expect(icon).toHaveStyle({
+      "--color": "var(--tgph-gray-11)",
+    });
   });
   it("icon in icon only button  has correct text color", async () => {
     const { container } = render(
       <Button icon={{ icon: Lucide.Bell, alt: "create" }} variant="soft" />,
     );
     const icon = container?.querySelector("[data-button-icon]");
-    expect(icon).toHaveClass("text-gray-12");
+    expect(icon).toHaveStyle({
+      "--color": "var(--tgph-gray-12)",
+    });
   });
   it("icon-only button has correct layout", async () => {
     const { container } = render(
@@ -97,7 +101,9 @@ describe("Button", () => {
     expect(text).toHaveStyle({
       "--color": "var(--tgph-gray-9)",
     });
-    expect(icon).toHaveClass("text-gray-8");
+    expect(icon).toHaveStyle({
+      "--color": "var(--tgph-gray-8)",
+    });
   });
   it("if a button set to an anchor is disabled, it turns into a button", () => {
     const { container } = render(

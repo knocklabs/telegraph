@@ -26,9 +26,9 @@ const Code = <T extends TgphElement>({
   size = "2",
   weight = "regular",
   variant = "soft",
-  color = "default",
   align = "left",
   family = "mono",
+  color,
   className,
   // Remove this from props to avoid passing to DOM element
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

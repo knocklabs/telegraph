@@ -44,7 +44,6 @@ describe("Heading", () => {
   it("default props applies correct className", () => {
     const { container } = render(<Heading as="h1">Heading</Heading>);
     expect(container.firstChild).toHaveStyle({
-      "--color": "var(--tgph-gray-12)",
       "--font-size": "var(--tgph-text-2)",
       "--leading": "var(--tgph-leading-2)",
       "--tracking": "var(--tgph-tracking-2)",
