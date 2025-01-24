@@ -1,5 +1,12 @@
 # @telegraph/popover
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`a9ece46`](https://github.com/knocklabs/telegraph/commit/a9ece460f0b90927e3808c83d6c90eabb118aed0)]:
+  - @telegraph/layout@0.1.2
+
 ## 0.0.7
 
 ### Patch Changes
