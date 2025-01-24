@@ -6,7 +6,7 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "@telegraph/motion";
 import React from "react";
 
 type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
@@ -37,11 +37,13 @@ const Root = ({
   });
 
   return (
-    <PopoverContext.Provider value={{ open, setOpen }}>
-      <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
-        {children}
-      </RadixPopover.Root>
-    </PopoverContext.Provider>
+    <AnimatePresence presence={open} tgph-motion-keys={["popover-content"]}>
+      <PopoverContext.Provider value={{ open, setOpen }}>
+        <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
+          {children}
+        </RadixPopover.Root>
+      </PopoverContext.Provider>
+    </AnimatePresence>
   );
 };
 
@@ -148,7 +150,15 @@ const Content = <T extends TgphElement>({
               x: 0,
               y: 0,
             }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            exit={{
+              opacity: 0.5,
+              scale: 0.6,
+              ...deriveAnimationBasedOnSide(side),
+            }}
+            transition={{
+              duration: 100,
+              type: "spring",
+            }}
             bg={bg}
             direction={direction}
             gap={gap}
@@ -161,6 +171,7 @@ const Content = <T extends TgphElement>({
               transformOrigin: "var(--radix-tooltip-content-transform-origin)",
             }}
             zIndex="popover"
+            tgph-motion-key="popover-content"
           >
             {children}
           </Stack>

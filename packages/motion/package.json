@@ -1,8 +1,8 @@
 {
-  "name": "@telegraph/popover",
-  "version": "0.0.5",
-  "description": "Displays content in a portal, triggered by a button.",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/popover",
+  "name": "@telegraph/motion",
+  "version": "0.0.0",
+  "description": "A collection of components that make animation easier in telegraph.",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/motion",
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
@@ -31,13 +31,6 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@radix-ui/react-popover": "^1.1.1",
-    "@radix-ui/react-use-controllable-state": "^1.1.0",
-    "@telegraph/helpers": "workspace:^",
-    "@telegraph/layout": "workspace:^",
-    "@telegraph/motion": "workspace:^"
-  },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
@@ -53,6 +46,6 @@
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.2.0"
   }
 }
