@@ -1,5 +1,12 @@
 # @telegraph/icon
 
+## 0.0.34
+
+### Patch Changes
+
+- Updated dependencies [[`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad)]:
+  - @telegraph/layout@0.1.0
+
 ## 0.0.33
 
 ### Patch Changes

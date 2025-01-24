@@ -1,5 +1,17 @@
 # @telegraph/button
 
+## 0.0.54
+
+### Patch Changes
+
+- [#351](https://github.com/knocklabs/telegraph/pull/351) [`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad) Thanks [@kylemcd](https://github.com/kylemcd)! - create new style-engine and implement it in layout and typography packages
+
+- Updated dependencies [[`7ef8fe2`](https://github.com/knocklabs/telegraph/commit/7ef8fe2df51b1f632163918095a5496322277cad), [`8f5a797`](https://github.com/knocklabs/telegraph/commit/8f5a797d9d4a02b7477ae8851057d92d09ff0fa3)]:
+  - @telegraph/style-engine@0.1.0
+  - @telegraph/typography@0.1.0
+  - @telegraph/layout@0.1.0
+  - @telegraph/icon@0.0.34
+
 ## 0.0.53
 
 ### Patch Changes

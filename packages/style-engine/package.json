@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/style-engine",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A wrappar around vanilla extract to style telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/style-engine",
   "author": "@knocklabs",
