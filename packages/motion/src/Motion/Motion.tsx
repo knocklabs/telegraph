@@ -10,8 +10,8 @@ import { getAnimationTimingFunction } from "./Motion.helpers";
 type MotionValues = {
   opacity?: number;
   scale?: number;
-  x?: number;
-  y?: number;
+  x?: number | string;
+  y?: number | string;
   rotate?: number;
 };
 
@@ -26,6 +26,7 @@ type MotionProps<T extends TgphElement> = PolymorphicProps<T> & {
   exit?: MotionValues;
   transition?: Transition;
   status?: "initial" | "animate" | "exit";
+  initializeWithAnimation?: boolean;
   children?: React.ReactNode;
 };
 
@@ -37,6 +38,7 @@ const Motion = <T extends TgphElement>({
   animate,
   exit,
   transition,
+  initializeWithAnimation = true,
   style,
   children,
   "tgph-motion-key": motionKey,
@@ -89,6 +91,11 @@ const Motion = <T extends TgphElement>({
     }
   }, [internalStatus, status, initial, animate, exit]);
 
+  const transitionDuration =
+    internalStatus === "initial" && initializeWithAnimation === false
+      ? 0
+      : transition?.duration;
+
   return (
     // @ts-expect-error - CSS variables inline throws a type error, but it's valid HTML.
     <Component
@@ -97,14 +104,22 @@ const Motion = <T extends TgphElement>({
         "--motion-opacity": currentValues?.opacity,
         "--motion-scale": currentValues?.scale,
         "--motion-x":
-          typeof currentValues?.x === "number" ? `${currentValues?.x}px` : null,
+          typeof currentValues?.x === "number"
+            ? `${currentValues?.x}px`
+            : typeof currentValues?.x === "string"
+              ? currentValues?.x
+              : null,
         "--motion-y":
-          typeof currentValues?.y === "number" ? `${currentValues?.y}px` : null,
+          typeof currentValues?.y === "number"
+            ? `${currentValues?.y}px`
+            : typeof currentValues?.y === "string"
+              ? currentValues?.y
+              : null,
         "--motion-rotate":
           typeof currentValues?.rotate === "number"
             ? `${currentValues?.rotate}deg`
             : null,
-        "--motion-transition-duration": `${transition?.duration}ms`,
+        "--motion-transition-duration": `${transitionDuration}ms`,
         "--motion-transition-type": getAnimationTimingFunction(
           transition?.type,
         ),

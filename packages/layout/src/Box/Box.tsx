@@ -22,11 +22,18 @@ const Box = <T extends TgphElement>({
 }: BoxProps<T>) => {
   const Component = (as || "div") as TgphElement;
 
-  const { styleProp, otherProps } = useStyleEngine({ props, cssVars });
+  const { styleProp, otherProps, interactive } = useStyleEngine({
+    props,
+    cssVars,
+  });
 
   return (
     <Component
-      className={clsx("tgph-box", className)}
+      className={clsx(
+        "tgph-box",
+        interactive && "tgph-box--interactive",
+        className,
+      )}
       style={styleProp}
       {...otherProps}
       ref={tgphRef}
