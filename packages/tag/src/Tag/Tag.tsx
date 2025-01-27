@@ -53,8 +53,6 @@ const Root = <T extends TgphElement>({
         pl={SPACING.Root[size]}
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
-        // hover_backgroundColor={COLOR.Root[variant][color]}
-        // focus_backgroundColor={COLOR.Root[variant][color]}
         className={clsx("tgph-tag", className)}
         {...props}
         data-tag
