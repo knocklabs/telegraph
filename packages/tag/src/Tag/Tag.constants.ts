@@ -1,8 +1,14 @@
 export const SIZE = {
   Root: {
-    "0": "h-5",
-    "1": "h-6",
-    "2": "h-8",
+    "0": {
+      h: "5",
+    },
+    "1": {
+      h: "6",
+    },
+    "2": {
+      h: "8",
+    },
   },
 } as const;
 
@@ -22,24 +28,24 @@ export const SPACING = {
 export const COLOR = {
   Root: {
     solid: {
-      default: "bg-gray-12",
-      accent: "bg-accent-9",
-      gray: "bg-gray-9",
-      red: "bg-red-9",
-      blue: "bg-blue-9",
-      green: "bg-green-9",
-      yellow: "bg-yellow-9",
-      purple: "bg-purple-9",
+      default: "gray-12",
+      accent: "accent-9",
+      gray: "gray-9",
+      red: "red-9",
+      blue: "blue-9",
+      green: "green-9",
+      yellow: "yellow-9",
+      purple: "purple-9",
     },
     soft: {
-      default: "bg-gray-3",
-      accent: "bg-accent-3",
-      gray: "bg-gray-3",
-      red: "bg-red-3",
-      blue: "bg-blue-3",
-      green: "bg-green-3",
-      yellow: "bg-yellow-3",
-      purple: "bg-purple-3",
+      default: "gray-3",
+      accent: "accent-3",
+      gray: "gray-3",
+      red: "red-3",
+      blue: "blue-3",
+      green: "green-3",
+      yellow: "yellow-3",
+      purple: "purple-3",
     },
   },
   Icon: {
