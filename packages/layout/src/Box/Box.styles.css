@@ -42,7 +42,7 @@
   overflow: var(--overflow);
 }
 
-.tgph-box-interactive {
+.tgph-box--interactive {
   --hover_backgroundColor: none;
   --focus_backgroundColor: none;
   --active_backgroundColor: none;
