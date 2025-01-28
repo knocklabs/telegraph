@@ -107,10 +107,10 @@ const AnimatePresence = ({ presenceMap, children }: AnimatePresenceProps) => {
     const hasPresenceMapChanged =
       // Check if array has changed values
       newPresenceMap?.some(
-        (p) =>
-          p.value !==
+        (n) =>
+          n.value !==
           previousPresenceMap?.find(
-            (p) => p["tgph-motion-key"] === p["tgph-motion-key"],
+            (p) => p["tgph-motion-key"] === n["tgph-motion-key"],
           )?.value,
         // Check if array has changed lengths
       ) || newPresenceMap?.length !== previousPresenceMap?.length;
