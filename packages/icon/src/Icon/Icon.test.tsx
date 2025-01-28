@@ -39,16 +39,21 @@ describe("Icon", () => {
     const { container } = render(
       <Icon icon={Lucide.Bell} alt="Create a workflow" />,
     );
-    expect(container.firstChild).toHaveClass("h-4");
-    expect(container.firstChild).toHaveClass("w-4");
-    expect(container.firstChild).toHaveClass("text-gray-12");
-    expect(container.firstChild).toHaveClass("inline-block");
+
+    expect(container.firstChild).toHaveStyle({
+      "--color": "var(--tgph-gray-12)",
+      "--height": "var(--tgph-spacing-4)",
+      "--width": "var(--tgph-spacing-4)",
+    });
   });
   it("color prop applies correct className", () => {
     const { container } = render(
       <Icon icon={Lucide.Bell} alt="Create a workflow" color="red" />,
     );
-    expect(container.firstChild).toHaveClass("text-red-11");
+
+    expect(container.firstChild).toHaveStyle({
+      "--color": "var(--tgph-red-11)",
+    });
   });
   it("variant prop applies correct className", () => {
     const { container } = render(
@@ -59,13 +64,19 @@ describe("Icon", () => {
         variant="secondary"
       />,
     );
-    expect(container.firstChild).toHaveClass("text-red-10");
+
+    expect(container.firstChild).toHaveStyle({
+      "--color": "var(--tgph-red-10)",
+    });
   });
   it("size prop applies correct className", () => {
     const { container } = render(
       <Icon icon={Lucide.Bell} alt="Create a workflow" size="9" />,
     );
-    expect(container.firstChild).toHaveClass("h-12");
-    expect(container.firstChild).toHaveClass("w-12");
+
+    expect(container.firstChild).toHaveStyle({
+      "--height": "var(--tgph-spacing-12)",
+      "--width": "var(--tgph-spacing-12)",
+    });
   });
 });

@@ -20,10 +20,10 @@ type TextProps<T extends TgphElement> = BaseTextProps &
 
 const Text = <T extends TgphElement>({
   as,
-  color = "default",
   size = "2",
   weight = "regular",
   align = "left",
+  color,
   className,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,

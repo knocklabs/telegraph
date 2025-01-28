@@ -4,17 +4,18 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
+import { Text } from "@telegraph/typography";
 import clsx from "clsx";
 // We use "Bell" in place of any icon so we get correct type checking
 import type { Bell } from "lucide-react";
 
-import { colorMap, sizeMap } from "./Icon.constants";
+import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
 
 type BaseIconProps = {
   icon: typeof Bell;
-  size?: keyof (typeof sizeMap)["box"];
-  variant?: keyof typeof colorMap;
-  color?: keyof (typeof colorMap)["primary"];
+  size?: keyof typeof SIZE_MAP;
+  variant?: keyof typeof COLOR_MAP;
+  color?: keyof (typeof COLOR_MAP)["primary"];
 } & (
   | {
       alt: string;
@@ -39,6 +40,7 @@ const Icon = <T extends TgphElement>({
   icon,
   alt,
   className,
+  style,
   ...props
 }: IconProps<T>) => {
   const IconComponent = icon;
@@ -52,15 +54,21 @@ const Icon = <T extends TgphElement>({
   }
 
   return (
-    <Box
+    <Text
       as={as || "span"}
-      className={clsx(
-        size && sizeMap["box"][size],
-        color && colorMap[variant][color],
-        "inline-block",
-        className,
-      )}
+      className={clsx("tgph-icon", className)}
       data-button-icon
+      style={{
+        // We choose to override these values vs passing them in as props because
+        // the icon's sizes aren't all exact telegraph tokens and the colors
+        // of the icon are different than the text color. Because of how the Text
+        // component is setup this is a valid way to inject these values in for these
+        // few cases.
+        "--height": SIZE_MAP[size],
+        "--width": SIZE_MAP[size],
+        "--color": COLOR_MAP[variant][color],
+        ...style,
+      }}
       {...props}
     >
       {IconComponent && (
@@ -71,7 +79,7 @@ const Icon = <T extends TgphElement>({
           display="block"
         />
       )}
-    </Box>
+    </Text>
   );
 };
 
