@@ -45,6 +45,12 @@ export type BaseStyleProps = {
   maxWidth: keyof typeof tokens.spacing;
   maxHeight: keyof typeof tokens.spacing;
   zIndex: keyof (typeof tokens)["zIndex"];
+  position: "relative" | "absolute" | "fixed" | "sticky";
+  top: keyof typeof tokens.spacing;
+  left: keyof typeof tokens.spacing;
+  right: keyof typeof tokens.spacing;
+  bottom: keyof typeof tokens.spacing;
+  overflow: "hidden" | "visible" | "scroll" | "auto";
 };
 
 type ShorthandStyleProps = {
@@ -100,13 +106,16 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   hover_backgroundColor: {
     cssVar: "--hover_backgroundColor",
     value: "var(--tgph-VARIABLE)",
+    interactive: true,
   },
   focus_backgroundColor: {
     cssVar: "--focus_backgroundColor",
     value: "var(--tgph-VARIABLE)",
+    interactive: true,
   },
   active_backgroundColor: {
     cssVar: "--active_backgroundColor",
+    interactive: true,
     value: "var(--tgph-VARIABLE)",
   },
   borderStyle: {
@@ -226,12 +235,12 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   borderBottomLeftRadius: {
     cssVar: "--border-radius",
     value: "var(--tgph-rounded-VARIABLE)",
-    direction: "bottom",
+    direction: "left",
   },
   borderBottomRightRadius: {
     cssVar: "--border-radius",
     value: "var(--tgph-rounded-VARIABLE)",
-    direction: "right",
+    direction: "bottom",
   },
   borderTopRadius: {
     cssVar: "--border-radius",
@@ -284,6 +293,30 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   zIndex: {
     cssVar: "--z-index",
     value: "var(--tgph-zIndex-VARIABLE)",
+  },
+  position: {
+    cssVar: "--position",
+    value: "VARIABLE",
+  },
+  top: {
+    cssVar: "--top",
+    value: "var(--tgph-spacing-VARIABLE)",
+  },
+  left: {
+    cssVar: "--left",
+    value: "var(--tgph-spacing-VARIABLE)",
+  },
+  right: {
+    cssVar: "--right",
+    value: "var(--tgph-spacing-VARIABLE)",
+  },
+  bottom: {
+    cssVar: "--bottom",
+    value: "var(--tgph-spacing-VARIABLE)",
+  },
+  overflow: {
+    cssVar: "--overflow",
+    value: "VARIABLE",
   },
 } as const;
 

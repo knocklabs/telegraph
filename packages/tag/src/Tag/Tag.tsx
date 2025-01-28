@@ -8,10 +8,10 @@ import type {
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { motion } from "@telegraph/motion";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import { COLOR, SIZE, SPACING } from "./Tag.constants";
@@ -47,11 +47,13 @@ const Root = <T extends TgphElement>({
     <TagContext.Provider value={{ size, color, variant }}>
       <Stack
         as={as}
-        display="inline-flex"
         align="center"
         rounded="2"
+        display="inline-flex"
         pl={SPACING.Root[size]}
-        className={clsx(SIZE.Root[size], COLOR.Root[variant][color], className)}
+        backgroundColor={COLOR.Root[variant][color]}
+        h={SIZE.Root[size].h}
+        className={clsx("tgph-tag", className)}
         {...props}
         data-tag
       />
@@ -81,10 +83,10 @@ const Text = <T extends TgphElement>({
       weight="medium"
       mr={SPACING.Text[context.size]}
       maxW={maxW}
+      overflow="hidden"
       style={{
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",
-        overflow: "hidden",
         ...style,
       }}
       {...props}
@@ -99,12 +101,7 @@ type CopyButtonProps = TgphComponentProps<typeof TelegraphButton.Root> & {
   textToCopy?: string;
 };
 
-const CopyButton = ({
-  onClick,
-  textToCopy,
-  className,
-  ...props
-}: CopyButtonProps) => {
+const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
   const context = React.useContext(TagContext);
 
   const [copied, setCopied] = React.useState(false);
@@ -117,59 +114,52 @@ const CopyButton = ({
   }, [copied]);
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <Tooltip label="Copy text">
-        <TelegraphButton.Root
-          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-            // Still run onClick incase the consumer wants to do something else
-            onClick?.(event);
-            setCopied(true);
-            textToCopy && navigator.clipboard.writeText(textToCopy);
-            event.currentTarget?.blur();
-          }}
-          size={context.size}
-          color={COLOR.Button[context.variant][context.color]}
-          variant={context.variant}
-          className={clsx("overflow-hidden", className)}
-          roundedTopRight="3"
-          roundedBottomRight="3"
-          roundedTopLeft="0"
-          roundedBottomLeft="0"
-          {...props}
-        >
-          {copied ? (
-            <TelegraphButton.Icon
-              as={motion.span}
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-              icon={Lucide.Check}
-              alt="Copied text"
-              key={"check icon"}
-            />
-          ) : (
-            <TelegraphButton.Icon
-              as={motion.span}
-              initial={{ y: "-100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-100%" }}
-              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-              icon={Lucide.Copy}
-              alt="Copy text"
-              key={"copy icon"}
-            />
-          )}
-        </TelegraphButton.Root>
-      </Tooltip>
-    </AnimatePresence>
+    <Tooltip label="Copy text">
+      <TelegraphButton.Root
+        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+          // Still run onClick incase the consumer wants to do something else
+          onClick?.(event);
+          setCopied(true);
+          textToCopy && navigator.clipboard.writeText(textToCopy);
+          event.currentTarget?.blur();
+        }}
+        size={context.size}
+        color={COLOR.Button[context.variant][context.color]}
+        variant={context.variant}
+        roundedTopRight="3"
+        roundedBottomRight="3"
+        roundedTopLeft="0"
+        roundedBottomLeft="0"
+        position="relative"
+        overflow="hidden"
+        p="2"
+        {...props}
+      >
+        <TelegraphButton.Icon
+          as={motion.span}
+          initializeWithAnimation={false}
+          animate={{ y: copied ? 0 : "150%", opacity: copied ? 1 : 1 }}
+          transition={{ duration: 150, type: "spring" }}
+          icon={Lucide.Check}
+          alt="Copied text"
+          aria-hidden={!copied}
+        />
+        <TelegraphButton.Icon
+          as={motion.span}
+          initializeWithAnimation={false}
+          animate={{ y: !copied ? 0 : "-150%", opacity: !copied ? 1 : 1 }}
+          transition={{ duration: 150, type: "spring" }}
+          icon={Lucide.Copy}
+          position="absolute"
+          alt="Copy text"
+          aria-hidden={copied}
+        />
+      </TelegraphButton.Root>
+    </Tooltip>
   );
 };
 
-const Button = <T extends TgphElement>({
-  className,
-  ...props
-}: ButtonProps<T>) => {
+const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
   const context = React.useContext(TagContext);
   return (
     <TelegraphButton
@@ -177,7 +167,10 @@ const Button = <T extends TgphElement>({
       color={COLOR.Button[context.variant][context.color]}
       variant={context.variant}
       icon={{ icon: Lucide.X, alt: "close" }}
-      className={clsx("rounded-tl-0 rounded-bl-0", className)}
+      roundedTopRight="3"
+      roundedBottomRight="3"
+      roundedTopLeft="0"
+      roundedBottomLeft="0"
       {...props}
     />
   );
@@ -190,7 +183,6 @@ const Icon = <T extends TgphElement>({
   icon,
   alt,
   "aria-hidden": ariaHidden,
-  className,
   ...props
 }: IconProps<T>) => {
   const context = React.useContext(TagContext);
@@ -200,7 +192,11 @@ const Icon = <T extends TgphElement>({
       icon={icon}
       size={context.size}
       color={COLOR.Icon[context.variant][context.color]}
-      className={clsx("rounded-tl-0 rounded-bl-0 mr-1", className)}
+      mr="1"
+      roundedTopRight="3"
+      roundedBottomRight="3"
+      roundedTopLeft="0"
+      roundedBottomLeft="0"
       {...a11yProps}
       {...props}
     />

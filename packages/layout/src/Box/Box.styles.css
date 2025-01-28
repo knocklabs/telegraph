@@ -1,8 +1,5 @@
 .tgph-box {
-  --background-color: transparent;
-  --hover_backgroundColor: none;
-  --focus_backgroundColor: none;
-  --active_backgroundColor: none;
+  --background-color: none;
   --border-color: var(--tgph-gray-6);
   --border-style: solid;
   --border-width: 0;
@@ -16,6 +13,12 @@
   --max-height: auto;
   --min-height: auto;
   --z-index: auto;
+  --position: static;
+  --top: auto;
+  --left: auto;
+  --right: auto;
+  --bottom: auto;
+  --overflow: visible;
 
   background-color: var(--background-color);
   border-width: var(--border-width);
@@ -31,16 +34,28 @@
   max-height: var(--max-height);
   min-height: var(--min-height);
   z-index: var(--z-index);
+  position: var(--position);
+  top: var(--top);
+  left: var(--left);
+  right: var(--right);
+  bottom: var(--bottom);
+  overflow: var(--overflow);
 }
 
-.tgph-box:hover {
+.tgph-box--interactive {
+  --hover_backgroundColor: none;
+  --focus_backgroundColor: none;
+  --active_backgroundColor: none;
+}
+
+.tgph-box--interactive:hover {
   background-color: var(--hover_backgroundColor);
 }
 
-.tgph-box:focus {
+.tgph-box--interactive:focus {
   background-color: var(--focus_backgroundColor);
 }
 
-.tgph-box:active {
+.tgph-box--interactive:active {
   background-color: var(--active_backgroundColor);
 }

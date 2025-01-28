@@ -15,6 +15,7 @@ export type CssVarProp = {
   cssVar: string;
   value: string;
   direction?: Direction;
+  interactive?: boolean;
 };
 
 type ApplyDirectionProps = {
@@ -135,11 +136,12 @@ export const getStyleProp = <
 ): {
   styleProp: StyleProp<CssVars>;
   otherProps: OtherProps<CssVars, Props>;
+  interactive: boolean;
 } => {
   const { cssVars } = params;
 
   if (!params?.props || Object.keys(params.props).length === 0) {
-    return { styleProp: {}, otherProps: {} };
+    return { styleProp: {}, otherProps: {}, interactive: false };
   }
 
   // Assign the additional styles to the style object so that it can be passed
@@ -148,6 +150,7 @@ export const getStyleProp = <
 
   const styleProp: StyleProp<CssVars> = style;
   const otherProps: OtherProps<CssVars, Props> = {};
+  let interactive = false;
 
   Object.keys(props).forEach((_key) => {
     const key = _key as keyof typeof props;
@@ -175,6 +178,12 @@ export const getStyleProp = <
 
     const cssVarName = matchingCssVar.cssVar as keyof StyleProp<CssVars>;
 
+    // If the style contains an interactive prop, set the interactive flag to true
+    // so that the component can include the interactive class
+    if (matchingCssVar.interactive) {
+      interactive = true;
+    }
+
     if (matchingCssVar.direction) {
       const currentValueOfCssVar = styleProp?.[cssVarName];
 
@@ -191,5 +200,5 @@ export const getStyleProp = <
     Object.assign(styleProp, { [cssVarName]: mappedValueOfCssVar });
   });
 
-  return { styleProp, otherProps };
+  return { styleProp, otherProps, interactive };
 };
