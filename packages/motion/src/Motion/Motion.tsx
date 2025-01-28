@@ -46,8 +46,12 @@ const Motion = <T extends TgphElement>({
 }: MotionProps<T>) => {
   const Component = as || "div";
 
-  const [currentValues, setCurrentValues] = React.useState(initial);
-  const [internalStatus, setInternalStatus] = React.useState("initial");
+  const [currentValues, setCurrentValues] = React.useState(
+    initializeWithAnimation ? initial : animate,
+  );
+  const [internalStatus, setInternalStatus] = React.useState(
+    initializeWithAnimation ? "initial" : "animate",
+  );
 
   // If the motion element is within the <AnimatePresence/> component,
   // this component needs to respond too the presence change by changing

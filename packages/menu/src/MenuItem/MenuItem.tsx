@@ -2,7 +2,7 @@ import { Button } from "@telegraph/button";
 import { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Lucide } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
-import { motion } from "framer-motion";
+import { motion } from "@telegraph/motion";
 
 type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   typeof Button<T>
@@ -68,26 +68,28 @@ const MenuItemLeading = ({
   const isSelectableButton = selected === true || selected === false;
 
   if (isSelectableButton) {
-    const variants = {
-      selected: {
-        opacity: [1, 1],
-        transform: ["rotate(-45deg) scale(0.3)", "rotate(0deg) scale(1)"],
-      },
-      unselected: { opacity: 0, transform: "rotate(0deg)" },
-    };
-
     return (
       <Button.Icon
         as={motion.span}
         variant="primary"
         icon={Lucide.Check}
         aria-hidden={true}
-        initial={false}
-        variants={variants}
-        animate={selected ? "selected" : "unselected"}
-        transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+        initializeWithAnimation={false}
+        animate={
+          !selected
+            ? {
+                opacity: 0,
+                rotate: -45,
+                scale: 0.3,
+              }
+            : {
+                opacity: 1,
+                rotate: 0,
+                scale: 1,
+              }
+        }
+        transition={{ duration: 150, type: "spring" }}
         style={{ transformOrigin: "center" }}
-        key="menu item check"
       />
     );
   }
