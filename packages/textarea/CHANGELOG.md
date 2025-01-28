@@ -1,5 +1,13 @@
 # @telegraph/textarea
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`a748be4`](https://github.com/knocklabs/telegraph/commit/a748be4d48b4e26908deaa120389598e185007c6), [`22ac9d0`](https://github.com/knocklabs/telegraph/commit/22ac9d0ff28ef0966edd31a4016c76d8a7ae91ad), [`8fdf776`](https://github.com/knocklabs/telegraph/commit/8fdf77633d6991014ffa55b32b1ba45ef124f917), [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8), [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8)]:
+  - @telegraph/style-engine@0.1.1
+  - @telegraph/typography@0.1.3
+
 ## 0.0.5
 
 ### Patch Changes

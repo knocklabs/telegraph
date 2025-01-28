@@ -1,5 +1,22 @@
 # @telegraph/combobox
 
+## 0.0.48
+
+### Patch Changes
+
+- [#368](https://github.com/knocklabs/telegraph/pull/368) [`22ac9d0`](https://github.com/knocklabs/telegraph/commit/22ac9d0ff28ef0966edd31a4016c76d8a7ae91ad) Thanks [@kylemcd](https://github.com/kylemcd)! - motion updates
+
+- Updated dependencies [[`a748be4`](https://github.com/knocklabs/telegraph/commit/a748be4d48b4e26908deaa120389598e185007c6), [`22ac9d0`](https://github.com/knocklabs/telegraph/commit/22ac9d0ff28ef0966edd31a4016c76d8a7ae91ad), [`8fdf776`](https://github.com/knocklabs/telegraph/commit/8fdf77633d6991014ffa55b32b1ba45ef124f917), [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8), [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8), [`bc6c1f4`](https://github.com/knocklabs/telegraph/commit/bc6c1f4223380b310487d72dc4153e499f07fefe)]:
+  - @telegraph/typography@0.1.3
+  - @telegraph/tooltip@0.0.30
+  - @telegraph/button@0.0.57
+  - @telegraph/layout@0.1.3
+  - @telegraph/motion@0.0.2
+  - @telegraph/icon@0.0.37
+  - @telegraph/menu@0.0.39
+  - @telegraph/tag@0.0.61
+  - @telegraph/input@0.0.29
+
 ## 0.0.47
 
 ### Patch Changes

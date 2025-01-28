@@ -1,5 +1,24 @@
 # @telegraph/layout
 
+## 0.1.3
+
+### Patch Changes
+
+- [#367](https://github.com/knocklabs/telegraph/pull/367) [`a748be4`](https://github.com/knocklabs/telegraph/commit/a748be4d48b4e26908deaa120389598e185007c6) Thanks [@kylemcd](https://github.com/kylemcd)! - style engine migration
+
+- [#368](https://github.com/knocklabs/telegraph/pull/368) [`22ac9d0`](https://github.com/knocklabs/telegraph/commit/22ac9d0ff28ef0966edd31a4016c76d8a7ae91ad) Thanks [@kylemcd](https://github.com/kylemcd)! - motion updates
+
+- [#361](https://github.com/knocklabs/telegraph/pull/361) [`8fdf776`](https://github.com/knocklabs/telegraph/commit/8fdf77633d6991014ffa55b32b1ba45ef124f917) Thanks [@kylemcd](https://github.com/kylemcd)! - style engine migration
+
+- [#366](https://github.com/knocklabs/telegraph/pull/366) [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8) Thanks [@kylemcd](https://github.com/kylemcd)! - style engine migration
+
+- [#366](https://github.com/knocklabs/telegraph/pull/366) [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8) Thanks [@kylemcd](https://github.com/kylemcd)! - style engine migration
+
+- [#360](https://github.com/knocklabs/telegraph/pull/360) [`bc6c1f4`](https://github.com/knocklabs/telegraph/commit/bc6c1f4223380b310487d72dc4153e499f07fefe) Thanks [@kylemcd](https://github.com/kylemcd)! - style engine migration
+
+- Updated dependencies [[`a748be4`](https://github.com/knocklabs/telegraph/commit/a748be4d48b4e26908deaa120389598e185007c6), [`22ac9d0`](https://github.com/knocklabs/telegraph/commit/22ac9d0ff28ef0966edd31a4016c76d8a7ae91ad), [`6cf176f`](https://github.com/knocklabs/telegraph/commit/6cf176fc3272d89d725951b5024dd0db4cf9a4e8)]:
+  - @telegraph/style-engine@0.1.1
+
 ## 0.1.2
 
 ### Patch Changes
