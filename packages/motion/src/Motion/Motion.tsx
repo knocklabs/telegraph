@@ -28,7 +28,6 @@ type MotionProps<T extends TgphElement> = PolymorphicProps<T> & {
   status?: "initial" | "animate" | "exit";
   initializeWithAnimation?: boolean;
   children?: React.ReactNode;
-  initialDelayDuration?: number;
   onAnimationComplete?: () => void;
 };
 
@@ -44,7 +43,6 @@ const Motion = <T extends TgphElement>({
   style,
   children,
   "tgph-motion-key": motionKey,
-  initialDelayDuration,
   onAnimationComplete,
   ...props
 }: MotionProps<T>) => {
@@ -85,7 +83,7 @@ const Motion = <T extends TgphElement>({
     if (status === "exit") {
       setInternalStatus("exit");
     }
-  }, [status, initialDelayDuration]);
+  }, [status]);
 
   // When the internalStatus changes, we update the currentValues
   // to the corresponding values
@@ -119,15 +117,7 @@ const Motion = <T extends TgphElement>({
     }
 
     return () => timeout && clearTimeout(timeout);
-  }, [
-    internalStatus,
-    status,
-    initial,
-    animate,
-    exit,
-    initialDelayDuration,
-    onAnimationComplete,
-  ]);
+  }, [internalStatus, status, initial, animate, exit, onAnimationComplete]);
 
   const transitionDuration =
     initializeWithAnimation === false && initialAnimateComplete === false
