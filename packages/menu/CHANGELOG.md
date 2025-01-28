@@ -1,5 +1,11 @@
 # @telegraph/menu
 
+## 0.0.40
+
+### Patch Changes
+
+- [`141974d`](https://github.com/knocklabs/telegraph/commit/141974dae192c212d1f126b8c7e3683ceffed809) Thanks [@kylemcd](https://github.com/kylemcd)! - fix bad logic on menu selected state
+
 ## 0.0.39
 
 ### Patch Changes
