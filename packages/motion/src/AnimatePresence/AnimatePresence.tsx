@@ -104,16 +104,17 @@ const AnimatePresence = ({ presenceMap, children }: AnimatePresenceProps) => {
     const newPresenceMap = presenceMap;
     let timeout: NodeJS.Timeout;
 
+    // Check if array has changed values
     const hasPresenceMapChanged =
-      // Check if array has changed values
       newPresenceMap?.some(
         (n) =>
           n.value !==
           previousPresenceMap?.find(
             (p) => p["tgph-motion-key"] === n["tgph-motion-key"],
           )?.value,
-        // Check if array has changed lengths
-      ) || newPresenceMap?.length !== previousPresenceMap?.length;
+      ) ||
+      // Check if array has changed lengths
+      newPresenceMap?.length !== previousPresenceMap?.length;
 
     // If the presence map has changed, we need to animate the children out.
     if (hasPresenceMapChanged) {

@@ -137,7 +137,7 @@ const Tooltip = <T extends TgphElement>({
               <OverrideAppearance appearance={appearance} asChild>
                 <Stack
                   as={motion.div}
-                  // Add tgph class so that this aAlways works in portals
+                  // Add tgph class so that this always works in portals
                   className="tgph"
                   initial={
                     shouldAnimate
