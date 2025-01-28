@@ -28,8 +28,6 @@ export const SingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
     const [value, setValue] = React.useState(firstValue);
-    // eslint-disable-next-line
-    const [otherValue, setOtherValue] = React.useState("sms");
 
     return (
       <Box w="80">
@@ -37,25 +35,6 @@ export const SingleSelect: Story = {
           {...args}
           value={value}
           onValueChange={setValue}
-          placeholder={"Select a channel"}
-          clearable
-        >
-          <TelegraphCombobox.Trigger size="1" />
-          <TelegraphCombobox.Content>
-            <TelegraphCombobox.Options>
-              {values.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
-                </TelegraphCombobox.Option>
-              ))}
-            </TelegraphCombobox.Options>
-            <TelegraphCombobox.Empty />
-          </TelegraphCombobox.Content>
-        </TelegraphCombobox.Root>
-        <TelegraphCombobox.Root
-          {...args}
-          value={otherValue}
-          onValueChange={setOtherValue}
           placeholder={"Select a channel"}
           clearable
         >
