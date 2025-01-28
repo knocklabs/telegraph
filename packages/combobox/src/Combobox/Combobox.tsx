@@ -44,9 +44,6 @@ type MultiSelect = {
   onValueChange?: (value: Array<Option>) => void;
 };
 
-// type LayoutValue<O extends Option | Array<Option> | string | Array<string>> =
-//   O extends Option | string ? never : "truncate" | "wrap";
-
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
   : "truncate" | "wrap";
