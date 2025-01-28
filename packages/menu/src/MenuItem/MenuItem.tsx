@@ -76,16 +76,16 @@ const MenuItemLeading = ({
         aria-hidden={true}
         initializeWithAnimation={false}
         animate={
-          !selected
+          selected
             ? {
-                opacity: 0,
-                rotate: -45,
-                scale: 0.3,
-              }
-            : {
                 opacity: 1,
                 rotate: 0,
                 scale: 1,
+              }
+            : {
+                opacity: 0,
+                rotate: -45,
+                scale: 0.3,
               }
         }
         transition={{ duration: 150, type: "spring" }}
