@@ -37,7 +37,14 @@ const Root = ({
   });
 
   return (
-    <AnimatePresence presence={open} tgph-motion-keys={["popover-content"]}>
+    <AnimatePresence
+      presenceMap={[
+        {
+          "tgph-motion-key": "popover-content",
+          value: open,
+        },
+      ]}
+    >
       <PopoverContext.Provider value={{ open, setOpen }}>
         <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
           {children}
@@ -139,6 +146,7 @@ const Content = <T extends TgphElement>({
             as={motion.div}
             // Add tgph class so that this always works in portals
             className="tgph"
+            initializeWithAnimation={false}
             initial={{
               opacity: 0.5,
               scale: 0.6,

@@ -15,7 +15,6 @@ import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
-import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
@@ -170,25 +169,7 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
   const context = React.useContext(ComboboxContext);
 
   return (
-    <Tag.Root
-      size="1"
-      as={motion.span}
-      initial={{ opacity: 0, transform: "scale(0.8)" }}
-      animate={{ opacity: 1, transform: "scale(1)" }}
-      exit={{ opacity: 0, transform: "scale(0.5)" }}
-      layout="position"
-      transition={{
-        duration: 0.2,
-        type: "spring",
-        bounce: 0,
-        layout: {
-          duration: 0.05,
-          type: "spring",
-          bounce: 0,
-        },
-      }}
-      {...props}
-    >
+    <Tag.Root size="1" layout="position" {...props}>
       <Tag.Text>{label || value}</Tag.Text>
       <Tag.Button
         icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
@@ -235,70 +216,43 @@ const TriggerValue = () => {
           flexGrow: 1,
         }}
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          {context.value.map((v, i) => {
-            if (
-              v?.value &&
-              ((layout === "truncate" && i <= 1) || layout === "wrap")
-            ) {
-              return (
-                <RefToTgphRef key={v.value}>
-                  <TriggerTag {...v} />
-                </RefToTgphRef>
-              );
-            }
-          })}
-        </AnimatePresence>
-        <AnimatePresence>
-          {layout === "truncate" && context.value.length > 2 && (
-            <Stack
-              as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-              h="full"
-              pr="1"
-              pl="8"
-              align="center"
-              aria-label={`${truncatedLength} more selected`}
-              style={{
-                position: "absolute",
-                right: 0,
-                backgroundImage:
-                  "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
-              }}
-              key="truncated text"
-            >
-              <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
-                +
-                <AnimatePresence mode="wait" initial={false}>
-                  {truncatedLengthStringArray.map((n) => (
-                    <Box
-                      as={motion.span}
-                      w="2"
-                      display="inline-block"
-                      initial={{
-                        opacity: 0.5,
-                      }}
-                      animate={{
-                        opacity: 1,
-                      }}
-                      exit={{
-                        opacity: 0.5,
-                      }}
-                      transition={{ duration: 0.1, type: "spring", bounce: 0 }}
-                      key={n}
-                    >
-                      {n}
-                    </Box>
-                  ))}
-                </AnimatePresence>{" "}
-                more
-              </Text>
-            </Stack>
-          )}
-        </AnimatePresence>
+        {context.value.map((v, i) => {
+          if (
+            v?.value &&
+            ((layout === "truncate" && i <= 1) || layout === "wrap")
+          ) {
+            return (
+              <RefToTgphRef key={v.value}>
+                <TriggerTag {...v} />
+              </RefToTgphRef>
+            );
+          }
+        })}
+        {layout === "truncate" && context.value.length > 2 && (
+          <Stack
+            h="full"
+            pr="1"
+            pl="8"
+            align="center"
+            aria-label={`${truncatedLength} more selected`}
+            position="absolute"
+            right="0"
+            style={{
+              backgroundImage:
+                "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
+            }}
+          >
+            <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
+              +
+              {truncatedLengthStringArray.map((n) => (
+                <Box as="span" w="2" display="inline-block" key={n}>
+                  {n}
+                </Box>
+              ))}{" "}
+              more
+            </Text>
+          </Stack>
+        )}
       </Stack>
     );
   }
@@ -440,13 +394,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
               />
             </Tooltip>
           )}
-          <TelegraphButton.Icon
-            as={motion.div}
-            icon={Lucide.ChevronDown}
-            animate={{ rotate: context.open ? "180deg" : "0deg" }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-            aria-hidden
-          />
+          <TelegraphButton.Icon icon={Lucide.ChevronDown} aria-hidden />
         </Stack>
       </TelegraphButton.Root>
     </TelegraphMenu.Trigger>
@@ -469,47 +417,47 @@ const Content = <T extends TgphElement>({
 
   const internalContentRef = React.useRef(null);
 
-  const [height, setHeight] = React.useState(0);
-  const [initialAnimationComplete, setInitialAnimationComplete] =
-    React.useState(false);
+  // const [height, setHeight] = React.useState(0);
+  // const [initialAnimationComplete, setInitialAnimationComplete] =
+  //   React.useState(false);
 
-  const setHeightFromContent = React.useCallback(
-    (element: Element) => {
-      // Set the initial height of the content after the animation completes
-      const rect = element.getBoundingClientRect();
-      if (rect) {
-        setHeight(rect.height);
-      }
+  // const setHeightFromContent = React.useCallback(
+  //   (element: Element) => {
+  //     // Set the initial height of the content after the animation completes
+  //     const rect = element.getBoundingClientRect();
+  //     if (rect) {
+  //       // setHeight(rect.height);
+  //     }
 
-      if (!initialAnimationComplete) {
-        setInitialAnimationComplete(true);
-      }
-    },
-    [initialAnimationComplete],
-  );
+  //     if (!initialAnimationComplete) {
+  //       setInitialAnimationComplete(true);
+  //     }
+  //   },
+  //   [initialAnimationComplete],
+  // );
 
-  React.useEffect(() => {
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const element = entry.target;
-        setHeightFromContent(element);
-      }
-    });
-    // Attatch the observer once the initial animation completes
-    // and the content ref is available
-    if (internalContentRef.current && initialAnimationComplete) {
-      observer.observe(internalContentRef.current);
-    }
+  // React.useEffect(() => {
+  //   const observer = new ResizeObserver((entries) => {
+  //     for (const entry of entries) {
+  //       const element = entry.target;
+  //       setHeightFromContent(element);
+  //     }
+  //   });
+  //   // Attatch the observer once the initial animation completes
+  //   // and the content ref is available
+  //   if (internalContentRef.current && initialAnimationComplete) {
+  //     observer.observe(internalContentRef.current);
+  //   }
 
-    return () => observer.disconnect();
-  }, [initialAnimationComplete, setHeightFromContent]);
+  //   return () => observer.disconnect();
+  // }, [initialAnimationComplete, setHeightFromContent]);
 
-  // Reset the animation complete state when the combobox is closed
-  React.useEffect(() => {
-    if (initialAnimationComplete === true && context.open === false) {
-      setInitialAnimationComplete(false);
-    }
-  }, [context.open, initialAnimationComplete]);
+  // // Reset the animation complete state when the combobox is closed
+  // React.useEffect(() => {
+  //   if (initialAnimationComplete === true && context.open === false) {
+  //     setInitialAnimationComplete(false);
+  //   }
+  // }, [context.open, initialAnimationComplete]);
 
   return (
     // We add radix's dismissable layer here so that we can swallow any escape key
@@ -524,84 +472,72 @@ const Content = <T extends TgphElement>({
         }
       }}
     >
-      <TelegraphMenu.Content
-        as={motion.div}
-        mt="1"
-        initial={{
-          opacity: 0,
-          scale: 0.8,
-          height: "auto",
-        }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-          // Set height based on the internalContentRef so that
-          // we get smooth animations when the content changes
-          minHeight: height ? `${height}px` : "0",
-        }}
-        exit={{ opacity: 0, scale: 0 }}
-        transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-        onAnimationComplete={() => {
-          // Set height when the initial animation for
-          // displaying the content completes
-          if (!initialAnimationComplete && internalContentRef) {
-            const element = internalContentRef.current as unknown as Element;
-            setHeightFromContent(element);
-          }
-        }}
-        onCloseAutoFocus={(event: Event) => {
-          if (!hasInteractedOutside.current)
-            context.triggerRef?.current?.focus();
-          hasInteractedOutside.current = false;
+      <Box tgphRef={composedRef}>
+        <TelegraphMenu.Content
+          // as={motion.div}
+          mt="1"
+          // onAnimationComplete={() => {
+          //   // Set height when the initial animation for
+          //   // displaying the content completes
+          //   if (!initialAnimationComplete && internalContentRef) {
+          //     const element = internalContentRef.current as unknown as Element;
+          //     setHeightFromContent(element);
+          //   }
+          // }}
+          onCloseAutoFocus={(event: Event) => {
+            if (!hasInteractedOutside.current)
+              context.triggerRef?.current?.focus();
+            hasInteractedOutside.current = false;
 
-          event.preventDefault();
-        }}
-        onKeyDown={(event: React.KeyboardEvent) => {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
+            event.preventDefault();
+          }}
+          bg="surface-1"
+          style={{
+            width: "var(--tgph-comobobox-trigger-width)",
+            ...style,
+            ...{
+              "--tgph-comobobox-content-transform-origin":
+                "var(--radix-popper-transform-origin)",
+              "--tgph-combobox-content-available-width":
+                "var(--radix-popper-available-width)",
+              "--tgph-combobox-content-available-height":
+                "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
+              "--tgph-comobobox-trigger-width":
+                "var(--radix-popper-anchor-width)",
+              "--tgph-combobox-trigger-height":
+                "var(--radix-popper-anchor-height)",
+            },
+          }}
+          {...props}
+          tgphRef={composedRef}
+          data-tgph-combobox-content
+          data-tgph-combobox-content-open={context.open}
+          // Cancel out accessibility attirbutes related to aria menu
+          role={undefined}
+          aria-orientation={undefined}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            // Don't allow the event to bubble up outside of the menu
+            event.stopPropagation();
 
-          // If the first option is focused and the user presses the up
-          // arrow key, focus the search input
-          const options = context.contentRef?.current?.querySelectorAll(
-            "[data-tgph-combobox-option]",
-          );
+            // If the first option is focused and the user presses the up
+            // arrow key, focus the search input
+            const options = context.contentRef?.current?.querySelectorAll(
+              "[data-tgph-combobox-option]",
+            );
 
-          if (
-            document.activeElement === options?.[0] &&
-            LAST_KEYS.includes(event.key)
-          ) {
-            context.searchRef?.current?.focus();
-          }
-        }}
-        bg="surface-1"
-        style={{
-          width: "var(--tgph-comobobox-trigger-width)",
-          ...style,
-          ...{
-            "--tgph-comobobox-content-transform-origin":
-              "var(--radix-popper-transform-origin)",
-            "--tgph-combobox-content-available-width":
-              "var(--radix-popper-available-width)",
-            "--tgph-combobox-content-available-height":
-              "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-            "--tgph-comobobox-trigger-width":
-              "var(--radix-popper-anchor-width)",
-            "--tgph-combobox-trigger-height":
-              "var(--radix-popper-anchor-height)",
-          },
-        }}
-        {...props}
-        tgphRef={composedRef}
-        data-tgph-combobox-content
-        data-tgph-combobox-content-open={initialAnimationComplete}
-        // Cancel out accessibility attirbutes related to aria menu
-        role={undefined}
-        aria-orientation={undefined}
-      >
-        <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-          {children}
-        </Stack>
-      </TelegraphMenu.Content>
+            if (
+              document.activeElement === options?.[0] &&
+              LAST_KEYS.includes(event.key)
+            ) {
+              context.searchRef?.current?.focus();
+            }
+          }}
+        >
+          <Stack direction="column" gap="1" tgphRef={internalContentRef}>
+            {children}
+          </Stack>
+        </TelegraphMenu.Content>
+      </Box>
     </DismissableLayer>
   );
 };
@@ -786,10 +722,6 @@ const Search = ({
         TrailingComponent={
           context?.searchQuery && context?.searchQuery?.length > 0 ? (
             <TelegraphButton
-              as={motion.button}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2, type: "spring", bounce: 0 }}
               variant="ghost"
               color="gray"
               icon={{ icon: Lucide.X, alt: "Clear Search Query" }}
@@ -836,10 +768,6 @@ const Empty = <T extends TgphElement>({
   if (isVisible) {
     return (
       <Stack
-        as={motion.div}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.2, type: "spring", bounce: 0 }}
         gap="1"
         align="center"
         justify="center"

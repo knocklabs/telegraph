@@ -1,14 +1,10 @@
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MotionGlobalConfig } from "framer-motion";
 import React from "react";
 import { beforeAll, describe, expect, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
-
-// Disable animations
-MotionGlobalConfig.skipAnimations = true;
 
 type Option = { value: string; label?: string };
 

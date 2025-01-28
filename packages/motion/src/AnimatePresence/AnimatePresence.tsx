@@ -6,31 +6,31 @@ type MotionElement = {
 };
 
 type AnimatePresenceContextType = {
-  presence?: boolean | undefined;
-  motionKeys: Array<string>;
+  initialAnimateComplete: boolean;
   motionElements: Array<MotionElement>;
   setMotionElements: React.Dispatch<React.SetStateAction<Array<MotionElement>>>;
+  presenceMap: Array<{ "tgph-motion-key": string; value: boolean }>;
+  previousPresenceMap: Array<{ "tgph-motion-key": string; value: boolean }>;
 };
 
 const AnimatePresenceContext = React.createContext<AnimatePresenceContextType>({
-  presence: undefined,
-  motionKeys: [],
+  initialAnimateComplete: false,
   motionElements: [],
   setMotionElements: () => {},
+  presenceMap: [],
+  previousPresenceMap: [],
 });
-
-type UseAnimatePresenceProps = {
-  motionKey?: string;
-  exitDuration?: number;
-};
 
 export const useAnimatePresence = ({
   motionKey,
   exitDuration,
-}: UseAnimatePresenceProps) => {
-  const { presence, setMotionElements, motionKeys } = React.useContext(
-    AnimatePresenceContext,
-  );
+}: MotionElement) => {
+  const {
+    presenceMap,
+    setMotionElements,
+    previousPresenceMap,
+    initialAnimateComplete,
+  } = React.useContext(AnimatePresenceContext);
 
   React.useEffect(() => {
     if (!motionKey || !exitDuration) return;
@@ -57,42 +57,67 @@ export const useAnimatePresence = ({
   }, [exitDuration, motionKey, setMotionElements]);
 
   const derivedMotionPresence = React.useMemo(() => {
-    if (presence === false && motionKey && motionKeys.includes(motionKey)) {
+    // Detect if the value of the key has changed, if so we change the
+    // presence to animate the children out.
+    const presenceValue = presenceMap.find(
+      (item) => item["tgph-motion-key"] === motionKey,
+    )?.value;
+
+    // In caes where the item is removed from the presence map, we need to
+    // check the previous presence map to see if the value has changed.
+    const previousPresenceValue = previousPresenceMap.find(
+      (item) => item["tgph-motion-key"] === motionKey,
+    )?.value;
+
+    const hasPresenceValueChanged = presenceValue !== previousPresenceValue;
+
+    if (hasPresenceValueChanged) {
       return false;
     }
 
     return true;
-  }, [presence, motionKeys, motionKey]);
+  }, [motionKey, presenceMap, previousPresenceMap]);
 
   return {
     presence: derivedMotionPresence,
+    initialAnimateComplete,
   };
 };
 
 type AnimatePresenceProps = {
-  presence?: boolean;
-  "tgph-motion-keys"?: Array<string>;
+  presenceMap: Array<{ "tgph-motion-key": string; value: boolean }>;
   children: React.ReactNode;
 };
 
-const AnimatePresence = ({
-  presence,
-  "tgph-motion-keys": motionKeys = [],
-  children,
-}: AnimatePresenceProps) => {
+const AnimatePresence = ({ presenceMap, children }: AnimatePresenceProps) => {
+  const [initialAnimateComplete, setInitialAnimateComplete] =
+    React.useState(false);
   const [managedChildren, setManagedChildren] = React.useState(children);
 
   const [motionElements, setMotionElements] = React.useState<
     Array<MotionElement>
   >([]);
-  const [previousPresence, setPreviousPresence] = React.useState(presence);
+  const [previousPresenceMap, setPreviousPresenceMap] =
+    React.useState(presenceMap);
 
   React.useEffect(() => {
-    const newPresence = presence;
+    const newPresenceMap = presenceMap;
     let timeout: NodeJS.Timeout;
 
-    // If the presence is false and the previous presence was true, we need to animate the children out.
-    if (newPresence === false && previousPresence === true) {
+    // Check if array has changed values
+    const hasPresenceMapChanged =
+      newPresenceMap?.some(
+        (n) =>
+          n.value !==
+          previousPresenceMap?.find(
+            (p) => p["tgph-motion-key"] === n["tgph-motion-key"],
+          )?.value,
+      ) ||
+      // Check if array has changed lengths
+      newPresenceMap?.length !== previousPresenceMap?.length;
+
+    // If the presence map has changed, we need to animate the children out.
+    if (hasPresenceMapChanged) {
       // We need to find the highest duration of the motion elements to animate the children out without
       // interrupting the animation of the other children.
       const highestDuration = Math.max(
@@ -101,20 +126,35 @@ const AnimatePresence = ({
 
       // Freeze the children until the animation is complete.
       timeout = setTimeout(() => {
-        setPreviousPresence(false);
         setManagedChildren(children);
+        setPreviousPresenceMap(newPresenceMap);
       }, highestDuration);
     } else {
       setManagedChildren(children);
-      setPreviousPresence(newPresence);
+      setPreviousPresenceMap(newPresenceMap);
     }
 
     return () => timeout && clearTimeout(timeout);
-  }, [presence, children, motionElements, previousPresence]);
+  }, [children, motionElements, presenceMap, previousPresenceMap]);
+
+  // If useEffect runs once, the initial animation is likely completed.
+  // So set this flag so we can use it to logically hide the initial
+  // animation when needed.
+  React.useEffect(() => {
+    if (!initialAnimateComplete) {
+      setInitialAnimateComplete(true);
+    }
+  }, [initialAnimateComplete]);
 
   return (
     <AnimatePresenceContext.Provider
-      value={{ presence, motionKeys, motionElements, setMotionElements }}
+      value={{
+        presenceMap,
+        previousPresenceMap,
+        initialAnimateComplete,
+        motionElements,
+        setMotionElements,
+      }}
     >
       {managedChildren}
     </AnimatePresenceContext.Provider>
