@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Lucide } from "@telegraph/icon";
 
 import { Button as TelegraphButton } from "./Button";
-import { buttonSizeMap } from "./Button.constants";
+import { BUTTON_SIZE_MAP } from "./Button.constants";
 
 const buttonColorMap = [
   "default",
@@ -36,7 +36,7 @@ const meta: Meta<typeof TelegraphButton> = {
       },
     },
     size: {
-      options: Object.keys(buttonSizeMap.default),
+      options: Object.keys(BUTTON_SIZE_MAP.default),
       control: {
         type: "select",
       },

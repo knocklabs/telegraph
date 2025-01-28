@@ -8,42 +8,32 @@ import {
 } from "@telegraph/helpers";
 import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { useStyleEngine } from "@telegraph/style-engine";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
-import { motion } from "framer-motion";
 import React from "react";
 
 import {
-  buttonSizeMap,
-  iconColorMap,
-  iconSizeMap,
-  iconVariantMap,
-  roundedMap,
-  textColorMap,
-  textSizeMap,
+  BUTTON_COLOR_MAP,
+  BUTTON_SIZE_MAP,
+  type ButtonColor,
+  type ButtonSize,
+  type ButtonVariant,
+  ICON_COLOR_MAP,
+  ICON_SIZE_MAP,
+  ICON_VARIANT_MAP,
+  TEXT_COLOR_MAP,
+  TEXT_SIZE_MAP,
+  cssVars,
 } from "./Button.constants";
-import {
-  type GhostVariant,
-  type OutlineVariant,
-  type SoftVariant,
-  type SolidVariant,
-  baseStyles,
-  ghostVariant,
-  loadingIconStyles,
-  outlineVariant,
-  softVariant,
-  solidVariant,
-} from "./Button.css";
 
 type RootBaseProps = {
-  variant?: "solid" | "soft" | "outline" | "ghost";
-  size?: "0" | "1" | "2" | "3";
+  variant?: ButtonVariant;
+  color?: ButtonColor;
+  size?: ButtonSize;
   state?: "default" | "loading";
   active?: boolean;
-} & SolidVariant &
-  SoftVariant &
-  OutlineVariant &
-  GhostVariant;
+};
 
 type InternalProps = {
   layout: "default" | "icon-only";
@@ -102,6 +92,11 @@ const Root = <T extends TgphElement>({
     minDurationMs: 1200,
   });
 
+  const { styleProp, otherProps } = useStyleEngine({
+    props: BUTTON_COLOR_MAP[variant][color],
+    cssVars,
+  });
+
   // If the button is in a disabled state, we don't want any clicks to fire.
   // To do this reliably, we convert the element back to a button if it is
   // disabled. We do this so we can use the native button element's disabled
@@ -131,38 +126,26 @@ const Root = <T extends TgphElement>({
     >
       <Stack
         as={derivedAs || "button"}
-        className={clsx(
-          baseStyles,
-          variant === "solid" && solidVariant({ color }),
-          variant === "soft" && softVariant({ color }),
-          variant === "outline" && outlineVariant({ color }),
-          variant === "ghost" && ghostVariant({ color }),
-          className,
-        )}
-        {...buttonSizeMap[layout][size]}
+        className={clsx("tgph-button", className)}
         display="inline-flex"
         align="center"
         justify="center"
-        rounded={roundedMap[size]}
+        {...BUTTON_SIZE_MAP[layout][size]}
+        style={styleProp}
         data-tgph-button
         data-tgph-button-layout={layout}
         data-tgph-button-state={state}
+        data-tgph-button-variant={variant}
+        data-tgph-button-color={color}
         disabled={state === "disabled" || state === "loading"}
+        {...otherProps}
         {...props}
       >
         {state === "loading" && (
           <Icon
-            as={motion.span}
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-            className={loadingIconStyles}
             icon={Lucide.LoaderCircle}
             aria-hidden={true}
+            data-tgph-button-loading-icon
           />
         )}
         {children}
@@ -190,13 +173,13 @@ const Icon = <T extends TgphElement>({
   const context = React.useContext(ButtonContext);
 
   const iconProps = {
-    size: size ?? iconSizeMap[context.size],
+    size: size ?? ICON_SIZE_MAP[context.size],
     color:
       color ??
-      iconColorMap[context.variant][
+      ICON_COLOR_MAP[context.variant][
         context.state === "disabled" ? "disabled" : context.color
       ],
-    variant: variant ?? iconVariantMap[context.layout],
+    variant: variant ?? ICON_VARIANT_MAP[context.layout],
   };
 
   const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
@@ -240,14 +223,14 @@ const Text = <T extends TgphElement>({
   const context = React.useContext(ButtonContext);
   const derivedColor =
     color ??
-    textColorMap[context.variant][
+    TEXT_COLOR_MAP[context.variant][
       context.state === "disabled" ? "disabled" : context.color
     ];
   return (
     <TelegraphText
       as={(as || "span") as T}
       color={derivedColor}
-      size={size ?? textSizeMap[context.size]}
+      size={size ?? TEXT_SIZE_MAP[context.size]}
       weight={weight}
       internal_optionalAs={true}
       data-button-text

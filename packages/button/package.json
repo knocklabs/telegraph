@@ -37,15 +37,13 @@
     "@telegraph/layout": "workspace:^",
     "@telegraph/style-engine": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "clsx": "^2.1.1",
-    "framer-motion": "^11.1.9"
+    "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^18.2.48",
     "eslint": "^8.56.0",

@@ -1,0 +1,72 @@
+.tgph-button {
+  --tgph-button-default-shadow: none;
+  --tgph-button-hover-shadow: none;
+  --tgph-button-focus-shadow: none;
+  --tgph-button-active-shadow: none;
+
+  appearance: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition:
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  text-decoration: none;
+  box-shadow: var(--tgph-button-default-shadow);
+}
+
+.tgph-button:hover {
+  box-shadow: var(--tgph-button-hover-shadow);
+}
+
+.tgph-button:focus {
+  box-shadow: var(--tgph-button-focus-shadow);
+}
+
+.tgph-button[data-tgph-button-state="active"] {
+  box-shadow: var(--tgph-button-active-shadow);
+  background-color: var(--active_backgroundColor);
+}
+
+/* We choose to manage the disabled background-color here as there are only two variations */
+.tgph-button[data-tgph-button-state="disabled"][data-tgph-button-variant="solid"],
+.tgph-button[data-tgph-button-state="disabled"][data-tgph-button-variant="soft"],
+.tgph-button[data-tgph-button-state="disabled"][data-tgph-button-variant="outline"] {
+  background-color: var(--tgph-gray-3);
+}
+.tgph-button[data-tgph-button-state="disabled"][data-tgph-button-variant="ghost"] {
+  background-color: var(--tgph-transparent);
+}
+
+.tgph-button:disabled {
+  cursor: not-allowed;
+}
+
+.tgph-button[data-tgph-button-state="disabled"]:hover {
+  background-color: revert;
+}
+
+[data-tgph-button-loading-icon] {
+  animation:
+    button-loading-icon 1s infinite linear,
+    button-loading-icon-fade-in 0.2s ease-in-out;
+}
+
+@keyframes button-loading-icon {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes button-loading-icon-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
