@@ -28,6 +28,8 @@ type MotionProps<T extends TgphElement> = PolymorphicProps<T> & {
   status?: "initial" | "animate" | "exit";
   initializeWithAnimation?: boolean;
   children?: React.ReactNode;
+  initialDelayDuration?: number;
+  onAnimationComplete?: () => void;
 };
 
 const Motion = <T extends TgphElement>({
@@ -42,27 +44,33 @@ const Motion = <T extends TgphElement>({
   style,
   children,
   "tgph-motion-key": motionKey,
+  initialDelayDuration,
+  onAnimationComplete,
   ...props
 }: MotionProps<T>) => {
   const Component = as || "div";
 
-  const [currentValues, setCurrentValues] = React.useState(
-    initializeWithAnimation ? initial : animate,
-  );
-  const [internalStatus, setInternalStatus] = React.useState(
-    initializeWithAnimation ? "initial" : "animate",
-  );
-
   // If the motion element is within the <AnimatePresence/> component,
   // this component needs to respond too the presence change by changing
   // the internalStatus to "exit"
-  const { presence } = useAnimatePresence({
-    motionKey,
-    exitDuration: transition?.duration,
+  const { presence, initialAnimateComplete } = useAnimatePresence({
+    motionKey: motionKey || "",
+    exitDuration: transition?.duration || 0,
   });
 
+  const [currentValues, setCurrentValues] = React.useState(
+    initializeWithAnimation === false && initialAnimateComplete === false
+      ? animate
+      : initial,
+  );
+  const [internalStatus, setInternalStatus] = React.useState(
+    initializeWithAnimation === false && initialAnimateComplete === false
+      ? "animate"
+      : "initial",
+  );
+
   React.useEffect(() => {
-    if (presence === false) {
+    if (presence === false && internalStatus === "animate") {
       setInternalStatus("exit");
     }
   }, [presence, internalStatus]);
@@ -77,26 +85,52 @@ const Motion = <T extends TgphElement>({
     if (status === "exit") {
       setInternalStatus("exit");
     }
-  }, [status]);
+  }, [status, initialDelayDuration]);
 
   // When the internalStatus changes, we update the currentValues
   // to the corresponding values
   React.useEffect(() => {
+    // We set a very short timeout here to ensure that the
+    // DOM element has responded to the state changes first.
+    let timeout: NodeJS.Timeout;
+
     if (internalStatus === "initial") {
-      setCurrentValues(initial);
+      timeout = setTimeout(() => {
+        setCurrentValues(initial);
+      }, 10);
     }
 
     if (internalStatus === "animate") {
-      setCurrentValues(animate);
+      timeout = setTimeout(() => {
+        setCurrentValues(animate);
+
+        if (onAnimationComplete) {
+          setTimeout(() => {
+            onAnimationComplete();
+          }, 10);
+        }
+      }, 10);
     }
 
     if (internalStatus === "exit") {
-      setCurrentValues(exit);
+      timeout = setTimeout(() => {
+        setCurrentValues(exit);
+      }, 10);
     }
-  }, [internalStatus, status, initial, animate, exit]);
+
+    return () => timeout && clearTimeout(timeout);
+  }, [
+    internalStatus,
+    status,
+    initial,
+    animate,
+    exit,
+    initialDelayDuration,
+    onAnimationComplete,
+  ]);
 
   const transitionDuration =
-    internalStatus === "initial" && initializeWithAnimation === false
+    initializeWithAnimation === false && initialAnimateComplete === false
       ? 0
       : transition?.duration;
 
@@ -141,6 +175,7 @@ Motion.displayName = "Motion";
 const motion = {
   div: (props: MotionProps<"div">) => <Motion as="div" {...props} />,
   span: (props: MotionProps<"span">) => <Motion as="span" {...props} />,
+  button: (props: MotionProps<"button">) => <Motion as="button" {...props} />,
 };
 
 export { Motion, motion };

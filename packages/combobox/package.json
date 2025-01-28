@@ -42,17 +42,16 @@
     "@telegraph/input": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/menu": "workspace:^",
+    "@telegraph/motion": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
-    "@telegraph/typography": "workspace:^",
-    "framer-motion": "^11.1.9"
+    "@telegraph/typography": "workspace:^"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
-    "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^18.2.48",
     "eslint": "^8.56.0",
