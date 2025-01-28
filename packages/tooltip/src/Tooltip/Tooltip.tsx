@@ -7,8 +7,8 @@ import {
   type TgphElement,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
+import { AnimatePresence, motion } from "@telegraph/motion";
 import { Text } from "@telegraph/typography";
-import { motion } from "framer-motion";
 import React from "react";
 
 import { TooltipContentProps } from "./Tooltip.constants";
@@ -104,82 +104,90 @@ const Tooltip = <T extends TgphElement>({
 
   if (enabled) {
     return (
-      <RadixTooltip.Provider
-        delayDuration={derivedDelayDuration}
-        skipDelayDuration={skipDelayDuration}
-        disableHoverableContent={disableHoverableContent}
-      >
-        <RadixTooltip.Root open={open} onOpenChange={setOpen}>
-          <RadixTooltip.Trigger asChild={true}>
-            <RefToTgphRef>{children}</RefToTgphRef>
-          </RadixTooltip.Trigger>
-          <RadixTooltip.Portal>
-            <RadixTooltip.Content
-              aria-label={ariaLabel}
-              onEscapeKeyDown={onEscapeKeyDown}
-              onPointerDownOutside={onPointerDownOutside}
-              forceMount={forceMount}
-              side={side}
-              sideOffset={sideOffset}
-              align={align}
-              alignOffset={alignOffset}
-              avoidCollisions={avoidCollisions}
-              collisionBoundary={collisionBoundary}
-              collisionPadding={collisionPadding}
-              arrowPadding={arrowPadding}
-              sticky={sticky}
-              hideWhenDetached={hideWhenDetached}
-              style={{
-                zIndex: `var(--tgph-zIndex-tooltip)`,
-              }}
-            >
-              <OverrideAppearance appearance={appearance} asChild>
-                <Stack
-                  as={motion.div}
-                  // Add tgph class so that this always works in portals
-                  className="tgph"
-                  initial={
-                    shouldAnimate
-                      ? {
-                          opacity: 0.5,
-                          scale: 0.6,
-                          ...deriveAnimationBasedOnSide(side),
-                        }
-                      : {}
-                  }
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    x: 0,
-                    y: 0,
-                  }}
-                  transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-                  bg="gray-1"
-                  rounded="3"
-                  py="2"
-                  px="3"
-                  align="center"
-                  justify="center"
-                  style={{
-                    transformOrigin:
-                      "var(--radix-tooltip-content-transform-origin)",
-                  }}
-                  {...(labelProps ? { labelProps } : {})}
-                  {...TooltipContentProps[appearance]}
-                >
-                  {typeof label === "string" ? (
-                    <Text as="span" size="1">
-                      {label}
-                    </Text>
-                  ) : (
-                    label
-                  )}
-                </Stack>
-              </OverrideAppearance>
-            </RadixTooltip.Content>
-          </RadixTooltip.Portal>
-        </RadixTooltip.Root>
-      </RadixTooltip.Provider>
+      <AnimatePresence presence={open} tgph-motion-keys={["tooltip-content"]}>
+        <RadixTooltip.Provider
+          delayDuration={derivedDelayDuration}
+          skipDelayDuration={skipDelayDuration}
+          disableHoverableContent={disableHoverableContent}
+        >
+          <RadixTooltip.Root open={open} onOpenChange={setOpen}>
+            <RadixTooltip.Trigger asChild={true}>
+              <RefToTgphRef>{children}</RefToTgphRef>
+            </RadixTooltip.Trigger>
+            <RadixTooltip.Portal>
+              <RadixTooltip.Content
+                aria-label={ariaLabel}
+                onEscapeKeyDown={onEscapeKeyDown}
+                onPointerDownOutside={onPointerDownOutside}
+                forceMount={forceMount}
+                side={side}
+                sideOffset={sideOffset}
+                align={align}
+                alignOffset={alignOffset}
+                avoidCollisions={avoidCollisions}
+                collisionBoundary={collisionBoundary}
+                collisionPadding={collisionPadding}
+                arrowPadding={arrowPadding}
+                sticky={sticky}
+                hideWhenDetached={hideWhenDetached}
+                style={{
+                  zIndex: `var(--tgph-zIndex-tooltip)`,
+                }}
+              >
+                <OverrideAppearance appearance={appearance} asChild>
+                  <Stack
+                    as={motion.div}
+                    // Add tgph class so that this always works in portals
+                    className="tgph"
+                    initial={
+                      shouldAnimate
+                        ? {
+                            opacity: 0.5,
+                            scale: 0.6,
+                            ...deriveAnimationBasedOnSide(side),
+                          }
+                        : {}
+                    }
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      x: 0,
+                      y: 0,
+                    }}
+                    exit={{
+                      opacity: 0.5,
+                      scale: 0.6,
+                      ...deriveAnimationBasedOnSide(side),
+                    }}
+                    transition={{ duration: 80, type: "spring" }}
+                    bg="gray-1"
+                    rounded="3"
+                    py="2"
+                    px="3"
+                    align="center"
+                    justify="center"
+                    style={{
+                      transformOrigin:
+                        "var(--radix-tooltip-content-transform-origin)",
+                    }}
+                    tgph-motion-key={"tooltip-content"}
+                    {...(labelProps ? { labelProps } : {})}
+                    {...TooltipContentProps[appearance]}
+                  >
+                    {typeof label === "string" ? (
+                      <Text as="span" size="1">
+                        {label}
+                      </Text>
+                    ) : (
+                      label
+                    )}
+                  </Stack>
+                </OverrideAppearance>
+              </RadixTooltip.Content>
+            </RadixTooltip.Portal>
+          </RadixTooltip.Root>
+        </RadixTooltip.Provider>
+      </AnimatePresence>
     );
   }
 
