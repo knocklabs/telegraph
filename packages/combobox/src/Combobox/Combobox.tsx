@@ -1,4 +1,5 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
+import * as Portal from "@radix-ui/react-portal";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
@@ -609,78 +610,84 @@ const Content = <T extends TgphElement>({
   }, [context.open, setHeightFromContent]);
 
   return (
-    // We add radix's dismissable layer here so that we can swallow any escape key
-    // presses to prevent cases like a modal closing when we close the combobox
-    <DismissableLayer
-      onEscapeKeyDown={(event) => {
-        if (context.open) {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-          event.preventDefault();
-          context.setOpen(false);
-        }
-      }}
-    >
-      <TelegraphMenu.Content
-        mt="1"
-        onCloseAutoFocus={(event: Event) => {
-          if (!hasInteractedOutside.current) {
-            context.triggerRef?.current?.focus();
-          }
-
-          hasInteractedOutside.current = false;
-
-          event.preventDefault();
-        }}
-        bg="surface-1"
-        style={{
-          width: "var(--tgph-comobobox-trigger-width)",
-          transition: "min-height 200ms ease-in-out",
-          minHeight: height ? `${height}px` : "0",
-          ...style,
-          ...{
-            "--tgph-comobobox-content-transform-origin":
-              "var(--radix-popper-transform-origin)",
-            "--tgph-combobox-content-available-width":
-              "var(--radix-popper-available-width)",
-            "--tgph-combobox-content-available-height":
-              "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-            "--tgph-comobobox-trigger-width":
-              "var(--radix-popper-anchor-width)",
-            "--tgph-combobox-trigger-height":
-              "var(--radix-popper-anchor-height)",
-          },
-        }}
-        {...props}
-        tgphRef={composedRef}
-        data-tgph-combobox-content
-        data-tgph-combobox-content-open={context.open}
-        // Cancel out accessibility attirbutes related to aria menu
-        role={undefined}
-        aria-orientation={undefined}
-        onKeyDown={(event: React.KeyboardEvent) => {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-
-          // If the first option is focused and the user presses the up
-          // arrow key, focus the search input
-          const options = context.contentRef?.current?.querySelectorAll(
-            "[data-tgph-combobox-option]",
-          );
-
-          if (
-            document.activeElement === options?.[0] &&
-            LAST_KEYS.includes(event.key)
-          ) {
-            context.searchRef?.current?.focus();
+    <Portal.Root asChild>
+      {/* 
+        We add radix's dismissable layer here so that we can swallow any escape
+        key presses to prevent cases like a modal closing when we close the
+        combobox 
+      */}
+      <DismissableLayer
+        onEscapeKeyDown={(event) => {
+          if (context.open) {
+            // Don't allow the event to bubble up outside of the menu
+            event.stopPropagation();
+            event.preventDefault();
+            context.setOpen(false);
           }
         }}
       >
-        <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-          {children}
-        </Stack>
-      </TelegraphMenu.Content>
-    </DismissableLayer>
+        <TelegraphMenu.Content
+          className="tgph"
+          mt="1"
+          onCloseAutoFocus={(event: Event) => {
+            if (!hasInteractedOutside.current) {
+              context.triggerRef?.current?.focus();
+            }
+
+            hasInteractedOutside.current = false;
+
+            event.preventDefault();
+          }}
+          bg="surface-1"
+          style={{
+            width: "var(--tgph-comobobox-trigger-width)",
+            transition: "min-height 200ms ease-in-out",
+            minHeight: height ? `${height}px` : "0",
+            ...style,
+            ...{
+              "--tgph-comobobox-content-transform-origin":
+                "var(--radix-popper-transform-origin)",
+              "--tgph-combobox-content-available-width":
+                "var(--radix-popper-available-width)",
+              "--tgph-combobox-content-available-height":
+                "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
+              "--tgph-comobobox-trigger-width":
+                "var(--radix-popper-anchor-width)",
+              "--tgph-combobox-trigger-height":
+                "var(--radix-popper-anchor-height)",
+            },
+          }}
+          {...props}
+          tgphRef={composedRef}
+          data-tgph-combobox-content
+          data-tgph-combobox-content-open={context.open}
+          // Cancel out accessibility attirbutes related to aria menu
+          role={undefined}
+          aria-orientation={undefined}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            // Don't allow the event to bubble up outside of the menu
+            event.stopPropagation();
+
+            // If the first option is focused and the user presses the up
+            // arrow key, focus the search input
+            const options = context.contentRef?.current?.querySelectorAll(
+              "[data-tgph-combobox-option]",
+            );
+
+            if (
+              document.activeElement === options?.[0] &&
+              LAST_KEYS.includes(event.key)
+            ) {
+              context.searchRef?.current?.focus();
+            }
+          }}
+        >
+          <Stack direction="column" gap="1" tgphRef={internalContentRef}>
+            {children}
+          </Stack>
+        </TelegraphMenu.Content>
+      </DismissableLayer>
+    </Portal.Root>
   );
 };
 
