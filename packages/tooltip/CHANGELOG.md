@@ -1,5 +1,12 @@
 # @telegraph/tooltip
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies [[`bbdf59b`](https://github.com/knocklabs/telegraph/commit/bbdf59b316b315075bb7cb8ec20225e438f8e756)]:
+  - @telegraph/motion@0.0.3
+
 ## 0.0.30
 
 ### Patch Changes
