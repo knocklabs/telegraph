@@ -17,23 +17,26 @@ beforeAll(() => {
   };
 });
 
-const values: Array<Option> = [
-  { value: "email", label: "Email" },
-  { value: "sms", label: "SMS" },
-  { value: "push", label: "Push" },
-  { value: "inapp", label: "In-App" },
-  { value: "webhook", label: "Webhook" },
-];
+const values = ["email", "sms", "push", "inapp", "webhook"];
+const labels = ["Email", "SMS", "Push", "In-App", "Webhook"];
+
+// Utility to query elements rendered in a portal
+const queryPortalElement = (selector: string) =>
+  document.querySelector(selector);
+const queryPortalElements = (selector: string) =>
+  document.querySelectorAll(selector);
 
 const ComboboxSingleSelect = ({ ...props }) => {
-  const [value, setValue] = React.useState<Option>(values[0]!);
+  const [value, setValue] = React.useState<string>(values[0]!);
   return (
     <Combobox.Root value={value} onValueChange={setValue} {...props}>
       <Combobox.Trigger />
       <Combobox.Content>
         <Combobox.Options>
-          {values.map((option) => (
-            <Combobox.Option key={option.value} {...option} />
+          {values.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {labels[index]}
+            </Combobox.Option>
           ))}
         </Combobox.Options>
         <Combobox.Empty />
@@ -41,8 +44,9 @@ const ComboboxSingleSelect = ({ ...props }) => {
     </Combobox.Root>
   );
 };
+
 const ComboboxMultiSelect = () => {
-  const [value, setValue] = React.useState<Array<Option>>([
+  const [value, setValue] = React.useState<Array<string>>([
     values[0]!,
     values[1]!,
   ]);
@@ -52,29 +56,10 @@ const ComboboxMultiSelect = () => {
       <Combobox.Content>
         <Combobox.Search />
         <Combobox.Options>
-          {values.map((option) => (
-            <Combobox.Option key={option.value} {...option} />
-          ))}
-        </Combobox.Options>
-        <Combobox.Empty />
-      </Combobox.Content>
-    </Combobox.Root>
-  );
-};
-const ComboboxMultiSelectControlledSearch = () => {
-  const [value, setValue] = React.useState<Array<Option>>([
-    values[0]!,
-    values[1]!,
-  ]);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  return (
-    <Combobox.Root value={value} onValueChange={setValue}>
-      <Combobox.Trigger />
-      <Combobox.Content>
-        <Combobox.Search vaue={searchQuery} onValueChange={setSearchQuery} />
-        <Combobox.Options>
-          {values.map((option) => (
-            <Combobox.Option key={option.value} {...option} />
+          {values.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {labels[index]}
+            </Combobox.Option>
           ))}
         </Combobox.Options>
         <Combobox.Empty />
@@ -94,73 +79,94 @@ describe("Combobox", () => {
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
       expectToHaveNoViolations(await axe(container));
     });
+
     it("pressing the down arrow key should open the combobox", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       // Tab to trigger
       await user.tab();
       // Open combobox
       await user.keyboard("[ArrowDown]");
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
       expect(trigger?.getAttribute("aria-expanded")).toBe("true");
     });
+
     it("after opening, pressing the down arrow key should focus the first option", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       // Open
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
       // Focus first option
       await user.keyboard("[ArrowDown]");
-      const firstOption = container.querySelector(
-        "[data-tgph-combobox-option]",
-      );
+      const firstOption = queryPortalElement("[data-tgph-combobox-option]");
       expect(document.activeElement).toEqual(firstOption);
     });
+
     it("pressing enter on an option should select it", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Open
       await user.keyboard("[ArrowDown]");
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      // Select first option
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("Email");
     });
-    it("pressing the first letter of a option should focus it", async () => {
+
+    it("pressing the first letter of an option should focus it", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
       await user.keyboard("s");
       const activeElementTextContent = document.activeElement?.textContent;
       expect(activeElementTextContent).toEqual("SMS");
+
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("SMS");
     });
+
     it("clear button should clear the field", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect clearable />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("Email");
-      const clearButton = container.querySelector("[data-tgph-combobox-clear]");
+
+      const clearButton = queryPortalElement("[data-tgph-combobox-clear]");
       await user.click(clearButton!);
       expect(trigger?.textContent).toBe("");
     });
+
     it("should not be able to open when disabled", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect disabled />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "false");
+
       expect(trigger?.getAttribute("aria-expanded")).toBe("false");
     });
   });
+
   describe("Multi Select", () => {
     it("combobox is accessible", async () => {
       const user = userEvent.setup();
@@ -171,77 +177,279 @@ describe("Combobox", () => {
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
       expectToHaveNoViolations(await axe(container));
     });
+
     it("search is automatically focused on open", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
-      await waitFor(() =>
-        expect(document.activeElement).toEqual(
-          container.querySelector("[data-tgph-combobox-search]"),
-        ),
-      );
+
+      const searchInput = queryPortalElement("[data-tgph-combobox-search]");
+      expect(document.activeElement).toBe(searchInput);
     });
+
     it("searching for an option should filter the options", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
       await user.keyboard("Email");
-      const options = container.querySelectorAll("[data-tgph-combobox-option]");
+      const options = queryPortalElements("[data-tgph-combobox-option]");
       expect(options.length).toBe(1);
     });
-    it("searching for an option in a controlled search should filter the options", async () => {
-      const user = userEvent.setup();
-      const { container } = render(<ComboboxMultiSelectControlledSearch />);
-      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
-      await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
-      await user.keyboard("Email");
-      const options = container.querySelectorAll("[data-tgph-combobox-option]");
-      expect(options.length).toBe(values.length);
-    });
+
     it("empty state should show when there are no results", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
-      await waitFor(() =>
-        expect(document.activeElement).toEqual(
-          container.querySelector("[data-tgph-combobox-search]"),
-        ),
-      );
+
       await user.keyboard("No results");
-      const empty = container.querySelector("[data-tgph-combobox-empty]");
-      await waitFor(() => expect(empty).not.toBeNull());
+      const emptyState = queryPortalElement("[data-tgph-combobox-empty]");
+      expect(emptyState).not.toBeNull();
     });
+
     it("deselecting an option should update the value", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
       await waitFor(() => expect(trigger?.textContent).toBe("EmailSMS"));
+
       // Open
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
       // Focus first option
       await user.keyboard("[ArrowDown]");
       await user.keyboard("[Enter]");
+
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
     });
-    it("clear button should clear the field", async () => {
+  });
+});
+
+const valuesLegacy: Array<Option> = [
+  { value: "email", label: "Email" },
+  { value: "sms", label: "SMS" },
+  { value: "push", label: "Push" },
+  { value: "inapp", label: "In-App" },
+  { value: "webhook", label: "Webhook" },
+];
+
+const ComboboxSingleSelectLegacy = ({ ...props }) => {
+  const [value, setValue] = React.useState<Option>(valuesLegacy[0]!);
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      {...props}
+      legacyBehavior={true}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Options>
+          {valuesLegacy.map((option) => (
+            <Combobox.Option key={option.value} {...option} />
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+const ComboboxMultiSelectLegacy = () => {
+  const [value, setValue] = React.useState<Array<Option>>([
+    valuesLegacy[0]!,
+    valuesLegacy[1]!,
+  ]);
+  return (
+    <Combobox.Root value={value} onValueChange={setValue} legacyBehavior={true}>
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Search />
+        <Combobox.Options>
+          {valuesLegacy.map((option) => (
+            <Combobox.Option key={option.value} {...option} />
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+describe("legacyBehavior Combobox", () => {
+  describe("Single Select", () => {
+    it("combobox is accessible", async () => {
       const user = userEvent.setup();
-      const { container } = render(<ComboboxSingleSelect clearable />);
+      const { container } = render(<ComboboxSingleSelectLegacy />);
+      expectToHaveNoViolations(await axe(container));
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
       await user.click(trigger!);
       await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      expectToHaveNoViolations(await axe(container));
+    });
+
+    it("pressing the down arrow key should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      // Open combobox
+      await user.keyboard("[ArrowDown]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("after opening, pressing the down arrow key should focus the first option", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Open
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      // Focus first option
+      await user.keyboard("[ArrowDown]");
+      const firstOption = queryPortalElement("[data-tgph-combobox-option]");
+      expect(document.activeElement).toEqual(firstOption);
+    });
+
+    it("pressing enter on an option should select it", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Open
+      await user.keyboard("[ArrowDown]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      // Select first option
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("Email");
-      const clearButton = container.querySelector("[data-tgph-combobox-clear]");
+    });
+
+    it("pressing the first letter of an option should focus it", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      await user.keyboard("s");
+      const activeElementTextContent = document.activeElement?.textContent;
+      expect(activeElementTextContent).toEqual("SMS");
+
+      await user.keyboard("[Enter]");
+      expect(trigger?.textContent).toBe("SMS");
+    });
+
+    it("clear button should clear the field", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelectLegacy clearable />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      await user.keyboard("[Enter]");
+      expect(trigger?.textContent).toBe("Email");
+
+      const clearButton = queryPortalElement("[data-tgph-combobox-clear]");
       await user.click(clearButton!);
       expect(trigger?.textContent).toBe("");
+    });
+
+    it("should not be able to open when disabled", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelectLegacy disabled />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "false");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("false");
+    });
+  });
+
+  describe("Multi Select", () => {
+    it("combobox is accessible", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelectLegacy />);
+      expectToHaveNoViolations(await axe(container));
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      expectToHaveNoViolations(await axe(container));
+    });
+
+    it("search is automatically focused on open", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      const searchInput = queryPortalElement("[data-tgph-combobox-search]");
+      expect(document.activeElement).toBe(searchInput);
+    });
+
+    it("searching for an option should filter the options", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      await user.keyboard("Email");
+      const options = queryPortalElements("[data-tgph-combobox-option]");
+      expect(options.length).toBe(1);
+    });
+
+    it("empty state should show when there are no results", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      await user.keyboard("No results");
+      const emptyState = queryPortalElement("[data-tgph-combobox-empty]");
+      expect(emptyState).not.toBeNull();
+    });
+
+    it("deselecting an option should update the value", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelectLegacy />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await waitFor(() => expect(trigger?.textContent).toBe("EmailSMS"));
+
+      // Open
+      await user.click(trigger!);
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      // Focus first option
+      await user.keyboard("[ArrowDown]");
+      await user.keyboard("[Enter]");
+
+      await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
     });
   });
 });

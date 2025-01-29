@@ -1,4 +1,5 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
+import * as Portal from "@radix-ui/react-portal";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
@@ -12,6 +13,7 @@ import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
+import { AnimatePresence, motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
@@ -21,6 +23,10 @@ import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
   type DefinedOption,
   type Option,
+  doesOptionMatchSearchQuery,
+  getCurrentOption,
+  getOptions,
+  getValueFromOption,
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
@@ -31,7 +37,7 @@ const SELECT_KEYS = ["Enter", " "];
 
 type SingleSelect = {
   value?: Option;
-  onValueChange?: (value: Option) => void;
+  onValueChange?: (value: Option | undefined) => void;
 };
 
 type MultiSelect = {
@@ -39,11 +45,14 @@ type MultiSelect = {
   onValueChange?: (value: Array<Option>) => void;
 };
 
-type LayoutValue<O extends Option | Array<Option>> = O extends Option
+type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
   : "truncate" | "wrap";
 
-type RootProps<O extends Option | Array<Option>> = {
+type RootProps<
+  O extends (Option | Array<Option>) | (string | Array<string>),
+  LB extends boolean,
+> = {
   value?: O;
   onValueChange?: (value: O) => void;
   layout?: LayoutValue<O>;
@@ -56,11 +65,15 @@ type RootProps<O extends Option | Array<Option>> = {
   closeOnSelect?: boolean;
   clearable?: boolean;
   disabled?: boolean;
+  legacyBehavior?: LB;
   children?: React.ReactNode;
 };
 
 const ComboboxContext = React.createContext<
-  Omit<RootProps<Option | Array<Option>>, "children"> & {
+  Omit<
+    RootProps<(Option | Array<Option>) | (string | Array<string>), boolean>,
+    "children"
+  > & {
     contentId: string;
     triggerId: string;
     open: boolean;
@@ -71,6 +84,8 @@ const ComboboxContext = React.createContext<
     triggerRef?: React.RefObject<HTMLDivElement>;
     searchRef?: React.RefObject<HTMLInputElement>;
     contentRef?: React.RefObject<HTMLDivElement>;
+    options: Array<DefinedOption>;
+    legacyBehavior: boolean;
   }
 >({
   value: undefined,
@@ -82,13 +97,19 @@ const ComboboxContext = React.createContext<
   onOpenToggle: () => {},
   clearable: false,
   disabled: false,
+  options: [],
+  legacyBehavior: false,
 });
 
-const Root = <O extends Option | Array<Option>>({
+const Root = <
+  O extends (Option | Array<Option>) | (string | Array<string>),
+  LB extends boolean,
+>({
   modal = true,
   closeOnSelect = true,
   clearable = false,
   disabled = false,
+  legacyBehavior = false as LB,
   open: openProp,
   onOpenChange: onOpenChangeProp,
   defaultOpen: defaultOpenProp,
@@ -97,13 +118,18 @@ const Root = <O extends Option | Array<Option>>({
   errored,
   placeholder,
   layout,
+  children,
   ...props
-}: RootProps<O>) => {
+}: RootProps<O, LB>) => {
   const contentId = React.useId();
   const triggerId = React.useId();
   const triggerRef = React.useRef(null);
   const searchRef = React.useRef(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
+
+  const options = React.useMemo(() => {
+    return getOptions(children);
+  }, [children]);
 
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [open = false, setOpen] = useControllableState({
@@ -148,6 +174,8 @@ const Root = <O extends Option | Array<Option>>({
         contentRef,
         errored,
         layout,
+        options,
+        legacyBehavior,
       }}
     >
       <TelegraphMenu.Root
@@ -155,7 +183,9 @@ const Root = <O extends Option | Array<Option>>({
         onOpenChange={setOpen}
         modal={modal}
         {...props}
-      />
+      >
+        {children}
+      </TelegraphMenu.Root>
     </ComboboxContext.Provider>
   );
 };
@@ -165,12 +195,39 @@ type TriggerTagProps = {
   label?: DefinedOption["label"];
 };
 
-const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
+const TriggerTag = ({ value, ...props }: TriggerTagProps) => {
   const context = React.useContext(ComboboxContext);
 
+  const option = React.useMemo(() => {
+    // Find option amongst other options
+    const foundOption = context.options.find((o) => o.value === value);
+    if (foundOption) return foundOption.label || foundOption.value;
+
+    // Find option amongst the current values in the case of creation
+    if (!context.value) return undefined;
+    const contextValue = context.value as Array<Option>;
+
+    const foundValue = contextValue.find(
+      (v) => getValueFromOption(v, context.legacyBehavior) === value,
+    );
+
+    if (foundValue) return foundValue;
+  }, [context.options, context.value, value, context.legacyBehavior]);
+
   return (
-    <Tag.Root size="1" layout="position" {...props}>
-      <Tag.Text>{label || value}</Tag.Text>
+    <Tag.Root
+      as={motion.span}
+      initializeWithAnimation={false}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.5 }}
+      transition={{ duration: 100, type: "spring" }}
+      tgph-motion-key={value}
+      size="1"
+      layout="position"
+      {...props}
+    >
+      <Tag.Text>{option}</Tag.Text>
       <Tag.Button
         icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
         onClick={(event: React.MouseEvent) => {
@@ -178,7 +235,12 @@ const TriggerTag = ({ label, value, ...props }: TriggerTagProps) => {
           const onValueChange =
             context.onValueChange as MultiSelect["onValueChange"];
           const contextValue = context.value as Array<Option>;
-          const newValue = contextValue.filter((v) => v?.value !== value);
+
+          const newValue = contextValue.filter((v) => {
+            const valueOption = getValueFromOption(v, context.legacyBehavior);
+            return valueOption !== value;
+          });
+
           onValueChange?.(newValue);
           // Stop click event from bubbling up
           event.stopPropagation();
@@ -216,52 +278,101 @@ const TriggerValue = () => {
           flexGrow: 1,
         }}
       >
-        {context.value.map((v, i) => {
-          if (
-            v?.value &&
-            ((layout === "truncate" && i <= 1) || layout === "wrap")
-          ) {
-            return (
-              <RefToTgphRef key={v.value}>
-                <TriggerTag {...v} />
-              </RefToTgphRef>
-            );
-          }
-        })}
-        {layout === "truncate" && context.value.length > 2 && (
-          <Stack
-            h="full"
-            pr="1"
-            pl="8"
-            align="center"
-            aria-label={`${truncatedLength} more selected`}
-            position="absolute"
-            right="0"
-            style={{
-              backgroundImage:
-                "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
-            }}
-          >
-            <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
-              +
-              {truncatedLengthStringArray.map((n) => (
-                <Box as="span" w="2" display="inline-block" key={n}>
-                  {n}
-                </Box>
-              ))}{" "}
-              more
-            </Text>
-          </Stack>
-        )}
+        <AnimatePresence
+          presenceMap={context.value.map((v) => {
+            const value = getValueFromOption(v, context.legacyBehavior);
+            return {
+              "tgph-motion-key": value || "",
+              value: true,
+            };
+          })}
+        >
+          {context.value.map((v, i) => {
+            const value = getValueFromOption(v, context.legacyBehavior);
+            if (
+              value &&
+              ((layout === "truncate" && i <= 1) || layout === "wrap")
+            ) {
+              return (
+                <RefToTgphRef key={value}>
+                  <TriggerTag value={value} />
+                </RefToTgphRef>
+              );
+            }
+          })}
+        </AnimatePresence>
+        <AnimatePresence
+          presenceMap={[
+            {
+              "tgph-motion-key": "combobox-more",
+              value: true,
+            },
+          ]}
+        >
+          {layout === "truncate" && context.value.length > 2 && (
+            <Stack
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 100, type: "spring" }}
+              h="full"
+              pr="1"
+              pl="8"
+              align="center"
+              aria-label={`${truncatedLength} more selected`}
+              position="absolute"
+              right="0"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
+              }}
+            >
+              <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
+                +
+                <AnimatePresence
+                  presenceMap={truncatedLengthStringArray.map((n) => ({
+                    "tgph-motion-key": n,
+                    value: true,
+                  }))}
+                >
+                  {truncatedLengthStringArray.map((n) => (
+                    <Box
+                      as={motion.span}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 100, type: "spring" }}
+                      w="2"
+                      display="inline-block"
+                      tgph-motion-key={n}
+                      key={n}
+                    >
+                      {n}
+                    </Box>
+                  ))}{" "}
+                </AnimatePresence>
+                more
+              </Text>
+            </Stack>
+          )}
+        </AnimatePresence>
       </Stack>
     );
   }
 
-  return (
-    <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
-      {context?.value?.label || context?.value?.value || context.placeholder}
-    </TelegraphButton.Text>
-  );
+  if (context && isSingleSelect(context.value)) {
+    const currentOption = getCurrentOption(
+      context.value,
+      context.options,
+      context.legacyBehavior,
+    );
+    return (
+      <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
+        {currentOption?.label || context.placeholder}
+      </TelegraphButton.Text>
+    );
+  }
 };
 
 type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
@@ -275,23 +386,42 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
   const getAriaLabelString = React.useCallback(() => {
     if (!context.value) return context.placeholder;
     if (isSingleSelect(context.value)) {
-      return (
-        context.value?.label || context.value?.value || context.placeholder
+      const currentOption = getCurrentOption(
+        context.value,
+        context.options,
+        context.legacyBehavior,
       );
-    } else {
+      return currentOption?.label || context.placeholder;
+    }
+    if (isMultiSelect(context.value)) {
       return (
-        context.value?.map((v) => v?.label).join(", ") || context.placeholder
+        context.value
+          ?.map((v) => {
+            const currentOption = getCurrentOption(
+              v,
+              context.options,
+              context.legacyBehavior,
+            );
+
+            return currentOption?.label;
+          })
+          .join(", ") || context.placeholder
       );
     }
-  }, [context.value, context.placeholder]);
+  }, [
+    context.value,
+    context.placeholder,
+    context.options,
+    context.legacyBehavior,
+  ]);
 
   const shouldShowClearable = React.useMemo(() => {
-    if (isMultiSelect(context.value)) {
-      return context.clearable && context.value?.length > 0;
-    }
-
     if (isSingleSelect(context.value)) {
       return context.clearable && context.value;
+    }
+
+    if (isMultiSelect(context.value)) {
+      return context.clearable && context.value?.length > 0;
     }
   }, [context.clearable, context.value]);
 
@@ -394,7 +524,13 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
               />
             </Tooltip>
           )}
-          <TelegraphButton.Icon icon={Lucide.ChevronDown} aria-hidden />
+          <TelegraphButton.Icon
+            as={motion.span}
+            animate={{ rotate: context.open ? 180 : 0 }}
+            transition={{ duration: 150, type: "spring" }}
+            icon={Lucide.ChevronDown}
+            aria-hidden
+          />
         </Stack>
       </TelegraphButton.Root>
     </TelegraphMenu.Trigger>
@@ -406,9 +542,9 @@ type ContentProps<T extends TgphElement> = TgphComponentProps<
 >;
 
 const Content = <T extends TgphElement>({
-  tgphRef,
   style,
   children,
+  tgphRef,
   ...props
 }: ContentProps<T>) => {
   const context = React.useContext(ComboboxContext);
@@ -417,76 +553,87 @@ const Content = <T extends TgphElement>({
 
   const internalContentRef = React.useRef(null);
 
-  // const [height, setHeight] = React.useState(0);
-  // const [initialAnimationComplete, setInitialAnimationComplete] =
-  //   React.useState(false);
+  const [height, setHeight] = React.useState(0);
+  const [initialAnimationComplete, setInitialAnimationComplete] =
+    React.useState(false);
 
-  // const setHeightFromContent = React.useCallback(
-  //   (element: Element) => {
-  //     // Set the initial height of the content after the animation completes
-  //     const rect = element.getBoundingClientRect();
-  //     if (rect) {
-  //       // setHeight(rect.height);
-  //     }
+  const setHeightFromContent = React.useCallback(
+    (element: Element) => {
+      // Set the initial height of the content after the animation completes
+      const rect = element?.getBoundingClientRect();
+      if (rect) {
+        setHeight(rect.height);
+      }
 
-  //     if (!initialAnimationComplete) {
-  //       setInitialAnimationComplete(true);
-  //     }
-  //   },
-  //   [initialAnimationComplete],
-  // );
+      if (!initialAnimationComplete) {
+        setInitialAnimationComplete(true);
+      }
+    },
+    [initialAnimationComplete],
+  );
 
-  // React.useEffect(() => {
-  //   const observer = new ResizeObserver((entries) => {
-  //     for (const entry of entries) {
-  //       const element = entry.target;
-  //       setHeightFromContent(element);
-  //     }
-  //   });
-  //   // Attatch the observer once the initial animation completes
-  //   // and the content ref is available
-  //   if (internalContentRef.current && initialAnimationComplete) {
-  //     observer.observe(internalContentRef.current);
-  //   }
+  React.useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const element = entry.target;
+        setHeightFromContent(element);
+      }
+    });
+    // Attatch the observer once the initial animation completes
+    // and the content ref is available
+    if (internalContentRef.current && initialAnimationComplete) {
+      observer.observe(internalContentRef.current);
+    }
 
-  //   return () => observer.disconnect();
-  // }, [initialAnimationComplete, setHeightFromContent]);
+    return () => observer.disconnect();
+  }, [initialAnimationComplete, setHeightFromContent]);
 
-  // // Reset the animation complete state when the combobox is closed
-  // React.useEffect(() => {
-  //   if (initialAnimationComplete === true && context.open === false) {
-  //     setInitialAnimationComplete(false);
-  //   }
-  // }, [context.open, initialAnimationComplete]);
+  // Reset the animation complete state when the combobox is closed
+  React.useEffect(() => {
+    if (initialAnimationComplete === true && context.open === false) {
+      setInitialAnimationComplete(false);
+    }
+  }, [context.open, initialAnimationComplete]);
+
+  // On open, set the height of the content after the animation completes
+  // we add a timeout here to ensure that the DOM element has responded to
+  // the state changes first
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (context.open) {
+      timeout = setTimeout(() => {
+        setHeightFromContent(internalContentRef.current as unknown as Element);
+      }, 10);
+    }
+
+    return () => timeout && clearTimeout(timeout);
+  }, [context.open, setHeightFromContent]);
 
   return (
-    // We add radix's dismissable layer here so that we can swallow any escape key
-    // presses to prevent cases like a modal closing when we close the combobox
-    <DismissableLayer
-      onEscapeKeyDown={(event) => {
-        if (context.open) {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-          event.preventDefault();
-          context.setOpen(false);
-        }
-      }}
-    >
-      <Box tgphRef={composedRef}>
+    <Portal.Root asChild>
+      {/* 
+        We add radix's dismissable layer here so that we can swallow any escape
+        key presses to prevent cases like a modal closing when we close the
+        combobox 
+      */}
+      <DismissableLayer
+        onEscapeKeyDown={(event) => {
+          if (context.open) {
+            // Don't allow the event to bubble up outside of the menu
+            event.stopPropagation();
+            event.preventDefault();
+            context.setOpen(false);
+          }
+        }}
+      >
         <TelegraphMenu.Content
-          // as={motion.div}
+          className="tgph"
           mt="1"
-          // onAnimationComplete={() => {
-          //   // Set height when the initial animation for
-          //   // displaying the content completes
-          //   if (!initialAnimationComplete && internalContentRef) {
-          //     const element = internalContentRef.current as unknown as Element;
-          //     setHeightFromContent(element);
-          //   }
-          // }}
           onCloseAutoFocus={(event: Event) => {
-            if (!hasInteractedOutside.current)
+            if (!hasInteractedOutside.current) {
               context.triggerRef?.current?.focus();
+            }
+
             hasInteractedOutside.current = false;
 
             event.preventDefault();
@@ -494,6 +641,8 @@ const Content = <T extends TgphElement>({
           bg="surface-1"
           style={{
             width: "var(--tgph-comobobox-trigger-width)",
+            transition: "min-height 200ms ease-in-out",
+            minHeight: height ? `${height}px` : "0",
             ...style,
             ...{
               "--tgph-comobobox-content-transform-origin":
@@ -537,8 +686,8 @@ const Content = <T extends TgphElement>({
             {children}
           </Stack>
         </TelegraphMenu.Content>
-      </Box>
-    </DismissableLayer>
+      </DismissableLayer>
+    </Portal.Root>
   );
 };
 
@@ -546,6 +695,7 @@ type OptionsProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>>;
 
 const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
   const context = React.useContext(ComboboxContext);
+
   return (
     <Stack
       id={context.contentId}
@@ -577,21 +727,26 @@ const Option = <T extends TgphElement>({
   label,
   selected,
   onSelect,
+  children,
   ...props
 }: OptionProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const [isFocused, setIsFocused] = React.useState(false);
   const contextValue = context.value;
 
-  const isVisible = isMultiSelect(contextValue)
-    ? !context.searchQuery ||
-      value.toLowerCase().includes(context.searchQuery.toLowerCase())
-    : !context.searchQuery ||
-      value.toLowerCase().includes(context.searchQuery.toLowerCase());
+  const isVisible =
+    !context.searchQuery ||
+    doesOptionMatchSearchQuery({
+      label: label?.toString() || children?.toString(),
+      value,
+      searchQuery: context.searchQuery,
+    });
 
   const isSelected = isMultiSelect(contextValue)
-    ? contextValue.some((v) => v?.value === value)
-    : contextValue?.value === value;
+    ? contextValue.some(
+        (v) => getValueFromOption(v, context.legacyBehavior) === value,
+      )
+    : getValueFromOption(contextValue, context.legacyBehavior) === value;
 
   const handleSelection = (event: Event | React.KeyboardEvent) => {
     // Don't allow the event to bubble up outside of the menu
@@ -619,14 +774,27 @@ const Option = <T extends TgphElement>({
     if (isSingleSelect(contextValue)) {
       const onValueChange =
         context.onValueChange as SingleSelect["onValueChange"];
-      onValueChange?.({ value, label });
+
+      // TODO: Remove this once { value, label } option is deprecated
+      if (context.legacyBehavior === true) {
+        onValueChange?.({ value, label });
+      } else {
+        onValueChange?.(value);
+      }
     } else if (isMultiSelect(contextValue)) {
       const onValueChange =
         context.onValueChange as MultiSelect["onValueChange"];
+      const contextValue = context.value as Array<Option>;
 
       const newValue = isSelected
-        ? contextValue.filter((v) => v?.value !== value)
-        : [...contextValue, { value, label }];
+        ? contextValue.filter(
+            (v) => getValueFromOption(v, context.legacyBehavior) !== value,
+          )
+        : [
+            ...contextValue,
+            // TODO: Remove this once { value, label } option is deprecated
+            context.legacyBehavior === true ? { value, label } : value,
+          ];
 
       onValueChange?.(newValue);
     }
@@ -655,7 +823,7 @@ const Option = <T extends TgphElement>({
         data-tgph-combobox-option-label={label}
         {...props}
       >
-        {label || value}
+        {label || children || value}
       </TelegraphMenu.Button>
     );
   }
@@ -783,29 +951,41 @@ const Empty = <T extends TgphElement>({
   }
 };
 
-type CreateProps<T extends TgphElement> = TgphComponentProps<
-  typeof TelegraphMenu.Button<T>
-> & {
+type CreateProps<
+  T extends TgphElement,
+  LB extends boolean,
+> = TgphComponentProps<typeof TelegraphMenu.Button<T>> & {
   leadingText?: string;
-  values?: Array<Option>;
-  onCreate?: (value: DefinedOption) => void;
-};
+} & (LB extends true
+    ? {
+        values: Array<DefinedOption>;
+        onCreate: (value: { value: string; label?: string }) => void;
+        legacyBehavior: true;
+      }
+    : {
+        values?: Array<string>;
+        onCreate?: (value: string) => void;
+        legacyBehavior?: false;
+      });
 
-const Create = <T extends TgphElement>({
+const Create = <T extends TgphElement, LB extends boolean>({
   leadingText = "Create",
   values,
   onCreate,
   selected = null,
+  legacyBehavior = false as LB,
   ...props
-}: CreateProps<T>) => {
+}: CreateProps<T, LB>) => {
   const context = React.useContext(ComboboxContext);
 
   const variableAlreadyExists = React.useCallback(
     (searchQuery: string | undefined) => {
       if (!values || values?.length === 0) return false;
-      return values.some((v) => v?.value === searchQuery);
+      return values.some(
+        (v) => getValueFromOption(v, legacyBehavior) === searchQuery,
+      );
     },
-    [values],
+    [values, legacyBehavior],
   );
 
   if (context.searchQuery && !variableAlreadyExists(context.searchQuery)) {
@@ -818,13 +998,14 @@ const Create = <T extends TgphElement>({
         selected={selected}
         onSelect={() => {
           if (onCreate && context.value && context.searchQuery) {
-            if (isSingleSelect(context.value)) {
-              onCreate({ value: context.searchQuery });
-            }
+            const value =
+              legacyBehavior === true
+                ? { value: context.searchQuery }
+                : context.searchQuery;
 
-            if (isMultiSelect(context.value)) {
-              onCreate({ value: context.searchQuery });
-            }
+            const create = onCreate as CreateProps<T, LB>["onCreate"];
+
+            create(value);
 
             context.setSearchQuery?.("");
           }
