@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.0.58
+
+### Patch Changes
+
+- [#373](https://github.com/knocklabs/telegraph/pull/373) [`8f699f0`](https://github.com/knocklabs/telegraph/commit/8f699f03c7ce28e85299512811b95eb4631921bc) Thanks [@kylemcd](https://github.com/kylemcd)! - combobox improvements
+
 ## 0.0.57
 
 ### Patch Changes
