@@ -100,6 +100,7 @@ const Content = <T extends TgphElement>({
   bg = "surface-1",
   alignOffset,
   tgphRef,
+  style,
   children,
   ...props
 }: ContentProps<T>) => {
@@ -177,6 +178,7 @@ const Content = <T extends TgphElement>({
             style={{
               overflowY: "auto",
               transformOrigin: "var(--radix-tooltip-content-transform-origin)",
+              ...style,
             }}
             zIndex="popover"
             tgph-motion-key="popover-content"

@@ -1,4 +1,7 @@
-import { type PolymorphicProps, type TgphElement } from "@telegraph/helpers";
+import {
+  type PolymorphicPropsWithTgphRef,
+  type TgphElement,
+} from "@telegraph/helpers";
 import { clsx } from "clsx";
 import React from "react";
 
@@ -20,7 +23,10 @@ type Transition = {
   type?: TransitionType;
 };
 
-type MotionProps<T extends TgphElement> = PolymorphicProps<T> & {
+type MotionProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
+  T,
+  TgphElement
+> & {
   initial?: MotionValues;
   animate?: MotionValues;
   exit?: MotionValues;
@@ -44,6 +50,7 @@ const Motion = <T extends TgphElement>({
   children,
   "tgph-motion-key": motionKey,
   onAnimationComplete,
+  tgphRef,
   ...props
 }: MotionProps<T>) => {
   const Component = as || "div";
@@ -154,6 +161,7 @@ const Motion = <T extends TgphElement>({
         ...style,
       }}
       {...props}
+      ref={tgphRef}
     >
       {children}
     </Component>
@@ -162,10 +170,19 @@ const Motion = <T extends TgphElement>({
 
 Motion.displayName = "Motion";
 
+// forwardRef is needed here because of how it's used with the `as` prop.
+// We then cast the React.FC type so that the component's types can be
+// interacted with as usual.
 const motion = {
-  div: (props: MotionProps<"div">) => <Motion as="div" {...props} />,
-  span: (props: MotionProps<"span">) => <Motion as="span" {...props} />,
-  button: (props: MotionProps<"button">) => <Motion as="button" {...props} />,
+  div: React.forwardRef<TgphElement>((props: MotionProps<"div">, ref) => (
+    <Motion as="div" {...props} tgphRef={ref || props.tgphRef} />
+  )) as React.FC<MotionProps<"div">>,
+  span: React.forwardRef<TgphElement>((props: MotionProps<"span">, ref) => (
+    <Motion as="span" {...props} tgphRef={ref || props.tgphRef} />
+  )) as React.FC<MotionProps<"span">>,
+  button: React.forwardRef<TgphElement>((props: MotionProps<"button">, ref) => (
+    <Motion as="button" {...props} tgphRef={ref || props.tgphRef} />
+  )) as React.FC<MotionProps<"button">>,
 };
 
 export { Motion, motion };
