@@ -1,5 +1,14 @@
 # @telegraph/radio
 
+## 0.0.45
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.0.58
+  - @telegraph/layout@0.1.4
+  - @telegraph/icon@0.0.38
+
 ## 0.0.44
 
 ### Patch Changes

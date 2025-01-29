@@ -1,5 +1,12 @@
 # @telegraph/layout
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`094cb1c`](https://github.com/knocklabs/telegraph/commit/094cb1cb32ab65f5c985cf5497997ec955ff3b89)]:
+  - @telegraph/style-engine@0.1.2
+
 ## 0.1.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.1.2
+
+### Patch Changes
+
+- [#377](https://github.com/knocklabs/telegraph/pull/377) [`094cb1c`](https://github.com/knocklabs/telegraph/commit/094cb1cb32ab65f5c985cf5497997ec955ff3b89) Thanks [@kylemcd](https://github.com/kylemcd)! - fix read-only warning that occurs in dev mode
+
 ## 0.1.1
 
 ### Patch Changes
