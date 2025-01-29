@@ -1,5 +1,19 @@
 # @telegraph/combobox
 
+## 0.0.52
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.0.58
+  - @telegraph/layout@0.1.4
+  - @telegraph/typography@0.1.4
+  - @telegraph/menu@0.0.42
+  - @telegraph/tag@0.0.63
+  - @telegraph/input@0.0.30
+  - @telegraph/tooltip@0.0.32
+  - @telegraph/icon@0.0.38
+
 ## 0.0.51
 
 ### Patch Changes
