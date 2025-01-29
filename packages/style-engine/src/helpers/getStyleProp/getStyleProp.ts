@@ -197,6 +197,13 @@ export const getStyleProp = <
       return;
     }
 
+    // If there is already a value for the css var, delete it
+    // so the new value can be assigned. This prevents the
+    // "read-only" warning we sometimes see in dev mode
+    if (styleProp?.[cssVarName]) {
+      delete styleProp?.[cssVarName];
+    }
+
     Object.assign(styleProp, { [cssVarName]: mappedValueOfCssVar });
   });
 
