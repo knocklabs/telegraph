@@ -1,6 +1,8 @@
 import React from "react";
 
-import { type CssVarsPropObject, getStyleProp } from "../helpers/getStyleProp";
+import { type CssVarProp, getStyleProp } from "../helpers/getStyleProp";
+
+type CssVarsPropObject<CssVars> = Record<keyof CssVars, CssVarProp>;
 
 export const useStyleEngine = <
   CssVars extends CssVarsPropObject<CssVars>,
