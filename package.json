@@ -37,7 +37,7 @@
       "INTERNAL_MISMATCH"
     ]
   },
-  "dependencies": {
+  "devDependencies": {
     "@actions/core": "^1.10.1",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.7",
