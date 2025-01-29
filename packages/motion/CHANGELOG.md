@@ -1,5 +1,11 @@
 # @telegraph/motion
 
+## 0.0.3
+
+### Patch Changes
+
+- [`bbdf59b`](https://github.com/knocklabs/telegraph/commit/bbdf59b316b315075bb7cb8ec20225e438f8e756) Thanks [@kylemcd](https://github.com/kylemcd)! - fix issue where refs weren't being properly applied to components using motion
+
 ## 0.0.2
 
 ### Patch Changes
