@@ -1,5 +1,11 @@
 # @telegraph/select
 
+## 0.0.13
+
+### Patch Changes
+
+- [`6d87d10`](https://github.com/knocklabs/telegraph/commit/6d87d102d5ece0eae0a9dc5a33c67c183c7f510e) Thanks [@kylemcd](https://github.com/kylemcd)! - remove logic now contained in combobox from select component
+
 ## 0.0.12
 
 ### Patch Changes
