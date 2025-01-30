@@ -1,7 +1,4 @@
-import {
-  defaultViteConfig,
-  styleEngineViteConfig,
-} from "@telegraph/vite-config";
+import { defaultViteConfig, scopedCssViteConfig } from "@telegraph/vite-config";
 import { mergeConfig } from "vite";
 
-export default mergeConfig(defaultViteConfig, styleEngineViteConfig);
+export default mergeConfig(defaultViteConfig, scopedCssViteConfig);

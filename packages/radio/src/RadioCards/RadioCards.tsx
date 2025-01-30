@@ -7,10 +7,7 @@ import {
 } from "@telegraph/helpers";
 import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
-import clsx from "clsx";
 import React from "react";
-
-import { baseStyles } from "./RadioCards.css";
 
 type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
   TgphComponentProps<typeof Stack>;
@@ -44,7 +41,7 @@ type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>;
 type ItemRef = React.ElementRef<typeof RadioGroup.Item>;
 
 const Item = React.forwardRef<ItemRef, ItemProps>(
-  ({ className, children, ...props }, forwardedRef) => {
+  ({ children, style, ...props }, forwardedRef) => {
     const { value: contextValue } = React.useContext(RadioButtonContext);
     return (
       <>
@@ -53,11 +50,16 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
             <Button.Root
               variant="outline"
               active={props.value === contextValue}
-              className={clsx(className, baseStyles)}
               h="full"
               w="full"
               px="0"
               py="0"
+              data-tgph-radio-group-button
+              style={{
+                "--tgph-button-active-shadow":
+                  "inset 0 0 0 1px var(--tgph-blue-8)",
+                ...style,
+              }}
             >
               {children}
             </Button.Root>

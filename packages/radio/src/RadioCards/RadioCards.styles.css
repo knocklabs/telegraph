@@ -1,0 +1,5 @@
+[data-tgph-radio-group-button]:hover [data-tgph-radio-card-description],
+[data-tgph-radio-group-button]:hover [data-tgph-radio-card-icon] {
+  color: var(--tgph-gray-12);
+  transition: color 0.2s ease-in-out;
+}
