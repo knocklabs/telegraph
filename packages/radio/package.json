@@ -35,8 +35,7 @@
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
-    "@telegraph/layout": "workspace:^",
-    "clsx": "^2.1.1"
+    "@telegraph/layout": "workspace:^"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",

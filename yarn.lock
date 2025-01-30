@@ -7179,7 +7179,6 @@ __metadata:
     "@telegraph/tailwind-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.2.48"
-    clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.3.1"

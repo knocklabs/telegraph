@@ -148,7 +148,7 @@ export const getStyleProp = <
   // to the component as a prop.
   const { style = {}, ...props } = params.props;
 
-  const styleProp: StyleProp<CssVars> = style;
+  let styleProp: StyleProp<CssVars> = style;
   const otherProps: OtherProps<CssVars, Props> = {};
   let interactive = false;
 
@@ -193,18 +193,17 @@ export const getStyleProp = <
         direction: matchingCssVar.direction,
       });
 
-      Object.assign(styleProp, { [cssVarName]: directionalValue });
+      styleProp = {
+        ...styleProp,
+        [cssVarName]: directionalValue,
+      };
       return;
     }
 
-    // If there is already a value for the css var, delete it
-    // so the new value can be assigned. This prevents the
-    // "read-only" warning we sometimes see in dev mode
-    if (styleProp?.[cssVarName]) {
-      delete styleProp?.[cssVarName];
-    }
-
-    Object.assign(styleProp, { [cssVarName]: mappedValueOfCssVar });
+    styleProp = {
+      ...styleProp,
+      [cssVarName]: mappedValueOfCssVar,
+    };
   });
 
   return { styleProp, otherProps, interactive };
