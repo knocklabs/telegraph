@@ -1,3 +1,4 @@
+import React from "react";
 import { Preview } from "@storybook/react-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import "./global.css";
