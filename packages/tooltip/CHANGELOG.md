@@ -1,5 +1,15 @@
 # @telegraph/tooltip
 
+## 0.0.33
+
+### Patch Changes
+
+- [#364](https://github.com/knocklabs/telegraph/pull/364) [`8cbd325`](https://github.com/knocklabs/telegraph/commit/8cbd325b8ccec7664be2649faa4a0bf6cf82c027) Thanks [@dependabot](https://github.com/apps/dependabot)! - upgrade radix dependency
+
+- Updated dependencies []:
+  - @telegraph/layout@0.1.5
+  - @telegraph/typography@0.1.5
+
 ## 0.0.32
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @telegraph/input
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.1.5
+  - @telegraph/typography@0.1.5
+
 ## 0.0.30
 
 ### Patch Changes
