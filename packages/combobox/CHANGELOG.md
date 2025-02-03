@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.55
+
+### Patch Changes
+
+- [`8fe81ee`](https://github.com/knocklabs/telegraph/commit/8fe81eec1eafa03111009b541da86aa2cf2dbd03) Thanks [@kylemcd](https://github.com/kylemcd)! - keep support of legacy label override
+
 ## 0.0.54
 
 ### Patch Changes
