@@ -1,6 +1,9 @@
 import React from "react";
 
-export type DefinedOption = { value: string; label?: string | React.ReactNode };
+export type DefinedOption = {
+  value: string;
+  label?: string | React.ReactNode;
+};
 export type Option = DefinedOption | string | React.ReactNode;
 export const isMultiSelect = (
   value: Option | Array<Option> | undefined,

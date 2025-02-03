@@ -13,6 +13,7 @@ const meta: Meta = {
   component: TelegraphCombobox.Root,
   argTypes: {},
   args: {},
+  parameters: { docs: { source: { type: "code" } } },
 };
 
 export default meta;
@@ -304,7 +305,7 @@ const firstLegacyValue = legacyValues[0] as Option;
 export const LegacyComboboxSingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstLegacyValue.value);
+    const [value, setValue] = React.useState(firstLegacyValue);
 
     return (
       <Box w="80">
@@ -312,6 +313,40 @@ export const LegacyComboboxSingleSelect: Story = {
           {...args}
           value={value}
           onValueChange={setValue}
+          placeholder={"Select a channel"}
+          clearable
+          legacyBehavior={true}
+        >
+          <TelegraphCombobox.Trigger size="1" />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Options>
+              {legacyValues.map((v) => (
+                <TelegraphCombobox.Option value={v.value} label={v.label} />
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState(firstLegacyValue);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={{
+            value: value.value,
+            label: <h2>{value.value}</h2>,
+          }}
+          // @ts-expect-error - for sb purposes
+          onValueChange={(value) => setValue(value)}
           placeholder={"Select a channel"}
           clearable
           legacyBehavior={true}

@@ -368,9 +368,19 @@ const TriggerValue = () => {
       context.options,
       context.legacyBehavior,
     );
+
+    const label =
+      currentOption?.label || currentOption?.value || context.placeholder;
+
+    // In `legacyBehavior` mode, we can override the label of the combobox via the `label` prop
+    // in context value. So, if we're in `legacyBehavior` mode and the context value has a
+    // label, we want to use that label instead of the label from the current option
+    const legacyLabelOverride =
+      context.legacyBehavior && (context?.value as DefinedOption)?.label;
+
     return (
       <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
-        {currentOption?.label || currentOption?.value || context.placeholder}
+        {legacyLabelOverride ?? label}
       </TelegraphButton.Text>
     );
   }
