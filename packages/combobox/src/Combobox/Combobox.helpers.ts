@@ -78,9 +78,14 @@ export const getCurrentOption = (
 ): DefinedOption | undefined => {
   if (!value) return undefined;
   if (!options || options.length === 0) return undefined;
-  return options.find(
+
+  const foundOption = options.find(
     (o) => o.value === getValueFromOption(value, legacyBehavior),
   );
+
+  if (!foundOption) return undefined;
+
+  return foundOption;
 };
 
 type DoesOptionMatchSearchQueryProps = {

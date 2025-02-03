@@ -206,12 +206,13 @@ const TriggerTag = ({ value, ...props }: TriggerTagProps) => {
     // Find option amongst the current values in the case of creation
     if (!context.value) return undefined;
     const contextValue = context.value as Array<Option>;
-
     const foundValue = contextValue.find(
       (v) => getValueFromOption(v, context.legacyBehavior) === value,
     );
 
-    if (foundValue) return foundValue;
+    if (!foundValue) return undefined;
+
+    return foundValue;
   }, [context.options, context.value, value, context.legacyBehavior]);
 
   return (
@@ -369,7 +370,7 @@ const TriggerValue = () => {
     );
     return (
       <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
-        {currentOption?.label || context.placeholder}
+        {currentOption?.label || currentOption?.value || context.placeholder}
       </TelegraphButton.Text>
     );
   }
