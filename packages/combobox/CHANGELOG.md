@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.54
+
+### Patch Changes
+
+- [`821374b`](https://github.com/knocklabs/telegraph/commit/821374b573e45015d9a9bf7a037eb89a7c19c2bc) Thanks [@kylemcd](https://github.com/kylemcd)! - display value when no label is provided
+
 ## 0.0.53
 
 ### Patch Changes
