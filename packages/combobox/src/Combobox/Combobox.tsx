@@ -380,7 +380,7 @@ const TriggerValue = () => {
 
     return (
       <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
-        {legacyLabelOverride ?? label}
+        {legacyLabelOverride ? legacyLabelOverride : label}
       </TelegraphButton.Text>
     );
   }
