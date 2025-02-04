@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.56
+
+### Patch Changes
+
+- [`c605b62`](https://github.com/knocklabs/telegraph/commit/c605b62a0e36a81847f5fe2afc1a33968984a49d) Thanks [@kylemcd](https://github.com/kylemcd)! - fix bad label override logic
+
 ## 0.0.55
 
 ### Patch Changes
