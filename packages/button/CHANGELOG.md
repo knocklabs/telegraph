@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.60
+
+### Patch Changes
+
+- [`67e54c0`](https://github.com/knocklabs/telegraph/commit/67e54c0aa06281579cdfb62f7ceb5792cba02b1c) Thanks [@kylemcd](https://github.com/kylemcd)! - remove fade animation from button loader to prevent flashing
+
 ## 0.0.59
 
 ### Patch Changes
