@@ -48,9 +48,7 @@
 }
 
 [data-tgph-button-loading-icon] {
-  animation:
-    button-loading-icon 1s infinite linear,
-    button-loading-icon-fade-in 0.2s ease-in-out;
+  animation: button-loading-icon 1s infinite linear;
 }
 
 @keyframes button-loading-icon {
@@ -59,14 +57,5 @@
   }
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes button-loading-icon-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
