@@ -103,7 +103,7 @@ export const MultiSelect: Story = {
           <TelegraphCombobox.Trigger />
           <TelegraphCombobox.Content
             style={{
-              width: "var(--tgph-comobobox-trigger-width)",
+              width: "var(--tgph-combobobox-trigger-width)",
             }}
           >
             <TelegraphCombobox.Search />
