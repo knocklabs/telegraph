@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.58
+
+### Patch Changes
+
+- [#391](https://github.com/knocklabs/telegraph/pull/391) [`05ea45f`](https://github.com/knocklabs/telegraph/commit/05ea45f6f5858ac657755a98f9ec5bef3fc37625) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Fix typo in CSS variables
+
 ## 0.0.57
 
 ### Patch Changes
