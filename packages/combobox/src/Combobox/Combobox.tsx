@@ -651,18 +651,18 @@ const Content = <T extends TgphElement>({
           }}
           bg="surface-1"
           style={{
-            width: "var(--tgph-comobobox-trigger-width)",
+            width: "var(--tgph-combobox-trigger-width)",
             transition: "min-height 200ms ease-in-out",
             minHeight: height ? `${height}px` : "0",
             ...style,
             ...{
-              "--tgph-comobobox-content-transform-origin":
+              "--tgph-combobox-content-transform-origin":
                 "var(--radix-popper-transform-origin)",
               "--tgph-combobox-content-available-width":
                 "var(--radix-popper-available-width)",
               "--tgph-combobox-content-available-height":
                 "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-              "--tgph-comobobox-trigger-width":
+              "--tgph-combobox-trigger-width":
                 "var(--radix-popper-anchor-width)",
               "--tgph-combobox-trigger-height":
                 "var(--radix-popper-anchor-height)",
