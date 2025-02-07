@@ -711,6 +711,8 @@ type OptionsProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>>;
 const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
   const context = React.useContext(ComboboxContext);
 
+  const { maxHeight } = props;
+
   return (
     <Stack
       id={context.contentId}
@@ -718,9 +720,10 @@ const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
       gap="1"
       style={{
         overflowY: "auto",
-        // Available Height - Padding from edge of screen
-        maxHeight:
-          "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))",
+        // maxHeight defaults to available height - padding from edge of screen
+        maxHeight: !maxHeight
+          ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
+          : undefined,
       }}
       // Accessibility attributes
       role="listbox"
