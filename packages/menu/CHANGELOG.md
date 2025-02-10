@@ -1,5 +1,15 @@
 # @telegraph/menu
 
+## 0.0.45
+
+### Patch Changes
+
+- [#396](https://github.com/knocklabs/telegraph/pull/396) [`eff031c`](https://github.com/knocklabs/telegraph/commit/eff031c01e5163230775366368d326fd86ade992) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix(KNO-7737): Long items in combobox and menu options do not overflow
+
+- Updated dependencies []:
+  - @telegraph/button@0.0.61
+  - @telegraph/icon@0.0.40
+
 ## 0.0.44
 
 ### Patch Changes
