@@ -1,5 +1,12 @@
 # @telegraph/tooltip
 
+## 0.0.34
+
+### Patch Changes
+
+- Updated dependencies [[`eff031c`](https://github.com/knocklabs/telegraph/commit/eff031c01e5163230775366368d326fd86ade992)]:
+  - @telegraph/typography@0.1.6
+
 ## 0.0.33
 
 ### Patch Changes
