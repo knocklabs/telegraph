@@ -17,12 +17,13 @@ import { AnimatePresence, motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
-import React from "react";
+import React, { useMemo } from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
   type DefinedOption,
   type Option,
+  coerceChildrenToText,
   doesOptionMatchSearchQuery,
   getCurrentOption,
   getOptions,
@@ -745,10 +746,12 @@ const Option = <T extends TgphElement>({
   const [isFocused, setIsFocused] = React.useState(false);
   const contextValue = context.value;
 
+  const textContent = useMemo(() => coerceChildrenToText(children), [children]);
+
   const isVisible =
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
-      label: label?.toString() || children?.toString(),
+      label: label?.toString() || textContent,
       value,
       searchQuery: context.searchQuery,
     });

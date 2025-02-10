@@ -107,3 +107,24 @@ export const doesOptionMatchSearchQuery = ({
     label?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 };
+
+export const coerceChildrenToText = (
+  children: React.ReactNode,
+): string | undefined => {
+  const childrenArray = React.Children.toArray(children);
+
+  return childrenArray
+    .map((child) => {
+      if (typeof child === "string") {
+        return child;
+      }
+
+      if (React.isValidElement(child) && child.props.children) {
+        return coerceChildrenToText(child.props.children);
+      }
+
+      return "";
+    })
+    .join(" ")
+    .trim();
+};
