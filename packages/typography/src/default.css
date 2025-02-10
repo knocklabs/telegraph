@@ -8,6 +8,7 @@
   --tracking: var(--tgph-tracking-2);
   --text-align: left;
   --font-family: var(--tgph-family-sans);
+  --text-overflow: clip;
 
   color: var(--color);
   font-size: var(--font-size);
@@ -17,4 +18,5 @@
   text-align: var(--text-align);
   box-sizing: border-box;
   font-family: var(--font-family);
+  text-overflow: var(--text-overflow);
 }

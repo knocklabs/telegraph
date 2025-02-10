@@ -9,6 +9,7 @@ export type BaseStyleProps = {
   tracking: keyof (typeof tokens)["tracking"];
   align: "left" | "center" | "right";
   family: keyof (typeof tokens)["family"];
+  textOverflow: "clip" | "ellipsis" | "string";
 };
 
 const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
@@ -39,6 +40,10 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   family: {
     cssVar: "--font-family",
     value: "var(--tgph-family-VARIABLE)",
+  },
+  textOverflow: {
+    cssVar: "--text-overflow",
+    value: "VARIABLE",
   },
 };
 
