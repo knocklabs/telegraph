@@ -383,8 +383,9 @@ const TriggerValue = () => {
         color={!context.value ? "gray" : "default"}
         style={{
           textOverflow: "ellipsis",
-          overflow: "hidden"
-        }}>
+          overflow: "hidden",
+        }}
+      >
         {legacyLabelOverride ? legacyLabelOverride : label}
       </TelegraphButton.Text>
     );

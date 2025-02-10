@@ -48,7 +48,11 @@ const MenuItem = <T extends TgphElement>({
           weight="regular"
           // Styles to prevent long items from overflowing the menu
           // max-width makes sure the text maintains the correct left alignment
-          style={{ maxWidth: "90%", textOverflow: "ellipsis", overflow: "hidden" }}
+          style={{
+            maxWidth: "90%",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+          }}
         >
           {props.children}
         </Button.Text>
