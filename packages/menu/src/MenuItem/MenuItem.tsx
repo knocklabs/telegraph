@@ -44,7 +44,14 @@ const MenuItem = <T extends TgphElement>({
           leadingIcon={leadingIcon}
           leadingComponent={leadingComponent}
         />
-        <Button.Text weight="regular">{props.children}</Button.Text>
+        <Button.Text
+          weight="regular"
+          w="full"
+          overflow="hidden"
+          textOverflow="ellipsis"
+        >
+          {props.children}
+        </Button.Text>
       </Stack>
       <MenuItemTrailing
         trailingIcon={trailingIcon}
@@ -90,6 +97,7 @@ const MenuItemLeading = ({
         }
         transition={{ duration: 150, type: "spring" }}
         style={{ transformOrigin: "center" }}
+        display="block"
       />
     );
   }
