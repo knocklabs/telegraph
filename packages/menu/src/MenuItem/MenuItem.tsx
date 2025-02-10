@@ -44,7 +44,14 @@ const MenuItem = <T extends TgphElement>({
           leadingIcon={leadingIcon}
           leadingComponent={leadingComponent}
         />
-        <Button.Text weight="regular">{props.children}</Button.Text>
+        <Button.Text
+          weight="regular"
+          // Styles to prevent long items from overflowing the menu
+          // max-width makes sure the text maintains the correct left alignment
+          style={{ maxWidth: "90%", textOverflow: "ellipsis", overflow: "hidden" }}
+        >
+          {props.children}
+        </Button.Text>
       </Stack>
       <MenuItemTrailing
         trailingIcon={trailingIcon}
