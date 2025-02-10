@@ -379,7 +379,11 @@ const TriggerValue = () => {
       context.legacyBehavior && (context?.value as DefinedOption)?.label;
 
     return (
-      <TelegraphButton.Text color={!context.value ? "gray" : "default"}>
+      <TelegraphButton.Text
+        color={!context.value ? "gray" : "default"}
+        textOverflow="ellipsis"
+        overflow="hidden"
+      >
         {legacyLabelOverride ? legacyLabelOverride : label}
       </TelegraphButton.Text>
     );
@@ -502,7 +506,7 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         aria-haspopup="listbox"
         // Custom attributes
         data-tgph-combobox-trigger
-        data-tgph-comobox-trigger-open={context.open}
+        data-tgph-combobox-trigger-open={context.open}
         disabled={context.disabled}
       >
         <TriggerValue />
