@@ -29,6 +29,44 @@ Scope styles:
 
 > Note: If you only want to use telegraph in a certain part of your app, you would wrap that part in an element with the `tgph` class.
 
+## Developing Locally
+
+Here is how to run the Storybook and development server locally:
+
+1. Clone the repository
+```bash
+git clone https://github.com/knocklabs/telegraph.git
+```
+
+2. Install dependencies
+```bash
+yarn install
+```
+
+3. Compile the packages and watch for changes
+```bash
+yarn dev:packages
+```
+
+4. In another terminal tab, run the Storybook server
+```bash
+yarn dev:storybook
+```
+
+5. Open `http://localhost:3005` in your browser. You can now make changes to the code and see them refresh automatically.
+
+### Before committing changes
+
+Before committing, run the following commands to ensure the code is formatted and linted:
+```bash
+yarn format
+yarn lint
+```
+
+### Releasing
+
+We use [changesets](https://github.com/changesets/changesets) to manage releases. Each time a PR is opened, make sure to include a changeset. A changeset bot will add a comment to your PR prompting you to do so with a template, click that and commit it to your PR.
+
 ## Packages
 
 ### Core Packages
