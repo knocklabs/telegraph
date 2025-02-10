@@ -17,7 +17,7 @@ import { AnimatePresence, motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
-import React, { useMemo } from "react";
+import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
@@ -750,7 +750,10 @@ const Option = <T extends TgphElement>({
   const [isFocused, setIsFocused] = React.useState(false);
   const contextValue = context.value;
 
-  const textContent = useMemo(() => coerceChildrenToText(children), [children]);
+  const textContent = React.useMemo(
+    () => coerceChildrenToText(children),
+    [children],
+  );
 
   const isVisible =
     !context.searchQuery ||
