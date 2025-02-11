@@ -92,21 +92,21 @@ export const getCurrentOption = (
 };
 
 type DoesOptionMatchSearchQueryProps = {
-  label?: React.ReactNode;
+  children?: React.ReactNode;
   value?: string;
   searchQuery: string;
 };
 
 export const doesOptionMatchSearchQuery = ({
-  label,
+  children,
   value,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
-  const labelStrings = findStringNodes(label);
+  const childStrings = findStringNodes(children);
 
   return (
     value?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    labelStrings.some((str) =>
+    childStrings.some((str) =>
       str.toLowerCase().includes(searchQuery.toLowerCase()),
     )
   );

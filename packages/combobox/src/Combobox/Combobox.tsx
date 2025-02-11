@@ -752,7 +752,7 @@ const Option = <T extends TgphElement>({
   const isVisible =
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
-      label: label || children,
+      children: label || children,
       value,
       searchQuery: context.searchQuery,
     });
