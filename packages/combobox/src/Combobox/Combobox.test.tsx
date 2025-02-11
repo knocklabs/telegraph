@@ -5,6 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
+import { findStringNodes } from "./Combobox.helpers";
 
 type Option = { value: string; label?: string };
 
@@ -451,5 +452,62 @@ describe("legacyBehavior Combobox", () => {
 
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
     });
+  });
+});
+
+describe("findStringNodes", () => {
+  it("returns empty array for null node", () => {
+    expect(findStringNodes(null)).toStrictEqual([]);
+  });
+
+  it("returns empty array for undefined node", () => {
+    expect(findStringNodes(undefined)).toStrictEqual([]);
+  });
+
+  it("handles array of strings", () => {
+    expect(findStringNodes(["Lorem", "ipsum"])).toStrictEqual([
+      "Lorem",
+      "ipsum",
+    ]);
+  });
+
+  it("handles array of elements", () => {
+    const children = [<span>Hello</span>, <span>World</span>];
+    expect(findStringNodes(children)).toStrictEqual(["Hello", "World"]);
+  });
+
+  it("handles element with text content", () => {
+    const node = <div>Hello</div>;
+    expect(findStringNodes(node)).toStrictEqual(["Hello"]);
+  });
+
+  it("handles element with child elements", () => {
+    const node = (
+      <div>
+        <span>Lorem</span>
+        <span>Ipsum</span>
+        <span>
+          <span>Dolor</span>
+          <span>Sit</span>
+        </span>
+      </div>
+    );
+    expect(findStringNodes(node)).toStrictEqual([
+      "Lorem",
+      "Ipsum",
+      "Dolor",
+      "Sit",
+    ]);
+  });
+
+  it("handles element with mixed children", () => {
+    const node = (
+      <p>
+        Lorem
+        <span>ipsum</span>
+        dolor
+      </p>
+    );
+    expect(findStringNodes(node)).toStrictEqual(["Lorem", "ipsum", "dolor"]);
   });
 });
