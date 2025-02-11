@@ -718,9 +718,10 @@ const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
       gap="1"
       style={{
         overflowY: "auto",
-        // Available Height - Padding from edge of screen
-        maxHeight:
-          "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))",
+        // maxHeight defaults to available height - padding from edge of screen
+        "--max-height": !props.maxHeight
+          ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
+          : undefined,
       }}
       // Accessibility attributes
       role="listbox"
