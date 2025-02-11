@@ -1,5 +1,13 @@
 # @telegraph/combobox
 
+## 0.0.60
+
+### Patch Changes
+
+- [#393](https://github.com/knocklabs/telegraph/pull/393) [`c532fc8`](https://github.com/knocklabs/telegraph/commit/c532fc8f0efc0671d62a90b4fc1d938a14fe4a52) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Support setting `maxHeight` prop on `Combobox.Options`
+
+- [#397](https://github.com/knocklabs/telegraph/pull/397) [`9405270`](https://github.com/knocklabs/telegraph/commit/94052700d273f4776ceb16ff1ee502dabeba5fa4) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Fix combobox searching when `Option` has non-text children
+
 ## 0.0.59
 
 ### Patch Changes
