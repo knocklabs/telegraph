@@ -92,18 +92,40 @@ export const getCurrentOption = (
 };
 
 type DoesOptionMatchSearchQueryProps = {
-  label?: string;
+  children?: React.ReactNode;
   value?: string;
   searchQuery: string;
 };
 
 export const doesOptionMatchSearchQuery = ({
-  label,
+  children,
   value,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
+  const childStrings = findStringNodes(children);
+
   return (
     value?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    label?.toLowerCase().includes(searchQuery.toLowerCase())
+    childStrings.some((str) =>
+      str.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
   );
+};
+
+// Exported for testing
+export const findStringNodes = (children: React.ReactNode): string[] => {
+  const childrenArray = React.Children.toArray(children);
+  const strNodes: string[] = [];
+
+  childrenArray.forEach((child) => {
+    if (typeof child === "string") {
+      strNodes.push(child);
+    }
+
+    if (React.isValidElement(child) && child.props.children) {
+      strNodes.push(...findStringNodes(child.props.children));
+    }
+  });
+
+  return strNodes;
 };
