@@ -102,30 +102,30 @@ export const doesOptionMatchSearchQuery = ({
   value,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
-  const labelAsText = coerceNodeToText(label);
+  const labelStrings = findStringNodes(label);
 
   return (
     value?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    labelAsText.toLowerCase().includes(searchQuery.toLowerCase())
+    labelStrings.some((str) =>
+      str.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
   );
 };
 
 // Exported for testing
-export const coerceNodeToText = (children: React.ReactNode): string => {
+export const findStringNodes = (children: React.ReactNode): string[] => {
   const childrenArray = React.Children.toArray(children);
+  const strNodes: string[] = [];
 
-  return childrenArray
-    .map((child) => {
-      if (typeof child === "string") {
-        return child;
-      }
+  childrenArray.forEach((child) => {
+    if (typeof child === "string") {
+      strNodes.push(child);
+    }
 
-      if (React.isValidElement(child) && child.props.children) {
-        return coerceNodeToText(child.props.children);
-      }
+    if (React.isValidElement(child) && child.props.children) {
+      strNodes.push(...findStringNodes(child.props.children));
+    }
+  });
 
-      return "";
-    })
-    .join(" ")
-    .trim();
+  return strNodes;
 };

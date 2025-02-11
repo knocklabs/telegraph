@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
-import { coerceNodeToText } from "./Combobox.helpers";
+import { findStringNodes } from "./Combobox.helpers";
 
 type Option = { value: string; label?: string };
 
@@ -455,26 +455,33 @@ describe("legacyBehavior Combobox", () => {
   });
 });
 
-describe("coerceNodeToText", () => {
-  it("returns empty string for null node", () => {
-    expect(coerceNodeToText(null)).toBe("");
+describe("findStringNodes", () => {
+  it("returns empty array for null node", () => {
+    expect(findStringNodes(null)).toStrictEqual([]);
   });
 
-  it("returns empty string for undefined node", () => {
-    expect(coerceNodeToText(undefined)).toBe("");
+  it("returns empty array for undefined node", () => {
+    expect(findStringNodes(undefined)).toStrictEqual([]);
   });
 
-  it("returns string for string node", () => {
-    const str = "Lorem ipsum";
-    expect(coerceNodeToText(str)).toBe(str);
+  it("handles array of strings", () => {
+    expect(findStringNodes(["Lorem", "ipsum"])).toStrictEqual([
+      "Lorem",
+      "ipsum",
+    ]);
   });
 
-  it("converts element with text content to string", () => {
+  it("handles array of elements", () => {
+    const children = [<span>Hello</span>, <span>World</span>];
+    expect(findStringNodes(children)).toStrictEqual(["Hello", "World"]);
+  });
+
+  it("handles element with text content", () => {
     const node = <div>Hello</div>;
-    expect(coerceNodeToText(node)).toBe("Hello");
+    expect(findStringNodes(node)).toStrictEqual(["Hello"]);
   });
 
-  it("converts element with child elements to string", () => {
+  it("handles element with child elements", () => {
     const node = (
       <div>
         <span>Lorem</span>
@@ -485,10 +492,15 @@ describe("coerceNodeToText", () => {
         </span>
       </div>
     );
-    expect(coerceNodeToText(node)).toBe("Lorem Ipsum Dolor Sit");
+    expect(findStringNodes(node)).toStrictEqual([
+      "Lorem",
+      "Ipsum",
+      "Dolor",
+      "Sit",
+    ]);
   });
 
-  it("converts element with mixed children to string", () => {
+  it("handles element with mixed children", () => {
     const node = (
       <p>
         Lorem
@@ -496,11 +508,6 @@ describe("coerceNodeToText", () => {
         dolor
       </p>
     );
-    expect(coerceNodeToText(node)).toBe("Lorem ipsum dolor");
-  });
-
-  it("converts array of elements to string", () => {
-    const children = [<span>Hello</span>, <span>World</span>];
-    expect(coerceNodeToText(children)).toBe("Hello World");
+    expect(findStringNodes(node)).toStrictEqual(["Lorem", "ipsum", "dolor"]);
   });
 });
