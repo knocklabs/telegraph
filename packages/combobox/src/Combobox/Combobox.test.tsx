@@ -5,6 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
+import { coerceNodeToText } from "./Combobox.helpers";
 
 type Option = { value: string; label?: string };
 
@@ -451,5 +452,55 @@ describe("legacyBehavior Combobox", () => {
 
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
     });
+  });
+});
+
+describe("coerceNodeToText", () => {
+  it("returns empty string for null node", () => {
+    expect(coerceNodeToText(null)).toBe("");
+  });
+
+  it("returns empty string for undefined node", () => {
+    expect(coerceNodeToText(undefined)).toBe("");
+  });
+
+  it("returns string for string node", () => {
+    const str = "Lorem ipsum";
+    expect(coerceNodeToText(str)).toBe(str);
+  });
+
+  it("converts element with text content to string", () => {
+    const node = <div>Hello</div>;
+    expect(coerceNodeToText(node)).toBe("Hello");
+  });
+
+  it("converts element with child elements to string", () => {
+    const node = (
+      <div>
+        <span>Lorem</span>
+        <span>Ipsum</span>
+        <span>
+          <span>Dolor</span>
+          <span>Sit</span>
+        </span>
+      </div>
+    );
+    expect(coerceNodeToText(node)).toBe("Lorem Ipsum Dolor Sit");
+  });
+
+  it("converts element with mixed children to string", () => {
+    const node = (
+      <p>
+        Lorem
+        <span>ipsum</span>
+        dolor
+      </p>
+    );
+    expect(coerceNodeToText(node)).toBe("Lorem ipsum dolor");
+  });
+
+  it("converts array of elements to string", () => {
+    const children = [<span>Hello</span>, <span>World</span>];
+    expect(coerceNodeToText(children)).toBe("Hello World");
   });
 });

@@ -92,7 +92,7 @@ export const getCurrentOption = (
 };
 
 type DoesOptionMatchSearchQueryProps = {
-  label?: string;
+  label?: React.ReactNode;
   value?: string;
   searchQuery: string;
 };
@@ -102,15 +102,16 @@ export const doesOptionMatchSearchQuery = ({
   value,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
+  const labelAsText = coerceNodeToText(label);
+
   return (
     value?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    label?.toLowerCase().includes(searchQuery.toLowerCase())
+    labelAsText.toLowerCase().includes(searchQuery.toLowerCase())
   );
 };
 
-export const coerceChildrenToText = (
-  children: React.ReactNode,
-): string | undefined => {
+// Exported for testing
+export const coerceNodeToText = (children: React.ReactNode): string => {
   const childrenArray = React.Children.toArray(children);
 
   return childrenArray
@@ -120,7 +121,7 @@ export const coerceChildrenToText = (
       }
 
       if (React.isValidElement(child) && child.props.children) {
-        return coerceChildrenToText(child.props.children);
+        return coerceNodeToText(child.props.children);
       }
 
       return "";

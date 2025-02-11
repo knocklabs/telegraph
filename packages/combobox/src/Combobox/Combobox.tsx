@@ -23,7 +23,6 @@ import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
   type DefinedOption,
   type Option,
-  coerceChildrenToText,
   doesOptionMatchSearchQuery,
   getCurrentOption,
   getOptions,
@@ -750,15 +749,10 @@ const Option = <T extends TgphElement>({
   const [isFocused, setIsFocused] = React.useState(false);
   const contextValue = context.value;
 
-  const textContent = React.useMemo(
-    () => coerceChildrenToText(children),
-    [children],
-  );
-
   const isVisible =
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
-      label: label?.toString() || textContent,
+      label: label || children,
       value,
       searchQuery: context.searchQuery,
     });
