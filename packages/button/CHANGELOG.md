@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.62
+
+### Patch Changes
+
+- [#401](https://github.com/knocklabs/telegraph/pull/401) [`ede88ff`](https://github.com/knocklabs/telegraph/commit/ede88ffd76c081ee66b0c879a4f97ea0d49a6aa9) Thanks [@kylemcd](https://github.com/kylemcd)! - persist style prop through to button
+
 ## 0.0.61
 
 ### Patch Changes
