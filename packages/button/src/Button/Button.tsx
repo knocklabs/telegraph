@@ -83,6 +83,7 @@ const Root = <T extends TgphElement>({
   disabled,
   className,
   children,
+  style,
   ...props
 }: RootProps<T>) => {
   const derivedState = deriveState({ state: stateProp, disabled, active });
@@ -93,7 +94,10 @@ const Root = <T extends TgphElement>({
   });
 
   const { styleProp, otherProps } = useStyleEngine({
-    props: BUTTON_COLOR_MAP[variant][color],
+    props: {
+      ...BUTTON_COLOR_MAP[variant][color],
+      ...style,
+    },
     cssVars,
   });
 
