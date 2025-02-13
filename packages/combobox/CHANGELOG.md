@@ -1,5 +1,19 @@
 # @telegraph/combobox
 
+## 0.0.63
+
+### Patch Changes
+
+- Updated dependencies [[`47723a4`](https://github.com/knocklabs/telegraph/commit/47723a426e1734d6bfa6c69000690875d0d101cc)]:
+  - @telegraph/layout@0.1.6
+  - @telegraph/button@0.0.64
+  - @telegraph/input@0.0.33
+  - @telegraph/menu@0.0.48
+  - @telegraph/tag@0.0.69
+  - @telegraph/tooltip@0.0.35
+  - @telegraph/typography@0.1.7
+  - @telegraph/icon@0.0.41
+
 ## 0.0.62
 
 ### Patch Changes
