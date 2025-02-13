@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.1.6
+
+### Patch Changes
+
+- [`47723a4`](https://github.com/knocklabs/telegraph/commit/47723a426e1734d6bfa6c69000690875d0d101cc) Thanks [@kylemcd](https://github.com/kylemcd)! - add missing box shadow style to box
+
 ## 0.1.5
 
 ### Patch Changes
