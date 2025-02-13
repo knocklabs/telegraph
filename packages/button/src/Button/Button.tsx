@@ -96,7 +96,7 @@ const Root = <T extends TgphElement>({
   const { styleProp, otherProps } = useStyleEngine({
     props: {
       ...BUTTON_COLOR_MAP[variant][color],
-      ...style,
+      style,
     },
     cssVars,
   });
