@@ -1,5 +1,12 @@
 # @telegraph/textarea
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/typography@0.1.7
+
 ## 0.0.9
 
 ### Patch Changes
