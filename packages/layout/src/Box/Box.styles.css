@@ -1,6 +1,7 @@
 .tgph-box {
   --background-color: none;
   --border-color: var(--tgph-gray-6);
+  --box-shadow: none;
   --border-style: solid;
   --border-width: 0;
   --padding: 0;
@@ -24,6 +25,7 @@
   border-width: var(--border-width);
   border-style: var(--border-style);
   border-color: var(--border-color);
+  box-shadow: var(--box-shadow);
   padding: var(--padding);
   margin: var(--margin);
   border-radius: var(--border-radius);
