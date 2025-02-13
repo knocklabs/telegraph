@@ -13,7 +13,7 @@ export type BaseStyleProps = {
 
 export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   default_buttonShadowColor: {
-    cssVar: "--tgph-button-default-shadow",
+    cssVar: "--box-shadow",
     value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
   },
   hover_buttonShadowColor: {

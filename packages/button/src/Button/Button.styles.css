@@ -1,5 +1,4 @@
 .tgph-button {
-  --tgph-button-default-shadow: none;
   --tgph-button-hover-shadow: none;
   --tgph-button-focus-shadow: none;
   --tgph-button-active-shadow: none;
@@ -13,7 +12,6 @@
     color 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
   text-decoration: none;
-  box-shadow: var(--tgph-button-default-shadow);
 }
 
 .tgph-button:hover {
