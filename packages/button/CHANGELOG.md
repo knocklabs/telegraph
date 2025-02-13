@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.65
+
+### Patch Changes
+
+- [`1a6d741`](https://github.com/knocklabs/telegraph/commit/1a6d7418990003585f58c64d7a8d023e8058b021) Thanks [@kylemcd](https://github.com/kylemcd)! - utilize existing box shadow var for button border
+
 ## 0.0.64
 
 ### Patch Changes
