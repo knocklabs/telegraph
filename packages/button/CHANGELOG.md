@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.63
+
+### Patch Changes
+
+- [`00be1af`](https://github.com/knocklabs/telegraph/commit/00be1af7e04c1d0aba3dc42a8cf2943b9cf2cfc7) Thanks [@kylemcd](https://github.com/kylemcd)! - fix spreading of style prop with useStyleEngine hook
+
 ## 0.0.62
 
 ### Patch Changes
