@@ -18,8 +18,8 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "dependencies": {
-    "@vanilla-extract/vite-plugin": "^4.0.13",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vanilla-extract/vite-plugin": "^5.0.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "vite": "^6.0.11",
     "vite-plugin-dts": "^3.9.1"
   },

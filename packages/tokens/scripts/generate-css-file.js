@@ -113,8 +113,8 @@ const saveTokens = async (name, tokens) => {
  */
 const main = async (funcArgs) => {
   try {
-    const path = funcArgs?.tokensPath;
-    const tokensPath = format({ root: "./", base: normalize(path) });
+    const funcArgsPath = funcArgs?.tokensPath;
+    const tokensPath = path.join(__dirname, "../", normalize(funcArgsPath));
     const tgph = await loadModule(tokensPath);
 
     const [tokens, lightTokens, darkTokens] = tokensToCss(

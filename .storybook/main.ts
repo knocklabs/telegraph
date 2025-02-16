@@ -1,9 +1,10 @@
 import type { ViteFinal } from "@storybook/builder-vite";
 import { mergeConfig } from "vite";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
 const viteFinal: ViteFinal = (config) => {
   return mergeConfig(config, {
-    plugins: [require("@vanilla-extract/vite-plugin").vanillaExtractPlugin()],
+    plugins: [vanillaExtractPlugin()],
     css: {
       postcss: {
         // Define postcss config inline so we don't need to create a postcss.config.js file
