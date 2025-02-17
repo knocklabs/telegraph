@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/radio",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/radio",
   "author": "@knocklabs",
   "license": "MIT",
@@ -52,7 +52,7 @@
     "vite": "^6.0.11"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   }
 }
