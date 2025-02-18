@@ -1,5 +1,20 @@
 # @telegraph/button
 
+## 0.0.71
+
+### Patch Changes
+
+- [#408](https://github.com/knocklabs/telegraph/pull/408) [`916d37c`](https://github.com/knocklabs/telegraph/commit/916d37cc78433eeb70a93e041b18f951d2d25bcd) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - chore: minor upgrades to react, fixes peer dependency issues
+
+- [#409](https://github.com/knocklabs/telegraph/pull/409) [`734b5c5`](https://github.com/knocklabs/telegraph/commit/734b5c5ee2ac0484a09f534148a4ca1cf23fb3d0) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - chore: adds React 19 as a peer dependency
+
+- Updated dependencies [[`916d37c`](https://github.com/knocklabs/telegraph/commit/916d37cc78433eeb70a93e041b18f951d2d25bcd), [`734b5c5`](https://github.com/knocklabs/telegraph/commit/734b5c5ee2ac0484a09f534148a4ca1cf23fb3d0)]:
+  - @telegraph/helpers@0.0.10
+  - @telegraph/icon@0.0.45
+  - @telegraph/layout@0.1.11
+  - @telegraph/style-engine@0.1.7
+  - @telegraph/typography@0.1.11
+
 ## 0.0.68
 
 ### Patch Changes

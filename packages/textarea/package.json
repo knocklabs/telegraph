@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/textarea",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A multi-line user input.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/textarea",
   "author": "@knocklabs",
