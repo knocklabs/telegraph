@@ -1,5 +1,16 @@
 # @telegraph/layout
 
+## 0.1.8
+
+### Patch Changes
+
+- [#407](https://github.com/knocklabs/telegraph/pull/407) [`2925a69`](https://github.com/knocklabs/telegraph/commit/2925a699379f14b08fc91d2c5f84a143dfda01eb) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - chore: upgrades Vite plugins, fixes peer dependency issues
+
+- Updated dependencies []:
+  - @telegraph/style-engine@0.1.4
+  - @telegraph/compose-refs@0.0.2
+  - @telegraph/helpers@0.0.7
+
 ## 0.1.6
 
 ### Patch Changes

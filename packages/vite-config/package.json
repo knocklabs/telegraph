@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/vite-config",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "author": "@knocklabs",
   "license": "MIT",
   "type": "module",
