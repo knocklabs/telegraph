@@ -4593,8 +4593,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4620,8 +4620,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4656,8 +4656,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4676,8 +4676,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4696,8 +4696,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4721,8 +4721,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4749,8 +4749,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4774,8 +4774,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4801,8 +4801,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4829,8 +4829,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4860,8 +4860,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4881,8 +4881,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4921,8 +4921,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -4979,8 +4979,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5004,8 +5004,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5027,8 +5027,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5051,8 +5051,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5081,8 +5081,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5122,8 +5122,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5141,7 +5141,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5168,8 +5168,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -5194,8 +5194,8 @@ __metadata:
     typescript: "npm:^5.5.4"
     vite: "npm:^6.0.11"
   peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 

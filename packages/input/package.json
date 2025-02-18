@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/input",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "Input component for Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/input",
   "author": "@knocklabs",
@@ -54,7 +54,7 @@
     "vite": "^6.0.11"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   }
 }

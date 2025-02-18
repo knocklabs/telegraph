@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/icon",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/icon",
   "author": "@knocklabs",
   "license": "MIT",
@@ -50,7 +50,7 @@
     "vite": "^6.0.11"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   }
 }
