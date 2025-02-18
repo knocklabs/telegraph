@@ -2054,7 +2054,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    storybook: "npm:^8.5.2"
+    storybook: "npm:^8.5.7"
     storybook-addon-render-modes: "npm:^0.0.11"
     turbo: "npm:^1.11.3"
     vite-tsconfig-paths: "npm:^5.0.1"
@@ -4342,9 +4342,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/core@npm:8.5.2":
-  version: 8.5.2
-  resolution: "@storybook/core@npm:8.5.2"
+"@storybook/core@npm:8.5.7":
+  version: 8.5.7
+  resolution: "@storybook/core@npm:8.5.7"
   dependencies:
     "@storybook/csf": "npm:0.1.12"
     better-opn: "npm:^3.0.2"
@@ -4362,7 +4362,7 @@ __metadata:
   peerDependenciesMeta:
     prettier:
       optional: true
-  checksum: 10c0/30716091ea9dd6e05ab079c67907f442c112cb6cb118d8a44e2be26f62398005f68dbdfbcb75a44bb2e59f468889e06dd92778de393550bf6fbb026c1c17e4ec
+  checksum: 10c0/c6146e20b7cde69819ea7da0088938f04d34f04105135d8f0e79c9cc12fbdfe6ea4cf3be70143a652ae92486320d195ba69f2856fae7f0914047becee18dde88
   languageName: node
   linkType: hard
 
@@ -12578,11 +12578,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:^8.5.2":
-  version: 8.5.2
-  resolution: "storybook@npm:8.5.2"
+"storybook@npm:^8.5.7":
+  version: 8.5.7
+  resolution: "storybook@npm:8.5.7"
   dependencies:
-    "@storybook/core": "npm:8.5.2"
+    "@storybook/core": "npm:8.5.7"
   peerDependencies:
     prettier: ^2 || ^3
   peerDependenciesMeta:
@@ -12592,7 +12592,7 @@ __metadata:
     getstorybook: ./bin/index.cjs
     sb: ./bin/index.cjs
     storybook: ./bin/index.cjs
-  checksum: 10c0/8c6f4bf5782c695fa3a66ebceb0092e04476ecc4c4b681889db9a9875c19e561dcf1b0c68215df1734dff9706b0bb942a5c47426e5825611856b2da37b9bcf0d
+  checksum: 10c0/cfe311ae4bf3753c2f0d88e84a343ba5ee33c02736c502309dd8c1b498f628d924015ada4af721000da1649020398aecfd07f37253fe0bd8bdb1c9adf6b5dec8
   languageName: node
   linkType: hard
 
