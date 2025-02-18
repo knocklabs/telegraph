@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { format, normalize } from "node:path";
+import { normalize } from "node:path";
 import path from "node:path";
 
 import { loadModule } from "./helpers";
@@ -122,11 +122,8 @@ const saveMapping = async (name, tokens) => {
  */
 const main = async (funcArgs) => {
   try {
-    const path = funcArgs?.tokensPath;
-    const tokensPath = format({
-      root: "./",
-      base: normalize(path),
-    });
+    const funcArgsPath = funcArgs?.tokensPath;
+    const tokensPath = path.join(__dirname, "../", normalize(funcArgsPath));
     const tgph = await loadModule(tokensPath);
 
     // Generate mappings for tokens

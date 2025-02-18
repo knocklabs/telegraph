@@ -6,7 +6,7 @@ export default {
       output: {
         assetFileNames: (assetInfo: { name: string }) => {
           // Rename the generated "style.css" file to "default.css"
-          // to match our convention as vanilla extract generatees
+          // to match our convention as vanilla extract generates
           // a "style.css" file.
           if (assetInfo.name === "style.css") {
             return "css/default.css";
