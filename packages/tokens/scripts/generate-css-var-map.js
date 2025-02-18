@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { format, normalize } from "node:path";
+import { normalize } from "node:path";
 import path from "node:path";
 
 import { loadModule } from "./helpers";
