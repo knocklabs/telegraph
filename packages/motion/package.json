@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/motion",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A collection of components that make animation easier in telegraph.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/motion",
   "author": "@knocklabs",
