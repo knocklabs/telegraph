@@ -1,5 +1,22 @@
 # @telegraph/button
 
+## 0.0.67
+
+### Patch Changes
+
+- Updated dependencies [[`2925a69`](https://github.com/knocklabs/telegraph/commit/2925a699379f14b08fc91d2c5f84a143dfda01eb)]:
+  - @telegraph/layout@0.1.8
+  - @telegraph/typography@0.1.8
+  - @telegraph/style-engine@0.1.4
+  - @telegraph/helpers@0.0.7
+  - @telegraph/icon@0.0.42
+
+## 0.0.66
+
+### Patch Changes
+
+- [`19d31b1`](https://github.com/knocklabs/telegraph/commit/19d31b165203c8a00186733b35d83c70bcbf32fc) Thanks [@kylemcd](https://github.com/kylemcd)! - add box-shadow to button to fix outline
+
 ## 0.0.65
 
 ### Patch Changes
