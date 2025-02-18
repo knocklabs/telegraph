@@ -1,9 +1,11 @@
 .tgph-button {
+  --box-shadow: none;
   --tgph-button-hover-shadow: none;
   --tgph-button-focus-shadow: none;
   --tgph-button-active-shadow: none;
 
   appearance: none;
+  box-shadow: var(--box-shadow);
   cursor: pointer;
   box-sizing: border-box;
   font-family: inherit;
