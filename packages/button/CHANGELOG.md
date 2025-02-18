@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.66
+
+### Patch Changes
+
+- [`19d31b1`](https://github.com/knocklabs/telegraph/commit/19d31b165203c8a00186733b35d83c70bcbf32fc) Thanks [@kylemcd](https://github.com/kylemcd)! - add box-shadow to button to fix outline
+
 ## 0.0.65
 
 ### Patch Changes
