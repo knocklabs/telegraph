@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tokens",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tokens",
@@ -50,11 +50,11 @@
     "@telegraph/vite-config": "workspace:^",
     "eslint": "^8.56.0",
     "lightningcss": "^1.25.1",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "typescript": "^5.5.4",
     "vite": "^6.0.11"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18.3.1"
   }
 }

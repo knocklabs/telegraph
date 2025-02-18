@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/radio",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/radio",
   "author": "@knocklabs",
   "license": "MIT",
@@ -44,15 +44,15 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/tailwind-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^18.2.48",
+    "@types/react": "^18.3.18",
     "eslint": "^8.56.0",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.5.4",
     "vite": "^6.0.11"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }
 }
