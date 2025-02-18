@@ -1,5 +1,15 @@
 # @telegraph/icon
 
+## 0.0.46
+
+### Patch Changes
+
+- [#384](https://github.com/knocklabs/telegraph/pull/384) [`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636) Thanks [@dependabot](https://github.com/apps/dependabot)! - upgrade typescript dep
+
+- Updated dependencies [[`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636)]:
+  - @telegraph/typography@0.1.12
+  - @telegraph/helpers@0.0.11
+
 ## 0.0.45
 
 ### Patch Changes

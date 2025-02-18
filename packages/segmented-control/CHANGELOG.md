@@ -1,5 +1,16 @@
 # @telegraph/segmented-control
 
+## 0.0.32
+
+### Patch Changes
+
+- [#384](https://github.com/knocklabs/telegraph/pull/384) [`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636) Thanks [@dependabot](https://github.com/apps/dependabot)! - upgrade typescript dep
+
+- Updated dependencies [[`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636)]:
+  - @telegraph/helpers@0.0.11
+  - @telegraph/button@0.0.72
+  - @telegraph/layout@0.1.12
+
 ## 0.0.31
 
 ### Patch Changes

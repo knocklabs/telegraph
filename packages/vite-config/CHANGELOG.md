@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.0.14
+
+### Patch Changes
+
+- [#384](https://github.com/knocklabs/telegraph/pull/384) [`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636) Thanks [@dependabot](https://github.com/apps/dependabot)! - upgrade typescript dep
+
 ## 0.0.13
 
 ### Patch Changes

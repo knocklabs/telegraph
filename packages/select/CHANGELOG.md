@@ -1,5 +1,15 @@
 # @telegraph/select
 
+## 0.0.33
+
+### Patch Changes
+
+- [#384](https://github.com/knocklabs/telegraph/pull/384) [`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636) Thanks [@dependabot](https://github.com/apps/dependabot)! - upgrade typescript dep
+
+- Updated dependencies [[`552fb82`](https://github.com/knocklabs/telegraph/commit/552fb82a33203c87e58715b4a52ea0c360999636)]:
+  - @telegraph/combobox@0.0.71
+  - @telegraph/helpers@0.0.11
+
 ## 0.0.32
 
 ### Patch Changes
