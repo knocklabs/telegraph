@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.0.15
+
+### Patch Changes
+
+- [#407](https://github.com/knocklabs/telegraph/pull/407) [`2925a69`](https://github.com/knocklabs/telegraph/commit/2925a699379f14b08fc91d2c5f84a143dfda01eb) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - chore: upgrades Vite plugins, fixes peer dependency issues
+
 ## 0.0.13
 
 ### Patch Changes
