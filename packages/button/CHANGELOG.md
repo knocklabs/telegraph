@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.0.68
+
+### Patch Changes
+
+- [`4e67707`](https://github.com/knocklabs/telegraph/commit/4e677077ed644bd2861401986c3a4350d26d0c05) Thanks [@kylemcd](https://github.com/kylemcd)! - revert the box-shadow override from button
+
 ## 0.0.67
 
 ### Patch Changes
