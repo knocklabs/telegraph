@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.72
+
+### Patch Changes
+
+- [#394](https://github.com/knocklabs/telegraph/pull/394) [`a21c8d7`](https://github.com/knocklabs/telegraph/commit/a21c8d75b02c6bd90dfc6c286f6c6bf972d95a70) Thanks [@dependabot](https://github.com/apps/dependabot)! - update radix dismissable layer dep
+
 ## 0.0.71
 
 ### Patch Changes
