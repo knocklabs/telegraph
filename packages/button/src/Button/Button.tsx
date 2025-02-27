@@ -256,11 +256,13 @@ type BaseDefaultProps =
       leadingIcon?: DefaultIconProps;
       trailingIcon?: DefaultIconProps;
       icon?: never;
+      skipChildrenWrapper?: boolean;
     }
   | {
       icon?: DefaultIconProps;
       leadingIcon?: never;
       trailingIcon?: never;
+      skipChildrenWrapper?: boolean;
     };
 type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root> &
@@ -271,15 +273,18 @@ const Default = <T extends TgphElement>({
   trailingIcon,
   icon,
   children,
+  skipChildrenWrapper,
   ...props
 }: DefaultProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
+  const child =
+    children && skipChildrenWrapper ? children : <Text>{children}</Text>;
   return (
     <Root {...props}>
       {combinedLeadingIcon && (
         <Icon {...combinedLeadingIcon} internal_iconType="leading" />
       )}
-      {children && <Text>{children}</Text>}
+      {child}
       {trailingIcon && <Icon {...trailingIcon} internal_iconType="trailing" />}
     </Root>
   );
