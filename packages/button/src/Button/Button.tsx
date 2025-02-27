@@ -277,8 +277,13 @@ const Default = <T extends TgphElement>({
   ...props
 }: DefaultProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
-  const child =
-    children && skipChildrenWrapper ? children : <Text>{children}</Text>;
+  const child = children ? (
+    skipChildrenWrapper ? (
+      children
+    ) : (
+      <Text>{children}</Text>
+    )
+  ) : null;
   return (
     <Root {...props}>
       {combinedLeadingIcon && (
