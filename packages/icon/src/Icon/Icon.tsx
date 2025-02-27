@@ -11,8 +11,10 @@ import type { Bell } from "lucide-react";
 
 import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
 
+type LucideIcon = typeof Bell;
+
 type BaseIconProps = {
-  icon: typeof Bell;
+  icon: LucideIcon;
   size?: keyof typeof SIZE_MAP;
   variant?: keyof typeof COLOR_MAP;
   color?: keyof (typeof COLOR_MAP)["primary"];
@@ -83,4 +85,4 @@ const Icon = <T extends TgphElement>({
   );
 };
 
-export { Icon };
+export { Icon, type LucideIcon };
