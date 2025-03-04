@@ -160,10 +160,12 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   margin: {
     cssVar: "--margin",
     value: "var(--tgph-spacing-VARIABLE)",
+    direction: "all",
   },
   marginX: {
     cssVar: "--margin",
-    value: "0 var(--tgph-spacing-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
+    direction: "x",
   },
   marginY: {
     cssVar: "--margin",
