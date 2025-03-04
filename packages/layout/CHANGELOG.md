@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.1.13
+
+### Patch Changes
+
+- [#426](https://github.com/knocklabs/telegraph/pull/426) [`061bb93`](https://github.com/knocklabs/telegraph/commit/061bb9367a211650add6e2f54cbce5c85b69a137) Thanks [@mattmikolay](https://github.com/mattmikolay)! - Fix `margin` and `marginX` in `Box` constants
+
 ## 0.1.12
 
 ### Patch Changes
