@@ -15,6 +15,11 @@
       "types": "./dist/types/index.d.ts",
       "default": "./dist/css/default.css"
     },
+    "./postcss": {
+      "import": "./dist/esm/postcss.mjs",
+      "require": "./dist/cjs/postcss.js",
+      "types": "./dist/types/plugins/postcss.d.ts"
+    },
     "./default.css": "./dist/css/default.css"
   },
   "files": [
@@ -35,15 +40,21 @@
     "@telegraph/tokens": "workspace:^",
     "@vanilla-extract/css": "^1.15.3",
     "@vanilla-extract/recipes": "^0.5.3",
-    "@vanilla-extract/sprinkles": "^1.6.2"
+    "@vanilla-extract/sprinkles": "^1.6.2",
+    "postcss": "^8.5.3"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
+    "@types/node": "^22.13.11",
+    "@types/postcss-import": "^14.0.3",
     "@types/react": "^18.3.18",
     "eslint": "^8.56.0",
+    "globby": "^14.1.0",
+    "lightningcss": "^1.29.3",
+    "postcss": "^8.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.7.3",
