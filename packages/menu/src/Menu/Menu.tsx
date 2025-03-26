@@ -140,6 +140,7 @@ const Button = <T extends TgphElement>({
   trailingComponent,
   selected,
   tgphRef,
+  onClick,
   ...props
 }: ButtonProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
@@ -147,6 +148,7 @@ const Button = <T extends TgphElement>({
     <RadixMenu.Item {...props} asChild={asChild} ref={tgphRef}>
       <RefToTgphRef>
         <MenuItem
+          onClick={onClick}
           selected={selected}
           leadingIcon={combinedLeadingIcon}
           trailingIcon={trailingIcon}
