@@ -1,5 +1,11 @@
 # @telegraph/menu
 
+## 0.0.58
+
+### Patch Changes
+
+- [#429](https://github.com/knocklabs/telegraph/pull/429) [`fdfe94c`](https://github.com/knocklabs/telegraph/commit/fdfe94cee527ace65603b7c9033db27105fb05a7) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix: onClick handler no longer fires twice when using Menu.Button component
+
 ## 0.0.57
 
 ### Patch Changes
