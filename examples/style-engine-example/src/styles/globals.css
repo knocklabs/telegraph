@@ -1,2 +1,6 @@
 @telegraph tokens;
 @telegraph components;
+
+body {
+  background-color: var(--tgph-surface-1);
+}
