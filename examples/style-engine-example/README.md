@@ -1,4 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Telegraph Style Engine
+
+The `@telegraph/style-engine` PostCSS plugin makes styling simpler. Just add `@telegraph` rules to your `globals.css` file to automatically include styles from any Telegraph package. No need to manually import individual stylesheets - the plugin handles it all for you.
+
+### PostCSS Config Example
+
+```json
+{
+  "plugins": ["@telegraph/style-engine/postcss"]
+}
+```
+
+### CSS File Example
+
+```css
+@telegraph tokens; /* Include all color tokens for light and dark appearance */
+@telegraph tokens-light; /* Include only light color tokens */
+@telegraph tokens-dark; /* Include only dark color tokens */
+@telegraph components; /* Include styles for all telegraph components installed in your project */
+```
 
 ## Getting Started
 
