@@ -1,0 +1,30 @@
+{
+  "name": "@telegraph/style-engine-example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev:examples": "next dev --turbopack",
+    "build:examples": "next build",
+    "start:examples": "next start",
+    "lint:examples": "next lint"
+  },
+  "dependencies": {
+    "@telegraph/button": "workspace:^",
+    "@telegraph/layout": "workspace:^",
+    "@telegraph/tokens": "workspace:^",
+    "@telegraph/typography": "workspace:^",
+    "next": "15.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/style-engine": "workspace:^",
+    "@types/node": "^22.13.11",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^19",
+    "typescript": "^5.7.3"
+  },
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/examples/style-engine-example"
+}
