@@ -2,8 +2,11 @@ import { type AcceptedPlugin, type PluginCreator, type Root } from "postcss";
 
 // Using require() instead of import to prevent ESM-related bugs in PostCSS.
 // ESM = ECMAScript Modules (the import/export syntax)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodePath = require("path");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeFs = require("fs");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const postcss = require("postcss");
 
 type PkgJson = {
@@ -26,8 +29,9 @@ type DepObject = Record<
  */
 function findMonorepoRoot(start = process.cwd()): string {
   let current = start;
+  let run = true;
 
-  while (true) {
+  while (run) {
     const pkgJsonPath = nodePath.join(current, "package.json");
     if (nodeFs.existsSync(pkgJsonPath)) {
       try {
@@ -41,7 +45,7 @@ function findMonorepoRoot(start = process.cwd()): string {
     }
 
     const parent = nodePath.dirname(current);
-    if (parent === current) break; // hit filesystem root
+    if (parent === current) run = false;
     current = parent;
   }
 
@@ -273,4 +277,4 @@ const styleEnginePostCssPlugin = (): AcceptedPlugin => {
 
 export default Object.assign(styleEnginePostCssPlugin, {
   postcss: true,
-}) as PluginCreator<{}>;
+}) as PluginCreator<Record<string, never>>;
