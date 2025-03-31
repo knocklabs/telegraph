@@ -2,9 +2,6 @@
   "name": "@telegraph/style-engine-example",
   "version": "0.1.0",
   "private": true,
-  "installConfig": {
-    "hoistingLimits": "dependencies"
-  },
   "scripts": {
     "dev:examples": "next dev --turbopack",
     "build:examples": "next build",
