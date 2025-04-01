@@ -27,7 +27,7 @@ type DepObject = Record<
  * Traverses up the directory tree to find the root of the monorepo by looking for a package.json with workspaces.
  * This is needed to properly resolve workspace dependencies in a monorepo setup.
  */
-function findMonorepoRoot(start = process.cwd()): string {
+function findMonorepoRoot(start = process.cwd()): string | undefined {
   let current = start;
   let run = true;
 
@@ -49,9 +49,7 @@ function findMonorepoRoot(start = process.cwd()): string {
     current = parent;
   }
 
-  throw new Error(
-    'Could not find monorepo root (no package.json with "workspaces" found)',
-  );
+  return undefined;
 }
 
 /**
@@ -234,7 +232,10 @@ const styleEnginePostCssPlugin = (): AcceptedPlugin => {
     postcssPlugin: "@telegraph/style-engine",
     plugins: [
       {
-        postcssPlugin: "style-engine",
+        postcssPlugin: "telegraph",
+        AtRule: {
+          telegraph() {},
+        },
         async Once(root) {
           const run = {
             tokens: [] as BuildTelegraphCssParams["config"]["tokens"],
