@@ -1,5 +1,14 @@
 # @telegraph/kbd
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/icon@0.0.48
+  - @telegraph/layout@0.1.14
+  - @telegraph/typography@0.1.14
+
 ## 0.0.22
 
 ### Patch Changes

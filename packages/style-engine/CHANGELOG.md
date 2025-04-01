@@ -1,5 +1,14 @@
 # @telegraph/style-engine
 
+## 0.1.9
+
+### Patch Changes
+
+- [#428](https://github.com/knocklabs/telegraph/pull/428) [`c738dff`](https://github.com/knocklabs/telegraph/commit/c738dff0c3686f72cb366d4dd001fbc467dec132) Thanks [@kylemcd](https://github.com/kylemcd)! - adds style-engine post css plugin
+
+- Updated dependencies [[`c738dff`](https://github.com/knocklabs/telegraph/commit/c738dff0c3686f72cb366d4dd001fbc467dec132)]:
+  - @telegraph/tokens@0.0.20
+
 ## 0.1.8
 
 ### Patch Changes
