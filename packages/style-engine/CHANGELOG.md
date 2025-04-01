@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.1.10
+
+### Patch Changes
+
+- [`dfafb5d`](https://github.com/knocklabs/telegraph/commit/dfafb5de1da5664bbe832fa0a36518ee53fed162) Thanks [@kylemcd](https://github.com/kylemcd)! - don't throw error when not in monorepo
+
 ## 0.1.9
 
 ### Patch Changes

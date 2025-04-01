@@ -1,5 +1,16 @@
 # @telegraph/tag
 
+## 0.0.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.0.75
+  - @telegraph/layout@0.1.15
+  - @telegraph/typography@0.1.15
+  - @telegraph/tooltip@0.0.43
+  - @telegraph/icon@0.0.49
+
 ## 0.0.79
 
 ### Patch Changes
