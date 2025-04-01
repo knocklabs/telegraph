@@ -1,5 +1,13 @@
 # @telegraph/textarea
 
+## 0.0.18
+
+### Patch Changes
+
+- Updated dependencies [[`dfafb5d`](https://github.com/knocklabs/telegraph/commit/dfafb5de1da5664bbe832fa0a36518ee53fed162)]:
+  - @telegraph/style-engine@0.1.10
+  - @telegraph/typography@0.1.15
+
 ## 0.0.17
 
 ### Patch Changes
