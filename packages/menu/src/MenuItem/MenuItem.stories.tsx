@@ -79,12 +79,26 @@ export const Default: Story = {
     const selected = type === "selectable" ? selectedProp : undefined;
     console.log(selected, type, args);
     return (
-      <TelegraphMenuItem
-        selected={selected}
-        leadingIcon={leadingIcon}
-        trailingIcon={trailingIcon}
-        {...args}
-      />
+      <>
+        <TelegraphMenuItem
+          selected={selected}
+          leadingIcon={leadingIcon}
+          trailingIcon={trailingIcon}
+          {...args}
+        />
+        <TelegraphMenuItem
+          selected={selected}
+          leadingIcon={leadingIcon}
+          trailingIcon={trailingIcon}
+          {...args}
+        />
+        <TelegraphMenuItem
+          selected={selected}
+          leadingIcon={leadingIcon}
+          trailingIcon={trailingIcon}
+          {...args}
+        />
+      </>
     );
   },
 };
