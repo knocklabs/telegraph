@@ -69,6 +69,26 @@ const ComboboxMultiSelect = () => {
   );
 };
 
+const CustomTriggerCombobox = () => {
+  const [value, setValue] = React.useState<Option>(valuesLegacy[0]!);
+  return (
+    <Combobox.Root value={value} onValueChange={setValue} legacyBehavior={true}>
+      <Combobox.Trigger>
+        {({ value }) => {
+          const option = Array.isArray(value) ? value[0] : value;
+          return <div>Trigger Value:{option?.label}</div>;
+        }}
+      </Combobox.Trigger>
+      <Combobox.Content>
+        <Combobox.Options>
+          {valuesLegacy.map((option) => (
+            <Combobox.Option key={option.value} {...option} />
+          ))}
+        </Combobox.Options>
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
 describe("Combobox", () => {
   describe("Single Select", () => {
     it("combobox is accessible", async () => {
@@ -509,5 +529,71 @@ describe("findStringNodes", () => {
       </p>
     );
     expect(findStringNodes(node)).toStrictEqual(["Lorem", "ipsum", "dolor"]);
+  });
+});
+
+describe("Custom Trigger", () => {
+  it("renders the custom trigger with the initial value", async () => {
+    const { container } = render(<CustomTriggerCombobox />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    expect(trigger?.textContent).toBe("Trigger Value:Email");
+  });
+
+  it("updates the trigger when a new value is selected", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<CustomTriggerCombobox />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Select SMS option
+    await user.keyboard("s");
+    await user.keyboard("[Enter]");
+
+    // Verify trigger updated
+    await waitFor(() => expect(trigger?.textContent).toBe("Trigger Value:SMS"));
+  });
+
+  it("maintains proper accessibility attributes", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<CustomTriggerCombobox />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Verify initial accessibility attributes
+    expect(trigger).toHaveAttribute("role", "combobox");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(trigger).toHaveAttribute("aria-haspopup", "listbox");
+
+    // Open combobox and verify attributes update
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+  });
+
+  it("handles keyboard navigation correctly", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<CustomTriggerCombobox />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Open
+    await user.keyboard("[ArrowDown]");
+    await user.keyboard("[ArrowDown]");
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Select first option
+    await user.keyboard("[Enter]");
+    expect(trigger?.textContent).toBe("Trigger Value:Email");
+  });
+
+  it("is accessible", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<CustomTriggerCombobox />);
+    expectToHaveNoViolations(await axe(container));
+
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+    expectToHaveNoViolations(await axe(container));
   });
 });
