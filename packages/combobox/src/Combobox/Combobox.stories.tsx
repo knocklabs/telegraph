@@ -405,3 +405,67 @@ export const LegacyComboboxMultiSelect: Story = {
     );
   },
 };
+
+export const SingleSelectWithCustomTrigger: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState(firstValue);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a channel"}
+          clearable
+        >
+          <TelegraphCombobox.Trigger size="1">Hello</TelegraphCombobox.Trigger>
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Options>
+              {values.map((v, index) => (
+                <TelegraphCombobox.Option value={v}>
+                  {labels[index]}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+export const MultiSelectWithCustomTrigger: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState([firstValue]);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a channel"}
+          clearable
+        >
+          <TelegraphCombobox.Trigger size="1">
+            {(params) => JSON.stringify(params.value)}
+          </TelegraphCombobox.Trigger>
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Options>
+              {values.map((v, index) => (
+                <TelegraphCombobox.Option value={v}>
+                  {labels[index]}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};

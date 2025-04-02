@@ -390,45 +390,55 @@ const TriggerValue = () => {
   }
 };
 
-type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
+type TriggerProps = Omit<
+  React.ComponentProps<typeof TelegraphMenu.Trigger>,
+  "children"
+> & {
   placeholder?: string;
   size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
+  children?:
+    | React.ReactNode
+    | ((props: {
+        value: DefinedOption | Array<DefinedOption | undefined> | undefined;
+      }) => React.ReactNode);
 };
 
-const Trigger = ({ size = "2", ...props }: TriggerProps) => {
+const Trigger = ({ size = "2", children, ...props }: TriggerProps) => {
   const context = React.useContext(ComboboxContext);
 
-  const getAriaLabelString = React.useCallback(() => {
-    if (!context.value) return context.placeholder;
+  const currentValue = React.useMemo<
+    DefinedOption | Array<DefinedOption | undefined> | undefined
+  >(() => {
+    if (!context.value) return undefined;
     if (isSingleSelect(context.value)) {
-      const currentOption = getCurrentOption(
+      return getCurrentOption(
         context.value,
         context.options,
         context.legacyBehavior,
       );
-      return currentOption?.label || context.placeholder;
     }
     if (isMultiSelect(context.value)) {
-      return (
-        context.value
-          ?.map((v) => {
-            const currentOption = getCurrentOption(
-              v,
-              context.options,
-              context.legacyBehavior,
-            );
-
-            return currentOption?.label;
-          })
-          .join(", ") || context.placeholder
+      return context.value.map((v) =>
+        getCurrentOption(v, context.options, context.legacyBehavior),
       );
     }
-  }, [
-    context.value,
-    context.placeholder,
-    context.options,
-    context.legacyBehavior,
-  ]);
+    return undefined;
+  }, [context.value, context.options, context.legacyBehavior]);
+
+  const getAriaLabelString = React.useCallback(() => {
+    if (!currentValue) return context.placeholder;
+    if (isSingleSelect(currentValue)) {
+      return currentValue?.label || currentValue?.value || context.placeholder;
+    }
+    if (isMultiSelect(currentValue)) {
+      return (
+        currentValue.map((v) => v?.label || v?.value).join(", ") ||
+        context.placeholder
+      );
+    }
+
+    return context.placeholder;
+  }, [currentValue, context.placeholder]);
 
   const shouldShowClearable = React.useMemo(() => {
     if (isSingleSelect(context.value)) {
@@ -509,7 +519,15 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         data-tgph-combobox-trigger-open={context.open}
         disabled={context.disabled}
       >
-        <TriggerValue />
+        {children ? (
+          typeof children === "function" ? (
+            children({ value: currentValue })
+          ) : (
+            children
+          )
+        ) : (
+          <TriggerValue />
+        )}
         <Stack align="center" gap="1">
           {shouldShowClearable && (
             <Tooltip label="Clear field">
