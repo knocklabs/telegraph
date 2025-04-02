@@ -6,6 +6,7 @@ import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   RefToTgphRef,
+  type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
@@ -390,27 +391,32 @@ const TriggerValue = () => {
   }
 };
 
+type ChildrenValue = string | Array<string> | never;
+
 // When utilizing the `children` prop as a function, we need to infer the type of the value
 // to ensure that the value is always defined. We do this via the generic `V` passed through
 // to the `Trigger` component. This is expected to be `typeof value`.
-type ChildrenFnValue<V extends string | Array<string> | never> = V extends never
+type ChildrenFnValue<V extends ChildrenValue> = V extends never
   ? never
   : V extends string
     ? DefinedOption | undefined
     : Array<DefinedOption>;
 
-type TriggerProps<V extends string | Array<string> | never> = Omit<
-  React.ComponentProps<typeof TelegraphMenu.Trigger>,
+// First, define the base component props without children
+type TriggerBaseProps = RemappedOmit<
+  TgphComponentProps<typeof TelegraphButton.Root> &
+    TgphComponentProps<typeof TelegraphMenu.Trigger>,
   "children"
-> & {
+>;
+// Then define your custom children type
+type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
-  size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
   children?:
     | React.ReactNode
     | ((props: { value: ChildrenFnValue<V> }) => React.ReactNode);
 };
 
-const Trigger = <V extends string | Array<string> | never>({
+const Trigger = <V extends ChildrenValue>({
   size = "2",
   children,
   ...props
@@ -529,10 +535,11 @@ const Trigger = <V extends string | Array<string> | never>({
         data-tgph-combobox-trigger
         data-tgph-combobox-trigger-open={context.open}
         disabled={context.disabled}
+        {...props}
       >
         {children ? (
           typeof children === "function" ? (
-            children({ value: currentValue })
+            children({ value: currentValue as ChildrenFnValue<V> })
           ) : (
             children
           )
