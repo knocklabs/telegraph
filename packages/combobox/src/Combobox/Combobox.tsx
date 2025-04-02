@@ -6,6 +6,7 @@ import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   RefToTgphRef,
+  type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
@@ -390,45 +391,71 @@ const TriggerValue = () => {
   }
 };
 
-type TriggerProps = React.ComponentProps<typeof TelegraphMenu.Trigger> & {
+type ChildrenValue = string | Array<string> | never;
+
+// When utilizing the `children` prop as a function, we need to infer the type of the value
+// to ensure that the value is always defined. We do this via the generic `V` passed through
+// to the `Trigger` component. This is expected to be `typeof value`.
+type ChildrenFnValue<V extends ChildrenValue> = V extends never
+  ? never
+  : V extends string
+    ? DefinedOption | undefined
+    : Array<DefinedOption>;
+
+// First, define the base component props without children
+type TriggerBaseProps = RemappedOmit<
+  TgphComponentProps<typeof TelegraphButton.Root> &
+    TgphComponentProps<typeof TelegraphMenu.Trigger>,
+  "children"
+>;
+// Then define your custom children type
+type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
-  size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
+  children?:
+    | React.ReactNode
+    | ((props: { value: ChildrenFnValue<V> }) => React.ReactNode);
 };
 
-const Trigger = ({ size = "2", ...props }: TriggerProps) => {
+const Trigger = <V extends ChildrenValue>({
+  size = "2",
+  children,
+  ...props
+}: TriggerProps<V>) => {
   const context = React.useContext(ComboboxContext);
 
-  const getAriaLabelString = React.useCallback(() => {
-    if (!context.value) return context.placeholder;
+  const currentValue = React.useMemo<
+    DefinedOption | Array<DefinedOption | undefined> | undefined
+  >(() => {
+    if (!context.value) return undefined;
     if (isSingleSelect(context.value)) {
-      const currentOption = getCurrentOption(
+      return getCurrentOption(
         context.value,
         context.options,
         context.legacyBehavior,
       );
-      return currentOption?.label || context.placeholder;
     }
     if (isMultiSelect(context.value)) {
-      return (
-        context.value
-          ?.map((v) => {
-            const currentOption = getCurrentOption(
-              v,
-              context.options,
-              context.legacyBehavior,
-            );
-
-            return currentOption?.label;
-          })
-          .join(", ") || context.placeholder
+      return context.value.map((v) =>
+        getCurrentOption(v, context.options, context.legacyBehavior),
       );
     }
-  }, [
-    context.value,
-    context.placeholder,
-    context.options,
-    context.legacyBehavior,
-  ]);
+    return undefined;
+  }, [context.value, context.options, context.legacyBehavior]);
+
+  const getAriaLabelString = React.useCallback(() => {
+    if (!currentValue) return context.placeholder;
+    if (isSingleSelect(currentValue)) {
+      return currentValue?.label || currentValue?.value || context.placeholder;
+    }
+    if (isMultiSelect(currentValue)) {
+      return (
+        currentValue.map((v) => v?.label || v?.value).join(", ") ||
+        context.placeholder
+      );
+    }
+
+    return context.placeholder;
+  }, [currentValue, context.placeholder]);
 
   const shouldShowClearable = React.useMemo(() => {
     if (isSingleSelect(context.value)) {
@@ -508,8 +535,17 @@ const Trigger = ({ size = "2", ...props }: TriggerProps) => {
         data-tgph-combobox-trigger
         data-tgph-combobox-trigger-open={context.open}
         disabled={context.disabled}
+        {...props}
       >
-        <TriggerValue />
+        {children ? (
+          typeof children === "function" ? (
+            children({ value: currentValue as ChildrenFnValue<V> })
+          ) : (
+            children
+          )
+        ) : (
+          <TriggerValue />
+        )}
         <Stack align="center" gap="1">
           {shouldShowClearable && (
             <Tooltip label="Clear field">

@@ -8,6 +8,7 @@ export type {
   TgphElement,
   TgphComponentProps,
   OptionalAsPropConfig,
+  RemappedOmit,
 } from "./types/utility";
 
 export { RefToTgphRef } from "./components/RefToTgphRef";

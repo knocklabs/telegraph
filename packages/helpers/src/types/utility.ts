@@ -66,3 +66,12 @@ export type TgphComponentProps<T extends React.ElementType> =
 // The `TgphElement` is a wrapper on the React.ElementType type that allows you to
 // pass a component as a prop to another component.
 export type TgphElement = React.ElementType;
+
+// The `RemappedOmit` type is a utility type that allows you to remove specific
+// fields from a type. Unlike the standard `Omit` type, this ensures the removed
+// fields are completely eliminated rather than potentially resolving to
+// `Record<string, any>`. It takes a type `T` and a union of property keys `K`
+// to remove from that type.
+export type RemappedOmit<T, K extends PropertyKey> = {
+  [P in keyof T as P extends K ? never : P]: T[P];
+};
