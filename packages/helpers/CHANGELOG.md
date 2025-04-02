@@ -1,5 +1,11 @@
 # @telegraph/helpers
 
+## 0.0.12
+
+### Patch Changes
+
+- [#434](https://github.com/knocklabs/telegraph/pull/434) [`955c255`](https://github.com/knocklabs/telegraph/commit/955c25512468a67717de9e56a6b49f72ff53279e) Thanks [@kylemcd](https://github.com/kylemcd)! - adds support for custom triggers in the combobox
+
 ## 0.0.11
 
 ### Patch Changes
