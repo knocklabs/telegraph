@@ -390,7 +390,16 @@ const TriggerValue = () => {
   }
 };
 
-type TriggerProps = Omit<
+// When utilizing the `children` prop as a function, we need to infer the type of the value
+// to ensure that the value is always defined. We do this via the generic `V` passed through
+// to the `Trigger` component. This is expected to be `typeof value`.
+type ChildrenFnValue<V extends string | Array<string> | never> = V extends never
+  ? never
+  : V extends string
+    ? DefinedOption | undefined
+    : Array<DefinedOption>;
+
+type TriggerProps<V extends string | Array<string> | never> = Omit<
   React.ComponentProps<typeof TelegraphMenu.Trigger>,
   "children"
 > & {
@@ -398,12 +407,14 @@ type TriggerProps = Omit<
   size?: TgphComponentProps<typeof TelegraphButton.Root>["size"];
   children?:
     | React.ReactNode
-    | ((props: {
-        value: DefinedOption | Array<DefinedOption | undefined> | undefined;
-      }) => React.ReactNode);
+    | ((props: { value: ChildrenFnValue<V> }) => React.ReactNode);
 };
 
-const Trigger = ({ size = "2", children, ...props }: TriggerProps) => {
+const Trigger = <V extends string | Array<string> | never>({
+  size = "2",
+  children,
+  ...props
+}: TriggerProps<V>) => {
   const context = React.useContext(ComboboxContext);
 
   const currentValue = React.useMemo<

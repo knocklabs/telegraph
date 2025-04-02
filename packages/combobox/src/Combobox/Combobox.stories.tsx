@@ -420,7 +420,9 @@ export const SingleSelectWithCustomTrigger: Story = {
           placeholder={"Select a channel"}
           clearable
         >
-          <TelegraphCombobox.Trigger size="1">Hello</TelegraphCombobox.Trigger>
+          <TelegraphCombobox.Trigger<typeof value> size="1">
+            {({ value }) => value?.label}
+          </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {values.map((v, index) => (
@@ -451,8 +453,8 @@ export const MultiSelectWithCustomTrigger: Story = {
           placeholder={"Select a channel"}
           clearable
         >
-          <TelegraphCombobox.Trigger size="1">
-            {(params) => JSON.stringify(params.value)}
+          <TelegraphCombobox.Trigger<typeof value> size="1">
+            {(params) => params.value.map((v) => v.label)?.join(", ")}
           </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
