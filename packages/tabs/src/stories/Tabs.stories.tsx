@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, Tabs } from "..";
+import { Tabs } from "..";
 import { Lucide } from "@telegraph/icon";
 import { Box } from "@telegraph/layout";
 import React from "react";
@@ -17,21 +17,21 @@ export default {
  */
 export const Basic = () => (
   <Tabs defaultValue="tab1">
-    <TabList>
-      <Tab value="tab1">First Tab</Tab>
-      <Tab value="tab2">Second Tab</Tab>
-      <Tab value="tab3">Third Tab</Tab>
-    </TabList>
+    <Tabs.List>
+      <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+      <Tabs.Tab value="tab2">Second Tab</Tabs.Tab>
+      <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
+    </Tabs.List>
 
-    <TabPanel value="tab1">
-      <Box padding="4">Content for the first tab</Box>
-    </TabPanel>
-    <TabPanel value="tab2">
-      <Box padding="4">Content for the second tab</Box>
-    </TabPanel>
-    <TabPanel value="tab3">
-      <Box padding="4">Content for the third tab</Box>
-    </TabPanel>
+    <Tabs.Panel value="tab1">
+      <Box py="4">Content for the first tab</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="tab2">
+      <Box py="4">Content for the second tab</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="tab3">
+      <Box py="4">Content for the third tab</Box>
+    </Tabs.Panel>
   </Tabs>
 );
 
@@ -40,8 +40,8 @@ export const Basic = () => (
  */
 export const WithIcons = () => (
   <Tabs defaultValue="home">
-    <TabList>
-      <Tab
+    <Tabs.List>
+      <Tabs.Tab
         value="home"
         leadingIcon={{
           icon: Lucide.Plus,
@@ -49,8 +49,8 @@ export const WithIcons = () => (
         }}
       >
         Tab
-      </Tab>
-      <Tab
+      </Tabs.Tab>
+      <Tabs.Tab
         value="settings"
         leadingIcon={{
           icon: Lucide.Plus,
@@ -58,8 +58,8 @@ export const WithIcons = () => (
         }}
       >
         Tab
-      </Tab>
-      <Tab
+      </Tabs.Tab>
+      <Tabs.Tab
         value="notifications"
         leadingIcon={{
           icon: Lucide.Plus,
@@ -67,18 +67,18 @@ export const WithIcons = () => (
         }}
       >
         Tab
-      </Tab>
-    </TabList>
+      </Tabs.Tab>
+    </Tabs.List>
 
-    <TabPanel value="home">
-      <Box padding="4">Home content</Box>
-    </TabPanel>
-    <TabPanel value="settings">
-      <Box padding="4">Settings content</Box>
-    </TabPanel>
-    <TabPanel value="notifications">
-      <Box padding="4">Notifications content</Box>
-    </TabPanel>
+    <Tabs.Panel value="home">
+      <Box py="4">Home content</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="settings">
+      <Box py="4">Settings content</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="notifications">
+      <Box py="4">Notifications content</Box>
+    </Tabs.Panel>
   </Tabs>
 );
 
@@ -87,45 +87,56 @@ export const WithIcons = () => (
  */
 export const Disabled = () => (
   <Tabs defaultValue="tab1">
-    <TabList>
-      <Tab value="tab1">Enabled Tab</Tab>
-      <Tab value="tab2" disabled icon={{ icon: Lucide.Plus, alt: "Plus" }}>
+    <Tabs.List>
+      <Tabs.Tab value="tab1">Enabled Tab</Tabs.Tab>
+      <Tabs.Tab value="tab2" disabled icon={{ icon: Lucide.Plus, alt: "Plus" }}>
         Disabled Tab
-      </Tab>
-      <Tab value="tab3">Enabled Tab</Tab>
-    </TabList>
+      </Tabs.Tab>
+      <Tabs.Tab value="tab3">Enabled Tab</Tabs.Tab>
+    </Tabs.List>
 
-    <TabPanel value="tab1">
-      <Box padding="4">Content for the first tab</Box>
-    </TabPanel>
-    <TabPanel value="tab2">
-      <Box padding="4">Content for the second tab (disabled)</Box>
-    </TabPanel>
-    <TabPanel value="tab3">
-      <Box padding="4">Content for the third tab</Box>
-    </TabPanel>
+    <Tabs.Panel value="tab1">
+      <Box py="4">Content for the first tab</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="tab2">
+      <Box py="4">Content for the second tab (disabled)</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="tab3">
+      <Box py="4">Content for the third tab</Box>
+    </Tabs.Panel>
   </Tabs>
 );
 
 /**
- * Example with composable pattern
+ * Example of controlled tabs with state management
  */
-export const ComposablePattern = () => (
-  <Tabs defaultValue="tab1">
-    <Tabs.List>
-      <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
-      <Tabs.Tab value="tab2">Second Tab</Tabs.Tab>
-      <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
-    </Tabs.List>
+export const Controlled = () => {
+  const [activeTab, setActiveTab] = React.useState("tab1");
 
-    <Tabs.Panel value="tab1">
-      <Box padding="4">Content for the first tab</Box>
-    </Tabs.Panel>
-    <Tabs.Panel value="tab2">
-      <Box padding="4">Content for the second tab</Box>
-    </Tabs.Panel>
-    <Tabs.Panel value="tab3">
-      <Box padding="4">Content for the third tab</Box>
-    </Tabs.Panel>
-  </Tabs>
-);
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs.List>
+        <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+        <Tabs.Tab value="tab2">Second Tab</Tabs.Tab>
+        <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
+      </Tabs.List>
+
+      <Box display="flex" gap="2" py="4">
+        <Box>Current active tab: {activeTab}</Box>
+        <button onClick={() => setActiveTab("tab1")}>Activate Tab 1</button>
+        <button onClick={() => setActiveTab("tab2")}>Activate Tab 2</button>
+        <button onClick={() => setActiveTab("tab3")}>Activate Tab 3</button>
+      </Box>
+
+      <Tabs.Panel value="tab1">
+        <Box py="4">Content for the first tab</Box>
+      </Tabs.Panel>
+      <Tabs.Panel value="tab2">
+        <Box py="4">Content for the second tab</Box>
+      </Tabs.Panel>
+      <Tabs.Panel value="tab3">
+        <Box py="4">Content for the third tab</Box>
+      </Tabs.Panel>
+    </Tabs>
+  );
+};

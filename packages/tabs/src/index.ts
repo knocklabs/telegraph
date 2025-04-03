@@ -9,4 +9,4 @@ const TabsComponent = Object.assign(Tabs, {
   Panel: TabPanel,
 });
 
-export { TabsComponent as Tabs, Tab, TabList, TabPanel };
+export { TabsComponent as Tabs };

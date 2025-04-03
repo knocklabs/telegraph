@@ -1,3 +1,1 @@
-import { TabList } from "./TabList";
-
-export { TabList };
+export { TabList } from "./TabList";

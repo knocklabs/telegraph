@@ -55,42 +55,18 @@ function MyTabs() {
       </Tabs.List>
       
       <Tabs.Panel value="tab1">
-        <Box padding={4}>Content for the first tab</Box>
+        <Box padding="4">Content for the first tab</Box>
       </Tabs.Panel>
       <Tabs.Panel value="tab2">
-        <Box padding={4}>Content for the second tab</Box>
+        <Box padding="4">Content for the second tab</Box>
       </Tabs.Panel>
       <Tabs.Panel value="tab3">
-        <Box padding={4}>Content for the third tab</Box>
+        <Box padding="4">Content for the third tab</Box>
       </Tabs.Panel>
     </Tabs>
   );
 }
 
-// Alternative import pattern
-import { Tabs, Tab, TabList, TabPanel } from '@telegraph/tabs';
-
-function AlternativeMyTabs() {
-  return (
-    <Tabs defaultValue="tab1">
-      <TabList>
-        <Tab value="tab1">First Tab</Tab>
-        <Tab value="tab2">Second Tab</Tab>
-        <Tab value="tab3">Third Tab</Tab>
-      </TabList>
-      
-      <TabPanel value="tab1">
-        <Box padding={4}>Content for first tab</Box>
-      </TabPanel>
-      <TabPanel value="tab2">
-        <Box padding={4}>Content for second tab</Box>
-      </TabPanel>
-      <TabPanel value="tab3">
-        <Box padding={4}>Content for third tab</Box>
-      </TabPanel>
-    </Tabs>
-  );
-}
 ```
 
 ## Controlled usage
@@ -124,46 +100,18 @@ function ControlledTabs() {
         </Tabs.List>
         
         <Tabs.Panel value="tab1">
-          <Box padding={4}>Content for the first tab</Box>
+          <Box padding="4">Content for the first tab</Box>
         </Tabs.Panel>
         <Tabs.Panel value="tab2">
-          <Box padding={4}>Content for the second tab</Box>
+          <Box padding="4">Content for the second tab</Box>
         </Tabs.Panel>
         <Tabs.Panel value="tab3">
-          <Box padding={4}>Content for the third tab</Box>
+          <Box padding="4">Content for the third tab</Box>
         </Tabs.Panel>
       </Tabs>
     </div>
   );
 }
-```
-
-## Vertical Orientation
-
-```jsx
-<Tabs defaultValue="tab1" orientation="vertical">
-  <Box display="flex">
-    <Box width="200px">
-      <TabList hasBorder={false}>
-        <Tab value="tab1">First Tab</Tab>
-        <Tab value="tab2">Second Tab</Tab>
-        <Tab value="tab3">Third Tab</Tab>
-      </TabList>
-    </Box>
-    
-    <Box flex="1">
-      <TabPanel value="tab1">
-        <Box padding={4}>Content for tab one</Box>
-      </TabPanel>
-      <TabPanel value="tab2">
-        <Box padding={4}>Content for tab two</Box>
-      </TabPanel>
-      <TabPanel value="tab3">
-        <Box padding={4}>Content for tab three</Box>
-      </TabPanel>
-    </Box>
-  </Box>
-</Tabs>
 ```
 
 ## Components API
@@ -172,30 +120,25 @@ function ControlledTabs() {
 - `defaultValue`: String - ID of the initially active tab
 - `value`: String - Controlled value for the active tab
 - `onValueChange`: Function - Callback when the active tab changes
-- `orientation`: 'horizontal' | 'vertical' - Orientation of the tabs
 - `disabled`: Boolean - Disables all tabs when true
-- `className`: String - Additional CSS class names
 
 ### Tab
 - `value`: String (required) - Unique identifier for the tab
 - `disabled`: Boolean - Disables this specific tab
 - `onClick`: Function - Additional callback when tab is clicked
-- `className`: String - Additional CSS class names
 - `leadingIcon`: Object - Icon to display at the start of the tab
   - `icon`: ComponentType - The icon component to render
   - `alt`: String - Alternative text for the icon
 - `trailingIcon`: Object - Icon to display at the end of the tab
   - `icon`: ComponentType - The icon component to render
   - `alt`: String - Alternative text for the icon
-- `variant`: 'solid' | 'outline' | 'ghost' - Visual style of the tab
-- `size`: '1' | '2' | '3' - Size of the tab (1=small, 2=medium, 3=large)
+- `icon`: Object - Icon to display at the end of the tab
+  - `icon`: ComponentType - The icon component to render
+  - `alt`: String - Alternative text for the icon
 
 ### TabList
-- `hasBorder`: Boolean - Whether to show a bottom border (default: true)
 - `loop`: Boolean - Whether keyboard navigation loops from last to first tab
-- `className`: String - Additional CSS class names
 
 ### TabPanel
 - `value`: String (required) - ID of the tab this panel is associated with
 - `forceMount`: Boolean - Whether to force mounting when tab is inactive
-- `className`: String - Additional CSS class names

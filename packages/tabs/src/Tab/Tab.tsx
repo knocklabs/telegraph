@@ -1,5 +1,9 @@
 import * as RadixTabs from "@radix-ui/react-tabs";
-import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
+import {
+  RefToTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+} from "@telegraph/helpers";
 import { MenuItem } from "@telegraph/menu";
 import React from "react";
 
@@ -9,11 +13,8 @@ import React from "react";
  * @property {React.ReactNode} children - Content to display in the tab
  * @property {boolean} disabled - Whether this tab is disabled
  * @property {() => void} onClick - Additional onClick handler
- * @property {string} className - Additional CSS class names
  * @property {TabIconProps} leadingIcon - Icon to display on the left side of the tab
  * @property {TabIconProps} trailingIcon - Icon to display on the right side of the tab
- * @property {string} variant - Visual style variant of the tab
- * @property {string} size - Size of the tab
  */
 export type TabProps<T extends TgphElement> = {
   value: string;
@@ -23,53 +24,55 @@ export type TabProps<T extends TgphElement> = {
  * Tab component that uses RadixTabs.Trigger with MenuItem styling
  */
 const Tab = <T extends TgphElement>({
+  disabled = false,
   value,
   children,
-  disabled = false,
   onClick,
-  className = "",
-  variant = "ghost",
-  size = "1",
   leadingIcon,
   trailingIcon,
   icon,
   ...props
 }: TabProps<T>) => {
-  const combinedLeadingIcon = (
-    leadingIcon
-      ? { size: "6", ...leadingIcon }
-      : icon
-        ? { size: "6", ...icon }
-        : undefined
-  ) as TgphComponentProps<typeof MenuItem<T>>["leadingIcon"] | undefined;
+  const defaultIconProps: TgphComponentProps<
+    typeof MenuItem<T>
+  >["leadingIcon"] = {
+    size: "6",
+    color: "gray",
+    variant: "secondary",
+  };
+
+  const combinedLeadingIcon = leadingIcon
+    ? ({ ...defaultIconProps, ...leadingIcon } as const)
+    : icon
+      ? ({ ...defaultIconProps, ...icon } as const)
+      : undefined;
 
   return (
     <RadixTabs.Trigger
       value={value}
       disabled={disabled}
       onClick={onClick}
-      className={className}
       asChild
     >
-      <MenuItem
-        variant={variant}
-        size={size}
-        leadingIcon={combinedLeadingIcon}
-        trailingIcon={trailingIcon && { size: "6", ...trailingIcon }}
-        disabled={disabled}
-        style={{
-          color: "var(--tgraph-gray-11)",
-        }}
-        py="4"
-        px="2"
-        position="relative"
-        data-tgph-tab=""
-        gap="2"
-        color="gray"
-        {...props}
-      >
-        {children}
-      </MenuItem>
+      <RefToTgphRef>
+        <MenuItem
+          leadingIcon={combinedLeadingIcon}
+          trailingIcon={
+            trailingIcon && { ...defaultIconProps, ...trailingIcon }
+          }
+          disabled={disabled}
+          py="4"
+          px="2"
+          position="relative"
+          data-tgph-tab=""
+          gap="2"
+          color="gray"
+          size="1"
+          {...props}
+        >
+          {children}
+        </MenuItem>
+      </RefToTgphRef>
     </RadixTabs.Trigger>
   );
 };
