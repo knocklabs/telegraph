@@ -1,5 +1,14 @@
 # @telegraph/tag
 
+## 0.0.82
+
+### Patch Changes
+
+- [#439](https://github.com/knocklabs/telegraph/pull/439) [`0dcbd65`](https://github.com/knocklabs/telegraph/commit/0dcbd65ba294edd97cdc4159533a8516433cd3c9) Thanks [@kylemcd](https://github.com/kylemcd)! - add combobox primitive trigger components
+
+- Updated dependencies [[`0dcbd65`](https://github.com/knocklabs/telegraph/commit/0dcbd65ba294edd97cdc4159533a8516433cd3c9)]:
+  - @telegraph/button@0.0.77
+
 ## 0.0.81
 
 ### Patch Changes
