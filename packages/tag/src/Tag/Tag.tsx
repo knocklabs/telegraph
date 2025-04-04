@@ -2,6 +2,7 @@ import { Button as TelegraphButton } from "@telegraph/button";
 import type {
   PolymorphicProps,
   PolymorphicPropsWithTgphRef,
+  RemappedOmit,
   Required,
   TgphComponentProps,
   TgphElement,
@@ -61,7 +62,7 @@ const Root = <T extends TgphElement>({
   );
 };
 
-type TextProps<T extends TgphElement> = Omit<
+type TextProps<T extends TgphElement> = RemappedOmit<
   TgphComponentProps<typeof TelegraphText<T>>,
   "as"
 > & {
@@ -71,6 +72,7 @@ type TextProps<T extends TgphElement> = Omit<
 const Text = <T extends TgphElement>({
   as = "span" as T,
   maxW = "40",
+  overflow = "hidden",
   style,
   ...props
 }: TextProps<T>) => {
@@ -83,7 +85,8 @@ const Text = <T extends TgphElement>({
       weight="medium"
       mr={SPACING.Text[context.size]}
       maxW={maxW}
-      overflow="hidden"
+      overflow={overflow}
+      internal_optionalAs={true}
       style={{
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",

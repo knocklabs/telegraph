@@ -1,10 +1,7 @@
 import React from "react";
 
-export type DefinedOption = {
-  value: string;
-  label?: string | React.ReactNode;
-};
-export type Option = DefinedOption | string | React.ReactNode;
+import type { DefinedOption, Option } from "./Combobox.types";
+
 export const isMultiSelect = (
   value: Option | Array<Option> | undefined,
 ): value is Array<Option> => {

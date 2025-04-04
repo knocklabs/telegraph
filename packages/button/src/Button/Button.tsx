@@ -1,6 +1,7 @@
 import {
   type PolymorphicProps,
   type PolymorphicPropsWithTgphRef,
+  RemappedOmit,
   type Required,
   type TgphComponentProps,
   type TgphElement,
@@ -209,7 +210,7 @@ const Icon = <T extends TgphElement>({
   );
 };
 
-type TextProps<T extends TgphElement> = Omit<
+type TextProps<T extends TgphElement> = RemappedOmit<
   TgphComponentProps<typeof TelegraphText<T>>,
   "as"
 > & {

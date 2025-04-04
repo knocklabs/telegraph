@@ -14,16 +14,11 @@ import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
-import { AnimatePresence, motion } from "@telegraph/motion";
-import { Tag } from "@telegraph/tag";
-import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
-  type DefinedOption,
-  type Option,
   doesOptionMatchSearchQuery,
   getCurrentOption,
   getOptions,
@@ -31,20 +26,17 @@ import {
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
+import { Primitives } from "./Combobox.primitives";
+import type {
+  DefinedOption,
+  MultiSelect,
+  Option,
+  SingleSelect,
+} from "./Combobox.types";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 const SELECT_KEYS = ["Enter", " "];
-
-type SingleSelect = {
-  value?: Option;
-  onValueChange?: (value: Option | undefined) => void;
-};
-
-type MultiSelect = {
-  value?: Array<Option>;
-  onValueChange?: (value: Array<Option>) => void;
-};
 
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
@@ -70,7 +62,7 @@ type RootProps<
   children?: React.ReactNode;
 };
 
-const ComboboxContext = React.createContext<
+export const ComboboxContext = React.createContext<
   Omit<
     RootProps<(Option | Array<Option>) | (string | Array<string>), boolean>,
     "children"
@@ -191,203 +183,40 @@ const Root = <
   );
 };
 
-type TriggerTagProps = {
-  value: DefinedOption["value"];
-  label?: DefinedOption["label"];
-};
-
-const TriggerTag = ({ value, ...props }: TriggerTagProps) => {
-  const context = React.useContext(ComboboxContext);
-
-  const option = React.useMemo(() => {
-    // Find option amongst other options
-    const foundOption = context.options.find((o) => o.value === value);
-    if (foundOption) return foundOption.label || foundOption.value;
-
-    // Find option amongst the current values in the case of creation
-    if (!context.value) return undefined;
-    const contextValue = context.value as Array<Option>;
-    const foundValue = contextValue.find(
-      (v) => getValueFromOption(v, context.legacyBehavior) === value,
-    );
-
-    if (!foundValue) return undefined;
-
-    return foundValue;
-  }, [context.options, context.value, value, context.legacyBehavior]);
-
-  return (
-    <Tag.Root
-      as={motion.span}
-      initializeWithAnimation={false}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.5 }}
-      transition={{ duration: 100, type: "spring" }}
-      tgph-motion-key={value}
-      size="1"
-      layout="position"
-      {...props}
-    >
-      <Tag.Text>{option}</Tag.Text>
-      <Tag.Button
-        icon={{ icon: Lucide.X, alt: `Remove ${value}` }}
-        onClick={(event: React.MouseEvent) => {
-          if (!context.onValueChange) return;
-          const onValueChange =
-            context.onValueChange as MultiSelect["onValueChange"];
-          const contextValue = context.value as Array<Option>;
-
-          const newValue = contextValue.filter((v) => {
-            const valueOption = getValueFromOption(v, context.legacyBehavior);
-            return valueOption !== value;
-          });
-
-          onValueChange?.(newValue);
-          // Stop click event from bubbling up
-          event.stopPropagation();
-          // Stop the button "submit" action from triggering
-          event.preventDefault();
-        }}
-      />
-    </Tag.Root>
-  );
-};
-
 const TriggerValue = () => {
   const context = React.useContext(ComboboxContext);
 
   if (context.value && isMultiSelect(context.value)) {
     const layout = context.layout || "truncate";
-    const truncatedLength = context.value.length - 2;
-    const truncatedLengthStringArray = truncatedLength.toString().split("");
 
     if (context.value.length === 0) {
-      return (
-        <TelegraphButton.Text color="gray">
-          {context.placeholder}
-        </TelegraphButton.Text>
-      );
+      return <Primitives.TriggerPlaceholder />;
     }
+
     return (
-      <Stack
-        gap="1"
-        w="full"
-        wrap={layout === "wrap" ? "wrap" : "nowrap"}
-        align="center"
-        style={{
-          position: "relative",
-          flexGrow: 1,
-        }}
-      >
-        <AnimatePresence
-          presenceMap={context.value.map((v) => {
-            const value = getValueFromOption(v, context.legacyBehavior);
-            return {
-              "tgph-motion-key": value || "",
-              value: true,
-            };
-          })}
-        >
-          {context.value.map((v, i) => {
-            const value = getValueFromOption(v, context.legacyBehavior);
-            if (
-              value &&
-              ((layout === "truncate" && i <= 1) || layout === "wrap")
-            ) {
-              return (
-                <RefToTgphRef key={value}>
-                  <TriggerTag value={value} />
-                </RefToTgphRef>
-              );
-            }
-          })}
-        </AnimatePresence>
-        <AnimatePresence
-          presenceMap={[
-            {
-              "tgph-motion-key": "combobox-more",
-              value: true,
-            },
-          ]}
-        >
-          {layout === "truncate" && context.value.length > 2 && (
-            <Stack
-              as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 100, type: "spring" }}
-              h="full"
-              pr="1"
-              pl="8"
-              align="center"
-              aria-label={`${truncatedLength} more selected`}
-              position="absolute"
-              right="0"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
-              }}
-            >
-              <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
-                +
-                <AnimatePresence
-                  presenceMap={truncatedLengthStringArray.map((n) => ({
-                    "tgph-motion-key": n,
-                    value: true,
-                  }))}
-                >
-                  {truncatedLengthStringArray.map((n) => (
-                    <Box
-                      as={motion.span}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 100, type: "spring" }}
-                      w="2"
-                      display="inline-block"
-                      tgph-motion-key={n}
-                      key={n}
-                    >
-                      {n}
-                    </Box>
-                  ))}{" "}
-                </AnimatePresence>
-                more
-              </Text>
-            </Stack>
-          )}
-        </AnimatePresence>
-      </Stack>
+      <Primitives.TriggerTagsContainer>
+        {context.value.map((v, i) => {
+          const value = getValueFromOption(v, context.legacyBehavior);
+          if (
+            value &&
+            ((layout === "truncate" && i <= 1) || layout === "wrap")
+          ) {
+            return (
+              <RefToTgphRef key={value}>
+                <Primitives.TriggerTag.Default value={value} />
+              </RefToTgphRef>
+            );
+          }
+        })}
+      </Primitives.TriggerTagsContainer>
     );
   }
 
   if (context && isSingleSelect(context.value)) {
-    const currentOption = getCurrentOption(
-      context.value,
-      context.options,
-      context.legacyBehavior,
-    );
-
-    const label =
-      currentOption?.label || currentOption?.value || context.placeholder;
-
-    // In `legacyBehavior` mode, we can override the label of the combobox via the `label` prop
-    // in context value. So, if we're in `legacyBehavior` mode and the context value has a
-    // label, we want to use that label instead of the label from the current option
-    const legacyLabelOverride =
-      context.legacyBehavior && (context?.value as DefinedOption)?.label;
-
-    return (
-      <TelegraphButton.Text
-        color={!context.value ? "gray" : "default"}
-        textOverflow="ellipsis"
-        overflow="hidden"
-      >
-        {legacyLabelOverride ? legacyLabelOverride : label}
-      </TelegraphButton.Text>
-    );
+    if (!context.value) {
+      return <Primitives.TriggerPlaceholder />;
+    }
+    return <Primitives.TriggerText />;
   }
 };
 
@@ -402,13 +231,12 @@ type ChildrenFnValue<V extends ChildrenValue> = V extends never
     ? DefinedOption | undefined
     : Array<DefinedOption>;
 
-// First, define the base component props without children
 type TriggerBaseProps = RemappedOmit<
   TgphComponentProps<typeof TelegraphButton.Root> &
     TgphComponentProps<typeof TelegraphMenu.Trigger>,
   "children"
 >;
-// Then define your custom children type
+
 type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
   children?:
@@ -456,31 +284,6 @@ const Trigger = <V extends ChildrenValue>({
 
     return context.placeholder;
   }, [currentValue, context.placeholder]);
-
-  const shouldShowClearable = React.useMemo(() => {
-    if (isSingleSelect(context.value)) {
-      return context.clearable && context.value;
-    }
-
-    if (isMultiSelect(context.value)) {
-      return context.clearable && context.value?.length > 0;
-    }
-  }, [context.clearable, context.value]);
-
-  const handleClear = () => {
-    if (isMultiSelect(context.value)) {
-      const onValueChange =
-        context.onValueChange as MultiSelect["onValueChange"];
-      onValueChange?.([]);
-    }
-
-    if (isSingleSelect(context.value)) {
-      const onValueChange =
-        context.onValueChange as SingleSelect["onValueChange"];
-      onValueChange?.(undefined);
-    }
-    context.triggerRef?.current?.focus();
-  };
 
   return (
     <TelegraphMenu.Trigger
@@ -547,41 +350,8 @@ const Trigger = <V extends ChildrenValue>({
           <TriggerValue />
         )}
         <Stack align="center" gap="1">
-          {shouldShowClearable && (
-            <Tooltip label="Clear field">
-              <TelegraphButton
-                type="button"
-                icon={{ icon: Lucide.X, alt: "Clear field" }}
-                size="1"
-                variant="ghost"
-                onClick={(event: React.MouseEvent) => {
-                  if (!context.value) return;
-                  event.stopPropagation();
-                  handleClear();
-                }}
-                onKeyDown={(event: React.KeyboardEvent) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.stopPropagation();
-                    handleClear();
-                  }
-                }}
-                data-tgph-combobox-clear
-                style={{
-                  // Remove margin to make the clear button flush
-                  // with the trigger button
-                  marginTop: "calc(-1 * var(--tgph-spacing-1)",
-                  marginBottom: "calc(-1 * var(--tgph-spacing-1)",
-                }}
-              />
-            </Tooltip>
-          )}
-          <TelegraphButton.Icon
-            as={motion.span}
-            animate={{ rotate: context.open ? 180 : 0 }}
-            transition={{ duration: 150, type: "spring" }}
-            icon={Lucide.ChevronDown}
-            aria-hidden
-          />
+          <Primitives.TriggerClear />
+          <Primitives.TriggerIndicator />
         </Stack>
       </TelegraphButton.Root>
     </TelegraphMenu.Trigger>
@@ -1077,6 +847,7 @@ const Combobox = {} as {
   Search: typeof Search;
   Empty: typeof Empty;
   Create: typeof Create;
+  Primitives: typeof Primitives;
 };
 
 Object.assign(Combobox, {
@@ -1088,6 +859,7 @@ Object.assign(Combobox, {
   Search,
   Empty,
   Create,
+  Primitives,
 });
 
 export { Combobox };

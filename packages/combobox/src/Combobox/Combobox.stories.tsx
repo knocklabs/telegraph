@@ -454,7 +454,16 @@ export const MultiSelectWithCustomTrigger: Story = {
           clearable
         >
           <TelegraphCombobox.Trigger<typeof value>>
-            {(params) => params.value.map((v) => v.label)?.join(", ")}
+            <TelegraphCombobox.Primitives.TriggerTagsContainer>
+              {value.map((v) => (
+                <TelegraphCombobox.Primitives.TriggerTag.Default
+                  value={v}
+                  key={v}
+                >
+                  {v.toUpperCase()}
+                </TelegraphCombobox.Primitives.TriggerTag.Default>
+              ))}
+            </TelegraphCombobox.Primitives.TriggerTagsContainer>
           </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
