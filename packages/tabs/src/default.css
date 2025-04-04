@@ -1,0 +1,45 @@
+/* Active tab style - orange underline */
+[data-tgph-tab][data-state="active"]::after {
+  animation: tabActivate 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--tgph-accent-9, #ff4f00);
+  bottom: calc(var(--tgph-spacing-2) * -1);
+  border-radius: 1px;
+  content: '';
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform-origin: center;
+}
+
+@keyframes tabActivate {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Active tab text and icon color */
+[data-tgph-tab][data-state="active"] .tgph-text {
+  color: var(--tgph-accent-11, #D13415);
+}
+
+/* Active tab icon color */
+[data-tgph-tab][data-state="active"] svg {
+  color: var(--tgph-accent-10, #DD4425);
+}
+
+/* Disabled tab icon color */
+[data-tgph-tab][data-disabled] svg {
+  color: var(--tgph-gray-7, #CDCED6);
+}
+
+/* Disabled tab text color */
+[data-tgph-tab][data-disabled] .tgph-text {
+  color: var(--tgph-gray-9, #8B8D98);
+}
