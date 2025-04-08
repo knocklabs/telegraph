@@ -1,5 +1,14 @@
 # @telegraph/tooltip
 
+## 0.0.45
+
+### Patch Changes
+
+- [#441](https://github.com/knocklabs/telegraph/pull/441) [`14ea9d1`](https://github.com/knocklabs/telegraph/commit/14ea9d164d69c0adeae4f2405565592aa4c9c75c) Thanks [@kylemcd](https://github.com/kylemcd)! - adds `skipAnimation` prop to `<Motion/>` and integrates into `<Popover/>` and `<Tooltip/>`
+
+- Updated dependencies [[`14ea9d1`](https://github.com/knocklabs/telegraph/commit/14ea9d164d69c0adeae4f2405565592aa4c9c75c)]:
+  - @telegraph/motion@0.0.8
+
 ## 0.0.44
 
 ### Patch Changes

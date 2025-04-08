@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/popover",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Displays content in a portal, triggered by a button.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/popover",
   "author": "@knocklabs",

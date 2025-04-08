@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/menu",
-  "version": "0.0.62",
+  "version": "0.0.63",
   "description": "A base component used within Menu, Select, and Combobox pop-over components.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/menu",
   "author": "@knocklabs",

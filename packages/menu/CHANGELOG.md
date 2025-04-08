@@ -1,5 +1,12 @@
 # @telegraph/menu
 
+## 0.0.63
+
+### Patch Changes
+
+- Updated dependencies [[`14ea9d1`](https://github.com/knocklabs/telegraph/commit/14ea9d164d69c0adeae4f2405565592aa4c9c75c)]:
+  - @telegraph/motion@0.0.8
+
 ## 0.0.62
 
 ### Patch Changes
