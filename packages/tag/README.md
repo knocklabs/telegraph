@@ -4,154 +4,249 @@
 
 # @telegraph/tag
 
-> A tag component with optional interactive button
+> A flexible tag component for displaying labels, categories, and statuses with optional interactivity.
 
-## Installation Instructions
+## Installation
 
-```
+```bash
 npm install @telegraph/tag
 ```
 
 ### Add stylesheet
 
-Pick one:
-
-Via CSS (preferred):
-
+```css
+@import "@telegraph/tag";
 ```
-@import "@telegraph/tag"
-```
-
-Via Javascript:
-
-```
-import "@telegraph/tag/default.css"
-```
-
-> Then, include `className="tgph"` on the farthest parent element wrapping the telegraph components
 
 ## Usage
 
 ### Basic Usage
 
-Shorthand tag component that adheres to the telegraph design system
+```tsx
+import { Tag } from "@telegraph/tag";
 
+export const BasicTag = () => {
+  return <Tag>New</Tag>;
+};
 ```
-import { Tag } from "@telegraph/tag"
 
-...
+### With Different Variants
 
-<Tag>Tag</Tag>
+```tsx
+import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
+
+export const TagVariants = () => {
+  return (
+    <Stack gap="2" direction="row">
+      <Tag variant="soft" color="blue">
+        Soft Blue
+      </Tag>
+      <Tag variant="solid" color="red">
+        Solid Red
+      </Tag>
+      <Tag variant="soft" color="green">
+        Soft Green
+      </Tag>
+      <Tag variant="solid" color="purple">
+        Solid Purple
+      </Tag>
+    </Stack>
+  );
+};
 ```
+
+### With Icons
+
+```tsx
+import { Lucide } from "@telegraph/icon";
+import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
+
+export const TagsWithIcons = () => {
+  return (
+    <Stack gap="2" direction="row">
+      <Tag icon={{ icon: Lucide.Check, alt: "Success" }} color="green">
+        Complete
+      </Tag>
+      <Tag icon={{ icon: Lucide.AlertCircle, alt: "Warning" }} color="yellow">
+        Warning
+      </Tag>
+      <Tag icon={{ icon: Lucide.X, alt: "Error" }} color="red">
+        Error
+      </Tag>
+    </Stack>
+  );
+};
+```
+
+### Interactive Tags
+
+```tsx
+import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
+
+export const InteractiveTags = () => {
+  return (
+    <Stack gap="2" direction="row">
+      <Tag onRemove={() => console.log("Remove clicked")} color="blue">
+        Removable
+      </Tag>
+      <Tag onCopy={() => console.log("Copied!")} color="purple">
+        Copyable
+      </Tag>
+      <Tag
+        onRemove={() => console.log("Remove clicked")}
+        onCopy={() => console.log("Copied!")}
+        color="green"
+      >
+        Both
+      </Tag>
+    </Stack>
+  );
+};
+```
+
+## API Reference
+
+### Tag
+
+The main tag component for simple usage.
 
 #### Props
 
-| Name     | Type                                                                               | Default     | Options                                                                 |
-| -------- | ---------------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------- |
-| size     | string                                                                             | "1"         | "1" "2"                                                                 |
-| color    | string                                                                             | "default"   | "default", "gray", "red", "accent", "blue", "green", "yellow", "purple" |
-| variant  | string                                                                             | "soft"      | "soft", "solid"                                                         |
-| icon     | [Icon Props](https://github.com/knocklabs/telegraph/tree/main/packages/icon#props) | `undefined` |                                                                         |
-| onRemove | () => {}                                                                           | `undefined` |                                                                         |
-| onCopy   | () => {}                                                                           | `undefined` |                                                                         |
+| Prop       | Type                                                                                    | Default     | Description                          |
+| ---------- | --------------------------------------------------------------------------------------- | ----------- | ------------------------------------ |
+| `size`     | `"1" \| "2"`                                                                            | `"1"`       | Size of the tag                      |
+| `color`    | `"default" \| "gray" \| "red" \| "accent" \| "blue" \| "green" \| "yellow" \| "purple"` | `"default"` | Color theme                          |
+| `variant`  | `"soft" \| "solid"`                                                                     | `"soft"`    | Visual style variant                 |
+| `icon`     | `{ icon: Icon; alt: string }`                                                           | -           | Leading icon configuration           |
+| `onRemove` | `() => void`                                                                            | -           | Called when remove button is clicked |
+| `onCopy`   | `() => void`                                                                            | -           | Called when copy button is clicked   |
 
-### Advanced Usage
+### Tag.Root
 
-Individual parts of the tag component that can be composed in configurations different from the default telegraph design system styles. This can be used to create modifications to one-off tag components without the need to modify the tag exported from this package.
-
-#### `<Tag.Root/>`
-
-Wraps the Tag children components and relays props to them.
-
-```
-import { Tag } from '@telegraph/tag'
-
-...
-
-<Tag.Root></Tag.Root>
-```
+The container component for custom tag layouts.
 
 #### Props
 
-| Name    | Type   | Default   | Options                                                                 |
-| ------- | ------ | --------- | ----------------------------------------------------------------------- |
-| size    | string | "1"       | "1" "2"                                                                 |
-| color   | string | "default" | "default", "gray", "red", "accent", "blue", "green", "yellow", "purple" |
-| variant | string | "soft"    | "soft", "solid"                                                         |
+| Prop      | Type                                                                                    | Default     | Description          |
+| --------- | --------------------------------------------------------------------------------------- | ----------- | -------------------- |
+| `size`    | `"1" \| "2"`                                                                            | `"1"`       | Size of the tag      |
+| `color`   | `"default" \| "gray" \| "red" \| "accent" \| "blue" \| "green" \| "yellow" \| "purple"` | `"default"` | Color theme          |
+| `variant` | `"soft" \| "solid"`                                                                     | `"soft"`    | Visual style variant |
 
-#### `<Tag.Text/>`
+### Tag.Text
 
-A component built on top of the Text component from [@telegraph/typography](https://github.com/knocklabs/telegraph/tree/main/packages/typography) with translated props to adhere to the telegraph design system
+Text content component that handles proper styling.
 
-```
-import { Tag } from '@telegraph/tag'
+Accepts all props from Telegraph's Text component.
 
-...
+### Tag.Button
 
-<Tag.Text>Text</Tag.Text>
-```
+Interactive button component for actions like remove/copy.
 
-##### Props
+Accepts all props from Telegraph's Button component.
 
-> See [text props](https://github.com/knocklabs/telegraph/tree/main/packages/typography)
+### Tag.Icon
 
-#### `<Tag.Button/>`
+Icon component that maintains proper sizing and colors.
 
-A component build on top of the Button component from [@telegraph/button](https://github.com/knocklabs/telegraph/tree/main/packages/button)
+Accepts all props from Telegraph's Icon component.
 
-```
-import { Tag } from '@telegraph/tag'
+## Examples
 
-...
+### Custom Tag Layout
 
-<Tag.Button/>
-```
+```tsx
+import { Lucide } from "@telegraph/icon";
+import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
 
-#### Props
-
-> See [button props](https://github.com/knocklabs/telegraph/tree/main/packages/icon#props)
-
-#### `<Tag.Text/>`
-
-A component built on top of the Text component from [@telegraph/typography](https://github.com/knocklabs/telegraph/tree/main/packages/typography) with translated props to adhere to the telegraph design system
-
-```
-import { Tag } from '@telegraph/tag'
-
-...
-
-<Tag.Text>Text</Tag.Text>
-```
-
-##### Props
-
-> See [text props](https://github.com/knocklabs/telegraph/tree/main/packages/typography)
-
-#### `<Tag.Icon/>`
-
-A component build on top of the Icon component from [@telegraph/icon](https://github.com/knocklabs/telegraph/tree/main/packages/icon)
-
-```
-import { Tag } from '@telegraph/tag'
-
-...
-
-<Tag.Icon icon={addSharp} alt="create"/>
+export const CustomTag = () => {
+  return (
+    <Tag.Root color="blue" variant="soft" size="2">
+      <Stack direction="row" gap="2" align="center">
+        <Tag.Icon icon={Lucide.Bell} alt="Notification" />
+        <Tag.Text>Custom Layout</Tag.Text>
+        <Tag.Button
+          icon={{ icon: Lucide.X, alt: "remove" }}
+          onClick={() => console.log("Remove clicked")}
+        />
+      </Stack>
+    </Tag.Root>
+  );
+};
 ```
 
-#### Props
+### Status Tags
 
-> See [icon props](https://github.com/knocklabs/telegraph/tree/main/packages/icon)
+```tsx
+import { Lucide } from "@telegraph/icon";
+import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
 
-#### An example of composing an advanced Tag
+export const StatusTags = () => {
+  const statuses = [
+    {
+      label: "Active",
+      color: "green",
+      icon: Lucide.CheckCircle,
+    },
+    {
+      label: "Pending",
+      color: "yellow",
+      icon: Lucide.Clock,
+    },
+    {
+      label: "Failed",
+      color: "red",
+      icon: Lucide.XCircle,
+    },
+  ];
 
+  return (
+    <Stack direction="row" gap="2">
+      {statuses.map((status) => (
+        <Tag
+          key={status.label}
+          color={status.color}
+          icon={{ icon: status.icon, alt: status.label }}
+        >
+          {status.label}
+        </Tag>
+      ))}
+    </Stack>
+  );
+};
 ```
-import { Tag } from "@telegraph/tag"
-import { Lucide  } from '@telegraph/icon'
 
-<Tag.Root color="blue" variant="solid" size="2">
-    <Tag.Icon icon={Lucide.Add} alt="Create"/>
-    <Tag.Text>Text</Tag.Text>
-    <Tag.Button icon={{ icon: Lucide.X, alt: "remove"}} onClick={() => {}}/>
-</Tag.Root>
+### Removable Tag Group
+
+```tsx
+import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
+import { useState } from "react";
+
+export const RemovableTags = () => {
+  const [tags, setTags] = useState([
+    { id: 1, label: "React", color: "blue" },
+    { id: 2, label: "TypeScript", color: "purple" },
+    { id: 3, label: "JavaScript", color: "yellow" },
+  ]);
+
+  const removeTag = (id: number) => {
+    setTags(tags.filter((tag) => tag.id !== id));
+  };
+
+  return (
+    <Stack direction="row" gap="2" wrap>
+      {tags.map((tag) => (
+        <Tag key={tag.id} color={tag.color} onRemove={() => removeTag(tag.id)}>
+          {tag.label}
+        </Tag>
+      ))}
+    </Stack>
+  );
+};
 ```
