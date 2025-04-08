@@ -1,5 +1,12 @@
 # @telegraph/tabs
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/menu@0.0.63
+
 ## 0.0.2
 
 ### Patch Changes
