@@ -85,6 +85,7 @@ type ContentProps<T extends TgphElement> = React.ComponentProps<
 > &
   Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
     contentStackRef?: React.RefObject<HTMLDivElement>;
+    skipAnimation?: TgphComponentProps<typeof motion.div>["skipAnimation"];
   };
 
 const Content = <T extends TgphElement>({
@@ -101,6 +102,7 @@ const Content = <T extends TgphElement>({
   alignOffset,
   tgphRef,
   style,
+  skipAnimation,
   children,
   ...props
 }: ContentProps<T>) => {
@@ -148,6 +150,7 @@ const Content = <T extends TgphElement>({
             // Add tgph class so that this always works in portals
             className="tgph"
             initializeWithAnimation={false}
+            skipAnimation={skipAnimation}
             initial={{
               opacity: 0.5,
               scale: 0.6,

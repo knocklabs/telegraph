@@ -19,6 +19,7 @@ type TooltipBaseProps<T extends TgphElement> = {
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
   appearance?: TgphComponentProps<typeof OverrideAppearance>["appearance"];
+  skipAnimation?: TgphComponentProps<typeof motion.div>["skipAnimation"];
 };
 
 type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
@@ -52,6 +53,7 @@ const Tooltip = <T extends TgphElement>({
   arrowPadding,
   sticky,
   hideWhenDetached,
+  skipAnimation,
   // Label Props
   label,
   labelProps,
@@ -139,6 +141,7 @@ const Tooltip = <T extends TgphElement>({
                   as={motion.div}
                   // Add tgph class so that this always works in portals
                   className="tgph"
+                  skipAnimation={skipAnimation}
                   initial={
                     shouldAnimate
                       ? {
