@@ -23,16 +23,25 @@ const meta: Meta = {
         type: "select",
       },
     },
+    skipAnimation: {
+      control: {
+        type: "boolean",
+      },
+    },
   },
   args: {
     side: "bottom",
     align: "center",
+    skipAnimation: false,
   },
 };
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof Popover.Root>>;
+type Story = StoryObj<
+  TgphComponentProps<typeof Popover.Root> &
+    TgphComponentProps<typeof Popover.Content>
+>;
 
 export const Default: Story = {
   render: ({ ...args }) => {
@@ -45,7 +54,12 @@ export const Default: Story = {
               leadingIcon={{ icon: Lucide.Ellipsis, "aria-hidden": true }}
             />
           </Popover.Trigger>
-          <Popover.Content {...args} px="4">
+          <Popover.Content
+            px="4"
+            align={args.align}
+            side={args.side}
+            skipAnimation={args.skipAnimation}
+          >
             <p>Test popover content</p>
           </Popover.Content>
         </Popover.Root>

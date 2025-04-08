@@ -39,6 +39,11 @@ const meta: Meta = {
         type: "boolean",
       },
     },
+    skipAnimation: {
+      control: {
+        type: "boolean",
+      },
+    },
   },
   args: {
     label: "Tooltip",
