@@ -51,19 +51,6 @@ export const DifferentWidths: Story = {
   ),
 };
 
-export const WithCustomStyles: Story = {
-  args: {
-    as: "span",
-    children: "This text has custom styles applied",
-    maxWidth: "40",
-    style: {
-      backgroundColor: "var(--tgph-colors-surface-2)",
-      padding: "8px",
-      borderRadius: "4px",
-    },
-  },
-};
-
 export const WithDifferentTextContent: Story = {
   args: {
     as: "span",
