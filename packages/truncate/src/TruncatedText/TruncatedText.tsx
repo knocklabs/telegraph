@@ -1,17 +1,17 @@
-import { TgphComponentProps } from "@telegraph/helpers";
+import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Text } from "@telegraph/typography";
 
 import { TooltipIfTruncated } from "../TooltipIfTruncated";
 
-type TruncatedTextProps = {
+type TruncatedTextProps<T extends TgphElement> = {
   tooltipProps?: Partial<TgphComponentProps<typeof TooltipIfTruncated>>;
-} & TgphComponentProps<typeof Text>;
+} & TgphComponentProps<typeof Text<T>>;
 
-const TruncatedText = ({
+const TruncatedText = <T extends TgphElement>({
   tooltipProps,
   style,
   ...props
-}: TruncatedTextProps) => {
+}: TruncatedTextProps<T>) => {
   return (
     <TooltipIfTruncated {...tooltipProps}>
       <Text
