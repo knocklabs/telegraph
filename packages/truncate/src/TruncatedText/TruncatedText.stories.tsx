@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 
 import { TruncatedText } from "./TruncatedText";
 
@@ -37,7 +37,7 @@ export const DifferentWidths: Story = {
     as: "span",
   },
   render: (args) => (
-    <Box style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+    <Stack gap="4" direction="column">
       <TruncatedText {...args} as="span" maxWidth="20">
         This text will be truncated at 20 spacing units
       </TruncatedText>
@@ -47,7 +47,7 @@ export const DifferentWidths: Story = {
       <TruncatedText {...args} as="span" maxWidth="60">
         This text will be truncated at 60 spacing units
       </TruncatedText>
-    </Box>
+    </Stack>
   ),
 };
 
@@ -69,7 +69,7 @@ export const WithDifferentTextContent: Story = {
     as: "span",
   },
   render: (args) => (
-    <Box style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+    <Stack gap="4" direction="column">
       <TruncatedText {...args} as="span" maxWidth="40">
         Short text that won't be truncated
       </TruncatedText>
@@ -82,6 +82,6 @@ export const WithDifferentTextContent: Story = {
         contains many words and exceeds the maximum width of the container by a
         significant margin
       </TruncatedText>
-    </Box>
+    </Stack>
   ),
 };
