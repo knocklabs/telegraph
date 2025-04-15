@@ -5659,8 +5659,11 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.3"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/helpers": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tooltip": "workspace:^"
+    "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
