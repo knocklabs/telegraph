@@ -1,0 +1,1 @@
+export { useTruncate } from "./useTruncate";

@@ -14,6 +14,7 @@ import { Icon, Lucide } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
+import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
@@ -626,27 +627,29 @@ const Option = <T extends TgphElement>({
 
   if (isVisible) {
     return (
-      <TelegraphMenu.Button
-        type="button"
-        onSelect={handleSelection}
-        onKeyDown={handleSelection}
-        // Force null if selected equals null so we
-        // can override the icon of the button
-        selected={selected === null ? null : selected ?? isSelected}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        // Accessibility attributes
-        role="option"
-        aria-selected={isSelected ? "true" : "false"}
-        // Custom attributes
-        data-tgph-combobox-option
-        data-tgph-combobox-option-focused={isFocused}
-        data-tgph-combobox-option-value={value}
-        data-tgph-combobox-option-label={label}
-        {...props}
-      >
-        {label || children || value}
-      </TelegraphMenu.Button>
+      <TooltipIfTruncated>
+        <TelegraphMenu.Button
+          type="button"
+          onSelect={handleSelection}
+          onKeyDown={handleSelection}
+          // Force null if selected equals null so we
+          // can override the icon of the button
+          selected={selected === null ? null : selected ?? isSelected}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          // Accessibility attributes
+          role="option"
+          aria-selected={isSelected ? "true" : "false"}
+          // Custom attributes
+          data-tgph-combobox-option
+          data-tgph-combobox-option-focused={isFocused}
+          data-tgph-combobox-option-value={value}
+          data-tgph-combobox-option-label={label}
+          {...props}
+        >
+          {label || children || value}
+        </TelegraphMenu.Button>
+      </TooltipIfTruncated>
     );
   }
 };
