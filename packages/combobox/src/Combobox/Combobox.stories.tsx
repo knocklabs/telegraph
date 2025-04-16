@@ -86,6 +86,39 @@ export const SingleSelectWithSearch: Story = {
   },
 };
 
+export const SingleSelectWithLongLabel: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState(firstValue);
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={
+            "Select a channel with a really really really long label"
+          }
+          clearable
+        >
+          <TelegraphCombobox.Trigger size="1" />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Options>
+              {values.map((v, index) => (
+                <TelegraphCombobox.Option value={v}>
+                  {labels[index]} with more content to make the label longer
+                  than the trigger width
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
 export const MultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line

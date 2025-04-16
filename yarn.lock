@@ -5046,6 +5046,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tag": "workspace:^"
     "@telegraph/tooltip": "workspace:^"
+    "@telegraph/truncate": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"
@@ -5638,6 +5639,30 @@ __metadata:
     "@telegraph/motion": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/typography": "workspace:^"
+    "@telegraph/vite-config": "workspace:^"
+    "@types/react": "npm:^18.3.18"
+    eslint: "npm:^8.56.0"
+    react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
+    typescript: "npm:^5.7.3"
+    vite: "npm:^6.0.11"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  languageName: unknown
+  linkType: soft
+
+"@telegraph/truncate@workspace:^, @telegraph/truncate@workspace:packages/truncate":
+  version: 0.0.0-use.local
+  resolution: "@telegraph/truncate@workspace:packages/truncate"
+  dependencies:
+    "@knocklabs/eslint-config": "npm:^0.0.3"
+    "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/helpers": "workspace:^"
+    "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/prettier-config": "workspace:^"
+    "@telegraph/tooltip": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"

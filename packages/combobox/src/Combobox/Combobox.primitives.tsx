@@ -5,6 +5,7 @@ import { Box, Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
+import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
@@ -151,14 +152,16 @@ const TriggerText = <T extends TgphElement>({
   ]);
 
   return (
-    <Button.Text
-      color={!context.value ? "gray" : "default"}
-      textOverflow="ellipsis"
-      overflow="hidden"
-      {...props}
-    >
-      {children || label}
-    </Button.Text>
+    <TooltipIfTruncated>
+      <Button.Text
+        color={!context.value ? "gray" : "default"}
+        textOverflow="ellipsis"
+        overflow="hidden"
+        {...props}
+      >
+        {children || label}
+      </Button.Text>
+    </TooltipIfTruncated>
   );
 };
 
@@ -172,9 +175,16 @@ const TriggerPlaceholder = <T extends TgphElement>({
 }: TriggerPlaceholderProps<T>) => {
   const context = React.useContext(ComboboxContext);
   return (
-    <Button.Text color="gray" {...props}>
-      {children || context.placeholder}
-    </Button.Text>
+    <TooltipIfTruncated>
+      <Button.Text
+        color="gray"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        {...props}
+      >
+        {children || context.placeholder}
+      </Button.Text>
+    </TooltipIfTruncated>
   );
 };
 
