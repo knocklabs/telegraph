@@ -114,6 +114,37 @@ function ControlledTabs() {
 }
 ```
 
+
+## Using Tabs as Navigation Links
+
+You can use tabs as navigation links by passing a Link component to the `as` prop. This is useful for creating tabbed navigation menus that update the URL:
+
+```jsx
+import { Tabs, useTabsContext } from '@telegraph/tabs';
+import { Link } from '@telegraph/link';
+
+function MyTabs() {
+  return (
+    <Tabs defaultValue="tab1">
+      <Tabs.List>
+        <Tabs.Tab as={Link} value="tab1" href="/">Home</Tabs.Tab>
+        <Tabs.Tab as={Link} value="tab2" href="/about">About</Tabs.Tab>
+        <Tabs.Tab as={Link} value="tab3" href="/contact">Contact</Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="tab1">
+        <Box padding="4">Content for the first tab</Box>
+      </Tabs.Panel>
+      <Tabs.Panel value="tab2">
+        <Box padding="4">Content for the second tab</Box>
+      </Tabs.Panel>
+      <Tabs.Panel value="tab3">
+        <Box padding="4">Content for the third tab</Box>
+      </Tabs.Panel>
+    </Tabs>
+  );
+}
+```
+
 ## Components API
 
 ### Tabs (Root)
