@@ -1,5 +1,11 @@
 # @telegraph/menu
 
+## 0.0.64
+
+### Patch Changes
+
+- [#450](https://github.com/knocklabs/telegraph/pull/450) [`7822ba4`](https://github.com/knocklabs/telegraph/commit/7822ba449d9c388bdea86615dbf2cb92c2638694) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix(kno-8547): fixes tabs weight and spacing
+
 ## 0.0.63
 
 ### Patch Changes
