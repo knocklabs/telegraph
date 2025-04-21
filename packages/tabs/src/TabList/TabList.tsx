@@ -18,7 +18,7 @@ const TabList = ({ children, loop = true, ...props }: TabListProps) => {
           flexDirection={"row"}
           spacing="2"
           gap="1"
-          paddingBottom={"2"}
+          paddingBottom={"1"}
           paddingRight={"0"}
           marginBottom="4"
           position="relative"

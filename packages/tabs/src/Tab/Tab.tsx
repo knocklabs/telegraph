@@ -63,6 +63,7 @@ const Tab = <T extends TgphElement>({
           disabled={disabled}
           py="4"
           px="2"
+          fontWeight="medium"
           position="relative"
           data-tgph-tab=""
           gap="2"

@@ -2,7 +2,7 @@
 [data-tgph-tab][data-state="active"]::after {
   animation: tabActivate 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--tgph-accent-9, #ff4f00);
-  bottom: calc(var(--tgph-spacing-2) * -1);
+  bottom: calc(var(--tgph-spacing-1) * -1);
   border-radius: 1px;
   content: '';
   height: 1px;
