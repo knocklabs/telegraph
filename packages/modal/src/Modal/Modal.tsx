@@ -12,6 +12,7 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Lucide } from "@telegraph/icon";
+import { Layer } from "@telegraph/layer";
 import { Box, Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
@@ -77,54 +78,56 @@ const RootComponent = ({
   // and can be used to identify the modal in the stacking context.
   // Without the need to generate a random id and manage between
   // different modal rendering patterns.
-  const id = a11yTitle;
-  const stacking = useModalStacking();
-  React.useEffect(() => {
-    if (!stacking || !open || stacking.layers.includes(id)) return;
-    stacking.addLayer(id);
-  }, [id, stacking, open]);
+  // const id = a11yTitle;
+  // const stacking = useModalStacking();
+  // React.useEffect(() => {
+  //   if (!stacking || !open || stacking.layers.includes(id)) return;
+  //   stacking.addLayer(id);
+  // }, [id, stacking, open]);
 
-  const layer = stacking.layers?.indexOf(id) || 0;
-  const layersLength = stacking.layers?.length || 0;
-  const isStacked = layer !== 0;
-  const isTopLayer = id === stacking.layers[stacking.layers.length - 1];
+  // const layer = stacking.layers?.indexOf(id) || 0;
+  // const layersLength = stacking.layers?.length || 0;
+  // const isStacked = layer !== 0;
+  // const isTopLayer = id === stacking.layers[stacking.layers.length - 1];
 
   return (
-    <DismissableLayer
-      onEscapeKeyDown={(event) => {
-        if (!isTopLayer) return;
-        event.preventDefault();
-        stacking.removeTopLayer();
-        onOpenChange(false);
-      }}
-      onPointerDownOutside={(event) => {
-        if (!isTopLayer) return;
-        event.preventDefault();
-        stacking.removeTopLayer();
-        onOpenChange(false);
-      }}
-    >
+    <Layer onEscapeKeyDown={() => {}}>
+      {/* // <DismissableLayer
+      //   onEscapeKeyDown={(event) => {
+      //     if (!isTopLayer) return;
+      //     event.preventDefault();
+      //     stacking.removeTopLayer();
+    //     onOpenChange(false);
+    //   }}
+    //   onPointerDownOutside={(event) => {
+    //     if (!isTopLayer) return;
+    //     event.preventDefault();
+    //     stacking.removeTopLayer();
+    //     onOpenChange(false);
+    //   }}
+    // > */}
       <Dialog.Root
         open={open}
-        onOpenChange={(value) => {
-          const hasLayers = stacking?.layers?.length > 0;
+        onOpenChange={onOpenChange}
+        // onOpenChange={(value) => {
+        //   const hasLayers = stacking?.layers?.length > 0;
 
-          if (hasLayers) {
-            if (
-              value === false &&
-              id === stacking.layers[stacking.layers.length - 1]
-            ) {
-              stacking.removeLayer(id);
-              return onOpenChange(false);
-            }
-            // If the modal is not the top layer, do not call onOpenChange
-            // when we are stacking the modals
-            return;
-          }
+        //   if (hasLayers) {
+        //     if (
+        //       value === false &&
+        //       id === stacking.layers[stacking.layers.length - 1]
+        //     ) {
+        //       stacking.removeLayer(id);
+        //       return onOpenChange(false);
+        //     }
+        //     // If the modal is not the top layer, do not call onOpenChange
+        //     // when we are stacking the modals
+        //     return;
+        //   }
 
-          onOpenChange(value);
-        }}
-        key={id}
+        //   onOpenChange(value);
+        // }}
+        // key={id}
       >
         <VisuallyHidden.Root>
           <Dialog.Title>{a11yTitle}</Dialog.Title>
@@ -137,9 +140,9 @@ const RootComponent = ({
             // We add the className "tgph" here so that styles within
             // the portal get scoped properly to telegraph
             <Portal.Root className="tgph">
-              <Overlay layer={layer}>
+              <Overlay>
                 <FocusScope
-                  trapped={typeof trapped === "boolean" ? trapped : isTopLayer}
+                  // trapped={typeof trapped === "boolean" ? trapped : isTopLayer}
                   onMountAutoFocus={onMountAutoFocus}
                   onUnmountAutoFocus={onUnmountAutoFocus}
                   asChild
@@ -147,14 +150,16 @@ const RootComponent = ({
                   <RefToTgphRef>
                     <Stack
                       as={motion.div}
-                      initial={{
-                        top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
-                      }}
-                      animate={{
-                        top: isStacked
-                          ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
-                          : "var(--tgph-spacing-16)",
-                      }}
+                      // initial={{
+                      //   top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
+                      // }}
+                      animate={
+                        {
+                          // top: isStacked
+                          //   ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
+                          // : "var(--tgph-spacing-16)",
+                        }
+                      }
                       exit={{ top: 0 }}
                       transition={{ type: "spring", duration: 0.3, bounce: 0 }}
                       w="full"
@@ -164,15 +169,15 @@ const RootComponent = ({
                         left: 0,
                         maxHeight: "calc(100vh - var(--tgph-spacing-32))",
                         maxWidth: "calc(100vw - var(--tgph-spacing-8))",
-                        zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
+                        // zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
                       }}
-                      key={`container-${id}`}
+                      // key={`container-${id}`}
                     >
                       <Stack
                         direction="column"
                         as={motion.div}
                         animate={{
-                          scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
+                          // scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
                           transformOrigin: "center center",
                         }}
                         transition={{
@@ -186,7 +191,7 @@ const RootComponent = ({
                         border="px"
                         rounded="4"
                         shadow="3"
-                        key={`content-${id}`}
+                        // key={`content-${id}`}
                         {...props}
                       >
                         {children}
@@ -199,21 +204,21 @@ const RootComponent = ({
           )}
         </AnimatePresence>
       </Dialog.Root>
-    </DismissableLayer>
+    </Layer>
   );
 };
 
 type OverlayProps = TgphComponentProps<typeof Box> & {
-  layer: number;
+  // layer: number;
 };
 
 const Overlay = ({ layer, children }: OverlayProps) => {
   // If the layer is greater than 0, we don't want to show this
   // overlay as to not stack the overlays on top of each other.
-  if (layer > 0) return children;
+  // if (layer > 0) return children;
   return (
     <Dialog.Overlay>
-      <Box
+      {/* <Box
         as={motion.div}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -228,7 +233,7 @@ const Overlay = ({ layer, children }: OverlayProps) => {
           cursor: "pointer",
           inset: "0px",
         }}
-      />
+      /> */}
       {children}
     </Dialog.Overlay>
   );
@@ -241,7 +246,12 @@ type ContentRef = React.ElementRef<typeof Dialog.Content>;
 const Content = React.forwardRef<ContentRef, ContentProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
-      <Dialog.Content ref={forwardedRef} asChild {...props}>
+      <Dialog.Content
+        ref={forwardedRef}
+        asChild
+        onEscapeKeyDown={(event) => event.preventDefault()}
+        {...props}
+      >
         <Stack direction="column" h="full" {...props}>
           {children}
         </Stack>

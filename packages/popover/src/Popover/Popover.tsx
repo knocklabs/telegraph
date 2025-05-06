@@ -5,6 +5,7 @@ import {
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
+import { Layer } from "@telegraph/layer";
 import { Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "@telegraph/motion";
 import React from "react";
@@ -106,6 +107,7 @@ const Content = <T extends TgphElement>({
   children,
   ...props
 }: ContentProps<T>) => {
+  const context = React.useContext(PopoverContext);
   const deriveAnimationBasedOnSide = (side: ContentProps<T>["side"]) => {
     const ANIMATION_OFFSET = 5;
     if (side === "top") {
@@ -134,63 +136,71 @@ const Content = <T extends TgphElement>({
   };
 
   return (
-    <RadixPopover.Portal>
-      <RadixPopover.Content
-        asChild
-        side={side}
-        sideOffset={sideOffset}
-        align={align}
-        alignOffset={alignOffset}
-        {...props}
-        ref={tgphRef}
-      >
-        <RefToTgphRef>
-          <Stack
-            as={motion.div}
-            // Add tgph class so that this always works in portals
-            className="tgph"
-            initializeWithAnimation={false}
-            skipAnimation={skipAnimation}
-            initial={{
-              opacity: 0.5,
-              scale: 0.6,
-              ...deriveAnimationBasedOnSide(side),
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              x: 0,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0.5,
-              scale: 0.6,
-              ...deriveAnimationBasedOnSide(side),
-            }}
-            transition={{
-              duration: 100,
-              type: "spring",
-            }}
-            bg={bg}
-            direction={direction}
-            gap={gap}
-            rounded={rounded}
-            border={border}
-            py={py}
-            shadow={shadow}
-            style={{
-              overflowY: "auto",
-              transformOrigin: "var(--radix-tooltip-content-transform-origin)",
-              ...style,
-            }}
-            zIndex="popover"
-            tgph-motion-key="popover-content"
-          >
-            {children}
-          </Stack>
-        </RefToTgphRef>
-      </RadixPopover.Content>
-    </RadixPopover.Portal>
+    <Layer
+      onEscapeKeyDown={() => {
+        context.setOpen(false);
+      }}
+    >
+      <RadixPopover.Portal>
+        <RadixPopover.Content
+          asChild
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          onEscapeKeyDown={(event) => event.preventDefault()}
+          // {...props}
+          ref={tgphRef}
+        >
+          <RefToTgphRef>
+            <Stack
+              as={motion.div}
+              // Add tgph class so that this always works in portals
+              className="tgph"
+              initializeWithAnimation={false}
+              skipAnimation={skipAnimation}
+              initial={{
+                opacity: 0.5,
+                scale: 0.6,
+                ...deriveAnimationBasedOnSide(side),
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                x: 0,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0.5,
+                scale: 0.6,
+                ...deriveAnimationBasedOnSide(side),
+              }}
+              transition={{
+                duration: 100,
+                type: "spring",
+              }}
+              bg={bg}
+              direction={direction}
+              gap={gap}
+              rounded={rounded}
+              border={border}
+              py={py}
+              shadow={shadow}
+              style={{
+                overflowY: "auto",
+                transformOrigin:
+                  "var(--radix-tooltip-content-transform-origin)",
+                ...style,
+              }}
+              zIndex="popover"
+              tgph-motion-key="popover-content"
+            >
+              {children}
+            </Stack>
+          </RefToTgphRef>
+        </RadixPopover.Content>
+      </RadixPopover.Portal>
+    </Layer>
   );
 };
 

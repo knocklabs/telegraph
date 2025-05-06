@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
+import { Popover as TelegraphPopover } from "@telegraph/popover";
 import { Heading } from "@telegraph/typography";
 import React from "react";
 
@@ -196,6 +197,7 @@ type NestedModalProps = {
   onOpenChange: (value: boolean) => void;
   depth: number;
   onClick: () => void;
+  children?: React.ReactNode;
 };
 
 const NestedModal = ({
@@ -203,6 +205,7 @@ const NestedModal = ({
   depth,
   onOpenChange,
   onClick,
+  children,
 }: NestedModalProps) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
@@ -226,14 +229,23 @@ const NestedModal = ({
             <TelegraphModal.Close />
           </TelegraphModal.Header>
           <TelegraphModal.Body>
+            {children}
             <Button
               variant="outline"
               size="1"
               onClick={onClick}
               tgphRef={buttonRef}
             >
-              Open Nested Modal {depth + 1}
+              open nested
             </Button>
+            <TelegraphPopover.Root>
+              <TelegraphPopover.Trigger>
+                <Button variant="outline" size="1">
+                  Open Nested Modal {depth + 1}
+                </Button>
+              </TelegraphPopover.Trigger>
+              <TelegraphPopover.Content>content</TelegraphPopover.Content>
+            </TelegraphPopover.Root>
           </TelegraphModal.Body>
         </TelegraphModal.Content>
       </TelegraphModal.Root>
@@ -251,33 +263,34 @@ export const NestedModals: Story = {
     /* eslint-enable react-hooks/rules-of-hooks */
     return (
       <>
-        <ModalStackingProvider>
-          <Button onClick={() => setModal1Open(true)}>Open Modal</Button>
-          <NestedModal
-            open={modal1Open}
-            onOpenChange={setModal1Open}
-            onClick={() => setModal2Open(true)}
-            depth={0}
-          />
+        <Button onClick={() => setModal1Open(true)}>Open Modal</Button>
+        <NestedModal
+          open={modal1Open}
+          onOpenChange={setModal1Open}
+          onClick={() => setModal2Open(true)}
+          depth={0}
+        >
           <NestedModal
             open={modal2Open}
             onOpenChange={setModal2Open}
             onClick={() => setModal3Open(true)}
             depth={1}
-          />
-          <NestedModal
-            open={modal3Open}
-            onOpenChange={setModal3Open}
-            onClick={() => setModal4Open(true)}
-            depth={2}
-          />
-          <NestedModal
-            open={modal4Open}
-            onOpenChange={setModal4Open}
-            onClick={() => {}}
-            depth={3}
-          />
-        </ModalStackingProvider>
+          >
+            <NestedModal
+              open={modal3Open}
+              onOpenChange={setModal3Open}
+              onClick={() => setModal4Open(true)}
+              depth={2}
+            >
+              <NestedModal
+                open={modal4Open}
+                onOpenChange={setModal4Open}
+                onClick={() => {}}
+                depth={3}
+              />
+            </NestedModal>
+          </NestedModal>
+        </NestedModal>
       </>
     );
   },
