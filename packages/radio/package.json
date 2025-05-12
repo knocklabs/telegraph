@@ -31,7 +31,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-radio-group": "^1.1.3",
+    "@radix-ui/react-radio-group": "^1.3.6",
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
