@@ -6,15 +6,46 @@ import type {
 import { Box } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import clsx from "clsx";
-// We use "Bell" in place of any icon so we get correct type checking
-import type { Bell } from "lucide-react";
+import type * as LucideIconsUnslugified from "lucide-react";
+import { DynamicIcon } from "lucide-react/dynamic";
+import LucideIcons from "lucide-static/icon-nodes.json";
 
 import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
 
-type LucideIcon = typeof Bell;
+// Take a slugified version of the icon like "a-arrow-down" and return
+// the unslugified version like "AArrowDown". We need the unslugified
+// version as the object key so that we don't introduce any breaking
+// changes to how the Lucide object works in the icon package.
+const unslugify = (slug: string): string => {
+  return slug
+    .split(/[-_]/g)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+};
+
+// An object of Lucide icons that contain the displayName of the icon
+// so that we can use that name to call the icon dynamically instead
+// of needing to bundle the icon directly into the component.
+const Lucide = Object.keys(LucideIcons).reduce(
+  (acc, key) => {
+    const unslugifiedKey = unslugify(
+      key,
+    ) as keyof typeof LucideIconsUnslugified;
+    acc[unslugifiedKey] = {
+      displayName: key as keyof typeof LucideIcons,
+    };
+    return acc;
+  },
+  {} as Record<
+    keyof typeof LucideIconsUnslugified,
+    Record<"displayName", keyof typeof LucideIcons>
+  >,
+);
+
+type LucideIcon = Record<"displayName", keyof typeof LucideIcons>;
 
 type BaseIconProps = {
-  icon: LucideIcon;
+  icon: Record<"displayName", keyof typeof LucideIcons>;
   size?: keyof typeof SIZE_MAP;
   variant?: keyof typeof COLOR_MAP;
   color?: keyof (typeof COLOR_MAP)["primary"];
@@ -45,9 +76,7 @@ const Icon = <T extends TgphElement>({
   style,
   ...props
 }: IconProps<T>) => {
-  const IconComponent = icon;
-
-  if (!IconComponent) {
+  if (!icon) {
     throw new Error(`@telegraph/icon: icon prop is required`);
   }
 
@@ -73,16 +102,16 @@ const Icon = <T extends TgphElement>({
       }}
       {...props}
     >
-      {IconComponent && (
-        <IconComponent
-          aria-label={alt}
-          width="100%"
-          height="100%"
-          display="block"
-        />
-      )}
+      {/* Dynamically import icons as we need them so we don't bloat the bundle */}
+      <DynamicIcon
+        name={icon.displayName}
+        aria-label={alt}
+        width="100%"
+        height="100%"
+        display="block"
+      />
     </Text>
   );
 };
 
-export { Icon, type LucideIcon };
+export { Icon, Lucide, type LucideIcon };
