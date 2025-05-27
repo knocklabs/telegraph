@@ -77,11 +77,17 @@ const Icon = <T extends TgphElement>({
   ...props
 }: IconProps<T>) => {
   if (!icon) {
-    throw new Error(`@telegraph/icon: icon prop is required`);
+    console.error(`@telegraph/icon: icon prop is required`);
+    return <></>;
+  }
+
+  if (!icon.displayName) {
+    console.error(`@telegraph/icon: icon prop is required with displayName`);
+    return <></>;
   }
 
   if (!alt && !props["aria-hidden"]) {
-    throw new Error(`@telegraph/icon: alt prop is required`);
+    console.error(`@telegraph/icon: alt prop is required`);
   }
 
   return (
