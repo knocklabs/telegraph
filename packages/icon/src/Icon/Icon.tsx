@@ -89,6 +89,8 @@ const Icon = <T extends TgphElement>({
       as={as || "span"}
       className={clsx("tgph-icon", className)}
       data-button-icon
+      role="img"
+      aria-label={alt}
       style={{
         // We choose to override these values vs passing them in as props because
         // the icon's sizes aren't all exact telegraph tokens and the colors
@@ -105,7 +107,6 @@ const Icon = <T extends TgphElement>({
       {/* Dynamically import icons as we need them so we don't bloat the bundle */}
       <DynamicIcon
         name={icon.displayName}
-        aria-label={alt}
         width="100%"
         height="100%"
         display="block"

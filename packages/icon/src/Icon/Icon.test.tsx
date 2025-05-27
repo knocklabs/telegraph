@@ -6,6 +6,19 @@ import { Lucide } from "../index";
 
 import { Icon } from "./Icon";
 
+// @ts-expect-error -- We need top import and mock this because DynamicIcon is ESM and vitest expects CJS :/
+const dynamicIconPkg = import("lucide-react/dist/esm/DynamicIcon.js") as {
+  default: React.ReactNode;
+};
+
+vi.mock("lucide-react/dynamic", () => {
+  return {
+    DynamicIcon: () => {
+      return dynamicIconPkg.default;
+    },
+  };
+});
+
 // Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
 beforeEach(() => {
