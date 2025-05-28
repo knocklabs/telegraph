@@ -7,10 +7,12 @@ import { Box } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import clsx from "clsx";
 import type * as LucideIconsUnslugified from "lucide-react";
-import { DynamicIcon } from "lucide-react/dynamic";
-import LucideIcons from "lucide-static/icon-nodes.json";
+import { DynamicIcon, dynamicIconImports } from "lucide-react/dynamic";
 
 import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
+import type { TransformKeysToPascal } from "./Icon.types";
+
+type LucideIcon = TransformKeysToPascal<keyof typeof dynamicIconImports>;
 
 // Take a slugified version of the icon like "a-arrow-down" and return
 // the unslugified version like "AArrowDown". We need the unslugified
@@ -23,29 +25,29 @@ const unslugify = (slug: string): string => {
     .join("");
 };
 
-// An object of Lucide icons that contain the displayName of the icon
-// so that we can use that name to call the icon dynamically instead
-// of needing to bundle the icon directly into the component.
-const Lucide = Object.keys(LucideIcons).reduce(
+// An object of Lucide icons that contain the kebab-cased name of
+// the icon so that we can use that name to call the icon dynamically
+// instead of needing to bundle the icon directly into the component.
+// We do it in this way to maintain backwards compatibility with the
+// `Lucide.Bell` pattern
+const Lucide = Object.keys(dynamicIconImports).reduce(
   (acc, key) => {
     const unslugifiedKey = unslugify(
       key,
     ) as keyof typeof LucideIconsUnslugified;
-    acc[unslugifiedKey] = {
-      displayName: key as keyof typeof LucideIcons,
-    };
+    acc[unslugifiedKey] = key as TransformKeysToPascal<
+      keyof typeof dynamicIconImports
+    >;
     return acc;
   },
   {} as Record<
     keyof typeof LucideIconsUnslugified,
-    Record<"displayName", keyof typeof LucideIcons>
+    TransformKeysToPascal<keyof typeof dynamicIconImports>
   >,
 );
 
-type LucideIcon = Record<"displayName", keyof typeof LucideIcons>;
-
 type BaseIconProps = {
-  icon: Record<"displayName", keyof typeof LucideIcons>;
+  icon: LucideIcon;
   size?: keyof typeof SIZE_MAP;
   variant?: keyof typeof COLOR_MAP;
   color?: keyof (typeof COLOR_MAP)["primary"];
@@ -78,12 +80,6 @@ const Icon = <T extends TgphElement>({
 }: IconProps<T>) => {
   if (!icon) {
     console.error(`@telegraph/icon: icon prop is required`);
-    return <></>;
-  }
-
-  if (!icon.displayName) {
-    console.error(`@telegraph/icon: icon prop is required with displayName`);
-    return <></>;
   }
 
   if (!alt && !props["aria-hidden"]) {
@@ -110,13 +106,7 @@ const Icon = <T extends TgphElement>({
       }}
       {...props}
     >
-      {/* Dynamically import icons as we need them so we don't bloat the bundle */}
-      <DynamicIcon
-        name={icon.displayName}
-        width="100%"
-        height="100%"
-        display="block"
-      />
+      <DynamicIcon name={icon} width="100%" height="100%" display="block" />
     </Text>
   );
 };

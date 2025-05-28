@@ -16,6 +16,11 @@ vi.mock("lucide-react/dynamic", () => {
     DynamicIcon: () => {
       return dynamicIconPkg.default;
     },
+    dynamicIconImports: {
+      Bell: () => {
+        return dynamicIconPkg.default;
+      },
+    },
   };
 });
 
@@ -38,15 +43,17 @@ describe("Icon", () => {
   });
   it("icon without icon prop throws error", async () => {
     // @ts-expect-error Testing error case
-    expect(() => render(<Icon alt="description" />)).toThrowError(
+    render(<Icon alt="description" />);
+    expect(console.error).toHaveBeenCalledWith(
       "@telegraph/icon: icon prop is required",
     );
   });
   it("icon without alt prop throws error", async () => {
-    expect(() =>
-      // @ts-expect-error Testing error case
-      render(<Icon icon={{ icon: Lucide.Bell }} />),
-    ).toThrowError("@telegraph/icon: alt prop is required");
+    // @ts-expect-error Testing error case
+    render(<Icon icon={{ icon: Lucide.Bell }} />);
+    expect(console.error).toHaveBeenCalledWith(
+      "@telegraph/icon: alt prop is required",
+    );
   });
   it("default props applies correct className", () => {
     const { container } = render(

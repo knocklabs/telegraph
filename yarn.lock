@@ -5142,7 +5142,6 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     lucide-react: "npm:^0.511.0"
-    lucide-static: "npm:^0.511.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -10826,13 +10825,6 @@ __metadata:
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/bf09dd73cf2233abea90506ad31a91739555d761062722acbe045cb73e274f035b196472de0971a8a8f0645b2b54e3f21b8c1980fe87c909ca93171a9c28428a
-  languageName: node
-  linkType: hard
-
-"lucide-static@npm:^0.511.0":
-  version: 0.511.0
-  resolution: "lucide-static@npm:0.511.0"
-  checksum: 10c0/0378043a06dc032cd686a33eca28510dcc87f498217825c76295c86cab248693998ccd7a8e65a272b00d4940f670fdb79dc5d1bf043760f26527f3ba5c9329f5
   languageName: node
   linkType: hard
 
