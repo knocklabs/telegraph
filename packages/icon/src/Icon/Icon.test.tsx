@@ -6,6 +6,24 @@ import { Lucide } from "../index";
 
 import { Icon } from "./Icon";
 
+// @ts-expect-error -- We need mock this impport because DynamicIcon is ESM and vitest expects CJS :/
+const dynamicIconPkg = import("lucide-react/dist/esm/DynamicIcon.js") as {
+  default: React.ReactNode;
+};
+
+vi.mock("lucide-react/dynamic", () => {
+  return {
+    DynamicIcon: () => {
+      return dynamicIconPkg.default;
+    },
+    dynamicIconImports: {
+      Bell: () => {
+        return dynamicIconPkg.default;
+      },
+    },
+  };
+});
+
 // Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
 beforeEach(() => {
@@ -25,15 +43,17 @@ describe("Icon", () => {
   });
   it("icon without icon prop throws error", async () => {
     // @ts-expect-error Testing error case
-    expect(() => render(<Icon alt="description" />)).toThrowError(
+    render(<Icon alt="description" />);
+    expect(console.error).toHaveBeenCalledWith(
       "@telegraph/icon: icon prop is required",
     );
   });
   it("icon without alt prop throws error", async () => {
-    expect(() =>
-      // @ts-expect-error Testing error case
-      render(<Icon icon={{ icon: Lucide.Bell }} />),
-    ).toThrowError("@telegraph/icon: alt prop is required");
+    // @ts-expect-error Testing error case
+    render(<Icon icon={{ icon: Lucide.Bell }} />);
+    expect(console.error).toHaveBeenCalledWith(
+      "@telegraph/icon: alt prop is required",
+    );
   });
   it("default props applies correct className", () => {
     const { container } = render(

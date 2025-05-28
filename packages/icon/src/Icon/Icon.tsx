@@ -6,15 +6,50 @@ import type {
 import { Box } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import clsx from "clsx";
-// We use "Bell" in place of any icon so we get correct type checking
-import type { Bell } from "lucide-react";
+import { DynamicIcon, dynamicIconImports } from "lucide-react/dynamic";
 
 import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
+import type { TransformKeysToPascal } from "./Icon.types";
 
-type LucideIcon = typeof Bell;
+type LucideIcon = TransformKeysToPascal<keyof typeof dynamicIconImports>;
+type PascalCaseLucideIconKey = keyof TransformKeysToPascal<
+  typeof dynamicIconImports
+>;
+type KebabCaseLucideIconKey = keyof typeof dynamicIconImports;
+
+// Take a kebab cased version of the icon like "a-arrow-down" and return
+// the pascal cased version like "AArrowDown". We need the pascal-cased
+// version as the object key so that we don't introduce any breaking
+// changes to how the Lucide object works in the icon package. This is
+// a temporary solution to maintain backwards compatibility with the
+// Lucide object.
+const toPascalCase = (
+  slug: KebabCaseLucideIconKey,
+): PascalCaseLucideIconKey => {
+  return slug
+    .split(/[-_]/g)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("") as PascalCaseLucideIconKey;
+};
+
+// An object of Lucide icons that contain the kebab-cased name of
+// the icon so that we can use that name to call the icon dynamically
+// instead of needing to bundle the icon directly into the component.
+// We do it in this way to maintain backwards compatibility with the
+// `Lucide.Bell` pattern
+const Lucide = (
+  Object.keys(dynamicIconImports) as Array<KebabCaseLucideIconKey>
+).reduce(
+  (acc, key) => {
+    const unslugifiedKey = toPascalCase(key);
+    acc[unslugifiedKey] = key;
+    return acc;
+  },
+  {} as Record<PascalCaseLucideIconKey, KebabCaseLucideIconKey>,
+);
 
 type BaseIconProps = {
-  icon: LucideIcon;
+  icon: KebabCaseLucideIconKey;
   size?: keyof typeof SIZE_MAP;
   variant?: keyof typeof COLOR_MAP;
   color?: keyof (typeof COLOR_MAP)["primary"];
@@ -45,14 +80,12 @@ const Icon = <T extends TgphElement>({
   style,
   ...props
 }: IconProps<T>) => {
-  const IconComponent = icon;
-
-  if (!IconComponent) {
-    throw new Error(`@telegraph/icon: icon prop is required`);
+  if (!icon) {
+    console.error(`@telegraph/icon: icon prop is required`);
   }
 
   if (!alt && !props["aria-hidden"]) {
-    throw new Error(`@telegraph/icon: alt prop is required`);
+    console.error(`@telegraph/icon: alt prop is required`);
   }
 
   return (
@@ -60,6 +93,8 @@ const Icon = <T extends TgphElement>({
       as={as || "span"}
       className={clsx("tgph-icon", className)}
       data-button-icon
+      role="img"
+      aria-label={alt}
       style={{
         // We choose to override these values vs passing them in as props because
         // the icon's sizes aren't all exact telegraph tokens and the colors
@@ -73,16 +108,9 @@ const Icon = <T extends TgphElement>({
       }}
       {...props}
     >
-      {IconComponent && (
-        <IconComponent
-          aria-label={alt}
-          width="100%"
-          height="100%"
-          display="block"
-        />
-      )}
+      <DynamicIcon name={icon} width="100%" height="100%" display="block" />
     </Text>
   );
 };
 
-export { Icon, type LucideIcon };
+export { Icon, Lucide, type LucideIcon };

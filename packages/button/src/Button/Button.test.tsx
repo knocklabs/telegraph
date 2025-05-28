@@ -32,10 +32,11 @@ describe("Button", () => {
     expectToHaveNoViolations(await axe(container));
   });
   it("icon button without alt is inaccessible", async () => {
-    expect(() =>
-      // @ts-expect-error Testing error case
-      render(<Button leadingIcon={{ icon: Lucide.Bell }}>Click me</Button>),
-    ).toThrow("@telegraph/icon: alt prop is required");
+    // @ts-expect-error Testing error case
+    render(<Button leadingIcon={{ icon: Lucide.Bell }}>Click me</Button>);
+    expect(console.error).toHaveBeenCalledWith(
+      "@telegraph/icon: alt prop is required",
+    );
   });
   it("alt text is optional if icon is aria hidden", async () => {
     const { container } = render(

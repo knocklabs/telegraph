@@ -34,7 +34,7 @@
     "@telegraph/helpers": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.436.0"
+    "lucide-react": "^0.511.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.3",
