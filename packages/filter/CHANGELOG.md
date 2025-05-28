@@ -1,5 +1,15 @@
 # @telegraph/filter
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`8338d18`](https://github.com/knocklabs/telegraph/commit/8338d18f02c1437fe5f7532bc6d9e3c0b43b03e1)]:
+  - @telegraph/icon@0.0.51
+  - @telegraph/button@0.0.78
+  - @telegraph/combobox@0.0.82
+  - @telegraph/menu@0.0.65
+
 ## 0.0.6
 
 ### Patch Changes
