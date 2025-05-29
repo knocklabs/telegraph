@@ -46,6 +46,7 @@ const Kbd = ({
         transition: "background-color 0.2s ease-in-out",
         ...style,
       }}
+      data-tgph-kbd
       {...props}
     >
       {text && (
