@@ -3833,7 +3833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-slot@npm:1.1.0, @radix-ui/react-slot@npm:^1.1.0":
+"@radix-ui/react-slot@npm:1.1.0":
   version: 1.1.0
   resolution: "@radix-ui/react-slot@npm:1.1.0"
   dependencies:
@@ -3893,7 +3893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-slot@npm:1.2.3":
+"@radix-ui/react-slot@npm:1.2.3, @radix-ui/react-slot@npm:^1.2.3":
   version: 1.2.3
   resolution: "@radix-ui/react-slot@npm:1.2.3"
   dependencies:
@@ -5264,7 +5264,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.4"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-slot": "npm:^1.1.0"
+    "@radix-ui/react-slot": "npm:^1.2.3"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tailwind-config": "workspace:^"
@@ -5442,7 +5442,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.4"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-slot": "npm:^1.1.0"
+    "@radix-ui/react-slot": "npm:^1.2.3"
     "@telegraph/compose-refs": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/layout": "workspace:^"

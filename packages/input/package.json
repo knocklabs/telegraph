@@ -32,7 +32,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-slot": "^1.2.3",
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
