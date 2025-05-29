@@ -7,7 +7,5 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
-    reviewers:
-      - "kylemcd"
     versioning-strategy: increase
     open-pull-requests-limit: 5
