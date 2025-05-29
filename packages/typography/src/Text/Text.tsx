@@ -25,7 +25,7 @@ const Text = <T extends TgphElement>({
   align = "left",
   color,
   className,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // Remove this from props to avoid passing to DOM element
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: TextProps<T>) => {

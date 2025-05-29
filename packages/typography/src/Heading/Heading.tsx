@@ -26,7 +26,6 @@ const Heading = <T extends TgphElement>({
   align,
   className,
   // Remove this from props to avoid passing to DOM element
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   internal_optionalAs: _internal_optionalAs,
   ...props
 }: HeadingProps<T>) => {
