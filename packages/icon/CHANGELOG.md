@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.0.51
+
+### Patch Changes
+
+- [#456](https://github.com/knocklabs/telegraph/pull/456) [`8338d18`](https://github.com/knocklabs/telegraph/commit/8338d18f02c1437fe5f7532bc6d9e3c0b43b03e1) Thanks [@kylemcd](https://github.com/kylemcd)! - Changes the export strategy for Lucide icons within @telegraph/icon so that they are individually chunked for easier tree shaking by a downstream user.
+
 ## 0.0.50
 
 ### Patch Changes
