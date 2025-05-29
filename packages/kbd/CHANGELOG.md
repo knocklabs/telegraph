@@ -1,5 +1,11 @@
 # @telegraph/kbd
 
+## 0.0.27
+
+### Patch Changes
+
+- [#458](https://github.com/knocklabs/telegraph/pull/458) [`9b2bd3b`](https://github.com/knocklabs/telegraph/commit/9b2bd3bddbc1920e1833d8513ae50867e16e9d99) Thanks [@kylemcd](https://github.com/kylemcd)! - fixes kbd component issue where the icon name was being dispalyed instead of the icon
+
 ## 0.0.26
 
 ### Patch Changes
