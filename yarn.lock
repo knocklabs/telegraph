@@ -4258,11 +4258,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-visually-hidden@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@radix-ui/react-visually-hidden@npm:1.1.0"
+"@radix-ui/react-visually-hidden@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@radix-ui/react-visually-hidden@npm:1.2.2"
   dependencies:
-    "@radix-ui/react-primitive": "npm:2.0.0"
+    "@radix-ui/react-primitive": "npm:2.1.2"
   peerDependencies:
     "@types/react": "*"
     "@types/react-dom": "*"
@@ -4273,7 +4273,7 @@ __metadata:
       optional: true
     "@types/react-dom":
       optional: true
-  checksum: 10c0/db138dd5f3c94958a9f836740d4408c89c4a73e770eaba5ead921e69b3c0d196c5cd58323d82829a9bc05a74873c299195dfd8366b9808e53a9a3dbca5a1e5fe
+  checksum: 10c0/464b955cbe66ae5de819af5b7c2796eba77f84ab677eade0aa57e98ea588ef5d189c822e7bee0e18608864d5d262a1c70b5dda487269219f147a2a7cea625292
   languageName: node
   linkType: hard
 
@@ -5266,7 +5266,7 @@ __metadata:
     "@radix-ui/react-dismissable-layer": "npm:^1.1.5"
     "@radix-ui/react-portal": "npm:^1.1.3"
     "@radix-ui/react-use-controllable-state": "npm:^1.1.0"
-    "@radix-ui/react-visually-hidden": "npm:^1.1.0"
+    "@radix-ui/react-visually-hidden": "npm:^1.2.2"
     "@telegraph/button": "workspace:^"
     "@telegraph/compose-refs": "workspace:^"
     "@telegraph/helpers": "workspace:^"
@@ -5503,7 +5503,7 @@ __metadata:
     "@radix-ui/react-dialog": "npm:^1.1.1"
     "@radix-ui/react-focus-scope": "npm:^1.1.0"
     "@radix-ui/react-portal": "npm:^1.1.3"
-    "@radix-ui/react-visually-hidden": "npm:^1.1.0"
+    "@radix-ui/react-visually-hidden": "npm:^1.2.2"
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
