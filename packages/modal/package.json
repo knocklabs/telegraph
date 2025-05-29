@@ -41,7 +41,7 @@
     "framer-motion": "^11.1.9"
   },
   "devDependencies": {
-    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/eslint-config": "^0.0.4",
     "@knocklabs/prettier-config": "^0.0.1",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
