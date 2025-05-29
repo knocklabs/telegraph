@@ -1,5 +1,17 @@
 # @telegraph/combobox
 
+## 0.0.83
+
+### Patch Changes
+
+- [#453](https://github.com/knocklabs/telegraph/pull/453) [`fa140c7`](https://github.com/knocklabs/telegraph/commit/fa140c7af8fa30c06a9b65d365304d279055efd8) Thanks [@dependabot](https://github.com/apps/dependabot)! - updates @radix-ui/react-visually-hidden
+
+- Updated dependencies [[`a020975`](https://github.com/knocklabs/telegraph/commit/a020975ce54f614cde1a98893fb675499de9d2b2)]:
+  - @telegraph/input@0.0.43
+  - @telegraph/tooltip@0.0.47
+  - @telegraph/tag@0.0.86
+  - @telegraph/truncate@0.0.2
+
 ## 0.0.82
 
 ### Patch Changes

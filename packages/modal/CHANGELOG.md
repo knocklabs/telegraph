@@ -1,5 +1,13 @@
 # @telegraph/modal
 
+## 0.0.80
+
+### Patch Changes
+
+- [#461](https://github.com/knocklabs/telegraph/pull/461) [`3a95302`](https://github.com/knocklabs/telegraph/commit/3a953020babbe721cce08efb2ae67dde9554eacb) Thanks [@dependabot](https://github.com/apps/dependabot)! - bump @radix-ui/react-dialog
+
+- [#453](https://github.com/knocklabs/telegraph/pull/453) [`fa140c7`](https://github.com/knocklabs/telegraph/commit/fa140c7af8fa30c06a9b65d365304d279055efd8) Thanks [@dependabot](https://github.com/apps/dependabot)! - updates @radix-ui/react-visually-hidden
+
 ## 0.0.79
 
 ### Patch Changes
