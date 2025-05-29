@@ -40,7 +40,7 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "devDependencies": {
-    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/eslint-config": "^0.0.4",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/tokens": "workspace:^",
