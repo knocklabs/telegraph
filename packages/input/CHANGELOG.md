@@ -1,5 +1,11 @@
 # @telegraph/input
 
+## 0.0.43
+
+### Patch Changes
+
+- [#465](https://github.com/knocklabs/telegraph/pull/465) [`a020975`](https://github.com/knocklabs/telegraph/commit/a020975ce54f614cde1a98893fb675499de9d2b2) Thanks [@dependabot](https://github.com/apps/dependabot)! - bump @radix-ui/react-slot
+
 ## 0.0.42
 
 ### Patch Changes

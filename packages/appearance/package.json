@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/appearance",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Utilties to manage the appearance of Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/appearance",
   "author": "@knocklabs",
