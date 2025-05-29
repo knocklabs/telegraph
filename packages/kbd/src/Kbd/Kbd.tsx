@@ -48,8 +48,6 @@ const Kbd = ({
       }}
       {...props}
     >
-      {appearance}
-      {contrast}
       {text && (
         <Text
           as="span"
