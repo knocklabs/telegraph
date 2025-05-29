@@ -2216,7 +2216,7 @@ __metadata:
     "@moonrepo/cli": "npm:^1.28.2"
     "@storybook/addon-essentials": "npm:^8.5.2"
     "@storybook/addon-interactions": "npm:^8.5.2"
-    "@storybook/addon-links": "npm:^8.5.2"
+    "@storybook/addon-links": "npm:^9.0.0"
     "@storybook/addon-onboarding": "npm:^8.5.2"
     "@storybook/addon-themes": "npm:^8.5.2"
     "@storybook/blocks": "npm:^8.5.2"
@@ -4868,20 +4868,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-links@npm:^8.5.2":
-  version: 8.5.2
-  resolution: "@storybook/addon-links@npm:8.5.2"
+"@storybook/addon-links@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@storybook/addon-links@npm:9.0.0"
   dependencies:
-    "@storybook/csf": "npm:0.1.12"
     "@storybook/global": "npm:^5.0.0"
-    ts-dedent: "npm:^2.0.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-    storybook: ^8.5.2
+    storybook: ^9.0.0
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 10c0/60f29c2ff9bb1887cb84a81fb29af9dc8f24cb424210a2619dbda3ba361d40f7b799f6084780b4244714c5785d0dcd936303acda548e1d72f955411a0c668647
+  checksum: 10c0/7ea1c49896ce1405d47eded38cbc2a2f23817eb6f12921884eec5a0f756d46d2afebc2a8b87affbc1089a33a5c968d3e3b415d65c7e3f05fd9398d9b936de8e7
   languageName: node
   linkType: hard
 
