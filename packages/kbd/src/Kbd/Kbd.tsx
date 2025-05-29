@@ -21,11 +21,12 @@ const Kbd = ({
   style,
   ...props
 }: KbdProps) => {
-  const { appearance } = useAppearance();
+  const { appearance: appearanceProp } = useAppearance();
   const { pressed } = usePressed({ key: props.eventKey || label });
-  const key = getIconOrKey(label);
+  const { icon, text } = getIconOrKey(label);
 
   const contrast = contrastProp ? "contrast" : "default";
+  const appearance = appearanceProp || "light";
 
   return (
     <Stack
@@ -47,17 +48,20 @@ const Kbd = ({
       }}
       {...props}
     >
-      {typeof key === "string" ? (
+      {appearance}
+      {contrast}
+      {text && (
         <Text
           as="span"
           {...sizeMap[size].text}
           {...colorMap[appearance][contrast].text}
         >
-          {key}
+          {text}
         </Text>
-      ) : (
+      )}
+      {icon && (
         <Icon
-          icon={key}
+          icon={icon}
           alt={label}
           {...sizeMap[size].icon}
           {...colorMap[appearance][contrast].icon}
