@@ -1,5 +1,12 @@
 # @telegraph/truncate
 
+## 0.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/tooltip@0.0.47
+
 ## 0.0.1
 
 ### Patch Changes

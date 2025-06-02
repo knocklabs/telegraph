@@ -1,5 +1,13 @@
 # @telegraph/radio
 
+## 0.0.66
+
+### Patch Changes
+
+- [#454](https://github.com/knocklabs/telegraph/pull/454) [`0e6a4f8`](https://github.com/knocklabs/telegraph/commit/0e6a4f8936674a6d53609183a16ea7b2eaa68f12) Thanks [@dependabot](https://github.com/apps/dependabot)! - updates @radix-ui/react-radio-group
+
+- [#462](https://github.com/knocklabs/telegraph/pull/462) [`5582e38`](https://github.com/knocklabs/telegraph/commit/5582e382dd0bbeec44a532b2ccf704981b4398c3) Thanks [@dependabot](https://github.com/apps/dependabot)! - bump @radix-ui/react-radio-group
+
 ## 0.0.65
 
 ### Patch Changes
