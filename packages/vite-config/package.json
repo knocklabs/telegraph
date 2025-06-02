@@ -21,7 +21,7 @@
     "@vanilla-extract/vite-plugin": "^5.0.1",
     "@vitejs/plugin-react": "^4.3.4",
     "vite": "^6.0.11",
-    "vite-plugin-dts": "^3.9.1"
+    "vite-plugin-dts": "^4.5.4"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.4",
