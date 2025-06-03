@@ -30,6 +30,7 @@ export const spacing = {
   72: "18rem",
   80: "20rem",
   96: "24rem",
+  120: "30rem",
   140: "35rem",
   160: "40rem", // Default card and modal width
   full: "100%",
