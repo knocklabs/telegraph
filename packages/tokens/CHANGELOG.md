@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.0.21
+
+### Patch Changes
+
+- [#470](https://github.com/knocklabs/telegraph/pull/470) [`9eec71e`](https://github.com/knocklabs/telegraph/commit/9eec71e19160c4d987d959a62ed02648d1639d2e) Thanks [@connorlindsey](https://github.com/connorlindsey)! - feat: add 120 to spacing constants
+
 ## 0.0.20
 
 ### Patch Changes
