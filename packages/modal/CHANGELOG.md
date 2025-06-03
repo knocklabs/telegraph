@@ -1,5 +1,15 @@
 # @telegraph/modal
 
+## 0.0.81
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.1.17
+  - @telegraph/style-engine@0.1.11
+  - @telegraph/button@0.0.79
+  - @telegraph/icon@0.0.52
+
 ## 0.0.80
 
 ### Patch Changes

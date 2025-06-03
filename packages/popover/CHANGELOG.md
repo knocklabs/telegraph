@@ -1,5 +1,13 @@
 # @telegraph/popover
 
+## 0.0.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.1.17
+  - @telegraph/motion@0.0.8
+
 ## 0.0.23
 
 ### Patch Changes

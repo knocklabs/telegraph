@@ -1,5 +1,13 @@
 # @telegraph/truncate
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/typography@0.1.17
+  - @telegraph/tooltip@0.0.48
+
 ## 0.0.2
 
 ### Patch Changes

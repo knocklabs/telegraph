@@ -1,5 +1,16 @@
 # @telegraph/tabs
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.1.17
+  - @telegraph/typography@0.1.17
+  - @telegraph/button@0.0.79
+  - @telegraph/icon@0.0.52
+  - @telegraph/menu@0.0.66
+
 ## 0.0.5
 
 ### Patch Changes

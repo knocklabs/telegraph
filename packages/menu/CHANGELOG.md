@@ -1,5 +1,15 @@
 # @telegraph/menu
 
+## 0.0.66
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.1.17
+  - @telegraph/button@0.0.79
+  - @telegraph/icon@0.0.52
+  - @telegraph/motion@0.0.8
+
 ## 0.0.65
 
 ### Patch Changes
