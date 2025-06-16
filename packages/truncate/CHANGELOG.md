@@ -1,5 +1,13 @@
 # @telegraph/truncate
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`bad64d8`](https://github.com/knocklabs/telegraph/commit/bad64d8996ba2304dc84ca81d0393bff5844fc96)]:
+  - @telegraph/tooltip@0.0.49
+  - @telegraph/typography@0.1.18
+
 ## 0.0.3
 
 ### Patch Changes

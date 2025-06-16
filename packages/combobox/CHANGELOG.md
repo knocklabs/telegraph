@@ -1,5 +1,22 @@
 # @telegraph/combobox
 
+## 0.0.85
+
+### Patch Changes
+
+- [#476](https://github.com/knocklabs/telegraph/pull/476) [`bad64d8`](https://github.com/knocklabs/telegraph/commit/bad64d8996ba2304dc84ca81d0393bff5844fc96) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-use-controllable-state from 1.1.0 to 1.2.2
+
+- Updated dependencies [[`45d2fe1`](https://github.com/knocklabs/telegraph/commit/45d2fe1284b97f984fb08f118e25a9d6bc58c353), [`bad64d8`](https://github.com/knocklabs/telegraph/commit/bad64d8996ba2304dc84ca81d0393bff5844fc96)]:
+  - @telegraph/layout@0.1.18
+  - @telegraph/menu@0.0.67
+  - @telegraph/tooltip@0.0.49
+  - @telegraph/button@0.0.80
+  - @telegraph/input@0.0.45
+  - @telegraph/tag@0.0.88
+  - @telegraph/typography@0.1.18
+  - @telegraph/truncate@0.0.4
+  - @telegraph/icon@0.0.53
+
 ## 0.0.84
 
 ### Patch Changes
