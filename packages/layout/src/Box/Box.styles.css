@@ -54,7 +54,7 @@
   background-color: var(--hover_backgroundColor);
 }
 
-.tgph-box--interactive:focus {
+.tgph-box--interactive:focus-visible {
   background-color: var(--focus_backgroundColor);
 }
 
