@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/input",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "description": "Input component for Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/input",
   "author": "@knocklabs",
