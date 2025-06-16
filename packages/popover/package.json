@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.6",
-    "@radix-ui/react-use-controllable-state": "^1.1.0",
+    "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/motion": "workspace:^"
