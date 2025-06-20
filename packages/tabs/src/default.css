@@ -25,21 +25,21 @@
 }
 
 /* Active tab text and icon color */
-[data-tgph-tab][data-state="active"] .tgph-text {
+[data-tgph-tab][data-state="active"] [data-tgph-tab-text] {
   color: var(--tgph-accent-11, #D13415);
 }
 
 /* Active tab icon color */
-[data-tgph-tab][data-state="active"] svg {
+[data-tgph-tab][data-state="active"] [data-tgph-tab-icon] {
   color: var(--tgph-accent-10, #DD4425);
 }
 
 /* Disabled tab icon color */
-[data-tgph-tab][data-disabled] svg {
+[data-tgph-tab][data-disabled] [data-tgph-tab-icon] {
   color: var(--tgph-gray-7, #CDCED6);
 }
 
 /* Disabled tab text color */
-[data-tgph-tab][data-disabled] .tgph-text {
+[data-tgph-tab][data-disabled] [data-tgph-tab-text] {
   color: var(--tgph-gray-9, #8B8D98);
 }
