@@ -10,6 +10,7 @@ type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   selected?: boolean | null;
   leadingComponent?: React.ReactNode;
   trailingComponent?: React.ReactNode;
+  textProps?: TgphComponentProps<typeof Button.Text>;
 };
 
 const MenuItem = <T extends TgphElement>({
@@ -25,6 +26,7 @@ const MenuItem = <T extends TgphElement>({
   leadingComponent,
   trailingIcon,
   trailingComponent,
+  textProps,
   ...props
 }: MenuItemProps<T>) => {
   return (
@@ -49,6 +51,7 @@ const MenuItem = <T extends TgphElement>({
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"
+          {...textProps}
         >
           {props.children}
         </Button.Text>

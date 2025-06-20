@@ -1,6 +1,7 @@
 import { Tabs } from "..";
 import { Lucide } from "@telegraph/icon";
-import { Box } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
+import { Text } from "@telegraph/typography";
 import React from "react";
 
 /**
@@ -103,6 +104,73 @@ export const Disabled = () => (
     </Tabs.Panel>
     <Tabs.Panel value="tab3">
       <Box py="4">Content for the third tab</Box>
+    </Tabs.Panel>
+  </Tabs>
+);
+
+export const WithAdditionalChildren = () => (
+  <Tabs defaultValue="tab1">
+    <Tabs.List>
+      <Tabs.Tab
+        value="tab1"
+        size="1"
+        leadingIcon={{
+          icon: Lucide.Plus,
+          alt: "Home",
+        }}
+        trailingComponent={
+          <Box style={{ marginLeft: "-8px" }}>
+            <Stack
+              w="2"
+              h="2"
+              bg="red-4"
+              p="2"
+              borderRadius="full"
+              align="center"
+              justify="center"
+            >
+              <Text as="span" color="red" size="0">
+                1
+              </Text>
+            </Stack>
+          </Box>
+        }
+      >
+        First Tab
+      </Tabs.Tab>
+      <Tabs.Tab
+        value="tab2"
+        size="1"
+        leadingIcon={{
+          icon: Lucide.Home,
+          alt: "Home",
+        }}
+        trailingComponent={
+          <Box style={{ marginLeft: "-8px" }}>
+            <Stack
+              w="2"
+              h="2"
+              bg="blue-4"
+              p="2"
+              borderRadius="full"
+              align="center"
+              justify="center"
+            >
+              <Text as="span" color="blue" size="0">
+                2
+              </Text>
+            </Stack>
+          </Box>
+        }
+      >
+        Second Tab
+      </Tabs.Tab>
+    </Tabs.List>
+    <Tabs.Panel value="tab1">
+      <Box py="4">Content for the first tab</Box>
+    </Tabs.Panel>
+    <Tabs.Panel value="tab2">
+      <Box py="4">Content for the second tab</Box>
     </Tabs.Panel>
   </Tabs>
 );
