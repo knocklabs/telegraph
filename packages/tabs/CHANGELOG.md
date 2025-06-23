@@ -1,5 +1,14 @@
 # @telegraph/tabs
 
+## 0.0.8
+
+### Patch Changes
+
+- [#482](https://github.com/knocklabs/telegraph/pull/482) [`3feb828`](https://github.com/knocklabs/telegraph/commit/3feb8288ac16a22544b52eb419061206a34247d4) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix: fix Tab active styling
+
+- Updated dependencies [[`3feb828`](https://github.com/knocklabs/telegraph/commit/3feb8288ac16a22544b52eb419061206a34247d4)]:
+  - @telegraph/menu@0.0.68
+
 ## 0.0.7
 
 ### Patch Changes
