@@ -39,6 +39,7 @@ const Tab = <T extends TgphElement>({
     size: "6",
     color: "gray",
     variant: "secondary",
+    "data-tgph-tab-icon": "",
   };
 
   const combinedLeadingIcon = leadingIcon
@@ -69,6 +70,10 @@ const Tab = <T extends TgphElement>({
           gap="2"
           color="gray"
           size="1"
+          // Important for styling the active color
+          textProps={{
+            "data-tgph-tab-text": "",
+          }}
           {...props}
         >
           {children}
