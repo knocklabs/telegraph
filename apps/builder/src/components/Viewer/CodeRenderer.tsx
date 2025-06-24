@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, Suspense } from "react";
 
 // We rely on a local ambient type declaration for @babel/standalone (see types folder).
 // The module is cast to `any` so we can access .transform without TypeScript errors.
@@ -168,10 +168,98 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
         React
       );
       const defaultExport =
-        (exportsReturned && exportsReturned.default) ||
-        moduleObj.exports.default;
+        (exportsReturned &&
+          (exportsReturned as Record<string, unknown>).default) ||
+        (moduleObj.exports as Record<string, unknown>).default;
+
+      const wrapMaybeAsyncComponent = (
+        Comp: (...args: never[]) => unknown
+      ): React.ComponentType => {
+        const Wrapper: React.FC = (props) => {
+          const [resolved, setResolved] = useState<React.ReactNode | null>(
+            null
+          );
+          const [loading, setLoading] = useState(false);
+          const [asyncError, setAsyncError] = useState<unknown>(null);
+
+          // Use a ref to avoid re-invoking on every render unless props change
+          const propsKey = JSON.stringify(props);
+
+          useEffect(() => {
+            let cancelled = false;
+
+            try {
+              const result = (Comp as any)(props);
+
+              if (
+                result &&
+                typeof (result as Promise<unknown>).then === "function"
+              ) {
+                setLoading(true);
+                (result as Promise<React.ReactNode>).then(
+                  (node) => {
+                    if (!cancelled) {
+                      setResolved(node);
+                      setLoading(false);
+                    }
+                  },
+                  (err) => {
+                    if (!cancelled) {
+                      setAsyncError(err);
+                      setLoading(false);
+                    }
+                  }
+                );
+              } else {
+                setResolved(result as React.ReactNode);
+              }
+            } catch (err) {
+              // If Comp throws a promise (Suspense), rethrow so React handles it normally
+              if (err && typeof (err as Promise<unknown>).then === "function") {
+                throw err;
+              }
+              setAsyncError(err);
+            }
+
+            return () => {
+              cancelled = true;
+            };
+          }, [propsKey]);
+
+          if (asyncError) {
+            throw asyncError;
+          }
+
+          if (loading || resolved === null) {
+            return React.createElement("span", null, "Loading…");
+          }
+
+          // If resolved value itself is a React element or node, render it; otherwise nothing
+          return <>{resolved as React.ReactNode}</>;
+        };
+        return Wrapper;
+      };
+
       if (typeof defaultExport === "function") {
-        setComponent(() => defaultExport as React.ComponentType);
+        setComponent(() => wrapMaybeAsyncComponent(defaultExport as any));
+      } else if (
+        defaultExport &&
+        typeof (defaultExport as Promise<unknown>).then === "function"
+      ) {
+        // The default export itself is a Promise (e.g., dynamic import). Use React.lazy.
+        setComponent(() =>
+          React.lazy(() =>
+            (defaultExport as Promise<unknown>).then((mod) => {
+              return {
+                default: wrapMaybeAsyncComponent(
+                  (mod as Record<string, unknown>).default as (
+                    ...args: never[]
+                  ) => unknown
+                ),
+              };
+            })
+          )
+        );
       } else {
         setError("No default export found in generated code");
       }
@@ -193,7 +281,9 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
   }
 
   return (
-    // Render the dynamically generated component
-    <Component />
+    // Render the dynamically generated component (support Suspense for lazy-loaded components)
+    <Suspense fallback={<pre>Loading component…</pre>}>
+      <Component />
+    </Suspense>
   );
 };

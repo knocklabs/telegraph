@@ -1,41 +1,154 @@
 import { openai } from "@ai-sdk/openai";
 import { streamText, tool } from "ai";
 import { z } from "zod";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { request } from "node:https";
 
 export const maxDuration = 30;
 
 // Runtime must be Node so we can access the filesystem
 export const runtime = "nodejs";
 
-import fs from "node:fs/promises";
-import path from "node:path";
-
 // Helper: walk up the directory tree until we find the monorepo root (contains `packages`)
-async function getRepoRoot(startDir: string): Promise<string> {
-  let current = startDir;
-  for (let i = 0; i < 5; i++) {
+// In some build/runtime environments (e.g. within Next.js's .next output) the working
+// directory can be nested many levels deep. We therefore allow a generous search depth
+// (default 25 levels) before giving up.
+async function getRepoRoot(startDir: string, maxDepth = 25): Promise<string> {
+  let current = path.resolve(startDir);
+  for (let depth = 0; depth <= maxDepth; depth++) {
     try {
       const stat = await fs.stat(path.join(current, "packages"));
       if (stat.isDirectory()) {
         return current;
       }
     } catch {
-      /* not found – keep walking */
+      /* `packages` not found at this level – keep walking */
     }
+
     const parent = path.dirname(current);
-    if (parent === current) break; // reached the fs root
+    if (parent === current) {
+      // Reached filesystem root – stop searching
+      break;
+    }
     current = parent;
   }
-  return startDir; // fallback – shouldn't happen in the repo
+
+  // If we couldn't locate the repo root we fall back to the original directory.
+  // This keeps the tools functional (they'll simply report "path not found")
+  // instead of throwing which would crash the entire route.
+  return startDir;
 }
 
-// Memoise repoRoot discovery so we don't hit fs for every tool call
 let _repoRoot: string | null = null;
+
+/**
+ * Resolve the monorepo root directory (the folder that directly contains the
+ * top-level `packages/` directory). We employ a defensive strategy that tries a
+ * few likely starting locations because {@link process.cwd} and `__dirname`
+ * can differ between local dev, build output and serverless runtimes.
+ */
 async function repoRoot() {
-  if (!_repoRoot) {
-    _repoRoot = await getRepoRoot(process.cwd());
+  if (_repoRoot) return _repoRoot;
+
+  const envOverride = process.env.TELEGRAPH_REPO_ROOT;
+  const candidates = [
+    envOverride, // explicit override wins
+    process.cwd(),
+    __dirname,
+  ].filter(Boolean) as string[];
+
+  for (const startDir of candidates) {
+    const root = await getRepoRoot(startDir);
+    try {
+      const stat = await fs.stat(path.join(root, "packages"));
+      if (stat.isDirectory()) {
+        _repoRoot = root;
+        return root;
+      }
+    } catch {
+      /* continue searching with next candidate */
+    }
   }
+
+  // Fallback: last resort use process.cwd(). This keeps the tools functional
+  // (they'll surface "path not found" errors instead of throwing).
+  _repoRoot = process.cwd();
   return _repoRoot;
+}
+
+// Helper: download a file from GitHub (raw content). We keep it extremely simple
+// and rely on the built-in HTTPS module to avoid adding dependencies.
+async function fetchFromGitHub(repoPath: string): Promise<string | null> {
+  const url = `https://raw.githubusercontent.com/knocklabs/telegraph/main/${repoPath}`;
+
+  return new Promise((resolve) => {
+    request(url, (res) => {
+      if (res.statusCode !== 200) {
+        resolve(null);
+        return;
+      }
+
+      let data = "";
+      res.setEncoding("utf8");
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => resolve(data));
+    })
+      .on("error", () => resolve(null))
+      .end();
+  });
+}
+
+// Helper: list a directory on GitHub via the contents API (unauthenticated – keep
+// usage light to avoid rate limits)
+async function listGithubDir(
+  repoPath: string
+): Promise<{ name: string; isDir: boolean }[] | null> {
+  const url = `https://api.github.com/repos/knocklabs/telegraph/contents/${repoPath}`;
+
+  return new Promise((resolve) => {
+    request(
+      url,
+      {
+        headers: {
+          "User-Agent": "telegraph-builder-runtime",
+          Accept: "application/vnd.github.v3+json",
+        },
+      },
+      (res) => {
+        if (res.statusCode !== 200) {
+          resolve(null);
+          return;
+        }
+
+        let raw = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => (raw += chunk));
+        res.on("end", () => {
+          try {
+            const json = JSON.parse(raw);
+            if (Array.isArray(json)) {
+              type GitHubEntry = { name: string; type: string };
+              resolve(
+                (json as GitHubEntry[]).map((item) => ({
+                  name: item.name,
+                  isDir: item.type === "dir",
+                }))
+              );
+              return;
+            }
+          } catch {
+            /* fall through */
+          }
+          resolve(null);
+        });
+      }
+    )
+      .on("error", () => resolve(null))
+      .end();
+  });
 }
 
 export async function POST(req: Request) {
@@ -58,8 +171,18 @@ export async function POST(req: Request) {
       "8. For compound components such as Button, Menu, etc., prefer the top-level export (e.g. `<Button>`). Use `<Button.Root>` and other sub-parts ONLY when implementing advanced custom patterns that the stories demonstrate.",
       "9. No inline styles. Use props / style tokens exposed by Telegraph components.",
       "10. Return a single **complete** `.tsx` file wrapped in triple back-ticks and NOTHING else (no prose).",
+      "11. When asked to stack things, utilize the `Stack` component from `@telegraph/layout` with the `direction` prop set to `column`, `row`, `row-reverse`, or `column-reverse`.",
+      "12. The react component should never have a `React.FC` or `React.Component` type. It should only be a function component. NEVER EVER write `React.FC` or `React.Component` in the generated code.",
+      "13. Always look to use the 'default' variation of a component, i.e. use `<Button>` instead of `<Button.Root>`, only in special cases where you need to do something that is not possible with the default component use the component's sub-parts.",
+      "14. When adding props to a component, always try to use the shorthand varation of the prop name, i.e. use `pb` instead of `paddingBottom`.",
+      "15. It's VERY VERY RARE, and should not be used unless explicitly acess for, but if a style is not possible via the props of a component, you can use the `style` prop to add inline styles to the component. This should only be used at an absolute last resort.",
+      "16. When using margin and padding, if you need the same space on both sides, use the `mx` or `my` prop instead of `ml` or `mr`.",
+      "17. You're an accessibility expert. Components should ALWAYS be accessible. Follow best practices for accessibility when building the components no matter what. ex: labbels on inputs, etc.",
+      "18. Only apply props if they're not already the default prop values applied to the component. ex: if the component has a `color` prop, don't apply the `color` prop if it's already the default value.",
+      "19. For any primitve prop values only use those defined from the component and `@telegraph/tokens`, i.e. never do `w='400px'`, utilize the defined tokens instead.",
       "Tools available: • `list_telegraph_packages` • `list_telegraph_files` • `read_telegraph_file`. Use them liberally (especially the *.stories.tsx / .constants.ts files) to inspect prop definitions and composition patterns.",
-      "If a file or constant cannot be found, gracefully continue – try alternative files or proceed with best-guess typings that follow guidelines, but be conservative and prefer patterns observed in the stories.",
+      "If a file or constant cannot be found, gracefully continue – try alternative files or proceed with best-guess typings that follow guidelines, but be conservative and prefer patterns observed in the stories. This should always be formatted in markdown.",
+      "Always return a message describing the component you are generating or the changes you are making.",
     ].join("\n"),
   };
 
@@ -80,7 +203,15 @@ export async function POST(req: Request) {
         }),
         execute: async ({ path: filePath }) => {
           const root = await repoRoot();
-          const normalizedPath = filePath.trim().replace(/^\/+/g, "");
+          // Normalise the incoming path so it is always relative to the monorepo root.
+          // 1. Trim whitespace
+          // 2. Remove any leading slashes
+          // 3. Remove a leading "telegraph/" segment if the caller included the repo
+          //    name (which the system prompt examples sometimes do)
+          const normalizedPath = filePath
+            .trim()
+            .replace(/^\/+/g, "")
+            .replace(/^telegraph\//, "");
           const absPath = path.resolve(root, normalizedPath);
 
           // Guard against directory traversal & non-existent paths
@@ -106,9 +237,40 @@ export async function POST(req: Request) {
             const code = await fs.readFile(absPath, "utf8");
             return { path: filePath, code };
           } catch (err: unknown) {
+            // Attempt within packages/ if not already namespaced
+            if (!normalizedPath.startsWith("packages/")) {
+              const pkgNormalized = path.posix.join("packages", normalizedPath);
+              const pkgAbs = path.resolve(root, pkgNormalized);
+              try {
+                const statPkg = await fs.stat(pkgAbs);
+                if (!statPkg.isDirectory()) {
+                  const code = await fs.readFile(pkgAbs, "utf8");
+                  return { path: `packages/${filePath}`, code };
+                }
+              } catch {
+                /* ignore and fall through to GitHub fallback */
+              }
+            }
+
+            // Local lookup failed – attempt GitHub fallback (both paths)
+            const remoteCode =
+              (await fetchFromGitHub(normalizedPath)) ??
+              (await fetchFromGitHub(`packages/${normalizedPath}`));
+
+            if (remoteCode !== null) {
+              return {
+                path: filePath,
+                code: remoteCode,
+                from: "github",
+              };
+            }
+
             return {
               error: `File not found or unreadable: ${filePath}`,
-              details: String(err),
+              details: [
+                `Local FS error: ${String(err)}`,
+                "GitHub fallback: file not found",
+              ].join(" | "),
             };
           }
         },
@@ -141,7 +303,10 @@ export async function POST(req: Request) {
         }),
         execute: async ({ path: dirPath }) => {
           const root = await repoRoot();
-          const normalizedDir = dirPath.trim().replace(/^\/+/g, "");
+          const normalizedDir = dirPath
+            .trim()
+            .replace(/^\/+/g, "")
+            .replace(/^telegraph\//, "");
           const absDir = path.resolve(root, normalizedDir);
 
           if (!absDir.startsWith(root)) {
@@ -157,9 +322,42 @@ export async function POST(req: Request) {
               })),
             };
           } catch (err: unknown) {
+            // Attempt within packages/ if not already namespaced
+            if (!normalizedDir.startsWith("packages/")) {
+              const pkgDirNormalized = path.posix.join(
+                "packages",
+                normalizedDir
+              );
+              const pkgDirAbs = path.resolve(root, pkgDirNormalized);
+              try {
+                const entriesPkg = await fs.readdir(pkgDirAbs, {
+                  withFileTypes: true,
+                });
+                return {
+                  files: entriesPkg.map((e) => ({
+                    name: e.name,
+                    isDir: e.isDirectory(),
+                  })),
+                };
+              } catch {
+                /* ignore & fall through */
+              }
+            }
+
+            // Local lookup failed – attempt GitHub fallback (both paths)
+            const remoteEntries =
+              (await listGithubDir(normalizedDir)) ??
+              (await listGithubDir(`packages/${normalizedDir}`));
+            if (remoteEntries !== null) {
+              return { files: remoteEntries, from: "github" };
+            }
+
             return {
               error: `Directory not found or unreadable: ${dirPath}`,
-              details: String(err),
+              details: [
+                `Local FS error: ${String(err)}`,
+                "GitHub fallback: directory not found",
+              ].join(" | "),
             };
           }
         },

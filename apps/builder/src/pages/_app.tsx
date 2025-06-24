@@ -1,10 +1,10 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 import type { AppProps } from "next/app";
-import { Inter } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
-
+const geistMono = Geist_Mono({ subsets: ["latin"], display: "swap" });
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div
-        className={`${inter.className}`}
+        className={`${inter.className} ${geistMono.className}`}
         style={{ height: "100%", minHeight: "100vh" }}
       >
         <Component {...pageProps} />
