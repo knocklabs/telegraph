@@ -41,14 +41,14 @@
     "format:check": {
       "dependsOn": ["^format:check"]
     },
-    "build:builder": {
+    "build:relay": {
       "dependsOn": ["^build"],
       "cache": false
     },
-    "dev:builder": {
+    "dev:relay": {
       "persistent": true
     },
-    "start:builder": {
+    "start:relay": {
       "persistent": true
     }
   }
