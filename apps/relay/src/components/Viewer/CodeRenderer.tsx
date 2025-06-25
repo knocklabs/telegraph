@@ -1,7 +1,8 @@
 // We rely on a local ambient type declaration for @babel/standalone (see types folder).
 // The module is cast to `any` so we can access .transform without TypeScript errors.
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import BabelUntyped from "@babel/standalone";
+// @ts-expect-error - Babel is not typed, we import in this way to avoid webpack issues
+import * as BabelUntyped from "@babel/standalone/babel.min.js";
 // Import Telegraph packages so they're available to generated code.
 // Keep these in a dedicated section to make maintenance easy.
 import * as TelegraphAppearance from "@telegraph/appearance";
