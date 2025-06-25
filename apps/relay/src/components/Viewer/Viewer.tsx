@@ -36,7 +36,7 @@ const Viewer = ({ chat }: ViewerProps) => {
       if (msg.role === "assistant" && typeof msg.content === "string") {
         // Look for a fenced code block: ```tsx ... ``` (tsx / jsx / js also acceptable)
         const match = msg.content.match(
-          /```(?:t?sx|jsx|javascript)?\s*\n([\s\S]*?)\n```/,
+          /```(?:t?sx|jsx|javascript|ts|typescript)?\s*\n([\s\S]*?)\n```/,
         );
         if (match) {
           return match[1].trim();
@@ -69,7 +69,7 @@ const Viewer = ({ chat }: ViewerProps) => {
         delete configWithoutPlugins.plugins;
 
         const maybePromise = prettierStandalone.format(generatedReactCode, {
-          parser: "babel",
+          parser: "babel-ts",
           plugins: [parserEstree as Plugin, parserBabel as Plugin],
           ...configWithoutPlugins,
         });
