@@ -1,9 +1,9 @@
 import { openai } from "@ai-sdk/openai";
 import { streamText, tool } from "ai";
-import { z } from "zod";
 import fs from "node:fs/promises";
-import path from "node:path";
 import { request } from "node:https";
+import path from "node:path";
+import { z } from "zod";
 
 export const maxDuration = 30;
 
@@ -51,12 +51,7 @@ let _repoRoot: string | null = null;
 async function repoRoot() {
   if (_repoRoot) return _repoRoot;
 
-  const envOverride = process.env.TELEGRAPH_REPO_ROOT;
-  const candidates = [
-    envOverride, // explicit override wins
-    process.cwd(),
-    __dirname,
-  ].filter(Boolean) as string[];
+  const candidates = [process.cwd()].filter(Boolean) as string[];
 
   for (const startDir of candidates) {
     const root = await getRepoRoot(startDir);
@@ -104,7 +99,7 @@ async function fetchFromGitHub(repoPath: string): Promise<string | null> {
 // Helper: list a directory on GitHub via the contents API (unauthenticated – keep
 // usage light to avoid rate limits)
 async function listGithubDir(
-  repoPath: string
+  repoPath: string,
 ): Promise<{ name: string; isDir: boolean }[] | null> {
   const url = `https://api.github.com/repos/knocklabs/telegraph/contents/${repoPath}`;
 
@@ -135,7 +130,7 @@ async function listGithubDir(
                 (json as GitHubEntry[]).map((item) => ({
                   name: item.name,
                   isDir: item.type === "dir",
-                }))
+                })),
               );
               return;
             }
@@ -144,7 +139,7 @@ async function listGithubDir(
           }
           resolve(null);
         });
-      }
+      },
     )
       .on("error", () => resolve(null))
       .end();
@@ -198,7 +193,7 @@ export async function POST(req: Request) {
           path: z
             .string()
             .describe(
-              "Relative path from the repo root (`telegraph/`) to the file you want to read."
+              "Relative path from the repo root (`telegraph/`) to the file you want to read.",
             ),
         }),
         execute: async ({ path: filePath }) => {
@@ -298,7 +293,7 @@ export async function POST(req: Request) {
           path: z
             .string()
             .describe(
-              "Directory path relative to the repo root (`telegraph/`) whose contents you want to list."
+              "Directory path relative to the repo root (`telegraph/`) whose contents you want to list.",
             ),
         }),
         execute: async ({ path: dirPath }) => {
@@ -326,7 +321,7 @@ export async function POST(req: Request) {
             if (!normalizedDir.startsWith("packages/")) {
               const pkgDirNormalized = path.posix.join(
                 "packages",
-                normalizedDir
+                normalizedDir,
               );
               const pkgDirAbs = path.resolve(root, pkgDirNormalized);
               try {
