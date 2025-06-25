@@ -190,8 +190,9 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
         // The default export itself is a Promise (e.g., dynamic import). Use React.lazy.
         setComponent(() =>
           React.lazy(() =>
-            (defaultExport as Promise<unknown>).then((mod) => {
-              const resolved = (mod as unknown).default ?? mod;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (defaultExport as Promise<any>).then((mod) => {
+              const resolved = mod.default ?? mod;
               return { default: resolved };
             }),
           ),
