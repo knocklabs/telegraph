@@ -216,6 +216,9 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
         <Text as="span" color="red">
           Error rendering code preview
         </Text>
+        <Text as="pre" color="red">
+          {error}
+        </Text>
         <CodeBlock code={code ?? ""} />
       </Stack>
     );
