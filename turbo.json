@@ -40,6 +40,16 @@
     },
     "format:check": {
       "dependsOn": ["^format:check"]
+    },
+    "build:builder": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "dev:builder": {
+      "persistent": true
+    },
+    "start:builder": {
+      "persistent": true
     }
   }
 }

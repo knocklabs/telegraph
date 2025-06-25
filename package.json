@@ -17,6 +17,9 @@
     "dev:examples": "turbo dev:examples --filter=\"./examples/*\" --concurrency=100",
     "build:packages": "turbo build --filter=\"./packages/*\" --filter=\"!config\"",
     "build:config": "turbo build --filter=\"./packages/*-config\"",
+    "build:builder": "turbo build:builder",
+    "dev:builder": "turbo dev:builder",
+    "start:builder": "turbo start:builder",
     "test": "vitest run --workspace=./vitest/workspace.ts",
     "test:watch": "vitest watch --workspace=./vitest/workspace.ts",
     "lint": "turbo lint",
@@ -31,7 +34,8 @@
   },
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples/*",
+    "apps/*"
   ],
   "manypkg": {
     "defaultBranch": "main",
@@ -61,7 +65,8 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
-    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-turbo": "^2.0.12",
     "husky": "^9.1.7",
     "jsdom": "^24.1.0",
