@@ -1,10 +1,7 @@
-import React, { useEffect, useMemo, useState, Suspense } from "react";
-
 // We rely on a local ambient type declaration for @babel/standalone (see types folder).
 // The module is cast to `any` so we can access .transform without TypeScript errors.
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import BabelUntyped from "@babel/standalone";
-
 // Import Telegraph packages so they're available to generated code.
 // Keep these in a dedicated section to make maintenance easy.
 import * as TelegraphAppearance from "@telegraph/appearance";
@@ -20,7 +17,6 @@ import * as TelegraphLayout from "@telegraph/layout";
 import * as TelegraphMenu from "@telegraph/menu";
 import * as TelegraphModal from "@telegraph/modal";
 import * as TelegraphMotion from "@telegraph/motion";
-import * as TelegraphNextjs from "@telegraph/nextjs";
 import * as TelegraphPopover from "@telegraph/popover";
 import * as TelegraphRadio from "@telegraph/radio";
 import * as TelegraphSegmentedControl from "@telegraph/segmented-control";
@@ -33,6 +29,7 @@ import * as TelegraphTokens from "@telegraph/tokens";
 import * as TelegraphTooltip from "@telegraph/tooltip";
 import * as TelegraphTruncate from "@telegraph/truncate";
 import * as TelegraphTypography from "@telegraph/typography";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 
 // Map of module id -> package namespace for requireShim.
 const telegraphPackages: Record<string, unknown> = {
@@ -49,7 +46,6 @@ const telegraphPackages: Record<string, unknown> = {
   "@telegraph/menu": TelegraphMenu,
   "@telegraph/modal": TelegraphModal,
   "@telegraph/motion": TelegraphMotion,
-  "@telegraph/nextjs": TelegraphNextjs,
   "@telegraph/popover": TelegraphPopover,
   "@telegraph/radio": TelegraphRadio,
   "@telegraph/segmented-control": TelegraphSegmentedControl,
@@ -158,14 +154,14 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
         "require",
         "module",
         "React",
-        compiledCode + "\nreturn module.exports;"
+        compiledCode + "\nreturn module.exports;",
       );
       const moduleObj = { exports: moduleExports };
       const exportsReturned = func(
         moduleExports,
         requireShim,
         moduleObj,
-        React
+        React,
       );
       const defaultExport =
         (exportsReturned &&
@@ -173,11 +169,11 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
         (moduleObj.exports as Record<string, unknown>).default;
 
       const wrapMaybeAsyncComponent = (
-        Comp: (...args: never[]) => unknown
+        Comp: (...args: never[]) => unknown,
       ): React.ComponentType => {
         const Wrapper: React.FC = (props) => {
           const [resolved, setResolved] = useState<React.ReactNode | null>(
-            null
+            null,
           );
           const [loading, setLoading] = useState(false);
           const [asyncError, setAsyncError] = useState<unknown>(null);
@@ -189,6 +185,7 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
             let cancelled = false;
 
             try {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const result = (Comp as any)(props);
 
               if (
@@ -208,7 +205,7 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
                       setAsyncError(err);
                       setLoading(false);
                     }
-                  }
+                  },
                 );
               } else {
                 setResolved(result as React.ReactNode);
@@ -224,6 +221,7 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
             return () => {
               cancelled = true;
             };
+            // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [propsKey]);
 
           if (asyncError) {
@@ -241,6 +239,7 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
       };
 
       if (typeof defaultExport === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setComponent(() => wrapMaybeAsyncComponent(defaultExport as any));
       } else if (
         defaultExport &&
@@ -254,11 +253,11 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
                 default: wrapMaybeAsyncComponent(
                   (mod as Record<string, unknown>).default as (
                     ...args: never[]
-                  ) => unknown
+                  ) => unknown,
                 ),
               };
-            })
-          )
+            }),
+          ),
         );
       } else {
         setError("No default export found in generated code");

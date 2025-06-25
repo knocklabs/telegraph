@@ -1,15 +1,14 @@
-import { Button } from "@telegraph/button";
-import { useEffect, useMemo, useState } from "react";
-import { Chat } from "@/components/Chat";
-import { Stack, Box } from "@telegraph/layout";
 import { Message, useChat } from "@ai-sdk/react";
-import { Viewer } from "@/components/Viewer";
-import { useRouter } from "next/router";
-import { SegmentedControl } from "@telegraph/segmented-control";
+import { Button } from "@telegraph/button";
 import { Lucide } from "@telegraph/icon";
+import { Box, Stack } from "@telegraph/layout";
+import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
 
-import { saveChatToStorage } from "@/utils/chatStorage";
+import { Chat } from "@/components/Chat";
 import { PreviousChats } from "@/components/PreviousChats";
+import { Viewer } from "@/components/Viewer";
+import { saveChatToStorage } from "@/utils/chatStorage";
 
 export default function Home() {
   const router = useRouter();
@@ -79,7 +78,7 @@ export default function Home() {
       undefined,
       {
         shallow: true,
-      }
+      },
     );
   }, [chat.id, router]);
 

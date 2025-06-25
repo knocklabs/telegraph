@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "dev:builder": "next dev --turbopack",
+    "build:builder": "next build --turbopack",
+    "start:builder": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -58,5 +58,6 @@
     "postcss": "^8.5.3",
     "typescript": "^5.7.3"
   },
+  "prettier": "@telegraph/prettier-config",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/apps/builder"
 }

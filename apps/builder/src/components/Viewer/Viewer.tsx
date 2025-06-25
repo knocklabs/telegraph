@@ -1,16 +1,17 @@
-import { useMemo, useEffect, useState, Suspense } from "react";
+import { useChat } from "@ai-sdk/react";
 import { Stack } from "@telegraph/layout";
+import prettierConfig from "@telegraph/prettier-config";
+import { SegmentedControl } from "@telegraph/segmented-control";
+import { Tag } from "@telegraph/tag";
 import dynamic from "next/dynamic";
-import prettierStandalone from "prettier/standalone";
+import { useRouter } from "next/router";
+import type { Plugin } from "prettier";
 import parserBabel from "prettier/plugins/babel";
 import parserEstree from "prettier/plugins/estree";
-import prettierConfig from "@telegraph/prettier-config";
-import type { Plugin } from "prettier";
-import { useChat } from "@ai-sdk/react";
-import { SegmentedControl } from "@telegraph/segmented-control";
-import { useRouter } from "next/router";
+import prettierStandalone from "prettier/standalone";
+import { Suspense, useEffect, useMemo, useState } from "react";
+
 import { CodeBlock } from "@/components/CodeBlock";
-import { Tag } from "@telegraph/tag";
 
 type ViewerProps = {
   chat: ReturnType<typeof useChat>;
@@ -20,7 +21,7 @@ const CodeRenderer = dynamic(
   () => import("./CodeRenderer").then((m) => m.CodeRenderer),
   {
     ssr: false,
-  }
+  },
 );
 
 const Viewer = ({ chat }: ViewerProps) => {
@@ -35,7 +36,7 @@ const Viewer = ({ chat }: ViewerProps) => {
       if (msg.role === "assistant" && typeof msg.content === "string") {
         // Look for a fenced code block: ```tsx ... ``` (tsx / jsx / js also acceptable)
         const match = msg.content.match(
-          /```(?:t?sx|jsx|javascript)?\s*\n([\s\S]*?)\n```/
+          /```(?:t?sx|jsx|javascript)?\s*\n([\s\S]*?)\n```/,
         );
         if (match) {
           return match[1].trim();
@@ -47,7 +48,7 @@ const Viewer = ({ chat }: ViewerProps) => {
 
   // Hold the formatted code in state since Prettier may be async and return a Promise.
   const [formattedReactCode, setFormattedReactCode] = useState<string | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -130,6 +131,7 @@ const Viewer = ({ chat }: ViewerProps) => {
         <Tag
           size="2"
           onCopy={() => {
+            // eslint-disable-next-line
             formattedReactCode &&
               navigator.clipboard.writeText(formattedReactCode);
           }}

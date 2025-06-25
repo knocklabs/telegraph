@@ -1,14 +1,15 @@
-import { Stack } from "@telegraph/layout";
-import { Text } from "@telegraph/typography";
-import { Button } from "@telegraph/button";
-import { TextArea } from "@telegraph/textarea";
 import { Message, useChat } from "@ai-sdk/react";
-import { useEffect, useRef } from "react";
-import { Tooltip } from "@telegraph/tooltip";
+import { Button } from "@telegraph/button";
 import { Icon, Lucide } from "@telegraph/icon";
+import { Stack } from "@telegraph/layout";
+import { TextArea } from "@telegraph/textarea";
+import { Tooltip } from "@telegraph/tooltip";
+import { Text } from "@telegraph/typography";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useRouter } from "next/router";
+
 import { deleteChatFromStorage } from "@/utils/chatStorage";
 
 import "./Chat.css";
@@ -157,7 +158,7 @@ const Chat = ({ chat }: ChatProps) => {
           <Button
             trailingIcon={{ icon: Lucide.Send, "aria-hidden": true }}
             variant="ghost"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault();
               handleSubmit();
             }}
