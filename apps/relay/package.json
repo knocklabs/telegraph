@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev:relay": "next dev --turbopack",
-    "build:relay": "next build --turbopack",
+    "build:relay": "next build",
     "start:relay": "next start",
     "lint": "next lint"
   },
