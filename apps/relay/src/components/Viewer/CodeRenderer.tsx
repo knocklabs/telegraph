@@ -15,6 +15,7 @@ import * as TelegraphIcon from "@telegraph/icon";
 import * as TelegraphInput from "@telegraph/input";
 import * as TelegraphKbd from "@telegraph/kbd";
 import * as TelegraphLayout from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import * as TelegraphMenu from "@telegraph/menu";
 import * as TelegraphModal from "@telegraph/modal";
 import * as TelegraphMotion from "@telegraph/motion";
@@ -30,7 +31,10 @@ import * as TelegraphTokens from "@telegraph/tokens";
 import * as TelegraphTooltip from "@telegraph/tooltip";
 import * as TelegraphTruncate from "@telegraph/truncate";
 import * as TelegraphTypography from "@telegraph/typography";
+import { Text } from "@telegraph/typography";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
+
+import { CodeBlock } from "@/components/CodeBlock";
 
 // Map of module id -> package namespace for requireShim.
 const telegraphPackages: Record<string, unknown> = {
@@ -103,15 +107,22 @@ const Babel: any = BabelUntyped;
 
 // Utility: transforms TypeScript/TSX into runnable JS using Babel.
 function transformCode(code: string): string {
+  /*
+   * Babel applies presets in **reverse order**: the last preset in the array runs first.
+   * To strip TypeScript types before the React JSX transform, we therefore list the
+   * React preset *first* and the TypeScript preset *second*.
+   */
   return Babel.transform(code, {
     presets: [
       [
         "react",
         {
           runtime: "automatic",
+          flow: false, // Disable Flow parsing since we use TypeScript
+          development: false,
         },
       ],
-      "typescript",
+      "typescript", // Runs first (right-most), removes TS syntax
     ],
     plugins: ["transform-modules-commonjs"],
     filename: "generated.tsx",
@@ -169,79 +180,9 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
           (exportsReturned as Record<string, unknown>).default) ||
         (moduleObj.exports as Record<string, unknown>).default;
 
-      const wrapMaybeAsyncComponent = (
-        Comp: (...args: never[]) => unknown,
-      ): React.ComponentType => {
-        const Wrapper: React.FC = (props) => {
-          const [resolved, setResolved] = useState<React.ReactNode | null>(
-            null,
-          );
-          const [loading, setLoading] = useState(false);
-          const [asyncError, setAsyncError] = useState<unknown>(null);
-
-          // Use a ref to avoid re-invoking on every render unless props change
-          const propsKey = JSON.stringify(props);
-
-          useEffect(() => {
-            let cancelled = false;
-
-            try {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const result = (Comp as any)(props);
-
-              if (
-                result &&
-                typeof (result as Promise<unknown>).then === "function"
-              ) {
-                setLoading(true);
-                (result as Promise<React.ReactNode>).then(
-                  (node) => {
-                    if (!cancelled) {
-                      setResolved(node);
-                      setLoading(false);
-                    }
-                  },
-                  (err) => {
-                    if (!cancelled) {
-                      setAsyncError(err);
-                      setLoading(false);
-                    }
-                  },
-                );
-              } else {
-                setResolved(result as React.ReactNode);
-              }
-            } catch (err) {
-              // If Comp throws a promise (Suspense), rethrow so React handles it normally
-              if (err && typeof (err as Promise<unknown>).then === "function") {
-                throw err;
-              }
-              setAsyncError(err);
-            }
-
-            return () => {
-              cancelled = true;
-            };
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-          }, [propsKey]);
-
-          if (asyncError) {
-            throw asyncError;
-          }
-
-          if (loading || resolved === null) {
-            return React.createElement("span", null, "Loading…");
-          }
-
-          // If resolved value itself is a React element or node, render it; otherwise nothing
-          return <>{resolved as React.ReactNode}</>;
-        };
-        return Wrapper;
-      };
-
       if (typeof defaultExport === "function") {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setComponent(() => wrapMaybeAsyncComponent(defaultExport as any));
+        // Treat the export as a normal React component and cast to ComponentType.
+        setComponent(() => defaultExport as unknown as React.ComponentType);
       } else if (
         defaultExport &&
         typeof (defaultExport as Promise<unknown>).then === "function"
@@ -250,13 +191,8 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
         setComponent(() =>
           React.lazy(() =>
             (defaultExport as Promise<unknown>).then((mod) => {
-              return {
-                default: wrapMaybeAsyncComponent(
-                  (mod as Record<string, unknown>).default as (
-                    ...args: never[]
-                  ) => unknown,
-                ),
-              };
+              const resolved = (mod as unknown).default ?? mod;
+              return { default: resolved };
             }),
           ),
         );
@@ -273,7 +209,15 @@ export const CodeRenderer: React.FC<CodeRendererProps> = ({ code }) => {
   }
 
   if (error) {
-    return <pre style={{ color: "red" }}>{error}</pre>;
+    // If compilation fails (often due to unsupported TS syntax), fall back to static highlighted display
+    return (
+      <Stack w="full" h="full">
+        <Text as="span" color="red">
+          Error rendering code preview
+        </Text>
+        <CodeBlock code={code ?? ""} />
+      </Stack>
+    );
   }
 
   if (!Component) {
