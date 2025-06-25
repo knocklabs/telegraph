@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.join(__dirname, "../../"),
   outputFileTracingIncludes: {
-    "/api/chat": ["./packages/**/*"],
+    "/api/chat": ["../../packages/**/*"],
   },
 };
 
