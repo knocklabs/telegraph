@@ -2494,7 +2494,7 @@ __metadata:
     prettier: "npm:^3.2.4"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     storybook: "npm:^8.5.7"
     storybook-addon-render-modes: "npm:^0.0.11"
     turbo: "npm:^1.11.3"
@@ -5620,7 +5620,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5647,7 +5647,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5684,7 +5684,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5704,7 +5704,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5730,7 +5730,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5750,7 +5750,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5775,7 +5775,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     lucide-react: "npm:^0.511.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5803,7 +5803,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5828,7 +5828,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5855,7 +5855,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5883,7 +5883,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5914,7 +5914,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     framer-motion: "npm:^11.1.9"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5935,7 +5935,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -5975,7 +5975,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6033,7 +6033,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6087,7 +6087,7 @@ __metadata:
     prettier: "npm:^3.2.4"
     prismjs: "npm:^1.29.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     react-markdown: "npm:^10.1.0"
     remark-gfm: "npm:^4.0.1"
     typescript: "npm:^5.7.3"
@@ -6111,7 +6111,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6134,7 +6134,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6159,7 +6159,7 @@ __metadata:
     "@types/react-dom": "npm:^19"
     next: "npm:15.3.4"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
   languageName: unknown
   linkType: soft
@@ -6184,7 +6184,7 @@ __metadata:
     lightningcss: "npm:^1.29.3"
     postcss: "npm:^8.5.3"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6212,7 +6212,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6242,7 +6242,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6283,7 +6283,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6329,7 +6329,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6353,7 +6353,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6379,7 +6379,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
+    react-dom: "npm:^19.1.0"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.0.11"
   peerDependencies:
@@ -6761,11 +6761,11 @@ __metadata:
   linkType: hard
 
 "@types/react-dom@npm:^19":
-  version: 19.0.4
-  resolution: "@types/react-dom@npm:19.0.4"
+  version: 19.1.6
+  resolution: "@types/react-dom@npm:19.1.6"
   peerDependencies:
     "@types/react": ^19.0.0
-  checksum: 10c0/4e71853919b94df9e746a4bd73f8180e9ae13016333ce9c543dcba9f4f4c8fe6e28b038ca6ee61c24e291af8e03ca3bc5ded17c46dee938fcb32d71186fda7a3
+  checksum: 10c0/7ba74eee2919e3f225e898b65fdaa16e54952aaf9e3472a080ddc82ca54585e46e60b3c52018d21d4b7053f09d27b8293e9f468b85f9932ff452cd290cc131e8
   languageName: node
   linkType: hard
 
@@ -15245,7 +15245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0, react-dom@npm:^18.3.1":
+"react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
   dependencies:
@@ -15254,6 +15254,17 @@ __metadata:
   peerDependencies:
     react: ^18.3.1
   checksum: 10c0/a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "react-dom@npm:19.1.0"
+  dependencies:
+    scheduler: "npm:^0.26.0"
+  peerDependencies:
+    react: ^19.1.0
+  checksum: 10c0/3e26e89bb6c67c9a6aa86cb888c7a7f8258f2e347a6d2a15299c17eb16e04c19194e3452bc3255bd34000a61e45e2cb51e46292392340432f133e5a5d2dfb5fc
   languageName: node
   linkType: hard
 
@@ -16137,6 +16148,13 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "scheduler@npm:0.26.0"
+  checksum: 10c0/5b8d5bfddaae3513410eda54f2268e98a376a429931921a81b5c3a2873aab7ca4d775a8caac5498f8cbc7d0daeab947cf923dbd8e215d61671f9f4e392d34356
   languageName: node
   linkType: hard
 
