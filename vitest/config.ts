@@ -1,10 +1,9 @@
 import { defineConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
 const sharedConfig = defineConfig({
   // @ts-expect-error -- Not sure, this is valid
-  plugins: [tsconfigPaths(), vanillaExtractPlugin()],
+  plugins: [tsconfigPaths()],
   test: {
     coverage: {
       enabled: true,
