@@ -1,0 +1,58 @@
+[data-tgph-textarea] {
+  appearance: none;
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-tgph-textarea]:hover {
+  border-color: var(--tgph-gray-7);
+}
+
+[data-tgph-textarea]:focus {
+  border-color: var(--tgph-blue-8);
+  outline: none;
+}
+
+[data-tgph-textarea]::placeholder {
+  color: var(--tgph-gray-10);
+}
+
+[data-tgph-textarea-state="disabled"] {
+  cursor: not-allowed;
+}
+
+[data-tgph-textarea-state="disabled"]:hover {
+  border-color: var(--tgph-gray-2);
+}
+
+[data-tgph-textarea-state="disabled"]:focus {
+  border-color: var(--tgph-gray-2);
+}
+
+[data-tgph-textarea-state="error"] {
+  border-color: var(--tgph-red-6);
+}
+
+[data-tgph-textarea-state="error"]:focus {
+  border-color: var(--tgph-red-8);
+}
+
+[data-tgph-textarea-resize="none"] {
+  resize: none;
+}
+
+[data-tgph-textarea-resize="both"] {
+  resize: both;
+}
+
+[data-tgph-textarea-resize="vertical"] {
+  resize: vertical;
+}
+
+[data-tgph-textarea-resize="horizontal"] {
+  resize: horizontal;
+}
+
+[data-tgph-textarea-variant="ghost"] {
+  border-color: transparent;
+  resize: none;
+}

@@ -1,6 +1,5 @@
 import type { TgphComponentProps } from "@telegraph/helpers";
 import { Text } from "@telegraph/typography";
-import { clsx } from "clsx";
 import React from "react";
 
 import {
@@ -11,7 +10,6 @@ import {
   stateMap,
   variantMap,
 } from "./TextArea.constants";
-import { baseStyles, variants } from "./TextArea.css";
 
 const deriveState = ({ disabled, errored }: TextAreaBaseProps): State => {
   if (disabled) return "disabled";
@@ -39,7 +37,6 @@ const TextArea = ({
   resize = "both",
   disabled,
   errored,
-  className,
   textProps,
   ...props
 }: TextAreaProps) => {
@@ -48,11 +45,10 @@ const TextArea = ({
   return (
     <Text
       as="textarea"
-      className={clsx(
-        baseStyles,
-        variants({ variant, size, resize, state: derivedState }),
-        className,
-      )}
+      data-tgph-textarea
+      data-tgph-textarea-state={derivedState}
+      data-tgph-textarea-resize={resize}
+      data-tgph-textarea-variant={variant}
       rounded={rounded}
       disabled={disabled}
       {...sizeMap[size]}
