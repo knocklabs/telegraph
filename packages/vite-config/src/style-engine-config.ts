@@ -1,5 +1,3 @@
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
-
 export default {
   build: {
     rollupOptions: {
@@ -16,9 +14,5 @@ export default {
       },
     },
   },
-  plugins: [
-    vanillaExtractPlugin({
-      identifiers: ({ hash }) => `tgph-${hash}`,
-    }),
-  ],
+  plugins: [],
 };
