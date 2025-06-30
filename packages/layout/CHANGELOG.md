@@ -1,5 +1,16 @@
 # @telegraph/layout
 
+## 0.1.19
+
+### Patch Changes
+
+- [#490](https://github.com/knocklabs/telegraph/pull/490) [`def8e98`](https://github.com/knocklabs/telegraph/commit/def8e983fe8d90d3d35f8ffe81ceb9daa46e1b30) Thanks [@kylemcd](https://github.com/kylemcd)! - deprecate and remove legacy vanilla extract style engine
+
+- Updated dependencies [[`def8e98`](https://github.com/knocklabs/telegraph/commit/def8e983fe8d90d3d35f8ffe81ceb9daa46e1b30)]:
+  - @telegraph/style-engine@0.1.12
+  - @telegraph/compose-refs@0.0.6
+  - @telegraph/helpers@0.0.12
+
 ## 0.1.18
 
 ### Patch Changes
