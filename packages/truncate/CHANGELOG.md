@@ -1,5 +1,14 @@
 # @telegraph/truncate
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`89da3cc`](https://github.com/knocklabs/telegraph/commit/89da3ccc374e5c610f5472bda950c95345b86a90)]:
+  - @telegraph/tooltip@0.0.50
+  - @telegraph/typography@0.1.19
+  - @telegraph/helpers@0.0.12
+
 ## 0.0.4
 
 ### Patch Changes

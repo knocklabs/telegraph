@@ -1,5 +1,18 @@
 # @telegraph/tooltip
 
+## 0.0.50
+
+### Patch Changes
+
+- [#487](https://github.com/knocklabs/telegraph/pull/487) [`89da3cc`](https://github.com/knocklabs/telegraph/commit/89da3ccc374e5c610f5472bda950c95345b86a90) Thanks [@dependabot](https://github.com/apps/dependabot)! - bump @radix-ui/react-tooltip from 1.1.7 to 1.2.7
+
+- Updated dependencies [[`def8e98`](https://github.com/knocklabs/telegraph/commit/def8e983fe8d90d3d35f8ffe81ceb9daa46e1b30)]:
+  - @telegraph/layout@0.1.19
+  - @telegraph/typography@0.1.19
+  - @telegraph/appearance@0.0.9
+  - @telegraph/helpers@0.0.12
+  - @telegraph/motion@0.0.8
+
 ## 0.0.49
 
 ### Patch Changes

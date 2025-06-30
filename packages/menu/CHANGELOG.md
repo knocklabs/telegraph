@@ -1,5 +1,16 @@
 # @telegraph/menu
 
+## 0.0.69
+
+### Patch Changes
+
+- Updated dependencies [[`def8e98`](https://github.com/knocklabs/telegraph/commit/def8e983fe8d90d3d35f8ffe81ceb9daa46e1b30)]:
+  - @telegraph/layout@0.1.19
+  - @telegraph/button@0.0.81
+  - @telegraph/helpers@0.0.12
+  - @telegraph/icon@0.0.54
+  - @telegraph/motion@0.0.8
+
 ## 0.0.68
 
 ### Patch Changes

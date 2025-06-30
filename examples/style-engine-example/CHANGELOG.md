@@ -1,5 +1,15 @@
 # @telegraph/style-engine-example
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`def8e98`](https://github.com/knocklabs/telegraph/commit/def8e983fe8d90d3d35f8ffe81ceb9daa46e1b30)]:
+  - @telegraph/layout@0.1.19
+  - @telegraph/button@0.0.81
+  - @telegraph/typography@0.1.19
+  - @telegraph/tokens@0.0.21
+
 ## 0.0.8
 
 ### Patch Changes

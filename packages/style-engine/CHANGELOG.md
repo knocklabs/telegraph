@@ -1,5 +1,14 @@
 # @telegraph/style-engine
 
+## 0.1.12
+
+### Patch Changes
+
+- [#490](https://github.com/knocklabs/telegraph/pull/490) [`def8e98`](https://github.com/knocklabs/telegraph/commit/def8e983fe8d90d3d35f8ffe81ceb9daa46e1b30) Thanks [@kylemcd](https://github.com/kylemcd)! - deprecate and remove legacy vanilla extract style engine
+
+- Updated dependencies []:
+  - @telegraph/tokens@0.0.21
+
 ## 0.1.11
 
 ### Patch Changes
