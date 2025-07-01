@@ -43,7 +43,7 @@ const Tabs = ({
 }: TabsProps) => {
   const [hoveredTabs, setHoveredTabs] = React.useState<Set<string>>(new Set());
   const [mountedTabs, setMountedTabs] = React.useState<Set<string>>(new Set());
-  
+
   const activeTab = value || defaultValue;
 
   const onTabHover = React.useCallback((tabValue: string) => {
