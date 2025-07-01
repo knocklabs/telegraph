@@ -12,22 +12,28 @@ export type TabPanelProps = TgphComponentProps<typeof Box> &
  * Content panel associated with a Tab
  * Only renders when its associated tab is active
  */
-const TabPanel = ({ value, children, forceMount, renderInBackground, ...props }: TabPanelProps) => {
+const TabPanel = ({
+  value,
+  children,
+  forceMount,
+  renderInBackground,
+  ...props
+}: TabPanelProps) => {
   return (
-    <RadixTabs.Content 
-      value={value} 
+    <RadixTabs.Content
+      value={value}
       forceMount={renderInBackground || forceMount}
       asChild
     >
       <RefToTgphRef>
-        <Box 
-          data-tgph-tab-panel="" 
+        <Box
+          data-tgph-tab-panel=""
           {...props}
           style={{
             ...(renderInBackground && {
-              visibility: 'var(--radix-tabs-content-visibility, visible)',
-              overflow: 'var(--radix-tabs-content-overflow, visible)', 
-              height: 'var(--radix-tabs-content-height, auto)',
+              visibility: "var(--radix-tabs-content-visibility, visible)",
+              overflow: "var(--radix-tabs-content-overflow, visible)",
+              height: "var(--radix-tabs-content-height, auto)",
             }),
             ...props.style,
           }}
