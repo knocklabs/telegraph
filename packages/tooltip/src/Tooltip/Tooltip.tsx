@@ -67,7 +67,7 @@ const Tooltip = <T extends TgphElement>({
   const [open, setOpen] = useControllableState({
     prop: openProp,
     onChange: onOpenChangeProp,
-    defaultProp: defaultOpenProp,
+    defaultProp: defaultOpenProp ?? false,
   });
   const { groupOpen } = useTooltipGroup({ open: !!open, delay: delayDuration });
 

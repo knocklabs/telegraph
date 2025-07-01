@@ -127,7 +127,7 @@ const Root = <
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpenProp,
+    defaultProp: defaultOpenProp ?? false,
     onChange: onOpenChangeProp,
   });
 

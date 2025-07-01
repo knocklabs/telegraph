@@ -34,7 +34,7 @@ const Root = ({
 }: RootProps) => {
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpenProp,
+    defaultProp: defaultOpenProp ?? false,
     onChange: onOpenChangeProp,
   });
   return (
@@ -145,7 +145,11 @@ const Button = <T extends TgphElement>({
 }: ButtonProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   return (
-    <RadixMenu.Item {...props} asChild={asChild} ref={tgphRef}>
+    <RadixMenu.Item
+      {...props}
+      asChild={asChild}
+      ref={tgphRef as React.LegacyRef<HTMLDivElement>}
+    >
       <RefToTgphRef>
         <MenuItem
           onClick={onClick}

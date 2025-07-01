@@ -22,7 +22,7 @@ const RadioButtonContext = React.createContext<RadioButtonInternalContext>({
 
 const Root = ({ value, children, onValueChange, ...props }: RootProps) => {
   return (
-    <RadioButtonContext.Provider value={{ value }}>
+    <RadioButtonContext.Provider value={{ value: value ?? "" }}>
       <RadioGroup.Root
         value={value}
         onValueChange={onValueChange}

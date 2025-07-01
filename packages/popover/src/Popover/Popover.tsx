@@ -32,7 +32,7 @@ const Root = ({
 }: RootProps) => {
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpenProp,
+    defaultProp: defaultOpenProp ?? false,
     onChange: onOpenChangeProp,
   });
 
