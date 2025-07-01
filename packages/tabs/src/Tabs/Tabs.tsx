@@ -8,6 +8,7 @@ export type BackgroundMount = "hover" | "once" | "hover-persist" | "none";
 type TabsContextValue = {
   hoveredTabs: Set<string>;
   mountedTabs: Set<string>;
+  activeTab: string | undefined;
   onTabHover: (tabValue: string) => void;
   onTabLeave: (tabValue: string) => void;
   getTabMountState: (
@@ -42,6 +43,8 @@ const Tabs = ({
 }: TabsProps) => {
   const [hoveredTabs, setHoveredTabs] = React.useState<Set<string>>(new Set());
   const [mountedTabs, setMountedTabs] = React.useState<Set<string>>(new Set());
+  
+  const activeTab = value || defaultValue;
 
   const onTabHover = React.useCallback((tabValue: string) => {
     setHoveredTabs((prev) => new Set(prev).add(tabValue));
@@ -60,16 +63,19 @@ const Tabs = ({
     (tabValue: string, backgroundMount?: BackgroundMount) => {
       if (!backgroundMount || backgroundMount === "none") return false;
       if (backgroundMount === "once") return true;
-      if (backgroundMount === "hover") return hoveredTabs.has(tabValue);
+      if (backgroundMount === "hover") {
+        return hoveredTabs.has(tabValue) && tabValue !== activeTab;
+      }
       if (backgroundMount === "hover-persist") return mountedTabs.has(tabValue);
       return false;
     },
-    [hoveredTabs, mountedTabs],
+    [hoveredTabs, mountedTabs, activeTab],
   );
 
   const contextValue: TabsContextValue = {
     hoveredTabs,
     mountedTabs,
+    activeTab,
     onTabHover,
     onTabLeave,
     getTabMountState,

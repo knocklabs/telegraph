@@ -476,6 +476,12 @@ export const BackgroundMountHoverPersist = () => {
  */
 export const BackgroundMountNone = () => {
   const [currentTab, setCurrentTab] = React.useState("tab1");
+  const [counter, setCounter] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Tabs value={currentTab} onValueChange={setCurrentTab}>
@@ -494,26 +500,56 @@ export const BackgroundMountNone = () => {
 
       <Tabs.Panel value="tab1" backgroundMount="none">
         <Box py="4">
-          <Text as="p">
+          <Text as="p" mb="3">
             <strong>None behavior:</strong> Only renders when active (explicit
             setting)
+          </Text>
+          <Text
+            as="p"
+            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
+          >
+            Counter: {counter}
+          </Text>
+          <Text as="p" mt="2">
+            This counter only runs when this tab is active. Check other tabs to
+            see they don't have running counters.
           </Text>
         </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="tab2" backgroundMount="none">
         <Box py="4">
-          <Text as="p">
+          <Text as="p" mb="3">
             <strong>Also none behavior:</strong> Not in DOM when inactive
+          </Text>
+          <Text
+            as="p"
+            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
+          >
+            Counter: {counter}
+          </Text>
+          <Text as="p" mt="2">
+            This tab also only renders when active. The counter only runs when
+            you're viewing this tab.
           </Text>
         </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="tab3" backgroundMount="none">
         <Box py="4">
-          <Text as="p">
+          <Text as="p" mb="3">
             <strong>Explicit none:</strong> Same as default behavior but
             explicit
+          </Text>
+          <Text
+            as="p"
+            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
+          >
+            Counter: {counter}
+          </Text>
+          <Text as="p" mt="2">
+            This demonstrates the explicit "none" setting. Counter only
+            increments when this tab is active.
           </Text>
         </Box>
       </Tabs.Panel>
