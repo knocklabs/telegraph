@@ -4219,6 +4219,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.4"
     "@knocklabs/typescript-config": "npm:^0.0.2"
+    "@telegraph/appearance": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/layout": "workspace:^"

@@ -10,15 +10,15 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts",
       "default": "./dist/css/default.css"
     },
     "./postcss": {
+      "types": "./dist/types/plugins/postcss.d.ts",
       "import": "./dist/esm/postcss.mjs",
-      "require": "./dist/cjs/postcss.js",
-      "types": "./dist/types/plugins/postcss.d.ts"
+      "require": "./dist/cjs/postcss.js"
     },
     "./default.css": "./dist/css/default.css"
   },

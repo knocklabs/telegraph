@@ -9,9 +9,9 @@
   "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts",
       "default": "./dist/css/default.css"
     },
     "./default.css": "./dist/css/default.css"
