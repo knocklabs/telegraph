@@ -173,4 +173,9 @@ function MyTabs() {
 ### TabPanel
 - `value`: String (required) - ID of the tab this panel is associated with
 - `forceMount`: Boolean - Whether to force mounting when tab is inactive
-- `renderInBackground`: Boolean - Whether to render content in background when tab is inactive (automatically sets forceMount=true)
+- `renderInBackground`: Boolean - Whether to render content in background when tab is inactive (deprecated, use backgroundMount)
+- `backgroundMount`: "hover" | "once" | "hover-persist" | "none" - Controls when content mounts in background:
+  - `hover` (default): Mount/unmount content on tab hover events
+  - `once`: Force mount at render time, no hover updates (like forceMount=true)
+  - `hover-persist`: Mount on first hover, persist without remounting
+  - `none`: Only render when tab is clicked/active

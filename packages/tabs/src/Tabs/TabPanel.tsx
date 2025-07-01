@@ -3,9 +3,12 @@ import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
 import React from "react";
 
+import { BackgroundMount, TabsContext } from "./Tabs";
+
 export type TabPanelProps = TgphComponentProps<typeof Box> &
   React.ComponentProps<typeof RadixTabs.Content> & {
     renderInBackground?: boolean;
+    backgroundMount?: BackgroundMount;
   };
 
 /**
@@ -17,12 +20,25 @@ const TabPanel = ({
   children,
   forceMount,
   renderInBackground,
+  backgroundMount,
   ...props
 }: TabPanelProps) => {
+  const tabsContext = React.useContext(TabsContext);
+
+  const shouldMountInBackground = React.useMemo(() => {
+    if (renderInBackground !== undefined) return renderInBackground;
+    
+    if (backgroundMount && tabsContext) {
+      return tabsContext.getTabMountState(value, backgroundMount);
+    }
+    
+    return false;
+  }, [renderInBackground, backgroundMount, value, tabsContext]);
+
   return (
     <RadixTabs.Content
       value={value}
-      forceMount={renderInBackground || forceMount}
+      forceMount={shouldMountInBackground || forceMount}
       asChild
     >
       <RefToTgphRef>
@@ -30,7 +46,7 @@ const TabPanel = ({
           data-tgph-tab-panel=""
           {...props}
           style={{
-            ...(renderInBackground && {
+            ...(shouldMountInBackground && {
               visibility: "var(--radix-tabs-content-visibility, visible)",
               overflow: "var(--radix-tabs-content-overflow, visible)",
               height: "var(--radix-tabs-content-height, auto)",

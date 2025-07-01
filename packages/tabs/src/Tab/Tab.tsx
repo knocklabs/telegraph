@@ -7,6 +7,8 @@ import {
 import { MenuItem } from "@telegraph/menu";
 import React from "react";
 
+import { TabsContext } from "../Tabs/Tabs";
+
 /**
  * Props for the Tab component
  * @property {string} value - Unique identifier for the tab
@@ -33,6 +35,8 @@ const Tab = <T extends TgphElement>({
   icon,
   ...props
 }: TabProps<T>) => {
+  const tabsContext = React.useContext(TabsContext);
+
   const defaultIconProps: TgphComponentProps<
     typeof MenuItem<T>
   >["leadingIcon"] = {
@@ -53,6 +57,12 @@ const Tab = <T extends TgphElement>({
       value={value}
       disabled={disabled}
       onClick={onClick}
+      onMouseEnter={() => {
+        tabsContext?.onTabHover(value);
+      }}
+      onMouseLeave={() => {
+        tabsContext?.onTabLeave(value);
+      }}
       asChild
     >
       <RefToTgphRef>
@@ -70,7 +80,6 @@ const Tab = <T extends TgphElement>({
           gap="2"
           color="gray"
           size="1"
-          // Important for styling the active color
           textProps={{
             "data-tgph-tab-text": "",
           }}
