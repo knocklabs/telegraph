@@ -61,7 +61,7 @@ const Tabs = ({
   const getTabMountState = React.useCallback(
     (tabValue: string, backgroundMount?: BackgroundMount) => {
       if (tabValue === activeTab) return false;
-      
+
       if (!backgroundMount || backgroundMount === "none") return false;
       if (backgroundMount === "once") return true;
       if (backgroundMount === "hover") {

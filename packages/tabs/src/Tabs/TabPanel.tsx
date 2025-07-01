@@ -26,24 +26,24 @@ const TabPanel = ({
   const tabsContext = React.useContext(TabsContext);
 
   let shouldMountInBackground = false;
-  
+
   if (renderInBackground !== undefined) {
     shouldMountInBackground = renderInBackground;
   } else if (backgroundMount && tabsContext) {
-    shouldMountInBackground = tabsContext.getTabMountState(value, backgroundMount);
+    shouldMountInBackground = tabsContext.getTabMountState(
+      value,
+      backgroundMount,
+    );
   }
 
   const shouldForceMount = shouldMountInBackground || forceMount;
-  const mountKey = backgroundMount === "hover" && tabsContext ? 
-    `${value}-${tabsContext.hoveredTabs.has(value) ? 'mounted' : 'unmounted'}` : 
-    undefined;
+  const mountKey =
+    backgroundMount === "hover" && tabsContext
+      ? `${value}-${tabsContext.hoveredTabs.has(value) ? "mounted" : "unmounted"}`
+      : undefined;
 
   return (
-    <RadixTabs.Content
-      value={value}
-      forceMount={shouldForceMount}
-      asChild
-    >
+    <RadixTabs.Content value={value} forceMount={shouldForceMount} asChild>
       <RefToTgphRef>
         <Box
           key={mountKey}
