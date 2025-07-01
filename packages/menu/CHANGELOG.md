@@ -1,5 +1,22 @@
 # @telegraph/menu
 
+## 0.0.70
+
+### Patch Changes
+
+- [#494](https://github.com/knocklabs/telegraph/pull/494) [`e769470`](https://github.com/knocklabs/telegraph/commit/e7694701fb63ebc65d9fe77d9a89c8f0bf557b67) Thanks [@kylemcd](https://github.com/kylemcd)! - update package exports to be in the correct order
+
+- [#495](https://github.com/knocklabs/telegraph/pull/495) [`f5d6a69`](https://github.com/knocklabs/telegraph/commit/f5d6a693e078dbfa1c99a78dc7b8ec6a9c34218a) Thanks [@kylemcd](https://github.com/kylemcd)! - fix typescript build issues
+
+- [#493](https://github.com/knocklabs/telegraph/pull/493) [`5209f6d`](https://github.com/knocklabs/telegraph/commit/5209f6d6c8ed9d71d61c76c089541b14d3369a35) Thanks [@kylemcd](https://github.com/kylemcd)! - update radix deps to latest
+
+- Updated dependencies [[`e769470`](https://github.com/knocklabs/telegraph/commit/e7694701fb63ebc65d9fe77d9a89c8f0bf557b67)]:
+  - @telegraph/helpers@0.0.13
+  - @telegraph/button@0.0.82
+  - @telegraph/layout@0.1.20
+  - @telegraph/motion@0.0.9
+  - @telegraph/icon@0.0.55
+
 ## 0.0.69
 
 ### Patch Changes

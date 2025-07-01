@@ -1,5 +1,11 @@
 # @telegraph/motion
 
+## 0.0.9
+
+### Patch Changes
+
+- [#494](https://github.com/knocklabs/telegraph/pull/494) [`e769470`](https://github.com/knocklabs/telegraph/commit/e7694701fb63ebc65d9fe77d9a89c8f0bf557b67) Thanks [@kylemcd](https://github.com/kylemcd)! - update package exports to be in the correct order
+
 ## 0.0.8
 
 ### Patch Changes
