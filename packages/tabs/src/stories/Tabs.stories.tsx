@@ -4,6 +4,15 @@ import { Box, Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
+const NestedCounter = () => {
+  const [counter, setCounter] = React.useState(0);
+  React.useEffect(() => {
+    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
+    return () => clearInterval(interval);
+  }, []);
+  return <Text as="p">Counter: {counter}</Text>;
+};
+
 /**
  * Example stories for the Tabs component
  */
@@ -210,18 +219,10 @@ export const Controlled = () => {
 };
 
 /**
- * Example with background rendering - content renders even when tab is inactive (legacy prop)
+ * Example with background rendering - content renders even when tab is inactive
  */
 export const BackgroundRendering = () => {
   const [currentTab, setCurrentTab] = React.useState("tab1");
-  const [backgroundCounter, setBackgroundCounter] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setBackgroundCounter((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <Tabs value={currentTab} onValueChange={setCurrentTab}>
@@ -233,21 +234,19 @@ export const BackgroundRendering = () => {
 
       <Box py="4">
         <Text as="p">Current active tab: {currentTab}</Text>
+        <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
+          Tabs with renderInBackground="once" are always mounted and running
+        </Text>
       </Box>
 
-      <Tabs.Panel value="tab1" renderInBackground>
+      <Tabs.Panel value="tab1" renderInBackground="once">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Proof of background rendering:</strong> This counter updates
             even when this tab is inactive, proving the component is mounted and
             running in the background.
           </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "24px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {backgroundCounter}
-          </Text>
+          <NestedCounter />
           <Text as="p" mt="3" style={{ fontSize: "14px", color: "#666" }}>
             Switch to another tab and come back - the counter will have
             continued incrementing!
@@ -255,7 +254,7 @@ export const BackgroundRendering = () => {
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab2" renderInBackground>
+      <Tabs.Panel value="tab2" renderInBackground="once">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Height behavior test:</strong> This tab contains a long list
@@ -283,69 +282,13 @@ export const BackgroundRendering = () => {
         <Box py="4">
           <Text as="p">
             <strong>Normal behavior:</strong> This tab only renders when active
-            (no renderInBackground prop). Content is unmounted when switching
+            (renderInBackground="none" is the default). Content is unmounted when switching
             away and remounted when returning.
           </Text>
-        </Box>
-      </Tabs.Panel>
-    </Tabs>
-  );
-};
-
-/**
- * Background Mount: Hover - content mounts/unmounts on tab hover
- */
-export const BackgroundMountHover = () => {
-  const [currentTab, setCurrentTab] = React.useState("tab1");
-  const [counter, setCounter] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <Tabs value={currentTab} onValueChange={setCurrentTab}>
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Hover Me</Tabs.Tab>
-        <Tabs.Tab value="tab2">Or Me</Tabs.Tab>
-        <Tabs.Tab value="tab3">Normal Tab</Tabs.Tab>
-      </Tabs.List>
-
-      <Box py="4">
-        <Text as="p">Current active tab: {currentTab}</Text>
-        <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          Hover over tabs to see content mount/unmount in background
-        </Text>
-      </Box>
-
-      <Tabs.Panel value="tab1" backgroundMount="hover">
-        <Box py="4">
-          <Text as="p" mb="3">
-            <strong>Hover behavior:</strong> This content mounts when you hover
-            the tab and unmounts when you leave.
+          <NestedCounter />
+          <Text as="p" mt="2" style={{ fontSize: "14px", color: "#666" }}>
+            This counter resets when you switch tabs because the component unmounts.
           </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {counter}
-          </Text>
-        </Box>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="tab2" backgroundMount="hover">
-        <Box py="4">
-          <Text as="p">
-            <strong>Also hover behavior:</strong> Watch the DOM - this content
-            appears/disappears on hover.
-          </Text>
-        </Box>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="tab3">
-        <Box py="4">
-          <Text as="p">Normal tab - only renders when active</Text>
         </Box>
       </Tabs.Panel>
     </Tabs>
@@ -357,12 +300,6 @@ export const BackgroundMountHover = () => {
  */
 export const BackgroundMountOnce = () => {
   const [currentTab, setCurrentTab] = React.useState("tab1");
-  const [counter, setCounter] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <Tabs value={currentTab} onValueChange={setCurrentTab}>
@@ -382,29 +319,26 @@ export const BackgroundMountOnce = () => {
       <Tabs.Panel value="tab1">
         <Box py="4">
           <Text as="p">Normal behavior - only mounted when active</Text>
+          <NestedCounter />
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab2" backgroundMount="once">
+      <Tabs.Panel value="tab2" renderInBackground="once">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Once behavior:</strong> This content is always mounted,
             counter runs continuously.
           </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {counter}
-          </Text>
+          <NestedCounter />
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab3" backgroundMount="once">
+      <Tabs.Panel value="tab3" renderInBackground="once">
         <Box py="4">
           <Text as="p">
             <strong>Also once behavior:</strong> Always in DOM, check dev tools!
           </Text>
+          <NestedCounter />
         </Box>
       </Tabs.Panel>
     </Tabs>
@@ -412,144 +346,62 @@ export const BackgroundMountOnce = () => {
 };
 
 /**
- * Background Mount: Hover Persist - content mounts on first hover and persists
- */
-export const BackgroundMountHoverPersist = () => {
-  const [currentTab, setCurrentTab] = React.useState("tab1");
-  const [counter, setCounter] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <Tabs value={currentTab} onValueChange={setCurrentTab}>
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Active Tab</Tabs.Tab>
-        <Tabs.Tab value="tab2">Hover to Load</Tabs.Tab>
-        <Tabs.Tab value="tab3">Also Hover to Load</Tabs.Tab>
-      </Tabs.List>
-
-      <Box py="4">
-        <Text as="p">Current active tab: {currentTab}</Text>
-        <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          Hover tabs 2 & 3 once to mount them permanently
-        </Text>
-      </Box>
-
-      <Tabs.Panel value="tab1">
-        <Box py="4">
-          <Text as="p">Normal behavior - only mounted when active</Text>
-        </Box>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="tab2" backgroundMount="hover-persist">
-        <Box py="4">
-          <Text as="p" mb="3">
-            <strong>Hover-persist behavior:</strong> Mounts on first hover, then
-            stays mounted.
-          </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {counter}
-          </Text>
-        </Box>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="tab3" backgroundMount="hover-persist">
-        <Box py="4">
-          <Text as="p">
-            <strong>Also hover-persist:</strong> Once hovered, stays in DOM
-            forever.
-          </Text>
-        </Box>
-      </Tabs.Panel>
-    </Tabs>
-  );
-};
-
-/**
- * Background Mount: None - explicit no background rendering
+ * Background Mount: None - explicit no background rendering (default behavior)
  */
 export const BackgroundMountNone = () => {
   const [currentTab, setCurrentTab] = React.useState("tab1");
-  const [counter, setCounter] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <Tabs value={currentTab} onValueChange={setCurrentTab}>
       <Tabs.List>
         <Tabs.Tab value="tab1">Active Tab</Tabs.Tab>
         <Tabs.Tab value="tab2">Explicit None</Tabs.Tab>
-        <Tabs.Tab value="tab3">Also None</Tabs.Tab>
+        <Tabs.Tab value="tab3">Default Behavior</Tabs.Tab>
       </Tabs.List>
 
       <Box py="4">
         <Text as="p">Current active tab: {currentTab}</Text>
         <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          All tabs use backgroundMount="none" - only active tab is in DOM
+          All tabs use renderInBackground="none" (or default) - only active tab is in DOM
         </Text>
       </Box>
 
-      <Tabs.Panel value="tab1" backgroundMount="none">
+      <Tabs.Panel value="tab1" renderInBackground="none">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>None behavior:</strong> Only renders when active (explicit
             setting)
           </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {counter}
-          </Text>
+          <NestedCounter />
           <Text as="p" mt="2">
             This counter only runs when this tab is active. Check other tabs to
-            see they don't have running counters.
+            see they reset when switching.
           </Text>
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab2" backgroundMount="none">
+      <Tabs.Panel value="tab2" renderInBackground="none">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Also none behavior:</strong> Not in DOM when inactive
           </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {counter}
-          </Text>
+          <NestedCounter />
           <Text as="p" mt="2">
-            This tab also only renders when active. The counter only runs when
-            you're viewing this tab.
+            This tab also only renders when active. The counter resets when
+            you switch tabs.
           </Text>
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab3" backgroundMount="none">
+      <Tabs.Panel value="tab3">
         <Box py="4">
           <Text as="p" mb="3">
-            <strong>Explicit none:</strong> Same as default behavior but
-            explicit
+            <strong>Default behavior:</strong> Same as "none" but using the default
           </Text>
-          <Text
-            as="p"
-            style={{ fontSize: "20px", fontWeight: "bold", color: "#007acc" }}
-          >
-            Counter: {counter}
-          </Text>
+          <NestedCounter />
           <Text as="p" mt="2">
-            This demonstrates the explicit "none" setting. Counter only
-            increments when this tab is active.
+            This demonstrates the default behavior (no renderInBackground prop).
+            Counter resets when switching tabs.
           </Text>
         </Box>
       </Tabs.Panel>
