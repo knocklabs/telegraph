@@ -38,7 +38,7 @@ const Root = ({
   const [open, onOpenChange] = useControllableState({
     prop: openProp,
     onChange: onOpenChangeProp,
-    defaultProp: defaultOpenProp,
+    defaultProp: defaultOpenProp ?? false,
   });
 
   const stacking = useModalStacking();
