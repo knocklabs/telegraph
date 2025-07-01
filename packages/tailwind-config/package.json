@@ -7,24 +7,24 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/default-config.d.ts",
       "import": "./dist/esm/default-config.mjs",
-      "require": "./dist/cjs/default-config.js",
-      "types": "./dist/types/default-config.d.ts"
+      "require": "./dist/cjs/default-config.js"
     },
     "./default-config": {
+      "types": "./dist/types/default-config.d.ts",
       "import": "./dist/esm/default-config.mjs",
-      "require": "./dist/cjs/default-config.js",
-      "types": "./dist/types/default-config.d.ts"
+      "require": "./dist/cjs/default-config.js"
     },
     "./token-config": {
+      "types": "./dist/types/token-config.d.ts",
       "import": "./dist/esm/token-config.mjs",
-      "require": "./dist/cjs/token-config.js",
-      "types": "./dist/types/token-config.d.ts"
+      "require": "./dist/cjs/token-config.js"
     },
     "./scoped-config": {
+      "types": "./dist/types/scoped-config.d.ts",
       "import": "./dist/esm/scoped-config.mjs",
-      "require": "./dist/cjs/scoped-config.js",
-      "types": "./dist/types/scoped-config.d.ts"
+      "require": "./dist/cjs/scoped-config.js"
     }
   },
   "files": [
