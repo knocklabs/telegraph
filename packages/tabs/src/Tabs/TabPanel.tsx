@@ -30,12 +30,16 @@ const TabPanel = ({
           style={{
             ...(shouldForceMount && {
               visibility: "var(--radix-tabs-content-visibility, visible)",
-              overflow: "var(--radix-tabs-content-overflow, visible)", 
+              overflow: "var(--radix-tabs-content-overflow, visible)",
               height: "var(--radix-tabs-content-height, auto)",
             }),
             ...props.style,
           }}
-          aria-hidden={shouldForceMount ? "var(--radix-tabs-content-aria-hidden, false)" : undefined}
+          aria-hidden={
+            shouldForceMount
+              ? "var(--radix-tabs-content-aria-hidden, false)"
+              : undefined
+          }
         >
           {children}
         </Box>

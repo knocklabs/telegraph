@@ -282,12 +282,13 @@ export const BackgroundRendering = () => {
         <Box py="4">
           <Text as="p">
             <strong>Normal behavior:</strong> This tab only renders when active
-            (renderInBackground="none" is the default). Content is unmounted when switching
-            away and remounted when returning.
+            (renderInBackground="none" is the default). Content is unmounted
+            when switching away and remounted when returning.
           </Text>
           <NestedCounter />
           <Text as="p" mt="2" style={{ fontSize: "14px", color: "#666" }}>
-            This counter resets when you switch tabs because the component unmounts.
+            This counter resets when you switch tabs because the component
+            unmounts.
           </Text>
         </Box>
       </Tabs.Panel>
@@ -362,7 +363,8 @@ export const BackgroundMountNone = () => {
       <Box py="4">
         <Text as="p">Current active tab: {currentTab}</Text>
         <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          All tabs use renderInBackground="none" (or default) - only active tab is in DOM
+          All tabs use renderInBackground="none" (or default) - only active tab
+          is in DOM
         </Text>
       </Box>
 
@@ -387,8 +389,8 @@ export const BackgroundMountNone = () => {
           </Text>
           <NestedCounter />
           <Text as="p" mt="2">
-            This tab also only renders when active. The counter resets when
-            you switch tabs.
+            This tab also only renders when active. The counter resets when you
+            switch tabs.
           </Text>
         </Box>
       </Tabs.Panel>
@@ -396,7 +398,8 @@ export const BackgroundMountNone = () => {
       <Tabs.Panel value="tab3">
         <Box py="4">
           <Text as="p" mb="3">
-            <strong>Default behavior:</strong> Same as "none" but using the default
+            <strong>Default behavior:</strong> Same as "none" but using the
+            default
           </Text>
           <NestedCounter />
           <Text as="p" mt="2">
