@@ -27,11 +27,11 @@ const TabPanel = ({
 
   const shouldMountInBackground = React.useMemo(() => {
     if (renderInBackground !== undefined) return renderInBackground;
-    
+
     if (backgroundMount && tabsContext) {
       return tabsContext.getTabMountState(value, backgroundMount);
     }
-    
+
     return false;
   }, [renderInBackground, backgroundMount, value, tabsContext]);
 
