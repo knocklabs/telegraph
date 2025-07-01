@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tooltip",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "description": "A simple tooltip component ",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tooltip",
   "author": "@knocklabs",
