@@ -43,3 +43,16 @@
 [data-tgph-tab][data-disabled] [data-tgph-tab-text] {
   color: var(--tgph-gray-9, #8B8D98);
 }
+
+/* Background rendering styles for TabPanel */
+[data-tgph-tab-panel][data-state="inactive"] {
+  --radix-tabs-content-visibility: hidden;
+  --radix-tabs-content-overflow: hidden;
+  --radix-tabs-content-height: 0;
+}
+
+[data-tgph-tab-panel][data-state="active"] {
+  --radix-tabs-content-visibility: visible;
+  --radix-tabs-content-overflow: visible;
+  --radix-tabs-content-height: auto;
+}

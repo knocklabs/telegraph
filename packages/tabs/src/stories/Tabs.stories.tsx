@@ -208,3 +208,34 @@ export const Controlled = () => {
     </Tabs>
   );
 };
+
+/**
+ * Example with background rendering - content renders even when tab is inactive
+ */
+export const BackgroundRendering = () => {
+  const [currentTab, setCurrentTab] = React.useState("tab1");
+
+  return (
+    <Tabs value={currentTab} onValueChange={setCurrentTab}>
+      <Tabs.List>
+        <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+        <Tabs.Tab value="tab2">Second Tab</Tabs.Tab>
+        <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
+      </Tabs.List>
+
+      <Box py="4">
+        <Text as="p">Current active tab: {currentTab}</Text>
+      </Box>
+
+      <Tabs.Panel value="tab1" renderInBackground>
+        <Box py="4">Content for the first tab (renders in background)</Box>
+      </Tabs.Panel>
+      <Tabs.Panel value="tab2" renderInBackground>
+        <Box py="4">Content for the second tab (renders in background)</Box>
+      </Tabs.Panel>
+      <Tabs.Panel value="tab3">
+        <Box py="4">Content for the third tab (normal behavior)</Box>
+      </Tabs.Panel>
+    </Tabs>
+  );
+};

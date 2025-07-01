@@ -173,3 +173,4 @@ function MyTabs() {
 ### TabPanel
 - `value`: String (required) - ID of the tab this panel is associated with
 - `forceMount`: Boolean - Whether to force mounting when tab is inactive
+- `renderInBackground`: Boolean - Whether to render content in background when tab is inactive (automatically sets forceMount=true)
