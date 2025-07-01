@@ -48,7 +48,6 @@ const Tabs = ({
 
   const onTabHover = React.useCallback((tabValue: string) => {
     setHoveredTabs((prev) => new Set(prev).add(tabValue));
-    setMountedTabs((prev) => new Set(prev).add(tabValue));
   }, []);
 
   const onTabLeave = React.useCallback((tabValue: string) => {
@@ -61,12 +60,19 @@ const Tabs = ({
 
   const getTabMountState = React.useCallback(
     (tabValue: string, backgroundMount?: BackgroundMount) => {
+      if (tabValue === activeTab) return false;
+      
       if (!backgroundMount || backgroundMount === "none") return false;
       if (backgroundMount === "once") return true;
       if (backgroundMount === "hover") {
-        return hoveredTabs.has(tabValue) && tabValue !== activeTab;
+        return hoveredTabs.has(tabValue);
       }
-      if (backgroundMount === "hover-persist") return mountedTabs.has(tabValue);
+      if (backgroundMount === "hover-persist") {
+        if (hoveredTabs.has(tabValue)) {
+          setMountedTabs((prev) => new Set(prev).add(tabValue));
+        }
+        return mountedTabs.has(tabValue);
+      }
       return false;
     },
     [hoveredTabs, mountedTabs, activeTab],
