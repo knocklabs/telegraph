@@ -218,7 +218,7 @@ export const BackgroundRendering = () => {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setBackgroundCounter(prev => prev + 1);
+      setBackgroundCounter((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -238,42 +238,53 @@ export const BackgroundRendering = () => {
       <Tabs.Panel value="tab1" renderInBackground>
         <Box py="4">
           <Text as="p" mb="3">
-            <strong>Proof of background rendering:</strong> This counter updates even when this tab is inactive, 
-            proving the component is mounted and running in the background.
+            <strong>Proof of background rendering:</strong> This counter updates
+            even when this tab is inactive, proving the component is mounted and
+            running in the background.
           </Text>
-          <Text as="p" style={{ fontSize: '24px', fontWeight: 'bold', color: '#007acc' }}>
+          <Text
+            as="p"
+            style={{ fontSize: "24px", fontWeight: "bold", color: "#007acc" }}
+          >
             Counter: {backgroundCounter}
           </Text>
-          <Text as="p" mt="3" style={{ fontSize: '14px', color: '#666' }}>
-            Switch to another tab and come back - the counter will have continued incrementing!
+          <Text as="p" mt="3" style={{ fontSize: "14px", color: "#666" }}>
+            Switch to another tab and come back - the counter will have
+            continued incrementing!
           </Text>
         </Box>
       </Tabs.Panel>
-      
+
       <Tabs.Panel value="tab2" renderInBackground>
         <Box py="4">
           <Text as="p" mb="3">
-            <strong>Height behavior test:</strong> This tab contains a long list to test how background rendering 
-            affects height calculations. The content should be hidden but maintain proper layout.
+            <strong>Height behavior test:</strong> This tab contains a long list
+            to test how background rendering affects height calculations. The
+            content should be hidden but maintain proper layout.
           </Text>
-          <Box as="ul" style={{ listStyle: 'decimal', paddingLeft: '20px' }}>
+          <Box as="ul" style={{ listStyle: "decimal", paddingLeft: "20px" }}>
             {Array.from({ length: 50 }, (_, i) => (
               <Box as="li" key={i} py="1">
-                <Text as="span">List item #{i + 1} - This is a long item to test height behavior with background rendering enabled</Text>
+                <Text as="span">
+                  List item #{i + 1} - This is a long item to test height
+                  behavior with background rendering enabled
+                </Text>
               </Box>
             ))}
           </Box>
-          <Text as="p" mt="4" style={{ fontSize: '14px', color: '#666' }}>
-            This long list tests that inactive tabs with renderInBackground don't affect the visible layout height.
+          <Text as="p" mt="4" style={{ fontSize: "14px", color: "#666" }}>
+            This long list tests that inactive tabs with renderInBackground
+            don't affect the visible layout height.
           </Text>
         </Box>
       </Tabs.Panel>
-      
+
       <Tabs.Panel value="tab3">
         <Box py="4">
           <Text as="p">
-            <strong>Normal behavior:</strong> This tab only renders when active (no renderInBackground prop).
-            Content is unmounted when switching away and remounted when returning.
+            <strong>Normal behavior:</strong> This tab only renders when active
+            (no renderInBackground prop). Content is unmounted when switching
+            away and remounted when returning.
           </Text>
         </Box>
       </Tabs.Panel>
