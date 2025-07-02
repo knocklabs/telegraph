@@ -2,7 +2,8 @@ import { Button } from "@telegraph/button";
 import { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
-import { motion } from "motion/react";
+import { LazyMotion, domAnimation } from "motion/react";
+import * as motion from "motion/react-m";
 
 type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   typeof Button<T>
@@ -79,28 +80,30 @@ const MenuItemLeading = ({
 
   if (isSelectableButton) {
     return (
-      <Button.Icon
-        as={motion.span}
-        variant="primary"
-        icon={Check}
-        aria-hidden={true}
-        animate={
-          selected
-            ? {
-                opacity: 1,
-                rotate: 0,
-                scale: 1,
-              }
-            : {
-                opacity: 0,
-                rotate: -45,
-                scale: 0.3,
-              }
-        }
-        transition={{ duration: 0.15, type: "spring", bounce: 0 }}
-        style={{ transformOrigin: "center" }}
-        display="block"
-      />
+      <LazyMotion features={domAnimation}>
+        <Button.Icon
+          as={motion.span}
+          variant="primary"
+          icon={Check}
+          aria-hidden={true}
+          animate={
+            selected
+              ? {
+                  opacity: 1,
+                  rotate: 0,
+                  scale: 1,
+                }
+              : {
+                  opacity: 0,
+                  rotate: -45,
+                  scale: 0.3,
+                }
+          }
+          transition={{ duration: 0.15, type: "spring", bounce: 0 }}
+          style={{ transformOrigin: "center" }}
+          display="block"
+        />
+      </LazyMotion>
     );
   }
 

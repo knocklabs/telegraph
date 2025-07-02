@@ -6,7 +6,7 @@ import { Tooltip } from "@telegraph/tooltip";
 import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
 import { ChevronDown, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import * as motion from "motion/react-m";
 import React from "react";
 
 import { ComboboxContext } from "./Combobox";
@@ -210,50 +210,46 @@ const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
         flexGrow: 1,
       }}
     >
-      <AnimatePresence>{children}</AnimatePresence>
-      <AnimatePresence>
-        {layout === "truncate" && context.value.length > 2 && (
-          <Stack
-            as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.1, type: "spring", bounce: 0 }}
-            h="full"
-            pr="1"
-            pl="8"
-            align="center"
-            aria-label={`${context.value.length - 2} more selected`}
-            position="absolute"
-            right="0"
-            style={{
-              backgroundImage:
-                "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
-            }}
-          >
-            <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
-              +
-              <AnimatePresence>
-                {truncatedLengthStringArray.map((n) => (
-                  <Box
-                    as={motion.span}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.1, type: "spring", bounce: 0 }}
-                    w="2"
-                    display="inline-block"
-                    key={n}
-                  >
-                    {n}
-                  </Box>
-                ))}{" "}
-              </AnimatePresence>
-              more
-            </Text>
-          </Stack>
-        )}
-      </AnimatePresence>
+      {children}
+      {layout === "truncate" && context.value.length > 2 && (
+        <Stack
+          as={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1, type: "spring", bounce: 0 }}
+          h="full"
+          pr="1"
+          pl="8"
+          align="center"
+          aria-label={`${context.value.length - 2} more selected`}
+          position="absolute"
+          right="0"
+          style={{
+            backgroundImage:
+              "linear-gradient(to left, var(--tgph-surface-1) 0 60%, transparent 90% 100%)",
+          }}
+        >
+          <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
+            +
+            {truncatedLengthStringArray.map((n) => (
+              <Box
+                as={motion.span}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1, type: "spring", bounce: 0 }}
+                w="2"
+                display="inline-block"
+                key={n}
+              >
+                {n}
+              </Box>
+            ))}{" "}
+            more
+          </Text>
+        </Stack>
+      )}
     </Stack>
   );
 };

@@ -13,7 +13,8 @@ import type {
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { LazyMotion, domAnimation } from "motion/react";
+import * as motion from "motion/react-m";
 import React from "react";
 
 import { useModalStacking } from "./ModalStacking";
@@ -90,49 +91,49 @@ const RootComponent = ({
   const isTopLayer = id === stacking.layers[stacking.layers.length - 1];
 
   return (
-    <DismissableLayer
-      onEscapeKeyDown={(event) => {
-        if (!isTopLayer) return;
-        event.preventDefault();
-        stacking.removeTopLayer();
-        onOpenChange(false);
-      }}
-      onPointerDownOutside={(event) => {
-        if (!isTopLayer) return;
-        event.preventDefault();
-        stacking.removeTopLayer();
-        onOpenChange(false);
-      }}
-    >
-      <Dialog.Root
-        open={open}
-        onOpenChange={(value) => {
-          const hasLayers = stacking?.layers?.length > 0;
-
-          if (hasLayers) {
-            if (
-              value === false &&
-              id === stacking.layers[stacking.layers.length - 1]
-            ) {
-              stacking.removeLayer(id);
-              return onOpenChange(false);
-            }
-            // If the modal is not the top layer, do not call onOpenChange
-            // when we are stacking the modals
-            return;
-          }
-
-          onOpenChange(value);
+    <LazyMotion features={domAnimation}>
+      <DismissableLayer
+        onEscapeKeyDown={(event) => {
+          if (!isTopLayer) return;
+          event.preventDefault();
+          stacking.removeTopLayer();
+          onOpenChange(false);
         }}
-        key={id}
+        onPointerDownOutside={(event) => {
+          if (!isTopLayer) return;
+          event.preventDefault();
+          stacking.removeTopLayer();
+          onOpenChange(false);
+        }}
       >
-        <VisuallyHidden.Root>
-          <Dialog.Title>{a11yTitle}</Dialog.Title>
-          {a11yDescription && (
-            <Dialog.Description>{a11yDescription}</Dialog.Description>
-          )}
-        </VisuallyHidden.Root>
-        <AnimatePresence>
+        <Dialog.Root
+          open={open}
+          onOpenChange={(value) => {
+            const hasLayers = stacking?.layers?.length > 0;
+
+            if (hasLayers) {
+              if (
+                value === false &&
+                id === stacking.layers[stacking.layers.length - 1]
+              ) {
+                stacking.removeLayer(id);
+                return onOpenChange(false);
+              }
+              // If the modal is not the top layer, do not call onOpenChange
+              // when we are stacking the modals
+              return;
+            }
+
+            onOpenChange(value);
+          }}
+          key={id}
+        >
+          <VisuallyHidden.Root>
+            <Dialog.Title>{a11yTitle}</Dialog.Title>
+            {a11yDescription && (
+              <Dialog.Description>{a11yDescription}</Dialog.Description>
+            )}
+          </VisuallyHidden.Root>
           {open && (
             // We add the className "tgph" here so that styles within
             // the portal get scoped properly to telegraph
@@ -197,9 +198,9 @@ const RootComponent = ({
               </Overlay>
             </Portal.Root>
           )}
-        </AnimatePresence>
-      </Dialog.Root>
-    </DismissableLayer>
+        </Dialog.Root>
+      </DismissableLayer>
+    </LazyMotion>
   );
 };
 

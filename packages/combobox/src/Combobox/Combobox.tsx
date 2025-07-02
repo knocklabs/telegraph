@@ -16,6 +16,7 @@ import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
+import { LazyMotion, domAnimation } from "motion/react";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
@@ -195,21 +196,23 @@ const TriggerValue = () => {
     }
 
     return (
-      <Primitives.TriggerTagsContainer>
-        {context.value.map((v, i) => {
-          const value = getValueFromOption(v, context.legacyBehavior);
-          if (
-            value &&
-            ((layout === "truncate" && i <= 1) || layout === "wrap")
-          ) {
-            return (
-              <RefToTgphRef key={value}>
-                <Primitives.TriggerTag.Default value={value} />
-              </RefToTgphRef>
-            );
-          }
-        })}
-      </Primitives.TriggerTagsContainer>
+      <LazyMotion features={domAnimation}>
+        <Primitives.TriggerTagsContainer>
+          {context.value.map((v, i) => {
+            const value = getValueFromOption(v, context.legacyBehavior);
+            if (
+              value &&
+              ((layout === "truncate" && i <= 1) || layout === "wrap")
+            ) {
+              return (
+                <RefToTgphRef key={value}>
+                  <Primitives.TriggerTag.Default value={value} />
+                </RefToTgphRef>
+              );
+            }
+          })}
+        </Primitives.TriggerTagsContainer>
+      </LazyMotion>
     );
   }
 

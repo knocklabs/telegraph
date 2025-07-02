@@ -6,7 +6,8 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { AnimatePresence, motion } from "motion/react";
+import { LazyMotion, domAnimation } from "motion/react";
+import * as motion from "motion/react-m";
 import React from "react";
 
 type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
@@ -37,11 +38,13 @@ const Root = ({
   });
 
   return (
-    <PopoverContext.Provider value={{ open, setOpen }}>
-      <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
-        <AnimatePresence>{children}</AnimatePresence>
-      </RadixPopover.Root>
-    </PopoverContext.Provider>
+    <LazyMotion features={domAnimation}>
+      <PopoverContext.Provider value={{ open, setOpen }}>
+        <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
+          {children}
+        </RadixPopover.Root>
+      </PopoverContext.Provider>
+    </LazyMotion>
   );
 };
 
