@@ -1,10 +1,11 @@
 import { Message, useChat } from "@ai-sdk/react";
 import { Button } from "@telegraph/button";
-import { Icon, Lucide } from "@telegraph/icon";
+import { Icon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { TextArea } from "@telegraph/textarea";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
+import { LoaderCircle, Send, Trash } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
@@ -122,7 +123,7 @@ const Chat = ({ chat }: ChatProps) => {
             >
               {formattedMessage === "Loading" ? (
                 <Icon
-                  icon={Lucide.LoaderCircle}
+                  icon={LoaderCircle}
                   alt="Loading"
                   data-tgph-button-loading-icon
                 />
@@ -148,7 +149,7 @@ const Chat = ({ chat }: ChatProps) => {
         >
           <Tooltip label="Delete chat">
             <Button
-              icon={{ icon: Lucide.Trash, alt: "Delete chat" }}
+              icon={{ icon: Trash, alt: "Delete chat" }}
               variant="ghost"
               onClick={() => {
                 handleDelete();
@@ -156,7 +157,7 @@ const Chat = ({ chat }: ChatProps) => {
             />
           </Tooltip>
           <Button
-            trailingIcon={{ icon: Lucide.Send, "aria-hidden": true }}
+            trailingIcon={{ icon: Send, "aria-hidden": true }}
             variant="ghost"
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault();

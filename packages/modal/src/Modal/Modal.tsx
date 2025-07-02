@@ -11,9 +11,9 @@ import type {
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 import React from "react";
 
 import { useModalStacking } from "./ModalStacking";
@@ -260,7 +260,7 @@ const Close = <T extends TgphElement>({
   return (
     <Dialog.Close asChild>
       <Button
-        icon={{ icon: Lucide.X, alt: "Close Modal" }}
+        icon={{ icon: X, alt: "Close Modal" }}
         variant={variant}
         size={size}
         {...props}

@@ -1,7 +1,7 @@
 import { Tabs } from "..";
-import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
+import { Home, Plus } from "lucide-react";
 import React from "react";
 
 /**
@@ -45,7 +45,7 @@ export const WithIcons = () => (
       <Tabs.Tab
         value="home"
         leadingIcon={{
-          icon: Lucide.Plus,
+          icon: Plus,
           alt: "Home",
         }}
       >
@@ -54,7 +54,7 @@ export const WithIcons = () => (
       <Tabs.Tab
         value="settings"
         leadingIcon={{
-          icon: Lucide.Plus,
+          icon: Plus,
           alt: "Settings",
         }}
       >
@@ -63,7 +63,7 @@ export const WithIcons = () => (
       <Tabs.Tab
         value="notifications"
         leadingIcon={{
-          icon: Lucide.Plus,
+          icon: Plus,
           alt: "Notifications",
         }}
       >
@@ -90,7 +90,7 @@ export const Disabled = () => (
   <Tabs defaultValue="tab1">
     <Tabs.List>
       <Tabs.Tab value="tab1">Enabled Tab</Tabs.Tab>
-      <Tabs.Tab value="tab2" disabled icon={{ icon: Lucide.Plus, alt: "Plus" }}>
+      <Tabs.Tab value="tab2" disabled icon={{ icon: Plus, alt: "Plus" }}>
         Disabled Tab
       </Tabs.Tab>
       <Tabs.Tab value="tab3">Enabled Tab</Tabs.Tab>
@@ -115,7 +115,7 @@ export const WithAdditionalChildren = () => (
         value="tab1"
         size="1"
         leadingIcon={{
-          icon: Lucide.Plus,
+          icon: Plus,
           alt: "Home",
         }}
         trailingComponent={
@@ -142,7 +142,7 @@ export const WithAdditionalChildren = () => (
         value="tab2"
         size="1"
         leadingIcon={{
-          icon: Lucide.Home,
+          icon: Home,
           alt: "Home",
         }}
         trailingComponent={

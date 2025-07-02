@@ -45,7 +45,7 @@ import { RadioCard } from "@telegraph/radio"
     value={value}
     onValueChange={(value) => setValue(value)}
     options={[
-        { icon: { icon: Lucide.Plus, alt: "Add"}, title: "Option", description: "Add option", value: "add" },
+        { icon: { icon: Plus, alt: "Add"}, title: "Option", description: "Add option", value: "add" },
         ...
     ]}
 />
@@ -64,7 +64,6 @@ import { RadioCard } from "@telegraph/radio"
 Individual parts of the radio cards component that can be composed in configurations different from the default telegraph design system styles. This can be used to create modifications to one-off radio components without the need to modify the radio exported from this package.
 
 ```jsx
-import { Lucide } from "@telegraph/icon";
 import { RadioCards } from "@telegraph/radio";
 
 <RadioCards.Root {...props}>

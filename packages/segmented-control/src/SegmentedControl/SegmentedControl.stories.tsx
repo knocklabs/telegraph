@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Lucide } from "@telegraph/icon";
 import { Box } from "@telegraph/layout";
+import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 import React from "react";
 
 import { SegmentedControl as TelegraphSegmentedControl } from "./SegmentedControl";
@@ -28,19 +28,19 @@ export const Default: Story = {
         >
           <TelegraphSegmentedControl.Option
             value="left"
-            icon={{ icon: Lucide.AlignLeft, "aria-hidden": true }}
+            icon={{ icon: AlignLeft, "aria-hidden": true }}
           >
             Left
           </TelegraphSegmentedControl.Option>
           <TelegraphSegmentedControl.Option
             value="center"
-            icon={{ icon: Lucide.AlignCenter, "aria-hidden": true }}
+            icon={{ icon: AlignCenter, "aria-hidden": true }}
           >
             Center
           </TelegraphSegmentedControl.Option>
           <TelegraphSegmentedControl.Option
             value="right"
-            icon={{ icon: Lucide.AlignRight, "aria-hidden": true }}
+            icon={{ icon: AlignRight, "aria-hidden": true }}
           >
             Right
           </TelegraphSegmentedControl.Option>

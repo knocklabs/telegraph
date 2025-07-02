@@ -23,19 +23,20 @@ npm install @telegraph/icon
 #### `<Icon/>`
 
 ```
-import { Icon, Lucide } from "@telegraph/icon"
+import { Icon } from "@telegraph/icon"
+import { Bell } from "lucide-react"
 
 ...
 
-<Icon icon={Lucide.Bell} alt="notifications"/>
+<Icon icon={Bell} alt="notifications"/>
 ```
 
 ##### Props
 
-| Name    | Type   | Default     | Options                                                                                     |
-| ------- | ------ | ----------- | ------------------------------------------------------------------------------------------- |
+| Name    | Type           | Default     | Options                                                                                     |
+| ------- | -------------- | ----------- | ------------------------------------------------------------------------------------------- |
 | icon    | ReactComponent | `undefined` | See package exports                                                                         |
-| alt     | string | `undefined` |                                                                                             |
-| size    | string | "2"         | "1" "2" "3" "4" "5" "6" "7" "8" "9"                                                         |
-| color   | string | "default"   | "default" "gray" "red" "beige" "blue" "green" "yellow" "purple" "accent" "disabled" "white" |
-| variant | string | "primary"   | "primary" "secondary"                                                                       |
+| alt     | string         | `undefined` |                                                                                             |
+| size    | string         | "2"         | "1" "2" "3" "4" "5" "6" "7" "8" "9"                                                         |
+| color   | string         | "default"   | "default" "gray" "red" "beige" "blue" "green" "yellow" "purple" "accent" "disabled" "white" |
+| variant | string         | "primary"   | "primary" "secondary"                                                                       |

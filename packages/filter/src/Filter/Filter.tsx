@@ -1,10 +1,10 @@
 import { Button } from "@telegraph/button";
 import { Combobox } from "@telegraph/combobox";
-import { Lucide } from "@telegraph/icon";
 import { Input } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
+import { SquareCheckBig } from "lucide-react";
 import React from "react";
 
 import {
@@ -435,7 +435,7 @@ export const Option = ({ name, value, icon: optionIcon }: OptionProps) => {
   const isSelected = stateControl.isKeyValueActive(filterKey, value);
 
   const icon = isSelected
-    ? { icon: Lucide.SquareCheckBig, "aria-hidden": true as const }
+    ? { icon: SquareCheckBig, "aria-hidden": true as const }
     : optionIcon
       ? { icon: optionIcon, "aria-hidden": true as const }
       : undefined;

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { Archive, Cog, CornerUpLeft, Ellipsis, Pencil } from "lucide-react";
 
 import { Menu as TelegraphMenu } from "./Menu";
 
@@ -42,29 +42,29 @@ export const Default: Story = {
           <TelegraphMenu.Trigger>
             <Button
               variant="outline"
-              leadingIcon={{ icon: Lucide.Ellipsis, "aria-hidden": true }}
+              leadingIcon={{ icon: Ellipsis, "aria-hidden": true }}
             />
           </TelegraphMenu.Trigger>
           <TelegraphMenu.Content {...args}>
             <TelegraphMenu.Button
-              leadingIcon={{ icon: Lucide.Cog, "aria-hidden": true }}
+              leadingIcon={{ icon: Cog, "aria-hidden": true }}
             >
               Manage workflow
             </TelegraphMenu.Button>
             <TelegraphMenu.Button
-              leadingIcon={{ icon: Lucide.Pencil, "aria-hidden": true }}
+              leadingIcon={{ icon: Pencil, "aria-hidden": true }}
             >
               Edit workflow steps
             </TelegraphMenu.Button>
             <TelegraphMenu.Divider />
             <TelegraphMenu.Button
               color="red"
-              leadingIcon={{ icon: Lucide.Archive, "aria-hidden": true }}
+              leadingIcon={{ icon: Archive, "aria-hidden": true }}
             >
               Archive workflow
             </TelegraphMenu.Button>
             <TelegraphMenu.Button
-              leadingIcon={{ icon: Lucide.CornerUpLeft, "aria-hidden": true }}
+              leadingIcon={{ icon: CornerUpLeft, "aria-hidden": true }}
               disabled={true}
             >
               Reset all uncomitted changes

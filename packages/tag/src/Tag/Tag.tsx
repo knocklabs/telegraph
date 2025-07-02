@@ -7,12 +7,13 @@ import type {
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
+import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { motion } from "@telegraph/motion";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
+import { Check, Copy, X } from "lucide-react";
 import React from "react";
 
 import { COLOR, SIZE, SPACING } from "./Tag.constants";
@@ -143,7 +144,7 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           initializeWithAnimation={false}
           animate={{ y: copied ? 0 : "150%", opacity: copied ? 1 : 1 }}
           transition={{ duration: 150, type: "spring" }}
-          icon={Lucide.Check}
+          icon={Check}
           alt="Copied text"
           aria-hidden={!copied}
         />
@@ -152,7 +153,7 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           initializeWithAnimation={false}
           animate={{ y: !copied ? 0 : "-150%", opacity: !copied ? 1 : 1 }}
           transition={{ duration: 150, type: "spring" }}
-          icon={Lucide.Copy}
+          icon={Copy}
           position="absolute"
           alt="Copy text"
           aria-hidden={copied}
@@ -169,7 +170,7 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
       size={context.size}
       color={COLOR.Button[context.variant][context.color]}
       variant={context.variant}
-      icon={{ icon: Lucide.X, alt: "close" }}
+      icon={{ icon: X, alt: "close" }}
       roundedTopRight="3"
       roundedBottomRight="3"
       roundedTopLeft="0"
@@ -241,7 +242,7 @@ const Default = <T extends TgphElement>({
         {children}
       </Text>
       {onRemove && (
-        <Button onClick={onRemove} icon={{ icon: Lucide.X, alt: "Remove" }} />
+        <Button onClick={onRemove} icon={{ icon: X, alt: "Remove" }} />
       )}
       {onCopy && <CopyButton onClick={onCopy} textToCopy={textToCopy} />}
     </Root>

@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Lucide } from "@telegraph/icon";
+import * as Icons from "lucide-react";
 
 import { Tag as TelegraphTag } from "./Tag";
 import { COLOR, SIZE } from "./Tag.constants";
-
-const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphTag> = {
   tags: ["autodocs"],
