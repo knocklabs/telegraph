@@ -1,5 +1,18 @@
 # @telegraph/icon
 
+## 0.1.0
+
+### Minor Changes
+
+- [#498](https://github.com/knocklabs/telegraph/pull/498) [`99e01e3`](https://github.com/knocklabs/telegraph/commit/99e01e3dcf7508af0bfae14e9b62cccff7af3388) Thanks [@kylemcd](https://github.com/kylemcd)! - update icon component so that the `Lucide` object isn't exported anymore. Instead, utilize icons directly imported from `lucide-react` so that a bundler can properly tree shake lucide in order to drastically reduce bundle size.
+
+### Patch Changes
+
+- [#501](https://github.com/knocklabs/telegraph/pull/501) [`dc12662`](https://github.com/knocklabs/telegraph/commit/dc12662f6f41697d976d0978871a567d564777e8) Thanks [@kylemcd](https://github.com/kylemcd)! - deprecate usage of `@telegraph/motion` in favor of tiny `motion` package
+
+- Updated dependencies []:
+  - @telegraph/typography@0.1.21
+
 ## 0.0.55
 
 ### Patch Changes
