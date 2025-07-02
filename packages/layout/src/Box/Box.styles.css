@@ -1,6 +1,6 @@
 .tgph-box {
   --background-color: none;
-  --border-color: var(--tgph-red-6);
+  --border-color: var(--tgph-gray-6);
   --box-shadow: none;
   --border-style: solid;
   --border-width: 0;
