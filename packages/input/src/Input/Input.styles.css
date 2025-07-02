@@ -1,0 +1,63 @@
+[data-tgph-input-container] {
+  box-sizing: border-box;
+}
+
+[data-tgph-input-slot] {
+  box-sizing: border-box;
+  order: 2;
+}
+
+[data-tgph-input-slot] > [data-tgph-button] {
+  width: var(--tgph-spacing-full);
+  height: var(--tgph-spacing-auto);
+}
+
+[data-tgph-input-slot] > [data-tgph-button-layout="icon-only"] {
+  aspect-ratio: 1;
+  padding: var(--tgph-spacing-0);
+}
+
+[data-tgph-input-slot] > [data-tgph-button-layout="default"] {
+  padding: var(--tgph-spacing-2);
+}
+
+[data-tgph-input-slot]:has([data-tgph-button-layout="icon-only"]) {
+  aspect-ratio: 1;
+}
+
+[data-tgph-input-slot]:has([data-tgph-button-layout="icon-only"]) {
+  padding: var(--tgph-spacing-1) !important;
+}
+
+[data-tgph-input-slot-position="leading"] {
+  order: 1;
+}
+
+[data-tgph-input-slot-position="trailing"] {
+  order: 3;
+}
+
+[data-tgph-input-slot-size="1"] > [data-tgph-button] {
+  border-radius: var(--tgph-rounded-1);
+}
+
+[data-tgph-input-slot-size="2"] > [data-tgph-button] {
+  border-radius: var(--tgph-rounded-1);
+}
+
+[data-tgph-input-slot-size="3"] > [data-tgph-button] {
+  border-radius: var(--tgph-rounded-2);
+}
+
+[data-tgph-input-container-state="disabled"] {
+  cursor: not-allowed;
+}
+
+[data-tgph-input-field] {
+  appearance: none;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  order: 2;
+  font-famiy: inherit;
+}

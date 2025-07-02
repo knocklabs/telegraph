@@ -1,53 +1,113 @@
 export const SIZE = {
   Container: {
-    "1": "h-6 pl-0 rounded-2",
-    "2": "h-8 pl-0 rounded-2",
-    "3": "h-10 pl-0 rounded-3",
-  },
-  Input: {
-    "1": "px-1",
-    "2": "px-2",
-    "3": "px-3",
+    "1": {
+      h: "6",
+      pl: "0",
+      rounded: "2",
+    },
+    "2": {
+      h: "8",
+      pl: "0",
+      rounded: "2",
+    },
+    "3": {
+      h: "10",
+      pl: "0",
+      rounded: "2",
+    },
   },
   Text: {
-    "1": "1",
-    "2": "2",
-    "3": "3",
-  },
-  Slot: {
-    "1": "[&>[data-tgph-button]]:rounded-1",
-    "2": "[&>[data-tgph-button]]:rounded-1",
-    "3": "[&>[data-tgph-button]]:rounded-2",
+    "1": {
+      size: "1",
+      px: "1",
+    },
+    "2": {
+      size: "2",
+      px: "2",
+    },
+    "3": {
+      size: "3",
+      px: "3",
+    },
   },
   SlotLeading: {
-    "1": "order-1 pl-1",
-    "2": "order-1 pl-2",
-    "3": "order-1 pl-3",
+    "1": {
+      pl: "1",
+    },
+    "2": {
+      pl: "2",
+    },
+    "3": {
+      pl: "3",
+    },
   },
   SlotTrailing: {
-    "1": "order-3 pr-1",
-    "2": "order-3 pr-2",
-    "3": "order-3 pr-3",
+    "1": {
+      pr: "1",
+    },
+    "2": {
+      pr: "2",
+    },
+    "3": {
+      pr: "3",
+    },
   },
 } as const;
 
 export const COLOR = {
   Container: {
     default: {
-      outline:
-        "bg-surface-1 border-gray-6 hover:border-gray-7 focus-within:!border-blue-8",
-      ghost:
-        "bg-transparent border-transparent hover:bg-gray-3 focus-within:!bg-gray-4 focus-within:!border-blue-8",
+      outline: {
+        bg: "surface-1",
+        border: "px",
+        borderColor: "gray-6",
+        hover_borderColor: "gray-7",
+        focus_within_borderColor: "blue-8",
+      },
+      ghost: {
+        bg: "transparent",
+        border: "px",
+        borderColor: "transparent",
+        hover_backgroundColor: "gray-3",
+        hover_borderColor: "transparent",
+        focus_within_backgroundColor: "gray-4",
+        focus_within_borderColor: "blue-8",
+      },
     },
     disabled: {
-      outline:
-        "cursor-not-allowed bg-gray-2 border-gray-2 [&_[data-tgph-icon]]:text-gray-8 placeholder:text-gray-9 [&>input]:text-gray-9",
-      ghost:
-        "cursor-not-allowed bg-transparent border border-transparent [&_[data-tgph-icon]]:text-gray-8 placeholder:text-gray-9 [&>input]:text-gray-9",
+      outline: {
+        bg: "gray-2",
+        border: "px",
+        borderColor: "gray-2",
+      },
+      ghost: {
+        bg: "transparent",
+        border: "px",
+        borderColor: "transparent",
+      },
     },
     error: {
-      outline: "bg-surface-1 border-red-6",
-      ghost: "bg-transparent border-red-6",
+      outline: {
+        bg: "surface-1",
+        border: "px",
+        borderColor: "red-6",
+      },
+      ghost: {
+        bg: "transparent",
+        border: "px",
+        borderColor: "red-6",
+      },
+    },
+  },
+  Text: {
+    default: {
+      color: "default",
+    },
+    disabled: {
+      color: "disabled",
+    },
+    error: {
+      color: "default",
     },
   },
 } as const;
