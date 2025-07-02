@@ -363,8 +363,8 @@ export const BackgroundMountNone = () => {
       <Box py="4">
         <Text as="p">Current active tab: {currentTab}</Text>
         <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          All tabs use forceBackgroundMount="none" (or default) - only active tab
-          is in DOM
+          All tabs use forceBackgroundMount="none" (or default) - only active
+          tab is in DOM
         </Text>
       </Box>
 
@@ -403,8 +403,8 @@ export const BackgroundMountNone = () => {
           </Text>
           <NestedCounter />
           <Text as="p" mt="2">
-            This demonstrates the default behavior (no forceBackgroundMount prop).
-            Counter resets when switching tabs.
+            This demonstrates the default behavior (no forceBackgroundMount
+            prop). Counter resets when switching tabs.
           </Text>
         </Box>
       </Tabs.Panel>
