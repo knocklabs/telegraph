@@ -7,8 +7,8 @@ import {
   type TgphElement,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { motion } from "@telegraph/motion";
 import { Text } from "@telegraph/typography";
+import { motion } from "motion/react";
 import React from "react";
 
 import { TooltipContentProps } from "./Tooltip.constants";
@@ -19,7 +19,7 @@ type TooltipBaseProps<T extends TgphElement> = {
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
   appearance?: TgphComponentProps<typeof OverrideAppearance>["appearance"];
-  skipAnimation?: TgphComponentProps<typeof motion.div>["skipAnimation"];
+  skipAnimation?: boolean;
   triggerRef?: React.RefObject<HTMLButtonElement>;
 };
 
@@ -145,9 +145,8 @@ const Tooltip = <T extends TgphElement>({
                 as={motion.div}
                 // Add tgph class so that this always works in portals
                 className="tgph"
-                skipAnimation={skipAnimation}
                 initial={
-                  shouldAnimate
+                  shouldAnimate && !skipAnimation
                     ? {
                         opacity: 0,
                         scale: 0.5,
@@ -162,8 +161,9 @@ const Tooltip = <T extends TgphElement>({
                   y: 0,
                 }}
                 transition={{
-                  duration: 100,
+                  duration: 0.1,
                   type: "spring",
+                  bounce: 0,
                 }}
                 bg="gray-1"
                 rounded="3"

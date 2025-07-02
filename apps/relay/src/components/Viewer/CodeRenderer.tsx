@@ -18,7 +18,6 @@ import * as TelegraphLayout from "@telegraph/layout";
 import { Stack } from "@telegraph/layout";
 import * as TelegraphMenu from "@telegraph/menu";
 import * as TelegraphModal from "@telegraph/modal";
-import * as TelegraphMotion from "@telegraph/motion";
 import * as TelegraphPopover from "@telegraph/popover";
 import * as TelegraphRadio from "@telegraph/radio";
 import * as TelegraphSegmentedControl from "@telegraph/segmented-control";
@@ -50,7 +49,6 @@ const telegraphPackages: Record<string, unknown> = {
   "@telegraph/layout": TelegraphLayout,
   "@telegraph/menu": TelegraphMenu,
   "@telegraph/modal": TelegraphModal,
-  "@telegraph/motion": TelegraphMotion,
   "@telegraph/popover": TelegraphPopover,
   "@telegraph/radio": TelegraphRadio,
   "@telegraph/segmented-control": TelegraphSegmentedControl,

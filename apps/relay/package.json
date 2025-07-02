@@ -22,7 +22,6 @@
     "@telegraph/layout": "workspace:*",
     "@telegraph/menu": "workspace:*",
     "@telegraph/modal": "workspace:*",
-    "@telegraph/motion": "workspace:*",
     "@telegraph/popover": "workspace:*",
     "@telegraph/prettier-config": "workspace:*",
     "@telegraph/radio": "workspace:*",

@@ -1,8 +1,8 @@
 import { Button } from "@telegraph/button";
 import { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { motion } from "@telegraph/motion";
 import { Check } from "lucide-react";
+import { motion } from "motion/react";
 
 type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   typeof Button<T>
@@ -84,7 +84,6 @@ const MenuItemLeading = ({
         variant="primary"
         icon={Check}
         aria-hidden={true}
-        initializeWithAnimation={false}
         animate={
           selected
             ? {
@@ -98,7 +97,7 @@ const MenuItemLeading = ({
                 scale: 0.3,
               }
         }
-        transition={{ duration: 150, type: "spring" }}
+        transition={{ duration: 0.15, type: "spring", bounce: 0 }}
         style={{ transformOrigin: "center" }}
         display="block"
       />

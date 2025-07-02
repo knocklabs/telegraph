@@ -6,7 +6,7 @@ import {
   TgphElement,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { AnimatePresence, motion } from "@telegraph/motion";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 
 type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
@@ -37,20 +37,11 @@ const Root = ({
   });
 
   return (
-    <AnimatePresence
-      presenceMap={[
-        {
-          "tgph-motion-key": "popover-content",
-          value: open,
-        },
-      ]}
-    >
-      <PopoverContext.Provider value={{ open, setOpen }}>
-        <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
-          {children}
-        </RadixPopover.Root>
-      </PopoverContext.Provider>
-    </AnimatePresence>
+    <PopoverContext.Provider value={{ open, setOpen }}>
+      <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
+        <AnimatePresence>{children}</AnimatePresence>
+      </RadixPopover.Root>
+    </PopoverContext.Provider>
   );
 };
 
@@ -85,7 +76,7 @@ type ContentProps<T extends TgphElement> = React.ComponentProps<
 > &
   Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
     contentStackRef?: React.RefObject<HTMLDivElement>;
-    skipAnimation?: TgphComponentProps<typeof motion.div>["skipAnimation"];
+    skipAnimation?: boolean;
   };
 
 const Content = <T extends TgphElement>({
@@ -149,27 +140,34 @@ const Content = <T extends TgphElement>({
             as={motion.div}
             // Add tgph class so that this always works in portals
             className="tgph"
-            initializeWithAnimation={false}
-            skipAnimation={skipAnimation}
-            initial={{
-              opacity: 0.5,
-              scale: 0.6,
-              ...deriveAnimationBasedOnSide(side),
-            }}
+            initial={
+              skipAnimation
+                ? undefined
+                : {
+                    opacity: 0.5,
+                    scale: 0.6,
+                    ...deriveAnimationBasedOnSide(side),
+                  }
+            }
             animate={{
               opacity: 1,
               scale: 1,
               x: 0,
               y: 0,
             }}
-            exit={{
-              opacity: 0.5,
-              scale: 0.6,
-              ...deriveAnimationBasedOnSide(side),
-            }}
+            exit={
+              skipAnimation
+                ? undefined
+                : {
+                    opacity: 0.5,
+                    scale: 0.6,
+                    ...deriveAnimationBasedOnSide(side),
+                  }
+            }
             transition={{
-              duration: 100,
+              duration: 0.1,
               type: "spring",
+              bounce: 0,
             }}
             bg={bg}
             direction={direction}
@@ -184,7 +182,7 @@ const Content = <T extends TgphElement>({
               ...style,
             }}
             zIndex="popover"
-            tgph-motion-key="popover-content"
+            key="tgph-popover-content"
           >
             {children}
           </Stack>

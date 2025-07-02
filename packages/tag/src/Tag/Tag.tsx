@@ -9,11 +9,11 @@ import type {
 } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
-import { motion } from "@telegraph/motion";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
 import { Check, Copy, X } from "lucide-react";
+import { motion } from "motion/react";
 import React from "react";
 
 import { COLOR, SIZE, SPACING } from "./Tag.constants";
@@ -141,18 +141,18 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
       >
         <TelegraphButton.Icon
           as={motion.span}
-          initializeWithAnimation={false}
+          initial={false}
           animate={{ y: copied ? 0 : "150%", opacity: copied ? 1 : 1 }}
-          transition={{ duration: 150, type: "spring" }}
+          transition={{ duration: 0.15, type: "spring", bounce: 0 }}
           icon={Check}
           alt="Copied text"
           aria-hidden={!copied}
         />
         <TelegraphButton.Icon
           as={motion.span}
-          initializeWithAnimation={false}
+          initial={false}
           animate={{ y: !copied ? 0 : "-150%", opacity: !copied ? 1 : 1 }}
-          transition={{ duration: 150, type: "spring" }}
+          transition={{ duration: 0.15, type: "spring", bounce: 0 }}
           icon={Copy}
           position="absolute"
           alt="Copy text"

@@ -1,12 +1,12 @@
 import { Button } from "@telegraph/button";
 import { type TgphComponentProps, type TgphElement } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
-import { AnimatePresence, motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
 import { ChevronDown, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 
 import { ComboboxContext } from "./Combobox";
@@ -37,7 +37,7 @@ const TriggerIndicator = <T extends TgphElement>({
     <Button.Icon
       as={motion.span}
       animate={{ rotate: context.open ? 180 : 0 }}
-      transition={{ duration: 150, type: "spring" }}
+      transition={{ duration: 0.15, type: "spring", bounce: 0 }}
       icon={icon}
       aria-hidden={ariaHidden}
       {...props}
@@ -210,32 +210,15 @@ const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
         flexGrow: 1,
       }}
     >
-      <AnimatePresence
-        presenceMap={context.value.map((v) => {
-          const value = getValueFromOption(v, context.legacyBehavior);
-          return {
-            "tgph-motion-key": value || "",
-            value: true,
-          };
-        })}
-      >
-        {children}
-      </AnimatePresence>
-      <AnimatePresence
-        presenceMap={[
-          {
-            "tgph-motion-key": "combobox-more",
-            value: true,
-          },
-        ]}
-      >
+      <AnimatePresence>{children}</AnimatePresence>
+      <AnimatePresence>
         {layout === "truncate" && context.value.length > 2 && (
           <Stack
             as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 100, type: "spring" }}
+            transition={{ duration: 0.1, type: "spring", bounce: 0 }}
             h="full"
             pr="1"
             pl="8"
@@ -250,22 +233,16 @@ const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
           >
             <Text as="span" size="1" style={{ whiteSpace: "nowrap" }}>
               +
-              <AnimatePresence
-                presenceMap={truncatedLengthStringArray.map((n) => ({
-                  "tgph-motion-key": n,
-                  value: true,
-                }))}
-              >
+              <AnimatePresence>
                 {truncatedLengthStringArray.map((n) => (
                   <Box
                     as={motion.span}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 100, type: "spring" }}
+                    transition={{ duration: 0.1, type: "spring", bounce: 0 }}
                     w="2"
                     display="inline-block"
-                    tgph-motion-key={n}
                     key={n}
                   >
                     {n}
@@ -300,12 +277,10 @@ const TriggerTagRoot = <T extends TgphElement>({
     <TriggerTagContext.Provider value={{ value }}>
       <Tag.Root
         as={motion.span}
-        initializeWithAnimation={false}
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.5 }}
-        transition={{ duration: 100, type: "spring" }}
-        tgph-motion-key={value}
+        transition={{ duration: 0.1, type: "spring", bounce: 0 }}
         size="1"
         layout="position"
         {...props}

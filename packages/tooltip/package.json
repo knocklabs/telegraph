@@ -37,8 +37,8 @@
     "@telegraph/appearance": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "@telegraph/motion": "workspace:^",
-    "@telegraph/typography": "workspace:^"
+    "@telegraph/typography": "workspace:^",
+    "motion": "^12.23.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.4",
