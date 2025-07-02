@@ -1,7 +1,7 @@
 import { Message, useChat } from "@ai-sdk/react";
 import { Button } from "@telegraph/button";
-import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
+import { Plus } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 
@@ -108,7 +108,7 @@ export default function Home() {
           </Box>
           <Button
             color="accent"
-            trailingIcon={{ icon: Lucide.Plus, "aria-hidden": true }}
+            trailingIcon={{ icon: Plus, "aria-hidden": true }}
             size="2"
             onClick={() => {
               router.replace({ pathname: router.pathname }, undefined, {

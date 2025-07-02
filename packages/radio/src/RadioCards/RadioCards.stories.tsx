@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Lucide } from "@telegraph/icon";
+import { Bell, DoorClosed } from "lucide-react";
 import React from "react";
 
 import { RadioCards as TelegraphRadioCards } from "./RadioCards";
@@ -36,13 +36,13 @@ export const RadioCards: StorybookRadioCardsType = {
         direction={direction}
         options={[
           {
-            icon: { icon: Lucide.Bell, alt: "Bell" },
+            icon: { icon: Bell, alt: "Bell" },
             title: "Option 1",
             description: "Description 1",
             value: "1",
           },
           {
-            icon: { icon: Lucide.DoorClosed, alt: "Door" },
+            icon: { icon: DoorClosed, alt: "Door" },
             title: "Option 2",
             description: "Description 2",
             value: "2",

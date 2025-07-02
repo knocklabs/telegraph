@@ -1,8 +1,8 @@
 import { Button } from "@telegraph/button";
 import { TgphComponentProps, TgphElement } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { motion } from "@telegraph/motion";
+import { Check } from "lucide-react";
 
 type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   typeof Button<T>
@@ -82,7 +82,7 @@ const MenuItemLeading = ({
       <Button.Icon
         as={motion.span}
         variant="primary"
-        icon={Lucide.Check}
+        icon={Check}
         aria-hidden={true}
         initializeWithAnimation={false}
         animate={

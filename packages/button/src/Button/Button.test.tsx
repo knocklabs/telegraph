@@ -1,5 +1,5 @@
-import { Lucide } from "@telegraph/icon";
 import { render } from "@testing-library/react";
+import { Bell } from "lucide-react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
@@ -23,8 +23,8 @@ describe("Button", () => {
   it("icon button is accessible", async () => {
     const { container } = render(
       <Button
-        leadingIcon={{ icon: Lucide.Bell, alt: "create" }}
-        trailingIcon={{ icon: Lucide.Bell, alt: "create" }}
+        leadingIcon={{ icon: Bell, alt: "create" }}
+        trailingIcon={{ icon: Bell, alt: "create" }}
       >
         Click me
       </Button>,
@@ -33,14 +33,14 @@ describe("Button", () => {
   });
   it("icon button without alt is inaccessible", async () => {
     // @ts-expect-error Testing error case
-    render(<Button leadingIcon={{ icon: Lucide.Bell }}>Click me</Button>);
+    render(<Button leadingIcon={{ icon: Bell }}>Click me</Button>);
     expect(console.error).toHaveBeenCalledWith(
       "@telegraph/icon: alt prop is required",
     );
   });
   it("alt text is optional if icon is aria hidden", async () => {
     const { container } = render(
-      <Button leadingIcon={{ icon: Lucide.Bell, "aria-hidden": true }}>
+      <Button leadingIcon={{ icon: Bell, "aria-hidden": true }}>
         Click me
       </Button>,
     );
@@ -49,8 +49,8 @@ describe("Button", () => {
   it("icon in text button icon has correct text color", async () => {
     const { container } = render(
       <Button
-        leadingIcon={{ icon: Lucide.Bell, alt: "create" }}
-        trailingIcon={{ icon: Lucide.Bell, alt: "create" }}
+        leadingIcon={{ icon: Bell, alt: "create" }}
+        trailingIcon={{ icon: Bell, alt: "create" }}
         variant="soft"
       >
         Click me
@@ -63,7 +63,7 @@ describe("Button", () => {
   });
   it("icon in icon only button  has correct text color", async () => {
     const { container } = render(
-      <Button icon={{ icon: Lucide.Bell, alt: "create" }} variant="soft" />,
+      <Button icon={{ icon: Bell, alt: "create" }} variant="soft" />,
     );
     const icon = container?.querySelector("[data-button-icon]");
     expect(icon).toHaveStyle({
@@ -72,7 +72,7 @@ describe("Button", () => {
   });
   it("icon-only button has correct layout", async () => {
     const { container } = render(
-      <Button icon={{ icon: Lucide.Bell, alt: "create" }} />,
+      <Button icon={{ icon: Bell, alt: "create" }} />,
     );
     expect(container.firstChild).toHaveAttribute(
       "data-tgph-button-layout",
@@ -81,7 +81,7 @@ describe("Button", () => {
   });
   it("text button has correct layout", async () => {
     const { container } = render(
-      <Button icon={{ icon: Lucide.Bell, alt: "create" }}>Button</Button>,
+      <Button icon={{ icon: Bell, alt: "create" }}>Button</Button>,
     );
     expect(container.firstChild).toHaveAttribute(
       "data-tgph-button-layout",
@@ -90,7 +90,7 @@ describe("Button", () => {
   });
   it("disabled prop makes the button disabled", async () => {
     const { container } = render(
-      <Button disabled icon={{ icon: Lucide.Bell, alt: "create" }}>
+      <Button disabled icon={{ icon: Bell, alt: "create" }}>
         Button
       </Button>,
     );

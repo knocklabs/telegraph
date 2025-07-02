@@ -1,28 +1,9 @@
 import { render } from "@testing-library/react";
+import { Bell } from "lucide-react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
-import { Lucide } from "../index";
-
 import { Icon } from "./Icon";
-
-// @ts-expect-error -- We need mock this impport because DynamicIcon is ESM and vitest expects CJS :/
-const dynamicIconPkg = import("lucide-react/dist/esm/DynamicIcon.js") as {
-  default: React.ReactNode;
-};
-
-vi.mock("lucide-react/dynamic", () => {
-  return {
-    DynamicIcon: () => {
-      return dynamicIconPkg.default;
-    },
-    dynamicIconImports: {
-      Bell: () => {
-        return dynamicIconPkg.default;
-      },
-    },
-  };
-});
 
 // Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
@@ -36,9 +17,7 @@ afterEach(() => {
 
 describe("Icon", () => {
   it("should render without a11y issues", async () => {
-    const { container } = render(
-      <Icon icon={Lucide.Bell} alt="Create a workflow" />,
-    );
+    const { container } = render(<Icon icon={Bell} alt="Create a workflow" />);
     expectToHaveNoViolations(await axe(container));
   });
   it("icon without icon prop throws error", async () => {
@@ -50,15 +29,13 @@ describe("Icon", () => {
   });
   it("icon without alt prop throws error", async () => {
     // @ts-expect-error Testing error case
-    render(<Icon icon={{ icon: Lucide.Bell }} />);
+    render(<Icon icon={Bell} />);
     expect(console.error).toHaveBeenCalledWith(
       "@telegraph/icon: alt prop is required",
     );
   });
   it("default props applies correct className", () => {
-    const { container } = render(
-      <Icon icon={Lucide.Bell} alt="Create a workflow" />,
-    );
+    const { container } = render(<Icon icon={Bell} alt="Create a workflow" />);
 
     expect(container.firstChild).toHaveStyle({
       "--color": "var(--tgph-gray-12)",
@@ -68,7 +45,7 @@ describe("Icon", () => {
   });
   it("color prop applies correct className", () => {
     const { container } = render(
-      <Icon icon={Lucide.Bell} alt="Create a workflow" color="red" />,
+      <Icon icon={Bell} alt="Create a workflow" color="red" />,
     );
 
     expect(container.firstChild).toHaveStyle({
@@ -78,7 +55,7 @@ describe("Icon", () => {
   it("variant prop applies correct className", () => {
     const { container } = render(
       <Icon
-        icon={Lucide.Bell}
+        icon={Bell}
         alt="Create a workflow"
         color="red"
         variant="secondary"
@@ -91,7 +68,7 @@ describe("Icon", () => {
   });
   it("size prop applies correct className", () => {
     const { container } = render(
-      <Icon icon={Lucide.Bell} alt="Create a workflow" size="9" />,
+      <Icon icon={Bell} alt="Create a workflow" size="9" />,
     );
 
     expect(container.firstChild).toHaveStyle({

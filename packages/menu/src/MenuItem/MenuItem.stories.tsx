@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
+import * as Lucide from "lucide-react";
 
 import { MenuItem as TelegraphMenuItem } from "./MenuItem";
 

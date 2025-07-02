@@ -10,11 +10,12 @@ import {
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
-import { Icon, Lucide } from "@telegraph/icon";
+import { Icon } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
+import { Plus, Search as SearchIcon, X } from "lucide-react";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
@@ -708,13 +709,13 @@ const Search = ({
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           onValueChange(event.target.value);
         }}
-        LeadingComponent={<Icon icon={Lucide.Search} alt="Search Icon" />}
+        LeadingComponent={<Icon icon={SearchIcon} alt="Search Icon" />}
         TrailingComponent={
           context?.searchQuery && context?.searchQuery?.length > 0 ? (
             <TelegraphButton
               variant="ghost"
               color="gray"
-              icon={{ icon: Lucide.X, alt: "Clear Search Query" }}
+              icon={{ icon: X, alt: "Clear Search Query" }}
               onClick={() => context.setSearchQuery?.("")}
             />
           ) : null
@@ -735,7 +736,7 @@ type EmptyProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>> & {
 };
 
 const Empty = <T extends TgphElement>({
-  icon = { icon: Lucide.Search, alt: "Search Icon" },
+  icon = { icon: SearchIcon, alt: "Search Icon" },
   message = "No results found",
   children,
   ...props
@@ -813,7 +814,7 @@ const Create = <T extends TgphElement, LB extends boolean>({
   if (context.searchQuery && !variableAlreadyExists(context.searchQuery)) {
     return (
       <Option
-        leadingIcon={{ icon: Lucide.Plus, "aria-hidden": true }}
+        leadingIcon={{ icon: Plus, "aria-hidden": true }}
         mx="1"
         value={context.searchQuery}
         label={`${leadingText} "${context.searchQuery}"`}

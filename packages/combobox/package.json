@@ -48,7 +48,8 @@
     "@telegraph/tag": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/truncate": "workspace:^",
-    "@telegraph/typography": "workspace:^"
+    "@telegraph/typography": "workspace:^",
+    "lucide-react": "^0.525.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.4",

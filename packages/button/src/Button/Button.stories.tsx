@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Lucide } from "@telegraph/icon";
+import * as Icons from "lucide-react";
 
 import { Button as TelegraphButton } from "./Button";
 import { BUTTON_SIZE_MAP } from "./Button.constants";
@@ -15,8 +15,6 @@ const buttonColorMap = [
   "purple",
 ];
 const buttonVariantMap = ["solid", "soft", "outline", "ghost"];
-
-const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphButton> = {
   title: "Components/Button",

@@ -2,7 +2,14 @@ import { Filter } from ".";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import { TgphComponentProps } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
+import {
+  Apple,
+  Fish,
+  ListFilter,
+  MemoryStick,
+  Moon,
+  Mountain,
+} from "lucide-react";
 import React from "react";
 
 const meta = {
@@ -26,7 +33,7 @@ export const Default: Story = {
             variant="outline"
             size="1"
             leadingIcon={{
-              icon: Lucide.ListFilter,
+              icon: ListFilter,
               "aria-hidden": true,
             }}
           >
@@ -37,9 +44,9 @@ export const Default: Story = {
           <Filter.Parameter
             name="Favorite Beverage"
             value="favorite-beverage"
-            icon={Lucide.Apple}
+            icon={Apple}
           >
-            <Filter.Menu name="Beverages" icon={Lucide.Apple} isSearchable>
+            <Filter.Menu name="Beverages" icon={Apple} isSearchable>
               <Filter.Menu name="Sodas">
                 <Filter.Option name="Sprite" value="sprite" />
                 <Filter.Option name="Dr. Pepper" value="dr-pepper" />
@@ -48,10 +55,10 @@ export const Default: Story = {
                 <Filter.Parameter
                   value="favorite-juice"
                   name="Favorite Juice"
-                  icon={Lucide.Fish}
+                  icon={Fish}
                 >
-                  <Filter.Menu name="Fruit Juices" icon={Lucide.Fish}>
-                    <Filter.Option value="apple-juice" icon={Lucide.Amphora} />
+                  <Filter.Menu name="Fruit Juices" icon={Fish}>
+                    <Filter.Option value="apple-juice" icon={Amphora} />
                     <Filter.Option name="Orange Juice" value="orange-juice" />
                   </Filter.Menu>
                 </Filter.Parameter>
@@ -71,21 +78,17 @@ export const Default: Story = {
           <Filter.Parameter
             name="Favorite Snacks"
             value="favorite-snacks"
-            icon={Lucide.Mountain}
+            icon={Mountain}
             isMulti
             pluralNoun="snacks"
           >
-            <Filter.Menu name="Snacks" icon={Lucide.Mountain}>
+            <Filter.Menu name="Snacks" icon={Mountain}>
               <Filter.Option
                 name="Chocolate"
                 value="chocolate"
-                icon={Lucide.MemoryStick}
+                icon={MemoryStick}
               />
-              <Filter.Option
-                name="Pretzels"
-                value="pretzels"
-                icon={Lucide.Moon}
-              />
+              <Filter.Option name="Pretzels" value="pretzels" icon={Moon} />
             </Filter.Menu>
           </Filter.Parameter>
         </Filter.Content>

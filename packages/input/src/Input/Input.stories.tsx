@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import { Icon, Lucide } from "@telegraph/icon";
+import { Icon } from "@telegraph/icon";
+import * as Icons from "lucide-react";
 
 import { Input as TelegraphInput } from "./Input";
 import { COLOR, SIZE } from "./Input.constants";
-
-const Icons = { ...Lucide };
 
 const meta: Meta<typeof TelegraphInput> = {
   tags: ["autodocs"],

@@ -7,11 +7,12 @@ import {
   type TgphElement,
   useDeterminateState,
 } from "@telegraph/helpers";
-import { Lucide, Icon as TelegraphIcon } from "@telegraph/icon";
+import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
+import { LoaderCircle } from "lucide-react";
 import React from "react";
 
 import {
@@ -148,7 +149,7 @@ const Root = <T extends TgphElement>({
       >
         {state === "loading" && (
           <Icon
-            icon={Lucide.LoaderCircle}
+            icon={LoaderCircle}
             aria-hidden={true}
             data-tgph-button-loading-icon
           />

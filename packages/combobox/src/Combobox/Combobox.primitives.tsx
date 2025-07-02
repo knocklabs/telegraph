@@ -1,12 +1,12 @@
 import { Button } from "@telegraph/button";
 import { type TgphComponentProps, type TgphElement } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import { AnimatePresence, motion } from "@telegraph/motion";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
+import { ChevronDown, X } from "lucide-react";
 import React from "react";
 
 import { ComboboxContext } from "./Combobox";
@@ -28,7 +28,7 @@ type TriggerIndicatorProps<T extends TgphElement> = Partial<
 >;
 
 const TriggerIndicator = <T extends TgphElement>({
-  icon = Lucide.ChevronDown,
+  icon = ChevronDown,
   "aria-hidden": ariaHidden = true,
   ...props
 }: TriggerIndicatorProps<T>) => {
@@ -88,7 +88,7 @@ const TriggerClear = <T extends TgphElement>({
     <Tooltip label="Clear field" {...tooltipProps}>
       <Button
         type="button"
-        icon={{ icon: Lucide.X, alt: "Clear field" }}
+        icon={{ icon: X, alt: "Clear field" }}
         size="1"
         variant="ghost"
         onClick={(event: React.MouseEvent) => {
@@ -369,7 +369,7 @@ const TriggerTagButton = <T extends TgphElement>({
 
   return (
     <Tag.Button
-      icon={{ icon: Lucide.X, alt: `Remove ${triggerTagContext.value}` }}
+      icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
       onClick={(event: React.MouseEvent) => {
         if (!context.onValueChange) return;
         const onValueChange =

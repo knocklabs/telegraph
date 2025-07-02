@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Lucide } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { Ellipsis } from "lucide-react";
 
 import { Popover } from "./Popover";
 
@@ -51,7 +51,7 @@ export const Default: Story = {
           <Popover.Trigger asChild={true}>
             <Button
               variant="outline"
-              leadingIcon={{ icon: Lucide.Ellipsis, "aria-hidden": true }}
+              leadingIcon={{ icon: Ellipsis, "aria-hidden": true }}
             />
           </Popover.Trigger>
           <Popover.Content

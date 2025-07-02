@@ -1,4 +1,15 @@
-import { Lucide, type LucideIcon } from "@telegraph/icon";
+import { type LucideIcon } from "@telegraph/icon";
+import {
+  ArrowBigUp,
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Command,
+  CornerDownLeft,
+  Delete,
+  Option,
+} from "lucide-react";
 
 export const getIconOrKey = (
   key: string,
@@ -6,15 +17,15 @@ export const getIconOrKey = (
   const isMac = navigator.userAgent.includes("Mac");
 
   if (key === "Meta") {
-    return isMac ? { icon: Lucide.Command } : { text: "Ctrl" };
+    return isMac ? { icon: Command } : { text: "Ctrl" };
   }
 
   if (key === "Enter") {
-    return { icon: Lucide.CornerDownLeft };
+    return { icon: CornerDownLeft };
   }
 
   if (key === "Shift") {
-    return { icon: Lucide.ArrowBigUp };
+    return { icon: ArrowBigUp };
   }
 
   if (key === "Escape") {
@@ -22,11 +33,11 @@ export const getIconOrKey = (
   }
 
   if (key === "Backspace") {
-    return { icon: Lucide.Delete };
+    return { icon: Delete };
   }
 
   if (key === "Alt") {
-    return isMac ? { icon: Lucide.Option } : { text: "Alt" };
+    return isMac ? { icon: Option } : { text: "Alt" };
   }
 
   if (key === "Control") {
@@ -34,19 +45,19 @@ export const getIconOrKey = (
   }
 
   if (key === "ArrowRight") {
-    return { icon: Lucide.ArrowRight };
+    return { icon: ArrowRight };
   }
 
   if (key === "ArrowLeft") {
-    return { icon: Lucide.ArrowLeft };
+    return { icon: ArrowLeft };
   }
 
   if (key === "ArrowDown") {
-    return { icon: Lucide.ArrowDown };
+    return { icon: ArrowDown };
   }
 
   if (key === "ArrowUp") {
-    return { icon: Lucide.ArrowUp };
+    return { icon: ArrowUp };
   }
 
   return key.length === 1 ? { text: key.toUpperCase() } : { text: key };

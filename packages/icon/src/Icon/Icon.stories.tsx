@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { Lucide } from "../index";
+import * as Icons from "lucide-react";
 
 import { Icon as TelegraphIcon } from "./Icon";
 import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
-
-const Icons = { ...Lucide };
 
 type StorybookTelegraphIconType = React.ComponentProps<typeof TelegraphIcon>;
 
