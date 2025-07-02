@@ -1,5 +1,15 @@
 # @telegraph/layout
 
+## 0.1.21
+
+### Patch Changes
+
+- [#500](https://github.com/knocklabs/telegraph/pull/500) [`e554068`](https://github.com/knocklabs/telegraph/commit/e554068b0f9ca5a1e8fe9d6f27dd2a30373a3cc8) Thanks [@kylemcd](https://github.com/kylemcd)! - change border color back to default from debug
+
+- [#498](https://github.com/knocklabs/telegraph/pull/498) [`99e01e3`](https://github.com/knocklabs/telegraph/commit/99e01e3dcf7508af0bfae14e9b62cccff7af3388) Thanks [@kylemcd](https://github.com/kylemcd)! - update imports for the `Lucide` object from `@telegraph/icon` to import icons directly from `lucide-react` instead.
+
+- [#497](https://github.com/knocklabs/telegraph/pull/497) [`2d3e1cd`](https://github.com/knocklabs/telegraph/commit/2d3e1cddd8a6bfac7108e350649f81bdc18f57c8) Thanks [@kylemcd](https://github.com/kylemcd)! - deprecate tailwind usage and migrate any remaining packages
+
 ## 0.1.20
 
 ### Patch Changes

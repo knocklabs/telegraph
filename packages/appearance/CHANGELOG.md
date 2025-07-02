@@ -1,5 +1,13 @@
 # @telegraph/appearance
 
+## 0.0.11
+
+### Patch Changes
+
+- [#498](https://github.com/knocklabs/telegraph/pull/498) [`99e01e3`](https://github.com/knocklabs/telegraph/commit/99e01e3dcf7508af0bfae14e9b62cccff7af3388) Thanks [@kylemcd](https://github.com/kylemcd)! - update imports for the `Lucide` object from `@telegraph/icon` to import icons directly from `lucide-react` instead.
+
+- [#497](https://github.com/knocklabs/telegraph/pull/497) [`2d3e1cd`](https://github.com/knocklabs/telegraph/commit/2d3e1cddd8a6bfac7108e350649f81bdc18f57c8) Thanks [@kylemcd](https://github.com/kylemcd)! - deprecate tailwind usage and migrate any remaining packages
+
 ## 0.0.10
 
 ### Patch Changes
