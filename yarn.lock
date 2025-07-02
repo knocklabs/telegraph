@@ -4400,7 +4400,6 @@ __metadata:
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.1"
     postcss-discard-empty: "npm:^7.0.1"
-    tailwindcss: "npm:^3.4.14"
     typescript: "npm:^5.7.3"
   languageName: unknown
   linkType: soft
