@@ -4,7 +4,7 @@
 
 feat(tabs): rename renderInBackground prop to forceBackgroundMount
 
-Renamed the `renderInBackground` prop to `forceBackgroundMount` in TabPanel component for better naming consistency. This is a breaking change for users currently using the `renderInBackground` prop.
+Renamed the `renderInBackground` prop to `forceBackgroundMount` in TabPanel component for better naming consistency. This change was made during development before the initial release.
 
 - Updated TabPanel component prop interface
 - Updated all story examples to use new prop name
