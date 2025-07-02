@@ -12,8 +12,8 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
-import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 
 import { useModalStacking } from "./ModalStacking";

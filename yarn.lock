@@ -4067,7 +4067,6 @@ __metadata:
     "@telegraph/input": "workspace:^"
     "@telegraph/layout": "workspace:^"
     "@telegraph/menu": "workspace:^"
-    "@telegraph/motion": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tag": "workspace:^"
@@ -4078,6 +4077,7 @@ __metadata:
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     lucide-react: "npm:^0.525.0"
+    motion: "npm:^12.23.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -4272,13 +4272,13 @@ __metadata:
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/motion": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
     lucide-react: "npm:^0.525.0"
+    motion: "npm:^12.23.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -4309,29 +4309,8 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
-    framer-motion: "npm:^11.1.9"
     lucide-react: "npm:^0.525.0"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    typescript: "npm:^5.7.3"
-    vite: "npm:^6.0.11"
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0
-    react-dom: ^18.0.0 || ^19.0.0
-  languageName: unknown
-  linkType: soft
-
-"@telegraph/motion@workspace:*, @telegraph/motion@workspace:^, @telegraph/motion@workspace:packages/motion":
-  version: 0.0.0-use.local
-  resolution: "@telegraph/motion@workspace:packages/motion"
-  dependencies:
-    "@knocklabs/eslint-config": "npm:^0.0.4"
-    "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@telegraph/postcss-config": "workspace:^"
-    "@telegraph/prettier-config": "workspace:^"
-    "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^18.3.18"
-    eslint: "npm:^8.56.0"
+    motion: "npm:^12.23.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -4366,12 +4345,12 @@ __metadata:
     "@radix-ui/react-use-controllable-state": "npm:^1.2.2"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/motion": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
+    motion: "npm:^12.23.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -4456,7 +4435,6 @@ __metadata:
     "@telegraph/layout": "workspace:*"
     "@telegraph/menu": "workspace:*"
     "@telegraph/modal": "workspace:*"
-    "@telegraph/motion": "workspace:*"
     "@telegraph/popover": "workspace:*"
     "@telegraph/prettier-config": "workspace:*"
     "@telegraph/radio": "workspace:*"
@@ -4626,7 +4604,6 @@ __metadata:
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/motion": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/tooltip": "workspace:^"
     "@telegraph/typography": "workspace:^"
@@ -4635,6 +4612,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     lucide-react: "npm:^0.525.0"
+    motion: "npm:^12.23.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -4697,13 +4675,13 @@ __metadata:
     "@telegraph/appearance": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/motion": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^18.3.18"
     eslint: "npm:^8.56.0"
+    motion: "npm:^12.23.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.7.3"
@@ -9068,15 +9046,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.1.9":
-  version: 11.1.9
-  resolution: "framer-motion@npm:11.1.9"
+"framer-motion@npm:^12.23.0":
+  version: 12.23.0
+  resolution: "framer-motion@npm:12.23.0"
   dependencies:
+    motion-dom: "npm:^12.22.0"
+    motion-utils: "npm:^12.19.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
     "@emotion/is-prop-valid":
       optional: true
@@ -9084,7 +9064,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/c1bbadb5f5c324de0473f3fb2c3d0180fc5239335f49b536dc827dff27c87d749af402d1c1fbe7081fbc15b816e32fadf66e24970476f98b2934464f8df9bdb0
+  checksum: 10c0/9085c734767620442e03298f738be9c7fff60a8ca59dddf39cc037c45579d11d3ec3502a5c3eba32084c8c258f239048bbf68f5dac62e288d96b069ce54d12e1
   languageName: node
   linkType: hard
 
@@ -11976,6 +11956,43 @@ __metadata:
     pkg-types: "npm:^1.3.0"
     ufo: "npm:^1.5.4"
   checksum: 10c0/69e738218a13d6365caf930e0ab4e2b848b84eec261597df9788cefb9930f3e40667be9cb58a4718834ba5f97a6efeef31d3b5a95f4388143fd4e0d0deff72ff
+  languageName: node
+  linkType: hard
+
+"motion-dom@npm:^12.22.0":
+  version: 12.22.0
+  resolution: "motion-dom@npm:12.22.0"
+  dependencies:
+    motion-utils: "npm:^12.19.0"
+  checksum: 10c0/f3ef3a2f9224e6aba81535833c8e396e632c80ca5c919890243113b91c1fd388073c04f3163be64bc72594cebb65a2161bca104c90846504ff771dee979ff9d7
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.19.0":
+  version: 12.19.0
+  resolution: "motion-utils@npm:12.19.0"
+  checksum: 10c0/e9526e0135c5f596b2d9a242edbd5b5268922b6001d1b9fb63f2fb4b11f891ac63a186eef8dbd80a4011692d70897aa0c6d4d161fcaaaef3dd4ca7aea6263226
+  languageName: node
+  linkType: hard
+
+"motion@npm:^12.23.0":
+  version: 12.23.0
+  resolution: "motion@npm:12.23.0"
+  dependencies:
+    framer-motion: "npm:^12.23.0"
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/57f0c050d70c2a4aea6e800d05f6f03ca0106fb785807e073484a50e701cde34f17210643820fb6375f9be74939c62775009a795eb872ca105c0ba7ec915f8e0
   languageName: node
   linkType: hard
 

@@ -70,7 +70,7 @@
   border-color: var(--active_borderColor);
 }
 
-.tgph-box--interactive:focus-within {
+.tgph-box--interactive:has(:focus-within) {
   background-color: var(--focus_within_backgroundColor);
   border-color: var(--focus_within_borderColor);
 }

@@ -44,12 +44,12 @@
     "@telegraph/input": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/menu": "workspace:^",
-    "@telegraph/motion": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/truncate": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "lucide-react": "^0.525.0"
+    "lucide-react": "^0.525.0",
+    "motion": "^12.23.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.4",
