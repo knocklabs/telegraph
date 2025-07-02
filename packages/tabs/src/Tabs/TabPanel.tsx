@@ -5,7 +5,7 @@ import React from "react";
 
 export type TabPanelProps = TgphComponentProps<typeof Box> &
   React.ComponentProps<typeof RadixTabs.Content> & {
-    renderInBackground?: "once" | "none";
+    forceBackgroundMount?: "once" | "none";
   };
 
 /**
@@ -16,10 +16,10 @@ const TabPanel = ({
   value,
   children,
   forceMount,
-  renderInBackground = "none",
+  forceBackgroundMount = "none",
   ...props
 }: TabPanelProps) => {
-  const shouldForceMount = renderInBackground === "once" || forceMount;
+  const shouldForceMount = forceBackgroundMount === "once" || forceMount;
 
   return (
     <RadixTabs.Content value={value} forceMount={shouldForceMount} asChild>

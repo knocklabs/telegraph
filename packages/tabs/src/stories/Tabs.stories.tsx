@@ -235,11 +235,11 @@ export const BackgroundRendering = () => {
       <Box py="4">
         <Text as="p">Current active tab: {currentTab}</Text>
         <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          Tabs with renderInBackground="once" are always mounted and running
+          Tabs with forceBackgroundMount="once" are always mounted and running
         </Text>
       </Box>
 
-      <Tabs.Panel value="tab1" renderInBackground="once">
+      <Tabs.Panel value="tab1" forceBackgroundMount="once">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Proof of background rendering:</strong> This counter updates
@@ -254,7 +254,7 @@ export const BackgroundRendering = () => {
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab2" renderInBackground="once">
+      <Tabs.Panel value="tab2" forceBackgroundMount="once">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Height behavior test:</strong> This tab contains a long list
@@ -272,7 +272,7 @@ export const BackgroundRendering = () => {
             ))}
           </Box>
           <Text as="p" mt="4" style={{ fontSize: "14px", color: "#666" }}>
-            This long list tests that inactive tabs with renderInBackground
+            This long list tests that inactive tabs with forceBackgroundMount
             don't affect the visible layout height.
           </Text>
         </Box>
@@ -282,7 +282,7 @@ export const BackgroundRendering = () => {
         <Box py="4">
           <Text as="p">
             <strong>Normal behavior:</strong> This tab only renders when active
-            (renderInBackground="none" is the default). Content is unmounted
+            (forceBackgroundMount="none" is the default). Content is unmounted
             when switching away and remounted when returning.
           </Text>
           <NestedCounter />
@@ -324,7 +324,7 @@ export const BackgroundMountOnce = () => {
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab2" renderInBackground="once">
+      <Tabs.Panel value="tab2" forceBackgroundMount="once">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Once behavior:</strong> This content is always mounted,
@@ -334,7 +334,7 @@ export const BackgroundMountOnce = () => {
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab3" renderInBackground="once">
+      <Tabs.Panel value="tab3" forceBackgroundMount="once">
         <Box py="4">
           <Text as="p">
             <strong>Also once behavior:</strong> Always in DOM, check dev tools!
@@ -363,12 +363,12 @@ export const BackgroundMountNone = () => {
       <Box py="4">
         <Text as="p">Current active tab: {currentTab}</Text>
         <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
-          All tabs use renderInBackground="none" (or default) - only active tab
+          All tabs use forceBackgroundMount="none" (or default) - only active tab
           is in DOM
         </Text>
       </Box>
 
-      <Tabs.Panel value="tab1" renderInBackground="none">
+      <Tabs.Panel value="tab1" forceBackgroundMount="none">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>None behavior:</strong> Only renders when active (explicit
@@ -382,7 +382,7 @@ export const BackgroundMountNone = () => {
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="tab2" renderInBackground="none">
+      <Tabs.Panel value="tab2" forceBackgroundMount="none">
         <Box py="4">
           <Text as="p" mb="3">
             <strong>Also none behavior:</strong> Not in DOM when inactive
@@ -403,7 +403,7 @@ export const BackgroundMountNone = () => {
           </Text>
           <NestedCounter />
           <Text as="p" mt="2">
-            This demonstrates the default behavior (no renderInBackground prop).
+            This demonstrates the default behavior (no forceBackgroundMount prop).
             Counter resets when switching tabs.
           </Text>
         </Box>
