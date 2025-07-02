@@ -13,7 +13,8 @@ import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
 import { Check, Copy, X } from "lucide-react";
-import { motion } from "motion/react";
+import { LazyMotion, domAnimation } from "motion/react";
+import * as motion from "motion/react-m";
 import React from "react";
 
 import { COLOR, SIZE, SPACING } from "./Tag.constants";
@@ -118,48 +119,50 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
   }, [copied]);
 
   return (
-    <Tooltip label="Copy text">
-      <TelegraphButton.Root
-        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-          // Still run onClick incase the consumer wants to do something else
-          onClick?.(event);
-          setCopied(true);
-          textToCopy && navigator.clipboard.writeText(textToCopy);
-          event.currentTarget?.blur();
-        }}
-        size={context.size}
-        color={COLOR.Button[context.variant][context.color]}
-        variant={context.variant}
-        roundedTopRight="3"
-        roundedBottomRight="3"
-        roundedTopLeft="0"
-        roundedBottomLeft="0"
-        position="relative"
-        overflow="hidden"
-        p="2"
-        {...props}
-      >
-        <TelegraphButton.Icon
-          as={motion.span}
-          initial={false}
-          animate={{ y: copied ? 0 : "150%", opacity: copied ? 1 : 1 }}
-          transition={{ duration: 0.15, type: "spring", bounce: 0 }}
-          icon={Check}
-          alt="Copied text"
-          aria-hidden={!copied}
-        />
-        <TelegraphButton.Icon
-          as={motion.span}
-          initial={false}
-          animate={{ y: !copied ? 0 : "-150%", opacity: !copied ? 1 : 1 }}
-          transition={{ duration: 0.15, type: "spring", bounce: 0 }}
-          icon={Copy}
-          position="absolute"
-          alt="Copy text"
-          aria-hidden={copied}
-        />
-      </TelegraphButton.Root>
-    </Tooltip>
+    <LazyMotion features={domAnimation}>
+      <Tooltip label="Copy text">
+        <TelegraphButton.Root
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+            // Still run onClick incase the consumer wants to do something else
+            onClick?.(event);
+            setCopied(true);
+            textToCopy && navigator.clipboard.writeText(textToCopy);
+            event.currentTarget?.blur();
+          }}
+          size={context.size}
+          color={COLOR.Button[context.variant][context.color]}
+          variant={context.variant}
+          roundedTopRight="3"
+          roundedBottomRight="3"
+          roundedTopLeft="0"
+          roundedBottomLeft="0"
+          position="relative"
+          overflow="hidden"
+          p="2"
+          {...props}
+        >
+          <TelegraphButton.Icon
+            as={motion.span}
+            initial={false}
+            animate={{ y: copied ? 0 : "150%", opacity: copied ? 1 : 1 }}
+            transition={{ duration: 0.15, type: "spring", bounce: 0 }}
+            icon={Check}
+            alt="Copied text"
+            aria-hidden={!copied}
+          />
+          <TelegraphButton.Icon
+            as={motion.span}
+            initial={false}
+            animate={{ y: !copied ? 0 : "-150%", opacity: !copied ? 1 : 1 }}
+            transition={{ duration: 0.15, type: "spring", bounce: 0 }}
+            icon={Copy}
+            position="absolute"
+            alt="Copy text"
+            aria-hidden={copied}
+          />
+        </TelegraphButton.Root>
+      </Tooltip>
+    </LazyMotion>
   );
 };
 
