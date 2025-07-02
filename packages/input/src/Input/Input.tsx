@@ -2,31 +2,25 @@ import { Slot as RadixSlot } from "@radix-ui/react-slot";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import type {
   PolymorphicProps,
-  PolymorphicPropsWithTgphRef,
   Required,
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
-import clsx from "clsx";
 import React from "react";
 
 import { COLOR, SIZE } from "./Input.constants";
 
 type BaseRootProps = {
-  size?: keyof typeof SIZE.Container;
-  variant?: keyof typeof COLOR.Container.default;
+  size?: "1" | "2" | "3";
+  variant?: "outline" | "ghost";
   errored?: boolean;
 };
 
-type RootProps<T extends TgphElement> = Omit<
-  PolymorphicPropsWithTgphRef<T, HTMLInputElement>,
-  "size"
-> &
-  BaseRootProps & {
-    textProps?: Omit<React.ComponentProps<typeof Text<"input">>, "as">;
-  };
+type RootProps<T extends TgphElement> = BaseRootProps & {
+  textProps?: Omit<React.ComponentProps<typeof Text<T>>, "as">;
+} & Omit<React.ComponentProps<typeof Text<T>>, "as">;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
@@ -42,8 +36,7 @@ const Root = <T extends TgphElement>({
   as = "input" as T,
   size = "2",
   variant = "outline",
-  textProps = { size: SIZE.Text[size], color: "default" },
-  className,
+  textProps,
   disabled,
   errored,
   children,
@@ -58,13 +51,7 @@ const Root = <T extends TgphElement>({
 
   return (
     <InputContext.Provider value={{ size, variant, state }}>
-      <Box
-        className={clsx(
-          "box-border flex items-center transition-all",
-          "border-[1px] border-solid text-gray-12 placeholder:text-gray-10",
-          COLOR.Container[state][variant],
-          SIZE.Container[size],
-        )}
+      <Stack
         // Focus the input when clicking on the container
         onPointerDown={(event: React.MouseEvent<HTMLDivElement>) => {
           const target = event.target as HTMLElement;
@@ -82,6 +69,13 @@ const Root = <T extends TgphElement>({
             input.focus();
           });
         }}
+        align="center"
+        {...SIZE.Container[size]}
+        {...COLOR.Container[state][variant]}
+        data-tgph-input-container
+        data-tgph-input-container-variant={variant}
+        data-tgph-input-container-state={state}
+        data-tgph-input-container-size={size}
       >
         {/* 
           We choose to use the `<Text/>` component as a base here so that we can 
@@ -89,26 +83,26 @@ const Root = <T extends TgphElement>({
         */}
         <Text
           as={Component}
-          className={clsx(
-            "appearance-none border-none shadow-0 outline-0 bg-transparent",
-            "[font-family:inherit] h-full w-full",
-            "order-2",
-            SIZE.Input[size],
-            className,
-          )}
+          bg="transparent"
+          shadow="0"
+          h="full"
+          w="full"
           disabled={disabled}
-          {...textProps}
-          {...props}
           tgphRef={composedRefs}
+          {...SIZE.Text[size]}
+          {...COLOR.Text[state]}
+          {...props}
+          {...textProps}
+          data-tgph-input-field
         />
         {children}
-      </Box>
+      </Stack>
     </InputContext.Provider>
   );
 };
 
 type SlotProps = React.ComponentPropsWithoutRef<typeof RadixSlot> & {
-  size?: keyof typeof SIZE.Slot;
+  size?: "1" | "2" | "3";
   position?: "leading" | "trailing";
 };
 type SlotRef = React.ElementRef<typeof RadixSlot>;
@@ -117,25 +111,18 @@ const Slot = React.forwardRef<SlotRef, SlotProps>(
   ({ position = "leading", ...props }, forwardedRef) => {
     const context = React.useContext(InputContext);
     return (
-      <Box
-        className={clsx(
-          "group box-border flex items-center justify-center h-full",
-          "[&>[data-tgph-button]]:w-full [&>[data-tgph-button]]:h-auto",
-          // Overrides to match the icon button in figma
-          "[&>[data-tgph-button-layout='icon-only']]:aspect-square [&>[data-tgph-button-layout='icon-only']]:p-0",
-          // Overrides default button layout to match the button in figma
-          "[&>[data-tgph-button-layout='default']]:px-2",
-          // If only an icon button is present, set the aspect ratio to square
-          "[&:has([data-tgph-button-layout='icon-only'])]:aspect-square",
-          // If only an icon button is present, reset the padding to spacing-1
-          "[&:has([data-tgph-button-layout='icon-only'])]:!p-1",
-          position === "leading" && SIZE.SlotLeading[context.size],
-          position === "trailing" && SIZE.SlotTrailing[context.size],
-          SIZE.Slot[props.size ?? context.size],
-        )}
+      <Stack
+        align="center"
+        justify="center"
+        h="full"
+        data-tgph-input-slot
+        data-tgph-input-slot-position={position}
+        data-tgph-input-slot-size={props.size ?? context.size}
+        {...(position === "leading" && SIZE.SlotLeading[context.size])}
+        {...(position === "trailing" && SIZE.SlotTrailing[context.size])}
       >
         <RadixSlot size={context.size} {...props} ref={forwardedRef} />
-      </Box>
+      </Stack>
     );
   },
 );

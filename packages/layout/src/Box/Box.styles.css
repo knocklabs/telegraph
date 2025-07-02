@@ -1,6 +1,6 @@
 .tgph-box {
   --background-color: none;
-  --border-color: var(--tgph-gray-6);
+  --border-color: var(--tgph-red-6);
   --box-shadow: none;
   --border-style: solid;
   --border-width: 0;
@@ -48,16 +48,29 @@
   --hover_backgroundColor: none;
   --focus_backgroundColor: none;
   --active_backgroundColor: none;
+  --focus_within_backgroundColor: none;
+  --hover_borderColor: none;
+  --focus_borderColor: none;
+  --active_borderColor: none;
+  --focus_within_borderColor: none;
 }
 
 .tgph-box--interactive:hover {
   background-color: var(--hover_backgroundColor);
+  border-color: var(--hover_borderColor);
 }
 
 .tgph-box--interactive:focus-visible {
   background-color: var(--focus_backgroundColor);
+  border-color: var(--focus_borderColor);
 }
 
 .tgph-box--interactive:active {
   background-color: var(--active_backgroundColor);
+  border-color: var(--active_borderColor);
+}
+
+.tgph-box--interactive:focus-within {
+  background-color: var(--focus_within_backgroundColor);
+  border-color: var(--focus_within_borderColor);
 }
