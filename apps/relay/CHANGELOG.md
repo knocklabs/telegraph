@@ -1,5 +1,12 @@
 # @telegraph/relay
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`0973af7`](https://github.com/knocklabs/telegraph/commit/0973af7763962c053cbf6ce6b134922683bd6cbd)]:
+  - @telegraph/tabs@0.0.12
+
 ## 0.1.3
 
 ### Patch Changes
