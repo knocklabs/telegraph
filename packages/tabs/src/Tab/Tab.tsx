@@ -70,6 +70,7 @@ const Tab = <T extends TgphElement>({
           gap="2"
           color="gray"
           size="1"
+          // Important for styling the active color
           textProps={{
             "data-tgph-tab-text": "",
           }}

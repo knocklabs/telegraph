@@ -8,7 +8,7 @@ export type TabsProps = TgphComponentProps<typeof Box> &
 
 /**
  * Root component for Tabs
- * Renders child components within a Radix UI tabs system
+ * Provides context for tab state management and renders child components
  */
 const Tabs = ({
   children,
