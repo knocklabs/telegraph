@@ -1,5 +1,11 @@
 # @telegraph/tabs
 
+## 0.0.12
+
+### Patch Changes
+
+- [#492](https://github.com/knocklabs/telegraph/pull/492) [`0973af7`](https://github.com/knocklabs/telegraph/commit/0973af7763962c053cbf6ce6b134922683bd6cbd) Thanks [@devin-ai-integration](https://github.com/apps/devin-ai-integration)! - feat(tabs): adds `forceBackgroundMount` prop for controlling tab rendering behavior.
+
 ## 0.0.11
 
 ### Patch Changes
