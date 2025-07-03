@@ -178,3 +178,6 @@ function MyTabs() {
 
 - `value`: String (required) - ID of the tab this panel is associated with
 - `forceMount`: Boolean - Whether to force mounting when tab is inactive
+- `forceBackgroundMount`: "once" | "none" - Controls when content renders in background:
+  - `once`: Force mount at render time, content always rendered (like forceMount=true)
+  - `none` (default): Only render when tab is clicked/active

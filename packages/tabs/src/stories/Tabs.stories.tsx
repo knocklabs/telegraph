@@ -4,6 +4,15 @@ import { Text } from "@telegraph/typography";
 import { Home, Plus } from "lucide-react";
 import React from "react";
 
+const NestedCounter = () => {
+  const [counter, setCounter] = React.useState(0);
+  React.useEffect(() => {
+    const interval = setInterval(() => setCounter((prev) => prev + 1), 1000);
+    return () => clearInterval(interval);
+  }, []);
+  return <Text as="p">Counter: {counter}</Text>;
+};
+
 /**
  * Example stories for the Tabs component
  */
@@ -204,6 +213,200 @@ export const Controlled = () => {
       </Tabs.Panel>
       <Tabs.Panel value="tab3">
         <Box py="4">Content for the third tab</Box>
+      </Tabs.Panel>
+    </Tabs>
+  );
+};
+
+/**
+ * Example with background rendering - content renders even when tab is inactive
+ */
+export const BackgroundRendering = () => {
+  const [currentTab, setCurrentTab] = React.useState("tab1");
+
+  return (
+    <Tabs value={currentTab} onValueChange={setCurrentTab}>
+      <Tabs.List>
+        <Tabs.Tab value="tab1">Background Proof</Tabs.Tab>
+        <Tabs.Tab value="tab2">Height Test</Tabs.Tab>
+        <Tabs.Tab value="tab3">Normal Behavior</Tabs.Tab>
+      </Tabs.List>
+
+      <Box py="4">
+        <Text as="p">Current active tab: {currentTab}</Text>
+        <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
+          Tabs with forceBackgroundMount="once" are always mounted and running
+        </Text>
+      </Box>
+
+      <Tabs.Panel value="tab1" forceBackgroundMount="once">
+        <Box py="4">
+          <Text as="p" mb="3">
+            <strong>Proof of background rendering:</strong> This counter updates
+            even when this tab is inactive, proving the component is mounted and
+            running in the background.
+          </Text>
+          <NestedCounter />
+          <Text as="p" mt="3" style={{ fontSize: "14px", color: "#666" }}>
+            Switch to another tab and come back - the counter will have
+            continued incrementing!
+          </Text>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="tab2" forceBackgroundMount="once">
+        <Box py="4">
+          <Text as="p" mb="3">
+            <strong>Height behavior test:</strong> This tab contains a long list
+            to test how background rendering affects height calculations. The
+            content should be hidden but maintain proper layout.
+          </Text>
+          <Box as="ul" style={{ listStyle: "decimal", paddingLeft: "20px" }}>
+            {Array.from({ length: 50 }, (_, i) => (
+              <Box as="li" key={i} py="1">
+                <Text as="span">
+                  List item #{i + 1} - This is a long item to test height
+                  behavior with background rendering enabled
+                </Text>
+              </Box>
+            ))}
+          </Box>
+          <Text as="p" mt="4" style={{ fontSize: "14px", color: "#666" }}>
+            This long list tests that inactive tabs with forceBackgroundMount
+            don't affect the visible layout height.
+          </Text>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="tab3">
+        <Box py="4">
+          <Text as="p">
+            <strong>Normal behavior:</strong> This tab only renders when active
+            (forceBackgroundMount="none" is the default). Content is unmounted
+            when switching away and remounted when returning.
+          </Text>
+          <NestedCounter />
+          <Text as="p" mt="2" style={{ fontSize: "14px", color: "#666" }}>
+            This counter resets when you switch tabs because the component
+            unmounts.
+          </Text>
+        </Box>
+      </Tabs.Panel>
+    </Tabs>
+  );
+};
+
+/**
+ * Background Mount: Once - content force mounts at render time
+ */
+export const BackgroundMountOnce = () => {
+  const [currentTab, setCurrentTab] = React.useState("tab1");
+
+  return (
+    <Tabs value={currentTab} onValueChange={setCurrentTab}>
+      <Tabs.List>
+        <Tabs.Tab value="tab1">Active Tab</Tabs.Tab>
+        <Tabs.Tab value="tab2">Always Mounted</Tabs.Tab>
+        <Tabs.Tab value="tab3">Also Always Mounted</Tabs.Tab>
+      </Tabs.List>
+
+      <Box py="4">
+        <Text as="p">Current active tab: {currentTab}</Text>
+        <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
+          Tabs 2 & 3 are always mounted (like forceMount=true)
+        </Text>
+      </Box>
+
+      <Tabs.Panel value="tab1">
+        <Box py="4">
+          <Text as="p">Normal behavior - only mounted when active</Text>
+          <NestedCounter />
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="tab2" forceBackgroundMount="once">
+        <Box py="4">
+          <Text as="p" mb="3">
+            <strong>Once behavior:</strong> This content is always mounted,
+            counter runs continuously.
+          </Text>
+          <NestedCounter />
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="tab3" forceBackgroundMount="once">
+        <Box py="4">
+          <Text as="p">
+            <strong>Also once behavior:</strong> Always in DOM, check dev tools!
+          </Text>
+          <NestedCounter />
+        </Box>
+      </Tabs.Panel>
+    </Tabs>
+  );
+};
+
+/**
+ * Background Mount: None - explicit no background rendering (default behavior)
+ */
+export const BackgroundMountNone = () => {
+  const [currentTab, setCurrentTab] = React.useState("tab1");
+
+  return (
+    <Tabs value={currentTab} onValueChange={setCurrentTab}>
+      <Tabs.List>
+        <Tabs.Tab value="tab1">Active Tab</Tabs.Tab>
+        <Tabs.Tab value="tab2">Explicit None</Tabs.Tab>
+        <Tabs.Tab value="tab3">Default Behavior</Tabs.Tab>
+      </Tabs.List>
+
+      <Box py="4">
+        <Text as="p">Current active tab: {currentTab}</Text>
+        <Text as="p" style={{ fontSize: "14px", color: "#666" }}>
+          All tabs use forceBackgroundMount="none" (or default) - only active
+          tab is in DOM
+        </Text>
+      </Box>
+
+      <Tabs.Panel value="tab1" forceBackgroundMount="none">
+        <Box py="4">
+          <Text as="p" mb="3">
+            <strong>None behavior:</strong> Only renders when active (explicit
+            setting)
+          </Text>
+          <NestedCounter />
+          <Text as="p" mt="2">
+            This counter only runs when this tab is active. Check other tabs to
+            see they reset when switching.
+          </Text>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="tab2" forceBackgroundMount="none">
+        <Box py="4">
+          <Text as="p" mb="3">
+            <strong>Also none behavior:</strong> Not in DOM when inactive
+          </Text>
+          <NestedCounter />
+          <Text as="p" mt="2">
+            This tab also only renders when active. The counter resets when you
+            switch tabs.
+          </Text>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="tab3">
+        <Box py="4">
+          <Text as="p" mb="3">
+            <strong>Default behavior:</strong> Same as "none" but using the
+            default
+          </Text>
+          <NestedCounter />
+          <Text as="p" mt="2">
+            This demonstrates the default behavior (no forceBackgroundMount
+            prop). Counter resets when switching tabs.
+          </Text>
+        </Box>
       </Tabs.Panel>
     </Tabs>
   );
