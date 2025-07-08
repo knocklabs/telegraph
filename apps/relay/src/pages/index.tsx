@@ -1,7 +1,7 @@
 import { Message, useChat } from "@ai-sdk/react";
 import { Button } from "@telegraph/button";
 import { Box, Stack } from "@telegraph/layout";
-import { Plus } from "lucide-react";
+import { Plus, LogOut } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 
@@ -12,6 +12,17 @@ import { saveChatToStorage } from "@/utils/chatStorage";
 
 export default function Home() {
   const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('relay_session');
+      router.push('/login');
+    }
+  };
 
   // Extract chat id (cid) from the query string if present – e.g. /?cid=abc123
   const chatIdFromUrl = useMemo(() => {
@@ -106,18 +117,26 @@ export default function Home() {
           <Box w="60">
             <PreviousChats />
           </Box>
-          <Button
-            color="accent"
-            trailingIcon={{ icon: Plus, "aria-hidden": true }}
-            size="2"
-            onClick={() => {
-              router.replace({ pathname: router.pathname }, undefined, {
-                shallow: true,
-              });
-            }}
-          >
-            New Chat
-          </Button>
+          <Stack direction="row" gap="2" align="center">
+            <Button
+              color="accent"
+              trailingIcon={{ icon: Plus, "aria-hidden": true }}
+              size="2"
+              onClick={() => {
+                router.replace({ pathname: router.pathname }, undefined, {
+                  shallow: true,
+                });
+              }}
+            >
+              New Chat
+            </Button>
+            <Button
+              variant="ghost"
+              icon={{ icon: LogOut, alt: "Logout" }}
+              size="2"
+              onClick={handleLogout}
+            />
+          </Stack>
         </Stack>
         <Chat chat={chat} />
       </Stack>
