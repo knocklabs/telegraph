@@ -188,6 +188,44 @@ export const MultiSelectWithWrapLayout: Story = {
   },
 };
 
+export const SingleSelectWithCreate: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState<string | undefined>(undefined);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a channel"}
+          closeOnSelect={false}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.Options>
+              {values.map((v, index) => (
+                <TelegraphCombobox.Option value={v}>
+                  {labels[index]}
+                </TelegraphCombobox.Option>
+              ))}
+              <TelegraphCombobox.Create<"div", false>
+                values={values}
+                onCreate={(createdValue) => {
+                  values.push(createdValue);
+                  setValue(createdValue);
+                }}
+              />
+            </TelegraphCombobox.Options>
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
 export const MultiSelectWithCreate: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line

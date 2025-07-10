@@ -823,7 +823,7 @@ const Create = <T extends TgphElement, LB extends boolean>({
         label={`${leadingText} "${context.searchQuery}"`}
         selected={selected}
         onSelect={() => {
-          if (onCreate && context.value && context.searchQuery) {
+          if (onCreate && context.searchQuery) {
             const value =
               legacyBehavior === true
                 ? { value: context.searchQuery }
