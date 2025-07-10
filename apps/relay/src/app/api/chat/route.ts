@@ -1,8 +1,11 @@
 import { openai } from "@ai-sdk/openai";
 import { streamText, tool } from "ai";
+import { cookies } from "next/headers";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
+
+import { validateSession } from "@/lib/auth";
 
 export const maxDuration = 30;
 
@@ -83,6 +86,18 @@ async function repoRoot() {
 
 export async function POST(req: Request) {
   try {
+    // Check authentication
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("relay_session")?.value;
+    const session = validateSession(sessionToken);
+
+    if (!session || !session.email.endsWith("@knock.app")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const { messages } = await req.json();
 
     // Prepend system prompt giving high-level guidance on how to build components

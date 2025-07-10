@@ -36,6 +36,9 @@
     "@telegraph/truncate": "workspace:*",
     "@telegraph/typography": "workspace:*",
     "ai": "^4.3.16",
+    "cookie": "^1.0.2",
+    "google-auth-library": "^10.1.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.4",
     "prettier": "^3.2.4",
     "prismjs": "^1.29.0",
@@ -47,6 +50,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/cookie": "^1.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.13.11",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^18.3.18",
