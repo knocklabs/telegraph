@@ -9,3 +9,7 @@ updates:
       include: "scope"
     versioning-strategy: increase
     open-pull-requests-limit: 5
+    ignore:
+      # vite >7 breaks storybook
+      - dependency-name: "vite"
+        versions: [">=7.0.0"]
