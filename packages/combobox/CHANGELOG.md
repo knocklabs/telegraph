@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.0.90
+
+### Patch Changes
+
+- [#509](https://github.com/knocklabs/telegraph/pull/509) [`b29b966`](https://github.com/knocklabs/telegraph/commit/b29b966ae01a20e17d1839296ba5ba155e967621) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: change logic gate for firing onCreate to not need a field value
+
 ## 0.0.89
 
 ### Patch Changes
