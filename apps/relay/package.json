@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/relay",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev:relay": "next dev --turbopack",
