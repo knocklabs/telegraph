@@ -1,16 +1,10 @@
 export const color = {
   transparent: "transparent",
-  white: "#ffffff",
+  white: "#FFFFFF",
   black: "#000000",
   surface: {
-    1: {
-      light: "#ffffff",
-      dark: "#18191b",
-    },
-    2: {
-      light: "#f9f9f8",
-      dark: "#111110",
-    },
+    1: { light: "#FFFFFF", dark: "#18191B"},
+    2: { light: "#FDFDFC", dark: "#101112"},
   },
   alpha: {
     white: {
