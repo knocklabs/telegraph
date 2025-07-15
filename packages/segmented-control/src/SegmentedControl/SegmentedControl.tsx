@@ -46,10 +46,8 @@ const Root = ({
       >
         <RefToTgphRef>
           <Stack
-            border="px"
-            rounded="4"
-            p="1"
-            gap="1"
+            bg="gray-3"
+            rounded="2"
             align="center"
             justify="space-between"
             {...props}
@@ -67,8 +65,8 @@ const ButtonStyleProps: Record<
   TgphComponentProps<typeof Button.Root>
 > = {
   active: {
-    variant: "soft",
-    color: "gray",
+    variant: "outline",
+    color: "default",
   },
   inactive: {
     variant: "ghost",
