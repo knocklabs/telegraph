@@ -1,5 +1,16 @@
 # @telegraph/layout
 
+## 0.2.0
+
+### Minor Changes
+
+- [#517](https://github.com/knocklabs/telegraph/pull/517) [`bca0117`](https://github.com/knocklabs/telegraph/commit/bca011776c3b8b96e4f46a049578fcd7a167e052) Thanks [@ksorathia](https://github.com/ksorathia)! - Update default border color from gray-6 to gray-5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/style-engine@0.1.14
+
 ## 0.1.21
 
 ### Patch Changes

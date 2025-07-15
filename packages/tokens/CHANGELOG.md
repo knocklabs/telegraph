@@ -1,5 +1,12 @@
 # @telegraph/tokens
 
+## 0.1.0
+
+### Minor Changes
+
+- [#517](https://github.com/knocklabs/telegraph/pull/517) [`bca0117`](https://github.com/knocklabs/telegraph/commit/bca011776c3b8b96e4f46a049578fcd7a167e052) Thanks [@ksorathia](https://github.com/ksorathia)! - Color palette update to match latest branding.
+  Add half steps to small spaces. Adjust text size and leading.
+
 ## 0.0.22
 
 ### Patch Changes
