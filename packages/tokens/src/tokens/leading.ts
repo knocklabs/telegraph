@@ -3,7 +3,7 @@ export const leading = {
   1: "1rem",
   2: "1.25rem",
   3: "1.5rem",
-  4: "1.75rem",
+  4: "1.5rem",
   5: "1.75rem",
   6: "2rem",
   7: "2.25rem",
