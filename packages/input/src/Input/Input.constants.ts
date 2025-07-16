@@ -32,7 +32,7 @@ export const SIZE = {
   },
   SlotLeading: {
     "1": {
-      pl: 1_5,
+      pl: "1_5",
     },
     "2": {
       pl: "2",
