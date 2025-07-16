@@ -17,8 +17,9 @@ type MenuItemProps<T extends TgphElement> = TgphComponentProps<
 const MenuItem = <T extends TgphElement>({
   variant = "ghost",
   size = "2",
-  h = "7",
-  gap = "3",
+  //h = "8",
+  px = "2",
+  gap = 1_5,
   justify = "space-between",
   w = "auto",
   selected,
@@ -34,8 +35,9 @@ const MenuItem = <T extends TgphElement>({
     <Button.Root
       size={size}
       variant={variant}
-      h={h}
+      //h={h}
       gap={gap}
+      px={px}
       justify={justify}
       w={w}
       {...props}
@@ -48,7 +50,7 @@ const MenuItem = <T extends TgphElement>({
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight={props?.fontWeight || "regular"}
+          weight={props?.fontWeight || "medium"}
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"
