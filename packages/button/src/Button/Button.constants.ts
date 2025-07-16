@@ -134,8 +134,7 @@ export const BUTTON_COLOR_MAP = {
   outline: {
     default: {
       backgroundColor: "surface-1",
-      hover_backgroundColor: "gray-2",
-      hover_backgroundColor: "gray-2",
+      hover_backgroundColor: "gray-2",      
       default_buttonShadowColor: "gray-6",
       hover_buttonShadowColor: "gray-7",
       focus_buttonShadowColor: "gray-8",
@@ -144,7 +143,7 @@ export const BUTTON_COLOR_MAP = {
     gray: {
       backgroundColor: "surface-1",
       hover_backgroundColor: "gray-2",
-      hover_backgroundColor: "gray-2",
+
       default_buttonShadowColor: "gray-6",
       hover_buttonShadowColor: "gray-7",
       focus_buttonShadowColor: "gray-8",
@@ -152,7 +151,6 @@ export const BUTTON_COLOR_MAP = {
     },
     red: {
       backgroundColor: "surface-1",
-      hover_backgroundColor: "red-2",
       hover_backgroundColor: "red-2",
       default_buttonShadowColor: "red-6",
       hover_buttonShadowColor: "red-7",
@@ -162,7 +160,6 @@ export const BUTTON_COLOR_MAP = {
     accent: {
       backgroundColor: "surface-1",
       hover_backgroundColor: "accent-2",
-      hover_backgroundColor: "accent-2",
       default_buttonShadowColor: "accent-6",
       hover_buttonShadowColor: "accent-7",
       focus_buttonShadowColor: "accent-8",
@@ -170,7 +167,6 @@ export const BUTTON_COLOR_MAP = {
     },
     green: {
       backgroundColor: "surface-1",
-      hover_backgroundColor: "green-2",
       hover_backgroundColor: "green-2",
       default_buttonShadowColor: "green-6",
       hover_buttonShadowColor: "green-7",
@@ -180,7 +176,6 @@ export const BUTTON_COLOR_MAP = {
     blue: {
       backgroundColor: "surface-1",
       hover_backgroundColor: "blue-2",
-      hover_backgroundColor: "blue-2",
       default_buttonShadowColor: "blue-6",
       hover_buttonShadowColor: "blue-7",
       focus_buttonShadowColor: "blue-8",
@@ -189,7 +184,6 @@ export const BUTTON_COLOR_MAP = {
     yellow: {
       backgroundColor: "surface-1",
       hover_backgroundColor: "yellow-2",
-      hover_backgroundColor: "yellow-2",
       default_buttonShadowColor: "yellow-6",
       hover_buttonShadowColor: "yellow-7",
       focus_buttonShadowColor: "yellow-8",
@@ -197,7 +191,6 @@ export const BUTTON_COLOR_MAP = {
     },
     purple: {
       backgroundColor: "surface-1",
-      hover_backgroundColor: "purple-2",
       hover_backgroundColor: "purple-2",
       default_buttonShadowColor: "purple-6",
       hover_buttonShadowColor: "purple-7",
@@ -263,7 +256,6 @@ export const BUTTON_SIZE_MAP = {
       w: "auto",
       h: "5",
       gap: "0_5",
-      gap: "0_5",
       px: "1",
       rounded: "2",
     },
@@ -284,8 +276,6 @@ export const BUTTON_SIZE_MAP = {
     "3": {
       w: "auto",
       h: "10",
-      gap: "2",
-      px: "3",
       gap: "2",
       px: "3",
       rounded: "3",

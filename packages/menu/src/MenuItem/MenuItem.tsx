@@ -36,7 +36,6 @@ const MenuItem = <T extends TgphElement>({
       variant={variant}
       gap={gap}
       px={px}
-      px={px}
       justify={justify}
       w={w}
       {...props}
@@ -49,7 +48,6 @@ const MenuItem = <T extends TgphElement>({
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight={props?.fontWeight || "medium"}
           weight={props?.fontWeight || "medium"}
           w="full"
           overflow="hidden"
