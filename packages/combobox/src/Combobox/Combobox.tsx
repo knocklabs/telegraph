@@ -249,11 +249,12 @@ type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
 };
 
 const Trigger = <V extends ChildrenValue>({
-  size = "2",
+  size = "1",
   children,
   ...props
 }: TriggerProps<V>) => {
   const context = React.useContext(ComboboxContext);
+  const hasTags = isMultiSelect(context.value) && context.value.length > 0;
 
   const currentValue = React.useMemo<
     DefinedOption | Array<DefinedOption | undefined> | undefined
@@ -328,7 +329,9 @@ const Trigger = <V extends ChildrenValue>({
         minH={TRIGGER_MIN_HEIGHT[size]}
         h="full"
         w="full"
-        py="1"
+        py="0_5"
+        pr={1_5}
+        pl={hasTags ? "0_5" : 1_5}
         size={size}
         color={context.errored ? "red" : "gray"}
         justify="space-between"

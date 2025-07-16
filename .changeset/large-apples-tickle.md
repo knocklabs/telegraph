@@ -7,6 +7,7 @@
 "@telegraph/modal": minor
 "@telegraph/icon": minor
 "@telegraph/menu": minor
+"@telegraph/combobox": minor
 ---
 
 Standardize spacing and style across primitives.
