@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tokens",
-  "version": "0.0.22",
+  "version": "0.1.0",
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tokens",
