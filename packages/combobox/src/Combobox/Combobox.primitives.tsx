@@ -5,7 +5,7 @@ import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronsUpDown, X } from "lucide-react";
 import * as motion from "motion/react-m";
 import React from "react";
 
@@ -28,7 +28,7 @@ type TriggerIndicatorProps<T extends TgphElement> = Partial<
 >;
 
 const TriggerIndicator = <T extends TgphElement>({
-  icon = ChevronDown,
+  icon = ChevronsUpDown,
   "aria-hidden": ariaHidden = true,
   ...props
 }: TriggerIndicatorProps<T>) => {
@@ -89,7 +89,7 @@ const TriggerClear = <T extends TgphElement>({
       <Button
         type="button"
         icon={{ icon: X, alt: "Clear field" }}
-        size="1"
+        size="0"
         variant="ghost"
         onClick={(event: React.MouseEvent) => {
           if (!context.value) return;
@@ -201,7 +201,7 @@ const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
 
   return (
     <Stack
-      gap="1"
+      gap="0_5"
       w="full"
       wrap={layout === "wrap" ? "wrap" : "nowrap"}
       align="center"
@@ -278,6 +278,8 @@ const TriggerTagRoot = <T extends TgphElement>({
         exit={{ opacity: 0, scale: 0.5 }}
         transition={{ duration: 0.1, type: "spring", bounce: 0 }}
         size="1"
+        maxH="5"
+        rounded="1"
         layout="position"
         {...props}
       >
@@ -341,6 +343,7 @@ const TriggerTagButton = <T extends TgphElement>({
   return (
     <Tag.Button
       icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
+      height="full"
       onClick={(event: React.MouseEvent) => {
         if (!context.onValueChange) return;
         const onValueChange =
