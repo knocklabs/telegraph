@@ -134,7 +134,7 @@ export const BUTTON_COLOR_MAP = {
   outline: {
     default: {
       backgroundColor: "surface-1",
-      hover_backgroundColor: "gray-2",      
+      hover_backgroundColor: "gray-2",
       default_buttonShadowColor: "gray-6",
       hover_buttonShadowColor: "gray-7",
       focus_buttonShadowColor: "gray-8",
