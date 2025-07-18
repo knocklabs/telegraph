@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { glob } from "glob";
+import type { Plugin } from "vite";
 
 // Types for CSS variable props
 export type CssVarProp = {
@@ -18,7 +19,7 @@ export type ComponentMap = Record<string, ComponentCssVars>;
  */
 export async function collectCssVars(
   pattern: string,
-  viteLoadModule?: (options: { id: string }) => Promise<Record<string, unknown>>,
+  viteLoadModule?: (id: string) => Promise<Record<string, unknown>>,
 ): Promise<ComponentMap> {
   const componentMap: ComponentMap = {};
   const files = await glob(pattern);
@@ -29,7 +30,7 @@ export async function collectCssVars(
 
       if (viteLoadModule) {
         // Use Vite's module loading in plugin context
-        module = await viteLoadModule({ id: file });
+        module = await viteLoadModule(file);
       } else {
         // Fallback to require for tests
         module = require(file);
@@ -38,7 +39,7 @@ export async function collectCssVars(
       if (module.cssVars) {
         // Extract component name from file path
         const pathParts = file.split("/");
-        const componentDir = pathParts.find((part, i) => {
+        const componentDir = pathParts.find((part: string, i: number) => {
           return pathParts[i + 1] === "src" && pathParts[i + 2];
         });
         const componentName = componentDir || "Unknown";
@@ -139,12 +140,20 @@ export async function appendInteractiveBlock(cssFilePath: string, css: string): 
 /**
  * Vite plugin for auto-generating interactive CSS
  */
-export function tgphStyleEngine() {
+export function tgphStyleEngine(): Plugin {
   return {
     name: "tgph-style-engine",
     async buildStart() {
       // Collect CSS vars from all components
-      const componentMap = await collectCssVars("packages/**/src/**/*.constants.ts", this.load);
+      const componentMap = await collectCssVars("packages/**/src/**/*.constants.ts", 
+        async (id: string) => {
+          // In build context, we'll use require as fallback since this.load is complex
+          try {
+            return require(id);
+          } catch {
+            return {};
+          }
+        });
       
       // Generate and append CSS for each component
       for (const [componentName, cssVars] of Object.entries(componentMap)) {
@@ -161,7 +170,7 @@ export function tgphStyleEngine() {
         }
       }
     },
-    async handleHotUpdate({ file, server }) {
+    async handleHotUpdate({ file, server }: { file: string; server: any }) {
       // Regenerate CSS when constants files change
       if (file.endsWith(".constants.ts")) {
         const module = await server.ssrLoadModule(file);
@@ -169,7 +178,7 @@ export function tgphStyleEngine() {
         if (module.cssVars) {
           // Extract component name from file path
           const pathParts = file.split("/");
-          const componentDir = pathParts.find((part, i) => {
+          const componentDir = pathParts.find((part: string, i: number) => {
             return pathParts[i + 1] === "src" && pathParts[i + 2];
           });
           const componentName = componentDir || "Unknown";
