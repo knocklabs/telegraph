@@ -15,12 +15,12 @@ export const SIZE = {
 export const SPACING = {
   Root: {
     "0": "1",
-    "1": "2",
+    "1": "1_5",
     "2": "2",
   },
   Text: {
     "0": "1",
-    "1": "2",
+    "1": "1_5",
     "2": "2",
   },
 } as const;

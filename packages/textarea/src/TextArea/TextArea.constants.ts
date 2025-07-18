@@ -25,12 +25,13 @@ type StateMap = {
 
 export const sizeMap: SizeMap = {
   "1": {
-    p: "1",
+    px: "1_5",
+    py: "1",
     size: "1",
   },
   "2": {
     px: "2",
-    py: "1",
+    py: "1_5",
     size: "2",
   },
   "3": {

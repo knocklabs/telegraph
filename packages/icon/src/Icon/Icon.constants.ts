@@ -1,13 +1,13 @@
 export const SIZE_MAP = {
-  "0": "0.8125rem",
-  "1": "0.874rem",
+  "0": "var(--tgph-spacing-3)",
+  "1": "var(--tgph-spacing-3_5)",
   "2": "var(--tgph-spacing-4)",
   "3": "1.125rem",
   "4": "var(--tgph-spacing-5)",
-  "5": "1.375rem",
-  "6": "1.625rem",
+  "5": "var(--tgph-spacing-6)",
+  "6": "var(--tgph-spacing-7)",
   "7": "var(--tgph-spacing-8)",
-  "8": "var(--tgph-spacing-9)",
+  "8": "var(--tgph-spacing-10)",
   "9": "var(--tgph-spacing-12)",
 } as const;
 

@@ -185,6 +185,7 @@ const RootComponent = ({
                         w={props.w ?? "full"}
                         bg="surface-1"
                         border="px"
+                        borderColor="gray-8"
                         rounded="4"
                         shadow="3"
                         key={`content-${id}`}
