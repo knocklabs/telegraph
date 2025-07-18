@@ -6,11 +6,45 @@ import type { CssVarProp } from "@telegraph/style-engine";
 // to all other buttons to make them the same height.
 export type BaseStyleProps = {
   default_buttonShadowColor: keyof typeof tokens.color;
+  // Interactive state props for buttons
+  hover_backgroundColor: keyof typeof tokens.color;
+  hover_buttonShadowColor: keyof typeof tokens.color;
+  focus_backgroundColor: keyof typeof tokens.color;
+  focus_buttonShadowColor: keyof typeof tokens.color;
+  active_backgroundColor: keyof typeof tokens.color;
+  active_buttonShadowColor: keyof typeof tokens.color;
 };
 
 export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   default_buttonShadowColor: {
     cssVar: "--box-shadow",
+    value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
+  },
+  // Interactive hover state
+  hover_backgroundColor: {
+    cssVar: "--hover_backgroundColor",
+    value: "var(--tgph-VARIABLE)",
+  },
+  hover_buttonShadowColor: {
+    cssVar: "--hover_buttonShadowColor",
+    value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
+  },
+  // Interactive focus state
+  focus_backgroundColor: {
+    cssVar: "--focus_backgroundColor",
+    value: "var(--tgph-VARIABLE)",
+  },
+  focus_buttonShadowColor: {
+    cssVar: "--focus_buttonShadowColor",
+    value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
+  },
+  // Interactive active state
+  active_backgroundColor: {
+    cssVar: "--active_backgroundColor",
+    value: "var(--tgph-VARIABLE)",
+  },
+  active_buttonShadowColor: {
+    cssVar: "--active_buttonShadowColor",
     value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
   },
 } as const;
