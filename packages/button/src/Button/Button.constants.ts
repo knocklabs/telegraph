@@ -15,6 +15,17 @@ export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
 } as const;
 
+// Interactive state props that accept objects with any base style properties
+export type InteractiveStyleProps = Partial<BaseStyleProps>;
+
+export type StyleProps = Partial<BaseStyleProps> & {
+  // Interactive state object props
+  hover?: InteractiveStyleProps;
+  focus?: InteractiveStyleProps;
+  active?: InteractiveStyleProps;
+  focus_within?: InteractiveStyleProps;
+};
+
 export const BUTTON_COLOR_MAP = {
   solid: {
     default: {
