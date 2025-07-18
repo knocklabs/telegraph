@@ -1,5 +1,20 @@
 # @telegraph/combobox
 
+## 0.1.0
+
+### Minor Changes
+
+- [#519](https://github.com/knocklabs/telegraph/pull/519) [`aa0df27`](https://github.com/knocklabs/telegraph/commit/aa0df2714578f411fd7c80ce3610713d6e77d053) Thanks [@ksorathia](https://github.com/ksorathia)! - Standardize spacing and style across primitives.
+
+### Patch Changes
+
+- Updated dependencies [[`aa0df27`](https://github.com/knocklabs/telegraph/commit/aa0df2714578f411fd7c80ce3610713d6e77d053)]:
+  - @telegraph/button@0.1.0
+  - @telegraph/input@0.1.0
+  - @telegraph/icon@0.2.0
+  - @telegraph/menu@0.1.0
+  - @telegraph/tag@0.0.93
+
 ## 0.0.91
 
 ### Patch Changes

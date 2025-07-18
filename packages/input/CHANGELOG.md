@@ -1,5 +1,11 @@
 # @telegraph/input
 
+## 0.1.0
+
+### Minor Changes
+
+- [#519](https://github.com/knocklabs/telegraph/pull/519) [`aa0df27`](https://github.com/knocklabs/telegraph/commit/aa0df2714578f411fd7c80ce3610713d6e77d053) Thanks [@ksorathia](https://github.com/ksorathia)! - Standardize spacing and style across primitives.
+
 ## 0.0.49
 
 ### Patch Changes
