@@ -26,6 +26,7 @@ import {
   ICON_VARIANT_MAP,
   TEXT_COLOR_MAP,
   TEXT_SIZE_MAP,
+  StyleProps,
   cssVars,
 } from "./Button.constants";
 
@@ -48,7 +49,8 @@ type RootProps<T extends TgphElement> = Omit<
   "tgphRef"
 > &
   PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
-  RootBaseProps;
+  RootBaseProps &
+  StyleProps;
 
 const ButtonContext = React.createContext<
   Required<Omit<RootBaseProps, "color" | "as" | "state"> & InternalProps>
