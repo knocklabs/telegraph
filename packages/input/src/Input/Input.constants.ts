@@ -61,17 +61,11 @@ export const COLOR = {
         bg: "surface-1",
         border: "px",
         borderColor: "gray-6",
-        hover_borderColor: "gray-7",
-        focus_within_borderColor: "blue-8",
       },
       ghost: {
         bg: "transparent",
         border: "px",
         borderColor: "transparent",
-        hover_backgroundColor: "gray-3",
-        hover_borderColor: "transparent",
-        focus_within_backgroundColor: "gray-4",
-        focus_within_borderColor: "blue-8",
       },
     },
     disabled: {

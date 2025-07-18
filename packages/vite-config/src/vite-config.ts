@@ -4,6 +4,8 @@ import { resolve } from "path";
 import { type PreRenderedAsset } from "rollup";
 import dts from "vite-plugin-dts";
 
+import { tgphStyleEngine } from "./style-engine-plugin.js";
+
 const require = createRequire(import.meta.url);
 const pkg = require(resolve(process.cwd(), "package.json"));
 
@@ -83,5 +85,6 @@ export default {
       outDir: "dist/types",
     }),
     react(),
+    tgphStyleEngine(),
   ],
 };

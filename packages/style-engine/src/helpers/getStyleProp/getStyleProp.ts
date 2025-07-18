@@ -180,7 +180,7 @@ export const getStyleProp = <
 
     // If the style contains an interactive prop, set the interactive flag to true
     // so that the component can include the interactive class
-    if (matchingCssVar.interactive) {
+    if (/^(?:hover|focus_within|focus|active)_/.test(key as string)) {
       interactive = true;
     }
 

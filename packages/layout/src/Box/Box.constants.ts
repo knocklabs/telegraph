@@ -4,15 +4,7 @@ import type { CssVarProp } from "@telegraph/style-engine";
 export type BaseStyleProps = {
   display: "block" | "inline-block" | "inline" | "flex" | "inline-flex";
   backgroundColor: keyof typeof tokens.color;
-  hover_backgroundColor: keyof typeof tokens.color;
-  focus_backgroundColor: keyof typeof tokens.color;
-  active_backgroundColor: keyof typeof tokens.color;
-  focus_within_backgroundColor: keyof typeof tokens.color;
   borderColor: keyof typeof tokens.color;
-  hover_borderColor: keyof typeof tokens.color;
-  focus_borderColor: keyof typeof tokens.color;
-  active_borderColor: keyof typeof tokens.color;
-  focus_within_borderColor: keyof typeof tokens.color;
   borderWidth: keyof typeof tokens.spacing;
   borderTopWidth: keyof typeof tokens.spacing;
   borderBottomWidth: keyof typeof tokens.spacing;
@@ -108,26 +100,6 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     cssVar: "--background-color",
     value: "var(--tgph-VARIABLE)",
   },
-  hover_backgroundColor: {
-    cssVar: "--hover_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  focus_backgroundColor: {
-    cssVar: "--focus_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  active_backgroundColor: {
-    cssVar: "--active_backgroundColor",
-    interactive: true,
-    value: "var(--tgph-VARIABLE)",
-  },
-  focus_within_backgroundColor: {
-    cssVar: "--focus_within_backgroundColor",
-    interactive: true,
-    value: "var(--tgph-VARIABLE)",
-  },
   borderStyle: {
     cssVar: "--border-style",
     value: "var(--tgph-border-style-VARIABLE)",
@@ -204,26 +176,6 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   borderColor: {
     cssVar: "--border-color",
-    value: "var(--tgph-VARIABLE)",
-  },
-  hover_borderColor: {
-    cssVar: "--hover_borderColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  focus_borderColor: {
-    cssVar: "--focus_borderColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  focus_within_borderColor: {
-    cssVar: "--focus_within_borderColor",
-    interactive: true,
-    value: "var(--tgph-VARIABLE)",
-  },
-  active_borderColor: {
-    cssVar: "--active_borderColor",
-    interactive: true,
     value: "var(--tgph-VARIABLE)",
   },
   borderWidth: {

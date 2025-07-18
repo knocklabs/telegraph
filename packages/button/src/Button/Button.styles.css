@@ -1,8 +1,4 @@
 .tgph-button {
-  --tgph-button-hover-shadow: none;
-  --tgph-button-focus-shadow: none;
-  --tgph-button-active-shadow: none;
-
   appearance: none;
   cursor: pointer;
   box-sizing: border-box;
@@ -12,19 +8,6 @@
     color 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
   text-decoration: none;
-}
-
-.tgph-button:hover {
-  box-shadow: var(--tgph-button-hover-shadow);
-}
-
-.tgph-button:focus {
-  box-shadow: var(--tgph-button-focus-shadow);
-}
-
-.tgph-button[data-tgph-button-state="active"] {
-  box-shadow: var(--tgph-button-active-shadow);
-  background-color: var(--active_backgroundColor);
 }
 
 /* We choose to manage the disabled background-color here as there are only two variations */
@@ -39,10 +22,6 @@
 
 .tgph-button:disabled {
   cursor: not-allowed;
-}
-
-.tgph-button[data-tgph-button-state="disabled"]:hover {
-  background-color: revert;
 }
 
 [data-tgph-button-loading-icon] {
