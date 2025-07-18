@@ -1,8 +1,11 @@
 .tgph-button {
+  --background-color: transparent;
+  
   appearance: none;
   cursor: pointer;
   box-sizing: border-box;
   font-family: inherit;
+  background-color: var(--background-color);
   transition:
     background-color 0.2s ease-in-out,
     color 0.2s ease-in-out,

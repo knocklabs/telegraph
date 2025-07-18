@@ -5,10 +5,15 @@ import type { CssVarProp } from "@telegraph/style-engine";
 // of the button. We use a shadow so we don't need apply a border
 // to all other buttons to make them the same height.
 export type BaseStyleProps = {
+  backgroundColor: keyof typeof tokens.color;
   default_buttonShadowColor: keyof typeof tokens.color;
 };
 
 export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
+  backgroundColor: {
+    cssVar: "--background-color",
+    value: "var(--tgph-VARIABLE)",
+  },
   default_buttonShadowColor: {
     cssVar: "--box-shadow",
     value: "inset 0 0 0 1px var(--tgph-VARIABLE)",

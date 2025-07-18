@@ -20,3 +20,70 @@
   font-family: var(--font-family);
   text-overflow: var(--text-overflow);
 }
+
+
+/* AUTO-GENERATED START */
+.tgph-code:hover {
+  --color: var(--hover_color);
+}
+
+.tgph-code:focus-visible {
+  --color: var(--focus_color);
+}
+
+.tgph-code:active {
+  --color: var(--active_color);
+}
+
+.tgph-code:has(:focus-within) {
+  --color: var(--focus_within_color);
+}
+
+.tgph-code:hover {
+  --font-size: var(--hover_fontSize);
+}
+
+.tgph-code:focus-visible {
+  --font-size: var(--focus_fontSize);
+}
+
+.tgph-code:active {
+  --font-size: var(--active_fontSize);
+}
+
+.tgph-code:has(:focus-within) {
+  --font-size: var(--focus_within_fontSize);
+}
+
+.tgph-code:hover {
+  --font-weight: var(--hover_fontWeight);
+}
+
+.tgph-code:focus-visible {
+  --font-weight: var(--focus_fontWeight);
+}
+
+.tgph-code:active {
+  --font-weight: var(--active_fontWeight);
+}
+
+.tgph-code:has(:focus-within) {
+  --font-weight: var(--focus_within_fontWeight);
+}
+
+.tgph-code:hover {
+  --letter-spacing: var(--hover_letterSpacing);
+}
+
+.tgph-code:focus-visible {
+  --letter-spacing: var(--focus_letterSpacing);
+}
+
+.tgph-code:active {
+  --letter-spacing: var(--active_letterSpacing);
+}
+
+.tgph-code:has(:focus-within) {
+  --letter-spacing: var(--focus_within_letterSpacing);
+}
+/* AUTO-GENERATED END */

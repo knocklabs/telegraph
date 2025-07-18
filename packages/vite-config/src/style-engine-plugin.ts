@@ -160,11 +160,19 @@ export function tgphStyleEngine(): Plugin {
         const css = generateInteractiveCss(componentName, cssVars);
         
         if (css.trim()) {
-          // Find the corresponding default.css file
-          const componentPattern = `packages/**/src/${componentName}/default.css`;
-          const cssFiles = await glob(componentPattern);
+          // Map component names to their package locations
+          const packageMap: Record<string, string> = {
+            'Box': 'layout',
+            'Stack': 'layout', 
+            'Button': 'button',
+            'Text': 'typography',
+            'Heading': 'typography',
+            'Code': 'typography',
+          };
           
-          for (const cssFile of cssFiles) {
+          const packageName = packageMap[componentName];
+          if (packageName) {
+            const cssFile = `packages/${packageName}/src/default.css`;
             await appendInteractiveBlock(cssFile, css);
           }
         }
