@@ -1,8 +1,8 @@
-import { promises as fs } from "node:fs";
-import { join, dirname, relative, resolve } from "node:path";
+import { readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 import { glob } from "glob";
-import type { Plugin } from "vite";
 
+// Types for CSS variable props
 export type CssVarProp = {
   cssVar: string;
   value: string;
@@ -13,43 +13,40 @@ export type CssVarProp = {
 export type ComponentCssVars = Record<string, CssVarProp>;
 export type ComponentMap = Record<string, ComponentCssVars>;
 
-const STATE_MAP = {
-  hover: ":hover",
-  focus_within: ":has(:focus-within)",
-  focus: ":focus-visible",
-  active: ":active",
-} as const;
-
 /**
- * Pure helper to collect cssVars from all components in the workspace
+ * Collect cssVars from all component constant files
  */
-export async function collectCssVars(globPattern: string, viteLoadModule?: (options: { id: string }) => Promise<any>): Promise<ComponentMap> {
-  const constantsFiles = await glob(globPattern, { ignore: ["**/node_modules/**"] });
+export async function collectCssVars(
+  pattern: string,
+  viteLoadModule?: (options: { id: string }) => Promise<Record<string, unknown>>,
+): Promise<ComponentMap> {
   const componentMap: ComponentMap = {};
+  const files = await glob(pattern);
 
-  for (const filePath of constantsFiles) {
+  for (const file of files) {
     try {
-      // Extract component name from file path (e.g., "Box" from "packages/layout/src/Box/Box.constants.ts")
-      const pathParts = filePath.split("/");
-      const componentName = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1]?.replace(/\.constants\.ts$/, "") || "Unknown";
-      
-      let module;
+      let module: Record<string, unknown>;
+
       if (viteLoadModule) {
-        // Use Vite's SSR module loading during build
-        const fullPath = resolve(filePath);
-        module = await viteLoadModule({ id: fullPath });
+        // Use Vite's module loading in plugin context
+        module = await viteLoadModule({ id: file });
       } else {
-        // Fallback to require for testing
-        const fullPath = resolve(filePath);
-        delete require.cache[fullPath];
-        module = require(fullPath);
+        // Fallback to require for tests
+        module = require(file);
       }
-      
+
       if (module.cssVars) {
-        componentMap[componentName] = module.cssVars;
+        // Extract component name from file path
+        const pathParts = file.split("/");
+        const componentDir = pathParts.find((part, i) => {
+          return pathParts[i + 1] === "src" && pathParts[i + 2];
+        });
+        const componentName = componentDir || "Unknown";
+
+        componentMap[componentName] = module.cssVars as ComponentCssVars;
       }
     } catch (error) {
-      console.warn(`Failed to load cssVars from ${filePath}:`, error);
+      console.warn(`Failed to load cssVars from ${file}:`, error);
     }
   }
 
@@ -57,7 +54,7 @@ export async function collectCssVars(globPattern: string, viteLoadModule?: (opti
 }
 
 /**
- * Pure helper to generate interactive CSS for a single component
+ * Generate interactive CSS for a single component
  */
 export const generateInteractiveCss = (componentName: string, cssVars: ComponentCssVars): string => {
   const cssRules: string[] = [];
@@ -71,7 +68,7 @@ export const generateInteractiveCss = (componentName: string, cssVars: Component
   // Group CSS variables by their CSS property
   const cssVarsByProperty: Record<string, { cssVar: string; direction?: string }[]> = {};
   
-  Object.entries(cssVars).forEach(([key, cssVarProp]) => {
+  Object.entries(cssVars).forEach(([_key, cssVarProp]) => {
     const { cssVar, direction } = cssVarProp;
     
     if (!cssVarsByProperty[cssVar]) {
@@ -82,7 +79,7 @@ export const generateInteractiveCss = (componentName: string, cssVars: Component
   });
 
   // Generate interactive CSS rules for each CSS property
-  Object.entries(cssVarsByProperty).forEach(([baseCssVar, variants]) => {
+  Object.entries(cssVarsByProperty).forEach(([baseCssVar, _variants]) => {
     // For each interactive state
     Object.entries(STATE_MAP).forEach(([state, pseudoSelector]) => {
       
@@ -110,46 +107,44 @@ export const generateInteractiveCss = (componentName: string, cssVars: Component
 /**
  * Appends or replaces the auto-generated CSS block in a default.css file
  */
-export async function appendInteractiveBlock(defaultCssPath: string, cssString: string): Promise<void> {
-  const startMarker = "/* AUTO-GENERATED START */";
-  const endMarker = "/* AUTO-GENERATED END */";
-  
+export async function appendInteractiveBlock(cssFilePath: string, css: string): Promise<void> {
   try {
-    let existingContent = await fs.readFile(defaultCssPath, "utf-8");
+    const existingContent = await readFile(cssFilePath, "utf-8");
     
-    // Check if there's already an auto-generated block
+    const startMarker = "/* AUTO-GENERATED START */";
+    const endMarker = "/* AUTO-GENERATED END */";
+    
     const startIndex = existingContent.indexOf(startMarker);
     const endIndex = existingContent.indexOf(endMarker);
+    
+    let newContent: string;
     
     if (startIndex !== -1 && endIndex !== -1) {
       // Replace existing block
       const before = existingContent.substring(0, startIndex);
       const after = existingContent.substring(endIndex + endMarker.length);
-      const newContent = `${before}${startMarker}\n${cssString}${endMarker}${after}`;
-      await fs.writeFile(defaultCssPath, newContent, "utf-8");
+      newContent = `${before}${startMarker}\n${css}\n${endMarker}${after}`;
     } else {
       // Append new block
-      const newContent = `${existingContent}\n${startMarker}\n${cssString}${endMarker}\n`;
-      await fs.writeFile(defaultCssPath, newContent, "utf-8");
+      const separator = existingContent.trim() ? "\n\n" : "";
+      newContent = `${existingContent}${separator}${startMarker}\n${css}\n${endMarker}\n`;
     }
+    
+    await writeFile(cssFilePath, newContent, "utf-8");
   } catch (error) {
-    console.warn(`Failed to update ${defaultCssPath}:`, error);
+    console.warn(`Failed to update ${cssFilePath}:`, error);
   }
 }
 
 /**
- * Main Vite plugin for Telegraph style engine
+ * Vite plugin for auto-generating interactive CSS
  */
-export function tgphStyleEngine(): Plugin {
-  let componentMap: ComponentMap = {};
-  
+export function tgphStyleEngine() {
   return {
     name: "tgph-style-engine",
-    
     async buildStart() {
-      // Discover all constants files in packages
-      const globPattern = "packages/**/src/**/*.constants.ts";
-      componentMap = await collectCssVars(globPattern, this.load);
+      // Collect CSS vars from all components
+      const componentMap = await collectCssVars("packages/**/src/**/*.constants.ts", this.load);
       
       // Generate and append CSS for each component
       for (const [componentName, cssVars] of Object.entries(componentMap)) {
@@ -157,55 +152,34 @@ export function tgphStyleEngine(): Plugin {
         
         if (css.trim()) {
           // Find the corresponding default.css file
-          const constantsFiles = await glob(`packages/**/src/**/${componentName}.constants.ts`);
+          const componentPattern = `packages/**/src/${componentName}/default.css`;
+          const cssFiles = await glob(componentPattern);
           
-          for (const constantsFile of constantsFiles) {
-            const defaultCssPath = join(dirname(constantsFile), "../default.css");
-            
-            try {
-              await fs.access(defaultCssPath);
-              await appendInteractiveBlock(defaultCssPath, css);
-            } catch {
-              // default.css doesn't exist, skip
-            }
+          for (const cssFile of cssFiles) {
+            await appendInteractiveBlock(cssFile, css);
           }
         }
       }
     },
-
     async handleHotUpdate({ file, server }) {
-      // Watch for changes to constants files
+      // Regenerate CSS when constants files change
       if (file.endsWith(".constants.ts")) {
-        const componentName = file.split("/").slice(-2, -1)[0] || file.split("/").slice(-1)[0]?.replace(/\.constants\.ts$/, "") || "Unknown";
+        const module = await server.ssrLoadModule(file);
         
-        try {
-          // Reload the module using Vite's SSR loading
-          const fullPath = resolve(file);
-          const module = await server.ssrLoadModule(fullPath);
+        if (module.cssVars) {
+          // Extract component name from file path
+          const pathParts = file.split("/");
+          const componentDir = pathParts.find((part, i) => {
+            return pathParts[i + 1] === "src" && pathParts[i + 2];
+          });
+          const componentName = componentDir || "Unknown";
           
-          if (module.cssVars) {
-            componentMap[componentName] = module.cssVars;
-            const css = generateInteractiveCss(componentName, module.cssVars);
-            
-            if (css.trim()) {
-              const defaultCssPath = join(dirname(file), "../default.css");
-              
-              try {
-                await fs.access(defaultCssPath);
-                await appendInteractiveBlock(defaultCssPath, css);
-                
-                // Trigger HMR for the updated CSS
-                const module = server.moduleGraph.getModuleById(defaultCssPath);
-                if (module) {
-                  server.reloadModule(module);
-                }
-              } catch {
-                // default.css doesn't exist, skip
-              }
-            }
+          const css = generateInteractiveCss(componentName, module.cssVars);
+          
+          if (css.trim()) {
+            const defaultCssPath = join(dirname(file), "../default.css");
+            await appendInteractiveBlock(defaultCssPath, css);
           }
-        } catch (error) {
-          console.warn(`Failed to hot reload ${file}:`, error);
         }
       }
     },

@@ -3,31 +3,119 @@
 [![npm version](https://img.shields.io/npm/v/@telegraph/vite-config.svg)](https://www.npmjs.com/package/@telegraph/vite-config)
 
 # @telegraph/vite-config
-> Shared `Vite` config for internal use in the telegraph project.
 
+Vite configuration and plugins for Telegraph components.
 
-### Installation Instructions
+## Interactive CSS Generator
 
+The Interactive CSS Generator automatically creates hover, focus, active, and focus-within styles for all Telegraph components using a beautiful object-based API.
+
+### ✨ **Object-Based Interactive API**
+
+Instead of individual props, use clean object syntax:
+
+```jsx
+// ✅ Beautiful object-based API
+<Box hover={{ bg: "blue-5", h: "10", rounded: "2" }}>
+  Hover me for magic!
+</Box>
+
+// 🚫 Old way (no longer needed)
+<Box hover_backgroundColor="blue-5" hover_height="10" hover_borderRadius="2">
+  Hover me
+</Box>
 ```
-npm install @telegraph/vite-config
+
+### 🎯 **Supported Interactive States**
+
+- `hover={{ }}` - Mouse hover
+- `focus={{ }}` - Keyboard focus  
+- `active={{ }}` - Click/press
+- `focus_within={{ }}` - Child element focused
+
+### 🔧 **How It Works**
+
+1. **Runtime**: Components detect object props and generate synthetic CSS variables
+2. **Build-time**: Plugin auto-generates CSS for ALL base properties  
+3. **Result**: Seamless interactive behavior with zero configuration
+
+```jsx
+// You write this:
+<Stack hover={{ gap: "4", direction: "column" }}>
+  <Text focus={{ color: "accent", fontSize: "4" }}>Focus me</Text>
+  <Button active={{ bg: "red-5" }}>Click me</Button>
+</Stack>
+
+// Plugin generates this CSS automatically:
+.tgph-stack:hover {
+  --gap: var(--hover_gap);
+  --direction: var(--hover_direction);
+}
+
+.tgph-text:focus-visible {
+  --color: var(--focus_color);
+  --font-size: var(--focus_fontSize);
+}
+
+.tgph-button:active {
+  --background-color: var(--active_bg);
+}
 ```
 
-### Usage
+### 📦 **Setup**
 
-#### Default
+The plugin is automatically included when using `@telegraph/vite-config`:
 
-vite.config.mts
+```ts
+// vite.config.ts
+import { defaultViteConfig, styleEngineViteConfig } from '@telegraph/vite-config';
+import { mergeConfig } from 'vite';
+
+export default mergeConfig(defaultViteConfig, styleEngineViteConfig);
 ```
-import { viteConfig } from "@telegraph/vite-config";
-import { defineConfig } from "vite";
 
-export default defineConfig(viteConfig);
+### 🎨 **All Properties Work**
+
+Every component property automatically supports interactive states:
+
+```jsx
+<Box
+  hover={{
+    bg: "blue-5",
+    h: "20",
+    rounded: "3",
+    shadow: "lg",
+    borderColor: "accent-6"
+  }}
+  focus={{
+    bg: "green-4",
+    borderWidth: "2"
+  }}
+>
+  Complete control over every property!
+</Box>
 ```
 
-#### Scoped CSS
-```
-import { defaultViteConfig, scopeCssViteConfig } from "@telegraph/vite-config";
-import { mergeConfig } from "vite";
+### 🏗️ **Plugin Exports**
 
-export default mergeConfig(defaultViteConfig, scopeCssViteConfig);
+```ts
+import {
+  tgphStyleEngine,      // Main Vite plugin
+  collectCssVars,       // Helper: discover component cssVars
+  generateInteractiveCss, // Helper: generate CSS for component
+  appendInteractiveBlock  // Helper: update default.css files
+} from '@telegraph/vite-config';
 ```
+
+### ⚡ **Benefits**
+
+- ✅ **Zero config** - Just use the object syntax
+- ✅ **Universal** - Works with ALL component properties  
+- ✅ **Type-safe** - Full TypeScript intellisense
+- ✅ **Performance** - Auto-generated CSS, no runtime overhead
+- ✅ **Clean API** - Beautiful, intuitive syntax
+- ✅ **Hot reload** - Updates during development
+
+---
+
+The Interactive CSS Generator makes Telegraph components delightful to use with powerful, intuitive interactive styling! 🎉

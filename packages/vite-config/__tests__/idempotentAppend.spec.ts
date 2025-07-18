@@ -132,7 +132,6 @@ describe("appendInteractiveBlock", () => {
 
     // First append
     await appendInteractiveBlock("test-files/default.css", cssString1);
-    const result1 = await fs.readFile("test-files/default.css", "utf-8");
 
     // Second append (should replace, not duplicate)
     await appendInteractiveBlock("test-files/default.css", cssString2);
