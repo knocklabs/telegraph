@@ -1,3 +1,5 @@
+import { tgphStyleEngine } from "./style-engine-plugin.js";
+
 export default {
   build: {
     rollupOptions: {
@@ -14,5 +16,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [tgphStyleEngine()],
 };

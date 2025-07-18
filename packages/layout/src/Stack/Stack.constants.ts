@@ -69,4 +69,13 @@ export const cssVars = {
   ...shorthandCssVars,
 } as const;
 
-export type StyleProps = Partial<BaseStyleProps & ShorthandStyleProps>;
+// Interactive state props that accept objects with any style properties
+export type InteractiveStyleProps = Partial<BaseStyleProps & ShorthandStyleProps>;
+
+export type StyleProps = Partial<BaseStyleProps & ShorthandStyleProps> & {
+  // Interactive state object props
+  hover?: InteractiveStyleProps;
+  focus?: InteractiveStyleProps;
+  active?: InteractiveStyleProps;
+  focus_within?: InteractiveStyleProps;
+};
