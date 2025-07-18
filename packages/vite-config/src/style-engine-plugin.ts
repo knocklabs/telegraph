@@ -59,92 +59,53 @@ export async function collectCssVars(globPattern: string, viteLoadModule?: (opti
 /**
  * Pure helper to generate interactive CSS for a single component
  */
-export function generateInteractiveCss(componentName: string, cssVars: ComponentCssVars): string {
-  const selectorPrefix = `.tgph-${componentName.toLowerCase()}`;
-  let css = "";
+export const generateInteractiveCss = (componentName: string, cssVars: ComponentCssVars): string => {
+  const cssRules: string[] = [];
+  const STATE_MAP = {
+    hover: ":hover",
+    focus: ":focus-visible", 
+    active: ":active",
+    focus_within: ":has(:focus-within)",
+  } as const;
 
-  // Collect base properties and their default values
-  const baseProps: Record<string, string> = {};
-  const interactiveVars: Record<string, Array<{ state: string; cssVar: string; syntheticVar: string }>> = {};
-
+  // Group CSS variables by their CSS property
+  const cssVarsByProperty: Record<string, { cssVar: string; direction?: string }[]> = {};
+  
   Object.entries(cssVars).forEach(([key, cssVarProp]) => {
-    // Check if this is an interactive prop by prefix OR by interactive flag
-    const interactiveMatch = key.match(/^(hover|focus_within|focus|active)_(.+)$/);
-    const isInteractiveByFlag = cssVarProp.interactive === true;
+    const { cssVar, direction } = cssVarProp;
     
-    if (interactiveMatch || isInteractiveByFlag) {
-      const [, state, baseProp] = interactiveMatch || [null, null, null];
-      
-      // For interactive flag format, extract state from key
-      if (isInteractiveByFlag && !interactiveMatch) {
-                 const flagMatch = key.match(/^(hover|focus_within|focus|active)_(.+)$/);
-        if (flagMatch) {
-          const [, flagState, flagBaseProp] = flagMatch;
-          const baseCssVar = cssVars[flagBaseProp as keyof typeof cssVars]?.cssVar;
-          
-          if (baseCssVar && flagState) {
-            const syntheticVar = `--${key}`;
-            
-            if (!interactiveVars[baseCssVar]) {
-              interactiveVars[baseCssVar] = [];
-            }
-            
-            interactiveVars[baseCssVar].push({
-              state: flagState,
-              cssVar: baseCssVar,
-              syntheticVar,
-            });
-          }
-        }
-      } else if (interactiveMatch) {
-        // Handle prefix format
-        const baseCssVar = cssVars[baseProp as keyof typeof cssVars]?.cssVar;
-        
-        if (baseCssVar && state) {
-          const syntheticVar = `--${key}`;
-          
-          if (!interactiveVars[baseCssVar]) {
-            interactiveVars[baseCssVar] = [];
-          }
-          
-          interactiveVars[baseCssVar].push({
-            state,
-            cssVar: baseCssVar,
-            syntheticVar,
-          });
-        }
-      }
-    } else {
-      // This is a base property, collect its default
-      if (cssVarProp.cssVar && !cssVarProp.interactive) {
-        baseProps[cssVarProp.cssVar] = "none"; // Default value
-      }
+    if (!cssVarsByProperty[cssVar]) {
+      cssVarsByProperty[cssVar] = [];
     }
+    
+    cssVarsByProperty[cssVar].push({ cssVar, direction });
   });
 
-  // Generate base defaults
-  if (Object.keys(baseProps).length > 0) {
-    css += `${selectorPrefix} {\n`;
-    Object.entries(baseProps).forEach(([cssVar, defaultValue]) => {
-      css += `  ${cssVar}: ${defaultValue};\n`;
-    });
-    css += "}\n\n";
-  }
-
-  // Generate interactive states
-  Object.entries(interactiveVars).forEach(([baseCssVar, states]) => {
-    states.forEach(({ state, syntheticVar }) => {
-      const selector = STATE_MAP[state as keyof typeof STATE_MAP];
-      if (selector) {
-        css += `${selectorPrefix}${selector} {\n`;
-        css += `  ${baseCssVar}: var(${syntheticVar});\n`;
-        css += "}\n\n";
+  // Generate interactive CSS rules for each CSS property
+  Object.entries(cssVarsByProperty).forEach(([baseCssVar, variants]) => {
+    // For each interactive state
+    Object.entries(STATE_MAP).forEach(([state, pseudoSelector]) => {
+      
+      // Get all potential property keys that could generate this CSS var
+      const potentialKeys = Object.entries(cssVars)
+        .filter(([, cssVarProp]) => cssVarProp.cssVar === baseCssVar)
+        .map(([key]) => key);
+      
+      if (potentialKeys.length > 0) {
+        // Generate CSS rule that maps the base CSS property to synthetic variables
+        const syntheticVarDeclarations = potentialKeys.map(propKey => {
+          const syntheticVar = `--${state}_${propKey}`;
+          return `${baseCssVar}: var(${syntheticVar});`;
+        }).join('\n  ');
+        
+        const selector = `.tgph-${componentName.toLowerCase()}${pseudoSelector}`;
+        cssRules.push(`${selector} {\n  ${syntheticVarDeclarations}\n}`);
       }
     });
   });
 
-  return css;
-}
+  return cssRules.join('\n\n');
+};
 
 /**
  * Appends or replaces the auto-generated CSS block in a default.css file

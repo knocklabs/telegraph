@@ -42,32 +42,12 @@ export type BaseStyleProps = {
   maxWidth: keyof typeof tokens.spacing;
   maxHeight: keyof typeof tokens.spacing;
   zIndex: keyof typeof tokens.zIndex;
-  position: keyof (typeof tokens)["position"];
+  position: "relative" | "absolute" | "fixed" | "sticky";
   top: keyof typeof tokens.spacing;
   left: keyof typeof tokens.spacing;
   right: keyof typeof tokens.spacing;
   bottom: keyof typeof tokens.spacing;
-  overflow: keyof (typeof tokens)["overflow"];
-  // Interactive state props - hover
-  hover_backgroundColor: keyof typeof tokens.color;
-  hover_borderColor: keyof typeof tokens.color;
-  hover_boxShadow: keyof typeof tokens.shadow;
-  hover_borderRadius: keyof typeof tokens.rounded;
-  // Interactive state props - focus
-  focus_backgroundColor: keyof typeof tokens.color;
-  focus_borderColor: keyof typeof tokens.color;
-  focus_boxShadow: keyof typeof tokens.shadow;
-  focus_borderRadius: keyof typeof tokens.rounded;
-  // Interactive state props - active
-  active_backgroundColor: keyof typeof tokens.color;
-  active_borderColor: keyof typeof tokens.color;
-  active_boxShadow: keyof typeof tokens.shadow;
-  active_borderRadius: keyof typeof tokens.rounded;
-  // Interactive state props - focus_within
-  focus_within_backgroundColor: keyof typeof tokens.color;
-  focus_within_borderColor: keyof typeof tokens.color;
-  focus_within_boxShadow: keyof typeof tokens.shadow;
-  focus_within_borderRadius: keyof typeof tokens.rounded;
+  overflow: "hidden" | "visible" | "scroll" | "auto";
 };
 
 type ShorthandStyleProps = {
@@ -300,7 +280,7 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   position: {
     cssVar: "--position",
-    value: "var(--tgph-position-VARIABLE)",
+    value: "VARIABLE",
   },
   top: {
     cssVar: "--top",
@@ -320,75 +300,7 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   overflow: {
     cssVar: "--overflow",
-    value: "var(--tgph-overflow-VARIABLE)",
-  },
-  // Interactive state hover
-  hover_backgroundColor: {
-    cssVar: "--hover_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  hover_borderColor: {
-    cssVar: "--hover_borderColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  hover_boxShadow: {
-    cssVar: "--hover_boxShadow",
-    value: "var(--tgph-shadow-VARIABLE)",
-  },
-  hover_borderRadius: {
-    cssVar: "--hover_borderRadius",
-    value: "var(--tgph-rounded-VARIABLE)",
-  },
-  // Interactive state focus
-  focus_backgroundColor: {
-    cssVar: "--focus_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  focus_borderColor: {
-    cssVar: "--focus_borderColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  focus_boxShadow: {
-    cssVar: "--focus_boxShadow",
-    value: "var(--tgph-shadow-VARIABLE)",
-  },
-  focus_borderRadius: {
-    cssVar: "--focus_borderRadius",
-    value: "var(--tgph-rounded-VARIABLE)",
-  },
-  // Interactive state active
-  active_backgroundColor: {
-    cssVar: "--active_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  active_borderColor: {
-    cssVar: "--active_borderColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  active_boxShadow: {
-    cssVar: "--active_boxShadow",
-    value: "var(--tgph-shadow-VARIABLE)",
-  },
-  active_borderRadius: {
-    cssVar: "--active_borderRadius",
-    value: "var(--tgph-rounded-VARIABLE)",
-  },
-  // Interactive state focus_within
-  focus_within_backgroundColor: {
-    cssVar: "--focus_within_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  focus_within_borderColor: {
-    cssVar: "--focus_within_borderColor",
-    value: "var(--tgph-VARIABLE)",
-  },
-  focus_within_boxShadow: {
-    cssVar: "--focus_within_boxShadow",
-    value: "var(--tgph-shadow-VARIABLE)",
-  },
-  focus_within_borderRadius: {
-    cssVar: "--focus_within_borderRadius",
-    value: "var(--tgph-rounded-VARIABLE)",
+    value: "VARIABLE",
   },
 } as const;
 
@@ -438,4 +350,13 @@ export const cssVars = {
   ...shorthandCssVars,
 } as const;
 
-export type StyleProps = Partial<BaseStyleProps & ShorthandStyleProps>;
+// Interactive state props that accept objects with any base style properties
+export type InteractiveStyleProps = Partial<BaseStyleProps & ShorthandStyleProps>;
+
+export type StyleProps = Partial<BaseStyleProps & ShorthandStyleProps> & {
+  // Interactive state object props
+  hover?: InteractiveStyleProps;
+  focus?: InteractiveStyleProps;
+  active?: InteractiveStyleProps;
+  focus_within?: InteractiveStyleProps;
+};

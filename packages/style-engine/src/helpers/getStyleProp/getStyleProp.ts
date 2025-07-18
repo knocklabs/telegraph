@@ -146,12 +146,45 @@ export const getStyleProp = <
 
   // Assign the additional styles to the style object so that it can be passed
   // to the component as a prop.
-  const { style = {}, ...props } = params.props;
+  const { style = {}, hover, focus, active, focus_within, ...props } = params.props;
 
   let styleProp: StyleProp<CssVars> = style;
   const otherProps: OtherProps<CssVars, Props> = {};
   let interactive = false;
 
+  // Handle interactive object props (hover, focus, active, focus_within)
+  const interactiveStates = { hover, focus, active, focus_within };
+  
+  Object.entries(interactiveStates).forEach(([stateName, stateProps]) => {
+    if (stateProps && typeof stateProps === 'object') {
+      interactive = true;
+      
+      // Process each property in the interactive state object
+      Object.entries(stateProps as Record<string, unknown>).forEach(([propKey, propValue]) => {
+        const cssVarsKey = propKey as unknown as keyof typeof cssVars;
+        const matchingCssVar = cssVars?.[cssVarsKey];
+        
+        if (matchingCssVar && propValue) {
+          // Generate synthetic CSS variable name for this interactive state
+          const syntheticVarName = `--${stateName}_${propKey}`;
+          
+          // Replace the VARIABLE placeholder with the actual value
+          const mappedValueOfCssVar = matchingCssVar.value.replace(
+            "VARIABLE",
+            propValue as string,
+          );
+          
+          // Add the synthetic variable to the style prop
+          styleProp = {
+            ...styleProp,
+            [syntheticVarName]: mappedValueOfCssVar,
+          };
+        }
+      });
+    }
+  });
+
+  // Handle regular (non-interactive) props
   Object.keys(props).forEach((_key) => {
     const key = _key as keyof typeof props;
     const cssVarsKey = key as unknown as keyof typeof cssVars;
@@ -177,12 +210,6 @@ export const getStyleProp = <
     );
 
     const cssVarName = matchingCssVar.cssVar as keyof StyleProp<CssVars>;
-
-    // If the style contains an interactive prop, set the interactive flag to true
-    // so that the component can include the interactive class
-    if (/^(?:hover|focus_within|focus|active)_/.test(key as string)) {
-      interactive = true;
-    }
 
     if (matchingCssVar.direction) {
       const currentValueOfCssVar = styleProp?.[cssVarName];
