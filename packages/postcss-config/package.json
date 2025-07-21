@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/postcss-config",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/postcss-config",

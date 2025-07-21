@@ -1,5 +1,14 @@
 # @telegraph/tooltip
 
+## 0.0.54
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.2.1
+  - @telegraph/typography@0.1.23
+  - @telegraph/appearance@0.0.11
+
 ## 0.0.53
 
 ### Patch Changes

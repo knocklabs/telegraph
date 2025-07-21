@@ -1,5 +1,12 @@
 # @telegraph/layout
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/style-engine@0.1.15
+
 ## 0.2.0
 
 ### Minor Changes

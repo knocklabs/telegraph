@@ -1,5 +1,14 @@
 # @telegraph/textarea
 
+## 0.1.1
+
+### Patch Changes
+
+- [#524](https://github.com/knocklabs/telegraph/pull/524) [`fd14d50`](https://github.com/knocklabs/telegraph/commit/fd14d509c3f3f76eafc07d08c73e30db79255a2e) Thanks [@kylemcd](https://github.com/kylemcd)! - bump packages to get tokens upgrades
+
+- Updated dependencies []:
+  - @telegraph/typography@0.1.23
+
 ## 0.1.0
 
 ### Minor Changes
