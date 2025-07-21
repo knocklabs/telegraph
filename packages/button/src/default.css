@@ -1,1 +1,35 @@
 @import "./Button/Button.styles.css";
+
+/* AUTO-GENERATED START */
+.tgph-button:hover {
+  --background-color: var(--hover_backgroundColor);
+}
+
+.tgph-button:focus-visible {
+  --background-color: var(--focus_backgroundColor);
+}
+
+.tgph-button:active {
+  --background-color: var(--active_backgroundColor);
+}
+
+.tgph-button:has(:focus-within) {
+  --background-color: var(--focus_within_backgroundColor);
+}
+
+.tgph-button:hover {
+  --box-shadow: var(--hover_default_buttonShadowColor);
+}
+
+.tgph-button:focus-visible {
+  --box-shadow: var(--focus_default_buttonShadowColor);
+}
+
+.tgph-button:active {
+  --box-shadow: var(--active_default_buttonShadowColor);
+}
+
+.tgph-button:has(:focus-within) {
+  --box-shadow: var(--focus_within_default_buttonShadowColor);
+}
+/* AUTO-GENERATED END */

@@ -1,2 +1,164 @@
 @import "./Box/Box.styles.css";
 @import "./Stack/Stack.styles.css";
+
+/* AUTO-GENERATED START */
+.tgph-stack:hover {
+  --background-color: var(--hover_backgroundColor);
+}
+
+.tgph-stack:focus-visible {
+  --background-color: var(--focus_backgroundColor);
+}
+
+.tgph-stack:active {
+  --background-color: var(--active_backgroundColor);
+}
+
+.tgph-stack:has(:focus-within) {
+  --background-color: var(--focus_within_backgroundColor);
+}
+
+.tgph-stack:hover {
+  --border-color: var(--hover_borderColor);
+}
+
+.tgph-stack:focus-visible {
+  --border-color: var(--focus_borderColor);
+}
+
+.tgph-stack:active {
+  --border-color: var(--active_borderColor);
+}
+
+.tgph-stack:has(:focus-within) {
+  --border-color: var(--focus_within_borderColor);
+}
+
+.tgph-stack:hover {
+  --border-radius: var(--hover_borderRadius);
+}
+
+.tgph-stack:focus-visible {
+  --border-radius: var(--focus_borderRadius);
+}
+
+.tgph-stack:active {
+  --border-radius: var(--active_borderRadius);
+}
+
+.tgph-stack:has(:focus-within) {
+  --border-radius: var(--focus_within_borderRadius);
+}
+
+.tgph-stack:hover {
+  --padding: var(--hover_padding);
+}
+
+.tgph-stack:focus-visible {
+  --padding: var(--focus_padding);
+}
+
+.tgph-stack:active {
+  --padding: var(--active_padding);
+}
+
+.tgph-stack:has(:focus-within) {
+  --padding: var(--focus_within_padding);
+}
+
+.tgph-stack:hover {
+  --height: var(--hover_height);
+}
+
+.tgph-stack:focus-visible {
+  --height: var(--focus_height);
+}
+
+.tgph-stack:active {
+  --height: var(--active_height);
+}
+
+.tgph-stack:has(:focus-within) {
+  --height: var(--focus_within_height);
+}
+
+.tgph-stack:hover {
+  --box-shadow: var(--hover_boxShadow);
+}
+
+.tgph-stack:focus-visible {
+  --box-shadow: var(--focus_boxShadow);
+}
+
+.tgph-stack:active {
+  --box-shadow: var(--active_boxShadow);
+}
+
+.tgph-stack:has(:focus-within) {
+  --box-shadow: var(--focus_within_boxShadow);
+}
+
+.tgph-stack:hover {
+  --gap: var(--hover_gap);
+}
+
+.tgph-stack:focus-visible {
+  --gap: var(--focus_gap);
+}
+
+.tgph-stack:active {
+  --gap: var(--active_gap);
+}
+
+.tgph-stack:has(:focus-within) {
+  --gap: var(--focus_within_gap);
+}
+
+.tgph-stack:hover {
+  --flex-direction: var(--hover_direction);
+}
+
+.tgph-stack:focus-visible {
+  --flex-direction: var(--focus_direction);
+}
+
+.tgph-stack:active {
+  --flex-direction: var(--active_direction);
+}
+
+.tgph-stack:has(:focus-within) {
+  --flex-direction: var(--focus_within_direction);
+}
+
+.tgph-stack:hover {
+  --align-items: var(--hover_align);
+}
+
+.tgph-stack:focus-visible {
+  --align-items: var(--focus_align);
+}
+
+.tgph-stack:active {
+  --align-items: var(--active_align);
+}
+
+.tgph-stack:has(:focus-within) {
+  --align-items: var(--focus_within_align);
+}
+
+.tgph-stack:hover {
+  --justify-content: var(--hover_justify);
+}
+
+.tgph-stack:focus-visible {
+  --justify-content: var(--focus_justify);
+}
+
+.tgph-stack:active {
+  --justify-content: var(--active_justify);
+}
+
+.tgph-stack:has(:focus-within) {
+  --justify-content: var(--focus_within_justify);
+}
+/* AUTO-GENERATED END */

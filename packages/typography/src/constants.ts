@@ -49,7 +49,16 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
 
 export const cssVars = baseCssVars;
 
-export type StyleProps = Partial<BaseStyleProps>;
+// Interactive state props that accept objects with any style properties
+export type InteractiveStyleProps = Partial<BaseStyleProps>;
+
+export type StyleProps = Partial<BaseStyleProps> & {
+  // Interactive state object props
+  hover?: InteractiveStyleProps;
+  focus?: InteractiveStyleProps;
+  active?: InteractiveStyleProps;
+  focus_within?: InteractiveStyleProps;
+};
 
 export const COLOR_MAP = {
   default: "gray-12",

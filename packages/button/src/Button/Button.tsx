@@ -24,6 +24,7 @@ import {
   ICON_COLOR_MAP,
   ICON_SIZE_MAP,
   ICON_VARIANT_MAP,
+  StyleProps,
   TEXT_COLOR_MAP,
   TEXT_SIZE_MAP,
   cssVars,
@@ -48,7 +49,8 @@ type RootProps<T extends TgphElement> = Omit<
   "tgphRef"
 > &
   PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
-  RootBaseProps;
+  RootBaseProps &
+  StyleProps;
 
 const ButtonContext = React.createContext<
   Required<Omit<RootBaseProps, "color" | "as" | "state"> & InternalProps>
