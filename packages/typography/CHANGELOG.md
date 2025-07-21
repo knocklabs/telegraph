@@ -1,5 +1,13 @@
 # @telegraph/typography
 
+## 0.1.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.2.1
+  - @telegraph/style-engine@0.1.15
+
 ## 0.1.22
 
 ### Patch Changes
