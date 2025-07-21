@@ -23,7 +23,7 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "postcss-combine-duplicated-selectors": "^10.0.3",
-    "postcss-custom-media": "^11.0.1",
+    "postcss-custom-media": "^11.0.6",
     "postcss-discard-empty": "^7.0.1"
   },
   "devDependencies": {
