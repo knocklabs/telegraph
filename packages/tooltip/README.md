@@ -19,11 +19,13 @@ npm install @telegraph/tooltip
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/tooltip";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/tooltip/default.css";
 ```
@@ -33,8 +35,8 @@ import "@telegraph/tooltip/default.css";
 ## Quick Start
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 import { Info } from "lucide-react";
 
 export const TooltipExample = () => (
@@ -48,14 +50,13 @@ export const TooltipExample = () => (
     <Tooltip
       content={
         <div>
-          <strong>Pro Tip:</strong><br />
+          <strong>Pro Tip:</strong>
+          <br />
           Use Ctrl+S to save quickly
         </div>
       }
     >
-      <Button icon={{ icon: Info, alt: "Info" }}>
-        Help
-      </Button>
+      <Button icon={{ icon: Info, alt: "Info" }}>Help</Button>
     </Tooltip>
   </div>
 );
@@ -67,27 +68,27 @@ export const TooltipExample = () => (
 
 The main tooltip component that wraps content and provides contextual information on hover or focus.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `content` | `ReactNode` | - | **Required.** Content to display in the tooltip |
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred placement side |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger |
-| `sideOffset` | `number` | `4` | Distance from the trigger element |
-| `alignOffset` | `number` | `0` | Offset along the alignment axis |
-| `delayDuration` | `number` | `700` | Delay before showing tooltip (ms) |
-| `skipDelayDuration` | `number` | `300` | Skip delay if another tooltip was recently shown |
-| `disableHoverableContent` | `boolean` | `false` | Prevent tooltip from staying open when hovering over content |
-| `avoidCollisions` | `boolean` | `true` | Automatically flip tooltip to avoid viewport edges |
-| `sticky` | `"partial" \| "always"` | `"partial"` | How tooltip follows the cursor |
-| `hideWhenDetached` | `boolean` | `false` | Hide tooltip when trigger is not visible |
+| Prop                      | Type                                     | Default     | Description                                                  |
+| ------------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
+| `content`                 | `ReactNode`                              | -           | **Required.** Content to display in the tooltip              |
+| `side`                    | `"top" \| "right" \| "bottom" \| "left"` | `"top"`     | Preferred placement side                                     |
+| `align`                   | `"start" \| "center" \| "end"`           | `"center"`  | Alignment relative to the trigger                            |
+| `sideOffset`              | `number`                                 | `4`         | Distance from the trigger element                            |
+| `alignOffset`             | `number`                                 | `0`         | Offset along the alignment axis                              |
+| `delayDuration`           | `number`                                 | `700`       | Delay before showing tooltip (ms)                            |
+| `skipDelayDuration`       | `number`                                 | `300`       | Skip delay if another tooltip was recently shown             |
+| `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content |
+| `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges           |
+| `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                               |
+| `hideWhenDetached`        | `boolean`                                | `false`     | Hide tooltip when trigger is not visible                     |
 
 ## Usage Patterns
 
 ### Basic Tooltip
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const BasicTooltip = () => (
   <Tooltip content="Click to save your work">
@@ -99,23 +100,23 @@ export const BasicTooltip = () => (
 ### Different Positions
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const PositionedTooltips = () => (
   <div>
     <Tooltip content="Tooltip on top" side="top">
       <Button>Top</Button>
     </Tooltip>
-    
+
     <Tooltip content="Tooltip on right" side="right">
       <Button>Right</Button>
     </Tooltip>
-    
+
     <Tooltip content="Tooltip on bottom" side="bottom">
       <Button>Bottom</Button>
     </Tooltip>
-    
+
     <Tooltip content="Tooltip on left" side="left">
       <Button>Left</Button>
     </Tooltip>
@@ -126,9 +127,9 @@ export const PositionedTooltips = () => (
 ### Rich Content
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
-import { User, Mail, Phone } from "lucide-react";
+import { Tooltip } from "@telegraph/tooltip";
+import { Mail, Phone, User } from "lucide-react";
 
 export const RichContentTooltip = () => (
   <Tooltip
@@ -139,8 +140,12 @@ export const RichContentTooltip = () => (
           <strong>John Doe</strong>
         </div>
         <div className="user-details">
-          <div><Mail size={16} /> john@example.com</div>
-          <div><Phone size={16} /> +1 (555) 123-4567</div>
+          <div>
+            <Mail size={16} /> john@example.com
+          </div>
+          <div>
+            <Phone size={16} /> +1 (555) 123-4567
+          </div>
         </div>
       </div>
     }
@@ -153,8 +158,8 @@ export const RichContentTooltip = () => (
 ### Custom Delays
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const CustomDelayTooltips = () => (
   <div>
@@ -162,7 +167,7 @@ export const CustomDelayTooltips = () => (
     <Tooltip content="Shows immediately" delayDuration={0}>
       <Button>Instant</Button>
     </Tooltip>
-    
+
     {/* Slow tooltip */}
     <Tooltip content="Takes time to show" delayDuration={1500}>
       <Button>Slow</Button>
@@ -174,12 +179,14 @@ export const CustomDelayTooltips = () => (
 ### Disabled Elements
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const DisabledTooltip = () => (
   <Tooltip content="This action is not available right now">
-    <span> {/* Wrapper needed for disabled elements */}
+    <span>
+      {" "}
+      {/* Wrapper needed for disabled elements */}
       <Button disabled>Disabled Action</Button>
     </span>
   </Tooltip>
@@ -191,16 +198,12 @@ export const DisabledTooltip = () => (
 ### Conditional Tooltips
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const ConditionalTooltip = ({ showTooltip, user }) => (
-  <Tooltip
-    content={showTooltip ? `Hello, ${user.name}!` : undefined}
-  >
-    <Button>
-      {user.isLoggedIn ? "Dashboard" : "Sign In"}
-    </Button>
+  <Tooltip content={showTooltip ? `Hello, ${user.name}!` : undefined}>
+    <Button>{user.isLoggedIn ? "Dashboard" : "Sign In"}</Button>
   </Tooltip>
 );
 ```
@@ -208,8 +211,8 @@ export const ConditionalTooltip = ({ showTooltip, user }) => (
 ### Interactive Tooltips
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 import { Link } from "next/link";
 
 export const InteractiveTooltip = () => (
@@ -219,9 +222,13 @@ export const InteractiveTooltip = () => (
         <p>Need help with this feature?</p>
         <div className="tooltip-actions">
           <Link href="/docs">
-            <Button size="0" variant="ghost">View Docs</Button>
+            <Button size="0" variant="ghost">
+              View Docs
+            </Button>
           </Link>
-          <Button size="0" variant="outline">Contact Support</Button>
+          <Button size="0" variant="outline">
+            Contact Support
+          </Button>
         </div>
       </div>
     }
@@ -238,8 +245,8 @@ export const InteractiveTooltip = () => (
 ### Form Field Tooltips
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Input } from "@telegraph/input";
+import { Tooltip } from "@telegraph/tooltip";
 import { HelpCircle } from "lucide-react";
 
 export const FormWithTooltips = () => (
@@ -276,19 +283,19 @@ export const FormWithTooltips = () => (
 ### Tooltip with Arrow Positioning
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const ArrowTooltips = () => (
   <div className="tooltip-demo-grid">
     <Tooltip content="Aligned to start" align="start">
       <Button>Start</Button>
     </Tooltip>
-    
+
     <Tooltip content="Centered alignment" align="center">
       <Button>Center</Button>
     </Tooltip>
-    
+
     <Tooltip content="Aligned to end" align="end">
       <Button>End</Button>
     </Tooltip>
@@ -311,8 +318,11 @@ export const ChartTooltip = ({ dataPoint }) => (
           <span className="unit">{dataPoint.unit}</span>
         </div>
         <div className="tooltip-change">
-          <span className={`change ${dataPoint.change >= 0 ? 'positive' : 'negative'}`}>
-            {dataPoint.change >= 0 ? '+' : ''}{dataPoint.change}%
+          <span
+            className={`change ${dataPoint.change >= 0 ? "positive" : "negative"}`}
+          >
+            {dataPoint.change >= 0 ? "+" : ""}
+            {dataPoint.change}%
           </span>
           <span className="period">vs last period</span>
         </div>
@@ -329,8 +339,8 @@ export const ChartTooltip = ({ dataPoint }) => (
 ### Keyboard Navigation Tooltips
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Kbd } from "@telegraph/kbd";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const KeyboardTooltips = () => (
   <div className="keyboard-shortcuts">
@@ -343,11 +353,12 @@ export const KeyboardTooltips = () => (
     >
       <Button>Save Document</Button>
     </Tooltip>
-    
+
     <Tooltip
       content={
         <div>
-          Copy: <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd><br />
+          Copy: <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd>
+          <br />
           Paste: <Kbd>Ctrl</Kbd> + <Kbd>V</Kbd>
         </div>
       }
@@ -362,40 +373,37 @@ export const KeyboardTooltips = () => (
 
 ```tsx
 import { Tooltip } from "@telegraph/tooltip";
-import { CheckCircle, AlertCircle, XCircle, Clock } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, XCircle } from "lucide-react";
 
 export const StatusTooltips = ({ status }) => {
   const statusConfig = {
     success: {
       icon: CheckCircle,
       color: "green",
-      message: "Operation completed successfully"
+      message: "Operation completed successfully",
     },
     warning: {
       icon: AlertCircle,
       color: "yellow",
-      message: "Operation completed with warnings"
+      message: "Operation completed with warnings",
     },
     error: {
       icon: XCircle,
       color: "red",
-      message: "Operation failed. Please try again"
+      message: "Operation failed. Please try again",
     },
     pending: {
       icon: Clock,
       color: "blue",
-      message: "Operation is still in progress"
-    }
+      message: "Operation is still in progress",
+    },
   };
 
   const config = statusConfig[status];
 
   return (
     <Tooltip content={config.message}>
-      <config.icon 
-        size={20} 
-        className={`status-icon status-${config.color}`}
-      />
+      <config.icon size={20} className={`status-icon status-${config.color}`} />
     </Tooltip>
   );
 };
@@ -404,120 +412,40 @@ export const StatusTooltips = ({ status }) => {
 ### Multi-level Tooltips
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 import { Settings, User } from "lucide-react";
 
 export const NestedTooltips = () => (
   <div className="nested-tooltip-example">
     <Tooltip content="User account settings">
-      <Button icon={{ icon: User, alt: "User" }}>
-        Profile
-      </Button>
+      <Button icon={{ icon: User, alt: "User" }}>Profile</Button>
     </Tooltip>
-    
+
     <Tooltip
       content={
         <div>
           <div>Advanced Settings</div>
           <div className="nested-actions">
             <Tooltip content="Manage account preferences" side="right">
-              <Button size="0" variant="ghost">Preferences</Button>
+              <Button size="0" variant="ghost">
+                Preferences
+              </Button>
             </Tooltip>
             <Tooltip content="Security and privacy settings" side="right">
-              <Button size="0" variant="ghost">Security</Button>
+              <Button size="0" variant="ghost">
+                Security
+              </Button>
             </Tooltip>
           </div>
         </div>
       }
       disableHoverableContent={false}
     >
-      <Button icon={{ icon: Settings, alt: "Settings" }}>
-        Settings
-      </Button>
+      <Button icon={{ icon: Settings, alt: "Settings" }}>Settings</Button>
     </Tooltip>
   </div>
 );
-```
-
-## Design Tokens & Styling
-
-The Tooltip component uses Telegraph design tokens for consistent theming:
-
-- `--tgph-gray-*` - Background and border colors
-- `--tgph-space-*` - Padding and spacing
-- `--tgph-radius-*` - Border radius values
-- `--tgph-shadow-*` - Drop shadow effects
-- `--tgph-font-size-*` - Typography sizing
-- `--tgph-z-index-*` - Layering and depth
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Customize tooltip appearance */
-  [data-tgph-tooltip-content] {
-    background: var(--tgph-gray-12);
-    color: var(--tgph-gray-1);
-    border-radius: var(--tgph-radius-2);
-    padding: var(--tgph-space-2) var(--tgph-space-3);
-    font-size: var(--tgph-font-size-1);
-    box-shadow: var(--tgph-shadow-4);
-    z-index: var(--tgph-z-index-tooltip);
-    
-    /* Smooth animations */
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-  
-  /* Tooltip arrow */
-  [data-tgph-tooltip-arrow] {
-    fill: var(--tgph-gray-12);
-  }
-  
-  /* Custom tooltip variants */
-  [data-tgph-tooltip-content][data-variant="info"] {
-    background: var(--tgph-blue-9);
-    color: var(--tgph-blue-contrast);
-  }
-  
-  [data-tgph-tooltip-content][data-variant="warning"] {
-    background: var(--tgph-yellow-9);
-    color: var(--tgph-yellow-contrast);
-  }
-  
-  [data-tgph-tooltip-content][data-variant="error"] {
-    background: var(--tgph-red-9);
-    color: var(--tgph-red-contrast);
-  }
-  
-  /* Rich content tooltips */
-  .rich-tooltip {
-    max-width: 300px;
-    padding: var(--tgph-space-3);
-  }
-  
-  .rich-tooltip h4 {
-    margin: 0 0 var(--tgph-space-2) 0;
-    font-weight: 600;
-  }
-  
-  .rich-tooltip p {
-    margin: 0;
-    line-height: 1.4;
-  }
-  
-  /* Interactive tooltip content */
-  .interactive-tooltip {
-    display: flex;
-    flex-direction: column;
-    gap: var(--tgph-space-2);
-  }
-  
-  .interactive-tooltip .tooltip-actions {
-    display: flex;
-    gap: var(--tgph-space-1);
-  }
-}
 ```
 
 ## Accessibility
@@ -530,10 +458,10 @@ The Tooltip component uses Telegraph design tokens for consistent theming:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Show tooltip when element receives focus |
-| `Escape` | Hide tooltip when focused |
+| Key               | Action                                        |
+| ----------------- | --------------------------------------------- |
+| `Tab`             | Show tooltip when element receives focus      |
+| `Escape`          | Hide tooltip when focused                     |
 | `Space` / `Enter` | Activate trigger element (button, link, etc.) |
 
 ### ARIA Attributes
@@ -551,157 +479,13 @@ The Tooltip component uses Telegraph design tokens for consistent theming:
 4. **Keyboard Access**: Ensure tooltips work with keyboard navigation
 5. **Mobile Considerations**: Consider touch interaction patterns
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Tooltip } from "@telegraph/tooltip";
-import { Button } from "@telegraph/button";
-
-test("shows tooltip on hover", async () => {
-  const user = userEvent.setup();
-
-  render(
-    <Tooltip content="Helpful information">
-      <Button>Hover me</Button>
-    </Tooltip>
-  );
-
-  const button = screen.getByRole("button", { name: "Hover me" });
-  
-  // Tooltip should not be visible initially
-  expect(screen.queryByText("Helpful information")).not.toBeInTheDocument();
-
-  // Hover over the button
-  await user.hover(button);
-
-  // Wait for tooltip to appear
-  expect(await screen.findByText("Helpful information")).toBeInTheDocument();
-
-  // Move away
-  await user.unhover(button);
-
-  // Tooltip should disappear
-  await waitFor(() => {
-    expect(screen.queryByText("Helpful information")).not.toBeInTheDocument();
-  });
-});
-
-test("shows tooltip on keyboard focus", async () => {
-  const user = userEvent.setup();
-
-  render(
-    <Tooltip content="Keyboard accessible">
-      <Button>Focus me</Button>
-    </Tooltip>
-  );
-
-  // Tab to focus the button
-  await user.tab();
-
-  const button = screen.getByRole("button", { name: "Focus me" });
-  expect(button).toHaveFocus();
-
-  // Tooltip should appear on focus
-  expect(await screen.findByText("Keyboard accessible")).toBeInTheDocument();
-});
-```
-
-### Rich Content Testing
-
-```tsx
-test("displays rich content correctly", async () => {
-  const user = userEvent.setup();
-
-  const richContent = (
-    <div>
-      <strong>User Details</strong>
-      <p>john@example.com</p>
-    </div>
-  );
-
-  render(
-    <Tooltip content={richContent}>
-      <Button>User Info</Button>
-    </Tooltip>
-  );
-
-  const button = screen.getByRole("button", { name: "User Info" });
-  await user.hover(button);
-
-  expect(await screen.findByText("User Details")).toBeInTheDocument();
-  expect(screen.getByText("john@example.com")).toBeInTheDocument();
-});
-```
-
-### Positioning Testing
-
-```tsx
-test("respects positioning props", async () => {
-  const user = userEvent.setup();
-
-  render(
-    <Tooltip content="Bottom tooltip" side="bottom" align="start">
-      <Button>Positioned</Button>
-    </Tooltip>
-  );
-
-  const button = screen.getByRole("button", { name: "Positioned" });
-  await user.hover(button);
-
-  const tooltip = await screen.findByRole("tooltip");
-  expect(tooltip).toHaveAttribute("data-side", "bottom");
-  expect(tooltip).toHaveAttribute("data-align", "start");
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Tooltip content="Accessible tooltip">
-      <Button>Test button</Button>
-    </Tooltip>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-
-test("has proper ARIA attributes", async () => {
-  const user = userEvent.setup();
-
-  render(
-    <Tooltip content="ARIA test">
-      <Button>ARIA button</Button>
-    </Tooltip>
-  );
-
-  const button = screen.getByRole("button", { name: "ARIA button" });
-  await user.hover(button);
-
-  const tooltip = await screen.findByRole("tooltip");
-  
-  expect(tooltip).toHaveAttribute("role", "tooltip");
-  expect(button).toHaveAttribute("aria-describedby", tooltip.id);
-});
-```
-
 ## Examples
 
 ### Basic Example
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
 import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
 
 export const BasicExample = () => (
   <Tooltip content="This will save your current work">
@@ -713,10 +497,10 @@ export const BasicExample = () => (
 ### Advanced Example
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
-import { Button } from "@telegraph/button";
 import { Badge } from "@telegraph/badge";
-import { User, Mail, MapPin, Calendar } from "lucide-react";
+import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
+import { Calendar, Mail, MapPin, User } from "lucide-react";
 
 export const UserProfileTooltip = ({ user }) => (
   <Tooltip
@@ -728,10 +512,12 @@ export const UserProfileTooltip = ({ user }) => (
           </div>
           <div className="user-info">
             <h4>{user.name}</h4>
-            <Badge variant="soft" color="green">Online</Badge>
+            <Badge variant="soft" color="green">
+              Online
+            </Badge>
           </div>
         </div>
-        
+
         <div className="user-details">
           <div className="detail-item">
             <Mail size={14} />
@@ -746,10 +532,14 @@ export const UserProfileTooltip = ({ user }) => (
             <span>Joined {user.joinDate}</span>
           </div>
         </div>
-        
+
         <div className="user-actions">
-          <Button size="0" variant="outline">View Profile</Button>
-          <Button size="0" variant="ghost">Send Message</Button>
+          <Button size="0" variant="outline">
+            View Profile
+          </Button>
+          <Button size="0" variant="ghost">
+            Send Message
+          </Button>
         </div>
       </div>
     }
@@ -757,9 +547,7 @@ export const UserProfileTooltip = ({ user }) => (
     align="start"
     disableHoverableContent={false}
   >
-    <div className="user-mention">
-      @{user.username}
-    </div>
+    <div className="user-mention">@{user.username}</div>
   </Tooltip>
 );
 ```
@@ -767,18 +555,18 @@ export const UserProfileTooltip = ({ user }) => (
 ### Real-world Example
 
 ```tsx
-import { Tooltip } from "@telegraph/tooltip";
-import { Button } from "@telegraph/button";
 import { Badge } from "@telegraph/badge";
-import { 
-  Settings, 
-  HelpCircle, 
-  Bell, 
-  User, 
+import { Button } from "@telegraph/button";
+import { Tooltip } from "@telegraph/tooltip";
+import {
+  Bell,
+  CreditCard,
+  HelpCircle,
   LogOut,
-  Zap,
+  Settings,
   Shield,
-  CreditCard 
+  User,
+  Zap,
 } from "lucide-react";
 
 export const ApplicationHeader = ({ user, notifications }) => (
@@ -789,10 +577,7 @@ export const ApplicationHeader = ({ user, notifications }) => (
 
     <nav className="header-nav">
       <Tooltip content="View all notifications">
-        <Button 
-          variant="ghost" 
-          icon={{ icon: Bell, alt: "Notifications" }}
-        >
+        <Button variant="ghost" icon={{ icon: Bell, alt: "Notifications" }}>
           {notifications.length > 0 && (
             <Badge variant="solid" color="red" size="0">
               {notifications.length}
@@ -852,10 +637,7 @@ export const ApplicationHeader = ({ user, notifications }) => (
         side="bottom"
         disableHoverableContent={false}
       >
-        <Button 
-          variant="ghost" 
-          icon={{ icon: HelpCircle, alt: "Help" }}
-        />
+        <Button variant="ghost" icon={{ icon: HelpCircle, alt: "Help" }} />
       </Tooltip>
 
       <Tooltip
@@ -868,18 +650,18 @@ export const ApplicationHeader = ({ user, notifications }) => (
               <div>
                 <div className="user-name">{user.name}</div>
                 <div className="user-email">{user.email}</div>
-                <Badge 
-                  variant="soft" 
-                  color={user.plan === 'premium' ? 'purple' : 'gray'}
+                <Badge
+                  variant="soft"
+                  color={user.plan === "premium" ? "purple" : "gray"}
                   size="0"
                 >
                   {user.plan}
                 </Badge>
               </div>
             </div>
-            
+
             <div className="menu-divider" />
-            
+
             <div className="menu-items">
               <div className="menu-item">
                 <User size={16} />
@@ -898,9 +680,9 @@ export const ApplicationHeader = ({ user, notifications }) => (
                 <span>Preferences</span>
               </div>
             </div>
-            
+
             <div className="menu-divider" />
-            
+
             <div className="menu-item danger">
               <LogOut size={16} />
               <span>Sign Out</span>
@@ -915,7 +697,7 @@ export const ApplicationHeader = ({ user, notifications }) => (
           <div className="user-avatar-small">
             <User size={16} />
           </div>
-          <span className="user-name-short">{user.name.split(' ')[0]}</span>
+          <span className="user-name-short">{user.name.split(" ")[0]}</span>
         </Button>
       </Tooltip>
     </nav>
@@ -928,17 +710,8 @@ export const ApplicationHeader = ({ user, notifications }) => (
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/tooltip)
 - [Radix UI Tooltip](https://www.radix-ui.com/primitives/docs/components/tooltip) - Base primitive
 - [Popover Component](../popover/README.md) - Related overlay component
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

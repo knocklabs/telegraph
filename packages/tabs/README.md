@@ -19,11 +19,13 @@ npm install @telegraph/tabs
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/tabs";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/tabs/default.css";
 ```
@@ -33,8 +35,8 @@ import "@telegraph/tabs/default.css";
 ## Quick Start
 
 ```tsx
-import { Tabs } from "@telegraph/tabs";
 import { Box } from "@telegraph/layout";
+import { Tabs } from "@telegraph/tabs";
 import { Home, Settings, User } from "lucide-react";
 
 export const BasicTabs = () => (
@@ -43,7 +45,10 @@ export const BasicTabs = () => (
       <Tabs.Tab value="home" leadingIcon={{ icon: Home, alt: "Home" }}>
         Home
       </Tabs.Tab>
-      <Tabs.Tab value="settings" leadingIcon={{ icon: Settings, alt: "Settings" }}>
+      <Tabs.Tab
+        value="settings"
+        leadingIcon={{ icon: Settings, alt: "Settings" }}
+      >
         Settings
       </Tabs.Tab>
       <Tabs.Tab value="profile" leadingIcon={{ icon: User, alt: "Profile" }}>
@@ -70,35 +75,35 @@ export const BasicTabs = () => (
 
 The root container component that provides tab state management and context.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `defaultValue` | `string` | `undefined` | ID of the initially active tab (uncontrolled) |
-| `value` | `string` | `undefined` | Currently active tab ID (controlled) |
-| `onValueChange` | `(value: string) => void` | `undefined` | Called when the active tab changes |
-| `disabled` | `boolean` | `false` | Disables all tabs when true |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout orientation |
-| `dir` | `"ltr" \| "rtl"` | `"ltr"` | Text direction |
+| Prop            | Type                         | Default        | Description                                   |
+| --------------- | ---------------------------- | -------------- | --------------------------------------------- |
+| `defaultValue`  | `string`                     | `undefined`    | ID of the initially active tab (uncontrolled) |
+| `value`         | `string`                     | `undefined`    | Currently active tab ID (controlled)          |
+| `onValueChange` | `(value: string) => void`    | `undefined`    | Called when the active tab changes            |
+| `disabled`      | `boolean`                    | `false`        | Disables all tabs when true                   |
+| `orientation`   | `"horizontal" \| "vertical"` | `"horizontal"` | Layout orientation                            |
+| `dir`           | `"ltr" \| "rtl"`             | `"ltr"`        | Text direction                                |
 
 ### `<Tabs.List>`
 
 Container for tab buttons that manages keyboard navigation.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `loop` | `boolean` | `true` | Whether keyboard navigation loops from last to first tab |
+| Prop   | Type      | Default | Description                                              |
+| ------ | --------- | ------- | -------------------------------------------------------- |
+| `loop` | `boolean` | `true`  | Whether keyboard navigation loops from last to first tab |
 
 ### `<Tabs.Tab>`
 
 Individual tab button that triggers content panel display.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | **Required.** Unique identifier for this tab |
-| `disabled` | `boolean` | `false` | Whether this specific tab is disabled |
-| `leadingIcon` | `IconProps` | `undefined` | Icon displayed at the start of the tab |
-| `trailingIcon` | `IconProps` | `undefined` | Icon displayed at the end of the tab |
-| `icon` | `IconProps` | `undefined` | Alias for `leadingIcon` |
-| `onClick` | `() => void` | `undefined` | Additional callback when tab is clicked |
+| Prop           | Type         | Default     | Description                                  |
+| -------------- | ------------ | ----------- | -------------------------------------------- |
+| `value`        | `string`     | -           | **Required.** Unique identifier for this tab |
+| `disabled`     | `boolean`    | `false`     | Whether this specific tab is disabled        |
+| `leadingIcon`  | `IconProps`  | `undefined` | Icon displayed at the start of the tab       |
+| `trailingIcon` | `IconProps`  | `undefined` | Icon displayed at the end of the tab         |
+| `icon`         | `IconProps`  | `undefined` | Alias for `leadingIcon`                      |
+| `onClick`      | `() => void` | `undefined` | Additional callback when tab is clicked      |
 
 #### IconProps Type
 
@@ -116,11 +121,11 @@ type IconProps = {
 
 Content panel associated with a specific tab.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | **Required.** ID of the tab this panel belongs to |
-| `forceMount` | `boolean` | `false` | Whether to force mounting when tab is inactive |
-| `forceBackgroundMount` | `"once" \| "none"` | `"none"` | Background mounting strategy for performance |
+| Prop                   | Type               | Default  | Description                                       |
+| ---------------------- | ------------------ | -------- | ------------------------------------------------- |
+| `value`                | `string`           | -        | **Required.** ID of the tab this panel belongs to |
+| `forceMount`           | `boolean`          | `false`  | Whether to force mounting when tab is inactive    |
+| `forceBackgroundMount` | `"once" \| "none"` | `"none"` | Background mounting strategy for performance      |
 
 ## Usage Patterns
 
@@ -154,25 +159,25 @@ export const DocumentTabs = () => (
 
 ```tsx
 import { Tabs } from "@telegraph/tabs";
-import { FileText, BarChart, Clock, AlertCircle } from "lucide-react";
+import { AlertCircle, BarChart, Clock, FileText } from "lucide-react";
 
 export const IconTabs = () => (
   <Tabs defaultValue="content">
     <Tabs.List>
-      <Tabs.Tab 
-        value="content" 
+      <Tabs.Tab
+        value="content"
         leadingIcon={{ icon: FileText, alt: "Content" }}
       >
         Content
       </Tabs.Tab>
-      <Tabs.Tab 
-        value="analytics" 
+      <Tabs.Tab
+        value="analytics"
         leadingIcon={{ icon: BarChart, alt: "Analytics" }}
       >
         Analytics
       </Tabs.Tab>
-      <Tabs.Tab 
-        value="activity" 
+      <Tabs.Tab
+        value="activity"
         leadingIcon={{ icon: Clock, alt: "Activity" }}
         trailingIcon={{ icon: AlertCircle, alt: "Has notifications" }}
       >
@@ -199,9 +204,7 @@ export const ControlledTabs = () => {
   return (
     <div>
       <p>Current tab: {activeTab}</p>
-      <button onClick={() => setActiveTab("tab3")}>
-        Jump to Tab 3
-      </button>
+      <button onClick={() => setActiveTab("tab3")}>Jump to Tab 3</button>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <Tabs.List>
@@ -296,15 +299,13 @@ export const OptimizedTabs = () => (
       <Tabs.Tab value="charts">Heavy Charts</Tabs.Tab>
     </Tabs.List>
 
-    <Tabs.Panel value="summary">
-      Always visible summary
-    </Tabs.Panel>
-    
+    <Tabs.Panel value="summary">Always visible summary</Tabs.Panel>
+
     {/* Only render when first accessed */}
     <Tabs.Panel value="data" forceBackgroundMount="none">
       <LargeDataTable />
     </Tabs.Panel>
-    
+
     {/* Render once on component mount */}
     <Tabs.Panel value="charts" forceBackgroundMount="once">
       <ExpensiveCharts />
@@ -322,24 +323,27 @@ import { useState } from "react";
 export const DynamicTabs = () => {
   const [tabs, setTabs] = useState([
     { id: "tab1", title: "Tab 1", content: "Content 1" },
-    { id: "tab2", title: "Tab 2", content: "Content 2" }
+    { id: "tab2", title: "Tab 2", content: "Content 2" },
   ]);
   const [activeTab, setActiveTab] = useState("tab1");
 
   const addTab = () => {
     const newId = `tab${tabs.length + 1}`;
-    setTabs([...tabs, { 
-      id: newId, 
-      title: `Tab ${tabs.length + 1}`, 
-      content: `Content ${tabs.length + 1}` 
-    }]);
+    setTabs([
+      ...tabs,
+      {
+        id: newId,
+        title: `Tab ${tabs.length + 1}`,
+        content: `Content ${tabs.length + 1}`,
+      },
+    ]);
     setActiveTab(newId);
   };
 
   const removeTab = (tabId: string) => {
-    const newTabs = tabs.filter(tab => tab.id !== tabId);
+    const newTabs = tabs.filter((tab) => tab.id !== tabId);
     setTabs(newTabs);
-    
+
     if (activeTab === tabId && newTabs.length > 0) {
       setActiveTab(newTabs[0].id);
     }
@@ -348,12 +352,12 @@ export const DynamicTabs = () => {
   return (
     <div>
       <button onClick={addTab}>Add Tab</button>
-      
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <Tabs.List>
-          {tabs.map(tab => (
-            <Tabs.Tab 
-              key={tab.id} 
+          {tabs.map((tab) => (
+            <Tabs.Tab
+              key={tab.id}
               value={tab.id}
               trailingIcon={{
                 icon: X,
@@ -361,7 +365,7 @@ export const DynamicTabs = () => {
                 onClick: (e) => {
                   e.stopPropagation();
                   removeTab(tab.id);
-                }
+                },
               }}
             >
               {tab.title}
@@ -369,7 +373,7 @@ export const DynamicTabs = () => {
           ))}
         </Tabs.List>
 
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <Tabs.Panel key={tab.id} value={tab.id}>
             {tab.content}
           </Tabs.Panel>
@@ -390,14 +394,14 @@ export const FormTabs = () => {
   const [formData, setFormData] = useState({
     personal: { name: "", email: "" },
     preferences: { theme: "light", notifications: true },
-    billing: { plan: "free", cardNumber: "" }
+    billing: { plan: "free", cardNumber: "" },
   });
   const [currentTab, setCurrentTab] = useState("personal");
 
   const updateFormData = (section: string, data: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [section]: { ...prev[section], ...data }
+      [section]: { ...prev[section], ...data },
     }));
   };
 
@@ -408,7 +412,9 @@ export const FormTabs = () => {
       case "preferences":
         return true; // Always complete
       case "billing":
-        return formData.billing.plan !== "premium" || formData.billing.cardNumber;
+        return (
+          formData.billing.plan !== "premium" || formData.billing.cardNumber
+        );
       default:
         return false;
     }
@@ -417,29 +423,32 @@ export const FormTabs = () => {
   return (
     <Tabs value={currentTab} onValueChange={setCurrentTab}>
       <Tabs.List>
-        <Tabs.Tab 
+        <Tabs.Tab
           value="personal"
-          trailingIcon={isTabComplete("personal") ? 
-            { icon: CheckCircle, alt: "Complete" } : 
-            { icon: Circle, alt: "Incomplete" }
+          trailingIcon={
+            isTabComplete("personal")
+              ? { icon: CheckCircle, alt: "Complete" }
+              : { icon: Circle, alt: "Incomplete" }
           }
         >
           Personal Info
         </Tabs.Tab>
-        <Tabs.Tab 
+        <Tabs.Tab
           value="preferences"
-          trailingIcon={isTabComplete("preferences") ? 
-            { icon: CheckCircle, alt: "Complete" } : 
-            { icon: Circle, alt: "Incomplete" }
+          trailingIcon={
+            isTabComplete("preferences")
+              ? { icon: CheckCircle, alt: "Complete" }
+              : { icon: Circle, alt: "Incomplete" }
           }
         >
           Preferences
         </Tabs.Tab>
-        <Tabs.Tab 
+        <Tabs.Tab
           value="billing"
-          trailingIcon={isTabComplete("billing") ? 
-            { icon: CheckCircle, alt: "Complete" } : 
-            { icon: Circle, alt: "Incomplete" }
+          trailingIcon={
+            isTabComplete("billing")
+              ? { icon: CheckCircle, alt: "Complete" }
+              : { icon: Circle, alt: "Incomplete" }
           }
         >
           Billing
@@ -447,21 +456,21 @@ export const FormTabs = () => {
       </Tabs.List>
 
       <Tabs.Panel value="personal">
-        <PersonalInfoForm 
+        <PersonalInfoForm
           data={formData.personal}
           onChange={(data) => updateFormData("personal", data)}
         />
       </Tabs.Panel>
-      
+
       <Tabs.Panel value="preferences">
-        <PreferencesForm 
+        <PreferencesForm
           data={formData.preferences}
           onChange={(data) => updateFormData("preferences", data)}
         />
       </Tabs.Panel>
-      
+
       <Tabs.Panel value="billing">
-        <BillingForm 
+        <BillingForm
           data={formData.billing}
           onChange={(data) => updateFormData("billing", data)}
         />
@@ -485,7 +494,7 @@ export const NestedTabs = () => (
 
     <Tabs.Panel value="main1">
       <h3>Main Section 1</h3>
-      
+
       {/* Nested tabs */}
       <Tabs defaultValue="sub1a">
         <Tabs.List>
@@ -506,57 +515,6 @@ export const NestedTabs = () => (
 );
 ```
 
-## Design Tokens & Styling
-
-The Tabs component uses Telegraph design tokens for consistent theming:
-
-- `--tgph-menu-*` - Tab button styling (inherited from MenuItem)
-- `--tgph-space-*` - Spacing and padding
-- `--tgph-radius-*` - Border radius values
-- `--tgph-color-*` - Text and background colors
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Customize tab list container */
-  [data-tgph-tabs] [data-tgph-tab-list] {
-    background: var(--tgph-gray-2);
-    border-radius: var(--tgph-radius-2);
-    padding: var(--tgph-space-1);
-  }
-  
-  /* Customize individual tabs */
-  [data-tgph-tab] {
-    transition: all 0.2s ease;
-  }
-  
-  [data-tgph-tab][data-state="active"] {
-    background: var(--tgph-accent-9);
-    color: var(--tgph-accent-contrast);
-  }
-  
-  [data-tgph-tab]:hover:not([data-state="active"]) {
-    background: var(--tgph-gray-4);
-  }
-  
-  /* Customize tab panels */
-  [data-tgph-tab-panel] {
-    padding: var(--tgph-space-4);
-    border-radius: 0 0 var(--tgph-radius-2) var(--tgph-radius-2);
-  }
-  
-  /* Icon styling */
-  [data-tgph-tab-icon] {
-    transition: color 0.2s ease;
-  }
-  
-  [data-state="active"] [data-tgph-tab-icon] {
-    color: var(--tgph-accent-contrast);
-  }
-}
-```
-
 ## Accessibility
 
 - ✅ **Keyboard Navigation**: Arrow keys navigate between tabs, Enter/Space activates
@@ -567,14 +525,14 @@ The Tabs component uses Telegraph design tokens for consistent theming:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Move focus to/from the tab list |
+| Key                | Action                             |
+| ------------------ | ---------------------------------- |
+| `Tab`              | Move focus to/from the tab list    |
 | `Arrow Left/Right` | Navigate between tabs (horizontal) |
-| `Arrow Up/Down` | Navigate between tabs (vertical) |
-| `Home` | Move to first tab |
-| `End` | Move to last tab |
-| `Enter` / `Space` | Activate focused tab |
+| `Arrow Up/Down`    | Navigate between tabs (vertical)   |
+| `Home`             | Move to first tab                  |
+| `End`              | Move to last tab                   |
+| `Enter` / `Space`  | Activate focused tab               |
 
 ### ARIA Attributes
 
@@ -593,129 +551,6 @@ The Tabs component uses Telegraph design tokens for consistent theming:
 3. **Icon Alt Text**: Always provide alt text for icons
 4. **Avoid Too Many Tabs**: Keep the number of tabs manageable
 5. **Content Relationships**: Ensure tab content is related to its label
-
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Tabs } from "@telegraph/tabs";
-
-test("allows tab navigation and content switching", async () => {
-  const user = userEvent.setup();
-
-  render(
-    <Tabs defaultValue="tab1">
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
-        <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
-      </Tabs.List>
-
-      <Tabs.Panel value="tab1">Content 1</Tabs.Panel>
-      <Tabs.Panel value="tab2">Content 2</Tabs.Panel>
-    </Tabs>
-  );
-
-  // First tab should be active by default
-  expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute("aria-selected", "true");
-  expect(screen.getByText("Content 1")).toBeVisible();
-
-  // Click second tab
-  await user.click(screen.getByRole("tab", { name: "Tab 2" }));
-  
-  expect(screen.getByRole("tab", { name: "Tab 2" })).toHaveAttribute("aria-selected", "true");
-  expect(screen.getByText("Content 2")).toBeVisible();
-});
-```
-
-### Keyboard Navigation Testing
-
-```tsx
-test("supports keyboard navigation", async () => {
-  const user = userEvent.setup();
-
-  render(
-    <Tabs defaultValue="tab1">
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
-        <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
-        <Tabs.Tab value="tab3">Tab 3</Tabs.Tab>
-      </Tabs.List>
-
-      <Tabs.Panel value="tab1">Content 1</Tabs.Panel>
-      <Tabs.Panel value="tab2">Content 2</Tabs.Panel>
-      <Tabs.Panel value="tab3">Content 3</Tabs.Panel>
-    </Tabs>
-  );
-
-  const tab1 = screen.getByRole("tab", { name: "Tab 1" });
-  const tab2 = screen.getByRole("tab", { name: "Tab 2" });
-
-  // Focus first tab
-  await user.tab();
-  expect(tab1).toHaveFocus();
-
-  // Navigate to second tab with arrow key
-  await user.keyboard("{ArrowRight}");
-  expect(tab2).toHaveFocus();
-
-  // Activate with Enter
-  await user.keyboard("{Enter}");
-  expect(tab2).toHaveAttribute("aria-selected", "true");
-});
-```
-
-### Controlled Tabs Testing
-
-```tsx
-test("works in controlled mode", async () => {
-  const user = userEvent.setup();
-  const handleValueChange = jest.fn();
-
-  render(
-    <Tabs value="tab1" onValueChange={handleValueChange}>
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
-        <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
-      </Tabs.List>
-
-      <Tabs.Panel value="tab1">Content 1</Tabs.Panel>
-      <Tabs.Panel value="tab2">Content 2</Tabs.Panel>
-    </Tabs>
-  );
-
-  await user.click(screen.getByRole("tab", { name: "Tab 2" }));
-  
-  expect(handleValueChange).toHaveBeenCalledWith("tab2");
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Tabs defaultValue="tab1">
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
-        <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
-      </Tabs.List>
-
-      <Tabs.Panel value="tab1">Content 1</Tabs.Panel>
-      <Tabs.Panel value="tab2">Content 2</Tabs.Panel>
-    </Tabs>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
 
 ## Examples
 
@@ -738,7 +573,7 @@ export const DocumentViewer = () => (
         <p>Document content goes here...</p>
       </article>
     </Tabs.Panel>
-    
+
     <Tabs.Panel value="metadata">
       <dl>
         <dt>Created</dt>
@@ -747,7 +582,7 @@ export const DocumentViewer = () => (
         <dd>John Doe</dd>
       </dl>
     </Tabs.Panel>
-    
+
     <Tabs.Panel value="versions">
       <ul>
         <li>v1.2.0 - Latest</li>
@@ -763,8 +598,8 @@ export const DocumentViewer = () => (
 
 ```tsx
 import { Tabs } from "@telegraph/tabs";
-import { useState, useEffect } from "react";
-import { BarChart, Users, Settings, Bell } from "lucide-react";
+import { BarChart, Bell, Settings, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const DashboardTabs = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -773,9 +608,9 @@ export const DashboardTabs = () => {
   // Simulate notification updates
   useEffect(() => {
     const interval = setInterval(() => {
-      setNotifications(prev => prev + Math.floor(Math.random() * 3));
+      setNotifications((prev) => prev + Math.floor(Math.random() * 3));
     }, 10000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -783,33 +618,38 @@ export const DashboardTabs = () => {
     <div className="dashboard">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <Tabs.List>
-          <Tabs.Tab 
-            value="overview" 
+          <Tabs.Tab
+            value="overview"
             leadingIcon={{ icon: BarChart, alt: "Analytics" }}
           >
             Overview
           </Tabs.Tab>
-          
-          <Tabs.Tab 
-            value="users" 
-            leadingIcon={{ icon: Users, alt: "Users" }}
-          >
+
+          <Tabs.Tab value="users" leadingIcon={{ icon: Users, alt: "Users" }}>
             Users
           </Tabs.Tab>
-          
-          <Tabs.Tab 
-            value="notifications" 
+
+          <Tabs.Tab
+            value="notifications"
             leadingIcon={{ icon: Bell, alt: "Notifications" }}
-            trailingIcon={notifications > 0 ? {
-              icon: () => <span className="notification-badge">{notifications}</span>,
-              alt: `${notifications} new notifications`
-            } : undefined}
+            trailingIcon={
+              notifications > 0
+                ? {
+                    icon: () => (
+                      <span className="notification-badge">
+                        {notifications}
+                      </span>
+                    ),
+                    alt: `${notifications} new notifications`,
+                  }
+                : undefined
+            }
           >
             Notifications
           </Tabs.Tab>
-          
-          <Tabs.Tab 
-            value="settings" 
+
+          <Tabs.Tab
+            value="settings"
             leadingIcon={{ icon: Settings, alt: "Settings" }}
           >
             Settings
@@ -829,7 +669,7 @@ export const DashboardTabs = () => {
         </Tabs.Panel>
 
         <Tabs.Panel value="notifications" forceBackgroundMount="once">
-          <NotificationCenter 
+          <NotificationCenter
             notifications={notifications}
             onClear={() => setNotifications(0)}
           />
@@ -848,18 +688,30 @@ export const DashboardTabs = () => {
 
 ```tsx
 import { Tabs } from "@telegraph/tabs";
+import { FileText, Image, Music, Video } from "lucide-react";
 import { useState } from "react";
-import { FileText, Image, Video, Music } from "lucide-react";
 
 export const MediaLibrary = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [currentTab, setCurrentTab] = useState("documents");
 
   const fileTypes = {
-    documents: { icon: FileText, alt: "Documents", extensions: [".pdf", ".doc", ".txt"] },
-    images: { icon: Image, alt: "Images", extensions: [".jpg", ".png", ".gif"] },
-    videos: { icon: Video, alt: "Videos", extensions: [".mp4", ".avi", ".mov"] },
-    audio: { icon: Music, alt: "Audio", extensions: [".mp3", ".wav", ".flac"] }
+    documents: {
+      icon: FileText,
+      alt: "Documents",
+      extensions: [".pdf", ".doc", ".txt"],
+    },
+    images: {
+      icon: Image,
+      alt: "Images",
+      extensions: [".jpg", ".png", ".gif"],
+    },
+    videos: {
+      icon: Video,
+      alt: "Videos",
+      extensions: [".mp4", ".avi", ".mov"],
+    },
+    audio: { icon: Music, alt: "Audio", extensions: [".mp3", ".wav", ".flac"] },
   };
 
   const getFileCount = (type: string) => {
@@ -879,20 +731,16 @@ export const MediaLibrary = () => {
       <Tabs value={currentTab} onValueChange={setCurrentTab}>
         <Tabs.List>
           {Object.entries(fileTypes).map(([type, config]) => (
-            <Tabs.Tab 
-              key={type}
-              value={type}
-              leadingIcon={config}
-            >
+            <Tabs.Tab key={type} value={type} leadingIcon={config}>
               {type.charAt(0).toUpperCase() + type.slice(1)}
               <span className="file-count">({getFileCount(type)})</span>
             </Tabs.Tab>
           ))}
         </Tabs.List>
 
-        {Object.keys(fileTypes).map(type => (
+        {Object.keys(fileTypes).map((type) => (
           <Tabs.Panel key={type} value={type}>
-            <FileGrid 
+            <FileGrid
               fileType={type}
               selectedFiles={selectedFiles}
               onSelectionChange={setSelectedFiles}
@@ -910,9 +758,7 @@ export const MediaLibrary = () => {
           <button onClick={() => deleteFiles(selectedFiles)}>
             Delete Selected
           </button>
-          <button onClick={() => setSelectedFiles([])}>
-            Clear Selection
-          </button>
+          <button onClick={() => setSelectedFiles([])}>Clear Selection</button>
         </div>
       )}
     </div>
@@ -924,17 +770,8 @@ export const MediaLibrary = () => {
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/tabs)
 - [Radix UI Tabs](https://www.radix-ui.com/primitives/docs/components/tabs) - Base primitive
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

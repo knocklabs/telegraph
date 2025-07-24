@@ -19,11 +19,13 @@ npm install @telegraph/kbd
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/kbd";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/kbd/default.css";
 ```
@@ -50,19 +52,19 @@ export const KeyboardShortcut = () => (
 
 Displays a keyboard key with automatic icon/text resolution and press state.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | required | Key label (e.g., "K", "Enter", "Meta") |
-| `size` | `"0" \| "1" \| "2" \| "3"` | `"1"` | Key size |
-| `contrast` | `boolean` | `false` | Use contrast styling |
-| `eventKey` | `KeyboardEvent["key"]` | `label` | Key event to listen for (defaults to label) |
+| Prop       | Type                       | Default  | Description                                 |
+| ---------- | -------------------------- | -------- | ------------------------------------------- |
+| `label`    | `string`                   | required | Key label (e.g., "K", "Enter", "Meta")      |
+| `size`     | `"0" \| "1" \| "2" \| "3"` | `"1"`    | Key size                                    |
+| `contrast` | `boolean`                  | `false`  | Use contrast styling                        |
+| `eventKey` | `KeyboardEvent["key"]`     | `label`  | Key event to listen for (defaults to label) |
 
 ### `<KbdProvider>`
 
 Provides keyboard state context for managing multiple key presses.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| Prop       | Type              | Default  | Description      |
+| ---------- | ----------------- | -------- | ---------------- |
 | `children` | `React.ReactNode` | required | Child components |
 
 ## Key Recognition
@@ -148,9 +150,9 @@ import { Kbd } from "@telegraph/kbd";
 import { Kbd } from "@telegraph/kbd";
 
 // Use on dark backgrounds
-<div style={{ background: 'var(--tgph-accent-9)', padding: '1rem' }}>
+<div style={{ background: "var(--tgph-accent-9)", padding: "1rem" }}>
   <Kbd label="K" contrast />
-</div>
+</div>;
 ```
 
 ## Advanced Usage
@@ -173,7 +175,7 @@ export const ShortcutHelp = () => (
         </Stack>
         <Text>Search</Text>
       </Stack>
-      
+
       <Stack direction="row" align="center" gap="2">
         <Stack direction="row" gap="1">
           <Kbd label="Meta" />
@@ -184,7 +186,7 @@ export const ShortcutHelp = () => (
         </Stack>
         <Text>Command Palette</Text>
       </Stack>
-      
+
       <Stack direction="row" align="center" gap="2">
         <Kbd label="Escape" />
         <Text>Close Dialog</Text>
@@ -232,7 +234,7 @@ export const GameControls = () => (
   <KbdProvider>
     <Stack gap="4">
       <Text as="h3">Game Controls</Text>
-      
+
       <Stack gap="2">
         <Text weight="medium">Movement</Text>
         <Stack direction="row" gap="1">
@@ -242,7 +244,7 @@ export const GameControls = () => (
           <Kbd label="D" />
         </Stack>
       </Stack>
-      
+
       <Stack gap="2">
         <Text weight="medium">Actions</Text>
         <Stack direction="row" gap="2">
@@ -321,13 +323,13 @@ export const NavigationGuide = () => (
   <KbdProvider>
     <Stack gap="4">
       <Text as="h3">Keyboard Navigation</Text>
-      
+
       <Stack gap="3">
         <Stack direction="row" align="center" gap="2">
           <Kbd label="Tab" />
           <Text>Next element</Text>
         </Stack>
-        
+
         <Stack direction="row" align="center" gap="2">
           <Stack direction="row" gap="1">
             <Kbd label="Shift" />
@@ -336,17 +338,17 @@ export const NavigationGuide = () => (
           </Stack>
           <Text>Previous element</Text>
         </Stack>
-        
+
         <Stack direction="row" align="center" gap="2">
           <Kbd label="Enter" />
           <Text>Activate/Submit</Text>
         </Stack>
-        
+
         <Stack direction="row" align="center" gap="2">
           <Kbd label="Escape" />
           <Text>Cancel/Close</Text>
         </Stack>
-        
+
         <Stack direction="row" align="center" gap="2">
           <Stack direction="row" gap="1">
             <Kbd label="ArrowUp" />
@@ -367,21 +369,25 @@ The Kbd component uses Telegraph design tokens for consistent styling:
 ### Size Tokens
 
 **Size "0" (Extra Small):**
+
 - Container: `min-width: var(--tgph-spacing-4)`, `height: var(--tgph-spacing-4)`
 - Text: `size: 0`, `padding: var(--tgph-spacing-1)`
 - Icon: `size: 0`
 
 **Size "1" (Small - default):**
+
 - Container: `min-width: var(--tgph-spacing-5)`, `height: var(--tgph-spacing-5)`
 - Text: `size: 0`, `padding: var(--tgph-spacing-1)`
 - Icon: `size: 0`
 
 **Size "2" (Medium):**
+
 - Container: `min-width: var(--tgph-spacing-6)`, `height: var(--tgph-spacing-6)`
 - Text: `size: 1`, `padding: var(--tgph-spacing-1)`
 - Icon: `size: 1`
 
 **Size "3" (Large):**
+
 - Container: `min-width: var(--tgph-spacing-8)`, `height: var(--tgph-spacing-8)`
 - Text: `size: 2`, `padding: var(--tgph-spacing-2)`
 - Icon: `size: 2`
@@ -389,76 +395,18 @@ The Kbd component uses Telegraph design tokens for consistent styling:
 ### Color Tokens
 
 **Default Styling:**
+
 - Background: `var(--tgph-surface-1)`
 - Border: `var(--tgph-gray-3)`
 - Text: `var(--tgph-gray-12)`
 - Pressed: `var(--tgph-gray-4)`
 
 **Contrast Styling:**
+
 - Background: `transparent`
 - Border: `var(--tgph-gray-3)` (light) / `var(--tgph-black)` (dark)
 - Text: `var(--tgph-white)` (light) / `var(--tgph-black)` (dark)
 - Pressed: `var(--tgph-alpha-black-2)`
-
-### Custom Styling
-
-```css
-.tgph {
-  /* Custom key styling */
-  [data-tgph-kbd] {
-    --custom-border-radius: var(--tgph-rounded-2);
-    border-radius: var(--custom-border-radius);
-    font-family: var(--tgph-font-mono);
-  }
-  
-  /* Custom press animation */
-  [data-tgph-kbd] {
-    transition: all 0.1s ease-in-out;
-    transform: translateY(0);
-  }
-  
-  [data-tgph-kbd]:active {
-    transform: translateY(1px);
-    box-shadow: var(--tgph-shadow-inner);
-  }
-}
-```
-
-## Accessibility
-
-- ✅ **Semantic HTML**: Uses appropriate semantic elements
-- ✅ **Screen Reader Support**: Keys are announced with proper context
-- ✅ **Keyboard Interactive**: Actually responds to keyboard events
-- ✅ **Visual Feedback**: Clear pressed state indication
-- ✅ **Platform Awareness**: Shows correct modifier keys per platform
-
-### Accessibility Guidelines
-
-1. **Context**: Always provide context around keyboard shortcuts
-2. **Alternative Actions**: Ensure keyboard shortcuts have mouse/touch alternatives  
-3. **Documentation**: Clearly document available shortcuts
-4. **Visual Grouping**: Group related shortcuts together
-5. **Consistent Labeling**: Use consistent key names across your app
-
-```tsx
-// ✅ Good accessibility practices
-<Stack gap="2">
-  <Text as="label">Search shortcut:</Text>
-  <Stack direction="row" gap="1">
-    <Kbd label="Meta" />
-    <Text>+</Text>
-    <Kbd label="K" />
-  </Stack>
-</Stack>
-
-// ✅ Provide context and alternatives
-<Text>
-  Press <Kbd label="/" /> to search, or use the search button in the top bar.
-</Text>
-
-// ❌ Poor accessibility - no context
-<Kbd label="K" /> {/* What does K do? */}
-```
 
 ### Best Practices
 
@@ -468,132 +416,14 @@ The Kbd component uses Telegraph design tokens for consistent styling:
 4. **Platform Consistency**: Let the component handle platform differences
 5. **Test Interaction**: Verify that displayed keys actually trigger when pressed
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Kbd, KbdProvider } from "@telegraph/kbd";
-
-test("renders key with correct label", () => {
-  render(
-    <KbdProvider>
-      <Kbd label="K" />
-    </KbdProvider>
-  );
-  
-  expect(screen.getByText("K")).toBeInTheDocument();
-});
-
-test("shows pressed state when key is pressed", async () => {
-  const user = userEvent.setup();
-  
-  const { container } = render(
-    <KbdProvider>
-      <Kbd label="K" eventKey="k" />
-    </KbdProvider>
-  );
-  
-  const kbd = container.querySelector('[data-tgph-kbd]');
-  
-  // Press the key
-  await user.keyboard("{k>}"); // Hold down
-  expect(kbd).toHaveStyle({ '--background-color': 'var(--tgph-gray-4)' });
-  
-  // Release the key
-  await user.keyboard("{/k}"); // Release
-  expect(kbd).toHaveStyle({ '--background-color': 'var(--tgph-surface-1)' });
-});
-
-test("displays icon for special keys", () => {
-  render(
-    <KbdProvider>
-      <Kbd label="ArrowRight" />
-    </KbdProvider>
-  );
-  
-  expect(screen.getByRole("img")).toBeInTheDocument();
-});
-```
-
-### Testing Keyboard Shortcuts
-
-```tsx
-test("keyboard shortcut combinations work", async () => {
-  const user = userEvent.setup();
-  const onShortcut = jest.fn();
-  
-  render(
-    <KbdProvider>
-      <div onKeyDown={(e) => {
-        if (e.metaKey && e.key === 'k') {
-          onShortcut();
-        }
-      }}>
-        <Kbd label="Meta" />
-        <Kbd label="K" />
-      </div>
-    </KbdProvider>
-  );
-  
-  await user.keyboard("{Meta>}k{/Meta}");
-  expect(onShortcut).toHaveBeenCalled();
-});
-```
-
-### Platform Detection Testing
-
-```tsx
-test("shows correct modifier key for platform", () => {
-  // Mock Mac platform
-  Object.defineProperty(navigator, 'userAgent', {
-    value: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
-    configurable: true
-  });
-  
-  render(<Kbd label="Meta" />);
-  expect(screen.getByRole("img")).toBeInTheDocument(); // Command icon
-  
-  // Mock Windows platform
-  Object.defineProperty(navigator, 'userAgent', {
-    value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-    configurable: true
-  });
-  
-  render(<Kbd label="Meta" />);
-  expect(screen.getByText("Ctrl")).toBeInTheDocument();
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <KbdProvider>
-      <Kbd label="Enter" />
-    </KbdProvider>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Examples
 
 ### Help Dialog with Shortcuts
 
 ```tsx
 import { Kbd, KbdProvider } from "@telegraph/kbd";
-import { Modal } from "@telegraph/modal";
 import { Stack } from "@telegraph/layout";
+import { Modal } from "@telegraph/modal";
 import { Text } from "@telegraph/typography";
 
 export const HelpDialog = ({ open, onClose }) => (
@@ -602,7 +432,7 @@ export const HelpDialog = ({ open, onClose }) => (
       <Modal.Header>
         <Text as="h2">Keyboard Shortcuts</Text>
       </Modal.Header>
-      
+
       <Modal.Body>
         <KbdProvider>
           <Stack gap="4">
@@ -614,7 +444,7 @@ export const HelpDialog = ({ open, onClose }) => (
                 <ShortcutRow keys={["Enter"]} action="Open item" />
               </Stack>
             </Stack>
-            
+
             <Stack gap="2">
               <Text weight="medium">Actions</Text>
               <Stack gap="1">
@@ -640,7 +470,9 @@ const ShortcutRow = ({ keys, action }) => (
         </Stack>
       ))}
     </Stack>
-    <Text size="1" color="gray">{action}</Text>
+    <Text size="1" color="gray">
+      {action}
+    </Text>
   </Stack>
 );
 ```
@@ -648,8 +480,8 @@ const ShortcutRow = ({ keys, action }) => (
 ### Command Palette Trigger
 
 ```tsx
-import { Kbd, KbdProvider } from "@telegraph/kbd";
 import { Button } from "@telegraph/button";
+import { Kbd, KbdProvider } from "@telegraph/kbd";
 import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Search } from "lucide-react";
@@ -659,13 +491,13 @@ export const CommandPaletteTrigger = ({ onClick }) => (
     <Button
       variant="outline"
       onClick={onClick}
-      style={{ width: '300px', justifyContent: 'space-between' }}
+      style={{ width: "300px", justifyContent: "space-between" }}
     >
       <Stack direction="row" align="center" gap="2">
         <Search size={16} />
         <Text color="gray">Search...</Text>
       </Stack>
-      
+
       <Stack direction="row" gap="1">
         <Kbd label="Meta" size="0" />
         <Kbd label="K" size="0" />
@@ -684,17 +516,19 @@ import { Text } from "@telegraph/typography";
 
 export const GameHUD = () => (
   <KbdProvider>
-    <Stack 
-      position="fixed" 
-      bottom="4" 
-      right="4" 
-      bg="alpha-black-8" 
-      padding="3" 
+    <Stack
+      position="fixed"
+      bottom="4"
+      right="4"
+      bg="alpha-black-8"
+      padding="3"
       rounded="2"
       gap="2"
     >
-      <Text size="1" color="white" weight="medium">Controls</Text>
-      
+      <Text size="1" color="white" weight="medium">
+        Controls
+      </Text>
+
       <Stack gap="1">
         <Stack direction="row" gap="1" justify="center">
           <Kbd label="W" size="0" contrast />
@@ -705,9 +539,11 @@ export const GameHUD = () => (
           <Kbd label="D" size="0" contrast />
         </Stack>
       </Stack>
-      
+
       <Stack direction="row" justify="between" align="center">
-        <Text size="0" color="white">Jump</Text>
+        <Text size="0" color="white">
+          Jump
+        </Text>
         <Kbd label=" " size="0" contrast />
       </Stack>
     </Stack>
@@ -718,17 +554,8 @@ export const GameHUD = () => (
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/kbd)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

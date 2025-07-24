@@ -14,22 +14,6 @@
 npm install @telegraph/style-engine
 ```
 
-### Add stylesheet
-
-Pick one:
-
-Via CSS (preferred):
-```css
-@import "@telegraph/style-engine";
-```
-
-Via Javascript:
-```tsx
-import "@telegraph/style-engine/default.css";
-```
-
-> Then, include `className="tgph"` on the farthest parent element wrapping the telegraph components
-
 ## Quick Start
 
 ### PostCSS Plugin Usage
@@ -38,9 +22,9 @@ import "@telegraph/style-engine/default.css";
 // postcss.config.js
 module.exports = {
   plugins: [
-    require('@telegraph/style-engine/postcss'),
+    require("@telegraph/style-engine/postcss"),
     // other plugins...
-  ]
+  ],
 };
 ```
 
@@ -65,12 +49,12 @@ const cssVars = {
   p: {
     cssVar: "--tgph-padding",
     value: "var(--tgph-space-VARIABLE)",
-    direction: "all"
+    direction: "all",
   },
   bg: {
     cssVar: "--tgph-background",
-    value: "var(--tgph-color-VARIABLE)"
-  }
+    value: "var(--tgph-color-VARIABLE)",
+  },
 } as const;
 
 export const StyledBox = ({ children, ...props }) => {
@@ -84,7 +68,9 @@ export const StyledBox = ({ children, ...props }) => {
 };
 
 // Usage
-<StyledBox p="4" bg="blue-3">Styled content</StyledBox>
+<StyledBox p="4" bg="blue-3">
+  Styled content
+</StyledBox>;
 ```
 
 ## What is the Style Engine?
@@ -105,15 +91,17 @@ The Style Engine is the foundational CSS-in-JS system that enables Telegraph's d
 Core function that processes style props and returns CSS variables.
 
 **Parameters:**
+
 - `params.props` - React props object including style props
 - `params.cssVars` - CSS variable mappings configuration
 
 **Returns:**
+
 ```tsx
 {
-  styleProp: Record<string, string>;    // CSS custom properties
-  otherProps: Record<string, unknown>;  // Non-style props
-  interactive: boolean;                 // Whether component has interactive styles
+  styleProp: Record<string, string>; // CSS custom properties
+  otherProps: Record<string, unknown>; // Non-style props
+  interactive: boolean; // Whether component has interactive styles
 }
 ```
 
@@ -144,17 +132,24 @@ Define how props map to CSS variables:
 
 ```tsx
 type CssVarProp = {
-  cssVar: string;        // CSS custom property name
-  value: string;         // Value template (use VARIABLE for prop value)
+  cssVar: string; // CSS custom property name
+  value: string; // Value template (use VARIABLE for prop value)
   direction?: Direction; // For directional properties
   interactive?: boolean; // Mark as interactive style
 };
 
-type Direction = 
-  | "x" | "y"           // Horizontal/vertical
-  | "top" | "bottom" | "left" | "right"  // Individual sides
-  | "all"               // All sides
-  | "side-top" | "side-bottom" | "side-left" | "side-right"; // Corner sides
+type Direction =
+  | "x"
+  | "y" // Horizontal/vertical
+  | "top"
+  | "bottom"
+  | "left"
+  | "right" // Individual sides
+  | "all" // All sides
+  | "side-top"
+  | "side-bottom"
+  | "side-left"
+  | "side-right"; // Corner sides
 ```
 
 ## PostCSS Plugin
@@ -163,25 +158,25 @@ The PostCSS plugin automatically includes CSS from Telegraph packages.
 
 ### At-Rules
 
-| Rule | Description |
-|------|-------------|
-| `@telegraph tokens` | Include default design tokens CSS |
-| `@telegraph tokens-light` | Include light theme tokens |
-| `@telegraph tokens-dark` | Include dark theme tokens |
-| `@telegraph components` | Include all component stylesheets |
+| Rule                      | Description                       |
+| ------------------------- | --------------------------------- |
+| `@telegraph tokens`       | Include default design tokens CSS |
+| `@telegraph tokens-light` | Include light theme tokens        |
+| `@telegraph tokens-dark`  | Include dark theme tokens         |
+| `@telegraph components`   | Include all component stylesheets |
 
 ### Configuration
 
 ```js
 // postcss.config.js
-const telegraphPlugin = require('@telegraph/style-engine/postcss');
+const telegraphPlugin = require("@telegraph/style-engine/postcss");
 
 module.exports = {
   plugins: [
     telegraphPlugin(),
-    require('autoprefixer'),
+    require("autoprefixer"),
     // other plugins...
-  ]
+  ],
 };
 ```
 
@@ -211,38 +206,74 @@ module.exports = {
 ### Building Custom Components
 
 ```tsx
-import { useStyleEngine, type CssVarProp } from "@telegraph/style-engine";
+import { type CssVarProp, useStyleEngine } from "@telegraph/style-engine";
 
 // Define comprehensive CSS variable mappings
 const cssVars = {
   // Spacing
-  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "all" },
-  pt: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "top" },
-  pr: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "right" },
-  pb: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "bottom" },
-  pl: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "left" },
-  px: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "x" },
-  py: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "y" },
-  
+  p: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "all",
+  },
+  pt: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "top",
+  },
+  pr: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "right",
+  },
+  pb: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "bottom",
+  },
+  pl: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "left",
+  },
+  px: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "x",
+  },
+  py: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "y",
+  },
+
   // Margin
-  m: { cssVar: "--tgph-margin", value: "var(--tgph-space-VARIABLE)", direction: "all" },
-  mt: { cssVar: "--tgph-margin", value: "var(--tgph-space-VARIABLE)", direction: "top" },
+  m: {
+    cssVar: "--tgph-margin",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "all",
+  },
+  mt: {
+    cssVar: "--tgph-margin",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "top",
+  },
   // ... more margin variants
-  
+
   // Colors
   bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
   color: { cssVar: "--tgph-color", value: "var(--tgph-color-VARIABLE)" },
-  
+
   // Layout
   w: { cssVar: "--tgph-width", value: "VARIABLE" },
   h: { cssVar: "--tgph-height", value: "VARIABLE" },
-  
+
   // Interactive states
-  hoverBg: { 
-    cssVar: "--tgph-hover-background", 
+  hoverBg: {
+    cssVar: "--tgph-hover-background",
     value: "var(--tgph-color-VARIABLE)",
-    interactive: true 
-  }
+    interactive: true,
+  },
 } as const;
 
 type StyledBoxProps = {
@@ -264,15 +295,15 @@ type StyledBoxProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const StyledBox = ({ children, ...props }: StyledBoxProps) => {
-  const { styleProp, otherProps, interactive } = useStyleEngine({ 
-    props, 
-    cssVars 
+  const { styleProp, otherProps, interactive } = useStyleEngine({
+    props,
+    cssVars,
   });
 
   return (
-    <div 
+    <div
       className={interactive ? "tgph-interactive" : undefined}
-      style={styleProp} 
+      style={styleProp}
       {...otherProps}
     >
       {children}
@@ -291,26 +322,26 @@ const responsiveCssVars = {
   p: {
     cssVar: "--tgph-padding",
     value: "var(--tgph-space-VARIABLE)",
-    direction: "all"
-  }
+    direction: "all",
+  },
 } as const;
 
 // Responsive component
 export const ResponsiveBox = ({ children, ...props }) => {
-  const { styleProp, otherProps } = useStyleEngine({ 
-    props, 
-    cssVars: responsiveCssVars 
+  const { styleProp, otherProps } = useStyleEngine({
+    props,
+    cssVars: responsiveCssVars,
   });
 
   return (
-    <div 
+    <div
       style={{
         ...styleProp,
         // Add responsive overrides
         [`@media ${RESPONSIVE_STYLE_PROPS.conditions.md["@media"]}`]: {
-          "--tgph-padding": "var(--tgph-space-6)"
-        }
-      }} 
+          "--tgph-padding": "var(--tgph-space-6)",
+        },
+      }}
       {...otherProps}
     >
       {children}
@@ -319,117 +350,25 @@ export const ResponsiveBox = ({ children, ...props }) => {
 };
 ```
 
-### Theme Integration
-
-```tsx
-import { tokens } from "@telegraph/style-engine";
-
-// Create theme-aware components
-const createThemedCssVars = (theme: 'light' | 'dark') => ({
-  bg: {
-    cssVar: "--tgph-background",
-    value: theme === 'dark' 
-      ? "var(--tgph-gray-1-dark)" 
-      : "var(--tgph-gray-1-light)"
-  },
-  color: {
-    cssVar: "--tgph-color",
-    value: theme === 'dark'
-      ? "var(--tgph-gray-12-dark)"
-      : "var(--tgph-gray-12-light)"
-  }
-});
-
-export const ThemedBox = ({ theme = 'light', ...props }) => {
-  const cssVars = createThemedCssVars(theme);
-  const { styleProp, otherProps } = useStyleEngine({ props, cssVars });
-
-  return <div style={styleProp} {...otherProps} />;
-};
-```
-
-### Build Integration
-
-#### Webpack
-
-```js
-// webpack.config.js
-const path = require('path');
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [
-                  require('@telegraph/style-engine/postcss'),
-                  require('autoprefixer')
-                ]
-              }
-            }
-          }
-        ]
-      }
-    ]
-  }
-};
-```
-
-#### Vite
-
-```js
-// vite.config.js
-import { defineConfig } from 'vite';
-import telegraphPlugin from '@telegraph/style-engine/postcss';
-
-export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [
-        telegraphPlugin(),
-        require('autoprefixer')
-      ]
-    }
-  }
-});
-```
-
-#### Next.js
-
-```js
-// next.config.js
-module.exports = {
-  experimental: {
-    postcss: {
-      plugins: [
-        require('@telegraph/style-engine/postcss'),
-        require('autoprefixer')
-      ]
-    }
-  }
-};
-```
-
 ### Performance Optimization
 
 ```tsx
 // Memoize CSS variable definitions
-const cssVars = useMemo(() => ({
-  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
-  bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" }
-}), []);
+const cssVars = useMemo(
+  () => ({
+    p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
+    bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
+  }),
+  [],
+);
 
 // Use callback for complex prop processing
-const processedProps = useCallback((props) => {
-  return getStyleProp({ props, cssVars });
-}, [cssVars]);
+const processedProps = useCallback(
+  (props) => {
+    return getStyleProp({ props, cssVars });
+  },
+  [cssVars],
+);
 ```
 
 ### Custom Directional Logic
@@ -440,13 +379,13 @@ const customCssVars = {
   borderRadius: {
     cssVar: "--tgph-border-radius",
     value: "var(--tgph-radius-VARIABLE)",
-    direction: "side-top" // Affects top-left and top-right corners
+    direction: "side-top", // Affects top-left and top-right corners
   },
   shadowDirection: {
     cssVar: "--tgph-box-shadow",
     value: "VARIABLE 4px 8px rgba(0,0,0,0.1)", // Custom shadow template
-    direction: "x" // Horizontal shadow direction
-  }
+    direction: "x", // Horizontal shadow direction
+  },
 } as const;
 ```
 
@@ -468,16 +407,16 @@ The Style Engine integrates deeply with Telegraph design tokens:
   /* Spacing tokens */
   padding: var(--tgph-space-4);
   margin: var(--tgph-space-2) var(--tgph-space-3);
-  
+
   /* Color tokens */
   background: var(--tgph-blue-3);
   color: var(--tgph-blue-11);
   border: 1px solid var(--tgph-blue-6);
-  
+
   /* Typography tokens */
   font-size: var(--tgph-font-size-2);
   line-height: var(--tgph-line-height-2);
-  
+
   /* Layout tokens */
   border-radius: var(--tgph-radius-2);
   box-shadow: var(--tgph-shadow-2);
@@ -495,83 +434,12 @@ The Style Engine PostCSS plugin performs the following optimizations:
 5. **Duplicate Removal**: Eliminates duplicate CSS rules
 6. **Minification**: Optimizes final CSS output
 
-## Testing
-
-### Testing Style Engine Components
-
-```tsx
-import { render } from "@testing-library/react";
-import { getStyleProp } from "@telegraph/style-engine";
-
-describe("Style Engine", () => {
-  test("processes style props correctly", () => {
-    const cssVars = {
-      p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" }
-    };
-    
-    const { styleProp, otherProps } = getStyleProp({
-      props: { p: "4", onClick: jest.fn() },
-      cssVars
-    });
-
-    expect(styleProp).toEqual({
-      "--tgph-padding": "var(--tgph-space-4)"
-    });
-    expect(otherProps).toEqual({
-      onClick: expect.any(Function)
-    });
-  });
-
-  test("handles directional properties", () => {
-    const cssVars = {
-      px: { 
-        cssVar: "--tgph-padding", 
-        value: "var(--tgph-space-VARIABLE)", 
-        direction: "x" 
-      }
-    };
-    
-    const { styleProp } = getStyleProp({
-      props: { px: "2" },
-      cssVars
-    });
-
-    expect(styleProp["--tgph-padding"]).toBe("0 var(--tgph-space-2) 0 var(--tgph-space-2)");
-  });
-});
-```
-
-### Testing PostCSS Plugin
-
-```js
-// test-postcss.js
-const postcss = require('postcss');
-const telegraphPlugin = require('@telegraph/style-engine/postcss');
-
-test('processes @telegraph rules', async () => {
-  const input = `
-    @telegraph tokens;
-    @telegraph components;
-    
-    .custom {
-      color: red;
-    }
-  `;
-
-  const result = await postcss([telegraphPlugin()]).process(input, {
-    from: undefined
-  });
-
-  expect(result.css).toContain('--tgph-');
-  expect(result.css).not.toContain('@telegraph');
-});
-```
-
 ## Troubleshooting
 
 ### Common Issues
 
 **CSS Variables Not Working**
+
 ```tsx
 // Ensure tgph class is on root element
 <div className="tgph">
@@ -580,33 +448,19 @@ test('processes @telegraph rules', async () => {
 ```
 
 **PostCSS Plugin Errors**
+
 ```js
 // Check Telegraph packages are installed
 npm ls @telegraph/tokens @telegraph/button
 ```
 
 **Type Errors with CSS Variables**
+
 ```tsx
 // Ensure cssVars object uses 'as const'
 const cssVars = {
-  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" }
+  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
 } as const; // <- Important!
-```
-
-### Debug Mode
-
-```js
-// Enable debug logging
-process.env.DEBUG = 'telegraph:style-engine';
-
-// Or in PostCSS config
-module.exports = {
-  plugins: [
-    require('@telegraph/style-engine/postcss')({
-      debug: true
-    })
-  ]
-};
 ```
 
 ## Examples
@@ -618,56 +472,96 @@ import { useStyleEngine } from "@telegraph/style-engine";
 
 const cssVars = {
   p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
-  bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" }
+  bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
 } as const;
 
 export const SimpleBox = (props) => {
   const { styleProp, otherProps } = useStyleEngine({ props, cssVars });
-  
+
   return <div style={styleProp} {...otherProps} />;
 };
 
 // Usage
-<SimpleBox p="4" bg="blue-3">Content</SimpleBox>
+<SimpleBox p="4" bg="blue-3">
+  Content
+</SimpleBox>;
 ```
 
 ### Advanced Example
 
 ```tsx
-import { useStyleEngine, RESPONSIVE_STYLE_PROPS } from "@telegraph/style-engine";
+import {
+  RESPONSIVE_STYLE_PROPS,
+  useStyleEngine,
+} from "@telegraph/style-engine";
 
 const advancedCssVars = {
   // Spacing
-  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "all" },
-  pt: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "top" },
-  pr: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "right" },
-  pb: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "bottom" },
-  pl: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "left" },
-  px: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "x" },
-  py: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)", direction: "y" },
-  
+  p: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "all",
+  },
+  pt: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "top",
+  },
+  pr: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "right",
+  },
+  pb: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "bottom",
+  },
+  pl: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "left",
+  },
+  px: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "x",
+  },
+  py: {
+    cssVar: "--tgph-padding",
+    value: "var(--tgph-space-VARIABLE)",
+    direction: "y",
+  },
+
   // Colors & States
   bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
-  hoverBg: { cssVar: "--tgph-hover-bg", value: "var(--tgph-color-VARIABLE)", interactive: true },
-  
+  hoverBg: {
+    cssVar: "--tgph-hover-bg",
+    value: "var(--tgph-color-VARIABLE)",
+    interactive: true,
+  },
+
   // Layout
   w: { cssVar: "--tgph-width", value: "VARIABLE" },
   h: { cssVar: "--tgph-height", value: "VARIABLE" },
-  rounded: { cssVar: "--tgph-border-radius", value: "var(--tgph-radius-VARIABLE)" }
+  rounded: {
+    cssVar: "--tgph-border-radius",
+    value: "var(--tgph-radius-VARIABLE)",
+  },
 } as const;
 
 export const AdvancedBox = ({ children, ...props }) => {
-  const { styleProp, otherProps, interactive } = useStyleEngine({ 
-    props, 
-    cssVars: advancedCssVars 
+  const { styleProp, otherProps, interactive } = useStyleEngine({
+    props,
+    cssVars: advancedCssVars,
   });
 
   return (
-    <div 
+    <div
       className={interactive ? "tgph-interactive" : undefined}
       style={{
         ...styleProp,
-        transition: interactive ? "all 0.2s ease" : undefined
+        transition: interactive ? "all 0.2s ease" : undefined,
       }}
       {...otherProps}
     >
@@ -677,16 +571,9 @@ export const AdvancedBox = ({ children, ...props }) => {
 };
 
 // Usage
-<AdvancedBox 
-  p="4" 
-  px="6" 
-  bg="blue-3" 
-  hoverBg="blue-4" 
-  rounded="2"
-  w="200px"
->
+<AdvancedBox p="4" px="6" bg="blue-3" hoverBg="blue-4" rounded="2" w="200px">
   Interactive Content
-</AdvancedBox>
+</AdvancedBox>;
 ```
 
 ### Real-world Example
@@ -763,17 +650,8 @@ export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
 - [Telegraph Tokens](../tokens/README.md) - Design token system
 - [PostCSS Documentation](https://postcss.org/) - PostCSS ecosystem
 - [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) - CSS variables
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this package:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Test changes: `pnpm test`
-5. Build: `pnpm build`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

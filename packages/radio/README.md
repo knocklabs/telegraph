@@ -19,11 +19,13 @@ npm install @telegraph/radio
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/radio";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/radio/default.css";
 ```
@@ -34,7 +36,7 @@ import "@telegraph/radio/default.css";
 
 ```tsx
 import { RadioCards } from "@telegraph/radio";
-import { Plus, Edit, Archive } from "lucide-react";
+import { Archive, Edit, Plus } from "lucide-react";
 
 export const ActionSelector = () => {
   const [selectedAction, setSelectedAction] = useState("add");
@@ -48,20 +50,20 @@ export const ActionSelector = () => {
           icon: { icon: Plus, alt: "Add" },
           title: "Create New",
           description: "Add a new item",
-          value: "add"
+          value: "add",
         },
         {
           icon: { icon: Edit, alt: "Edit" },
           title: "Edit Existing",
           description: "Modify current item",
-          value: "edit"
+          value: "edit",
         },
         {
           icon: { icon: Archive, alt: "Archive" },
           title: "Archive",
           description: "Move to archive",
-          value: "archive"
-        }
+          value: "archive",
+        },
       ]}
     />
   );
@@ -74,12 +76,12 @@ export const ActionSelector = () => {
 
 The main component that renders a radio group with card-style options.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | `undefined` | Currently selected value |
-| `onValueChange` | `(value: string) => void` | `undefined` | Callback when selection changes |
-| `options` | `RadioOption[]` | - | Array of radio option configurations |
-| `direction` | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"` | Layout direction for the radio group |
+| Prop            | Type                                                     | Default     | Description                          |
+| --------------- | -------------------------------------------------------- | ----------- | ------------------------------------ |
+| `value`         | `string`                                                 | `undefined` | Currently selected value             |
+| `onValueChange` | `(value: string) => void`                                | `undefined` | Callback when selection changes      |
+| `options`       | `RadioOption[]`                                          | -           | Array of radio option configurations |
+| `direction`     | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"`     | Layout direction for the radio group |
 
 #### RadioOption Type
 
@@ -88,9 +90,9 @@ type RadioOption = {
   value: string;
   title?: string;
   description?: string;
-  icon?: { icon: LucideIcon; alt: string; };
+  icon?: { icon: LucideIcon; alt: string };
   // Additional RadioCards.Item props
-}
+};
 ```
 
 ### Composition Components
@@ -111,7 +113,7 @@ For detailed props of each component, see the [Complete Component Reference](#co
 
 ```tsx
 import { RadioCards } from "@telegraph/radio";
-import { Star, Heart, Bookmark } from "lucide-react";
+import { Bookmark, Heart, Star } from "lucide-react";
 
 export const PreferenceSelector = () => {
   const [preference, setPreference] = useState("star");
@@ -123,7 +125,11 @@ export const PreferenceSelector = () => {
       options={[
         { icon: { icon: Star, alt: "Star" }, title: "Favorite", value: "star" },
         { icon: { icon: Heart, alt: "Heart" }, title: "Love", value: "love" },
-        { icon: { icon: Bookmark, alt: "Bookmark" }, title: "Save", value: "save" }
+        {
+          icon: { icon: Bookmark, alt: "Bookmark" },
+          title: "Save",
+          value: "save",
+        },
       ]}
     />
   );
@@ -141,18 +147,18 @@ export const PreferenceSelector = () => {
     {
       title: "Basic Plan",
       description: "$10/month - Essential features",
-      value: "basic"
+      value: "basic",
     },
     {
-      title: "Pro Plan", 
+      title: "Pro Plan",
       description: "$25/month - Advanced features",
-      value: "pro"
+      value: "pro",
     },
     {
       title: "Enterprise",
       description: "Custom pricing - Full suite",
-      value: "enterprise"
-    }
+      value: "enterprise",
+    },
   ]}
 />
 ```
@@ -166,7 +172,7 @@ export const PreferenceSelector = () => {
   options={[
     { title: "Low", description: "Can wait", value: "low" },
     { title: "Medium", description: "Normal priority", value: "medium" },
-    { title: "High", description: "Urgent", value: "high" }
+    { title: "High", description: "Urgent", value: "high" },
   ]}
 />
 ```
@@ -180,7 +186,7 @@ export const PreferenceSelector = () => {
   options={[
     { icon: { icon: Grid, alt: "Grid view" }, value: "grid" },
     { icon: { icon: List, alt: "List view" }, value: "list" },
-    { icon: { icon: Card, alt: "Card view" }, value: "card" }
+    { icon: { icon: Card, alt: "Card view" }, value: "card" },
   ]}
 />
 ```
@@ -190,12 +196,12 @@ export const PreferenceSelector = () => {
 ### Custom Composition
 
 ```tsx
+import { Box, Stack } from "@telegraph/layout";
 import { RadioCards } from "@telegraph/radio";
-import { Stack, Box } from "@telegraph/layout";
 
 export const CustomRadioCards = ({ options, value, onValueChange }) => (
-  <RadioCards.Root 
-    value={value} 
+  <RadioCards.Root
+    value={value}
     onValueChange={onValueChange}
     direction="row"
     gap="2"
@@ -204,20 +210,16 @@ export const CustomRadioCards = ({ options, value, onValueChange }) => (
       <RadioCards.Item key={option.value} value={option.value}>
         <Stack direction="column" align="center" p="4" gap="3">
           {option.icon && (
-            <RadioCards.ItemIcon 
-              {...option.icon}
-              size="6"
-              color="primary"
-            />
+            <RadioCards.ItemIcon {...option.icon} size="6" color="primary" />
           )}
-          
+
           <Stack direction="column" align="center" gap="1">
             {option.title && (
               <RadioCards.ItemTitle size="3" weight="semibold">
                 {option.title}
               </RadioCards.ItemTitle>
             )}
-            
+
             {option.description && (
               <RadioCards.ItemDescription size="1" align="center">
                 {option.description}
@@ -226,13 +228,7 @@ export const CustomRadioCards = ({ options, value, onValueChange }) => (
           </Stack>
 
           {option.badge && (
-            <Box 
-              px="2" 
-              py="1" 
-              bg="accent-3" 
-              rounded="1"
-              color="accent-11"
-            >
+            <Box px="2" py="1" bg="accent-3" rounded="1" color="accent-11">
               {option.badge}
             </Box>
           )}
@@ -247,7 +243,7 @@ export const CustomRadioCards = ({ options, value, onValueChange }) => (
 
 ```tsx
 import { RadioCards } from "@telegraph/radio";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 type FormData = {
   paymentMethod: string;
@@ -272,14 +268,14 @@ export const PaymentForm = () => {
                   icon: { icon: CreditCard, alt: "Credit card" },
                   title: "Credit Card",
                   description: "Visa, Mastercard, Amex",
-                  value: "card"
+                  value: "card",
                 },
                 {
                   icon: { icon: Wallet, alt: "PayPal" },
                   title: "PayPal",
                   description: "Pay with your PayPal account",
-                  value: "paypal"
-                }
+                  value: "paypal",
+                },
               ]}
             />
             {fieldState.error && (
@@ -299,8 +295,8 @@ export const PaymentForm = () => {
 import { RadioCards } from "@telegraph/radio";
 
 export const ConditionalRadio = ({ userPlan, options }) => {
-  const filteredOptions = options.filter(option => {
-    if (option.requiresPro && userPlan !== 'pro') {
+  const filteredOptions = options.filter((option) => {
+    if (option.requiresPro && userPlan !== "pro") {
       return false;
     }
     return true;
@@ -310,12 +306,13 @@ export const ConditionalRadio = ({ userPlan, options }) => {
     <RadioCards
       value={selectedOption}
       onValueChange={setSelectedOption}
-      options={filteredOptions.map(option => ({
+      options={filteredOptions.map((option) => ({
         ...option,
-        title: option.requiresPro && userPlan !== 'pro' 
-          ? `${option.title} (Pro only)` 
-          : option.title,
-        disabled: option.requiresPro && userPlan !== 'pro'
+        title:
+          option.requiresPro && userPlan !== "pro"
+            ? `${option.title} (Pro only)`
+            : option.title,
+        disabled: option.requiresPro && userPlan !== "pro",
       }))}
     />
   );
@@ -325,8 +322,8 @@ export const ConditionalRadio = ({ userPlan, options }) => {
 ### Responsive Layouts
 
 ```tsx
-import { RadioCards } from "@telegraph/radio";
 import { useMediaQuery } from "@telegraph/helpers";
+import { RadioCards } from "@telegraph/radio";
 
 export const ResponsiveRadioCards = ({ options, ...props }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -334,12 +331,12 @@ export const ResponsiveRadioCards = ({ options, ...props }) => {
   return (
     <RadioCards
       direction={isMobile ? "column" : "row"}
-      options={options.map(option => ({
+      options={options.map((option) => ({
         ...option,
         // Adjust descriptions for mobile
-        description: isMobile 
+        description: isMobile
           ? option.shortDescription || option.description
-          : option.description
+          : option.description,
       }))}
       {...props}
     />
@@ -357,7 +354,7 @@ export const RadioCardsWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
     return (
       <Stack direction="row" gap="1">
-        {[1, 2, 3].map(i => (
+        {[1, 2, 3].map((i) => (
           <Skeleton key={i} width="120px" height="80px" />
         ))}
       </Stack>
@@ -378,7 +375,7 @@ export const MultiStepSelector = () => {
   const [selections, setSelections] = useState({});
 
   const handleStepSelection = (value: string) => {
-    setSelections(prev => ({ ...prev, [`step${step}`]: value }));
+    setSelections((prev) => ({ ...prev, [`step${step}`]: value }));
     if (step < 3) {
       setStep(step + 1);
     }
@@ -387,7 +384,7 @@ export const MultiStepSelector = () => {
   return (
     <div>
       <h3>Step {step} of 3</h3>
-      
+
       {step === 1 && (
         <RadioCards
           value={selections.step1}
@@ -395,7 +392,7 @@ export const MultiStepSelector = () => {
           options={categoryOptions}
         />
       )}
-      
+
       {step === 2 && (
         <RadioCards
           value={selections.step2}
@@ -403,7 +400,7 @@ export const MultiStepSelector = () => {
           options={subcategoryOptions[selections.step1]}
         />
       )}
-      
+
       {step === 3 && (
         <RadioCards
           value={selections.step3}
@@ -416,42 +413,6 @@ export const MultiStepSelector = () => {
 };
 ```
 
-## Design Tokens & Styling
-
-The RadioCards component uses Telegraph design tokens for consistent theming:
-
-- `--tgph-button-*` - Button styling tokens (since items are button-based)
-- `--tgph-blue-8` - Active state border color
-- `--tgph-space-*` - Spacing and padding
-- `--tgph-radius-*` - Border radius values
-- `--tgph-color-*` - Text and background colors
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Customize active state */
-  --tgph-button-active-shadow: inset 0 0 0 2px var(--tgph-green-8);
-  
-  /* Custom radio card styling */
-  [data-tgph-radio-group-button] {
-    border-radius: var(--tgph-radius-3);
-  }
-  
-  [data-tgph-radio-card-description] {
-    opacity: 0.8;
-  }
-  
-  [data-tgph-radio-card-icon] {
-    transition: transform 0.2s ease;
-  }
-  
-  [data-tgph-radio-group-button][data-state="checked"] [data-tgph-radio-card-icon] {
-    transform: scale(1.1);
-  }
-}
-```
-
 ## Accessibility
 
 - ✅ **Keyboard Navigation**: Full keyboard support for radio group navigation
@@ -462,11 +423,11 @@ The RadioCards component uses Telegraph design tokens for consistent theming:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Move focus to/from the radio group |
-| `Arrow Keys` | Navigate between radio options |
-| `Space` | Select the focused radio option |
+| Key          | Action                             |
+| ------------ | ---------------------------------- |
+| `Tab`        | Move focus to/from the radio group |
+| `Arrow Keys` | Navigate between radio options     |
+| `Space`      | Select the focused radio option    |
 
 ### ARIA Attributes
 
@@ -483,161 +444,59 @@ The RadioCards component uses Telegraph design tokens for consistent theming:
 4. **Default Selection**: Consider providing a sensible default value
 5. **Error States**: Clearly indicate validation errors
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { RadioCards } from "@telegraph/radio";
-
-test("allows selection of radio options", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  const options = [
-    { title: "Option 1", value: "option1" },
-    { title: "Option 2", value: "option2" }
-  ];
-
-  render(
-    <RadioCards
-      options={options}
-      value="option1"
-      onValueChange={handleChange}
-    />
-  );
-
-  const option2 = screen.getByRole("radio", { name: /option 2/i });
-  
-  await user.click(option2);
-
-  expect(handleChange).toHaveBeenCalledWith("option2");
-});
-```
-
-### Keyboard Navigation Testing
-
-```tsx
-test("supports keyboard navigation", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <RadioCards
-      options={options}
-      value=""
-      onValueChange={handleChange}
-    />
-  );
-
-  const radioGroup = screen.getByRole("radiogroup");
-  
-  await user.tab(); // Focus the radio group
-  await user.keyboard("{ArrowDown}"); // Navigate to next option
-  await user.keyboard(" "); // Select option
-
-  expect(handleChange).toHaveBeenCalled();
-});
-```
-
-### Custom Composition Testing
-
-```tsx
-test("custom composition works correctly", () => {
-  render(
-    <RadioCards.Root value="test" onValueChange={jest.fn()}>
-      <RadioCards.Item value="test">
-        <RadioCards.ItemTitle>Test Title</RadioCards.ItemTitle>
-        <RadioCards.ItemDescription>Test Description</RadioCards.ItemDescription>
-      </RadioCards.Item>
-    </RadioCards.Root>
-  );
-
-  expect(screen.getByText("Test Title")).toBeInTheDocument();
-  expect(screen.getByText("Test Description")).toBeInTheDocument();
-  expect(screen.getByRole("radio")).toHaveAttribute("value", "test");
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <RadioCards
-      options={[
-        { title: "Option 1", value: "option1" },
-        { title: "Option 2", value: "option2" }
-      ]}
-      value="option1"
-      onValueChange={jest.fn()}
-    />
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Complete Component Reference
 
 ### `<RadioCards.Root>`
 
 The radio group container component.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | `undefined` | Currently selected value |
-| `onValueChange` | `(value: string) => void` | `undefined` | Selection change callback |
-| `direction` | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"` | Layout direction |
-| `gap` | `string` | `"1"` | Space between items |
+| Prop            | Type                                                     | Default     | Description               |
+| --------------- | -------------------------------------------------------- | ----------- | ------------------------- |
+| `value`         | `string`                                                 | `undefined` | Currently selected value  |
+| `onValueChange` | `(value: string) => void`                                | `undefined` | Selection change callback |
+| `direction`     | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"`     | Layout direction          |
+| `gap`           | `string`                                                 | `"1"`       | Space between items       |
 
 ### `<RadioCards.Item>`
 
 Individual radio button item.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | The value for this radio option |
-| `disabled` | `boolean` | `false` | Whether the option is disabled |
-| `children` | `ReactNode` | - | Content of the radio item |
+| Prop       | Type        | Default | Description                     |
+| ---------- | ----------- | ------- | ------------------------------- |
+| `value`    | `string`    | -       | The value for this radio option |
+| `disabled` | `boolean`   | `false` | Whether the option is disabled  |
+| `children` | `ReactNode` | -       | Content of the radio item       |
 
 ### `<RadioCards.ItemTitle>`
 
 Title text component for radio items.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4"` | `"2"` | Text size |
-| `weight` | `"regular" \| "medium" \| "semibold"` | `"regular"` | Font weight |
-| `children` | `ReactNode` | - | Title text content |
+| Prop       | Type                                  | Default     | Description        |
+| ---------- | ------------------------------------- | ----------- | ------------------ |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"`     | `"2"`       | Text size          |
+| `weight`   | `"regular" \| "medium" \| "semibold"` | `"regular"` | Font weight        |
+| `children` | `ReactNode`                           | -           | Title text content |
 
 ### `<RadioCards.ItemDescription>`
 
 Description text component for radio items.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4"` | `"0"` | Text size |
-| `color` | `"gray" \| "primary" \| "accent"` | `"gray"` | Text color |
-| `children` | `ReactNode` | - | Description text content |
+| Prop       | Type                              | Default  | Description              |
+| ---------- | --------------------------------- | -------- | ------------------------ |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"` | `"0"`    | Text size                |
+| `color`    | `"gray" \| "primary" \| "accent"` | `"gray"` | Text color               |
+| `children` | `ReactNode`                       | -        | Description text content |
 
 ### `<RadioCards.ItemIcon>`
 
 Icon component for radio items.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `icon` | `LucideIcon` | - | Lucide icon component |
-| `alt` | `string` | - | Alternative text for the icon |
-| `size` | `"1" \| "2" \| "3" \| "4" \| "5" \| "6"` | `"4"` | Icon size |
-| `color` | `"gray" \| "primary" \| "accent"` | `"gray"` | Icon color |
+| Prop    | Type                                     | Default  | Description                   |
+| ------- | ---------------------------------------- | -------- | ----------------------------- |
+| `icon`  | `LucideIcon`                             | -        | Lucide icon component         |
+| `alt`   | `string`                                 | -        | Alternative text for the icon |
+| `size`  | `"1" \| "2" \| "3" \| "4" \| "5" \| "6"` | `"4"`    | Icon size                     |
+| `color` | `"gray" \| "primary" \| "accent"`        | `"gray"` | Icon color                    |
 
 ## Examples
 
@@ -645,7 +504,7 @@ Icon component for radio items.
 
 ```tsx
 import { RadioCards } from "@telegraph/radio";
-import { Mail, Phone, MessageSquare } from "lucide-react";
+import { Mail, MessageSquare, Phone } from "lucide-react";
 
 export const ContactMethodSelector = () => {
   const [method, setMethod] = useState("email");
@@ -659,20 +518,20 @@ export const ContactMethodSelector = () => {
           icon: { icon: Mail, alt: "Email" },
           title: "Email",
           description: "We'll send updates via email",
-          value: "email"
+          value: "email",
         },
         {
           icon: { icon: Phone, alt: "Phone" },
           title: "Phone",
           description: "We'll call you with updates",
-          value: "phone"
+          value: "phone",
         },
         {
           icon: { icon: MessageSquare, alt: "SMS" },
           title: "SMS",
           description: "We'll text you updates",
-          value: "sms"
-        }
+          value: "sms",
+        },
       ]}
     />
   );
@@ -682,16 +541,16 @@ export const ContactMethodSelector = () => {
 ### Advanced Example
 
 ```tsx
-import { RadioCards } from "@telegraph/radio";
-import { Stack, Box } from "@telegraph/layout";
 import { Badge } from "@telegraph/badge";
+import { Box, Stack } from "@telegraph/layout";
+import { RadioCards } from "@telegraph/radio";
 
 export const PricingPlanSelector = () => {
   const [selectedPlan, setSelectedPlan] = useState("pro");
 
   return (
-    <RadioCards.Root 
-      value={selectedPlan} 
+    <RadioCards.Root
+      value={selectedPlan}
       onValueChange={setSelectedPlan}
       direction="row"
       gap="3"
@@ -699,12 +558,8 @@ export const PricingPlanSelector = () => {
       {plans.map((plan) => (
         <RadioCards.Item key={plan.value} value={plan.value}>
           <Stack direction="column" p="4" gap="3" align="center">
-            <RadioCards.ItemIcon 
-              icon={plan.icon} 
-              alt={plan.title}
-              size="5"
-            />
-            
+            <RadioCards.ItemIcon icon={plan.icon} alt={plan.title} size="5" />
+
             <Stack direction="column" align="center" gap="2">
               <Stack direction="row" align="center" gap="2">
                 <RadioCards.ItemTitle size="3" weight="semibold">
@@ -712,11 +567,11 @@ export const PricingPlanSelector = () => {
                 </RadioCards.ItemTitle>
                 {plan.popular && <Badge variant="accent">Popular</Badge>}
               </Stack>
-              
+
               <Box fontSize="2xl" fontWeight="bold" color="primary">
                 ${plan.price}/mo
               </Box>
-              
+
               <RadioCards.ItemDescription align="center">
                 {plan.description}
               </RadioCards.ItemDescription>
@@ -753,22 +608,22 @@ export const DeliveryOptionsForm = () => {
       title: "Standard Delivery",
       description: "5-7 business days",
       value: "standard",
-      price: "Free"
+      price: "Free",
     },
     {
       icon: { icon: Zap, alt: "Express delivery" },
-      title: "Express Delivery", 
+      title: "Express Delivery",
       description: "2-3 business days",
       value: "express",
-      price: "$9.99"
+      price: "$9.99",
     },
     {
       icon: { icon: Clock, alt: "Same day delivery" },
       title: "Same Day",
       description: "Order by 2pm",
       value: "same-day",
-      price: "$24.99"
-    }
+      price: "$24.99",
+    },
   ];
 
   return (
@@ -777,17 +632,17 @@ export const DeliveryOptionsForm = () => {
         {...register("delivery", { required: true })}
         value={selectedDelivery}
         direction="column"
-        options={deliveryOptions.map(option => ({
+        options={deliveryOptions.map((option) => ({
           ...option,
           title: (
             <Stack direction="row" justify="between" w="full">
               <span>{option.title}</span>
               <span className="price">{option.price}</span>
             </Stack>
-          )
+          ),
         }))}
       />
-      
+
       <Button type="submit" mt="4">
         Continue to Payment
       </Button>
@@ -800,17 +655,8 @@ export const DeliveryOptionsForm = () => {
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/radio)
 - [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

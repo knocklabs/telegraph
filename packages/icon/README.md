@@ -19,11 +19,13 @@ npm install @telegraph/icon
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/icon";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/icon/default.css";
 ```
@@ -34,7 +36,7 @@ import "@telegraph/icon/default.css";
 
 ```tsx
 import { Icon } from "@telegraph/icon";
-import { Bell, User, Settings } from "lucide-react";
+import { Bell, Settings, User } from "lucide-react";
 
 export const IconExample = () => (
   <div>
@@ -51,17 +53,17 @@ export const IconExample = () => (
 
 A wrapper around Lucide React icons that applies Telegraph design tokens.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `icon` | `LucideIcon` | required | Lucide React icon component |
-| `alt` | `string` | required* | Alternative text for screen readers |
-| `aria-hidden` | `true` | `undefined` | Hide from screen readers (makes `alt` optional) |
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Icon size |
-| `color` | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"default"` | Icon color |
-| `variant` | `"primary" \| "secondary"` | `"primary"` | Color intensity variant |
-| `as` | `TgphElement` | `"span"` | HTML element or component to render |
+| Prop          | Type                                                                                                                                   | Default     | Description                                     |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ----------------------------------------------- |
+| `icon`        | `LucideIcon`                                                                                                                           | required    | Lucide React icon component                     |
+| `alt`         | `string`                                                                                                                               | required\*  | Alternative text for screen readers             |
+| `aria-hidden` | `true`                                                                                                                                 | `undefined` | Hide from screen readers (makes `alt` optional) |
+| `size`        | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"`                                                                   | `"2"`       | Icon size                                       |
+| `color`       | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"default"` | Icon color                                      |
+| `variant`     | `"primary" \| "secondary"`                                                                                                             | `"primary"` | Color intensity variant                         |
+| `as`          | `TgphElement`                                                                                                                          | `"span"`    | HTML element or component to render             |
 
-*Required unless `aria-hidden={true}` is provided
+\*Required unless `aria-hidden={true}` is provided
 
 ## Usage Patterns
 
@@ -89,7 +91,7 @@ import { Star } from "lucide-react";
 
 // Available sizes from 0-9
 <Icon icon={Star} alt="Rating" size="0" /> // 12px
-<Icon icon={Star} alt="Rating" size="1" /> // 14px  
+<Icon icon={Star} alt="Rating" size="1" /> // 14px
 <Icon icon={Star} alt="Rating" size="2" /> // 16px (default)
 <Icon icon={Star} alt="Rating" size="3" /> // 18px
 <Icon icon={Star} alt="Rating" size="4" /> // 20px
@@ -130,17 +132,17 @@ import { Icon } from "@telegraph/icon";
 import { ExternalLink } from "lucide-react";
 
 // As a button
-<Icon 
-  as="button" 
-  icon={ExternalLink} 
+<Icon
+  as="button"
+  icon={ExternalLink}
   alt="Open in new tab"
   onClick={() => window.open(url, '_blank')}
 />
 
 // As a link
-<Icon 
-  as="a" 
-  icon={ExternalLink} 
+<Icon
+  as="a"
+  icon={ExternalLink}
   alt="External link"
   href="https://example.com"
   target="_blank"
@@ -167,7 +169,7 @@ export const DownloadButton = () => (
 
 ```tsx
 import { Icon } from "@telegraph/icon";
-import { CheckCircle, XCircle, AlertTriangle, Clock } from "lucide-react";
+import { AlertTriangle, CheckCircle, Clock, XCircle } from "lucide-react";
 
 const StatusIcon = ({ status }: { status: string }) => {
   const statusConfig = {
@@ -178,7 +180,7 @@ const StatusIcon = ({ status }: { status: string }) => {
   };
 
   const config = statusConfig[status as keyof typeof statusConfig];
-  
+
   return <Icon {...config} />;
 };
 ```
@@ -192,7 +194,7 @@ import { useState } from "react";
 
 export const LikeButton = () => {
   const [liked, setLiked] = useState(false);
-  
+
   return (
     <Icon
       as="button"
@@ -201,9 +203,9 @@ export const LikeButton = () => {
       color={liked ? "red" : "gray"}
       size="3"
       onClick={() => setLiked(!liked)}
-      style={{ 
+      style={{
         cursor: "pointer",
-        fill: liked ? "currentColor" : "transparent"
+        fill: liked ? "currentColor" : "transparent",
       }}
     />
   );
@@ -219,18 +221,24 @@ import * as Icons from "lucide-react";
 
 export const IconShowcase = () => {
   const featuredIcons = [
-    Icons.Bell, Icons.User, Icons.Settings, Icons.Search,
-    Icons.Mail, Icons.Calendar, Icons.File, Icons.Home
+    Icons.Bell,
+    Icons.User,
+    Icons.Settings,
+    Icons.Search,
+    Icons.Mail,
+    Icons.Calendar,
+    Icons.File,
+    Icons.Home,
   ];
 
   return (
     <Stack direction="row" wrap="wrap" gap="4">
       {featuredIcons.map((IconComponent, index) => (
         <Box key={index} padding="3" border="1" rounded="2">
-          <Icon 
-            icon={IconComponent} 
+          <Icon
+            icon={IconComponent}
             alt={IconComponent.displayName || `Icon ${index + 1}`}
-            size="5" 
+            size="5"
           />
         </Box>
       ))}
@@ -259,6 +267,7 @@ The icon component uses Telegraph design tokens for consistent sizing and colors
 ### Color Tokens
 
 **Primary Variant (default):**
+
 - `default` → `var(--tgph-gray-12)`
 - `accent` → `var(--tgph-accent-11)`
 - `red` → `var(--tgph-red-11)`
@@ -266,29 +275,11 @@ The icon component uses Telegraph design tokens for consistent sizing and colors
 - etc.
 
 **Secondary Variant (lighter):**
+
 - `default` → `var(--tgph-gray-11)`
 - `accent` → `var(--tgph-accent-10)`
 - `red` → `var(--tgph-red-10)`
 - etc.
-
-### Custom Styling
-
-```css
-.tgph {
-  /* Custom icon colors */
-  --tgph-accent-11: #your-brand-color;
-  
-  /* Icon-specific styling */
-  .tgph-icon {
-    transition: color 0.2s ease;
-  }
-  
-  /* Hover effects for interactive icons */
-  button.tgph-icon:hover {
-    opacity: 0.8;
-  }
-}
-```
 
 ## Tree Shaking & Bundle Size
 
@@ -296,13 +287,13 @@ The icon package is optimized for tree shaking. Import only the icons you need:
 
 ```tsx
 // ✅ Good - only imports specific icons
-import { Bell, User, Settings } from "lucide-react";
-
+import { Bell, Settings, User } from "lucide-react";
 // ❌ Avoid - imports entire library
 import * as Icons from "lucide-react";
 ```
 
 Bundle size impact:
+
 - Base `@telegraph/icon`: ~2KB
 - Each Lucide icon: ~1KB
 - Total size scales with number of icons used
@@ -335,76 +326,6 @@ Bundle size impact:
 </div>
 ```
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Icon } from "@telegraph/icon";
-import { Bell } from "lucide-react";
-
-test("renders icon with proper accessibility", () => {
-  render(<Icon icon={Bell} alt="Notifications" />);
-  
-  const icon = screen.getByRole("img", { name: "Notifications" });
-  expect(icon).toBeInTheDocument();
-});
-
-test("handles interactive icon clicks", async () => {
-  const user = userEvent.setup();
-  const handleClick = jest.fn();
-  
-  render(
-    <Icon 
-      as="button" 
-      icon={Bell} 
-      alt="Toggle notifications"
-      onClick={handleClick}
-    />
-  );
-  
-  const button = screen.getByRole("button", { name: "Toggle notifications" });
-  await user.click(button);
-  
-  expect(handleClick).toHaveBeenCalledTimes(1);
-});
-```
-
-### Testing Different Props
-
-```tsx
-test("applies correct size and color", () => {
-  const { container } = render(
-    <Icon icon={Bell} alt="Bell" size="4" color="red" variant="secondary" />
-  );
-  
-  expect(container.firstChild).toHaveStyle({
-    "--width": "var(--tgph-spacing-5)",
-    "--height": "var(--tgph-spacing-5)", 
-    "--color": "var(--tgph-red-10)",
-  });
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Icon icon={Bell} alt="Notifications" />
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## TypeScript
 
 ### Icon Component Types
@@ -423,7 +344,12 @@ type CustomIconProps = {
   interactive?: boolean;
 };
 
-const CustomIcon = ({ iconName, label, interactive, ...props }: CustomIconProps) => {
+const CustomIcon = ({
+  iconName,
+  label,
+  interactive,
+  ...props
+}: CustomIconProps) => {
   return (
     <Icon
       as={interactive ? "button" : "span"}
@@ -465,14 +391,19 @@ const TypedIcon = ({ name, ...props }: { name: IconName } & Omit<IconProps, 'ico
 
 ```tsx
 import { Icon } from "@telegraph/icon";
-import { Home, User, Settings, Bell } from "lucide-react";
+import { Bell, Home, Settings, User } from "lucide-react";
 
 const Navigation = () => (
   <nav>
     <Icon as="a" href="/" icon={Home} alt="Home" />
     <Icon as="a" href="/profile" icon={User} alt="Profile" />
     <Icon as="a" href="/settings" icon={Settings} alt="Settings" />
-    <Icon as="button" icon={Bell} alt="Notifications" onClick={showNotifications} />
+    <Icon
+      as="button"
+      icon={Bell}
+      alt="Notifications"
+      onClick={showNotifications}
+    />
   </nav>
 );
 ```
@@ -483,13 +414,24 @@ const Navigation = () => (
 import { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
-const StatusBadge = ({ status, message }: { status: "success" | "error"; message: string }) => (
-  <Stack direction="row" align="center" gap="2" padding="2" 
-        background={status === "success" ? "green-2" : "red-2"} 
-        rounded="2">
-    <Icon 
+const StatusBadge = ({
+  status,
+  message,
+}: {
+  status: "success" | "error";
+  message: string;
+}) => (
+  <Stack
+    direction="row"
+    align="center"
+    gap="2"
+    padding="2"
+    background={status === "success" ? "green-2" : "red-2"}
+    rounded="2"
+  >
+    <Icon
       icon={status === "success" ? CheckCircle : AlertCircle}
       color={status === "success" ? "green" : "red"}
       alt={status === "success" ? "Success" : "Error"}
@@ -503,8 +445,8 @@ const StatusBadge = ({ status, message }: { status: "success" | "error"; message
 ### Icon Button Component
 
 ```tsx
-import { Icon } from "@telegraph/icon";
 import { Button } from "@telegraph/button";
+import { Icon } from "@telegraph/icon";
 import type { LucideIcon } from "@telegraph/icon";
 
 type IconButtonProps = {
@@ -515,7 +457,13 @@ type IconButtonProps = {
   onClick?: () => void;
 };
 
-const IconButton = ({ icon, label, variant = "ghost", size = "2", onClick }: IconButtonProps) => (
+const IconButton = ({
+  icon,
+  label,
+  variant = "ghost",
+  size = "2",
+  onClick,
+}: IconButtonProps) => (
   <Button
     variant={variant}
     size={size}
@@ -525,24 +473,15 @@ const IconButton = ({ icon, label, variant = "ghost", size = "2", onClick }: Ico
 );
 
 // Usage
-<IconButton icon={Download} label="Download file" onClick={handleDownload} />
+<IconButton icon={Download} label="Download file" onClick={handleDownload} />;
 ```
 
 ## References
 
 - [Lucide React Icons](https://lucide.dev/icons/)
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/icon)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

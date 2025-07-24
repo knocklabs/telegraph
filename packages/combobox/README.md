@@ -19,11 +19,13 @@ npm install @telegraph/combobox
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/combobox";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/combobox/default.css";
 ```
@@ -61,36 +63,36 @@ export const SingleSelectExample = () => {
 
 The root component that manages the state and context for the combobox.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string \| string[] \| Option \| Option[]` | `undefined` | The selected value(s) |
-| `onValueChange` | `(value: string \| string[] \| Option \| Option[]) => void` | `undefined` | Callback when selection changes |
-| `layout` | `"truncate" \| "wrap"` | `"truncate"` | How to display multiple selections |
-| `open` | `boolean` | `undefined` | Controlled open state |
-| `defaultOpen` | `boolean` | `false` | Initial open state |
-| `errored` | `boolean` | `false` | Shows error styling |
-| `placeholder` | `string` | `undefined` | Placeholder text |
-| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes |
-| `modal` | `boolean` | `true` | Whether to render in a modal |
-| `closeOnSelect` | `boolean` | `true` | Close menu after selection |
-| `clearable` | `boolean` | `false` | Show clear button |
-| `disabled` | `boolean` | `false` | Disable the combobox |
-| `legacyBehavior` | `boolean` | `false` | Use legacy object format ⚠️ Deprecated |
+| Prop             | Type                                                        | Default      | Description                            |
+| ---------------- | ----------------------------------------------------------- | ------------ | -------------------------------------- |
+| `value`          | `string \| string[] \| Option \| Option[]`                  | `undefined`  | The selected value(s)                  |
+| `onValueChange`  | `(value: string \| string[] \| Option \| Option[]) => void` | `undefined`  | Callback when selection changes        |
+| `layout`         | `"truncate" \| "wrap"`                                      | `"truncate"` | How to display multiple selections     |
+| `open`           | `boolean`                                                   | `undefined`  | Controlled open state                  |
+| `defaultOpen`    | `boolean`                                                   | `false`      | Initial open state                     |
+| `errored`        | `boolean`                                                   | `false`      | Shows error styling                    |
+| `placeholder`    | `string`                                                    | `undefined`  | Placeholder text                       |
+| `onOpenChange`   | `(open: boolean) => void`                                   | `undefined`  | Callback when open state changes       |
+| `modal`          | `boolean`                                                   | `true`       | Whether to render in a modal           |
+| `closeOnSelect`  | `boolean`                                                   | `true`       | Close menu after selection             |
+| `clearable`      | `boolean`                                                   | `false`      | Show clear button                      |
+| `disabled`       | `boolean`                                                   | `false`      | Disable the combobox                   |
+| `legacyBehavior` | `boolean`                                                   | `false`      | Use legacy object format ⚠️ Deprecated |
 
 ### `<Combobox.Trigger>`
 
 The button that triggers the combobox dropdown.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"1" \| "2" \| "3"` | `"2"` | Size of the trigger |
-| `placeholder` | `string` | `undefined` | Placeholder text |
-| `children` | `ReactNode` | `undefined` | Custom trigger content |
+| Prop          | Type                | Default     | Description            |
+| ------------- | ------------------- | ----------- | ---------------------- |
+| `size`        | `"1" \| "2" \| "3"` | `"2"`       | Size of the trigger    |
+| `placeholder` | `string`            | `undefined` | Placeholder text       |
+| `children`    | `ReactNode`         | `undefined` | Custom trigger content |
 
 ### Other Components
 
 - **`<Combobox.Content>`** - Dropdown menu content container
-- **`<Combobox.Options>`** - Container for option items  
+- **`<Combobox.Options>`** - Container for option items
 - **`<Combobox.Option>`** - Individual selectable option
 - **`<Combobox.Search>`** - Search input for filtering options
 - **`<Combobox.Empty>`** - Empty state when no options match
@@ -130,8 +132,8 @@ export const MultiSelectExample = () => {
 
 ```tsx
 import { Combobox } from "@telegraph/combobox";
-import { useState, useMemo } from "react";
 import { Box } from "@telegraph/layout";
+import { useMemo, useState } from "react";
 
 export const AsyncCombobox = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -149,8 +151,8 @@ export const AsyncCombobox = () => {
   };
 
   const filteredOptions = useMemo(() => {
-    return options.filter(option => 
-      option.toLowerCase().includes(searchQuery.toLowerCase())
+    return options.filter((option) =>
+      option.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [options, searchQuery]);
 
@@ -158,7 +160,7 @@ export const AsyncCombobox = () => {
     <Combobox.Root>
       <Combobox.Trigger placeholder="Search for options..." />
       <Combobox.Content>
-        <Combobox.Search 
+        <Combobox.Search
           value={searchQuery}
           onValueChange={(query) => {
             setSearchQuery(query);
@@ -192,11 +194,11 @@ import { Combobox } from "@telegraph/combobox";
 import { useState } from "react";
 
 export const CreatableCombobox = () => {
-  const [options, setOptions] = useState(['Option 1', 'Option 2']);
-  const [value, setValue] = useState('');
+  const [options, setOptions] = useState(["Option 1", "Option 2"]);
+  const [value, setValue] = useState("");
 
   const handleCreate = (newValue: string) => {
-    setOptions(prev => [...prev, newValue]);
+    setOptions((prev) => [...prev, newValue]);
     setValue(newValue);
   };
 
@@ -212,7 +214,7 @@ export const CreatableCombobox = () => {
             </Combobox.Option>
           ))}
         </Combobox.Options>
-        <Combobox.Create 
+        <Combobox.Create
           values={options}
           onCreate={handleCreate}
           leadingText="Create"
@@ -236,12 +238,12 @@ type FormData = {
 
 export const FormIntegration = () => {
   const { register, setValue, watch } = useForm<FormData>();
-  
+
   return (
     <form>
-      <Combobox.Root 
-        value={watch('framework')}
-        onValueChange={(value) => setValue('framework', value)}
+      <Combobox.Root
+        value={watch("framework")}
+        onValueChange={(value) => setValue("framework", value)}
       >
         <Combobox.Trigger placeholder="Select framework..." />
         <Combobox.Content>
@@ -261,7 +263,7 @@ export const FormIntegration = () => {
 
 ```tsx
 import { Combobox } from "@telegraph/combobox";
-import { Stack, Box } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
 
 export const CustomTrigger = () => (
   <Combobox.Root clearable>
@@ -280,37 +282,9 @@ export const CustomTrigger = () => (
         </Stack>
       </Stack>
     </Combobox.Trigger>
-    <Combobox.Content>
-      {/* Content */}
-    </Combobox.Content>
+    <Combobox.Content>{/* Content */}</Combobox.Content>
   </Combobox.Root>
 );
-```
-
-## Design Tokens & Styling
-
-The combobox uses design tokens from the Telegraph system:
-
-- `--tgph-colors-surface-{scale}` - Background colors
-- `--tgph-colors-gray-{scale}` - Border and text colors  
-- `--tgph-spacing-{scale}` - Padding and spacing
-- `--tgph-radii-{scale}` - Border radius values
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Custom trigger styling */
-  [data-tgph-combobox-trigger] {
-    --tgph-colors-surface-1: #your-bg-color;
-    border: 2px solid var(--tgph-colors-gray-6);
-  }
-  
-  /* Error state styling */
-  [data-tgph-combobox-trigger][data-tgph-button-color="red"] {
-    border-color: var(--tgph-colors-red-7);
-  }
-}
 ```
 
 ## Accessibility
@@ -322,13 +296,13 @@ The combobox uses design tokens from the Telegraph system:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `↓` / `↑` | Navigate options |
-| `Enter` / `Space` | Select option |
-| `Escape` | Close dropdown |
-| `Tab` | Move focus |
-| `Backspace` | Remove last tag (multi-select) |
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
+| `↓` / `↑`         | Navigate options               |
+| `Enter` / `Space` | Select option                  |
+| `Escape`          | Close dropdown                 |
+| `Tab`             | Move focus                     |
+| `Backspace`       | Remove last tag (multi-select) |
 
 ### ARIA Attributes
 
@@ -345,150 +319,45 @@ The combobox uses design tokens from the Telegraph system:
 3. **Error feedback**: Use the `errored` prop and provide error messages
 4. **Reasonable limits**: Consider pagination for large option lists
 
-## Testing
-
-### Testing Library Examples
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Combobox } from "@telegraph/combobox";
-
-test("opens dropdown when trigger is clicked", async () => {
-  const user = userEvent.setup();
-  
-  render(
-    <Combobox.Root>
-      <Combobox.Trigger placeholder="Select..." />
-      <Combobox.Content>
-        <Combobox.Options>
-          <Combobox.Option value="option1">Option 1</Combobox.Option>
-        </Combobox.Options>
-      </Combobox.Content>
-    </Combobox.Root>
-  );
-  
-  const trigger = screen.getByRole("combobox");
-  expect(trigger).toHaveAttribute("aria-expanded", "false");
-  
-  await user.click(trigger);
-  expect(trigger).toHaveAttribute("aria-expanded", "true");
-});
-
-test("selects option when clicked", async () => {
-  const user = userEvent.setup();
-  const onValueChange = jest.fn();
-  
-  render(
-    <Combobox.Root onValueChange={onValueChange}>
-      <Combobox.Trigger />
-      <Combobox.Content>
-        <Combobox.Options>
-          <Combobox.Option value="option1">Option 1</Combobox.Option>
-        </Combobox.Options>
-      </Combobox.Content>
-    </Combobox.Root>
-  );
-  
-  await user.click(screen.getByRole("combobox"));
-  await user.click(screen.getByRole("option", { name: "Option 1" }));
-  
-  expect(onValueChange).toHaveBeenCalledWith("option1");
-});
-```
-
-### Testing Search Functionality
-
-```tsx
-test("filters options based on search", async () => {
-  const user = userEvent.setup();
-  
-  render(
-    <Combobox.Root>
-      <Combobox.Trigger />
-      <Combobox.Content>
-        <Combobox.Search />
-        <Combobox.Options>
-          <Combobox.Option value="react">React</Combobox.Option>
-          <Combobox.Option value="vue">Vue</Combobox.Option>
-        </Combobox.Options>
-      </Combobox.Content>
-    </Combobox.Root>
-  );
-  
-  await user.click(screen.getByRole("combobox"));
-  
-  const searchInput = screen.getByRole("textbox");
-  await user.type(searchInput, "rea");
-  
-  expect(screen.getByText("React")).toBeInTheDocument();
-  expect(screen.queryByText("Vue")).not.toBeInTheDocument();
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Combobox.Root>
-      <Combobox.Trigger placeholder="Select option" />
-      <Combobox.Content>
-        <Combobox.Options>
-          <Combobox.Option value="option1">Option 1</Combobox.Option>
-        </Combobox.Options>
-      </Combobox.Content>
-    </Combobox.Root>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Complete Component Reference
 
 ### `<Combobox.Option>`
 
 Individual selectable option item.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | required | Option value |
-| `label` | `string` | `undefined` | Display label |
+| Prop       | Type      | Default     | Description          |
+| ---------- | --------- | ----------- | -------------------- |
+| `value`    | `string`  | required    | Option value         |
+| `label`    | `string`  | `undefined` | Display label        |
 | `selected` | `boolean` | `undefined` | Force selected state |
 
 ### `<Combobox.Search>`
 
 Search input field for filtering options.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | `"Search"` | Accessibility label |
-| `placeholder` | `string` | `"Search"` | Input placeholder |
+| Prop          | Type     | Default    | Description         |
+| ------------- | -------- | ---------- | ------------------- |
+| `label`       | `string` | `"Search"` | Accessibility label |
+| `placeholder` | `string` | `"Search"` | Input placeholder   |
 
 ### `<Combobox.Empty>`
 
 Empty state component shown when no options match search.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `icon` | `IconProps \| null` | `SearchIcon` | Empty state icon |
-| `message` | `string \| null` | `"No results found"` | Empty state message |
+| Prop      | Type                | Default              | Description         |
+| --------- | ------------------- | -------------------- | ------------------- |
+| `icon`    | `IconProps \| null` | `SearchIcon`         | Empty state icon    |
+| `message` | `string \| null`    | `"No results found"` | Empty state message |
 
 ### `<Combobox.Create>`
 
 Option to create new values when none match search.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `leadingText` | `string` | `"Create"` | Text before search value |
-| `values` | `string[] \| Option[]` | `undefined` | Existing values |
-| `onCreate` | `(value: string \| Option) => void` | `undefined` | Creation callback |
+| Prop          | Type                                | Default     | Description              |
+| ------------- | ----------------------------------- | ----------- | ------------------------ |
+| `leadingText` | `string`                            | `"Create"`  | Text before search value |
+| `values`      | `string[] \| Option[]`              | `undefined` | Existing values          |
+| `onCreate`    | `(value: string \| Option) => void` | `undefined` | Creation callback        |
 
 ### Primitives
 
@@ -540,17 +409,8 @@ const [value, setValue] = useState<{ value: string; label?: string }>();
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/combobox)
 - [ARIA Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

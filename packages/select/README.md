@@ -19,11 +19,13 @@ npm install @telegraph/select
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/select";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/select/default.css";
 ```
@@ -53,12 +55,14 @@ export const CountrySelector = () => {
 ## When to Use Select vs Combobox
 
 **Use Select when:**
+
 - Simple dropdown selection
 - Predefined list of options
 - No search/filtering needed
 - Standard selection patterns
 
 **Use Combobox when:**
+
 - Need search functionality
 - Large option lists
 - Custom option rendering
@@ -71,26 +75,26 @@ export const CountrySelector = () => {
 
 The main select container component.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string \| string[]` | `undefined` | Selected value(s) |
-| `onValueChange` | `(value: string \| string[]) => void` | `undefined` | Called when selection changes |
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4"` | `"1"` | Size of the trigger button |
-| `placeholder` | `string` | `"Select..."` | Placeholder text when no value selected |
-| `disabled` | `boolean` | `false` | Whether the select is disabled |
-| `triggerProps` | `ComboboxTriggerProps` | `{}` | Props passed to the trigger button |
-| `contentProps` | `ComboboxContentProps` | `{}` | Props passed to the dropdown content |
-| `optionsProps` | `ComboboxOptionsProps` | `{}` | Props passed to the options container |
+| Prop            | Type                                  | Default       | Description                             |
+| --------------- | ------------------------------------- | ------------- | --------------------------------------- |
+| `value`         | `string \| string[]`                  | `undefined`   | Selected value(s)                       |
+| `onValueChange` | `(value: string \| string[]) => void` | `undefined`   | Called when selection changes           |
+| `size`          | `"0" \| "1" \| "2" \| "3" \| "4"`     | `"1"`         | Size of the trigger button              |
+| `placeholder`   | `string`                              | `"Select..."` | Placeholder text when no value selected |
+| `disabled`      | `boolean`                             | `false`       | Whether the select is disabled          |
+| `triggerProps`  | `ComboboxTriggerProps`                | `{}`          | Props passed to the trigger button      |
+| `contentProps`  | `ComboboxContentProps`                | `{}`          | Props passed to the dropdown content    |
+| `optionsProps`  | `ComboboxOptionsProps`                | `{}`          | Props passed to the options container   |
 
 ### `<Select.Option>`
 
 Individual option within the select dropdown.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | Unique value for this option |
-| `disabled` | `boolean` | `false` | Whether this option is disabled |
-| `children` | `ReactNode` | - | Display text/content for the option |
+| Prop       | Type        | Default | Description                         |
+| ---------- | ----------- | ------- | ----------------------------------- |
+| `value`    | `string`    | -       | Unique value for this option        |
+| `disabled` | `boolean`   | `false` | Whether this option is disabled     |
+| `children` | `ReactNode` | -       | Display text/content for the option |
 
 ## Usage Patterns
 
@@ -103,8 +107,8 @@ export const LanguageSelector = () => {
   const [language, setLanguage] = useState("en");
 
   return (
-    <Select.Root 
-      value={language} 
+    <Select.Root
+      value={language}
       onValueChange={setLanguage}
       placeholder="Choose language"
     >
@@ -126,8 +130,8 @@ export const SkillSelector = () => {
   const [skills, setSkills] = useState([]);
 
   return (
-    <Select.Root 
-      value={skills} 
+    <Select.Root
+      value={skills}
       onValueChange={setSkills}
       placeholder="Select skills"
     >
@@ -194,7 +198,7 @@ export const EmptySelect = () => {
           No options available
         </Select.Option>
       ) : (
-        options.map(option => (
+        options.map((option) => (
           <Select.Option key={option.value} value={option.value}>
             {option.label}
           </Select.Option>
@@ -211,7 +215,7 @@ export const EmptySelect = () => {
 
 ```tsx
 import { Select } from "@telegraph/select";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 type FormData = {
   priority: string;
@@ -219,7 +223,11 @@ type FormData = {
 };
 
 export const TaskForm = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
   return (
     <form onSubmit={handleSubmit(console.log)}>
@@ -242,7 +250,9 @@ export const TaskForm = () => {
             </Select.Root>
           )}
         />
-        {errors.priority && <span className="error">{errors.priority.message}</span>}
+        {errors.priority && (
+          <span className="error">{errors.priority.message}</span>
+        )}
       </div>
 
       <div>
@@ -303,7 +313,7 @@ export const DynamicSelect = () => {
           onValueChange={console.log}
           placeholder={loading ? "Loading..." : "Select subcategory"}
         >
-          {options.map(option => (
+          {options.map((option) => (
             <Select.Option key={option.id} value={option.id}>
               {option.name}
             </Select.Option>
@@ -329,11 +339,11 @@ export const CustomStyledSelect = () => {
       onValueChange={setValue}
       triggerProps={{
         variant: "outline",
-        color: "accent"
+        color: "accent",
       }}
       contentProps={{
         align: "start",
-        sideOffset: 4
+        sideOffset: 4,
       }}
     >
       <Select.Option value="option1">Option 1</Select.Option>
@@ -355,12 +365,12 @@ export const ConditionalSelect = ({ userRole, permissions }) => {
   const availableRoles = [
     { value: "read", label: "Read Only", permission: "read" },
     { value: "write", label: "Read & Write", permission: "write" },
-    { value: "admin", label: "Administrator", permission: "admin" }
-  ].filter(role => permissions.includes(role.permission));
+    { value: "admin", label: "Administrator", permission: "admin" },
+  ].filter((role) => permissions.includes(role.permission));
 
   return (
     <Select.Root value={access} onValueChange={setAccess}>
-      {availableRoles.map(role => (
+      {availableRoles.map((role) => (
         <Select.Option key={role.value} value={role.value}>
           {role.label}
         </Select.Option>
@@ -383,7 +393,7 @@ export const SelectWithLoading = ({ loading, options, ...props }) => {
 
   return (
     <Select.Root {...props}>
-      {options.map(option => (
+      {options.map((option) => (
         <Select.Option key={option.value} value={option.value}>
           {option.label}
         </Select.Option>
@@ -407,27 +417,27 @@ export const GroupedSelect = () => {
       options: [
         { value: "apple", label: "Apple" },
         { value: "banana", label: "Banana" },
-        { value: "orange", label: "Orange" }
-      ]
+        { value: "orange", label: "Orange" },
+      ],
     },
     {
-      label: "Vegetables", 
+      label: "Vegetables",
       options: [
         { value: "carrot", label: "Carrot" },
         { value: "lettuce", label: "Lettuce" },
-        { value: "tomato", label: "Tomato" }
-      ]
-    }
+        { value: "tomato", label: "Tomato" },
+      ],
+    },
   ];
 
   return (
     <Select.Root value={value} onValueChange={setValue}>
-      {optionGroups.map(group => (
+      {optionGroups.map((group) => (
         <React.Fragment key={group.label}>
           <Select.Option value="" disabled>
             {group.label}
           </Select.Option>
-          {group.options.map(option => (
+          {group.options.map((option) => (
             <Select.Option key={option.value} value={option.value}>
               {option.label}
             </Select.Option>
@@ -437,49 +447,6 @@ export const GroupedSelect = () => {
     </Select.Root>
   );
 };
-```
-
-## Design Tokens & Styling
-
-The Select component inherits styling from the Combobox component:
-
-- `--tgph-button-*` - Trigger button styling
-- `--tgph-popover-*` - Dropdown content styling  
-- `--tgph-gray-*` - Background and border colors
-- `--tgph-radius-*` - Border radius values
-- `--tgph-space-*` - Padding and spacing
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Customize select trigger */
-  [data-tgph-combobox-trigger] {
-    border: 1px solid var(--tgph-gray-6);
-    background: var(--tgph-gray-1);
-  }
-  
-  /* Customize dropdown content */
-  [data-tgph-combobox-content] {
-    background: var(--tgph-gray-1);
-    border: 1px solid var(--tgph-gray-6);
-    box-shadow: var(--tgph-shadow-3);
-  }
-  
-  /* Customize options */
-  [data-tgph-combobox-option] {
-    padding: var(--tgph-space-2);
-  }
-  
-  [data-tgph-combobox-option][data-highlighted] {
-    background: var(--tgph-accent-3);
-  }
-  
-  [data-tgph-combobox-option][data-state="checked"] {
-    background: var(--tgph-accent-9);
-    color: var(--tgph-accent-contrast);
-  }
-}
 ```
 
 ## Accessibility
@@ -494,13 +461,13 @@ Since Select is built on Combobox, it inherits all accessibility features:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Space` / `Enter` | Open/close dropdown |
-| `Arrow Up/Down` | Navigate options |
-| `Escape` | Close dropdown |
-| `Home` / `End` | Jump to first/last option |
-| `Type to search` | Quick option selection |
+| Key               | Action                    |
+| ----------------- | ------------------------- |
+| `Space` / `Enter` | Open/close dropdown       |
+| `Arrow Up/Down`   | Navigate options          |
+| `Escape`          | Close dropdown            |
+| `Home` / `End`    | Jump to first/last option |
+| `Type to search`  | Quick option selection    |
 
 ### ARIA Attributes
 
@@ -518,105 +485,6 @@ Since Select is built on Combobox, it inherits all accessibility features:
 3. **Logical Option Order**: Order options alphabetically or by relevance
 4. **Handle Empty States**: Provide feedback when no options available
 5. **Error Messaging**: Show clear validation errors
-
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Select } from "@telegraph/select";
-
-test("allows option selection", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <Select.Root value="" onValueChange={handleChange}>
-      <Select.Option value="option1">Option 1</Select.Option>
-      <Select.Option value="option2">Option 2</Select.Option>
-    </Select.Root>
-  );
-
-  const trigger = screen.getByRole("combobox");
-  await user.click(trigger);
-
-  const option = screen.getByRole("option", { name: /option 1/i });
-  await user.click(option);
-
-  expect(handleChange).toHaveBeenCalledWith("option1");
-});
-```
-
-### Keyboard Navigation Testing
-
-```tsx
-test("supports keyboard navigation", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <Select.Root value="" onValueChange={handleChange}>
-      <Select.Option value="option1">Option 1</Select.Option>
-      <Select.Option value="option2">Option 2</Select.Option>
-    </Select.Root>
-  );
-
-  const trigger = screen.getByRole("combobox");
-  
-  await user.tab(); // Focus the select
-  await user.keyboard(" "); // Open dropdown
-  await user.keyboard("{ArrowDown}"); // Navigate to first option
-  await user.keyboard("{Enter}"); // Select option
-
-  expect(handleChange).toHaveBeenCalledWith("option1");
-});
-```
-
-### Multiple Selection Testing
-
-```tsx
-test("handles multiple selection", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <Select.Root value={["option1"]} onValueChange={handleChange}>
-      <Select.Option value="option1">Option 1</Select.Option>
-      <Select.Option value="option2">Option 2</Select.Option>
-    </Select.Root>
-  );
-
-  const trigger = screen.getByRole("combobox");
-  await user.click(trigger);
-
-  const option2 = screen.getByRole("option", { name: /option 2/i });
-  await user.click(option2);
-
-  expect(handleChange).toHaveBeenCalledWith(["option1", "option2"]);
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Select.Root value="option1" onValueChange={jest.fn()}>
-      <Select.Option value="option1">Option 1</Select.Option>
-      <Select.Option value="option2">Option 2</Select.Option>
-    </Select.Root>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
 
 ## Examples
 
@@ -646,15 +514,15 @@ export const StatusSelector = () => {
 
 ```tsx
 import { Select } from "@telegraph/select";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 export const UserPreferencesForm = () => {
   const { control, handleSubmit, watch } = useForm({
     defaultValues: {
       theme: "system",
       language: "en",
-      notifications: []
-    }
+      notifications: [],
+    },
   });
 
   const theme = watch("theme");
@@ -714,7 +582,9 @@ export const UserPreferencesForm = () => {
               <Select.Option value="email">Email Updates</Select.Option>
               <Select.Option value="push">Push Notifications</Select.Option>
               <Select.Option value="sms">SMS Alerts</Select.Option>
-              <Select.Option value="desktop">Desktop Notifications</Select.Option>
+              <Select.Option value="desktop">
+                Desktop Notifications
+              </Select.Option>
             </Select.Root>
           )}
         />
@@ -730,7 +600,7 @@ export const UserPreferencesForm = () => {
 
 ```tsx
 import { Select } from "@telegraph/select";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const CountryRegionSelector = () => {
   const [country, setCountry] = useState("");
@@ -742,7 +612,7 @@ export const CountryRegionSelector = () => {
     if (country) {
       setLoading(true);
       setRegion(""); // Reset region when country changes
-      
+
       fetchRegionsForCountry(country)
         .then(setRegions)
         .finally(() => setLoading(false));
@@ -753,7 +623,7 @@ export const CountryRegionSelector = () => {
     { value: "us", label: "United States" },
     { value: "ca", label: "Canada" },
     { value: "mx", label: "Mexico" },
-    { value: "uk", label: "United Kingdom" }
+    { value: "uk", label: "United Kingdom" },
   ];
 
   return (
@@ -767,7 +637,7 @@ export const CountryRegionSelector = () => {
             placeholder="Select country"
             size="2"
           >
-            {countries.map(country => (
+            {countries.map((country) => (
               <Select.Option key={country.value} value={country.value}>
                 {country.label}
               </Select.Option>
@@ -782,15 +652,15 @@ export const CountryRegionSelector = () => {
             onValueChange={setRegion}
             disabled={!country || loading}
             placeholder={
-              !country 
-                ? "Select country first" 
-                : loading 
-                ? "Loading..." 
-                : "Select region"
+              !country
+                ? "Select country first"
+                : loading
+                  ? "Loading..."
+                  : "Select region"
             }
             size="2"
           >
-            {regions.map(region => (
+            {regions.map((region) => (
               <Select.Option key={region.code} value={region.code}>
                 {region.name}
               </Select.Option>
@@ -807,17 +677,8 @@ export const CountryRegionSelector = () => {
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/select)
 - [Combobox Component](../combobox/README.md) - Full-featured dropdown with search
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

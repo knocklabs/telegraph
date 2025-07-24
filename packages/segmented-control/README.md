@@ -19,11 +19,13 @@ npm install @telegraph/segmented-control
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/segmented-control";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/segmented-control/default.css";
 ```
@@ -39,20 +41,10 @@ export const ViewSelector = () => {
   const [view, setView] = useState("list");
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={view} 
-      onValueChange={setView}
-    >
-      <SegmentedControl.Option value="list">
-        List
-      </SegmentedControl.Option>
-      <SegmentedControl.Option value="grid">
-        Grid
-      </SegmentedControl.Option>
-      <SegmentedControl.Option value="card">
-        Card
-      </SegmentedControl.Option>
+    <SegmentedControl.Root type="single" value={view} onValueChange={setView}>
+      <SegmentedControl.Option value="list">List</SegmentedControl.Option>
+      <SegmentedControl.Option value="grid">Grid</SegmentedControl.Option>
+      <SegmentedControl.Option value="card">Card</SegmentedControl.Option>
     </SegmentedControl.Root>
   );
 };
@@ -64,27 +56,27 @@ export const ViewSelector = () => {
 
 The container component that manages the selection state and layout.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `"single" \| "multiple"` | `"single"` | Selection mode |
-| `value` | `string \| string[]` | `undefined` | Controlled value(s) |
-| `defaultValue` | `string \| string[]` | `undefined` | Default value(s) for uncontrolled usage |
-| `onValueChange` | `(value: string \| string[]) => void` | `undefined` | Called when selection changes |
-| `disabled` | `boolean` | `false` | Disable all options |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout orientation |
-| `rovingFocus` | `boolean` | `true` | Enable keyboard navigation |
-| `loop` | `boolean` | `true` | Loop focus when reaching ends |
+| Prop            | Type                                  | Default        | Description                             |
+| --------------- | ------------------------------------- | -------------- | --------------------------------------- |
+| `type`          | `"single" \| "multiple"`              | `"single"`     | Selection mode                          |
+| `value`         | `string \| string[]`                  | `undefined`    | Controlled value(s)                     |
+| `defaultValue`  | `string \| string[]`                  | `undefined`    | Default value(s) for uncontrolled usage |
+| `onValueChange` | `(value: string \| string[]) => void` | `undefined`    | Called when selection changes           |
+| `disabled`      | `boolean`                             | `false`        | Disable all options                     |
+| `orientation`   | `"horizontal" \| "vertical"`          | `"horizontal"` | Layout orientation                      |
+| `rovingFocus`   | `boolean`                             | `true`         | Enable keyboard navigation              |
+| `loop`          | `boolean`                             | `true`         | Loop focus when reaching ends           |
 
 ### `<SegmentedControl.Option>`
 
 Individual option button within the segmented control.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | Unique identifier for this option |
-| `disabled` | `boolean` | `false` | Disable this specific option |
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4"` | `"1"` | Button size |
-| `children` | `ReactNode` | - | Content of the option |
+| Prop       | Type                              | Default | Description                       |
+| ---------- | --------------------------------- | ------- | --------------------------------- |
+| `value`    | `string`                          | -       | Unique identifier for this option |
+| `disabled` | `boolean`                         | `false` | Disable this specific option      |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"` | `"1"`   | Button size                       |
+| `children` | `ReactNode`                       | -       | Content of the option             |
 
 ## Usage Patterns
 
@@ -97,9 +89,9 @@ export const TimeRangeSelector = () => {
   const [timeRange, setTimeRange] = useState("week");
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={timeRange} 
+    <SegmentedControl.Root
+      type="single"
+      value={timeRange}
       onValueChange={setTimeRange}
     >
       <SegmentedControl.Option value="day">Day</SegmentedControl.Option>
@@ -120,9 +112,9 @@ export const NotificationSettings = () => {
   const [notifications, setNotifications] = useState(["email", "push"]);
 
   return (
-    <SegmentedControl.Root 
-      type="multiple" 
-      value={notifications} 
+    <SegmentedControl.Root
+      type="multiple"
+      value={notifications}
       onValueChange={setNotifications}
     >
       <SegmentedControl.Option value="email">Email</SegmentedControl.Option>
@@ -138,15 +130,15 @@ export const NotificationSettings = () => {
 
 ```tsx
 import { SegmentedControl } from "@telegraph/segmented-control";
-import { List, Grid, Card } from "lucide-react";
+import { Card, Grid, List } from "lucide-react";
 
 export const LayoutSelector = () => {
   const [layout, setLayout] = useState("list");
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={layout} 
+    <SegmentedControl.Root
+      type="single"
+      value={layout}
       onValueChange={setLayout}
     >
       <SegmentedControl.Option value="list">
@@ -169,9 +161,9 @@ export const LayoutSelector = () => {
 ### Vertical Layout
 
 ```tsx
-<SegmentedControl.Root 
-  type="single" 
-  value={selectedOption} 
+<SegmentedControl.Root
+  type="single"
+  value={selectedOption}
   onValueChange={setSelectedOption}
   orientation="vertical"
 >
@@ -189,15 +181,31 @@ import { SegmentedControl } from "@telegraph/segmented-control";
 export const SizedControls = () => (
   <div>
     {/* Small */}
-    <SegmentedControl.Root type="single" value="option1" onValueChange={console.log}>
-      <SegmentedControl.Option value="option1" size="0">Small</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2" size="0">Small</SegmentedControl.Option>
+    <SegmentedControl.Root
+      type="single"
+      value="option1"
+      onValueChange={console.log}
+    >
+      <SegmentedControl.Option value="option1" size="0">
+        Small
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="option2" size="0">
+        Small
+      </SegmentedControl.Option>
     </SegmentedControl.Root>
 
     {/* Large */}
-    <SegmentedControl.Root type="single" value="option1" onValueChange={console.log}>
-      <SegmentedControl.Option value="option1" size="3">Large</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2" size="3">Large</SegmentedControl.Option>
+    <SegmentedControl.Root
+      type="single"
+      value="option1"
+      onValueChange={console.log}
+    >
+      <SegmentedControl.Option value="option1" size="3">
+        Large
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="option2" size="3">
+        Large
+      </SegmentedControl.Option>
     </SegmentedControl.Root>
   </div>
 );
@@ -209,7 +217,7 @@ export const SizedControls = () => (
 
 ```tsx
 import { SegmentedControl } from "@telegraph/segmented-control";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 type FormData = {
   priority: string;
@@ -229,14 +237,20 @@ export const TaskForm = () => {
           rules={{ required: "Priority is required" }}
           render={({ field, fieldState }) => (
             <div>
-              <SegmentedControl.Root 
+              <SegmentedControl.Root
                 type="single"
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SegmentedControl.Option value="low">Low</SegmentedControl.Option>
-                <SegmentedControl.Option value="medium">Medium</SegmentedControl.Option>
-                <SegmentedControl.Option value="high">High</SegmentedControl.Option>
+                <SegmentedControl.Option value="low">
+                  Low
+                </SegmentedControl.Option>
+                <SegmentedControl.Option value="medium">
+                  Medium
+                </SegmentedControl.Option>
+                <SegmentedControl.Option value="high">
+                  High
+                </SegmentedControl.Option>
               </SegmentedControl.Root>
               {fieldState.error && (
                 <span className="error">{fieldState.error.message}</span>
@@ -252,14 +266,20 @@ export const TaskForm = () => {
           name="categories"
           control={control}
           render={({ field }) => (
-            <SegmentedControl.Root 
+            <SegmentedControl.Root
               type="multiple"
               value={field.value || []}
               onValueChange={field.onChange}
             >
-              <SegmentedControl.Option value="work">Work</SegmentedControl.Option>
-              <SegmentedControl.Option value="personal">Personal</SegmentedControl.Option>
-              <SegmentedControl.Option value="urgent">Urgent</SegmentedControl.Option>
+              <SegmentedControl.Option value="work">
+                Work
+              </SegmentedControl.Option>
+              <SegmentedControl.Option value="personal">
+                Personal
+              </SegmentedControl.Option>
+              <SegmentedControl.Option value="urgent">
+                Urgent
+              </SegmentedControl.Option>
             </SegmentedControl.Root>
           )}
         />
@@ -280,20 +300,13 @@ export const ConditionalSegmentedControl = ({ userRole, permissions }) => {
   const availableViews = [
     { value: "read", label: "Read", requiredPermission: "read" },
     { value: "write", label: "Write", requiredPermission: "write" },
-    { value: "admin", label: "Admin", requiredPermission: "admin" }
-  ].filter(view => permissions.includes(view.requiredPermission));
+    { value: "admin", label: "Admin", requiredPermission: "admin" },
+  ].filter((view) => permissions.includes(view.requiredPermission));
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={view} 
-      onValueChange={setView}
-    >
-      {availableViews.map(view => (
-        <SegmentedControl.Option 
-          key={view.value} 
-          value={view.value}
-        >
+    <SegmentedControl.Root type="single" value={view} onValueChange={setView}>
+      {availableViews.map((view) => (
+        <SegmentedControl.Option key={view.value} value={view.value}>
           {view.label}
         </SegmentedControl.Option>
       ))}
@@ -319,11 +332,8 @@ export const SegmentedControlWithLoading = ({ loading, options, ...props }) => {
 
   return (
     <SegmentedControl.Root {...props}>
-      {options.map(option => (
-        <SegmentedControl.Option 
-          key={option.value} 
-          value={option.value}
-        >
+      {options.map((option) => (
+        <SegmentedControl.Option key={option.value} value={option.value}>
           {option.label}
         </SegmentedControl.Option>
       ))}
@@ -347,14 +357,14 @@ export const DynamicSegmentedControl = () => {
   }, []);
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={selectedCategory} 
+    <SegmentedControl.Root
+      type="single"
+      value={selectedCategory}
       onValueChange={setSelectedCategory}
     >
-      {categories.map(category => (
-        <SegmentedControl.Option 
-          key={category.id} 
+      {categories.map((category) => (
+        <SegmentedControl.Option
+          key={category.id}
           value={category.id}
           disabled={!category.enabled}
         >
@@ -370,20 +380,20 @@ export const DynamicSegmentedControl = () => {
 ### Responsive Design
 
 ```tsx
-import { SegmentedControl } from "@telegraph/segmented-control";
 import { useMediaQuery } from "@telegraph/helpers";
+import { SegmentedControl } from "@telegraph/segmented-control";
 
 export const ResponsiveSegmentedControl = ({ options, ...props }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  
+
   return (
-    <SegmentedControl.Root 
+    <SegmentedControl.Root
       orientation={isMobile ? "vertical" : "horizontal"}
       {...props}
     >
-      {options.map(option => (
-        <SegmentedControl.Option 
-          key={option.value} 
+      {options.map((option) => (
+        <SegmentedControl.Option
+          key={option.value}
           value={option.value}
           size={isMobile ? "2" : "1"}
         >
@@ -407,16 +417,16 @@ export const SegmentedControlWithTooltips = () => {
   const sortOptions = [
     { value: "name", label: "Name", tooltip: "Sort by name (A-Z)" },
     { value: "date", label: "Date", tooltip: "Sort by creation date" },
-    { value: "size", label: "Size", tooltip: "Sort by file size" }
+    { value: "size", label: "Size", tooltip: "Sort by file size" },
   ];
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={sorting} 
+    <SegmentedControl.Root
+      type="single"
+      value={sorting}
       onValueChange={setSorting}
     >
-      {sortOptions.map(option => (
+      {sortOptions.map((option) => (
         <Tooltip key={option.value} content={option.tooltip}>
           <SegmentedControl.Option value={option.value}>
             {option.label}
@@ -426,46 +436,6 @@ export const SegmentedControlWithTooltips = () => {
     </SegmentedControl.Root>
   );
 };
-```
-
-## Design Tokens & Styling
-
-The SegmentedControl component uses Telegraph design tokens:
-
-- `--tgph-gray-3` - Background color of the container
-- `--tgph-radius-2` - Border radius of the container
-- `--tgph-button-*` - Button styling tokens for options
-- `--tgph-space-*` - Internal spacing and gaps
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Customize container background */
-  [data-tgph-segmented-control-root] {
-    background: var(--tgph-gray-2);
-    border-radius: var(--tgph-radius-3);
-    padding: var(--tgph-space-1);
-  }
-  
-  /* Active option styling */
-  [data-state="on"] {
-    background: var(--tgph-accent-9);
-    color: var(--tgph-accent-contrast);
-    box-shadow: var(--tgph-shadow-2);
-  }
-  
-  /* Hover states */
-  [data-tgph-segmented-control-option]:hover:not([data-state="on"]) {
-    background: var(--tgph-gray-4);
-  }
-  
-  /* Focus styles */
-  [data-tgph-segmented-control-option]:focus-visible {
-    outline: 2px solid var(--tgph-blue-8);
-    outline-offset: 2px;
-  }
-}
 ```
 
 ## Accessibility
@@ -478,13 +448,13 @@ The SegmentedControl component uses Telegraph design tokens:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Move focus to/from the segmented control |
-| `Arrow Keys` | Navigate between options |
-| `Space` / `Enter` | Toggle the focused option |
-| `Home` | Move to first option |
-| `End` | Move to last option |
+| Key               | Action                                   |
+| ----------------- | ---------------------------------------- |
+| `Tab`             | Move focus to/from the segmented control |
+| `Arrow Keys`      | Navigate between options                 |
+| `Space` / `Enter` | Toggle the focused option                |
+| `Home`            | Move to first option                     |
+| `End`             | Move to last option                      |
 
 ### ARIA Attributes
 
@@ -501,126 +471,6 @@ The SegmentedControl component uses Telegraph design tokens:
 4. **Appropriate Defaults**: Set sensible default selections
 5. **Error Handling**: Provide clear feedback for validation errors
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { SegmentedControl } from "@telegraph/segmented-control";
-
-test("allows single selection", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <SegmentedControl.Root 
-      type="single" 
-      value="option1" 
-      onValueChange={handleChange}
-    >
-      <SegmentedControl.Option value="option1">Option 1</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2">Option 2</SegmentedControl.Option>
-    </SegmentedControl.Root>
-  );
-
-  const option2 = screen.getByRole("button", { name: /option 2/i });
-  
-  await user.click(option2);
-
-  expect(handleChange).toHaveBeenCalledWith("option2");
-});
-
-test("allows multiple selection", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <SegmentedControl.Root 
-      type="multiple" 
-      value={["option1"]} 
-      onValueChange={handleChange}
-    >
-      <SegmentedControl.Option value="option1">Option 1</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2">Option 2</SegmentedControl.Option>
-    </SegmentedControl.Root>
-  );
-
-  const option2 = screen.getByRole("button", { name: /option 2/i });
-  
-  await user.click(option2);
-
-  expect(handleChange).toHaveBeenCalledWith(["option1", "option2"]);
-});
-```
-
-### Keyboard Navigation Testing
-
-```tsx
-test("supports keyboard navigation", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-
-  render(
-    <SegmentedControl.Root 
-      type="single" 
-      value="" 
-      onValueChange={handleChange}
-    >
-      <SegmentedControl.Option value="option1">Option 1</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2">Option 2</SegmentedControl.Option>
-    </SegmentedControl.Root>
-  );
-
-  const firstOption = screen.getByRole("button", { name: /option 1/i });
-  
-  await user.tab(); // Focus the segmented control
-  await user.keyboard("{ArrowRight}"); // Navigate to next option
-  await user.keyboard(" "); // Select option
-
-  expect(handleChange).toHaveBeenCalledWith("option2");
-});
-```
-
-### State Management Testing
-
-```tsx
-test("handles disabled options", () => {
-  render(
-    <SegmentedControl.Root type="single" value="" onValueChange={jest.fn()}>
-      <SegmentedControl.Option value="option1">Option 1</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2" disabled>Option 2</SegmentedControl.Option>
-    </SegmentedControl.Root>
-  );
-
-  const disabledOption = screen.getByRole("button", { name: /option 2/i });
-  
-  expect(disabledOption).toBeDisabled();
-  expect(disabledOption).toHaveAttribute("aria-pressed", "false");
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <SegmentedControl.Root type="single" value="option1" onValueChange={jest.fn()}>
-      <SegmentedControl.Option value="option1">Option 1</SegmentedControl.Option>
-      <SegmentedControl.Option value="option2">Option 2</SegmentedControl.Option>
-    </SegmentedControl.Root>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Examples
 
 ### Basic Example
@@ -632,11 +482,7 @@ export const ThemeSelector = () => {
   const [theme, setTheme] = useState("system");
 
   return (
-    <SegmentedControl.Root 
-      type="single" 
-      value={theme} 
-      onValueChange={setTheme}
-    >
+    <SegmentedControl.Root type="single" value={theme} onValueChange={setTheme}>
       <SegmentedControl.Option value="light">Light</SegmentedControl.Option>
       <SegmentedControl.Option value="dark">Dark</SegmentedControl.Option>
       <SegmentedControl.Option value="system">System</SegmentedControl.Option>
@@ -649,7 +495,7 @@ export const ThemeSelector = () => {
 
 ```tsx
 import { SegmentedControl } from "@telegraph/segmented-control";
-import { LineChart, BarChart, PieChart } from "lucide-react";
+import { BarChart, LineChart, PieChart } from "lucide-react";
 
 export const ChartTypeSelector = () => {
   const [chartType, setChartType] = useState("line");
@@ -659,9 +505,9 @@ export const ChartTypeSelector = () => {
     <div className="chart-controls">
       <div>
         <label>Chart Type</label>
-        <SegmentedControl.Root 
-          type="single" 
-          value={chartType} 
+        <SegmentedControl.Root
+          type="single"
+          value={chartType}
           onValueChange={setChartType}
         >
           <SegmentedControl.Option value="line">
@@ -681,13 +527,15 @@ export const ChartTypeSelector = () => {
 
       <div>
         <label>Data Views</label>
-        <SegmentedControl.Root 
-          type="multiple" 
-          value={dataViews} 
+        <SegmentedControl.Root
+          type="multiple"
+          value={dataViews}
           onValueChange={setDataViews}
         >
           <SegmentedControl.Option value="table">Table</SegmentedControl.Option>
-          <SegmentedControl.Option value="export">Export</SegmentedControl.Option>
+          <SegmentedControl.Option value="export">
+            Export
+          </SegmentedControl.Option>
           <SegmentedControl.Option value="share">Share</SegmentedControl.Option>
         </SegmentedControl.Root>
       </div>
@@ -706,8 +554,8 @@ export const ProjectSettingsForm = () => {
   const { register, watch, handleSubmit } = useForm({
     defaultValues: {
       visibility: "private",
-      notifications: ["comments", "mentions"]
-    }
+      notifications: ["comments", "mentions"],
+    },
   });
 
   const visibility = watch("visibility");
@@ -717,10 +565,12 @@ export const ProjectSettingsForm = () => {
     <form onSubmit={handleSubmit(console.log)} className="project-settings">
       <div className="form-group">
         <label>Project Visibility</label>
-        <SegmentedControl.Root 
-          type="single" 
+        <SegmentedControl.Root
+          type="single"
           value={visibility}
-          onValueChange={(value) => register("visibility").onChange({ target: { value } })}
+          onValueChange={(value) =>
+            register("visibility").onChange({ target: { value } })
+          }
         >
           <SegmentedControl.Option value="private">
             Private
@@ -741,10 +591,12 @@ export const ProjectSettingsForm = () => {
 
       <div className="form-group">
         <label>Email Notifications</label>
-        <SegmentedControl.Root 
-          type="multiple" 
+        <SegmentedControl.Root
+          type="multiple"
           value={notifications}
-          onValueChange={(value) => register("notifications").onChange({ target: { value } })}
+          onValueChange={(value) =>
+            register("notifications").onChange({ target: { value } })
+          }
         >
           <SegmentedControl.Option value="comments">
             Comments
@@ -771,17 +623,8 @@ export const ProjectSettingsForm = () => {
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/segmented-control)
 - [Radix UI Toggle Group](https://www.radix-ui.com/primitives/docs/components/toggle-group)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

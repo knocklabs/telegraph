@@ -19,11 +19,13 @@ npm install @telegraph/menu
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/menu";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/menu/default.css";
 ```
@@ -33,20 +35,21 @@ import "@telegraph/menu/default.css";
 ## Quick Start
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Button } from "@telegraph/button";
-import { MoreHorizontal, Edit, Archive, Trash } from "lucide-react";
+import { Menu } from "@telegraph/menu";
+import { Archive, Edit, MoreHorizontal, Trash } from "lucide-react";
 
 export const ActionMenu = () => (
   <Menu.Root>
     <Menu.Trigger>
-      <Button variant="ghost" icon={{ icon: MoreHorizontal, alt: "More actions" }} />
+      <Button
+        variant="ghost"
+        icon={{ icon: MoreHorizontal, alt: "More actions" }}
+      />
     </Menu.Trigger>
-    
+
     <Menu.Content>
-      <Menu.Button leadingIcon={{ icon: Edit, alt: "" }}>
-        Edit
-      </Menu.Button>
+      <Menu.Button leadingIcon={{ icon: Edit, alt: "" }}>Edit</Menu.Button>
       <Menu.Button leadingIcon={{ icon: Archive, alt: "" }}>
         Archive
       </Menu.Button>
@@ -65,37 +68,37 @@ export const ActionMenu = () => (
 
 The root container that manages menu state and provides context.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `open` | `boolean` | `undefined` | Controlled open state |
-| `defaultOpen` | `boolean` | `false` | Default open state |
+| Prop           | Type                      | Default     | Description                      |
+| -------------- | ------------------------- | ----------- | -------------------------------- |
+| `open`         | `boolean`                 | `undefined` | Controlled open state            |
+| `defaultOpen`  | `boolean`                 | `false`     | Default open state               |
 | `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes |
-| `modal` | `boolean` | `true` | Whether menu should be modal |
+| `modal`        | `boolean`                 | `true`      | Whether menu should be modal     |
 
 ### `<Menu.Trigger>`
 
 The trigger element that opens/closes the menu. Must wrap a single focusable element.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `asChild` | `boolean` | `true` | Whether to render as child element |
+| Prop       | Type              | Default  | Description                        |
+| ---------- | ----------------- | -------- | ---------------------------------- |
+| `asChild`  | `boolean`         | `true`   | Whether to render as child element |
 | `children` | `React.ReactNode` | required | Trigger element (usually a Button) |
 
 ### `<Menu.Content>`
 
 The dropdown content container that holds menu items.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Side to display menu |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to trigger |
-| `sideOffset` | `number` | `4` | Distance from trigger |
-| `gap` | `SpacingToken` | `"1"` | Gap between menu items |
-| `py` | `SpacingToken` | `"1"` | Vertical padding |
-| `rounded` | `RoundedToken` | `"4"` | Border radius |
-| `shadow` | `ShadowToken` | `"2"` | Drop shadow |
-| `border` | `SpacingToken` | `"px"` | Border width |
-| `borderColor` | `ColorToken` | `"gray-8"` | Border color |
+| Prop          | Type                                     | Default    | Description                   |
+| ------------- | ---------------------------------------- | ---------- | ----------------------------- |
+| `side`        | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Side to display menu          |
+| `align`       | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to trigger |
+| `sideOffset`  | `number`                                 | `4`        | Distance from trigger         |
+| `gap`         | `SpacingToken`                           | `"1"`      | Gap between menu items        |
+| `py`          | `SpacingToken`                           | `"1"`      | Vertical padding              |
+| `rounded`     | `RoundedToken`                           | `"4"`      | Border radius                 |
+| `shadow`      | `ShadowToken`                            | `"2"`      | Drop shadow                   |
+| `border`      | `SpacingToken`                           | `"px"`     | Border width                  |
+| `borderColor` | `ColorToken`                             | `"gray-8"` | Border color                  |
 
 All Box props are also supported for additional styling.
 
@@ -103,17 +106,17 @@ All Box props are also supported for additional styling.
 
 Individual menu item that can be clicked or selected.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | required | Button label |
-| `leadingIcon` / `icon` | `IconProps` | `undefined` | Icon before text |
-| `trailingIcon` | `IconProps` | `undefined` | Icon after text |
-| `leadingComponent` | `React.ReactNode` | `undefined` | Custom component before text |
-| `trailingComponent` | `React.ReactNode` | `undefined` | Custom component after text |
-| `selected` | `boolean` | `false` | Whether item is selected |
-| `disabled` | `boolean` | `false` | Whether item is disabled |
-| `color` | `"gray" \| "accent" \| "red"` | `"gray"` | Button color theme |
-| `onClick` | `() => void` | `undefined` | Click handler |
+| Prop                   | Type                          | Default     | Description                  |
+| ---------------------- | ----------------------------- | ----------- | ---------------------------- |
+| `children`             | `React.ReactNode`             | required    | Button label                 |
+| `leadingIcon` / `icon` | `IconProps`                   | `undefined` | Icon before text             |
+| `trailingIcon`         | `IconProps`                   | `undefined` | Icon after text              |
+| `leadingComponent`     | `React.ReactNode`             | `undefined` | Custom component before text |
+| `trailingComponent`    | `React.ReactNode`             | `undefined` | Custom component after text  |
+| `selected`             | `boolean`                     | `false`     | Whether item is selected     |
+| `disabled`             | `boolean`                     | `false`     | Whether item is disabled     |
+| `color`                | `"gray" \| "accent" \| "red"` | `"gray"`    | Button color theme           |
+| `onClick`              | `() => void`                  | `undefined` | Click handler                |
 
 Inherits all Button props for additional styling.
 
@@ -125,12 +128,12 @@ Visual separator between menu sections.
 
 Standalone menu item component for use outside of Menu context.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `selected` | `boolean` | `false` | Whether item is selected |
-| `leadingComponent` | `React.ReactNode` | `undefined` | Custom component before text |
-| `trailingComponent` | `React.ReactNode` | `undefined` | Custom component after text |
-| `textProps` | `TextProps` | `undefined` | Props for text element |
+| Prop                | Type              | Default     | Description                  |
+| ------------------- | ----------------- | ----------- | ---------------------------- |
+| `selected`          | `boolean`         | `false`     | Whether item is selected     |
+| `leadingComponent`  | `React.ReactNode` | `undefined` | Custom component before text |
+| `trailingComponent` | `React.ReactNode` | `undefined` | Custom component after text  |
+| `textProps`         | `TextProps`       | `undefined` | Props for text element       |
 
 Inherits all Button props.
 
@@ -139,52 +142,46 @@ Inherits all Button props.
 ### Basic Action Menu
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Button } from "@telegraph/button";
-import { MoreVertical, Copy, Share, Download } from "lucide-react";
+import { Menu } from "@telegraph/menu";
+import { Copy, Download, MoreVertical, Share } from "lucide-react";
 
 <Menu.Root>
   <Menu.Trigger>
     <Button variant="ghost" icon={{ icon: MoreVertical, alt: "Actions" }} />
   </Menu.Trigger>
-  
+
   <Menu.Content>
-    <Menu.Button leadingIcon={{ icon: Copy, alt: "" }}>
-      Copy
-    </Menu.Button>
-    <Menu.Button leadingIcon={{ icon: Share, alt: "" }}>
-      Share
-    </Menu.Button>
+    <Menu.Button leadingIcon={{ icon: Copy, alt: "" }}>Copy</Menu.Button>
+    <Menu.Button leadingIcon={{ icon: Share, alt: "" }}>Share</Menu.Button>
     <Menu.Button leadingIcon={{ icon: Download, alt: "" }}>
       Download
     </Menu.Button>
   </Menu.Content>
-</Menu.Root>
+</Menu.Root>;
 ```
 
 ### Menu with Sections
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Button } from "@telegraph/button";
-import { Settings, User, CreditCard, LogOut, Bell, Shield } from "lucide-react";
+import { Menu } from "@telegraph/menu";
+import { Bell, CreditCard, LogOut, Settings, Shield, User } from "lucide-react";
 
 <Menu.Root>
   <Menu.Trigger>
     <Button variant="outline">Account Menu</Button>
   </Menu.Trigger>
-  
+
   <Menu.Content align="end">
     {/* Profile section */}
-    <Menu.Button leadingIcon={{ icon: User, alt: "" }}>
-      Profile
-    </Menu.Button>
+    <Menu.Button leadingIcon={{ icon: User, alt: "" }}>Profile</Menu.Button>
     <Menu.Button leadingIcon={{ icon: Settings, alt: "" }}>
       Settings
     </Menu.Button>
-    
+
     <Menu.Divider />
-    
+
     {/* Billing section */}
     <Menu.Button leadingIcon={{ icon: CreditCard, alt: "" }}>
       Billing
@@ -192,25 +189,23 @@ import { Settings, User, CreditCard, LogOut, Bell, Shield } from "lucide-react";
     <Menu.Button leadingIcon={{ icon: Bell, alt: "" }}>
       Notifications
     </Menu.Button>
-    
+
     <Menu.Divider />
-    
+
     {/* Account section */}
-    <Menu.Button leadingIcon={{ icon: Shield, alt: "" }}>
-      Privacy
-    </Menu.Button>
+    <Menu.Button leadingIcon={{ icon: Shield, alt: "" }}>Privacy</Menu.Button>
     <Menu.Button leadingIcon={{ icon: LogOut, alt: "" }} color="red">
       Sign Out
     </Menu.Button>
   </Menu.Content>
-</Menu.Root>
+</Menu.Root>;
 ```
 
 ### Selection Menu
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Button } from "@telegraph/button";
+import { Menu } from "@telegraph/menu";
 import { Check } from "lucide-react";
 import { useState } from "react";
 
@@ -222,7 +217,7 @@ const ViewMenu = () => {
       <Menu.Trigger>
         <Button variant="outline">View: {selectedView}</Button>
       </Menu.Trigger>
-      
+
       <Menu.Content>
         <Menu.Button
           selected={selectedView === "grid"}
@@ -256,7 +251,7 @@ import { Menu } from "@telegraph/menu";
 // Bottom aligned (default)
 <Menu.Content side="bottom" align="start">
 
-// Top aligned  
+// Top aligned
 <Menu.Content side="top" align="end">
 
 // Side menus
@@ -288,14 +283,10 @@ const ControlledMenu = () => {
       <Menu.Trigger>
         <Button>Controlled Menu</Button>
       </Menu.Trigger>
-      
+
       <Menu.Content>
-        <Menu.Button onClick={() => handleAction("save")}>
-          Save
-        </Menu.Button>
-        <Menu.Button onClick={() => handleAction("export")}>
-          Export
-        </Menu.Button>
+        <Menu.Button onClick={() => handleAction("save")}>Save</Menu.Button>
+        <Menu.Button onClick={() => handleAction("export")}>Export</Menu.Button>
       </Menu.Content>
     </Menu.Root>
   );
@@ -305,15 +296,15 @@ const ControlledMenu = () => {
 ### Menu with Custom Components
 
 ```tsx
-import { Menu } from "@telegraph/menu";
-import { Badge } from "@telegraph/badge";
 import { Avatar } from "@telegraph/avatar";
+import { Badge } from "@telegraph/badge";
+import { Menu } from "@telegraph/menu";
 
 <Menu.Root>
   <Menu.Trigger>
     <Avatar src="/user.jpg" alt="User menu" />
   </Menu.Trigger>
-  
+
   <Menu.Content>
     <Menu.Button
       leadingComponent={<Avatar size="sm" src="/user.jpg" alt="" />}
@@ -321,13 +312,13 @@ import { Avatar } from "@telegraph/avatar";
     >
       John Doe
     </Menu.Button>
-    
+
     <Menu.Divider />
-    
+
     <Menu.Button>Settings</Menu.Button>
     <Menu.Button>Help</Menu.Button>
   </Menu.Content>
-</Menu.Root>
+</Menu.Root>;
 ```
 
 ### Nested Menus (Submenus)
@@ -340,46 +331,44 @@ import { ChevronRight } from "lucide-react";
   <Menu.Trigger>
     <Button>File Menu</Button>
   </Menu.Trigger>
-  
+
   <Menu.Content>
     <Menu.Button>New File</Menu.Button>
     <Menu.Button>Open File</Menu.Button>
-    
+
     {/* Submenu trigger */}
     <Menu.Root>
       <Menu.Trigger>
-        <Menu.Button 
-          trailingIcon={{ icon: ChevronRight, alt: "" }}
-        >
+        <Menu.Button trailingIcon={{ icon: ChevronRight, alt: "" }}>
           Recent Files
         </Menu.Button>
       </Menu.Trigger>
-      
+
       <Menu.Content side="right" sideOffset={-4}>
         <Menu.Button>Document1.pdf</Menu.Button>
         <Menu.Button>Spreadsheet.xlsx</Menu.Button>
         <Menu.Button>Presentation.pptx</Menu.Button>
       </Menu.Content>
     </Menu.Root>
-    
+
     <Menu.Divider />
     <Menu.Button color="red">Delete File</Menu.Button>
   </Menu.Content>
-</Menu.Root>
+</Menu.Root>;
 ```
 
 ### Menu with Keyboard Shortcuts
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Kbd } from "@telegraph/kbd";
-import { Copy, Paste, Cut, Undo, Redo } from "lucide-react";
+import { Menu } from "@telegraph/menu";
+import { Copy, Cut, Paste, Redo, Undo } from "lucide-react";
 
 <Menu.Root>
   <Menu.Trigger>
     <Button>Edit Menu</Button>
   </Menu.Trigger>
-  
+
   <Menu.Content>
     <Menu.Button
       leadingIcon={{ icon: Undo, alt: "" }}
@@ -392,7 +381,7 @@ import { Copy, Paste, Cut, Undo, Redo } from "lucide-react";
     >
       Undo
     </Menu.Button>
-    
+
     <Menu.Button
       leadingIcon={{ icon: Redo, alt: "" }}
       trailingComponent={
@@ -405,9 +394,9 @@ import { Copy, Paste, Cut, Undo, Redo } from "lucide-react";
     >
       Redo
     </Menu.Button>
-    
+
     <Menu.Divider />
-    
+
     <Menu.Button
       leadingIcon={{ icon: Cut, alt: "" }}
       trailingComponent={
@@ -419,7 +408,7 @@ import { Copy, Paste, Cut, Undo, Redo } from "lucide-react";
     >
       Cut
     </Menu.Button>
-    
+
     <Menu.Button
       leadingIcon={{ icon: Copy, alt: "" }}
       trailingComponent={
@@ -431,7 +420,7 @@ import { Copy, Paste, Cut, Undo, Redo } from "lucide-react";
     >
       Copy
     </Menu.Button>
-    
+
     <Menu.Button
       leadingIcon={{ icon: Paste, alt: "" }}
       trailingComponent={
@@ -444,7 +433,7 @@ import { Copy, Paste, Cut, Undo, Redo } from "lucide-react";
       Paste
     </Menu.Button>
   </Menu.Content>
-</Menu.Root>
+</Menu.Root>;
 ```
 
 ### Context Menu
@@ -470,15 +459,13 @@ const ContextMenu = ({ children }) => {
 
   return (
     <>
-      <div onContextMenu={handleContextMenu}>
-        {children}
-      </div>
-      
+      <div onContextMenu={handleContextMenu}>{children}</div>
+
       {contextMenu && (
         <Menu.Root open={!!contextMenu} onOpenChange={handleClose}>
           <Menu.Content
             style={{
-              position: 'fixed',
+              position: "fixed",
               left: contextMenu.x,
               top: contextMenu.y,
             }}
@@ -518,7 +505,7 @@ const MenuWithLoading = () => {
       <Menu.Trigger>
         <Button>Actions</Button>
       </Menu.Trigger>
-      
+
       <Menu.Content>
         <Menu.Button onClick={handleAsyncAction} disabled={loading}>
           {loading ? (
@@ -530,7 +517,7 @@ const MenuWithLoading = () => {
             "Sync Data"
           )}
         </Menu.Button>
-        
+
         <Menu.Button>Other Action</Menu.Button>
       </Menu.Content>
     </Menu.Root>
@@ -545,11 +532,13 @@ The menu component uses Telegraph design tokens for consistent styling:
 ### Color Tokens
 
 **Menu Content:**
+
 - Background: `var(--tgph-surface-1)`
 - Border: `var(--tgph-gray-8)`
 - Shadow: `var(--tgph-shadow-2)`
 
 **Menu Items:**
+
 - Default: `var(--tgph-gray-12)` text
 - Hover: `var(--tgph-gray-3)` background
 - Selected: `var(--tgph-accent-3)` background with checkmark
@@ -567,33 +556,6 @@ The menu component uses Telegraph design tokens for consistent styling:
 - Menu content: `var(--tgph-rounded-4)`
 - Menu items: `var(--tgph-rounded-1)`
 
-### Custom Styling
-
-```css
-.tgph {
-  /* Custom menu styling */
-  [data-tgph-menu-content] {
-    --custom-menu-bg: var(--tgph-surface-2);
-    background-color: var(--custom-menu-bg);
-  }
-  
-  /* Custom menu item styling */
-  [data-tgph-menu-button] {
-    transition: all 0.15s ease;
-  }
-  
-  [data-tgph-menu-button]:hover {
-    transform: translateX(2px);
-  }
-  
-  /* Custom selected state */
-  [data-tgph-menu-button][data-selected="true"] {
-    background-color: var(--tgph-accent-4);
-    border-left: 2px solid var(--tgph-accent-9);
-  }
-}
-```
-
 ## Accessibility
 
 - ✅ **Keyboard Navigation**: Full arrow key navigation and Enter/Space activation
@@ -605,15 +567,15 @@ The menu component uses Telegraph design tokens for consistent styling:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Space` / `Enter` | Open/close menu or activate item |
-| `Escape` | Close menu |
-| `Arrow Down` | Navigate to next item |
-| `Arrow Up` | Navigate to previous item |
-| `Home` | Navigate to first item |
-| `End` | Navigate to last item |
-| `Tab` | Close menu and move to next focusable element |
+| Key               | Action                                        |
+| ----------------- | --------------------------------------------- |
+| `Space` / `Enter` | Open/close menu or activate item              |
+| `Escape`          | Close menu                                    |
+| `Arrow Down`      | Navigate to next item                         |
+| `Arrow Up`        | Navigate to previous item                     |
+| `Home`            | Navigate to first item                        |
+| `End`             | Navigate to last item                         |
+| `Tab`             | Close menu and move to next focusable element |
 
 ### ARIA Attributes
 
@@ -640,7 +602,7 @@ The menu component uses Telegraph design tokens for consistent styling:
       <Avatar src="/user.jpg" alt="" />
     </Button>
   </Menu.Trigger>
-  
+
   <Menu.Content>
     <Menu.Button>Profile Settings</Menu.Button>
     <Menu.Button>Sign Out</Menu.Button>
@@ -654,7 +616,7 @@ The menu component uses Telegraph design tokens for consistent styling:
       ⋯
     </div>
   </Menu.Trigger>
-  
+
   <Menu.Content>
     <div>Settings</div> {/* No role or interaction */}
   </Menu.Content>
@@ -669,216 +631,22 @@ The menu component uses Telegraph design tokens for consistent styling:
 4. **Clear Item Labels**: Use descriptive text for menu items
 5. **Handle Disabled States**: Properly disable items when actions aren't available
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Menu } from "@telegraph/menu";
-
-test("opens menu on trigger click", async () => {
-  const user = userEvent.setup();
-  
-  render(
-    <Menu.Root>
-      <Menu.Trigger>
-        <button>Open Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button>Menu Item</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  const trigger = screen.getByRole("button", { name: "Open Menu" });
-  await user.click(trigger);
-  
-  expect(screen.getByRole("menu")).toBeInTheDocument();
-  expect(screen.getByRole("menuitem", { name: "Menu Item" })).toBeInTheDocument();
-});
-
-test("closes menu on item click", async () => {
-  const user = userEvent.setup();
-  const handleClick = jest.fn();
-  
-  render(
-    <Menu.Root>
-      <Menu.Trigger>
-        <button>Open Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button onClick={handleClick}>Action</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  await user.click(screen.getByRole("button", { name: "Open Menu" }));
-  await user.click(screen.getByRole("menuitem", { name: "Action" }));
-  
-  expect(handleClick).toHaveBeenCalledTimes(1);
-  expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-});
-
-test("handles keyboard navigation", async () => {
-  const user = userEvent.setup();
-  
-  render(
-    <Menu.Root>
-      <Menu.Trigger>
-        <button>Open Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button>Item 1</Menu.Button>
-        <Menu.Button>Item 2</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  const trigger = screen.getByRole("button", { name: "Open Menu" });
-  await user.click(trigger);
-  
-  // Navigate with arrow keys
-  await user.keyboard("{ArrowDown}");
-  expect(screen.getByRole("menuitem", { name: "Item 1" })).toHaveFocus();
-  
-  await user.keyboard("{ArrowDown}");
-  expect(screen.getByRole("menuitem", { name: "Item 2" })).toHaveFocus();
-  
-  // Close with Escape
-  await user.keyboard("{Escape}");
-  expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-  expect(trigger).toHaveFocus();
-});
-```
-
-### Testing Menu State
-
-```tsx
-test("handles controlled state", async () => {
-  const user = userEvent.setup();
-  const handleOpenChange = jest.fn();
-  
-  const { rerender } = render(
-    <Menu.Root open={false} onOpenChange={handleOpenChange}>
-      <Menu.Trigger>
-        <button>Toggle Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button>Item</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-  
-  await user.click(screen.getByRole("button"));
-  expect(handleOpenChange).toHaveBeenCalledWith(true);
-  
-  // Simulate controlled state change
-  rerender(
-    <Menu.Root open={true} onOpenChange={handleOpenChange}>
-      <Menu.Trigger>
-        <button>Toggle Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button>Item</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  expect(screen.getByRole("menu")).toBeInTheDocument();
-});
-```
-
-### Testing Menu Items
-
-```tsx
-test("shows selected state", () => {
-  render(
-    <Menu.Root defaultOpen>
-      <Menu.Trigger>
-        <button>Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button selected>Selected Item</Menu.Button>
-        <Menu.Button>Regular Item</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  const selectedItem = screen.getByRole("menuitem", { name: "Selected Item" });
-  expect(selectedItem).toHaveAttribute("aria-checked", "true");
-});
-
-test("handles disabled items", async () => {
-  const user = userEvent.setup();
-  const handleClick = jest.fn();
-  
-  render(
-    <Menu.Root defaultOpen>
-      <Menu.Trigger>
-        <button>Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button disabled onClick={handleClick}>
-          Disabled Item
-        </Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  const disabledItem = screen.getByRole("menuitem", { name: "Disabled Item" });
-  expect(disabledItem).toHaveAttribute("aria-disabled", "true");
-  
-  await user.click(disabledItem);
-  expect(handleClick).not.toHaveBeenCalled();
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Menu.Root defaultOpen>
-      <Menu.Trigger>
-        <button>User Menu</button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Button>Profile</Menu.Button>
-        <Menu.Button>Settings</Menu.Button>
-        <Menu.Button>Sign Out</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Examples
 
 ### User Profile Menu
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Avatar } from "@telegraph/avatar";
 import { Badge } from "@telegraph/badge";
-import { User, Settings, CreditCard, LogOut } from "lucide-react";
+import { Menu } from "@telegraph/menu";
+import { CreditCard, LogOut, Settings, User } from "lucide-react";
 
 export const UserProfileMenu = ({ user }) => (
   <Menu.Root>
     <Menu.Trigger>
       <Avatar src={user.avatar} alt={`${user.name} menu`} />
     </Menu.Trigger>
-    
+
     <Menu.Content align="end">
       {/* User info */}
       <Menu.Button
@@ -887,9 +655,9 @@ export const UserProfileMenu = ({ user }) => (
       >
         {user.name}
       </Menu.Button>
-      
+
       <Menu.Divider />
-      
+
       {/* Account actions */}
       <Menu.Button leadingIcon={{ icon: User, alt: "" }}>
         Profile Settings
@@ -900,9 +668,9 @@ export const UserProfileMenu = ({ user }) => (
       <Menu.Button leadingIcon={{ icon: CreditCard, alt: "" }}>
         Billing
       </Menu.Button>
-      
+
       <Menu.Divider />
-      
+
       <Menu.Button leadingIcon={{ icon: LogOut, alt: "" }} color="red">
         Sign Out
       </Menu.Button>
@@ -914,55 +682,55 @@ export const UserProfileMenu = ({ user }) => (
 ### Table Row Actions
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Button } from "@telegraph/button";
-import { MoreVertical, Eye, Edit, Copy, Archive, Trash } from "lucide-react";
+import { Menu } from "@telegraph/menu";
+import { Archive, Copy, Edit, Eye, MoreVertical, Trash } from "lucide-react";
 
 export const TableRowMenu = ({ item, onAction }) => (
   <Menu.Root>
     <Menu.Trigger>
-      <Button 
-        variant="ghost" 
+      <Button
+        variant="ghost"
         size="sm"
         icon={{ icon: MoreVertical, alt: "Row actions" }}
       />
     </Menu.Trigger>
-    
+
     <Menu.Content align="end">
-      <Menu.Button 
+      <Menu.Button
         leadingIcon={{ icon: Eye, alt: "" }}
-        onClick={() => onAction('view', item)}
+        onClick={() => onAction("view", item)}
       >
         View Details
       </Menu.Button>
-      
-      <Menu.Button 
+
+      <Menu.Button
         leadingIcon={{ icon: Edit, alt: "" }}
-        onClick={() => onAction('edit', item)}
+        onClick={() => onAction("edit", item)}
       >
         Edit
       </Menu.Button>
-      
-      <Menu.Button 
+
+      <Menu.Button
         leadingIcon={{ icon: Copy, alt: "" }}
-        onClick={() => onAction('duplicate', item)}
+        onClick={() => onAction("duplicate", item)}
       >
         Duplicate
       </Menu.Button>
-      
+
       <Menu.Divider />
-      
-      <Menu.Button 
+
+      <Menu.Button
         leadingIcon={{ icon: Archive, alt: "" }}
-        onClick={() => onAction('archive', item)}
+        onClick={() => onAction("archive", item)}
       >
         Archive
       </Menu.Button>
-      
-      <Menu.Button 
+
+      <Menu.Button
         leadingIcon={{ icon: Trash, alt: "" }}
         color="red"
-        onClick={() => onAction('delete', item)}
+        onClick={() => onAction("delete", item)}
       >
         Delete
       </Menu.Button>
@@ -974,16 +742,16 @@ export const TableRowMenu = ({ item, onAction }) => (
 ### Filter Menu
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Button } from "@telegraph/button";
+import { Menu } from "@telegraph/menu";
 import { Filter } from "lucide-react";
 import { useState } from "react";
 
 export const FilterMenu = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
-    status: 'all',
-    priority: 'all',
-    assignee: 'all'
+    status: "all",
+    priority: "all",
+    assignee: "all",
   });
 
   const handleFilterChange = (key, value) => {
@@ -995,47 +763,44 @@ export const FilterMenu = ({ onFilterChange }) => {
   return (
     <Menu.Root>
       <Menu.Trigger>
-        <Button 
-          variant="outline"
-          leadingIcon={{ icon: Filter, alt: "" }}
-        >
+        <Button variant="outline" leadingIcon={{ icon: Filter, alt: "" }}>
           Filters
         </Button>
       </Menu.Trigger>
-      
+
       <Menu.Content>
         {/* Status filter */}
         <Menu.Button
-          selected={filters.status === 'all'}
-          onClick={() => handleFilterChange('status', 'all')}
+          selected={filters.status === "all"}
+          onClick={() => handleFilterChange("status", "all")}
         >
           All Status
         </Menu.Button>
         <Menu.Button
-          selected={filters.status === 'active'}
-          onClick={() => handleFilterChange('status', 'active')}
+          selected={filters.status === "active"}
+          onClick={() => handleFilterChange("status", "active")}
         >
           Active Only
         </Menu.Button>
         <Menu.Button
-          selected={filters.status === 'completed'}
-          onClick={() => handleFilterChange('status', 'completed')}
+          selected={filters.status === "completed"}
+          onClick={() => handleFilterChange("status", "completed")}
         >
           Completed Only
         </Menu.Button>
-        
+
         <Menu.Divider />
-        
+
         {/* Priority filter */}
         <Menu.Button
-          selected={filters.priority === 'high'}
-          onClick={() => handleFilterChange('priority', 'high')}
+          selected={filters.priority === "high"}
+          onClick={() => handleFilterChange("priority", "high")}
         >
           High Priority
         </Menu.Button>
         <Menu.Button
-          selected={filters.priority === 'medium'}
-          onClick={() => handleFilterChange('priority', 'medium')}
+          selected={filters.priority === "medium"}
+          onClick={() => handleFilterChange("priority", "medium")}
         >
           Medium Priority
         </Menu.Button>
@@ -1049,17 +814,8 @@ export const FilterMenu = ({ onFilterChange }) => {
 
 - [Radix UI Menu](https://www.radix-ui.com/docs/primitives/components/dropdown-menu)
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/menu)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

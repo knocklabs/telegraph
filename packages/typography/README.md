@@ -19,11 +19,13 @@ npm install @telegraph/typography
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/typography";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/typography/default.css";
 ```
@@ -33,7 +35,7 @@ import "@telegraph/typography/default.css";
 ## Quick Start
 
 ```tsx
-import { Heading, Text, Code } from "@telegraph/typography";
+import { Code, Heading, Text } from "@telegraph/typography";
 
 export const TypographyExample = () => (
   <div>
@@ -41,15 +43,13 @@ export const TypographyExample = () => (
     <Heading as="h1" size="6">
       Main Page Title
     </Heading>
-    
+
     <Heading as="h2" size="4" color="gray">
       Section Heading
     </Heading>
 
     {/* Body text */}
-    <Text size="2">
-      This is the standard body text size for most content.
-    </Text>
+    <Text size="2">This is the standard body text size for most content.</Text>
 
     <Text size="1" color="gray">
       This is smaller, secondary text for captions and metadata.
@@ -67,39 +67,39 @@ export const TypographyExample = () => (
 
 Semantic heading component for page and section titles with proper hierarchy.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `as` | `"h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `"h2"` | HTML heading element |
-| `size` | `"1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"4"` | Visual size scale |
-| `color` | `TypographyColor` | `"default"` | Text color |
-| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment |
-| `weight` | `"regular" \| "medium" \| "semibold" \| "bold"` | `"semibold"` | Font weight |
+| Prop     | Type                                                          | Default      | Description          |
+| -------- | ------------------------------------------------------------- | ------------ | -------------------- |
+| `as`     | `"h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"`                | `"h2"`       | HTML heading element |
+| `size`   | `"1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"4"`        | Visual size scale    |
+| `color`  | `TypographyColor`                                             | `"default"`  | Text color           |
+| `align`  | `"left" \| "center" \| "right"`                               | `"left"`     | Text alignment       |
+| `weight` | `"regular" \| "medium" \| "semibold" \| "bold"`               | `"semibold"` | Font weight          |
 
 ### `<Text>`
 
 Flexible text component for body content, labels, and inline text.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `as` | `TextElement` | `"p"` | HTML element to render |
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Visual size scale |
-| `color` | `TypographyColor` | `"default"` | Text color |
-| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment |
-| `weight` | `"regular" \| "medium" \| "semibold" \| "bold"` | `"regular"` | Font weight |
+| Prop     | Type                                                                 | Default     | Description            |
+| -------- | -------------------------------------------------------------------- | ----------- | ---------------------- |
+| `as`     | `TextElement`                                                        | `"p"`       | HTML element to render |
+| `size`   | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"`       | Visual size scale      |
+| `color`  | `TypographyColor`                                                    | `"default"` | Text color             |
+| `align`  | `"left" \| "center" \| "right"`                                      | `"left"`    | Text alignment         |
+| `weight` | `"regular" \| "medium" \| "semibold" \| "bold"`                      | `"regular"` | Font weight            |
 
 #### TextElement Type
 
 ```tsx
-type TextElement = 
-  | "p" 
-  | "span" 
-  | "div" 
-  | "label" 
-  | "em" 
-  | "strong" 
-  | "b" 
-  | "i" 
-  | "pre" 
+type TextElement =
+  | "p"
+  | "span"
+  | "div"
+  | "label"
+  | "em"
+  | "strong"
+  | "b"
+  | "i"
+  | "pre"
   | "code";
 ```
 
@@ -107,25 +107,25 @@ type TextElement =
 
 Inline code component for displaying code snippets and technical content.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"0" \| "1" \| "2" \| "3" \| "4"` | `"1"` | Visual size scale |
-| `color` | `TypographyColor` | `"default"` | Text color |
-| `variant` | `"solid" \| "soft" \| "outline" \| "ghost"` | `"soft"` | Visual style |
+| Prop      | Type                                        | Default     | Description       |
+| --------- | ------------------------------------------- | ----------- | ----------------- |
+| `size`    | `"0" \| "1" \| "2" \| "3" \| "4"`           | `"1"`       | Visual size scale |
+| `color`   | `TypographyColor`                           | `"default"` | Text color        |
+| `variant` | `"solid" \| "soft" \| "outline" \| "ghost"` | `"soft"`    | Visual style      |
 
 #### TypographyColor Type
 
 ```tsx
-type TypographyColor = 
-  | "default" 
-  | "gray" 
-  | "red" 
-  | "blue" 
-  | "green" 
-  | "yellow" 
-  | "purple" 
-  | "accent" 
-  | "disabled" 
+type TypographyColor =
+  | "default"
+  | "gray"
+  | "red"
+  | "blue"
+  | "green"
+  | "yellow"
+  | "purple"
+  | "accent"
+  | "disabled"
   | "white";
 ```
 
@@ -133,18 +133,18 @@ type TypographyColor =
 
 Telegraph uses a harmonious type scale with consistent line heights and spacing:
 
-| Size | Font Size | Line Height | Usage |
-|------|-----------|-------------|-------|
-| `0` | `12px` | `16px` | Captions, fine print |
-| `1` | `14px` | `20px` | Labels, small text |
-| `2` | `16px` | `24px` | Body text (default) |
-| `3` | `18px` | `26px` | Emphasized body text |
-| `4` | `20px` | `28px` | Small headings |
-| `5` | `24px` | `32px` | Section headings |
-| `6` | `30px` | `38px` | Page headings |
-| `7` | `36px` | `44px` | Large headings |
-| `8` | `48px` | `56px` | Display text |
-| `9` | `60px` | `68px` | Hero text |
+| Size | Font Size | Line Height | Usage                |
+| ---- | --------- | ----------- | -------------------- |
+| `0`  | `12px`    | `16px`      | Captions, fine print |
+| `1`  | `14px`    | `20px`      | Labels, small text   |
+| `2`  | `16px`    | `24px`      | Body text (default)  |
+| `3`  | `18px`    | `26px`      | Emphasized body text |
+| `4`  | `20px`    | `28px`      | Small headings       |
+| `5`  | `24px`    | `32px`      | Section headings     |
+| `6`  | `30px`    | `38px`      | Page headings        |
+| `7`  | `36px`    | `44px`      | Large headings       |
+| `8`  | `48px`    | `56px`      | Display text         |
+| `9`  | `60px`    | `68px`      | Hero text            |
 
 ## Usage Patterns
 
@@ -158,15 +158,15 @@ export const DocumentStructure = () => (
     <Heading as="h1" size="7">
       Article Title
     </Heading>
-    
+
     <Heading as="h2" size="5">
       Main Section
     </Heading>
-    
+
     <Heading as="h3" size="4">
       Subsection
     </Heading>
-    
+
     <Heading as="h4" size="3">
       Minor Heading
     </Heading>
@@ -184,15 +184,13 @@ export const TextExamples = () => (
     <Text size="3" weight="medium">
       Lead paragraph with emphasis
     </Text>
-    
-    <Text size="2">
-      Standard body text for most content
-    </Text>
-    
+
+    <Text size="2">Standard body text for most content</Text>
+
     <Text size="1" color="gray">
       Secondary information and captions
     </Text>
-    
+
     <Text size="0" color="gray">
       Fine print and metadata
     </Text>
@@ -227,11 +225,12 @@ export const CodeExamples = () => (
     <Text>
       Use the <Code>useState</Code> hook for local component state.
     </Text>
-    
+
     <Text>
-      Install with <Code variant="outline">npm install @telegraph/typography</Code>
+      Install with{" "}
+      <Code variant="outline">npm install @telegraph/typography</Code>
     </Text>
-    
+
     <Code size="2" variant="solid">
       const message = "Hello World";
     </Code>
@@ -249,7 +248,7 @@ export const AlignmentExamples = () => (
     <Heading align="left">Left Aligned Heading</Heading>
     <Heading align="center">Centered Heading</Heading>
     <Heading align="right">Right Aligned Heading</Heading>
-    
+
     <Text align="center">Centered paragraph text</Text>
   </div>
 );
@@ -260,24 +259,19 @@ export const AlignmentExamples = () => (
 ### Responsive Typography
 
 ```tsx
-import { Heading, Text } from "@telegraph/typography";
 import { useMediaQuery } from "@telegraph/helpers";
+import { Heading, Text } from "@telegraph/typography";
 
 export const ResponsiveTypography = ({ title, content }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  
+
   return (
     <div>
-      <Heading 
-        as="h1" 
-        size={isMobile ? "5" : "7"}
-      >
+      <Heading as="h1" size={isMobile ? "5" : "7"}>
         {title}
       </Heading>
-      
-      <Text size={isMobile ? "1" : "2"}>
-        {content}
-      </Text>
+
+      <Text size={isMobile ? "1" : "2"}>{content}</Text>
     </div>
   );
 };
@@ -286,7 +280,7 @@ export const ResponsiveTypography = ({ title, content }) => {
 ### Custom Typography Components
 
 ```tsx
-import { Text, Heading } from "@telegraph/typography";
+import { Heading, Text } from "@telegraph/typography";
 
 export const BlogPost = ({ post }) => (
   <article className="blog-post">
@@ -294,17 +288,17 @@ export const BlogPost = ({ post }) => (
       <Heading as="h1" size="7" align="center">
         {post.title}
       </Heading>
-      
+
       <Text size="1" color="gray" align="center">
         By {post.author} • {post.date}
       </Text>
     </header>
-    
+
     <div className="content">
       <Text size="3" weight="medium" color="gray">
         {post.excerpt}
       </Text>
-      
+
       {post.content.map((paragraph, index) => (
         <Text key={index} size="2">
           {paragraph}
@@ -318,15 +312,15 @@ export const BlogPost = ({ post }) => (
 ### Form Typography
 
 ```tsx
-import { Text, Heading } from "@telegraph/typography";
 import { Input } from "@telegraph/input";
+import { Heading, Text } from "@telegraph/typography";
 
 export const FormWithTypography = () => (
   <form>
     <Heading as="h2" size="5">
       Contact Information
     </Heading>
-    
+
     <div className="form-field">
       <Text as="label" htmlFor="name" weight="medium">
         Full Name
@@ -336,7 +330,7 @@ export const FormWithTypography = () => (
         Enter your first and last name
       </Text>
     </div>
-    
+
     <div className="form-field">
       <Text as="label" htmlFor="email" weight="medium">
         Email Address
@@ -353,26 +347,24 @@ export const FormWithTypography = () => (
 ### Documentation Typography
 
 ```tsx
-import { Heading, Text, Code } from "@telegraph/typography";
+import { Code, Heading, Text } from "@telegraph/typography";
 
 export const APIDocumentation = ({ method }) => (
   <section className="api-method">
     <Heading as="h3" size="4">
       {method.name}
     </Heading>
-    
-    <Text size="2">
-      {method.description}
-    </Text>
-    
+
+    <Text size="2">{method.description}</Text>
+
     <Heading as="h4" size="3">
       Parameters
     </Heading>
-    
-    {method.parameters.map(param => (
+
+    {method.parameters.map((param) => (
       <div key={param.name} className="parameter">
         <Text weight="medium">
-          <Code>{param.name}</Code> 
+          <Code>{param.name}</Code>
           <Text as="span" size="1" color="gray">
             ({param.type})
           </Text>
@@ -382,11 +374,11 @@ export const APIDocumentation = ({ method }) => (
         </Text>
       </div>
     ))}
-    
+
     <Heading as="h4" size="3">
       Example
     </Heading>
-    
+
     <Code size="2" variant="outline">
       {method.example}
     </Code>
@@ -404,24 +396,22 @@ export const ProductCard = ({ product }) => (
     <Heading as="h3" size="3" weight="semibold">
       {product.name}
     </Heading>
-    
+
     <Text size="1" color="gray">
       {product.category}
     </Text>
-    
-    <Text size="2">
-      {product.description}
-    </Text>
-    
+
+    <Text size="2">{product.description}</Text>
+
     <div className="price-container">
       <Text size="4" weight="bold" color="accent">
         ${product.price}
       </Text>
-      
+
       {product.originalPrice && (
-        <Text 
-          as="span" 
-          size="2" 
+        <Text
+          as="span"
+          size="2"
           color="gray"
           style={{ textDecoration: "line-through" }}
         >
@@ -443,20 +433,17 @@ export const StatsCard = ({ title, value, change, period }) => (
     <Text size="1" color="gray" weight="medium">
       {title.toUpperCase()}
     </Text>
-    
+
     <Heading as="div" size="6" weight="bold">
       {value}
     </Heading>
-    
+
     <div className="change-indicator">
-      <Text 
-        size="1" 
-        color={change >= 0 ? "green" : "red"}
-        weight="medium"
-      >
-        {change >= 0 ? "+" : ""}{change}%
+      <Text size="1" color={change >= 0 ? "green" : "red"} weight="medium">
+        {change >= 0 ? "+" : ""}
+        {change}%
       </Text>
-      
+
       <Text size="1" color="gray">
         {period}
       </Text>
@@ -473,8 +460,8 @@ import { Link } from "next/link";
 
 export const Navigation = ({ items }) => (
   <nav className="main-navigation">
-    {items.map(item => (
-      <Text 
+    {items.map((item) => (
+      <Text
         key={item.href}
         as={Link}
         href={item.href}
@@ -493,64 +480,18 @@ export const Navigation = ({ items }) => (
 
 ```tsx
 import { Text } from "@telegraph/typography";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
 export const StatusMessage = ({ type, message }) => (
   <div className={`status-message status-${type}`}>
     {type === "success" && <CheckCircle size={16} />}
     {type === "error" && <AlertCircle size={16} />}
-    
-    <Text 
-      size="1" 
-      color={type === "success" ? "green" : "red"}
-      weight="medium"
-    >
+
+    <Text size="1" color={type === "success" ? "green" : "red"} weight="medium">
       {message}
     </Text>
   </div>
 );
-```
-
-## Design Tokens & Styling
-
-Typography components use Telegraph design tokens for consistent sizing and spacing:
-
-- `--tgph-font-size-*` - Font size scale (0-9)
-- `--tgph-line-height-*` - Line height for each size
-- `--tgph-font-weight-*` - Font weight values
-- `--tgph-color-*` - Text color tokens
-
-### Custom Typography Styling
-
-```css
-.tgph {
-  /* Custom typography styles */
-  .custom-heading {
-    font-family: "Custom Serif", serif;
-    letter-spacing: -0.02em;
-  }
-  
-  .code-block {
-    font-family: "Fira Code", "Monaco", monospace;
-    background: var(--tgph-gray-2);
-    padding: var(--tgph-space-4);
-    border-radius: var(--tgph-radius-2);
-  }
-  
-  /* Responsive typography */
-  @media (max-width: 768px) {
-    [data-tgph-text][data-size="6"] {
-      font-size: var(--tgph-font-size-5);
-      line-height: var(--tgph-line-height-5);
-    }
-  }
-  
-  /* Custom color themes */
-  .dark-theme {
-    --tgph-color-default: #ffffff;
-    --tgph-color-gray: #a0a0a0;
-  }
-}
 ```
 
 ## Accessibility
@@ -575,124 +516,6 @@ Typography components use Telegraph design tokens for consistent sizing and spac
 - Proper semantic elements reduce need for additional ARIA labels
 - Color is never the only indicator of meaning or state
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import { Heading, Text, Code } from "@telegraph/typography";
-
-test("renders typography components correctly", () => {
-  render(
-    <div>
-      <Heading as="h1" size="6">
-        Test Heading
-      </Heading>
-      <Text size="2" color="gray">
-        Test paragraph
-      </Text>
-      <Code>test code</Code>
-    </div>
-  );
-
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Test Heading");
-  expect(screen.getByText("Test paragraph")).toBeInTheDocument();
-  expect(screen.getByText("test code")).toBeInTheDocument();
-});
-
-test("applies correct sizes and colors", () => {
-  render(
-    <div>
-      <Heading data-testid="heading" size="4" color="blue">
-        Blue Heading
-      </Heading>
-      <Text data-testid="text" size="1" color="red">
-        Red Text
-      </Text>
-    </div>
-  );
-
-  const heading = screen.getByTestId("heading");
-  const text = screen.getByTestId("text");
-
-  expect(heading).toHaveAttribute("data-size", "4");
-  expect(heading).toHaveAttribute("data-color", "blue");
-  expect(text).toHaveAttribute("data-size", "1");
-  expect(text).toHaveAttribute("data-color", "red");
-});
-```
-
-### Semantic Testing
-
-```tsx
-test("maintains proper heading hierarchy", () => {
-  render(
-    <div>
-      <Heading as="h1">Main Title</Heading>
-      <Heading as="h2">Section Title</Heading>
-      <Heading as="h3">Subsection Title</Heading>
-    </div>
-  );
-
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Main Title");
-  expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Section Title");
-  expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("Subsection Title");
-});
-
-test("renders text with correct semantic elements", () => {
-  render(
-    <div>
-      <Text as="label" htmlFor="input">Label Text</Text>
-      <Text as="em">Emphasized Text</Text>
-      <Text as="strong">Strong Text</Text>
-    </div>
-  );
-
-  expect(screen.getByLabelText("Label Text")).toBeInTheDocument();
-  expect(screen.getByText("Emphasized Text").tagName).toBe("EM");
-  expect(screen.getByText("Strong Text").tagName).toBe("STRONG");
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <article>
-      <Heading as="h1" size="6">Article Title</Heading>
-      <Heading as="h2" size="4">Section Heading</Heading>
-      <Text>Paragraph content with good contrast.</Text>
-      <Code>const code = "example";</Code>
-    </article>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
-### Visual Regression Testing
-
-```tsx
-test("typography maintains consistent styling", () => {
-  const { container } = render(
-    <div>
-      <Heading size="5" weight="bold">Heading</Heading>
-      <Text size="2" color="gray">Body text</Text>
-      <Code variant="soft">code snippet</Code>
-    </div>
-  );
-
-  expect(container).toMatchSnapshot();
-});
-```
-
 ## Examples
 
 ### Basic Example
@@ -705,7 +528,7 @@ export const SimplePage = () => (
     <Heading as="h1" size="6">
       Welcome to Our Platform
     </Heading>
-    
+
     <Text size="2">
       Get started by exploring our features and building amazing experiences.
     </Text>
@@ -716,7 +539,7 @@ export const SimplePage = () => (
 ### Advanced Example
 
 ```tsx
-import { Heading, Text, Code } from "@telegraph/typography";
+import { Code, Heading, Text } from "@telegraph/typography";
 
 export const FeatureShowcase = ({ features }) => (
   <section className="feature-showcase">
@@ -724,7 +547,7 @@ export const FeatureShowcase = ({ features }) => (
       <Heading as="h2" size="6" align="center">
         Powerful Features
       </Heading>
-      
+
       <Text size="3" color="gray" align="center">
         Everything you need to build modern applications
       </Text>
@@ -736,11 +559,11 @@ export const FeatureShowcase = ({ features }) => (
           <Heading as="h3" size="4" weight="semibold">
             {feature.title}
           </Heading>
-          
+
           <Text size="2" color="gray">
             {feature.description}
           </Text>
-          
+
           {feature.codeExample && (
             <div className="code-example">
               <Text size="1" weight="medium" color="accent">
@@ -751,7 +574,7 @@ export const FeatureShowcase = ({ features }) => (
               </Code>
             </div>
           )}
-          
+
           <div className="feature-benefits">
             {feature.benefits.map((benefit, idx) => (
               <Text key={idx} size="1" color="green">
@@ -769,7 +592,7 @@ export const FeatureShowcase = ({ features }) => (
 ### Real-world Example
 
 ```tsx
-import { Heading, Text, Code } from "@telegraph/typography";
+import { Code, Heading, Text } from "@telegraph/typography";
 import { useState } from "react";
 
 export const DocumentationPage = ({ doc }) => {
@@ -781,9 +604,9 @@ export const DocumentationPage = ({ doc }) => {
         <Heading as="h3" size="3" weight="semibold">
           Table of Contents
         </Heading>
-        
-        {doc.sections.map(section => (
-          <Text 
+
+        {doc.sections.map((section) => (
+          <Text
             key={section.id}
             as="button"
             size="1"
@@ -801,7 +624,7 @@ export const DocumentationPage = ({ doc }) => {
           <Heading as="h1" size="7">
             {doc.title}
           </Heading>
-          
+
           <div className="doc-meta">
             <Text size="1" color="gray">
               Last updated: {doc.lastUpdated}
@@ -810,18 +633,18 @@ export const DocumentationPage = ({ doc }) => {
               Version: <Code size="0">{doc.version}</Code>
             </Text>
           </div>
-          
+
           <Text size="3" weight="medium" color="gray">
             {doc.description}
           </Text>
         </header>
 
-        {doc.sections.map(section => (
+        {doc.sections.map((section) => (
           <section key={section.id} className="doc-section">
             <Heading as="h2" size="5" id={section.id}>
               {section.title}
             </Heading>
-            
+
             {section.content.map((block, index) => {
               switch (block.type) {
                 case "paragraph":
@@ -830,26 +653,21 @@ export const DocumentationPage = ({ doc }) => {
                       {block.content}
                     </Text>
                   );
-                  
+
                 case "code":
                   return (
                     <Code key={index} size="2" variant="outline">
                       {block.content}
                     </Code>
                   );
-                  
+
                 case "heading":
                   return (
-                    <Heading 
-                      key={index} 
-                      as="h3" 
-                      size="4"
-                      weight="semibold"
-                    >
+                    <Heading key={index} as="h3" size="4" weight="semibold">
                       {block.content}
                     </Heading>
                   );
-                  
+
                 case "list":
                   return (
                     <ul key={index}>
@@ -860,7 +678,7 @@ export const DocumentationPage = ({ doc }) => {
                       ))}
                     </ul>
                   );
-                  
+
                 case "note":
                   return (
                     <div key={index} className="doc-note">
@@ -869,18 +687,25 @@ export const DocumentationPage = ({ doc }) => {
                       </Text>
                     </div>
                   );
-                  
+
                 default:
                   return null;
               }
             })}
           </section>
         ))}
-        
+
         <footer className="doc-footer">
           <Text size="1" color="gray" align="center">
-            Have questions? Check our <Text as="a" href="/faq" color="accent">FAQ</Text> or 
-            <Text as="a" href="/support" color="accent"> contact support</Text>.
+            Have questions? Check our{" "}
+            <Text as="a" href="/faq" color="accent">
+              FAQ
+            </Text>{" "}
+            or
+            <Text as="a" href="/support" color="accent">
+              {" "}
+              contact support
+            </Text>.
           </Text>
         </footer>
       </main>
@@ -894,17 +719,8 @@ export const DocumentationPage = ({ doc }) => {
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/typography)
 - [Design Tokens](../tokens/README.md) - Typography token system
 - [Truncate Component](../truncate/README.md) - Text overflow handling
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

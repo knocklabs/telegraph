@@ -19,11 +19,13 @@ npm install @telegraph/button
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/button";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/button/default.css";
 ```
@@ -46,17 +48,17 @@ export const Example = () => (
 
 ### `<Button>` (Default Component)
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | `"solid" \| "soft" \| "outline" \| "ghost"` | `"solid"` | Visual style variant |
-| `size` | `"0" \| "1" \| "2" \| "3"` | `"2"` | Button size |
-| `color` | `"default" \| "accent" \| "gray" \| "red" \| "green" \| "blue" \| "yellow" \| "purple"` | `"default"` | Button color theme |
-| `state` | `"default" \| "loading"` | `"default"` | Button state |
-| `active` | `boolean` | `false` | Whether button appears pressed |
-| `disabled` | `boolean` | `false` | Whether button is disabled |
-| `leadingIcon` | `IconProps` | `undefined` | Icon before text |
-| `trailingIcon` | `IconProps` | `undefined` | Icon after text |
-| `icon` | `IconProps` | `undefined` | Icon-only button |
+| Prop           | Type                                                                                    | Default     | Description                    |
+| -------------- | --------------------------------------------------------------------------------------- | ----------- | ------------------------------ |
+| `variant`      | `"solid" \| "soft" \| "outline" \| "ghost"`                                             | `"solid"`   | Visual style variant           |
+| `size`         | `"0" \| "1" \| "2" \| "3"`                                                              | `"2"`       | Button size                    |
+| `color`        | `"default" \| "accent" \| "gray" \| "red" \| "green" \| "blue" \| "yellow" \| "purple"` | `"default"` | Button color theme             |
+| `state`        | `"default" \| "loading"`                                                                | `"default"` | Button state                   |
+| `active`       | `boolean`                                                                               | `false`     | Whether button appears pressed |
+| `disabled`     | `boolean`                                                                               | `false`     | Whether button is disabled     |
+| `leadingIcon`  | `IconProps`                                                                             | `undefined` | Icon before text               |
+| `trailingIcon` | `IconProps`                                                                             | `undefined` | Icon after text                |
+| `icon`         | `IconProps`                                                                             | `undefined` | Icon-only button               |
 
 ### Icon Props Structure
 
@@ -72,7 +74,10 @@ type IconProps = {
 The button uses exported constants for consistent styling:
 
 ```tsx
-import { BUTTON_COLOR_MAP, BUTTON_SIZE_MAP } from "@telegraph/button/Button.constants";
+import {
+  BUTTON_COLOR_MAP,
+  BUTTON_SIZE_MAP,
+} from "@telegraph/button/Button.constants";
 
 // Available variants
 // BUTTON_COLOR_MAP: solid, soft, outline, ghost
@@ -91,7 +96,7 @@ import { BUTTON_COLOR_MAP, BUTTON_SIZE_MAP } from "@telegraph/button/Button.cons
 <Button variant="solid" color="accent">Primary Action</Button>
 <Button variant="solid" color="red">Destructive</Button>
 
-// Soft buttons (medium emphasis) 
+// Soft buttons (medium emphasis)
 <Button variant="soft" color="accent">Secondary Action</Button>
 
 // Outline buttons (medium emphasis with border)
@@ -130,12 +135,12 @@ export const LoadingButton = () => {
 
   const handleClick = async () => {
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };
 
   return (
-    <Button 
+    <Button
       state={loading ? "loading" : "default"}
       onClick={handleClick}
       disabled={loading}
@@ -175,7 +180,9 @@ import { Box } from "@telegraph/layout";
 export const ButtonGroup = () => (
   <Box display="flex" gap="2">
     <Button variant="outline">Cancel</Button>
-    <Button variant="solid" color="accent">Confirm</Button>
+    <Button variant="solid" color="accent">
+      Confirm
+    </Button>
   </Box>
 );
 ```
@@ -183,8 +190,8 @@ export const ButtonGroup = () => (
 ### Using with TypeScript
 
 ```tsx
-import type { ComponentProps } from "react";
 import { Button } from "@telegraph/button";
+import type { ComponentProps } from "react";
 
 type CustomButtonProps = ComponentProps<typeof Button> & {
   customProp?: string;
@@ -212,28 +219,6 @@ import Link from "next/link";
 </Button>
 ```
 
-## Design Tokens & Styling
-
-Button uses these CSS custom properties:
-
-- `--tgph-button-hover-shadow` - Shadow on hover
-- `--tgph-button-focus-shadow` - Shadow on focus  
-- `--tgph-button-active-shadow` - Shadow when active
-- `--tgph-colors-{color}-{scale}` - Color tokens for each variant
-
-### Custom Theming
-
-```css
-.tgph {
-  /* Custom button colors */
-  --tgph-colors-accent-9: #your-brand-color;
-  --tgph-colors-accent-10: #your-brand-hover;
-  
-  /* Custom button shadows */
-  --tgph-button-focus-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-```
-
 ## Accessibility
 
 - ✅ **Keyboard Navigation**: Focusable with Tab, activated with Space/Enter
@@ -255,69 +240,6 @@ Button uses these CSS custom properties:
 2. **Loading feedback**: Use `state="loading"` for async actions
 3. **Icon accessibility**: Provide meaningful `alt` text for icons
 4. **Keyboard support**: All buttons are keyboard accessible
-
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Button } from "@telegraph/button";
-
-test("button handles click events", async () => {
-  const user = userEvent.setup();
-  const handleClick = jest.fn();
-  
-  render(<Button onClick={handleClick}>Click me</Button>);
-  
-  const button = screen.getByRole("button", { name: "Click me" });
-  await user.click(button);
-  
-  expect(handleClick).toHaveBeenCalledTimes(1);
-});
-
-test("disabled button prevents clicks", async () => {
-  const user = userEvent.setup();
-  const handleClick = jest.fn();
-  
-  render(<Button disabled onClick={handleClick}>Disabled</Button>);
-  
-  const button = screen.getByRole("button", { name: "Disabled" });
-  await user.click(button);
-  
-  expect(handleClick).not.toHaveBeenCalled();
-  expect(button).toBeDisabled();
-});
-```
-
-### Loading State Testing
-
-```tsx
-test("loading button shows loading state", () => {
-  render(<Button state="loading">Save</Button>);
-  
-  const button = screen.getByRole("button");
-  expect(button).toBeDisabled();
-  expect(button).toHaveAttribute("data-tgph-button-state", "loading");
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Button icon={{ icon: Settings, alt: "Settings" }} />
-  );
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
 
 ## Examples
 
@@ -344,10 +266,10 @@ import { Button } from "@telegraph/button";
 
 ```tsx
 import { Button } from "@telegraph/button";
-import { Check, X, Loader } from "lucide-react";
+import { Check, Loader, X } from "lucide-react";
 
 export const ActionButtons = ({ loading, onSave, onCancel }) => (
-  <div style={{ display: 'flex', gap: '8px' }}>
+  <div style={{ display: "flex", gap: "8px" }}>
     <Button
       variant="outline"
       onClick={onCancel}
@@ -356,7 +278,7 @@ export const ActionButtons = ({ loading, onSave, onCancel }) => (
     >
       Cancel
     </Button>
-    
+
     <Button
       variant="solid"
       color="accent"
@@ -374,8 +296,8 @@ export const ActionButtons = ({ loading, onSave, onCancel }) => (
 
 ```tsx
 import { Button } from "@telegraph/button";
-import { Download, Share, MoreHorizontal } from "lucide-react";
 import { Box } from "@telegraph/layout";
+import { Download, MoreHorizontal, Share } from "lucide-react";
 
 export const DocumentActions = ({ onDownload, onShare, onMore }) => (
   <Box display="flex" gap="2" align="center">
@@ -385,21 +307,21 @@ export const DocumentActions = ({ onDownload, onShare, onMore }) => (
       icon={{ icon: Download, alt: "Download document" }}
       onClick={onDownload}
     />
-    
+
     <Button
-      variant="ghost" 
+      variant="ghost"
       size="1"
       icon={{ icon: Share, alt: "Share document" }}
       onClick={onShare}
     />
-    
+
     <Button
       variant="ghost"
-      size="1" 
+      size="1"
       icon={{ icon: MoreHorizontal, alt: "More actions" }}
       onClick={onMore}
     />
-    
+
     <Button variant="solid" color="accent">
       Edit Document
     </Button>
@@ -410,17 +332,8 @@ export const DocumentActions = ({ onDownload, onShare, onMore }) => (
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/button)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 

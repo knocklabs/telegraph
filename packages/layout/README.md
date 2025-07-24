@@ -19,11 +19,13 @@ npm install @telegraph/layout
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/layout";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/layout/default.css";
 ```
@@ -38,10 +40,16 @@ import { Box, Stack } from "@telegraph/layout";
 export const LayoutExample = () => (
   <Box p="4" bg="surface-1" rounded="2">
     <Stack direction="column" gap="3">
-      <Box p="2" bg="accent-3" rounded="1">Header</Box>
+      <Box p="2" bg="accent-3" rounded="1">
+        Header
+      </Box>
       <Stack direction="row" gap="2">
-        <Box flex="1" p="2" bg="gray-3" rounded="1">Sidebar</Box>
-        <Box flex="3" p="2" bg="gray-2" rounded="1">Content</Box>
+        <Box flex="1" p="2" bg="gray-3" rounded="1">
+          Sidebar
+        </Box>
+        <Box flex="3" p="2" bg="gray-2" rounded="1">
+          Content
+        </Box>
       </Stack>
     </Stack>
   </Box>
@@ -56,98 +64,98 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 #### Core Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `as` | `TgphElement` | `"div"` | HTML element or component to render |
-| `children` | `React.ReactNode` | - | Child elements |
+| Prop       | Type              | Default | Description                         |
+| ---------- | ----------------- | ------- | ----------------------------------- |
+| `as`       | `TgphElement`     | `"div"` | HTML element or component to render |
+| `children` | `React.ReactNode` | -       | Child elements                      |
 
 #### Spacing Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `p` / `padding` | `SpacingToken` | Padding on all sides |
-| `px` / `paddingX` | `SpacingToken` | Horizontal padding |
-| `py` / `paddingY` | `SpacingToken` | Vertical padding |
-| `pt` / `paddingTop` | `SpacingToken` | Top padding |
-| `pr` / `paddingRight` | `SpacingToken` | Right padding |
-| `pb` / `paddingBottom` | `SpacingToken` | Bottom padding |
-| `pl` / `paddingLeft` | `SpacingToken` | Left padding |
-| `m` / `margin` | `SpacingToken` | Margin on all sides |
-| `mx` / `marginX` | `SpacingToken` | Horizontal margin |
-| `my` / `marginY` | `SpacingToken` | Vertical margin |
-| `mt` / `marginTop` | `SpacingToken` | Top margin |
-| `mr` / `marginRight` | `SpacingToken` | Right margin |
-| `mb` / `marginBottom` | `SpacingToken` | Bottom margin |
-| `ml` / `marginLeft` | `SpacingToken` | Left margin |
+| Prop                   | Type           | Description          |
+| ---------------------- | -------------- | -------------------- |
+| `p` / `padding`        | `SpacingToken` | Padding on all sides |
+| `px` / `paddingX`      | `SpacingToken` | Horizontal padding   |
+| `py` / `paddingY`      | `SpacingToken` | Vertical padding     |
+| `pt` / `paddingTop`    | `SpacingToken` | Top padding          |
+| `pr` / `paddingRight`  | `SpacingToken` | Right padding        |
+| `pb` / `paddingBottom` | `SpacingToken` | Bottom padding       |
+| `pl` / `paddingLeft`   | `SpacingToken` | Left padding         |
+| `m` / `margin`         | `SpacingToken` | Margin on all sides  |
+| `mx` / `marginX`       | `SpacingToken` | Horizontal margin    |
+| `my` / `marginY`       | `SpacingToken` | Vertical margin      |
+| `mt` / `marginTop`     | `SpacingToken` | Top margin           |
+| `mr` / `marginRight`   | `SpacingToken` | Right margin         |
+| `mb` / `marginBottom`  | `SpacingToken` | Bottom margin        |
+| `ml` / `marginLeft`    | `SpacingToken` | Left margin          |
 
 #### Visual Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `bg` / `backgroundColor` | `ColorToken` | Background color |
-| `borderColor` | `ColorToken` | Border color |
-| `border` / `borderWidth` | `SpacingToken` | Border width on all sides |
-| `borderTop` / `borderTopWidth` | `SpacingToken` | Top border width |
-| `borderRight` / `borderRightWidth` | `SpacingToken` | Right border width |
-| `borderBottom` / `borderBottomWidth` | `SpacingToken` | Bottom border width |
-| `borderLeft` / `borderLeftWidth` | `SpacingToken` | Left border width |
-| `borderX` | `SpacingToken` | Horizontal border width |
-| `borderY` | `SpacingToken` | Vertical border width |
-| `borderStyle` | `"solid" \| "dashed" \| "dotted"` | Border style |
-| `rounded` / `borderRadius` | `RoundedToken` | Border radius on all corners |
-| `roundedTop` / `borderTopRadius` | `RoundedToken` | Top corners border radius |
-| `roundedBottom` / `borderBottomRadius` | `RoundedToken` | Bottom corners border radius |
-| `roundedLeft` / `borderLeftRadius` | `RoundedToken` | Left corners border radius |
-| `roundedRight` / `borderRightRadius` | `RoundedToken` | Right corners border radius |
-| `roundedTopLeft` / `borderTopLeftRadius` | `RoundedToken` | Top-left corner border radius |
-| `roundedTopRight` / `borderTopRightRadius` | `RoundedToken` | Top-right corner border radius |
-| `roundedBottomLeft` / `borderBottomLeftRadius` | `RoundedToken` | Bottom-left corner border radius |
-| `roundedBottomRight` / `borderBottomRightRadius` | `RoundedToken` | Bottom-right corner border radius |
-| `shadow` / `boxShadow` | `ShadowToken` | Box shadow |
+| Prop                                             | Type                              | Description                       |
+| ------------------------------------------------ | --------------------------------- | --------------------------------- |
+| `bg` / `backgroundColor`                         | `ColorToken`                      | Background color                  |
+| `borderColor`                                    | `ColorToken`                      | Border color                      |
+| `border` / `borderWidth`                         | `SpacingToken`                    | Border width on all sides         |
+| `borderTop` / `borderTopWidth`                   | `SpacingToken`                    | Top border width                  |
+| `borderRight` / `borderRightWidth`               | `SpacingToken`                    | Right border width                |
+| `borderBottom` / `borderBottomWidth`             | `SpacingToken`                    | Bottom border width               |
+| `borderLeft` / `borderLeftWidth`                 | `SpacingToken`                    | Left border width                 |
+| `borderX`                                        | `SpacingToken`                    | Horizontal border width           |
+| `borderY`                                        | `SpacingToken`                    | Vertical border width             |
+| `borderStyle`                                    | `"solid" \| "dashed" \| "dotted"` | Border style                      |
+| `rounded` / `borderRadius`                       | `RoundedToken`                    | Border radius on all corners      |
+| `roundedTop` / `borderTopRadius`                 | `RoundedToken`                    | Top corners border radius         |
+| `roundedBottom` / `borderBottomRadius`           | `RoundedToken`                    | Bottom corners border radius      |
+| `roundedLeft` / `borderLeftRadius`               | `RoundedToken`                    | Left corners border radius        |
+| `roundedRight` / `borderRightRadius`             | `RoundedToken`                    | Right corners border radius       |
+| `roundedTopLeft` / `borderTopLeftRadius`         | `RoundedToken`                    | Top-left corner border radius     |
+| `roundedTopRight` / `borderTopRightRadius`       | `RoundedToken`                    | Top-right corner border radius    |
+| `roundedBottomLeft` / `borderBottomLeftRadius`   | `RoundedToken`                    | Bottom-left corner border radius  |
+| `roundedBottomRight` / `borderBottomRightRadius` | `RoundedToken`                    | Bottom-right corner border radius |
+| `shadow` / `boxShadow`                           | `ShadowToken`                     | Box shadow                        |
 
 #### Layout Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `display` | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode |
-| `w` / `width` | `SpacingToken` | Width |
-| `h` / `height` | `SpacingToken` | Height |
-| `minW` / `minWidth` | `SpacingToken` | Minimum width |
-| `minH` / `minHeight` | `SpacingToken` | Minimum height |
-| `maxW` / `maxWidth` | `SpacingToken` | Maximum width |
-| `maxH` / `maxHeight` | `SpacingToken` | Maximum height |
-| `position` | `"relative" \| "absolute" \| "fixed" \| "sticky"` | Position type |
-| `top` | `SpacingToken` | Top position offset |
-| `right` | `SpacingToken` | Right position offset |
-| `bottom` | `SpacingToken` | Bottom position offset |
-| `left` | `SpacingToken` | Left position offset |
-| `zIndex` | `ZIndexToken` | Z-index stack order |
-| `overflow` | `"hidden" \| "visible" \| "scroll" \| "auto"` | Overflow behavior |
+| Prop                 | Type                                                               | Description            |
+| -------------------- | ------------------------------------------------------------------ | ---------------------- |
+| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode           |
+| `w` / `width`        | `SpacingToken`                                                     | Width                  |
+| `h` / `height`       | `SpacingToken`                                                     | Height                 |
+| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width          |
+| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height         |
+| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width          |
+| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height         |
+| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type          |
+| `top`                | `SpacingToken`                                                     | Top position offset    |
+| `right`              | `SpacingToken`                                                     | Right position offset  |
+| `bottom`             | `SpacingToken`                                                     | Bottom position offset |
+| `left`               | `SpacingToken`                                                     | Left position offset   |
+| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order    |
+| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior      |
 
 #### Interactive Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `hover_backgroundColor` | `ColorToken` | Background color on hover |
-| `focus_backgroundColor` | `ColorToken` | Background color on focus |
-| `active_backgroundColor` | `ColorToken` | Background color when active |
+| Prop                           | Type         | Description                            |
+| ------------------------------ | ------------ | -------------------------------------- |
+| `hover_backgroundColor`        | `ColorToken` | Background color on hover              |
+| `focus_backgroundColor`        | `ColorToken` | Background color on focus              |
+| `active_backgroundColor`       | `ColorToken` | Background color when active           |
 | `focus_within_backgroundColor` | `ColorToken` | Background color when child is focused |
-| `hover_borderColor` | `ColorToken` | Border color on hover |
-| `focus_borderColor` | `ColorToken` | Border color on focus |
-| `active_borderColor` | `ColorToken` | Border color when active |
-| `focus_within_borderColor` | `ColorToken` | Border color when child is focused |
+| `hover_borderColor`            | `ColorToken` | Border color on hover                  |
+| `focus_borderColor`            | `ColorToken` | Border color on focus                  |
+| `active_borderColor`           | `ColorToken` | Border color when active               |
+| `focus_within_borderColor`     | `ColorToken` | Border color when child is focused     |
 
 ### `<Stack>`
 
 A flexbox container built on top of Box for creating flexible layouts.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `direction` / `flexDirection` | `"row" \| "column" \| "row-reverse" \| "column-reverse"` | `"row"` | Flex direction |
-| `align` / `alignItems` | `"flex-start" \| "flex-end" \| "center" \| "stretch" \| "baseline"` | `"stretch"` | Cross-axis alignment |
-| `justify` / `justifyContent` | `"flex-start" \| "flex-end" \| "center" \| "space-between" \| "space-around" \| "space-evenly"` | `"flex-start"` | Main-axis alignment |
-| `wrap` / `flexWrap` | `"wrap" \| "nowrap" \| "wrap-reverse"` | `"nowrap"` | Flex wrap behavior |
-| `gap` | `SpacingToken` | `"0"` | Gap between items |
+| Prop                          | Type                                                                                            | Default        | Description          |
+| ----------------------------- | ----------------------------------------------------------------------------------------------- | -------------- | -------------------- |
+| `direction` / `flexDirection` | `"row" \| "column" \| "row-reverse" \| "column-reverse"`                                        | `"row"`        | Flex direction       |
+| `align` / `alignItems`        | `"flex-start" \| "flex-end" \| "center" \| "stretch" \| "baseline"`                             | `"stretch"`    | Cross-axis alignment |
+| `justify` / `justifyContent`  | `"flex-start" \| "flex-end" \| "center" \| "space-between" \| "space-around" \| "space-evenly"` | `"flex-start"` | Main-axis alignment  |
+| `wrap` / `flexWrap`           | `"wrap" \| "nowrap" \| "wrap-reverse"`                                                          | `"nowrap"`     | Flex wrap behavior   |
+| `gap`                         | `SpacingToken`                                                                                  | `"0"`          | Gap between items    |
 
 Stack inherits all Box props for additional styling.
 
@@ -349,7 +357,13 @@ import { Box, Stack } from "@telegraph/layout";
 export const AppLayout = ({ children }) => (
   <Box minH="screen" bg="surface-1">
     {/* Header */}
-    <Box as="header" p="4" bg="surface-2" borderBottom="px" borderColor="gray-6">
+    <Box
+      as="header"
+      p="4"
+      bg="surface-2"
+      borderBottom="px"
+      borderColor="gray-6"
+    >
       <Stack direction="row" align="center" justify="between">
         <Box>Logo</Box>
         <Stack direction="row" gap="4">
@@ -358,17 +372,28 @@ export const AppLayout = ({ children }) => (
         </Stack>
       </Stack>
     </Box>
-    
+
     {/* Main content */}
     <Stack direction="row" minH="0" flex="1">
       {/* Sidebar */}
-      <Box as="aside" w="64" p="4" bg="surface-2" borderRight="px" borderColor="gray-6">
+      <Box
+        as="aside"
+        w="64"
+        p="4"
+        bg="surface-2"
+        borderRight="px"
+        borderColor="gray-6"
+      >
         <Stack direction="column" gap="2">
-          <Box p="2" rounded="1" hover_bg="gray-3">Sidebar item 1</Box>
-          <Box p="2" rounded="1" hover_bg="gray-3">Sidebar item 2</Box>
+          <Box p="2" rounded="1" hover_bg="gray-3">
+            Sidebar item 1
+          </Box>
+          <Box p="2" rounded="1" hover_bg="gray-3">
+            Sidebar item 2
+          </Box>
         </Stack>
       </Box>
-      
+
       {/* Content */}
       <Box as="main" flex="1" p="6">
         {children}
@@ -414,20 +439,10 @@ export const ResponsiveLayout = () => (
       gap={{ base: "4", md: "6" }}
       align={{ base: "stretch", md: "flex-start" }}
     >
-      <Box
-        w={{ base: "full", md: "1/3" }}
-        p="4"
-        bg="surface-1"
-        rounded="2"
-      >
+      <Box w={{ base: "full", md: "1/3" }} p="4" bg="surface-1" rounded="2">
         Sidebar content
       </Box>
-      <Box
-        w={{ base: "full", md: "2/3" }}
-        p="4"
-        bg="surface-1"
-        rounded="2"
-      >
+      <Box w={{ base: "full", md: "2/3" }} p="4" bg="surface-1" rounded="2">
         Main content
       </Box>
     </Stack>
@@ -438,9 +453,9 @@ export const ResponsiveLayout = () => (
 ### Form Layouts
 
 ```tsx
-import { Box, Stack } from "@telegraph/layout";
-import { Input } from "@telegraph/input";
 import { Button } from "@telegraph/button";
+import { Input } from "@telegraph/input";
+import { Box, Stack } from "@telegraph/layout";
 
 export const FormLayout = () => (
   <Box maxW="md" mx="auto" p="6">
@@ -449,12 +464,12 @@ export const FormLayout = () => (
         <label htmlFor="name">Name</label>
         <Input id="name" />
       </Box>
-      
+
       <Box>
         <label htmlFor="email">Email</label>
         <Input id="email" type="email" />
       </Box>
-      
+
       <Stack direction="row" gap="2" justify="end">
         <Button variant="outline">Cancel</Button>
         <Button type="submit">Submit</Button>
@@ -528,10 +543,12 @@ The layout components use Telegraph design tokens for consistent styling:
 ### Color Tokens
 
 **Surface Colors:**
+
 - `"surface-1"` → Primary surface
 - `"surface-2"` → Secondary surface
 
 **Semantic Colors:**
+
 - `"accent-1"` to `"accent-12"` → Brand colors
 - `"gray-1"` to `"gray-12"` → Neutral grays
 - `"red-1"` to `"red-12"` → Error/danger colors
@@ -540,6 +557,7 @@ The layout components use Telegraph design tokens for consistent styling:
 - `"yellow-1"` to `"yellow-12"` → Warning colors
 
 **Special Colors:**
+
 - `"transparent"` → Transparent
 - `"alpha-black-1"` to `"alpha-black-12"` → Semi-transparent black
 - `"alpha-white-1"` to `"alpha-white-12"` → Semi-transparent white
@@ -564,33 +582,6 @@ The layout components use Telegraph design tokens for consistent styling:
 - `"4"` → Large shadow
 - `"inner"` → Inset shadow
 
-### Custom Styling
-
-```css
-.tgph {
-  /* Custom spacing scale */
-  --tgph-spacing-custom: 18px;
-  
-  /* Custom colors */
-  --tgph-brand-primary: #your-brand-color;
-  --tgph-brand-secondary: #your-secondary-color;
-  
-  /* Custom shadows */
-  --tgph-shadow-custom: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-/* Custom component styling */
-.tgph-box {
-  /* Override default transitions */
-  transition: all 0.2s ease-in-out;
-}
-
-.tgph-stack {
-  /* Custom gap calculation */
-  --gap: calc(var(--gap) * 1.5);
-}
-```
-
 ## Accessibility
 
 - ✅ **Semantic HTML**: Use appropriate `as` prop for semantic elements
@@ -613,9 +604,9 @@ The layout components use Telegraph design tokens for consistent styling:
   <Box as="section" p="4">
     <h2>Section heading</h2>
     <Stack direction="column" gap="2">
-      <Box as="button" 
-           p="2" 
-           bg="accent-3" 
+      <Box as="button"
+           p="2"
+           bg="accent-3"
            focus_bg="accent-4"
            focus_borderColor="accent-8"
            border="px"
@@ -643,122 +634,6 @@ The layout components use Telegraph design tokens for consistent styling:
 4. **Sufficient Contrast**: Ensure text and background colors meet contrast requirements
 5. **Responsive Design**: Use layout components to create mobile-friendly layouts
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Box, Stack } from "@telegraph/layout";
-
-test("renders box with correct styling", () => {
-  render(<Box p="4" bg="surface-1" data-testid="box">Content</Box>);
-  
-  const box = screen.getByTestId("box");
-  expect(box).toHaveStyle({
-    '--padding': 'var(--tgph-spacing-4)',
-    '--background-color': 'var(--tgph-surface-1)',
-  });
-});
-
-test("renders as different elements", () => {
-  render(
-    <Box as="button" data-testid="button">
-      Click me
-    </Box>
-  );
-  
-  const button = screen.getByTestId("button");
-  expect(button.tagName).toBe('BUTTON');
-});
-
-test("stack arranges children correctly", () => {
-  const { container } = render(
-    <Stack direction="column" gap="2" data-testid="stack">
-      <div>Item 1</div>
-      <div>Item 2</div>
-    </Stack>
-  );
-  
-  const stack = screen.getByTestId("stack");
-  expect(stack).toHaveStyle({
-    'display': 'flex',
-    'flex-direction': 'column',
-    '--gap': 'var(--tgph-spacing-2)',
-  });
-});
-```
-
-### Testing Interactive States
-
-```tsx
-test("shows hover state on interaction", async () => {
-  const user = userEvent.setup();
-  
-  render(
-    <Box
-      as="button"
-      p="2"
-      bg="surface-1"
-      hover_backgroundColor="surface-2"
-      data-testid="interactive-box"
-    >
-      Hover me
-    </Box>
-  );
-  
-  const box = screen.getByTestId("interactive-box");
-  
-  await user.hover(box);
-  expect(box).toHaveClass("tgph-box--interactive");
-});
-```
-
-### Layout Testing
-
-```tsx
-test("creates responsive layout", () => {
-  render(
-    <Box p="4">
-      <Stack direction="row" gap="4">
-        <Box flex="1" data-testid="sidebar">Sidebar</Box>
-        <Box flex="3" data-testid="content">Content</Box>
-      </Stack>
-    </Box>
-  );
-  
-  expect(screen.getByTestId("sidebar")).toBeInTheDocument();
-  expect(screen.getByTestId("content")).toBeInTheDocument();
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <Box as="main" p="4">
-      <Box as="section">
-        <h2>Section Title</h2>
-        <Stack direction="column" gap="2">
-          <Box as="button" p="2" bg="accent-3">
-            Action Button
-          </Box>
-        </Stack>
-      </Box>
-    </Box>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Examples
 
 ### Dashboard Layout
@@ -777,13 +652,13 @@ export const Dashboard = () => (
         </Box>
       </Stack>
     </Box>
-    
+
     {/* Main content */}
     <Box p="6">
       <Stack direction="column" gap="6">
         {/* Stats grid */}
         <Stack direction="row" gap="4" wrap="wrap">
-          {[1, 2, 3, 4].map(i => (
+          {[1, 2, 3, 4].map((i) => (
             <Box
               key={i}
               p="4"
@@ -796,13 +671,17 @@ export const Dashboard = () => (
               flex="1"
             >
               <Stack direction="column" gap="2">
-                <Box as="h3" color="gray">Metric {i}</Box>
-                <Box as="p" fontSize="2xl" fontWeight="bold">1,234</Box>
+                <Box as="h3" color="gray">
+                  Metric {i}
+                </Box>
+                <Box as="p" fontSize="2xl" fontWeight="bold">
+                  1,234
+                </Box>
               </Stack>
             </Box>
           ))}
         </Stack>
-        
+
         {/* Content sections */}
         <Stack direction="row" gap="6">
           <Box flex="2">
@@ -813,12 +692,12 @@ export const Dashboard = () => (
               </Box>
             </Box>
           </Box>
-          
+
           <Box flex="1">
             <Box p="4" bg="surface-1" rounded="2" shadow="1">
               <h2>Activity Feed</h2>
               <Stack direction="column" gap="2" mt="4">
-                {[1, 2, 3].map(i => (
+                {[1, 2, 3].map((i) => (
                   <Box key={i} p="2" rounded="1" hover_bg="gray-2">
                     Activity item {i}
                   </Box>
@@ -851,7 +730,7 @@ export const Modal = ({ children, onClose }) => (
       zIndex="modal"
       onClick={onClose}
     />
-    
+
     {/* Modal */}
     <Box
       position="fixed"
@@ -881,18 +760,23 @@ export const Modal = ({ children, onClose }) => (
             ×
           </Box>
         </Stack>
-        
+
         {/* Content */}
-        <Box>
-          {children}
-        </Box>
-        
+        <Box>{children}</Box>
+
         {/* Actions */}
         <Stack direction="row" gap="2" justify="end">
           <Box as="button" p="2" px="4" rounded="1" hover_bg="gray-3">
             Cancel
           </Box>
-          <Box as="button" p="2" px="4" bg="accent-3" hover_bg="accent-4" rounded="1">
+          <Box
+            as="button"
+            p="2"
+            px="4"
+            bg="accent-3"
+            hover_bg="accent-4"
+            rounded="1"
+          >
             Confirm
           </Box>
         </Stack>
@@ -922,23 +806,21 @@ export const Card = ({ title, description, image, actions }) => (
     <Stack direction="column" gap="3">
       {/* Image */}
       {image && (
-        <Box
-          w="full"
-          h="48"
-          bg="gray-2"
-          rounded="1"
-          overflow="hidden"
-        >
-          <img src={image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <Box w="full" h="48" bg="gray-2" rounded="1" overflow="hidden">
+          <img
+            src={image}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </Box>
       )}
-      
+
       {/* Content */}
       <Stack direction="column" gap="2">
         <h3>{title}</h3>
         <p>{description}</p>
       </Stack>
-      
+
       {/* Actions */}
       {actions && (
         <Stack direction="row" gap="2" justify="end">
@@ -954,21 +836,11 @@ export const Card = ({ title, description, image, actions }) => (
 
 - [Telegraph Design Tokens](https://github.com/knocklabs/telegraph/tree/main/packages/tokens)
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/layout)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 
 ## License
 
 MIT License - see [LICENSE](../../LICENSE) for details.
-

@@ -25,7 +25,7 @@ import { forwardRef, useRef } from "react";
 const MyComponent = forwardRef<HTMLDivElement, {}>((props, forwardedRef) => {
   const internalRef = useRef<HTMLDivElement>(null);
   const composedRef = useComposedRefs(forwardedRef, internalRef);
-  
+
   return <div ref={composedRef} {...props} />;
 });
 ```
@@ -37,12 +37,15 @@ const MyComponent = forwardRef<HTMLDivElement, {}>((props, forwardedRef) => {
 A React hook that composes multiple refs into a single ref callback.
 
 **Parameters:**
+
 - `...refs: PossibleRef<T>[]` - Any number of refs to compose
 
 **Returns:**
+
 - `(node: T) => void` - A callback ref that applies all provided refs
 
 **Type Definition:**
+
 ```tsx
 type PossibleRef<T> = React.Ref<T> | undefined;
 function useComposedRefs<T>(...refs: PossibleRef<T>[]): (node: T) => void;
@@ -53,12 +56,15 @@ function useComposedRefs<T>(...refs: PossibleRef<T>[]): (node: T) => void;
 A utility function that composes multiple refs into a single callback ref (non-hook version).
 
 **Parameters:**
+
 - `...refs: PossibleRef<T>[]` - Any number of refs to compose
 
 **Returns:**
+
 - `(node: T) => void` - A callback ref that applies all provided refs
 
 **Type Definition:**
+
 ```tsx
 function composeRefs<T>(...refs: PossibleRef<T>[]): (node: T) => void;
 ```
@@ -71,28 +77,28 @@ The most common use case is when you need both a forwarded ref and an internal r
 
 ```tsx
 import { useComposedRefs } from "@telegraph/compose-refs";
-import { forwardRef, useRef, useEffect } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 
 const Button = forwardRef<HTMLButtonElement, { children: React.ReactNode }>(
   ({ children, ...props }, forwardedRef) => {
     const internalRef = useRef<HTMLButtonElement>(null);
     const composedRef = useComposedRefs(forwardedRef, internalRef);
-    
+
     useEffect(() => {
       // Use internal ref for component logic
       const button = internalRef.current;
       if (button) {
         // Your internal logic here
-        console.log('Button mounted:', button);
+        console.log("Button mounted:", button);
       }
     }, []);
-    
+
     return (
       <button ref={composedRef} {...props}>
         {children}
       </button>
     );
-  }
+  },
 );
 ```
 
@@ -108,10 +114,14 @@ const ComplexComponent = forwardRef<HTMLDivElement, {}>(
   (props, forwardedRef) => {
     const measurementRef = useRef<HTMLDivElement>(null);
     const observerRef = useRef<HTMLDivElement>(null);
-    const composedRef = useComposedRefs(forwardedRef, measurementRef, observerRef);
-    
+    const composedRef = useComposedRefs(
+      forwardedRef,
+      measurementRef,
+      observerRef,
+    );
+
     return <div ref={composedRef} {...props} />;
-  }
+  },
 );
 ```
 
@@ -131,11 +141,11 @@ const ComponentWithCallback = forwardRef<HTMLInputElement, {}>(
         node.focus();
       }
     }, []);
-    
+
     const composedRef = useComposedRefs(forwardedRef, callbackRef);
-    
+
     return <input ref={composedRef} {...props} />;
-  }
+  },
 );
 ```
 
@@ -153,7 +163,7 @@ const ref2 = createRef<HTMLDivElement>();
 const combinedRef = composeRefs(ref1, ref2);
 
 // Use combinedRef as a callback ref
-<div ref={combinedRef} />
+<div ref={combinedRef} />;
 ```
 
 ## Advanced Usage
@@ -173,14 +183,14 @@ type Props = {
 const ConditionalRefComponent = forwardRef<HTMLDivElement, Props>(
   ({ enableInternalRef, ...props }, forwardedRef) => {
     const internalRef = useRef<HTMLDivElement>(null);
-    
+
     const composedRef = useComposedRefs(
       forwardedRef,
-      enableInternalRef ? internalRef : undefined
+      enableInternalRef ? internalRef : undefined,
     );
-    
+
     return <div ref={composedRef} {...props} />;
-  }
+  },
 );
 ```
 
@@ -195,19 +205,19 @@ import { forwardRef } from "react";
 // Custom hook that returns a ref
 function useAutoResize() {
   const ref = useRef<HTMLTextAreaElement>(null);
-  
+
   useEffect(() => {
     const textarea = ref.current;
     if (textarea) {
       const autoResize = () => {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
       };
-      textarea.addEventListener('input', autoResize);
-      return () => textarea.removeEventListener('input', autoResize);
+      textarea.addEventListener("input", autoResize);
+      return () => textarea.removeEventListener("input", autoResize);
     }
   }, []);
-  
+
   return ref;
 }
 
@@ -215,9 +225,9 @@ const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, {}>(
   (props, forwardedRef) => {
     const autoResizeRef = useAutoResize();
     const composedRef = useComposedRefs(forwardedRef, autoResizeRef);
-    
+
     return <textarea ref={composedRef} {...props} />;
-  }
+  },
 );
 ```
 
@@ -237,7 +247,7 @@ const ButtonComponent = forwardRef<HTMLButtonElement, {}>(
     const internalRef = useRef<HTMLButtonElement>(null);
     const composedRef = useComposedRefs(forwardedRef, internalRef);
     return <button ref={composedRef} {...props} />;
-  }
+  },
 );
 
 // ❌ TypeScript error - mismatched types
@@ -246,7 +256,7 @@ const MismatchedComponent = forwardRef<HTMLButtonElement, {}>(
     const divRef = useRef<HTMLDivElement>(null); // Different type!
     const composedRef = useComposedRefs(forwardedRef, divRef); // Error
     return <button ref={composedRef} {...props} />;
-  }
+  },
 );
 ```
 
@@ -266,9 +276,9 @@ const PolymorphicComponent = forwardRef<HTMLElement, PolymorphicProps<any>>(
   ({ as: Component = "div", ...props }, forwardedRef) => {
     const internalRef = useRef<HTMLElement>(null);
     const composedRef = useComposedRefs(forwardedRef, internalRef);
-    
+
     return <Component ref={composedRef} {...props} />;
-  }
+  },
 );
 ```
 
@@ -282,12 +292,12 @@ React components sometimes need multiple refs on the same element:
 // ❌ This doesn't work - only the last ref is applied
 const BrokenComponent = forwardRef((props, forwardedRef) => {
   const internalRef = useRef(null);
-  
+
   return (
-    <div 
-      ref={internalRef}     // This gets overwritten
-      ref={forwardedRef}    // Only this applies
-      {...props} 
+    <div
+      ref={internalRef} // This gets overwritten
+      ref={forwardedRef} // Only this applies
+      {...props}
     />
   );
 });
@@ -302,7 +312,7 @@ Compose refs safely handles both callback and object refs:
 const WorkingComponent = forwardRef((props, forwardedRef) => {
   const internalRef = useRef(null);
   const composedRef = useComposedRefs(forwardedRef, internalRef);
-  
+
   return <div ref={composedRef} {...props} />;
 });
 ```
@@ -312,58 +322,27 @@ const WorkingComponent = forwardRef((props, forwardedRef) => {
 ### Testing Library Example
 
 ```tsx
-import { render } from "@testing-library/react";
 import { useComposedRefs } from "@telegraph/compose-refs";
-import { forwardRef, useRef, createRef } from "react";
+import { render } from "@testing-library/react";
+import { createRef, forwardRef, useRef } from "react";
 
 const TestComponent = forwardRef<HTMLDivElement, { testId: string }>(
   ({ testId }, forwardedRef) => {
     const internalRef = useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, internalRef);
-    
+
     return <div ref={composedRef} data-testid={testId} />;
-  }
+  },
 );
 
 test("applies both forwarded and internal refs", () => {
   const externalRef = createRef<HTMLDivElement>();
-  
+
   render(<TestComponent ref={externalRef} testId="test-element" />);
-  
+
   // External ref should be populated
   expect(externalRef.current).toBeInTheDocument();
   expect(externalRef.current).toHaveAttribute("data-testid", "test-element");
-});
-```
-
-### Unit Testing
-
-```tsx
-import { composeRefs } from "@telegraph/compose-refs";
-import { createRef } from "react";
-
-test("composeRefs applies value to all refs", () => {
-  const ref1 = createRef<HTMLDivElement>();
-  const ref2 = createRef<HTMLDivElement>();
-  const callbackRef = jest.fn();
-  
-  const composedRef = composeRefs(ref1, ref2, callbackRef);
-  const element = document.createElement("div");
-  
-  composedRef(element);
-  
-  expect(ref1.current).toBe(element);
-  expect(ref2.current).toBe(element);
-  expect(callbackRef).toHaveBeenCalledWith(element);
-});
-
-test("handles undefined refs gracefully", () => {
-  const ref = createRef<HTMLDivElement>();
-  const composedRef = composeRefs(ref, undefined, null);
-  const element = document.createElement("div");
-  
-  expect(() => composedRef(element)).not.toThrow();
-  expect(ref.current).toBe(element);
 });
 ```
 
@@ -371,21 +350,11 @@ test("handles undefined refs gracefully", () => {
 
 - [React Forwarding Refs](https://react.dev/reference/react/forwardRef)
 - [Radix UI Compose Refs](https://github.com/radix-ui/primitives/tree/main/packages/react/compose-refs) (Original implementation)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this utility:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Run tests: `pnpm test`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 
 ## License
 
 MIT License - see [LICENSE](../../LICENSE) for details.
-

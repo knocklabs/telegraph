@@ -19,11 +19,13 @@ npm install @telegraph/input
 Pick one:
 
 Via CSS (preferred):
+
 ```css
 @import "@telegraph/input";
 ```
 
 Via Javascript:
+
 ```tsx
 import "@telegraph/input/default.css";
 ```
@@ -33,8 +35,8 @@ import "@telegraph/input/default.css";
 ## Quick Start
 
 ```tsx
-import { Input } from "@telegraph/input";
 import { Icon } from "@telegraph/icon";
+import { Input } from "@telegraph/input";
 import { Search } from "lucide-react";
 
 export const SearchInput = () => (
@@ -51,15 +53,15 @@ export const SearchInput = () => (
 
 The default Input component provides a simple API for common use cases.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"1" \| "2" \| "3"` | `"2"` | Input size |
-| `variant` | `"outline" \| "ghost"` | `"outline"` | Visual style variant |
-| `errored` | `boolean` | `false` | Shows error state styling |
-| `disabled` | `boolean` | `false` | Disables the input |
-| `LeadingComponent` | `React.ReactNode` | `undefined` | Component to display before the input text |
-| `TrailingComponent` | `React.ReactNode` | `undefined` | Component to display after the input text |
-| `as` | `TgphElement` | `"input"` | HTML element or component to render |
+| Prop                | Type                   | Default     | Description                                |
+| ------------------- | ---------------------- | ----------- | ------------------------------------------ |
+| `size`              | `"1" \| "2" \| "3"`    | `"2"`       | Input size                                 |
+| `variant`           | `"outline" \| "ghost"` | `"outline"` | Visual style variant                       |
+| `errored`           | `boolean`              | `false`     | Shows error state styling                  |
+| `disabled`          | `boolean`              | `false`     | Disables the input                         |
+| `LeadingComponent`  | `React.ReactNode`      | `undefined` | Component to display before the input text |
+| `TrailingComponent` | `React.ReactNode`      | `undefined` | Component to display after the input text  |
+| `as`                | `TgphElement`          | `"input"`   | HTML element or component to render        |
 
 ### Composition API
 
@@ -69,20 +71,20 @@ For advanced use cases, use the composition API:
 
 Container component that wraps the input and slots.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"1" \| "2" \| "3"` | `"2"` | Input size |
-| `variant` | `"outline" \| "ghost"` | `"outline"` | Visual style variant |
-| `errored` | `boolean` | `false` | Shows error state styling |
-| `disabled` | `boolean` | `false` | Disables the input |
-| `as` | `TgphElement` | `"input"` | HTML element or component to render |
+| Prop       | Type                   | Default     | Description                         |
+| ---------- | ---------------------- | ----------- | ----------------------------------- |
+| `size`     | `"1" \| "2" \| "3"`    | `"2"`       | Input size                          |
+| `variant`  | `"outline" \| "ghost"` | `"outline"` | Visual style variant                |
+| `errored`  | `boolean`              | `false`     | Shows error state styling           |
+| `disabled` | `boolean`              | `false`     | Disables the input                  |
+| `as`       | `TgphElement`          | `"input"`   | HTML element or component to render |
 
 #### `<Input.Slot>`
 
 Wrapper for leading and trailing components.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| Prop       | Type                      | Default     | Description          |
+| ---------- | ------------------------- | ----------- | -------------------- |
 | `position` | `"leading" \| "trailing"` | `"leading"` | Position of the slot |
 
 ## Usage Patterns
@@ -167,8 +169,8 @@ import { Search, Mail, Lock } from "lucide-react";
   placeholder="Password"
   LeadingComponent={<Icon icon={Lock} alt="Password" />}
   TrailingComponent={
-    <Icon 
-      icon={Eye} 
+    <Icon
+      icon={Eye}
       alt="Toggle password visibility"
       onClick={togglePasswordVisibility}
     />
@@ -183,10 +185,10 @@ import { Search, Mail, Lock } from "lucide-react";
 Use `Input.Root` and `Input.Slot` for maximum control:
 
 ```tsx
-import { Input } from "@telegraph/input";
 import { Button } from "@telegraph/button";
 import { Icon } from "@telegraph/icon";
-import { Search, Filter } from "lucide-react";
+import { Input } from "@telegraph/input";
+import { Filter, Search } from "lucide-react";
 
 export const AdvancedSearchInput = () => (
   <Input.Root placeholder="Search products...">
@@ -208,10 +210,10 @@ export const AdvancedSearchInput = () => (
 ### Form Integration
 
 ```tsx
+import { Icon } from "@telegraph/icon";
 import { Input } from "@telegraph/input";
 import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
-import { Icon } from "@telegraph/icon";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -226,7 +228,9 @@ export const FormField = () => {
 
   return (
     <Stack gap="1">
-      <Text as="label" htmlFor="email">Email Address</Text>
+      <Text as="label" htmlFor="email">
+        Email Address
+      </Text>
       <Input
         id="email"
         type="email"
@@ -239,7 +243,9 @@ export const FormField = () => {
       {error && (
         <Stack direction="row" align="center" gap="1">
           <Icon icon={AlertCircle} alt="Error" color="red" size="1" />
-          <Text size="1" color="red">{error}</Text>
+          <Text size="1" color="red">
+            {error}
+          </Text>
         </Stack>
       )}
     </Stack>
@@ -250,9 +256,9 @@ export const FormField = () => {
 ### Search with Clear Button
 
 ```tsx
-import { Input } from "@telegraph/input";
 import { Button } from "@telegraph/button";
 import { Icon } from "@telegraph/icon";
+import { Input } from "@telegraph/input";
 import { Search, X } from "lucide-react";
 import { useState } from "react";
 
@@ -285,21 +291,21 @@ export const SearchInput = () => {
 ### Number Input with Controls
 
 ```tsx
-import { Input } from "@telegraph/input";
 import { Button } from "@telegraph/button";
 import { Icon } from "@telegraph/icon";
-import { Plus, Minus } from "lucide-react";
+import { Input } from "@telegraph/input";
+import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 
 export const NumberInput = ({ min = 0, max = 100 }) => {
   const [value, setValue] = useState(0);
 
-  const increment = () => setValue(prev => Math.min(prev + 1, max));
-  const decrement = () => setValue(prev => Math.max(prev - 1, min));
+  const increment = () => setValue((prev) => Math.min(prev + 1, max));
+  const decrement = () => setValue((prev) => Math.max(prev - 1, min));
 
   return (
-    <Input.Root 
-      type="number" 
+    <Input.Root
+      type="number"
       value={value}
       onChange={(e) => setValue(Number(e.target.value))}
       min={min}
@@ -340,19 +346,16 @@ const TextAreaInput = forwardRef<HTMLTextAreaElement>((props, ref) => (
 ));
 
 // Usage
-<TextAreaInput 
-  placeholder="Enter your message..."
-  rows={4}
-/>
+<TextAreaInput placeholder="Enter your message..." rows={4} />;
 ```
 
 ### Input with Validation
 
 ```tsx
-import { Input } from "@telegraph/input";
 import { Icon } from "@telegraph/icon";
-import { CheckCircle, AlertCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Input } from "@telegraph/input";
+import { AlertCircle, CheckCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const ValidatedInput = ({ validate, ...props }) => {
   const [value, setValue] = useState("");
@@ -389,7 +392,7 @@ export const ValidatedInput = ({ validate, ...props }) => {
 <ValidatedInput
   placeholder="Enter email"
   validate={(email) => /\S+@\S+\.\S+/.test(email)}
-/>
+/>;
 ```
 
 ## Design Tokens & Styling
@@ -399,11 +402,13 @@ The input component uses Telegraph design tokens for consistent styling:
 ### Size Tokens
 
 **Container Heights:**
+
 - Size `"1"`: `var(--tgph-spacing-6)` (24px)
-- Size `"2"`: `var(--tgph-spacing-8)` (32px) 
+- Size `"2"`: `var(--tgph-spacing-8)` (32px)
 - Size `"3"`: `var(--tgph-spacing-10)` (40px)
 
 **Text Sizes:**
+
 - Size `"1"`: `var(--tgph-text-1)`
 - Size `"2"`: `var(--tgph-text-2)`
 - Size `"3"`: `var(--tgph-text-3)`
@@ -411,43 +416,21 @@ The input component uses Telegraph design tokens for consistent styling:
 ### Color Tokens
 
 **Outline Variant:**
+
 - Background: `var(--tgph-surface-1)`
 - Border: `var(--tgph-gray-6)`
 - Hover Border: `var(--tgph-gray-7)`
 - Focus Border: `var(--tgph-blue-8)`
 
 **Ghost Variant:**
+
 - Background: `transparent`
 - Hover Background: `var(--tgph-gray-3)`
 - Focus Background: `var(--tgph-gray-4)`
 
 **Error State:**
+
 - Border: `var(--tgph-red-6)`
-
-### Custom Styling
-
-```css
-.tgph {
-  /* Custom input styling */
-  [data-tgph-input-container] {
-    --custom-focus-color: var(--tgph-accent-8);
-  }
-  
-  [data-tgph-input-container]:focus-within {
-    border-color: var(--custom-focus-color);
-  }
-  
-  /* Custom slot styling */
-  [data-tgph-input-slot] {
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-  }
-  
-  [data-tgph-input-container]:focus-within [data-tgph-input-slot] {
-    opacity: 1;
-  }
-}
-```
 
 ## Accessibility
 
@@ -486,19 +469,19 @@ The input component uses Telegraph design tokens for consistent styling:
 
 // ❌ Poor accessibility
 <Input placeholder="Search" /> {/* No label */}
-<Input 
+<Input
   LeadingComponent={<Icon icon={Search} />} {/* No alt text */}
 />
 ```
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Focus next element |
-| `Shift + Tab` | Focus previous element |
-| `Enter` | Submit form (if in form) |
-| `Escape` | Clear input (if custom clear handler) |
+| Key           | Action                                |
+| ------------- | ------------------------------------- |
+| `Tab`         | Focus next element                    |
+| `Shift + Tab` | Focus previous element                |
+| `Enter`       | Submit form (if in form)              |
+| `Escape`      | Clear input (if custom clear handler) |
 
 ### Best Practices
 
@@ -508,141 +491,35 @@ The input component uses Telegraph design tokens for consistent styling:
 4. **Placeholder Usage**: Use placeholders for examples, not instructions
 5. **Focus Order**: Ensure logical tab order through form fields
 
-## Testing
-
-### Testing Library Example
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Input } from "@telegraph/input";
-
-test("renders input with placeholder", () => {
-  render(<Input placeholder="Enter text" />);
-  
-  const input = screen.getByPlaceholderText("Enter text");
-  expect(input).toBeInTheDocument();
-});
-
-test("handles user input", async () => {
-  const user = userEvent.setup();
-  const handleChange = jest.fn();
-  
-  render(<Input onChange={handleChange} />);
-  
-  const input = screen.getByRole("textbox");
-  await user.type(input, "Hello World");
-  
-  expect(input).toHaveValue("Hello World");
-  expect(handleChange).toHaveBeenCalledTimes(11); // One per character
-});
-
-test("shows error state", () => {
-  const { container } = render(<Input errored />);
-  
-  const inputContainer = container.querySelector('[data-tgph-input-container]');
-  expect(inputContainer).toHaveAttribute('data-tgph-input-container-state', 'error');
-});
-```
-
-### Testing with Slots
-
-```tsx
-test("renders leading and trailing components", () => {
-  render(
-    <Input
-      LeadingComponent={<span data-testid="leading">Search</span>}
-      TrailingComponent={<button data-testid="trailing">Clear</button>}
-    />
-  );
-  
-  expect(screen.getByTestId("leading")).toBeInTheDocument();
-  expect(screen.getByTestId("trailing")).toBeInTheDocument();
-});
-
-test("focuses input when clicking container", async () => {
-  const user = userEvent.setup();
-  
-  const { container } = render(<Input placeholder="Click to focus" />);
-  
-  const inputContainer = container.querySelector('[data-tgph-input-container]');
-  const input = screen.getByRole("textbox");
-  
-  await user.click(inputContainer!);
-  
-  expect(input).toHaveFocus();
-});
-```
-
-### Form Testing
-
-```tsx
-test("integrates with form submission", async () => {
-  const user = userEvent.setup();
-  const handleSubmit = jest.fn();
-  
-  render(
-    <form onSubmit={handleSubmit}>
-      <Input name="email" placeholder="Email" />
-      <button type="submit">Submit</button>
-    </form>
-  );
-  
-  const input = screen.getByPlaceholderText("Email");
-  const submitButton = screen.getByRole("button", { name: "Submit" });
-  
-  await user.type(input, "test@example.com");
-  await user.click(submitButton);
-  
-  expect(handleSubmit).toHaveBeenCalled();
-});
-```
-
-### Accessibility Testing
-
-```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
-
-expect.extend(toHaveNoViolations);
-
-test("has no accessibility violations", async () => {
-  const { container } = render(
-    <div>
-      <label htmlFor="test-input">Test Input</label>
-      <Input id="test-input" placeholder="Enter text" />
-    </div>
-  );
-  
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
 ## Examples
 
 ### Contact Form
 
 ```tsx
+import { Button } from "@telegraph/button";
+import { Icon } from "@telegraph/icon";
 import { Input } from "@telegraph/input";
 import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
-import { Button } from "@telegraph/button";
-import { Icon } from "@telegraph/icon";
-import { User, Mail, MessageSquare } from "lucide-react";
+import { Mail, MessageSquare, User } from "lucide-react";
 
 export const ContactForm = () => (
   <Stack gap="4" as="form">
     <Stack gap="1">
-      <Text as="label" htmlFor="name">Full Name</Text>
+      <Text as="label" htmlFor="name">
+        Full Name
+      </Text>
       <Input
         id="name"
         placeholder="Enter your full name"
         LeadingComponent={<Icon icon={User} alt="Name" />}
       />
     </Stack>
-    
+
     <Stack gap="1">
-      <Text as="label" htmlFor="email">Email Address</Text>
+      <Text as="label" htmlFor="email">
+        Email Address
+      </Text>
       <Input
         id="email"
         type="email"
@@ -650,9 +527,11 @@ export const ContactForm = () => (
         LeadingComponent={<Icon icon={Mail} alt="Email" />}
       />
     </Stack>
-    
+
     <Stack gap="1">
-      <Text as="label" htmlFor="message">Message</Text>
+      <Text as="label" htmlFor="message">
+        Message
+      </Text>
       <Input.Root
         as="textarea"
         id="message"
@@ -664,7 +543,7 @@ export const ContactForm = () => (
         </Input.Slot>
       </Input.Root>
     </Stack>
-    
+
     <Button type="submit">Send Message</Button>
   </Stack>
 );
@@ -673,10 +552,10 @@ export const ContactForm = () => (
 ### E-commerce Search
 
 ```tsx
-import { Input } from "@telegraph/input";
 import { Button } from "@telegraph/button";
 import { Icon } from "@telegraph/icon";
-import { Search, Filter, ScanBarcode } from "lucide-react";
+import { Input } from "@telegraph/input";
+import { Filter, ScanBarcode, Search } from "lucide-react";
 import { useState } from "react";
 
 export const ProductSearch = () => {
@@ -713,11 +592,11 @@ export const ProductSearch = () => {
 ### Authentication Inputs
 
 ```tsx
-import { Input } from "@telegraph/input";
-import { Stack } from "@telegraph/layout";
 import { Button } from "@telegraph/button";
 import { Icon } from "@telegraph/icon";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Input } from "@telegraph/input";
+import { Stack } from "@telegraph/layout";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 
 export const LoginForm = () => {
@@ -730,7 +609,7 @@ export const LoginForm = () => {
         placeholder="Email address"
         LeadingComponent={<Icon icon={Mail} alt="Email" />}
       />
-      
+
       <Input
         type={showPassword ? "text" : "password"}
         placeholder="Password"
@@ -739,15 +618,15 @@ export const LoginForm = () => {
           <Button
             variant="ghost"
             size="1"
-            icon={{ 
-              icon: showPassword ? EyeOff : Eye, 
-              alt: showPassword ? "Hide password" : "Show password" 
+            icon={{
+              icon: showPassword ? EyeOff : Eye,
+              alt: showPassword ? "Hide password" : "Show password",
             }}
             onClick={() => setShowPassword(!showPassword)}
           />
         }
       />
-      
+
       <Button type="submit">Sign In</Button>
     </Stack>
   );
@@ -757,21 +636,11 @@ export const LoginForm = () => {
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/input)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to this component:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Open Storybook: `pnpm storybook`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 
 ## License
 
 MIT License - see [LICENSE](../../LICENSE) for details.
-

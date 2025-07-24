@@ -19,10 +19,10 @@ npm install @telegraph/helpers
 ## Quick Start
 
 ```tsx
-import { 
-  PolymorphicProps, 
-  useDeterminateState, 
-  RefToTgphRef 
+import {
+  PolymorphicProps,
+  RefToTgphRef,
+  useDeterminateState,
 } from "@telegraph/helpers";
 
 // Type-safe polymorphic component
@@ -147,11 +147,11 @@ type BoxProps<T extends TgphElement> = PolymorphicProps<T> & {
   margin?: string;
 };
 
-const Box = <T extends TgphElement = "div">({ 
-  as, 
-  padding, 
-  margin, 
-  ...props 
+const Box = <T extends TgphElement = "div">({
+  as,
+  padding,
+  margin,
+  ...props
 }: BoxProps<T>) => {
   const Component = as || "div";
   return <Component style={{ padding, margin }} {...props} />;
@@ -170,14 +170,17 @@ Polymorphic props with Telegraph-specific ref handling.
 ```tsx
 import { PolymorphicPropsWithTgphRef, TgphElement } from "@telegraph/helpers";
 
-type InputProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<T, HTMLInputElement> & {
+type InputProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
+  T,
+  HTMLInputElement
+> & {
   placeholder?: string;
 };
 
-const Input = <T extends TgphElement = "input">({ 
-  as, 
-  tgphRef, 
-  ...props 
+const Input = <T extends TgphElement = "input">({
+  as,
+  tgphRef,
+  ...props
 }: InputProps<T>) => {
   const Component = as || "input";
   return <Component ref={tgphRef} {...props} />;
@@ -191,12 +194,20 @@ Utility for combining element props with custom props.
 ```tsx
 import { PropsWithAs } from "@telegraph/helpers";
 
-type CustomButtonProps = PropsWithAs<"button", {
-  variant: "primary" | "secondary";
-  loading?: boolean;
-}>;
+type CustomButtonProps = PropsWithAs<
+  "button",
+  {
+    variant: "primary" | "secondary";
+    loading?: boolean;
+  }
+>;
 
-const CustomButton = ({ as: Component = "button", variant, loading, ...props }: CustomButtonProps) => {
+const CustomButton = ({
+  as: Component = "button",
+  variant,
+  loading,
+  ...props
+}: CustomButtonProps) => {
   return <Component disabled={loading} data-variant={variant} {...props} />;
 };
 ```
@@ -208,25 +219,26 @@ const CustomButton = ({ as: Component = "button", variant, loading, ...props }: 
 Component for handling ref forwarding between external libraries (like Radix) and Telegraph components.
 
 ```tsx
-import { RefToTgphRef } from "@telegraph/helpers";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@telegraph/button";
+import { RefToTgphRef } from "@telegraph/helpers";
 
 // Radix expects a `ref` prop, but Telegraph uses `tgphRef`
 <Popover.Trigger asChild>
   <RefToTgphRef>
     <Button>Open Popover</Button>
   </RefToTgphRef>
-</Popover.Trigger>
+</Popover.Trigger>;
 ```
 
 #### Use Cases
 
 **With Radix UI Primitives:**
+
 ```tsx
-import { RefToTgphRef } from "@telegraph/helpers";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@telegraph/button";
+import { RefToTgphRef } from "@telegraph/helpers";
 
 const DialogExample = () => (
   <Dialog.Root>
@@ -235,22 +247,21 @@ const DialogExample = () => (
         <Button>Open Dialog</Button>
       </RefToTgphRef>
     </Dialog.Trigger>
-    <Dialog.Content>
-      {/* Dialog content */}
-    </Dialog.Content>
+    <Dialog.Content>{/* Dialog content */}</Dialog.Content>
   </Dialog.Root>
 );
 ```
 
 **With Form Libraries:**
+
 ```tsx
 import { RefToTgphRef } from "@telegraph/helpers";
-import { Controller, useForm } from "react-hook-form";
 import { Input } from "@telegraph/input";
+import { Controller, useForm } from "react-hook-form";
 
 const FormExample = () => {
   const { control } = useForm();
-  
+
   return (
     <Controller
       name="email"
@@ -289,14 +300,14 @@ import { useState } from "react";
 
 const LoadingButton = () => {
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Ensure loading state persists for at least 1 second
   const buttonState = useDeterminateState({
     value: isLoading ? "loading" : "idle",
     determinateValue: "loading",
     minDurationMs: 1000,
   });
-  
+
   const handleClick = async () => {
     setIsLoading(true);
     try {
@@ -305,7 +316,7 @@ const LoadingButton = () => {
       setIsLoading(false); // Will transition back after minimum duration
     }
   };
-  
+
   return (
     <button onClick={handleClick} disabled={buttonState === "loading"}>
       {buttonState === "loading" ? "Loading..." : "Click me"}
@@ -323,14 +334,15 @@ type FormState = "idle" | "submitting" | "success" | "error";
 
 const FormWithFeedback = () => {
   const [formState, setFormState] = useState<FormState>("idle");
-  
+
   // Ensure success/error states are visible for at least 2 seconds
   const displayState = useDeterminateState({
     value: formState,
-    determinateValue: formState === "success" || formState === "error" ? formState : "idle",
+    determinateValue:
+      formState === "success" || formState === "error" ? formState : "idle",
     minDurationMs: 2000,
   });
-  
+
   const handleSubmit = async () => {
     setFormState("submitting");
     try {
@@ -343,7 +355,7 @@ const FormWithFeedback = () => {
       setTimeout(() => setFormState("idle"), 2500);
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <button disabled={displayState === "submitting"}>
@@ -382,7 +394,7 @@ const Text = forwardRef<HTMLElement, TextProps<TgphElement>>(
     ...props
   }: TextProps<T>, ref) => {
     const Component = as || "span";
-    
+
     return (
       <Component
         ref={tgphRef || ref}
@@ -437,7 +449,7 @@ const Card = ({ variant, children, ...props }: CardProps) => {
     // TypeScript knows `background` is required here
     return <div style={{ background: props.background }} />;
   }
-  
+
   // Handle secondary variant
   return <div>{children}</div>;
 };
@@ -450,9 +462,9 @@ const Card = ({ variant, children, ...props }: CardProps) => {
 ### Integration with External Libraries
 
 ```tsx
-import { RefToTgphRef, PolymorphicProps } from "@telegraph/helpers";
 import * as RadixPopover from "@radix-ui/react-popover";
 import { Button } from "@telegraph/button";
+import { PolymorphicProps, RefToTgphRef } from "@telegraph/helpers";
 
 type PopoverProps = PolymorphicProps<"div"> & {
   trigger: React.ReactNode;
@@ -464,9 +476,7 @@ const Popover = ({ trigger, content, ...props }: PopoverProps) => (
     <RadixPopover.Trigger asChild>
       <RefToTgphRef>{trigger}</RefToTgphRef>
     </RadixPopover.Trigger>
-    <RadixPopover.Content {...props}>
-      {content}
-    </RadixPopover.Content>
+    <RadixPopover.Content {...props}>{content}</RadixPopover.Content>
   </RadixPopover.Root>
 );
 
@@ -474,7 +484,7 @@ const Popover = ({ trigger, content, ...props }: PopoverProps) => (
 <Popover
   trigger={<Button>Open Menu</Button>}
   content={<div>Popover content</div>}
-/>
+/>;
 ```
 
 ## TypeScript
@@ -482,7 +492,7 @@ const Popover = ({ trigger, content, ...props }: PopoverProps) => (
 ### Utility Type Examples
 
 ```tsx
-import { Required, Optional, RemappedOmit } from "@telegraph/helpers";
+import { Optional, RemappedOmit, Required } from "@telegraph/helpers";
 
 // API response type
 type User = {
@@ -499,7 +509,7 @@ type CreateUserPayload = RemappedOmit<User, "id" | "createdAt" | "updatedAt">;
 
 // Update user payload (make all fields optional except id)
 type UpdateUserPayload = Required<
-  Optional<User, "name" | "email" | "avatar">, 
+  Optional<User, "name" | "email" | "avatar">,
   "id"
 >;
 
@@ -510,10 +520,10 @@ type PublicUser = RemappedOmit<User, "email">;
 ### Component Prop Patterns
 
 ```tsx
-import { 
-  PolymorphicProps, 
-  TgphElement, 
-  TgphComponentProps 
+import {
+  PolymorphicProps,
+  TgphComponentProps,
+  TgphElement,
 } from "@telegraph/helpers";
 
 // Pattern 1: Simple polymorphic component
@@ -522,7 +532,10 @@ type SimpleProps<T extends TgphElement> = PolymorphicProps<T> & {
 };
 
 // Pattern 2: Component with ref forwarding
-type WithRefProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<T, HTMLElement> & {
+type WithRefProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
+  T,
+  HTMLElement
+> & {
   variant?: string;
 };
 
@@ -532,92 +545,11 @@ type NativeProps = TgphComponentProps<"button"> & {
 };
 
 // Pattern 4: Conditional props based on variant
-type ConditionalProps<T extends TgphElement> = PolymorphicProps<T> & (
-  | { variant: "icon"; icon: React.ComponentType; label?: never; }
-  | { variant: "text"; label: string; icon?: never; }
-);
-```
-
-## Testing
-
-### Testing Type Utilities
-
-```tsx
-import { Required, Optional, RemappedOmit } from "@telegraph/helpers";
-
-// Type tests (compile-time verification)
-type User = { name?: string; email?: string; };
-
-// Test Required utility
-type RequiredUser = Required<User, "name">;
-const user1: RequiredUser = { name: "John" }; // ✓ Valid
-const user2: RequiredUser = { email: "john@example.com" }; // ✗ Error: missing name
-
-// Test Optional utility  
-type PartialUser = Optional<{ name: string; email: string; }, "email">;
-const user3: PartialUser = { name: "John" }; // ✓ Valid - email is optional
-
-// Test RemappedOmit utility
-type PublicUser = RemappedOmit<{ id: string; password: string; }, "password">;
-const user4: PublicUser = { id: "123" }; // ✓ Valid - password is removed
-```
-
-### Testing React Hooks
-
-```tsx
-import { renderHook, act } from "@testing-library/react";
-import { useDeterminateState } from "@telegraph/helpers";
-
-test("useDeterminateState maintains minimum duration", async () => {
-  const { result, rerender } = renderHook(
-    ({ value }) => useDeterminateState({
-      value,
-      determinateValue: "loading",
-      minDurationMs: 100,
-    }),
-    { initialProps: { value: "idle" } }
+type ConditionalProps<T extends TgphElement> = PolymorphicProps<T> &
+  (
+    | { variant: "icon"; icon: React.ComponentType; label?: never }
+    | { variant: "text"; label: string; icon?: never }
   );
-  
-  expect(result.current).toBe("idle");
-  
-  // Start loading
-  rerender({ value: "loading" });
-  expect(result.current).toBe("loading");
-  
-  // Try to stop loading immediately
-  rerender({ value: "idle" });
-  expect(result.current).toBe("loading"); // Still loading due to minimum duration
-  
-  // Wait for minimum duration
-  await act(async () => {
-    await new Promise(resolve => setTimeout(resolve, 150));
-  });
-  
-  expect(result.current).toBe("idle"); // Now transitioned
-});
-```
-
-### Testing Components with Helpers
-
-```tsx
-import { render, screen } from "@testing-library/react";
-import { RefToTgphRef } from "@telegraph/helpers";
-import * as Popover from "@radix-ui/react-popover";
-
-const TestComponent = () => (
-  <Popover.Root>
-    <Popover.Trigger asChild>
-      <RefToTgphRef>
-        <button>Trigger</button>
-      </RefToTgphRef>
-    </Popover.Trigger>
-  </Popover.Root>
-);
-
-test("RefToTgphRef forwards refs correctly", () => {
-  render(<TestComponent />);
-  expect(screen.getByRole("button")).toBeInTheDocument();
-});
 ```
 
 ## Best Practices
@@ -640,22 +572,11 @@ test("RefToTgphRef forwards refs correctly", () => {
 
 - [TypeScript Handbook - Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
 - [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
-- [Design System Guidelines](https://github.com/knocklabs/telegraph)
-- [CHANGELOG](./CHANGELOG.md)
 
 ## Contributing
-
-To contribute to these utilities:
-
-1. Clone the repository
-2. Install dependencies: `pnpm install`
-3. Start development: `pnpm dev`
-4. Run tests: `pnpm test`
 
 See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
 
 ## License
 
 MIT License - see [LICENSE](../../LICENSE) for details.
-
-
