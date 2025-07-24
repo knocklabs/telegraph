@@ -3,8 +3,8 @@
 [![npm version](https://img.shields.io/npm/v/@telegraph/nextjs.svg)](https://www.npmjs.com/package/@telegraph/nextjs)
 
 # @telegraph/nextjs
-> Next.js plugin for telegraph
 
+> Next.js plugin for telegraph
 
 ## Installation Instructions
 
@@ -12,8 +12,8 @@
 npm install @telegraph/nextjs
 ```
 
-
 ## Usage
+
 ```
 import { withTelegraph } from "@telegraph/nextjs";
 
@@ -21,4 +21,3 @@ const nextConfig = {};
 
 export default withTelegraph(nextConfig);
 ```
-
