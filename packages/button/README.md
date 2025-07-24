@@ -69,26 +69,6 @@ type IconProps = {
 };
 ```
 
-## Variants & Constants
-
-The button uses exported constants for consistent styling:
-
-```tsx
-import {
-  BUTTON_COLOR_MAP,
-  BUTTON_SIZE_MAP,
-} from "@telegraph/button/Button.constants";
-
-// Available variants
-// BUTTON_COLOR_MAP: solid, soft, outline, ghost
-
-// Available colors per variant
-// default, accent, gray, red, green, blue, yellow, purple
-
-// Available sizes
-// BUTTON_SIZE_MAP: "0", "1", "2", "3"
-```
-
 ### Visual Examples
 
 ```tsx
