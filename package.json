@@ -48,7 +48,7 @@
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/config-conventional": "^19.8.1",
     "@manypkg/cli": "^0.21.2",
     "@moonrepo/cli": "^1.28.2",
     "@storybook/addon-essentials": "^8.5.2",
