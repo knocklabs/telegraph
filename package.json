@@ -70,7 +70,7 @@
     "eslint-plugin-turbo": "^2.0.12",
     "husky": "^9.1.7",
     "jsdom": "^24.1.0",
-    "postcss-import": "^16.1.0",
+    "postcss-import": "^16.1.1",
     "postcss-import-ext-glob": "^2.1.1",
     "prettier": "^3.2.4",
     "prop-types": "^15.8.1",
