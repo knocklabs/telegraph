@@ -639,7 +639,7 @@ const Option = <T extends TgphElement>({
         onKeyDown={handleSelection}
         // Force null if selected equals null so we
         // can override the icon of the button
-        selected={selected === null ? null : selected ?? isSelected}
+        selected={selected === null ? null : (selected ?? isSelected)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         // Accessibility attributes
