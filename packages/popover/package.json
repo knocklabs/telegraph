@@ -36,7 +36,7 @@
     "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "motion": "^12.23.0"
+    "motion": "^12.23.12"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.4",
