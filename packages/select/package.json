@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/select",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "description": "A simple select component built on top of @telegraph/combobox",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/select",
   "author": "@knocklabs",

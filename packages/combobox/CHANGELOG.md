@@ -1,5 +1,17 @@
 # @telegraph/combobox
 
+## 0.1.2
+
+### Patch Changes
+
+- [#532](https://github.com/knocklabs/telegraph/pull/532) [`c0244e3`](https://github.com/knocklabs/telegraph/commit/c0244e3f4b6232f633ba4d99bb0eb603909c87fa) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.23.0 to 12.23.12
+
+- Updated dependencies [[`c0244e3`](https://github.com/knocklabs/telegraph/commit/c0244e3f4b6232f633ba4d99bb0eb603909c87fa)]:
+  - @telegraph/tooltip@0.0.55
+  - @telegraph/menu@0.1.2
+  - @telegraph/tag@0.0.95
+  - @telegraph/truncate@0.0.10
+
 ## 0.1.1
 
 ### Patch Changes
