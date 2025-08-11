@@ -27,12 +27,16 @@ export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
 
     childrenArray.forEach((child) => {
       if (React.isValidElement(child)) {
-        if (child.props.value) {
+        const childProps = child.props as Record<string, unknown>;
+        if (childProps.value) {
           // If it has a value prop, it's an option
           options.push(child);
-        } else if (child.props.children) {
+        } else if (childProps.children) {
           // If it has children, recursively search them
-          recursivelyFindOptionElements(child.props.children, options);
+          recursivelyFindOptionElements(
+            childProps.children as React.ReactNode,
+            options,
+          );
         }
       }
     });
@@ -119,8 +123,13 @@ export const findStringNodes = (children: React.ReactNode): string[] => {
       strNodes.push(child);
     }
 
-    if (React.isValidElement(child) && child.props.children) {
-      strNodes.push(...findStringNodes(child.props.children));
+    if (React.isValidElement(child)) {
+      const childProps = child.props as Record<string, unknown>;
+      if (childProps.children) {
+        strNodes.push(
+          ...findStringNodes(childProps.children as React.ReactNode),
+        );
+      }
     }
   });
 
