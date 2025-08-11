@@ -1,5 +1,17 @@
 # @telegraph/combobox
 
+## 0.1.3
+
+### Patch Changes
+
+- [#535](https://github.com/knocklabs/telegraph/pull/535) [`23ae20c`](https://github.com/knocklabs/telegraph/commit/23ae20c41f62e6f0a8c6d5c60db882a24cf8512d) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump lucide-react from 0.525.0 to 0.539.0
+
+- Updated dependencies [[`23ae20c`](https://github.com/knocklabs/telegraph/commit/23ae20c41f62e6f0a8c6d5c60db882a24cf8512d)]:
+  - @telegraph/button@0.1.2
+  - @telegraph/icon@0.2.2
+  - @telegraph/menu@0.1.3
+  - @telegraph/tag@0.0.96
+
 ## 0.1.2
 
 ### Patch Changes
