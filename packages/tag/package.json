@@ -39,7 +39,7 @@
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.525.0",
+    "lucide-react": "^0.539.0",
     "motion": "^12.23.12"
   },
   "devDependencies": {
