@@ -2344,7 +2344,7 @@ __metadata:
     "@storybook/addon-links": "npm:^8.5.2"
     "@storybook/addon-onboarding": "npm:^9.0.4"
     "@storybook/addon-themes": "npm:^8.5.2"
-    "@storybook/blocks": "npm:^8.5.2"
+    "@storybook/blocks": "npm:^8.6.14"
     "@storybook/icons": "npm:^1.4.0"
     "@storybook/react": "npm:^8.5.2"
     "@storybook/react-vite": "npm:^8.5.2"
@@ -4053,7 +4053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/blocks@npm:8.5.2, @storybook/blocks@npm:^8.5.2":
+"@storybook/blocks@npm:8.5.2":
   version: 8.5.2
   resolution: "@storybook/blocks@npm:8.5.2"
   dependencies:
@@ -4070,6 +4070,25 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10c0/a8345cdd2805aeaf1c6798ed91f34aa4b9edfcd25f55cbb0dd2bf027a30b23b9ee10f9e199d3022760df7b9d78357b7a2d3ed2f587e8bfa9aa456e5a77960926
+  languageName: node
+  linkType: hard
+
+"@storybook/blocks@npm:^8.6.14":
+  version: 8.6.14
+  resolution: "@storybook/blocks@npm:8.6.14"
+  dependencies:
+    "@storybook/icons": "npm:^1.2.12"
+    ts-dedent: "npm:^2.0.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    storybook: ^8.6.14
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/3f87c1f224031dee8b5fa6e296022997d21956832fea1e4ffa3525931c05a8ef6450b67c728635297a08548d65ef5abde05d7740d4ea3a9a811f2ff08a5f0148
   languageName: node
   linkType: hard
 
