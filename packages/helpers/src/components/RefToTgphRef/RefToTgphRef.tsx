@@ -71,7 +71,7 @@ const applyRefProps = (
       const validChild = child as Child;
       const $$typeof = validChild.$$typeof;
       const $$typeofType = validChild.type.$$typeof;
-      const childProps = validChild.props;
+      const childProps = validChild.props as Record<string, unknown>;
       const tgphRef = childProps.tgphRef;
 
       // If we detect that the child is a forwardRef, we to pass the `ref` prop
@@ -84,17 +84,17 @@ const applyRefProps = (
         $$typeofType === FORWARD_REF_SYMBOL
       ) {
         return React.cloneElement(validChild, {
-          ...mergeProps(props, childProps),
+          ...mergeProps(props, childProps as Record<string, unknown>),
           tgphRef: tgphRef || ref,
           ref: tgphRef || ref,
-        });
+        } as Record<string, unknown>);
       }
 
       // Otherwise, we can just pass the `tgphRef` prop to the child.
       return React.cloneElement(validChild, {
-        ...mergeProps(props, childProps),
+        ...mergeProps(props, childProps as Record<string, unknown>),
         tgphRef: tgphRef || ref,
-      });
+      } as Record<string, unknown>);
     }
 
     // If the child is not a valid element, we can just return it.

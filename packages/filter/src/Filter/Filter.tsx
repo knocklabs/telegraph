@@ -99,7 +99,10 @@ export const Root = ({ children }: FilterProps) => {
 export const Trigger = ({ children }: TriggerProps) => {
   const { triggerRef } = useFilter();
   return (
-    <Menu.Trigger tgphRef={triggerRef} asChild={true}>
+    <Menu.Trigger
+      tgphRef={triggerRef as React.RefObject<HTMLDivElement>}
+      asChild={true}
+    >
       {children}
     </Menu.Trigger>
   );
@@ -147,8 +150,9 @@ export const Content = ({
       : React.Children.toArray(childrenToUse).filter((child) => {
           // Check for TS
           if (React.isValidElement(child)) {
-            let menuItemName = child.props?.name || "";
-            let menuItemValue = child.props?.value || "";
+            const childProps = child.props as Record<string, unknown>;
+            let menuItemName = String(childProps?.name || "");
+            let menuItemValue = String(childProps?.value || "");
 
             // Wild block of code to get the actual name and value to filter by
             // from the nested menu item within a nested Parameter component
@@ -159,8 +163,16 @@ export const Content = ({
               : "";
             // Name of the sub-component we defined
             if (componentName === "Parameter") {
-              menuItemName = child?.props?.children?.props?.name || "";
-              menuItemValue = child?.props?.children?.props?.value || "";
+              const nestedChildren = childProps?.children as Record<
+                string,
+                unknown
+              >;
+              const nestedProps = nestedChildren?.props as Record<
+                string,
+                unknown
+              >;
+              menuItemName = String(nestedProps?.name || "");
+              menuItemValue = String(nestedProps?.value || "");
             }
 
             const shouldShowOption: boolean =

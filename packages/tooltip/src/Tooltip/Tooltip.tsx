@@ -73,7 +73,13 @@ const Tooltip = <T extends TgphElement>({
   const { groupOpen } = useTooltipGroup({ open: !!open, delay: delayDuration });
 
   const areAnyChildrenElementsDisabled = React.Children.toArray(children).some(
-    (child) => (child as React.ReactElement).props.disabled,
+    (child) => {
+      if (React.isValidElement(child)) {
+        const childProps = child.props as Record<string, unknown>;
+        return childProps.disabled;
+      }
+      return false;
+    },
   );
 
   const derivedDelayDuration =

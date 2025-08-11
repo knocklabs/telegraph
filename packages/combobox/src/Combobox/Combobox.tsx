@@ -118,8 +118,8 @@ const Root = <
 }: RootProps<O, LB>) => {
   const contentId = React.useId();
   const triggerId = React.useId();
-  const triggerRef = React.useRef(null);
-  const searchRef = React.useRef(null);
+  const triggerRef = React.useRef<HTMLDivElement>(null);
+  const searchRef = React.useRef<HTMLInputElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
   const options = React.useMemo(() => {
@@ -164,9 +164,9 @@ const Root = <
         disabled,
         searchQuery,
         setSearchQuery,
-        triggerRef,
-        searchRef,
-        contentRef,
+        triggerRef: triggerRef as React.RefObject<HTMLDivElement>,
+        searchRef: searchRef as React.RefObject<HTMLInputElement>,
+        contentRef: contentRef as React.RefObject<HTMLDivElement>,
         errored,
         layout,
         options,
