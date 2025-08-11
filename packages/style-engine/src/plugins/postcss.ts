@@ -125,7 +125,7 @@ function getTelegraphDeps(): DepObject {
           const nestedDeps = recursivelyGetTelegraphDeps(deps);
           Object.assign(allDeps, nestedDeps);
         }
-      } catch (err) {
+      } catch (_err) {
         // Skip if package.json cannot be read
         continue;
       }
