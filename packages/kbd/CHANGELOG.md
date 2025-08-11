@@ -1,5 +1,14 @@
 # @telegraph/kbd
 
+## 0.0.36
+
+### Patch Changes
+
+- [#535](https://github.com/knocklabs/telegraph/pull/535) [`23ae20c`](https://github.com/knocklabs/telegraph/commit/23ae20c41f62e6f0a8c6d5c60db882a24cf8512d) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump lucide-react from 0.525.0 to 0.539.0
+
+- Updated dependencies [[`23ae20c`](https://github.com/knocklabs/telegraph/commit/23ae20c41f62e6f0a8c6d5c60db882a24cf8512d)]:
+  - @telegraph/icon@0.2.2
+
 ## 0.0.35
 
 ### Patch Changes
