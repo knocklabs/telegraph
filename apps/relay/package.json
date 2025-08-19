@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",
-    "@babel/standalone": "^7.24.5",
+    "@babel/standalone": "^7.28.3",
     "@telegraph/appearance": "workspace:*",
     "@telegraph/button": "workspace:*",
     "@telegraph/combobox": "workspace:*",
