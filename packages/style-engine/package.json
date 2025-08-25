@@ -47,7 +47,7 @@
     "@telegraph/vite-config": "workspace:^",
     "@types/node": "^22.13.11",
     "@types/postcss-import": "^14.0.3",
-    "@types/react": "^19.0.0",
+    "@types/react": "^19.1.11",
     "eslint": "^8.56.0",
     "globby": "^14.1.0",
     "lightningcss": "^1.30.1",
