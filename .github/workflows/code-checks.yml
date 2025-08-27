@@ -3,6 +3,10 @@ name: Code Checks
 on:
   merge_group:
   pull_request:
+  push:
+    branches:
+      - changeset-release/main
+      - main
 
 concurrency:
   group: code-checks-${{ github.workflow }}-${{ github.ref }}
