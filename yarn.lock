@@ -4373,7 +4373,7 @@ __metadata:
     "@types/react": "npm:^19.1.11"
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     typescript: "npm:^5.9.2"
@@ -4411,7 +4411,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.1.11"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
@@ -4459,7 +4459,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.1.11"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     typescript: "npm:^5.9.2"
@@ -4504,7 +4504,7 @@ __metadata:
     "@types/react": "npm:^19.1.11"
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     typescript: "npm:^5.9.2"
@@ -4558,7 +4558,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.1.11"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     typescript: "npm:^5.9.2"
@@ -4612,7 +4612,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.1.11"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
@@ -4644,7 +4644,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.1.11"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
@@ -4951,7 +4951,7 @@ __metadata:
     "@types/react": "npm:^19.1.11"
     clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
-    lucide-react: "npm:^0.539.0"
+    lucide-react: "npm:^0.541.0"
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
@@ -11779,12 +11779,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.539.0":
-  version: 0.539.0
-  resolution: "lucide-react@npm:0.539.0"
+"lucide-react@npm:^0.541.0":
+  version: 0.541.0
+  resolution: "lucide-react@npm:0.541.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/ae85244dc23a78c51cc5f829ee09321cf68201333ab3d5614ed73cda77a4cd12284d3630a5a2167a39e31e02811056336de76a597c6874b28bb9984baf876494
+  checksum: 10c0/ffa23a9c9ead0832c7e0bb1eb7ed44e9f38bbf083d94b4d36a66eb23fa2099d4a52e1677c91eb7e8ea922621fa98e730f5d513bc56b3111b14b835bd8ab823ab
   languageName: node
   linkType: hard
 
