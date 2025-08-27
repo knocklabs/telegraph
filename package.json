@@ -54,7 +54,7 @@
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
     "@storybook/addon-links": "^8.6.14",
-    "@storybook/addon-onboarding": "^9.0.4",
+    "@storybook/addon-onboarding": "^8.6.14",
     "@storybook/addon-themes": "^8.6.14",
     "@storybook/blocks": "^8.6.14",
     "@storybook/icons": "^1.4.0",

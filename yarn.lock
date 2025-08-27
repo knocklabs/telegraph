@@ -2350,7 +2350,7 @@ __metadata:
     "@storybook/addon-essentials": "npm:^8.6.14"
     "@storybook/addon-interactions": "npm:^8.6.14"
     "@storybook/addon-links": "npm:^8.6.14"
-    "@storybook/addon-onboarding": "npm:^9.0.4"
+    "@storybook/addon-onboarding": "npm:^8.6.14"
     "@storybook/addon-themes": "npm:^8.6.14"
     "@storybook/blocks": "npm:^8.6.14"
     "@storybook/icons": "npm:^1.4.0"
@@ -4042,12 +4042,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-onboarding@npm:^9.0.4":
-  version: 9.0.4
-  resolution: "@storybook/addon-onboarding@npm:9.0.4"
+"@storybook/addon-onboarding@npm:^8.6.14":
+  version: 8.6.14
+  resolution: "@storybook/addon-onboarding@npm:8.6.14"
   peerDependencies:
-    storybook: ^9.0.4
-  checksum: 10c0/1bc848a7ece035f14e369b174de8ed9c8fc20d1f9d77e4f5e84421ff1d7d41e65bbe5ca2c2676026962fca68b40df2b01d004fecc5201653297235a0638415f8
+    storybook: ^8.6.14
+  checksum: 10c0/822b005c5e49aa84fe46207c383d178292484edf211d38997b9c07fc481bc61ff88eea8244a187b465101ec8a3c420543d21e5baaf4dbb9df2cd0149b89bfc8d
   languageName: node
   linkType: hard
 
