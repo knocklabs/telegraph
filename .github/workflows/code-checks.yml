@@ -16,9 +16,6 @@ on:
       - main
       - 'changeset-release/**'
 
-permissions:
-  contents: read
-
 concurrency:
   group: code-checks-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
