@@ -1,5 +1,14 @@
 # @telegraph/segmented-control
 
+## 0.1.3
+
+### Patch Changes
+
+- [#544](https://github.com/knocklabs/telegraph/pull/544) [`638bebc`](https://github.com/knocklabs/telegraph/commit/638bebccbcb604f76e86aba9d204fa27767cf608) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-toggle-group from 1.1.10 to 1.1.11
+
+- Updated dependencies [[`7d587b9`](https://github.com/knocklabs/telegraph/commit/7d587b908df373676d556bd2fc3c242c37917496)]:
+  - @telegraph/button@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes
