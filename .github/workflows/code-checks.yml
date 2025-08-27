@@ -12,6 +12,9 @@ on:
       - opened
       - synchronize
       - reopened
+    branches:
+      - main
+      - 'changeset-release/**'
 
 permissions:
   contents: read
