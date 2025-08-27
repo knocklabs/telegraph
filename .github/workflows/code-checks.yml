@@ -3,10 +3,18 @@ name: Code Checks
 on:
   merge_group:
   pull_request:
-  push:
-    branches:
-      - changeset-release/main
-      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
 
 concurrency:
   group: code-checks-${{ github.workflow }}-${{ github.ref }}
