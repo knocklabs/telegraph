@@ -21,9 +21,8 @@ export default {
   stories: ["../packages/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)"],
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
+    "@storybook/addon-onboarding",
     "@storybook/addon-themes",
-    "storybook-addon-render-modes",
   ],
   core: {
     builder: "@storybook/builder-vite", // 👈 The builder enabled here.
