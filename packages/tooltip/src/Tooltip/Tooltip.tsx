@@ -72,16 +72,14 @@ const Tooltip = <T extends TgphElement>({
   });
   const { groupOpen } = useTooltipGroup({ open: !!open, delay: delayDuration });
 
-  const areAnyChildrenElementsDisabled = React.useMemo(
-    () =>
-      React.Children.toArray(children).some((child) => {
-        if (React.isValidElement(child)) {
-          const childProps = child.props as Record<string, unknown>;
-          return childProps.disabled;
-        }
-        return false;
-      }),
-    [children],
+  const areAnyChildrenElementsDisabled = React.Children.toArray(children).some(
+    (child) => {
+      if (React.isValidElement(child)) {
+        const childProps = child.props as Record<string, unknown>;
+        return childProps.disabled;
+      }
+      return false;
+    },
   );
 
   const derivedDelayDuration =
@@ -89,35 +87,32 @@ const Tooltip = <T extends TgphElement>({
 
   const shouldAnimate = !groupOpen;
 
-  const deriveAnimationBasedOnSide = React.useCallback(
-    (side: TooltipProps<T>["side"]) => {
-      const ANIMATION_OFFSET = 5;
-      if (side === "top") {
-        return {
-          y: -ANIMATION_OFFSET,
-        };
-      }
+  const deriveAnimationBasedOnSide = (side: TooltipProps<T>["side"]) => {
+    const ANIMATION_OFFSET = 5;
+    if (side === "top") {
+      return {
+        y: -ANIMATION_OFFSET,
+      };
+    }
 
-      if (side === "bottom") {
-        return {
-          y: ANIMATION_OFFSET,
-        };
-      }
+    if (side === "bottom") {
+      return {
+        y: ANIMATION_OFFSET,
+      };
+    }
 
-      if (side === "left") {
-        return {
-          x: -ANIMATION_OFFSET,
-        };
-      }
+    if (side === "left") {
+      return {
+        x: -ANIMATION_OFFSET,
+      };
+    }
 
-      if (side === "right") {
-        return {
-          x: ANIMATION_OFFSET,
-        };
-      }
-    },
-    [],
-  );
+    if (side === "right") {
+      return {
+        x: ANIMATION_OFFSET,
+      };
+    }
+  };
 
   return (
     <LazyMotion features={domAnimation}>
@@ -158,17 +153,15 @@ const Tooltip = <T extends TgphElement>({
                   as={motion.div}
                   // Add tgph class so that this always works in portals
                   className="tgph"
-                  initial={React.useMemo(
-                    () =>
-                      shouldAnimate && !skipAnimation
-                        ? {
-                            opacity: 0,
-                            scale: 0.5,
-                            ...deriveAnimationBasedOnSide(side),
-                          }
-                        : {},
-                    [shouldAnimate, skipAnimation, deriveAnimationBasedOnSide, side],
-                  )}
+                  initial={
+                    shouldAnimate && !skipAnimation
+                      ? {
+                          opacity: 0,
+                          scale: 0.5,
+                          ...deriveAnimationBasedOnSide(side),
+                        }
+                      : {}
+                  }
                   animate={{
                     opacity: 1,
                     scale: 1,
@@ -190,10 +183,7 @@ const Tooltip = <T extends TgphElement>({
                     transformOrigin:
                       "var(--radix-tooltip-content-transform-origin)",
                   }}
-                  {...React.useMemo(
-                    () => (labelProps ? labelProps : {}),
-                    [labelProps],
-                  )}
+                  {...(labelProps ? labelProps : {})}
                   {...TooltipContentProps[appearance]}
                 >
                   {typeof label === "string" ? (
