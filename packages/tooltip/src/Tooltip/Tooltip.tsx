@@ -87,32 +87,22 @@ const Tooltip = <T extends TgphElement>({
 
   const shouldAnimate = !groupOpen;
 
-  const deriveAnimationBasedOnSide = (side: TooltipProps<T>["side"]) => {
+  const animationOffset = React.useMemo(() => {
     const ANIMATION_OFFSET = 5;
-    if (side === "top") {
-      return {
-        y: -ANIMATION_OFFSET,
-      };
-    }
+    return {
+      top: { y: -ANIMATION_OFFSET },
+      bottom: { y: ANIMATION_OFFSET },
+      left: { x: -ANIMATION_OFFSET },
+      right: { x: ANIMATION_OFFSET },
+    };
+  }, []);
 
-    if (side === "bottom") {
-      return {
-        y: ANIMATION_OFFSET,
-      };
-    }
-
-    if (side === "left") {
-      return {
-        x: -ANIMATION_OFFSET,
-      };
-    }
-
-    if (side === "right") {
-      return {
-        x: ANIMATION_OFFSET,
-      };
-    }
-  };
+  const deriveAnimationBasedOnSide = React.useCallback(
+    (side: TooltipProps<T>["side"]) => {
+      return animationOffset[side as keyof typeof animationOffset] || {};
+    },
+    [animationOffset],
+  );
 
   return (
     <LazyMotion features={domAnimation}>
