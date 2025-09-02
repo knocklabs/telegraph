@@ -39,7 +39,7 @@
     "cookie": "^1.0.2",
     "google-auth-library": "^10.1.0",
     "jsonwebtoken": "^9.0.2",
-    "next": "15.4.4",
+    "next": "15.5.2",
     "prettier": "^3.6.2",
     "prismjs": "^1.29.0",
     "react": "^19.1.1",
