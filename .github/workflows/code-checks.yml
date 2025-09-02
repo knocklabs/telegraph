@@ -2,7 +2,7 @@ name: Code Checks
 
 on:
   merge_group:
-  pull_request_target:
+  pull_request:
 
 concurrency:
   group: code-checks-${{ github.workflow }}-${{ github.ref }}
