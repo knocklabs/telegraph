@@ -3125,6 +3125,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-presence@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@radix-ui/react-presence@npm:1.1.5"
+  dependencies:
+    "@radix-ui/react-compose-refs": "npm:1.1.2"
+    "@radix-ui/react-use-layout-effect": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/d0e61d314250eeaef5369983cb790701d667f51734bafd98cf759072755562018052c594e6cdc5389789f4543cb0a4d98f03ff4e8f37338d6b5bf51a1700c1d1
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-primitive@npm:2.1.3":
   version: 2.1.3
   resolution: "@radix-ui/react-primitive@npm:2.1.3"
@@ -3241,17 +3261,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-tabs@npm:^1.1.12":
-  version: 1.1.12
-  resolution: "@radix-ui/react-tabs@npm:1.1.12"
+"@radix-ui/react-tabs@npm:^1.1.13":
+  version: 1.1.13
+  resolution: "@radix-ui/react-tabs@npm:1.1.13"
   dependencies:
-    "@radix-ui/primitive": "npm:1.1.2"
+    "@radix-ui/primitive": "npm:1.1.3"
     "@radix-ui/react-context": "npm:1.1.2"
     "@radix-ui/react-direction": "npm:1.1.1"
     "@radix-ui/react-id": "npm:1.1.1"
-    "@radix-ui/react-presence": "npm:1.1.4"
+    "@radix-ui/react-presence": "npm:1.1.5"
     "@radix-ui/react-primitive": "npm:2.1.3"
-    "@radix-ui/react-roving-focus": "npm:1.1.10"
+    "@radix-ui/react-roving-focus": "npm:1.1.11"
     "@radix-ui/react-use-controllable-state": "npm:1.2.2"
   peerDependencies:
     "@types/react": "*"
@@ -3263,7 +3283,7 @@ __metadata:
       optional: true
     "@types/react-dom":
       optional: true
-  checksum: 10c0/ca171a3170d746fe2c72cdbda4332a0267f887545142a98befa21895ff7198f0541405ece55c701ef4c06bdf45c92c01bf07a554eb57c2f7a1d972f47c636495
+  checksum: 10c0/a3c78cd8c30dcb95faf1605a8424a1a71dab121dfa6e9c0019bb30d0f36d882762c925b17596d4977990005a255d8ddc0b7454e4f83337fe557b45570a2d8058
   languageName: node
   linkType: hard
 
@@ -4589,7 +4609,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-tabs": "npm:^1.1.12"
+    "@radix-ui/react-tabs": "npm:^1.1.13"
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
