@@ -275,11 +275,11 @@ export const CustomTrigger = () => (
             <Combobox.Primitives.TriggerTag.Default value="tag2" />
           </Combobox.Primitives.TriggerTagsContainer>
         </Box>
-        <Stack direction="row" gap="1" align="center">
+        <Combobox.Primitives.TriggerActionContainer>
           <Combobox.Primitives.TriggerClear />
           <Box borderLeft="1" h="4" />
           <Combobox.Primitives.TriggerIndicator />
-        </Stack>
+        </Combobox.Primitives.TriggerActionsContainer>
       </Stack>
     </Combobox.Trigger>
     <Combobox.Content>{/* Content */}</Combobox.Content>
