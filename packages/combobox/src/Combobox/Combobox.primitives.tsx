@@ -403,12 +403,12 @@ const TriggerValue = () => {
     const layout = context.layout || "truncate";
 
     if (context.value.length === 0) {
-      return <Primitives.TriggerPlaceholder />;
+      return <TriggerPlaceholder />;
     }
 
     return (
       <LazyMotion features={domAnimation}>
-        <Primitives.TriggerTagsContainer>
+        <TriggerTagsContainer>
           {context.value.map((v, i) => {
             const value = getValueFromOption(v, context.legacyBehavior);
             if (
@@ -417,21 +417,21 @@ const TriggerValue = () => {
             ) {
               return (
                 <RefToTgphRef key={value}>
-                  <Primitives.TriggerTag.Default value={value} />
+                  <TriggerTag.Default value={value} />
                 </RefToTgphRef>
               );
             }
           })}
-        </Primitives.TriggerTagsContainer>
+        </TriggerTagsContainer>
       </LazyMotion>
     );
   }
 
   if (context && isSingleSelect(context.value)) {
     if (!context.value) {
-      return <Primitives.TriggerPlaceholder />;
+      return <TriggerPlaceholder />;
     }
-    return <Primitives.TriggerText />;
+    return <TriggerText />;
   }
 };
 
