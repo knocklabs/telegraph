@@ -5,7 +5,6 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
-  RefToTgphRef,
   type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
@@ -16,7 +15,6 @@ import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
-import { LazyMotion, domAnimation } from "motion/react";
 import React from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
@@ -185,45 +183,6 @@ const Root = <
   );
 };
 
-const TriggerValue = () => {
-  const context = React.useContext(ComboboxContext);
-
-  if (context.value && isMultiSelect(context.value)) {
-    const layout = context.layout || "truncate";
-
-    if (context.value.length === 0) {
-      return <Primitives.TriggerPlaceholder />;
-    }
-
-    return (
-      <LazyMotion features={domAnimation}>
-        <Primitives.TriggerTagsContainer>
-          {context.value.map((v, i) => {
-            const value = getValueFromOption(v, context.legacyBehavior);
-            if (
-              value &&
-              ((layout === "truncate" && i <= 1) || layout === "wrap")
-            ) {
-              return (
-                <RefToTgphRef key={value}>
-                  <Primitives.TriggerTag.Default value={value} />
-                </RefToTgphRef>
-              );
-            }
-          })}
-        </Primitives.TriggerTagsContainer>
-      </LazyMotion>
-    );
-  }
-
-  if (context && isSingleSelect(context.value)) {
-    if (!context.value) {
-      return <Primitives.TriggerPlaceholder />;
-    }
-    return <Primitives.TriggerText />;
-  }
-};
-
 type ChildrenValue = string | Array<string> | never;
 
 // When utilizing the `children` prop as a function, we need to infer the type of the value
@@ -354,12 +313,14 @@ const Trigger = <V extends ChildrenValue>({
             children
           )
         ) : (
-          <TriggerValue />
+          <>
+            <Primitives.TriggerValue />
+            <Primitives.TriggerActionsContainer>
+              <Primitives.TriggerClear />
+              <Primitives.TriggerIndicator />
+            </Primitives.TriggerActionsContainer>
+          </>
         )}
-        <Stack align="center" gap="1">
-          <Primitives.TriggerClear />
-          <Primitives.TriggerIndicator />
-        </Stack>
       </TelegraphButton.Root>
     </TelegraphMenu.Trigger>
   );
