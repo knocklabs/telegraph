@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.1.5
+
+### Patch Changes
+
+- [#557](https://github.com/knocklabs/telegraph/pull/557) [`366b466`](https://github.com/knocklabs/telegraph/commit/366b4662d31fc822f42ea144207d8897d08ef3ad) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: restructure combobox primitives to make dropping down to primitives easier
+
 ## 0.1.4
 
 ### Patch Changes
