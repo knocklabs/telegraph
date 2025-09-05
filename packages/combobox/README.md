@@ -275,11 +275,11 @@ export const CustomTrigger = () => (
             <Combobox.Primitives.TriggerTag.Default value="tag2" />
           </Combobox.Primitives.TriggerTagsContainer>
         </Box>
-        <Stack direction="row" gap="1" align="center">
+        <Combobox.Primitives.TriggerActionContainer>
           <Combobox.Primitives.TriggerClear />
           <Box borderLeft="1" h="4" />
           <Combobox.Primitives.TriggerIndicator />
-        </Stack>
+        </Combobox.Primitives.TriggerActionsContainer>
       </Stack>
     </Combobox.Trigger>
     <Combobox.Content>{/* Content */}</Combobox.Content>
@@ -370,7 +370,9 @@ The combobox includes primitive components for advanced customization:
 - **`<Combobox.Primitives.TriggerText>`** - Selected value text
 - **`<Combobox.Primitives.TriggerPlaceholder>`** - Placeholder text
 - **`<Combobox.Primitives.TriggerTagsContainer>`** - Multi-select tags container
+- **`<Combobox.Primitives.TriggerActionsContainer>`** - Container for actions section of trigger
 - **`<Combobox.Primitives.TriggerTag.*>`** - Tag components for multi-select
+- **`<Combobox.Primitives.TriggerValue>`** - Displays the value of the trigger for single and multi-select
 
 For detailed primitive documentation, see the [Primitives](#primitives) section above.
 

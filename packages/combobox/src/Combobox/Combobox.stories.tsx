@@ -492,7 +492,11 @@ export const SingleSelectWithCustomTrigger: Story = {
           clearable
         >
           <TelegraphCombobox.Trigger<typeof value>>
-            {({ value }) => value?.label}
+            <TelegraphCombobox.Primitives.TriggerValue />
+            <TelegraphCombobox.Primitives.TriggerActionsContainer>
+              <TelegraphCombobox.Primitives.TriggerClear />
+              <TelegraphCombobox.Primitives.TriggerIndicator />
+            </TelegraphCombobox.Primitives.TriggerActionsContainer>
           </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
@@ -525,16 +529,11 @@ export const MultiSelectWithCustomTrigger: Story = {
           clearable
         >
           <TelegraphCombobox.Trigger<typeof value>>
-            <TelegraphCombobox.Primitives.TriggerTagsContainer>
-              {value.map((v) => (
-                <TelegraphCombobox.Primitives.TriggerTag.Default
-                  value={v}
-                  key={v}
-                >
-                  {v.toUpperCase()}
-                </TelegraphCombobox.Primitives.TriggerTag.Default>
-              ))}
-            </TelegraphCombobox.Primitives.TriggerTagsContainer>
+            <TelegraphCombobox.Primitives.TriggerValue />
+            <TelegraphCombobox.Primitives.TriggerActionsContainer>
+              <TelegraphCombobox.Primitives.TriggerClear />
+              <TelegraphCombobox.Primitives.TriggerIndicator />
+            </TelegraphCombobox.Primitives.TriggerActionsContainer>
           </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>

@@ -1,11 +1,16 @@
 import { Button } from "@telegraph/button";
-import { type TgphComponentProps, type TgphElement } from "@telegraph/helpers";
+import {
+  RefToTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+} from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
 import { ChevronsUpDown, X } from "lucide-react";
+import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import React from "react";
 
@@ -385,6 +390,51 @@ const TriggerTagDefault = <T extends TgphElement>({
   );
 };
 
+type TriggerActionsContainerProps = TgphComponentProps<typeof Stack>;
+
+const TriggerActionsContainer = (props: TriggerActionsContainerProps) => {
+  return <Stack align="center" gap="1" {...props} />;
+};
+
+const TriggerValue = () => {
+  const context = React.useContext(ComboboxContext);
+
+  if (context.value && isMultiSelect(context.value)) {
+    const layout = context.layout || "truncate";
+
+    if (context.value.length === 0) {
+      return <TriggerPlaceholder />;
+    }
+
+    return (
+      <LazyMotion features={domAnimation}>
+        <TriggerTagsContainer>
+          {context.value.map((v, i) => {
+            const value = getValueFromOption(v, context.legacyBehavior);
+            if (
+              value &&
+              ((layout === "truncate" && i <= 1) || layout === "wrap")
+            ) {
+              return (
+                <RefToTgphRef key={value}>
+                  <TriggerTag.Default value={value} />
+                </RefToTgphRef>
+              );
+            }
+          })}
+        </TriggerTagsContainer>
+      </LazyMotion>
+    );
+  }
+
+  if (context && isSingleSelect(context.value)) {
+    if (!context.value) {
+      return <TriggerPlaceholder />;
+    }
+    return <TriggerText />;
+  }
+};
+
 const TriggerTag = {
   Root: TriggerTagRoot,
   Text: TriggerTagText,
@@ -398,7 +448,9 @@ const Primitives = {
   TriggerText,
   TriggerPlaceholder,
   TriggerTagsContainer,
+  TriggerActionsContainer,
   TriggerTag,
+  TriggerValue,
 };
 
 export { Primitives };
