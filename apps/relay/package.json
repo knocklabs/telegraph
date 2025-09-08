@@ -37,7 +37,7 @@
     "@telegraph/typography": "workspace:*",
     "ai": "^4.3.16",
     "cookie": "^1.0.2",
-    "google-auth-library": "^10.1.0",
+    "google-auth-library": "^10.3.0",
     "jsonwebtoken": "^9.0.2",
     "next": "15.5.2",
     "prettier": "^3.6.2",
