@@ -4493,7 +4493,7 @@ __metadata:
     cookie: "npm:^1.0.2"
     eslint: "npm:^8.56.0"
     eslint-config-next: "npm:15.4.4"
-    google-auth-library: "npm:^10.1.0"
+    google-auth-library: "npm:^10.3.0"
     jsonwebtoken: "npm:^9.0.2"
     next: "npm:15.5.2"
     postcss: "npm:^8.5.3"
@@ -9727,9 +9727,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-auth-library@npm:^10.1.0":
-  version: 10.1.0
-  resolution: "google-auth-library@npm:10.1.0"
+"google-auth-library@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "google-auth-library@npm:10.3.0"
   dependencies:
     base64-js: "npm:^1.3.0"
     ecdsa-sig-formatter: "npm:^1.0.11"
@@ -9738,7 +9738,7 @@ __metadata:
     google-logging-utils: "npm:^1.0.0"
     gtoken: "npm:^8.0.0"
     jws: "npm:^4.0.0"
-  checksum: 10c0/5d769a1df775b2e1a7f5ddcd98da4b424db765b4404d050260628204b0cf25764aeec45f2227c50402ab10988954f09c4c86f537de1f30b1c5a476b62c4205f1
+  checksum: 10c0/7500ee430025bbc6435094e3147767d296d2e669bb7414b44d1771046bff4bd2de684364f8c52b47e90ab88a6ea3b55ff4202397474a40ccb85a02d06edaa652
   languageName: node
   linkType: hard
 
