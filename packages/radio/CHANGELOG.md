@@ -1,5 +1,15 @@
 # @telegraph/radio
 
+## 0.0.77
+
+### Patch Changes
+
+- [#561](https://github.com/knocklabs/telegraph/pull/561) [`1b5cac1`](https://github.com/knocklabs/telegraph/commit/1b5cac1e87648956e281a976439286b4e78719e8) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-radio-group from 1.3.7 to 1.3.8
+
+- Updated dependencies [[`efcbf52`](https://github.com/knocklabs/telegraph/commit/efcbf52f5b3b364ba20fafc3cb66bbf0681172d7)]:
+  - @telegraph/button@0.1.4
+  - @telegraph/icon@0.2.4
+
 ## 0.0.76
 
 ### Patch Changes
