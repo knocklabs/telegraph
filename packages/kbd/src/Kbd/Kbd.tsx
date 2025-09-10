@@ -19,10 +19,11 @@ const Kbd = ({
   contrast: contrastProp = false,
   label,
   style,
+  eventKey,
   ...props
 }: KbdProps) => {
   const { appearance: appearanceProp } = useAppearance();
-  const { pressed } = usePressed({ key: props.eventKey || label });
+  const { pressed } = usePressed({ key: eventKey || label });
   const { icon, text } = getIconOrKey(label);
 
   const contrast = contrastProp ? "contrast" : "default";
