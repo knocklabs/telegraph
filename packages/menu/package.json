@@ -32,7 +32,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-menu": "^2.1.15",
+    "@radix-ui/react-menu": "^2.1.16",
     "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
