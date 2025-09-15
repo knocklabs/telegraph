@@ -1,5 +1,18 @@
 # @telegraph/kbd
 
+## 0.0.38
+
+### Patch Changes
+
+- [#560](https://github.com/knocklabs/telegraph/pull/560) [`efcbf52`](https://github.com/knocklabs/telegraph/commit/efcbf52f5b3b364ba20fafc3cb66bbf0681172d7) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump lucide-react from 0.541.0 to 0.542.0
+
+- [#564](https://github.com/knocklabs/telegraph/pull/564) [`5d37d0a`](https://github.com/knocklabs/telegraph/commit/5d37d0acfbc00fb58f686f49ab27b99d108bf71c) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix(kbd): prevent eventKey prop from being passed to DOM
+
+  Fixes React warning by destructuring eventKey from props to prevent it from being spread to the Stack component via {...props}. Updates usePressed hook to use the destructured eventKey variable instead of props.eventKey.
+
+- Updated dependencies [[`efcbf52`](https://github.com/knocklabs/telegraph/commit/efcbf52f5b3b364ba20fafc3cb66bbf0681172d7)]:
+  - @telegraph/icon@0.2.4
+
 ## 0.0.37
 
 ### Patch Changes
