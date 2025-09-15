@@ -1,5 +1,11 @@
 # @telegraph/popover
 
+## 0.1.3
+
+### Patch Changes
+
+- [#566](https://github.com/knocklabs/telegraph/pull/566) [`38867ab`](https://github.com/knocklabs/telegraph/commit/38867ab2cc762056a3486bfa7d25cc90841db608) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-popover from 1.1.14 to 1.1.15
+
 ## 0.1.2
 
 ### Patch Changes
