@@ -1,5 +1,13 @@
 # @telegraph/button
 
+## 0.2.0
+
+### Minor Changes
+
+- [#569](https://github.com/knocklabs/telegraph/pull/569) [`4817bf4`](https://github.com/knocklabs/telegraph/commit/4817bf496e77214d5a99426d4a559e99fd98e8f0) Thanks [@andy-knock](https://github.com/andy-knock)! - fix(button): switch default "type" from "submit" to "button"
+
+  The previous default type="submit" is a minority use case (Buttons used for submitting forms). As such, make it opt-in as opposed to the default.
+
 ## 0.1.4
 
 ### Patch Changes
