@@ -85,7 +85,7 @@ const Root = <T extends TgphElement>({
   state: stateProp = "default",
   active = false,
   disabled,
-  type,
+  type = "button",
   className,
   children,
   style,
@@ -147,7 +147,7 @@ const Root = <T extends TgphElement>({
         data-tgph-button-variant={variant}
         data-tgph-button-color={color}
         disabled={state === "disabled" || state === "loading"}
-        type={derivedAs === "button" ? type : undefined} // only pass type if it's a button
+        type={type} // only pass type if it's a button
         {...otherProps}
         {...props}
       >
