@@ -114,4 +114,35 @@ describe("Button", () => {
     );
     expect(container.firstChild?.nodeName).toBe("BUTTON");
   });
+  it("default button should not submit form", () => {
+    const handleSubmit = vi.fn();
+    const { container } = render(
+      <form onSubmit={handleSubmit}>
+        <Button>Button</Button>
+      </form>,
+    );
+    const button = container.querySelector("button");
+    button?.click();
+    expect(handleSubmit).not.toHaveBeenCalled();
+  });
+  it('button with type="submit" should submit form', () => {
+    const handleSubmit = vi.fn((e) => e.preventDefault());
+    const { container } = render(
+      <form onSubmit={handleSubmit}>
+        <Button type="submit">Submit</Button>
+      </form>,
+    );
+    const button = container.querySelector("button");
+    button?.click();
+    expect(handleSubmit).toHaveBeenCalled();
+  });
+  it('type prop is not passed when as="a"', () => {
+    const { container } = render(
+      <Button as="a" type="submit">
+        Link Button
+      </Button>,
+    );
+    const anchor = container.querySelector("a");
+    expect(anchor).not.toHaveAttribute("type");
+  });
 });

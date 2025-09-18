@@ -40,6 +40,7 @@ git clone https://github.com/knocklabs/telegraph.git
 
 2. Install dependencies
 ```bash
+asdf install
 yarn install
 ```
 
@@ -54,6 +55,11 @@ yarn dev:storybook
 ```
 
 5. Open `http://localhost:3005` in your browser. You can now make changes to the code and see them refresh automatically.
+
+6. Running tests
+```bash
+yarn test:watch
+```
 
 ### Before committing changes
 
