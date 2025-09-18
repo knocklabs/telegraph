@@ -40,6 +40,7 @@ git clone https://github.com/knocklabs/telegraph.git
 
 2. Install dependencies
 ```bash
+asdf install
 yarn install
 ```
 
