@@ -110,7 +110,8 @@ const Root = <T extends TgphElement>({
   // To do this reliably, we convert the element back to a button if it is
   // disabled. We do this so we can use the native button element's disabled
   // state to prevent clicks.
-  const derivedAs = disabled ? "button" : as;
+  // We also want to trivially pass in "button" if no "as" prop is provided
+  const derivedAs = disabled || !as ? "button" : as;
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const childrenArray = React.Children.toArray(children);
@@ -134,7 +135,7 @@ const Root = <T extends TgphElement>({
       value={{ variant, size, color, state, layout, active, type }}
     >
       <Stack
-        as={derivedAs || "button"}
+        as={derivedAs}
         className={clsx("tgph-button", className)}
         display="inline-flex"
         align="center"
@@ -147,7 +148,7 @@ const Root = <T extends TgphElement>({
         data-tgph-button-variant={variant}
         data-tgph-button-color={color}
         disabled={state === "disabled" || state === "loading"}
-        type={type}
+        {...(!as && derivedAs === "button" && { type })} // Only pass in type if we are a button
         {...otherProps}
         {...props}
       >
