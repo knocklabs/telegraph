@@ -119,7 +119,7 @@ describe("Button", () => {
     const { container } = render(
       <form onSubmit={handleSubmit}>
         <Button>Button</Button>
-      </form>
+      </form>,
     );
     const button = container.querySelector("button");
     button?.click();
@@ -130,7 +130,7 @@ describe("Button", () => {
     const { container } = render(
       <form onSubmit={handleSubmit}>
         <Button type="submit">Submit</Button>
-      </form>
+      </form>,
     );
     const button = container.querySelector("button");
     button?.click();
