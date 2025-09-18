@@ -56,6 +56,11 @@ yarn dev:storybook
 
 5. Open `http://localhost:3005` in your browser. You can now make changes to the code and see them refresh automatically.
 
+6. Running tests
+```bash
+yarn test
+```
+
 ### Before committing changes
 
 Before committing, run the following commands to ensure the code is formatted and linted:

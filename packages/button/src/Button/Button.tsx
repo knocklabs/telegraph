@@ -35,6 +35,7 @@ type RootBaseProps = {
   size?: ButtonSize;
   state?: "default" | "loading";
   active?: boolean;
+  type?: "button" | "submit";
 };
 
 type InternalProps = {
@@ -59,6 +60,7 @@ const ButtonContext = React.createContext<
   state: "default",
   layout: "default",
   active: false,
+  type: "button",
 });
 
 type DeriveStateParams = {
@@ -83,6 +85,7 @@ const Root = <T extends TgphElement>({
   state: stateProp = "default",
   active = false,
   disabled,
+  type,
   className,
   children,
   style,
@@ -115,10 +118,10 @@ const Root = <T extends TgphElement>({
       const child = childrenArray[0] as
         | React.ReactComponentElement<typeof Icon>
         | {
-            props: {
-              icon: undefined;
-            };
+          props: {
+            icon: undefined;
           };
+        };
       if (child?.props?.icon) {
         return "icon-only";
       }
@@ -128,7 +131,7 @@ const Root = <T extends TgphElement>({
 
   return (
     <ButtonContext.Provider
-      value={{ variant, size, color, state, layout, active }}
+      value={{ variant, size, color, state, layout, active, type }}
     >
       <Stack
         as={derivedAs || "button"}
@@ -144,6 +147,7 @@ const Root = <T extends TgphElement>({
         data-tgph-button-variant={variant}
         data-tgph-button-color={color}
         disabled={state === "disabled" || state === "loading"}
+        type={derivedAs === "button" ? type : undefined} // only pass type if it's a button
         {...otherProps}
         {...props}
       >
@@ -183,7 +187,7 @@ const Icon = <T extends TgphElement>({
     color:
       color ??
       ICON_COLOR_MAP[context.variant][
-        context.state === "disabled" ? "disabled" : context.color
+      context.state === "disabled" ? "disabled" : context.color
       ],
     variant: variant ?? ICON_VARIANT_MAP[context.layout],
   };
@@ -230,7 +234,7 @@ const Text = <T extends TgphElement>({
   const derivedColor =
     color ??
     TEXT_COLOR_MAP[context.variant][
-      context.state === "disabled" ? "disabled" : context.color
+    context.state === "disabled" ? "disabled" : context.color
     ];
   return (
     <TelegraphText
@@ -255,15 +259,15 @@ type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
 type BaseDefaultProps =
   | {
-      leadingIcon?: DefaultIconProps;
-      trailingIcon?: DefaultIconProps;
-      icon?: never;
-    }
+    leadingIcon?: DefaultIconProps;
+    trailingIcon?: DefaultIconProps;
+    icon?: never;
+  }
   | {
-      icon?: DefaultIconProps;
-      leadingIcon?: never;
-      trailingIcon?: never;
-    };
+    icon?: DefaultIconProps;
+    leadingIcon?: never;
+    trailingIcon?: never;
+  };
 type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root> &
   BaseDefaultProps;
