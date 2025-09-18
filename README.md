@@ -58,7 +58,7 @@ yarn dev:storybook
 
 6. Running tests
 ```bash
-yarn test
+yarn test:watch
 ```
 
 ### Before committing changes
