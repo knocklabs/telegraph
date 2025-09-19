@@ -13,7 +13,7 @@ import { useStyleEngine } from "@telegraph/style-engine";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
-import React, { ButtonHTMLAttributes } from "react";
+import React from "react";
 
 import {
   BUTTON_COLOR_MAP,
@@ -35,7 +35,6 @@ type RootBaseProps = {
   size?: ButtonSize;
   state?: "default" | "loading";
   active?: boolean;
-  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
 };
 
 type InternalProps = {
@@ -60,7 +59,6 @@ const ButtonContext = React.createContext<
   state: "default",
   layout: "default",
   active: false,
-  type: "button",
 });
 
 type DeriveStateParams = {
@@ -132,7 +130,7 @@ const Root = <T extends TgphElement>({
 
   return (
     <ButtonContext.Provider
-      value={{ variant, size, color, state, layout, active, type }}
+      value={{ variant, size, color, state, layout, active }}
     >
       <Stack
         as={derivedAs}
