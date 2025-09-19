@@ -1,5 +1,13 @@
 # @telegraph/tabs
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [[`76a99cc`](https://github.com/knocklabs/telegraph/commit/76a99cc774ccf5609cabb6ee3d429fbc5ba1dee8)]:
+  - @telegraph/button@0.2.1
+  - @telegraph/menu@0.1.7
+
 ## 0.0.20
 
 ### Patch Changes

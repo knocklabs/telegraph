@@ -1,5 +1,13 @@
 # @telegraph/button
 
+## 0.2.1
+
+### Patch Changes
+
+- [#571](https://github.com/knocklabs/telegraph/pull/571) [`76a99cc`](https://github.com/knocklabs/telegraph/commit/76a99cc774ccf5609cabb6ee3d429fbc5ba1dee8) Thanks [@andy-knock](https://github.com/andy-knock)! - fix: Make button "type" prop fully compatible with HTML button type prop
+
+  In 0.2.0, we mistakenly overrode the typing for the type prop (which also broke full compatibility with html button) and modified the behavior of it. It was unnecessary to override the typing for the prop.
+
 ## 0.2.0
 
 ### Minor Changes
