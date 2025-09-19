@@ -125,6 +125,17 @@ describe("Button", () => {
     button?.click();
     expect(handleSubmit).not.toHaveBeenCalled();
   });
+  it("type=undefined should not submit form", () => {
+    const handleSubmit = vi.fn((e) => e.preventDefault());
+    const { container } = render(
+      <form onSubmit={handleSubmit}>
+        <Button type={undefined}>Submit</Button>
+      </form>,
+    );
+    const button = container.querySelector("button");
+    button?.click();
+    expect(handleSubmit).not.toHaveBeenCalled();
+  });
   it('type="submit" should submit form', () => {
     const handleSubmit = vi.fn((e) => e.preventDefault());
     const { container } = render(
@@ -151,18 +162,6 @@ describe("Button", () => {
     button?.click();
     expect(input.value).toBe("bar");
   });
-  it("type=undefined should submit form", () => {
-    const handleSubmit = vi.fn((e) => e.preventDefault());
-    const { container } = render(
-      <form onSubmit={handleSubmit}>
-        <Button type={undefined}>Submit</Button>
-      </form>,
-    );
-    const button = container.querySelector("button");
-    button?.click();
-    expect(handleSubmit).toHaveBeenCalled();
-  });
-
   it('type prop is not passed when as="a"', () => {
     const { container } = render(
       <Button as="a" type="submit">
