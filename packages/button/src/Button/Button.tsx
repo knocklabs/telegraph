@@ -35,7 +35,6 @@ type RootBaseProps = {
   size?: ButtonSize;
   state?: "default" | "loading";
   active?: boolean;
-  type?: "button" | "submit";
 };
 
 type InternalProps = {
@@ -60,7 +59,6 @@ const ButtonContext = React.createContext<
   state: "default",
   layout: "default",
   active: false,
-  type: "button",
 });
 
 type DeriveStateParams = {
@@ -132,7 +130,7 @@ const Root = <T extends TgphElement>({
 
   return (
     <ButtonContext.Provider
-      value={{ variant, size, color, state, layout, active, type }}
+      value={{ variant, size, color, state, layout, active }}
     >
       <Stack
         as={derivedAs}
