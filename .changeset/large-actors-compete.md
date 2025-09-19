@@ -2,6 +2,6 @@
 "@telegraph/button": patch
 ---
 
-fix: make type prop compatible with HTMLButtonProps['type']
+fix: Make button "type" prop fully compatible with HTML button type prop
 
-In 0.2.0, we were only supporting submit and button, there is also reset and undefined values to support
+In 0.2.0, we mistakenly overrode the typing for the type prop (which also broke full compatibility with html button) and modified the behavior of it. It was unnecessary to override the typing for the prop.

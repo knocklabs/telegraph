@@ -114,7 +114,7 @@ describe("Button", () => {
     );
     expect(container.firstChild?.nodeName).toBe("BUTTON");
   });
-  it("default button is BUTTON behavior, should not submit form", () => {
+  it("default button should not submit form", () => {
     const handleSubmit = vi.fn();
     const { container } = render(
       <form onSubmit={handleSubmit}>
