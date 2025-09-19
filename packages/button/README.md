@@ -56,6 +56,7 @@ export const Example = () => (
 | `state`        | `"default" \| "loading"`                                                                | `"default"` | Button state                   |
 | `active`       | `boolean`                                                                               | `false`     | Whether button appears pressed |
 | `disabled`     | `boolean`                                                                               | `false`     | Whether button is disabled     |
+| `type`         | `"button" \| "submit" \| "reset"`                                                       | `"button"`  | Button type attribute          |
 | `leadingIcon`  | `IconProps`                                                                             | `undefined` | Icon before text               |
 | `trailingIcon` | `IconProps`                                                                             | `undefined` | Icon after text                |
 | `icon`         | `IconProps`                                                                             | `undefined` | Icon-only button               |
