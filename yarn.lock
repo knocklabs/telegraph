@@ -1271,12 +1271,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/postcss-global-data@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@csstools/postcss-global-data@npm:3.0.0"
+"@csstools/postcss-global-data@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@csstools/postcss-global-data@npm:3.1.0"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/9c40b07c3c01c4736fca7835297685c5f865a93973d02214bcd9ed1300884fb2dcbb491afccf1e9a971e628340886be83f853b7a86ad51a104031440aad9dbcf
+  checksum: 10c0/fe394a7c8073456433289459921175d222faa30b9859a11625482331de931bd04cd724fa15243a622cda30413cb1de4a1d701de68937a95743522c29aa43a584
   languageName: node
   linkType: hard
 
@@ -4465,7 +4465,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@telegraph/postcss-config@workspace:packages/postcss-config"
   dependencies:
-    "@csstools/postcss-global-data": "npm:^3.0.0"
+    "@csstools/postcss-global-data": "npm:^3.1.0"
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
