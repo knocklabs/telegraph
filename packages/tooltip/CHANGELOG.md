@@ -1,5 +1,11 @@
 # @telegraph/tooltip
 
+## 0.0.56
+
+### Patch Changes
+
+- [#580](https://github.com/knocklabs/telegraph/pull/580) [`fccb828`](https://github.com/knocklabs/telegraph/commit/fccb828f5863e9020d9e33ae981799bdf8e66d47) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-tooltip from 1.2.7 to 1.2.8
+
 ## 0.0.55
 
 ### Patch Changes
