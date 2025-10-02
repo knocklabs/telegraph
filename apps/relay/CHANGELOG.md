@@ -1,5 +1,17 @@
 # @telegraph/relay
 
+## 0.1.16
+
+### Patch Changes
+
+- Updated dependencies [[`fccb828`](https://github.com/knocklabs/telegraph/commit/fccb828f5863e9020d9e33ae981799bdf8e66d47)]:
+  - @telegraph/tooltip@0.0.56
+  - @telegraph/combobox@0.1.9
+  - @telegraph/tag@0.0.101
+  - @telegraph/truncate@0.0.11
+  - @telegraph/filter@0.0.26
+  - @telegraph/select@0.0.63
+
 ## 0.1.15
 
 ### Patch Changes
