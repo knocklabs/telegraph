@@ -38,7 +38,7 @@
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/menu": "workspace:^",
-    "lucide-react": "^0.542.0"
+    "lucide-react": "^0.544.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
