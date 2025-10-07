@@ -30,7 +30,9 @@
     "release": "yarn release:publish && yarn changeset tag",
     "release:publish": "yarn workspaces foreach -Rpt --no-private --from '@telegraph/*' npm publish --access public --tolerate-republish",
     "postinstall": "manypkg check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "manypkg:check": "manypkg check",
+    "manypkg:fix": "manypkg fix"
   },
   "workspaces": [
     "packages/*",
@@ -43,7 +45,7 @@
       "INTERNAL_MISMATCH"
     ]
   },
-  "dependencies": {
+  "devDependencies": {
     "@actions/core": "^1.11.1",
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.27.7",
