@@ -30,7 +30,9 @@
     "release": "yarn release:publish && yarn changeset tag",
     "release:publish": "yarn workspaces foreach -Rpt --no-private --from '@telegraph/*' npm publish --access public --tolerate-republish",
     "postinstall": "manypkg check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "manypkg:check": "manypkg check",
+    "manypkg:fix": "manypkg fix"
   },
   "workspaces": [
     "packages/*",
@@ -43,13 +45,13 @@
       "INTERNAL_MISMATCH"
     ]
   },
-  "dependencies": {
+  "devDependencies": {
     "@actions/core": "^1.11.1",
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@manypkg/cli": "^0.21.2",
+    "@manypkg/cli": "^0.25.1",
     "@moonrepo/cli": "^1.28.2",
     "@storybook/addon-links": "^9.1.3",
     "@storybook/addon-onboarding": "^9.1.3",
