@@ -11,36 +11,6 @@ import { loadModule } from "./helpers";
 const TELEGRAPH_VARIABLE_PREFIX = "tgph";
 
 /**
- * Searches for a specific value within an object and returns the path to that value.
- *
- * @param {Object} obj The object to search through.
- * @param {*} targetValue The value to search for.
- * @returns {Object|null} An object containing the path and value if found, otherwise null.
- */
-function findPathAndValue(obj, targetValue) {
-  function search(currentObject, currentValue, path) {
-    if (currentValue === targetValue) {
-      return { value: currentValue, path };
-    }
-
-    if (typeof currentObject === "object" && currentObject !== null) {
-      for (const key of Object.keys(currentObject)) {
-        const result = search(
-          currentObject[key],
-          currentObject[key],
-          path ? `${path}.${key}` : key,
-        );
-        if (result) return result;
-      }
-    }
-
-    return null;
-  }
-
-  return search(obj, obj, "");
-}
-
-/**
  * Converts design tokens into CSS custom properties.
  *
  * @param {Object} variables The design tokens to convert.
@@ -123,7 +93,7 @@ const main = async (funcArgs) => {
     );
     const [breakpointTokens] = tokensToCss(tgph.tokens, "breakpoint");
 
-    const defaultCss = `:root {${tokens}} [data-tgph-appearance="light"]{${lightTokens}} [data-tgph-appearance="dark"]{${darkTokens}}`;
+    const defaultCss = `:root {${tokens} ${lightTokens}} [data-tgph-appearance="dark"]{${darkTokens}}`;
     const lightCss = `:root {${lightTokens} ${tokens} }`;
     const darkCss = `:root {${darkTokens} ${tokens} }`;
     const breakpointCss = `${breakpointTokens}`;
