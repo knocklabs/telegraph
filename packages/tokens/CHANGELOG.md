@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.1.2
+
+### Patch Changes
+
+- [#587](https://github.com/knocklabs/telegraph/pull/587) [`0474256`](https://github.com/knocklabs/telegraph/commit/047425631c37101998e39896a34812da5bd4dcbb) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: tokens shouldn't need explicit appearance data attribute
+
 ## 0.1.1
 
 ### Patch Changes

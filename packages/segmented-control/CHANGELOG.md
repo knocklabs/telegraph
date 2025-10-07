@@ -1,5 +1,13 @@
 # @telegraph/segmented-control
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.2.2
+  - @telegraph/button@0.2.3
+
 ## 0.1.7
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @telegraph/select
 
+## 0.0.65
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/combobox@0.1.11
+
 ## 0.0.64
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @telegraph/filter
 
+## 0.0.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.2.2
+  - @telegraph/button@0.2.3
+  - @telegraph/combobox@0.1.11
+  - @telegraph/icon@0.2.6
+  - @telegraph/menu@0.1.9
+
 ## 0.0.27
 
 ### Patch Changes
