@@ -4016,7 +4016,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4044,7 +4044,7 @@ __metadata:
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4083,7 +4083,7 @@ __metadata:
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4103,7 +4103,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4130,7 +4130,7 @@ __metadata:
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4150,7 +4150,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4175,7 +4175,7 @@ __metadata:
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4202,7 +4202,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4229,7 +4229,7 @@ __metadata:
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4255,7 +4255,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4284,7 +4284,7 @@ __metadata:
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4316,7 +4316,7 @@ __metadata:
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4333,7 +4333,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^8.56.0"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   languageName: unknown
   linkType: soft
@@ -4356,7 +4356,7 @@ __metadata:
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4379,7 +4379,7 @@ __metadata:
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.6"
     postcss-discard-empty: "npm:^7.0.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -4390,7 +4390,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@trivago/prettier-plugin-sort-imports": "npm:^5.2.2"
     prettier: "npm:^3.6.2"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -4412,7 +4412,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4472,7 +4472,7 @@ __metadata:
     react-dom: "npm:^19.1.1"
     react-markdown: "npm:^10.1.0"
     remark-gfm: "npm:^4.0.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     zod: "npm:^4.1.11"
   languageName: unknown
   linkType: soft
@@ -4494,7 +4494,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4517,7 +4517,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4542,7 +4542,7 @@ __metadata:
     next: "npm:15.5.4"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -4564,7 +4564,7 @@ __metadata:
     postcss: "npm:^8.5.3"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4592,7 +4592,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4623,7 +4623,7 @@ __metadata:
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4646,7 +4646,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4665,7 +4665,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     lightningcss: "npm:^1.30.1"
     react: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4692,7 +4692,7 @@ __metadata:
     motion: "npm:^12.23.12"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4716,7 +4716,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4742,7 +4742,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4759,7 +4759,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^4.5.0"
     eslint: "npm:^8.56.0"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vite: "npm:^6.0.11"
     vite-plugin-dts: "npm:^4.5.4"
   languageName: unknown
@@ -15233,13 +15233,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.8.3, typescript@npm:^5.9.2":
+"typescript@npm:^5.8.3":
   version: 5.9.2
   resolution: "typescript@npm:5.9.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^5.9.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
   languageName: node
   linkType: hard
 
@@ -15253,13 +15263,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.9.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
   version: 5.9.2
   resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=d69c25"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/66fc07779427a7c3fa97da0cf2e62595eaff2cea4594d45497d294bfa7cb514d164f0b6ce7a5121652cf44c0822af74e29ee579c771c405e002d1f23cf06bfde
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=d69c25"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/6f7e53bf0d9702350deeb6f35e08b69cbc8b958c33e0ec77bdc0ad6a6c8e280f3959dcbfde6f5b0848bece57810696489deaaa53d75de3578ff255d168c1efbd
   languageName: node
   linkType: hard
 
