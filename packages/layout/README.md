@@ -115,22 +115,23 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 #### Layout Props
 
-| Prop                 | Type                                                               | Description            |
-| -------------------- | ------------------------------------------------------------------ | ---------------------- |
-| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode           |
-| `w` / `width`        | `SpacingToken`                                                     | Width                  |
-| `h` / `height`       | `SpacingToken`                                                     | Height                 |
-| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width          |
-| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height         |
-| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width          |
-| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height         |
-| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type          |
-| `top`                | `SpacingToken`                                                     | Top position offset    |
-| `right`              | `SpacingToken`                                                     | Right position offset  |
-| `bottom`             | `SpacingToken`                                                     | Bottom position offset |
-| `left`               | `SpacingToken`                                                     | Left position offset   |
-| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order    |
-| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior      |
+| Prop                 | Type                                                               | Description                           |
+| -------------------- | ------------------------------------------------------------------ | ------------------------------------- |
+| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode                          |
+| `w` / `width`        | `SpacingToken`                                                     | Width                                 |
+| `h` / `height`       | `SpacingToken`                                                     | Height                                |
+| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width                         |
+| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height                        |
+| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width                         |
+| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height                        |
+| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type                         |
+| `top`                | `SpacingToken`                                                     | Top position offset                   |
+| `right`              | `SpacingToken`                                                     | Right position offset                 |
+| `bottom`             | `SpacingToken`                                                     | Bottom position offset                |
+| `left`               | `SpacingToken`                                                     | Left position offset                  |
+| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order                   |
+| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior                     |
+| `alignSelf`          | `CSSProperties["alignSelf"]`                                       | Override flex alignment for this item |
 
 #### Interactive Props
 
@@ -346,6 +347,48 @@ import { Box } from "@telegraph/layout";
 >
   <input placeholder="Focus me to see container change" />
 </Box>
+```
+
+### Flexbox Alignment
+
+```tsx
+import { Box, Stack } from "@telegraph/layout";
+
+// Override alignment for specific items
+<Stack direction="row" align="flex-start" gap="2" h="32">
+  <Box p="4" bg="gray-3" rounded="1">
+    Item 1
+  </Box>
+  <Box p="4" bg="gray-3" rounded="1" alignSelf="center">
+    Centered Item
+  </Box>
+  <Box p="4" bg="gray-3" rounded="1" alignSelf="flex-end">
+    Bottom Item
+  </Box>
+</Stack>
+
+// Practical example: Icon with multi-line text
+<Stack direction="row" align="baseline" gap="2">
+  <Box alignSelf="center">
+    <Icon icon={Mail} />
+  </Box>
+  <Box>
+    <Text>
+      This is a long text that might wrap to multiple lines.
+      The icon will stay centered vertically.
+    </Text>
+  </Box>
+</Stack>
+
+// Stretch item to fill container
+<Stack direction="row" gap="2" h="24">
+  <Box p="2" bg="gray-3" rounded="1">
+    Fixed size
+  </Box>
+  <Box p="2" bg="gray-3" rounded="1" alignSelf="stretch">
+    Stretched to fill height
+  </Box>
+</Stack>
 ```
 
 ### Complex Layouts

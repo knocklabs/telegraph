@@ -1,5 +1,6 @@
 import type { tokens } from "@telegraph/style-engine";
 import type { CssVarProp } from "@telegraph/style-engine";
+import type { CSSProperties } from "react";
 
 export type BaseStyleProps = {
   display: "block" | "inline-block" | "inline" | "flex" | "inline-flex";
@@ -56,6 +57,7 @@ export type BaseStyleProps = {
   right: keyof typeof tokens.spacing;
   bottom: keyof typeof tokens.spacing;
   overflow: "hidden" | "visible" | "scroll" | "auto";
+  alignSelf: CSSProperties["alignSelf"];
 };
 
 type ShorthandStyleProps = {
@@ -348,6 +350,10 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   overflow: {
     cssVar: "--overflow",
+    value: "VARIABLE",
+  },
+  alignSelf: {
+    cssVar: "--align-self",
     value: "VARIABLE",
   },
 } as const;
