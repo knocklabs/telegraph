@@ -12,10 +12,8 @@
     ".": {
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/css/default.css"
-    },
-    "./default.css": "./dist/css/default.css"
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "files": [
     "dist",
@@ -38,16 +36,16 @@
     "@telegraph/typography": "workspace:^"
   },
   "devDependencies": {
-    "@knocklabs/eslint-config": "^0.0.3",
+    "@knocklabs/eslint-config": "^0.0.5",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^19.0.0",
+    "@types/react": "^19.1.11",
     "eslint": "^8.56.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "typescript": "^5.5.4",
+    "typescript": "^5.9.3",
     "vite": "^6.0.11"
   },
   "peerDependencies": {
