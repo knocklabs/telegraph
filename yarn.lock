@@ -2233,7 +2233,7 @@ __metadata:
     "@storybook/addon-links": "npm:^9.1.3"
     "@storybook/addon-onboarding": "npm:^9.1.3"
     "@storybook/addon-themes": "npm:^9.1.3"
-    "@storybook/icons": "npm:^1.4.0"
+    "@storybook/icons": "npm:^1.6.0"
     "@storybook/react": "npm:^9.1.3"
     "@storybook/react-vite": "npm:^9.1.7"
     "@testing-library/dom": "npm:^10.0.0"
@@ -3903,13 +3903,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/icons@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@storybook/icons@npm:1.4.0"
+"@storybook/icons@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@storybook/icons@npm:1.6.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-  checksum: 10c0/fd0514fb3fa431a8b5939fe1d9fc336b253ef2c25b34792d2d4ee59e13321108d34f8bf223a0981482f54f83c5ef47ffd1a98c376ca9071011c1b8afe2b01d43
+  checksum: 10c0/bbec9201a78a730195f9cf377b15856dc414a54d04e30d16c379d062425cc617bfd0d6586ba1716012cfbdab461f0c9693a6a52920f9bd09c7b4291fb116f59c
   languageName: node
   linkType: hard
 
