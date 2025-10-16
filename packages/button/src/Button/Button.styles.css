@@ -2,6 +2,7 @@
   --tgph-button-hover-shadow: none;
   --tgph-button-focus-shadow: none;
   --tgph-button-active-shadow: none;
+  --tgph-button-hover-text-color: none;
 
   appearance: none;
   cursor: pointer;
@@ -14,8 +15,21 @@
   text-decoration: none;
 }
 
+.tgph-button [data-button-text],
+.tgph-button [data-button-icon] {
+  transition: color 0.2s ease-in-out,
+}
+
 .tgph-button:hover {
   box-shadow: var(--tgph-button-hover-shadow);
+}
+
+.tgph-button:hover [data-button-text] {
+  --color: var(--tgph-button-hover-text-color) !important;
+}
+
+.tgph-button:hover [data-button-icon] {
+  --color: var(--tgph-button-hover-text-color) !important;
 }
 
 .tgph-button:focus {
