@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.2.5
+
+### Patch Changes
+
+- [#595](https://github.com/knocklabs/telegraph/pull/595) [`3c4a714`](https://github.com/knocklabs/telegraph/commit/3c4a7142e9e9272701f924162ca938d548fef625) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix: adds hover state to gray button text color
+
 ## 0.2.4
 
 ### Patch Changes
