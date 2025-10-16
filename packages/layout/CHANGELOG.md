@@ -1,5 +1,11 @@
 # @telegraph/layout
 
+## 0.2.3
+
+### Patch Changes
+
+- [#593](https://github.com/knocklabs/telegraph/pull/593) [`322bf1e`](https://github.com/knocklabs/telegraph/commit/322bf1e463b0a2a5b83899843d8ea54004b89b9b) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add data-list package, add alignSelf prop to Box component.
+
 ## 0.2.2
 
 ### Patch Changes
