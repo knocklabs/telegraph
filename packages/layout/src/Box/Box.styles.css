@@ -20,6 +20,7 @@
   --right: auto;
   --bottom: auto;
   --overflow: visible;
+  --align-self: auto;
 
   background-color: var(--background-color);
   border-width: var(--border-width);
@@ -42,6 +43,7 @@
   right: var(--right);
   bottom: var(--bottom);
   overflow: var(--overflow);
+  align-self: var(--align-self);
 }
 
 .tgph-box--interactive {

@@ -1,4 +1,4 @@
-# {{emoji}} {{package_name}}
+# {{package_name}}
 
 > {{package_description}}
 
@@ -13,25 +13,6 @@
 ```bash
 npm install @telegraph/{{package_name}}
 ```
-
-### Add stylesheet
-
-{{#if has_stylesheet}}
-Pick one:
-
-Via CSS (preferred):
-
-```css
-@import "@telegraph/{{package_name}}";
-```
-
-Via Javascript:
-
-```tsx
-import "@telegraph/{{package_name}}/default.css";
-```
-
-> Then, include `className="tgph"` on the farthest parent element wrapping the telegraph components
 
 ## Quick Start
 

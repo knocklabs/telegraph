@@ -1,0 +1,55 @@
+{
+  "name": "@telegraph/data-list",
+  "version": "0.0.0",
+  "description": "Flexible data list component for displaying label-value pairs in a structured, composable format.",
+  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/data-list",
+  "author": "@knocklabs",
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "prettier": "@telegraph/prettier-config",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "vite build --watch --emptyOutDir false",
+    "build": "yarn clean && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
+    "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@telegraph/helpers": "workspace:^",
+    "@telegraph/icon": "workspace:^",
+    "@telegraph/layout": "workspace:^",
+    "@telegraph/typography": "workspace:^"
+  },
+  "devDependencies": {
+    "@knocklabs/eslint-config": "^0.0.5",
+    "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/postcss-config": "workspace:^",
+    "@telegraph/prettier-config": "workspace:^",
+    "@telegraph/vite-config": "workspace:^",
+    "@types/react": "^19.1.11",
+    "eslint": "^8.56.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "typescript": "^5.9.3",
+    "vite": "^6.0.11"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}
