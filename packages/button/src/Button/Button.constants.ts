@@ -9,6 +9,7 @@ export type BaseStyleProps = {
   hover_buttonShadowColor: keyof typeof tokens.color;
   focus_buttonShadowColor: keyof typeof tokens.color;
   active_buttonShadowColor: keyof typeof tokens.color;
+  hover_textColor?: keyof typeof tokens.color;
 };
 
 export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
@@ -27,6 +28,10 @@ export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   active_buttonShadowColor: {
     cssVar: "--tgph-button-active-shadow",
     value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
+  },
+  hover_textColor: {
+    cssVar: "--tgph-button-hover-text-color",
+    value: "var(--tgph-VARIABLE)",
   },
 } as const;
 
@@ -204,12 +209,14 @@ export const BUTTON_COLOR_MAP = {
       hover_backgroundColor: "gray-3",
       focus_backgroundColor: "gray-4",
       active_backgroundColor: "gray-4",
+      hover_textColor: "gray-12",
     },
     gray: {
       backgroundColor: "transparent",
       hover_backgroundColor: "gray-3",
       focus_backgroundColor: "gray-4",
       active_backgroundColor: "gray-4",
+      hover_textColor: "gray-12",
     },
     red: {
       backgroundColor: "transparent",
