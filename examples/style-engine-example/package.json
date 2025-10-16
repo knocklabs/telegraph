@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/style-engine-example",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "private": true,
   "scripts": {
     "dev:examples": "next dev --turbopack",
