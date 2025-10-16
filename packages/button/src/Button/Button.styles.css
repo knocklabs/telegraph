@@ -24,11 +24,13 @@
   box-shadow: var(--tgph-button-hover-shadow);
 }
 
-.tgph-button:hover [data-button-text] {
+.tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-text],
+.tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-text] {
   --color: var(--tgph-button-hover-text-color) !important;
 }
 
-.tgph-button:hover [data-button-icon] {
+.tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-icon],
+.tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-icon] {
   --color: var(--tgph-button-hover-text-color) !important;
 }
 

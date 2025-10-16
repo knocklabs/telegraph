@@ -92,48 +92,56 @@ export const BUTTON_COLOR_MAP = {
       hover_backgroundColor: "gray-4",
       focus_backgroundColor: "gray-5",
       active_backgroundColor: "gray-5",
+      hover_textColor: "gray-12",
     },
     gray: {
       backgroundColor: "gray-3",
       hover_backgroundColor: "gray-4",
       focus_backgroundColor: "gray-5",
       active_backgroundColor: "gray-5",
+      hover_textColor: "gray-11",
     },
     red: {
       backgroundColor: "red-3",
       hover_backgroundColor: "red-4",
       focus_backgroundColor: "red-5",
       active_backgroundColor: "red-5",
+      hover_textColor: "red-11",
     },
     accent: {
       backgroundColor: "accent-3",
       hover_backgroundColor: "accent-4",
       focus_backgroundColor: "accent-5",
       active_backgroundColor: "accent-5",
+      hover_textColor: "accent-11",
     },
     green: {
       backgroundColor: "green-3",
       hover_backgroundColor: "green-4",
       focus_backgroundColor: "green-5",
       active_backgroundColor: "green-5",
+      hover_textColor: "green-11",
     },
     blue: {
       backgroundColor: "blue-3",
       hover_backgroundColor: "blue-4",
       focus_backgroundColor: "blue-5",
       active_backgroundColor: "blue-5",
+      hover_textColor: "blue-11",
     },
     yellow: {
       backgroundColor: "yellow-3",
       hover_backgroundColor: "yellow-4",
       focus_backgroundColor: "yellow-5",
       active_backgroundColor: "yellow-5",
+      hover_textColor: "yellow-11",
     },
     purple: {
       backgroundColor: "purple-3",
       hover_backgroundColor: "purple-4",
       focus_backgroundColor: "purple-5",
       active_backgroundColor: "purple-5",
+      hover_textColor: "purple-11",
     },
   },
   outline: {
@@ -144,6 +152,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "gray-7",
       focus_buttonShadowColor: "gray-8",
       active_buttonShadowColor: "gray-8",
+      hover_textColor: "gray-12",
     },
     gray: {
       backgroundColor: "surface-1",
@@ -153,6 +162,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "gray-7",
       focus_buttonShadowColor: "gray-8",
       active_buttonShadowColor: "gray-8",
+      hover_textColor: "gray-11",
     },
     red: {
       backgroundColor: "surface-1",
@@ -161,6 +171,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "red-7",
       focus_buttonShadowColor: "red-8",
       active_buttonShadowColor: "red-8",
+      hover_textColor: "red-11",
     },
     accent: {
       backgroundColor: "surface-1",
@@ -169,6 +180,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "accent-7",
       focus_buttonShadowColor: "accent-8",
       active_buttonShadowColor: "accent-8",
+      hover_textColor: "accent-11",
     },
     green: {
       backgroundColor: "surface-1",
@@ -177,6 +189,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "green-7",
       focus_buttonShadowColor: "green-8",
       active_buttonShadowColor: "green-8",
+      hover_textColor: "green-11",
     },
     blue: {
       backgroundColor: "surface-1",
@@ -185,6 +198,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "blue-7",
       focus_buttonShadowColor: "blue-8",
       active_buttonShadowColor: "blue-8",
+      hover_textColor: "blue-11",
     },
     yellow: {
       backgroundColor: "surface-1",
@@ -193,6 +207,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "yellow-7",
       focus_buttonShadowColor: "yellow-8",
       active_buttonShadowColor: "yellow-8",
+      hover_textColor: "yellow-11",
     },
     purple: {
       backgroundColor: "surface-1",
@@ -201,6 +216,7 @@ export const BUTTON_COLOR_MAP = {
       hover_buttonShadowColor: "purple-7",
       focus_buttonShadowColor: "purple-8",
       active_buttonShadowColor: "purple-8",
+      hover_textColor: "purple-11",
     },
   },
   ghost: {
@@ -223,36 +239,42 @@ export const BUTTON_COLOR_MAP = {
       hover_backgroundColor: "red-3",
       focus_backgroundColor: "red-4",
       active_backgroundColor: "red-4",
+      hover_textColor: "red-11",
     },
     accent: {
       backgroundColor: "transparent",
       hover_backgroundColor: "accent-3",
       focus_backgroundColor: "accent-4",
       active_backgroundColor: "accent-4",
+      hover_textColor: "accent-11",
     },
     green: {
       backgroundColor: "transparent",
       hover_backgroundColor: "green-3",
       focus_backgroundColor: "green-4",
       active_backgroundColor: "green-4",
+      hover_textColor: "green-11",
     },
     blue: {
       backgroundColor: "transparent",
       hover_backgroundColor: "blue-3",
       focus_backgroundColor: "blue-4",
       active_backgroundColor: "blue-4",
+      hover_textColor: "blue-11",
     },
     yellow: {
       backgroundColor: "transparent",
       hover_backgroundColor: "yellow-3",
       focus_backgroundColor: "yellow-4",
       active_backgroundColor: "yellow-4",
+      hover_textColor: "yellow-11",
     },
     purple: {
       backgroundColor: "transparent",
       hover_backgroundColor: "purple-3",
       focus_backgroundColor: "purple-4",
       active_backgroundColor: "purple-4",
+      hover_textColor: "purple-11",
     },
   },
 } as const;
