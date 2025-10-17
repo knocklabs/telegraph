@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.2.7
+
+### Patch Changes
+
+- [#599](https://github.com/knocklabs/telegraph/pull/599) [`0073505`](https://github.com/knocklabs/telegraph/commit/00735055f9078e61ac4b31d7bc306b57c5fc6c7b) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - fix: fixes solid variants of button hover colors
+
 ## 0.2.6
 
 ### Patch Changes
