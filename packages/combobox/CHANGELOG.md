@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.1.16
+
+### Patch Changes
+
+- [#603](https://github.com/knocklabs/telegraph/pull/603) [`f369dc9`](https://github.com/knocklabs/telegraph/commit/f369dc946e16ce48954873f48ca20a0f120100b5) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-dismissable-layer from 1.1.10 to 1.1.11
+
 ## 0.1.15
 
 ### Patch Changes

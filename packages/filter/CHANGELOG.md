@@ -1,5 +1,12 @@
 # @telegraph/filter
 
+## 0.0.33
+
+### Patch Changes
+
+- Updated dependencies [[`f369dc9`](https://github.com/knocklabs/telegraph/commit/f369dc946e16ce48954873f48ca20a0f120100b5)]:
+  - @telegraph/combobox@0.1.16
+
 ## 0.0.32
 
 ### Patch Changes
