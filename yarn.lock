@@ -2233,7 +2233,7 @@ __metadata:
     "@moonrepo/cli": "npm:^1.28.2"
     "@storybook/addon-links": "npm:^9.1.3"
     "@storybook/addon-onboarding": "npm:^9.1.15"
-    "@storybook/addon-themes": "npm:^9.1.3"
+    "@storybook/addon-themes": "npm:^10.0.2"
     "@storybook/icons": "npm:^1.6.0"
     "@storybook/react": "npm:^9.1.3"
     "@storybook/react-vite": "npm:^9.1.7"
@@ -3862,14 +3862,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-themes@npm:^9.1.3":
-  version: 9.1.3
-  resolution: "@storybook/addon-themes@npm:9.1.3"
+"@storybook/addon-themes@npm:^10.0.2":
+  version: 10.0.2
+  resolution: "@storybook/addon-themes@npm:10.0.2"
   dependencies:
     ts-dedent: "npm:^2.0.0"
   peerDependencies:
-    storybook: ^9.1.3
-  checksum: 10c0/953016abbbf42caec9c3f68e3ff105acfca001c6cb5169e9d5a5e0660c198bf78ad05e82387f9ceae3b3ffd87f402f90435c19e4efeca00a8bd3f55571c5c141
+    storybook: ^10.0.2
+  checksum: 10c0/1f8493f426e1bdf74718c25082c1287031dc6a8abbf9753fb683c29a9278f95d6009eee5af5133dc7e36cef32ee8c48e48c4b89fa377d661900e3745b9e26068
   languageName: node
   linkType: hard
 
