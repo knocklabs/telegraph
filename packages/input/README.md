@@ -61,6 +61,8 @@ The default Input component provides a simple API for common use cases.
 | `disabled`          | `boolean`              | `false`     | Disables the input                         |
 | `LeadingComponent`  | `React.ReactNode`      | `undefined` | Component to display before the input text |
 | `TrailingComponent` | `React.ReactNode`      | `undefined` | Component to display after the input text  |
+| `textProps`         | `object`               | `undefined` | Props to pass to the inner Text component  |
+| `stackProps`        | `object`               | `undefined` | Props to pass to the Stack container       |
 | `as`                | `TgphElement`          | `"input"`   | HTML element or component to render        |
 
 ### Composition API
@@ -71,13 +73,15 @@ For advanced use cases, use the composition API:
 
 Container component that wraps the input and slots.
 
-| Prop       | Type                   | Default     | Description                         |
-| ---------- | ---------------------- | ----------- | ----------------------------------- |
-| `size`     | `"1" \| "2" \| "3"`    | `"2"`       | Input size                          |
-| `variant`  | `"outline" \| "ghost"` | `"outline"` | Visual style variant                |
-| `errored`  | `boolean`              | `false`     | Shows error state styling           |
-| `disabled` | `boolean`              | `false`     | Disables the input                  |
-| `as`       | `TgphElement`          | `"input"`   | HTML element or component to render |
+| Prop         | Type                   | Default     | Description                         |
+| ------------ | ---------------------- | ----------- | ----------------------------------- |
+| `size`       | `"1" \| "2" \| "3"`    | `"2"`       | Input size                          |
+| `variant`    | `"outline" \| "ghost"` | `"outline"` | Visual style variant                |
+| `errored`    | `boolean`              | `false`     | Shows error state styling           |
+| `disabled`   | `boolean`              | `false`     | Disables the input                  |
+| `textProps`  | `object`               | `undefined` | Props to pass to the inner Text component  |
+| `stackProps` | `object`               | `undefined` | Props to pass to the Stack container       |
+| `as`         | `TgphElement`          | `"input"`   | HTML element or component to render |
 
 #### `<Input.Slot>`
 
@@ -179,6 +183,45 @@ import { Search, Mail, Lock } from "lucide-react";
 ```
 
 ## Advanced Usage
+
+### Customizing with stackProps and textProps
+
+Use `stackProps` to customize the container and `textProps` to customize the input field:
+
+```tsx
+import { Input } from "@telegraph/input";
+
+// Full-width input with custom padding
+<Input
+  placeholder="Search..."
+  stackProps={{
+    w: "full",
+    padding: "3",
+  }}
+/>
+
+// Custom text styling
+<Input
+  placeholder="Enter code"
+  textProps={{
+    fontFamily: "mono",
+    letterSpacing: "wider",
+  }}
+/>
+
+// Combined customization
+<Input
+  placeholder="Custom input"
+  stackProps={{
+    w: "full",
+    rounded: "4",
+    border: "2",
+  }}
+  textProps={{
+    weight: "medium",
+  }}
+/>
+```
 
 ### Composition Pattern
 
