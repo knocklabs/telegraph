@@ -43,6 +43,8 @@
   right: var(--right);
   bottom: var(--bottom);
   overflow: var(--overflow);
+  overflow-x: var(--overflow-x);
+  overflow-y: var(--overflow-y);
   align-self: var(--align-self);
 }
 

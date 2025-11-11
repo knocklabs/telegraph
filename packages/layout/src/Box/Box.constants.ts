@@ -57,6 +57,8 @@ export type BaseStyleProps = {
   right: keyof typeof tokens.spacing;
   bottom: keyof typeof tokens.spacing;
   overflow: "hidden" | "visible" | "scroll" | "auto";
+  overflowX: "hidden" | "visible" | "scroll" | "auto";
+  overflowY: "hidden" | "visible" | "scroll" | "auto";
   alignSelf: CSSProperties["alignSelf"];
 };
 
@@ -350,6 +352,14 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   overflow: {
     cssVar: "--overflow",
+    value: "VARIABLE",
+  },
+  overflowX: {
+    cssVar: "--overflow-x",
+    value: "VARIABLE",
+  },
+  overflowY: {
+    cssVar: "--overflow-y",
     value: "VARIABLE",
   },
   alignSelf: {
