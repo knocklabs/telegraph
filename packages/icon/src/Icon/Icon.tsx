@@ -15,6 +15,7 @@ type BaseIconProps = {
   size?: keyof typeof SIZE_MAP;
   variant?: keyof typeof COLOR_MAP;
   color?: keyof (typeof COLOR_MAP)["primary"];
+  animation?: "spin" | "none";
 } & (
   | {
       alt: string;
@@ -36,6 +37,7 @@ const Icon = <T extends TgphElement>({
   size = "2",
   color = "default",
   variant = "primary",
+  animation = "none",
   icon,
   alt,
   className,
@@ -57,6 +59,7 @@ const Icon = <T extends TgphElement>({
       as={as || "span"}
       className={clsx("tgph-icon", className)}
       data-button-icon
+      data-tgph-icon-animation={animation}
       style={{
         // We choose to override these values vs passing them in as props because
         // the icon's sizes aren't all exact telegraph tokens and the colors

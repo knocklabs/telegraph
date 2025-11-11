@@ -10,6 +10,7 @@ const sharedConfig = defineConfig({
       all: false,
       provider: "v8",
     },
+    projects: ["packages/*"],
     globals: true,
     setupFiles: ["../../vitest/setup"],
     environment: "jsdom",
@@ -17,3 +18,4 @@ const sharedConfig = defineConfig({
 });
 
 export { sharedConfig };
+export default sharedConfig;

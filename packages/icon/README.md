@@ -35,7 +35,7 @@ import "@telegraph/icon/default.css";
 ## Quick Start
 
 ```tsx
-import { Icon } from "@telegraph/icon";
+import { Icon, Spinner } from "@telegraph/icon";
 import { Bell, Settings, User } from "lucide-react";
 
 export const IconExample = () => (
@@ -43,6 +43,7 @@ export const IconExample = () => (
     <Icon icon={Bell} alt="Notifications" />
     <Icon icon={User} alt="User profile" size="4" color="accent" />
     <Icon icon={Settings} aria-hidden={true} />
+    <Spinner alt="Loading..." />
   </div>
 );
 ```
@@ -61,9 +62,29 @@ A wrapper around Lucide React icons that applies Telegraph design tokens.
 | `size`        | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"`                                                                   | `"2"`       | Icon size                                       |
 | `color`       | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"default"` | Icon color                                      |
 | `variant`     | `"primary" \| "secondary"`                                                                                                             | `"primary"` | Color intensity variant                         |
+| `animation`   | `"spin" \| "none"`                                                                                                                     | `"none"`    | Icon animation                                  |
 | `as`          | `TgphElement`                                                                                                                          | `"span"`    | HTML element or component to render             |
 
 \*Required unless `aria-hidden={true}` is provided
+
+### `<Spinner>`
+
+A specialized loading indicator component with accessibility features built in.
+
+| Prop       | Type                                                                                                                                   | Default          | Description                         |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------------- |
+| `icon`     | `LucideIcon`                                                                                                                           | `LoaderCircle`   | Lucide React icon component         |
+| `alt`      | `string`                                                                                                                               | `"Loading..."`   | Alternative text for screen readers |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"`                                                                   | `"2"`            | Icon size                           |
+| `color`    | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"gray"`         | Icon color                          |
+| `variant`  | `"primary" \| "secondary"`                                                                                                             | `"primary"`      | Color intensity variant             |
+| `animation`| `"spin" \| "none"`                                                                                                                     | `"spin"`         | Icon animation                      |
+| `as`       | `TgphElement`                                                                                                                          | `"span"`         | HTML element or component to render |
+
+**Accessibility features:**
+- Includes `role="status"` to identify as a status indicator
+- Includes `aria-live="polite"` to announce loading state to screen readers
+- Default loading text can be customized via the `alt` prop
 
 ## Usage Patterns
 
@@ -119,6 +140,38 @@ import { AlertCircle, CheckCircle, Info } from "lucide-react";
 // Primary vs Secondary variants
 <Icon icon={User} alt="User" color="gray" variant="primary" />   // Darker
 <Icon icon={User} alt="User" color="gray" variant="secondary" /> // Lighter
+```
+
+### Animated Icons
+
+```tsx
+import { Icon } from "@telegraph/icon";
+import { LoaderCircle, RefreshCw } from "lucide-react";
+
+// Spinning loader
+<Icon icon={LoaderCircle} alt="Loading" animation="spin" />
+
+// Custom spinning icon
+<Icon icon={RefreshCw} alt="Refreshing" animation="spin" color="accent" />
+```
+
+### Loading Spinners
+
+```tsx
+import { Spinner } from "@telegraph/icon";
+
+// Basic spinner
+<Spinner />
+
+// Custom size and color
+<Spinner size="4" color="accent" />
+
+// Custom loading text
+<Spinner alt="Saving changes..." />
+
+// Different spinner icons
+import { Loader2 } from "lucide-react";
+<Spinner icon={Loader2} alt="Processing" />
 ```
 
 ## Advanced Usage
@@ -304,6 +357,7 @@ Bundle size impact:
 - ✅ **Semantic Icons**: Required `alt` prop for meaningful icons
 - ✅ **Decorative Icons**: `aria-hidden` for purely visual icons
 - ✅ **Interactive Icons**: Button/link semantics when interactive
+- ✅ **Loading States**: Spinner component with `role="status"` and `aria-live="polite"`
 - ✅ **Color Contrast**: All color variants meet WCAG AA standards
 
 ### Accessibility Guidelines
@@ -311,19 +365,22 @@ Bundle size impact:
 1. **Meaningful Icons**: Always provide `alt` text for icons that convey information
 2. **Decorative Icons**: Use `aria-hidden={true}` for purely visual icons
 3. **Interactive Icons**: Use semantic HTML (`button`, `a`) for clickable icons
-4. **Color Dependency**: Don't rely solely on color to convey information
+4. **Loading Indicators**: Use `Spinner` component for accessible loading states
+5. **Color Dependency**: Don't rely solely on color to convey information
 
 ```tsx
 // ✅ Good accessibility practices
 <Icon icon={Save} alt="Save document" />
 <Icon icon={Star} aria-hidden={true} /> {/* Decorative */}
 <Icon as="button" icon={Delete} alt="Delete item" onClick={handleDelete} />
+<Spinner alt="Loading content..." /> {/* Auto-announces to screen readers */}
 
 // ❌ Poor accessibility
 <Icon icon={Save} /> {/* Missing alt text */}
 <div onClick={handleDelete}>
   <Icon icon={Delete} alt="Delete" /> {/* Should be button */}
 </div>
+<Icon icon={LoaderCircle} animation="spin" alt="Loading" /> {/* Use Spinner instead */}
 ```
 
 ## TypeScript
@@ -331,11 +388,12 @@ Bundle size impact:
 ### Icon Component Types
 
 ```tsx
-import { Icon, type LucideIcon } from "@telegraph/icon";
+import { Icon, Spinner, type LucideIcon } from "@telegraph/icon";
 import type { ComponentProps } from "react";
 
 // Extract icon props type
 type IconProps = ComponentProps<typeof Icon>;
+type SpinnerProps = ComponentProps<typeof Spinner>;
 
 // Create custom icon component
 type CustomIconProps = {
@@ -358,6 +416,24 @@ const CustomIcon = ({
       {...props}
     />
   );
+};
+
+// Create loading wrapper
+type LoadingWrapperProps = {
+  isLoading: boolean;
+  children: React.ReactNode;
+  loadingText?: string;
+};
+
+const LoadingWrapper = ({
+  isLoading,
+  children,
+  loadingText = "Loading...",
+}: LoadingWrapperProps) => {
+  if (isLoading) {
+    return <Spinner alt={loadingText} />;
+  }
+  return <>{children}</>;
 };
 ```
 
@@ -474,6 +550,62 @@ const IconButton = ({
 
 // Usage
 <IconButton icon={Download} label="Download file" onClick={handleDownload} />;
+```
+
+### Loading States with Spinner
+
+```tsx
+import { Button } from "@telegraph/button";
+import { Spinner } from "@telegraph/icon";
+import { Box, Stack } from "@telegraph/layout";
+import { Text } from "@telegraph/typography";
+import { useState } from "react";
+
+const SaveButton = () => {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    await saveData();
+    setIsSaving(false);
+  };
+
+  return (
+    <Button onClick={handleSave} disabled={isSaving}>
+      {isSaving ? (
+        <>
+          <Spinner size="1" />
+          <Text>Saving...</Text>
+        </>
+      ) : (
+        <Text>Save Changes</Text>
+      )}
+    </Button>
+  );
+};
+
+// Loading overlay
+const LoadingOverlay = ({ isLoading }: { isLoading: boolean }) => {
+  if (!isLoading) return null;
+
+  return (
+    <Box
+      position="fixed"
+      inset="0"
+      display="flex"
+      align="center"
+      justify="center"
+      background="gray-a-6"
+    >
+      <Stack align="center" gap="3">
+        <Spinner size="6" color="accent" />
+        <Text size="3" color="gray">
+          Loading content...
+        </Text>
+      </Stack>
+    </Box>
+  );
+};
 ```
 
 ## References
