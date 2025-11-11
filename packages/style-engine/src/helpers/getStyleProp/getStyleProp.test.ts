@@ -117,8 +117,7 @@ describe("getStyleProp", () => {
     });
 
     expect(styleProp).toStrictEqual({
-      "--margin":
-        "calc(-1 * var(--tgph-spacing-4)) 0 0 var(--tgph-spacing-2)",
+      "--margin": "calc(-1 * var(--tgph-spacing-4)) 0 0 var(--tgph-spacing-2)",
     });
   });
 
