@@ -71,22 +71,22 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 #### Spacing Props
 
-| Prop                   | Type           | Description          |
-| ---------------------- | -------------- | -------------------- |
-| `p` / `padding`        | `SpacingToken` | Padding on all sides |
-| `px` / `paddingX`      | `SpacingToken` | Horizontal padding   |
-| `py` / `paddingY`      | `SpacingToken` | Vertical padding     |
-| `pt` / `paddingTop`    | `SpacingToken` | Top padding          |
-| `pr` / `paddingRight`  | `SpacingToken` | Right padding        |
-| `pb` / `paddingBottom` | `SpacingToken` | Bottom padding       |
-| `pl` / `paddingLeft`   | `SpacingToken` | Left padding         |
-| `m` / `margin`         | `SpacingToken` | Margin on all sides  |
-| `mx` / `marginX`       | `SpacingToken` | Horizontal margin    |
-| `my` / `marginY`       | `SpacingToken` | Vertical margin      |
-| `mt` / `marginTop`     | `SpacingToken` | Top margin           |
-| `mr` / `marginRight`   | `SpacingToken` | Right margin         |
-| `mb` / `marginBottom`  | `SpacingToken` | Bottom margin        |
-| `ml` / `marginLeft`    | `SpacingToken` | Left margin          |
+| Prop                   | Type           | Description                              |
+| ---------------------- | -------------- | ---------------------------------------- |
+| `p` / `padding`        | `SpacingToken` | Padding on all sides                     |
+| `px` / `paddingX`      | `SpacingToken` | Horizontal padding                       |
+| `py` / `paddingY`      | `SpacingToken` | Vertical padding                         |
+| `pt` / `paddingTop`    | `SpacingToken` | Top padding                              |
+| `pr` / `paddingRight`  | `SpacingToken` | Right padding                            |
+| `pb` / `paddingBottom` | `SpacingToken` | Bottom padding                           |
+| `pl` / `paddingLeft`   | `SpacingToken` | Left padding                             |
+| `m` / `margin`         | `SpacingToken` | Margin on all sides (supports negatives) |
+| `mx` / `marginX`       | `SpacingToken` | Horizontal margin (supports negatives)   |
+| `my` / `marginY`       | `SpacingToken` | Vertical margin (supports negatives)     |
+| `mt` / `marginTop`     | `SpacingToken` | Top margin (supports negatives)          |
+| `mr` / `marginRight`   | `SpacingToken` | Right margin (supports negatives)        |
+| `mb` / `marginBottom`  | `SpacingToken` | Bottom margin (supports negatives)       |
+| `ml` / `marginLeft`    | `SpacingToken` | Left margin (supports negatives)         |
 
 #### Visual Props
 
@@ -115,25 +115,25 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 #### Layout Props
 
-| Prop                 | Type                                                               | Description                           |
-| -------------------- | ------------------------------------------------------------------ | ------------------------------------- |
-| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode                          |
-| `w` / `width`        | `SpacingToken`                                                     | Width                                 |
-| `h` / `height`       | `SpacingToken`                                                     | Height                                |
-| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width                         |
-| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height                        |
-| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width                         |
-| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height                        |
-| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type                         |
-| `top`                | `SpacingToken`                                                     | Top position offset                   |
-| `right`              | `SpacingToken`                                                     | Right position offset                 |
-| `bottom`             | `SpacingToken`                                                     | Bottom position offset                |
-| `left`               | `SpacingToken`                                                     | Left position offset                  |
-| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order                   |
-| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior on both axes        |
-| `overflowX`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Horizontal overflow behavior          |
-| `overflowY`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Vertical overflow behavior            |
-| `alignSelf`          | `CSSProperties["alignSelf"]`                                       | Override flex alignment for this item |
+| Prop                 | Type                                                               | Description                                 |
+| -------------------- | ------------------------------------------------------------------ | ------------------------------------------- |
+| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode                                |
+| `w` / `width`        | `SpacingToken`                                                     | Width                                       |
+| `h` / `height`       | `SpacingToken`                                                     | Height                                      |
+| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width                               |
+| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height                              |
+| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width                               |
+| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height                              |
+| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type                               |
+| `top`                | `SpacingToken`                                                     | Top position offset (supports negatives)    |
+| `right`              | `SpacingToken`                                                     | Right position offset (supports negatives)  |
+| `bottom`             | `SpacingToken`                                                     | Bottom position offset (supports negatives) |
+| `left`               | `SpacingToken`                                                     | Left position offset (supports negatives)   |
+| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order                         |
+| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior on both axes              |
+| `overflowX`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Horizontal overflow behavior                |
+| `overflowY`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Vertical overflow behavior                  |
+| `alignSelf`          | `CSSProperties["alignSelf"]`                                       | Override flex alignment for this item       |
 
 #### Interactive Props
 
@@ -236,6 +236,50 @@ import { Box } from "@telegraph/layout";
 // Different spacing values
 <Box p="0_5" m="1_5" px="2_5" /> // Fractional values
 <Box p="8" m="auto" /> // Larger values and auto
+
+// Negative margins (useful for overlapping elements)
+<Box ml="-2" mt="-4" /> // Negative values
+<Box mx="-3" /> // Negative horizontal margins
+```
+
+#### Negative Spacing
+
+Negative spacing values are supported for margins and positioning properties (`top`, `left`, `right`, `bottom`). This is useful for overlapping elements or creating pull effects:
+
+```tsx
+import { Box, Stack } from "@telegraph/layout";
+
+// Overlap avatars in a stack
+<Stack direction="row">
+  <Box w="10" h="10" bg="accent-3" rounded="full" />
+  <Box w="10" h="10" bg="blue-3" rounded="full" ml="-2" />
+  <Box w="10" h="10" bg="green-3" rounded="full" ml="-2" />
+</Stack>
+
+// Pull content into previous section
+<Stack direction="column" gap="4">
+  <Box p="8" bg="accent-3" rounded="2">
+    Header Section
+  </Box>
+  <Box p="6" bg="surface-1" rounded="2" shadow="2" mt="-6">
+    This card overlaps the header
+  </Box>
+</Stack>
+
+// Absolute positioning with negative offsets
+<Box position="relative" w="64" h="64" bg="gray-2" rounded="2">
+  <Box
+    position="absolute"
+    top="-2"
+    right="-2"
+    w="8"
+    h="8"
+    bg="red-9"
+    rounded="full"
+  >
+    Badge
+  </Box>
+</Box>
 ```
 
 ### Border and Radius
@@ -595,14 +639,14 @@ import { Box } from "@telegraph/layout";
 </Box>
 
 // Scrollable container with specific axes
-<Box 
-  w="96" 
-  h="64" 
+<Box
+  w="96"
+  h="64"
   overflow="hidden"  // Base: hide overflow
   overflowY="scroll" // Override: allow vertical scroll
-  bg="surface-1" 
-  rounded="2" 
-  border="px" 
+  bg="surface-1"
+  rounded="2"
+  border="px"
   borderColor="gray-6"
   p="4"
 >

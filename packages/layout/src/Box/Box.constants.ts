@@ -1,6 +1,9 @@
 import type { tokens } from "@telegraph/style-engine";
-import type { CssVarProp } from "@telegraph/style-engine";
+import type { CssVarProp, WithNegativeSpacing } from "@telegraph/style-engine";
 import type { CSSProperties } from "react";
+
+// Type that allows both positive and negative spacing values
+type SpacingValue = WithNegativeSpacing<keyof typeof tokens.spacing>;
 
 export type BaseStyleProps = {
   display: "block" | "inline-block" | "inline" | "flex" | "inline-flex";
@@ -21,19 +24,19 @@ export type BaseStyleProps = {
   borderRightWidth: keyof typeof tokens.spacing;
   borderStyle: keyof (typeof tokens)["border-style"];
   padding: keyof typeof tokens.spacing;
-  margin: keyof typeof tokens.spacing;
+  margin: SpacingValue;
   paddingX: keyof typeof tokens.spacing;
   paddingY: keyof typeof tokens.spacing;
   paddingTop: keyof typeof tokens.spacing;
   paddingBottom: keyof typeof tokens.spacing;
   paddingLeft: keyof typeof tokens.spacing;
   paddingRight: keyof typeof tokens.spacing;
-  marginX: keyof typeof tokens.spacing;
-  marginY: keyof typeof tokens.spacing;
-  marginTop: keyof typeof tokens.spacing;
-  marginBottom: keyof typeof tokens.spacing;
-  marginLeft: keyof typeof tokens.spacing;
-  marginRight: keyof typeof tokens.spacing;
+  marginX: SpacingValue;
+  marginY: SpacingValue;
+  marginTop: SpacingValue;
+  marginBottom: SpacingValue;
+  marginLeft: SpacingValue;
+  marginRight: SpacingValue;
   borderRadius: keyof typeof tokens.rounded;
   borderTopLeftRadius: keyof typeof tokens.rounded;
   borderTopRightRadius: keyof typeof tokens.rounded;
@@ -52,10 +55,10 @@ export type BaseStyleProps = {
   maxHeight: keyof typeof tokens.spacing;
   zIndex: keyof (typeof tokens)["zIndex"];
   position: "relative" | "absolute" | "fixed" | "sticky";
-  top: keyof typeof tokens.spacing;
-  left: keyof typeof tokens.spacing;
-  right: keyof typeof tokens.spacing;
-  bottom: keyof typeof tokens.spacing;
+  top: SpacingValue;
+  left: SpacingValue;
+  right: SpacingValue;
+  bottom: SpacingValue;
   overflow: "hidden" | "visible" | "scroll" | "auto";
   overflowX: "hidden" | "visible" | "scroll" | "auto";
   overflowY: "hidden" | "visible" | "scroll" | "auto";
@@ -68,19 +71,19 @@ type ShorthandStyleProps = {
   borderY: keyof typeof tokens.spacing;
   bg: keyof typeof tokens.color;
   p: keyof typeof tokens.spacing;
-  m: keyof typeof tokens.spacing;
+  m: SpacingValue;
   px: keyof typeof tokens.spacing;
   py: keyof typeof tokens.spacing;
   pt: keyof typeof tokens.spacing;
   pb: keyof typeof tokens.spacing;
   pl: keyof typeof tokens.spacing;
   pr: keyof typeof tokens.spacing;
-  mx: keyof typeof tokens.spacing;
-  my: keyof typeof tokens.spacing;
-  mt: keyof typeof tokens.spacing;
-  mb: keyof typeof tokens.spacing;
-  ml: keyof typeof tokens.spacing;
-  mr: keyof typeof tokens.spacing;
+  mx: SpacingValue;
+  my: SpacingValue;
+  mt: SpacingValue;
+  mb: SpacingValue;
+  ml: SpacingValue;
+  mr: SpacingValue;
   shadow: keyof typeof tokens.shadow;
   w: keyof typeof tokens.spacing;
   h: keyof typeof tokens.spacing;

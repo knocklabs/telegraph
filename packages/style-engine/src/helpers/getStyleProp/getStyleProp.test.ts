@@ -76,4 +76,66 @@ describe("getStyleProp", () => {
     });
     expect(otherProps).toStrictEqual({});
   });
+
+  it("handles negative spacing values correctly", () => {
+    const { styleProp } = getStyleProp({
+      props: {
+        marginLeft: "-2",
+      },
+      cssVars: {
+        marginLeft: {
+          cssVar: "--margin",
+          value: "var(--tgph-spacing-VARIABLE)",
+          direction: "left",
+        },
+      },
+    });
+
+    expect(styleProp).toStrictEqual({
+      "--margin": "0 0 0 calc(-1 * var(--tgph-spacing-2))",
+    });
+  });
+
+  it("handles negative spacing with multiple directional values", () => {
+    const { styleProp } = getStyleProp({
+      props: {
+        marginTop: "-4",
+        marginLeft: "2",
+      },
+      cssVars: {
+        marginTop: {
+          cssVar: "--margin",
+          value: "var(--tgph-spacing-VARIABLE)",
+          direction: "top",
+        },
+        marginLeft: {
+          cssVar: "--margin",
+          value: "var(--tgph-spacing-VARIABLE)",
+          direction: "left",
+        },
+      },
+    });
+
+    expect(styleProp).toStrictEqual({
+      "--margin": "calc(-1 * var(--tgph-spacing-4)) 0 0 var(--tgph-spacing-2)",
+    });
+  });
+
+  it("handles negative spacing for positioning properties", () => {
+    const { styleProp } = getStyleProp({
+      props: {
+        top: "-8",
+      },
+      cssVars: {
+        top: {
+          cssVar: "--top",
+          value: "var(--tgph-spacing-VARIABLE)",
+        },
+      },
+    });
+
+    expect(styleProp).toStrictEqual({
+      "--top": "calc(-1 * var(--tgph-spacing-8))",
+    });
+  });
 });

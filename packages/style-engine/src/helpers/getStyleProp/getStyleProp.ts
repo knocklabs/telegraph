@@ -18,10 +18,66 @@ export type CssVarProp = {
   interactive?: boolean;
 };
 
+// Helper type to create negative spacing values
+// This distributes over union types for proper type expansion
+export type NegativeSpacing<T extends string | number | symbol> =
+  T extends string ? `-${T}` : never;
+
+// Type that allows both positive and negative spacing values for a given token type
+// Using direct template literal for better TypeScript inference and autocomplete
+export type WithNegativeSpacing<T extends string | number | symbol> =
+  T extends string ? T | `-${T}` : T;
+
 type ApplyDirectionProps = {
   currentValueOfCssVar: string | undefined;
   value: string;
   direction?: Direction;
+};
+
+// Helper function to parse directional values (handles calc() expressions)
+const parseDirectionalValues = (
+  value: string,
+): [string, string, string, string] => {
+  const matches: string[] = [];
+  let current = "";
+  let depth = 0;
+
+  for (let i = 0; i < value.length; i++) {
+    const char = value[i];
+
+    if (char === "(") {
+      depth++;
+      current += char;
+    } else if (char === ")") {
+      depth--;
+      current += char;
+    } else if (char === " " && depth === 0) {
+      // Space at depth 0 means we're between values
+      if (current) {
+        matches.push(current);
+        current = "";
+      }
+    } else {
+      current += char;
+    }
+  }
+
+  // Push the last value
+  if (current) {
+    matches.push(current);
+  }
+
+  // Ensure we always have 4 values
+  while (matches.length < 4) {
+    matches.push("0");
+  }
+
+  return [
+    matches[0] || "0",
+    matches[1] || "0",
+    matches[2] || "0",
+    matches[3] || "0",
+  ];
 };
 
 // For values like margin and padding that require 4 values
@@ -30,7 +86,8 @@ const applyDirectionalValues = ({
   value,
   direction,
 }: ApplyDirectionProps) => {
-  const [top, right, bottom, left] = currentValueOfCssVar.split(" ");
+  const [top, right, bottom, left] =
+    parseDirectionalValues(currentValueOfCssVar);
 
   const newValues = {
     top,
@@ -170,11 +227,28 @@ export const getStyleProp = <
       return;
     }
 
-    // Replace the VARIABLE placeholder with the actual value of the prop
-    const mappedValueOfCssVar = matchingCssVar.value.replace(
-      "VARIABLE",
-      matchingPropValue,
-    );
+    // Handle negative spacing values
+    let mappedValueOfCssVar: string;
+    const isNegative =
+      typeof matchingPropValue === "string" &&
+      matchingPropValue.startsWith("-");
+
+    if (isNegative) {
+      // Remove the "-" prefix to get the actual token key
+      const positiveValue = matchingPropValue.slice(1);
+      // Replace VARIABLE with the positive token and wrap in calc()
+      const positiveVar = matchingCssVar.value.replace(
+        "VARIABLE",
+        positiveValue,
+      );
+      mappedValueOfCssVar = `calc(-1 * ${positiveVar})`;
+    } else {
+      // Replace the VARIABLE placeholder with the actual value of the prop
+      mappedValueOfCssVar = matchingCssVar.value.replace(
+        "VARIABLE",
+        matchingPropValue,
+      );
+    }
 
     const cssVarName = matchingCssVar.cssVar as keyof StyleProp<CssVars>;
 
