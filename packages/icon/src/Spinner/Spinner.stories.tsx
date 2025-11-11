@@ -1,29 +1,31 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as Icons from "lucide-react";
 
-import { Icon as TelegraphIcon } from "./Icon";
-import { COLOR_MAP, SIZE_MAP } from "./Icon.constants";
+import { COLOR_MAP, SIZE_MAP } from "../Icon/Icon.constants";
 
-type StorybookTelegraphIconType = React.ComponentProps<typeof TelegraphIcon>;
+import { Spinner as TelegraphSpinner } from "./Spinner";
 
-const StorybookTelegraphIcon = ({
+type StorybookTelegraphSpinnerType = React.ComponentProps<
+  typeof TelegraphSpinner
+>;
+
+const StorybookTelegraphSpinner = ({
   icon,
   ...props
-}: StorybookTelegraphIconType) => {
+}: StorybookTelegraphSpinnerType) => {
   return (
-    <TelegraphIcon
+    <TelegraphSpinner
       // @ts-expect-error: for illustrative purposes only
       icon={Icons[icon as keyof typeof Icons]}
       {...props}
-      alt="test"
     />
   );
 };
 
-const meta: Meta<typeof TelegraphIcon> = {
+const meta: Meta<typeof TelegraphSpinner> = {
   tags: ["autodocs"],
-  title: "Components/Icon",
-  component: StorybookTelegraphIcon,
+  title: "Components/Icon/Spinner",
+  component: StorybookTelegraphSpinner,
 };
 
 export default meta;
@@ -62,20 +64,20 @@ export const Default: Story = {
     },
   },
   args: {
-    color: "default",
+    color: "gray",
     size: "3",
-    icon: "Bell",
-    alt: "Bell",
+    icon: "LoaderCircle",
+    alt: "Loading...",
     variant: "primary",
-    animation: "none",
+    animation: "spin",
   },
 };
 
-type StorybookIconType = Omit<
-  React.ComponentProps<typeof TelegraphIcon>,
+type StorybookSpinnerType = Omit<
+  React.ComponentProps<typeof TelegraphSpinner>,
   "icon"
 > & {
   icon: string;
 };
 
-type Story = StoryObj<StorybookIconType>;
+type Story = StoryObj<StorybookSpinnerType>;

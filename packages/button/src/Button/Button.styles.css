@@ -17,7 +17,7 @@
 
 .tgph-button [data-button-text],
 .tgph-button [data-button-icon] {
-  transition: color 0.2s ease-in-out,
+  transition: color 0.2s ease-in-out;
 }
 
 .tgph-button:hover {
@@ -57,17 +57,4 @@
 
 .tgph-button[data-tgph-button-state="disabled"]:hover {
   background-color: revert;
-}
-
-[data-tgph-button-loading-icon] {
-  animation: button-loading-icon 1s infinite linear;
-}
-
-@keyframes button-loading-icon {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

@@ -1,2 +1,1 @@
-export { Icon, type LucideIcon } from "./Icon";
 export { Spinner, type SpinnerProps } from "./Spinner";
