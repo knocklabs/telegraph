@@ -20,6 +20,7 @@ type BaseRootProps = {
 
 type RootProps<T extends TgphElement> = BaseRootProps & {
   textProps?: Omit<React.ComponentProps<typeof Text<T>>, "as">;
+  stackProps?: Omit<React.ComponentProps<typeof Stack>, "as">;
 } & Omit<React.ComponentProps<typeof Text<T>>, "as">;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
@@ -37,6 +38,7 @@ const Root = <T extends TgphElement>({
   size = "2",
   variant = "outline",
   textProps,
+  stackProps,
   disabled,
   errored,
   children,
@@ -76,6 +78,7 @@ const Root = <T extends TgphElement>({
         data-tgph-input-container-variant={variant}
         data-tgph-input-container-state={state}
         data-tgph-input-container-size={size}
+        {...stackProps}
       >
         {/* 
           We choose to use the `<Text/>` component as a base here so that we can 
