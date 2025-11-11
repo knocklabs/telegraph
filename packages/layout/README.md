@@ -130,7 +130,9 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 | `bottom`             | `SpacingToken`                                                     | Bottom position offset                |
 | `left`               | `SpacingToken`                                                     | Left position offset                  |
 | `zIndex`             | `ZIndexToken`                                                      | Z-index stack order                   |
-| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior                     |
+| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior on both axes        |
+| `overflowX`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Horizontal overflow behavior          |
+| `overflowY`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Vertical overflow behavior            |
 | `alignSelf`          | `CSSProperties["alignSelf"]`                                       | Override flex alignment for this item |
 
 #### Interactive Props
@@ -549,6 +551,67 @@ import { Box, Stack } from "@telegraph/layout";
       <h2>Centered heading</h2>
       <p>Centered description</p>
     </Box>
+  </Stack>
+</Box>
+```
+
+### Overflow and Scrolling
+
+```tsx
+import { Box } from "@telegraph/layout";
+
+// Hide overflow on both axes
+<Box w="64" h="32" overflow="hidden" bg="surface-1" rounded="1">
+  <Box w="96" h="48" bg="accent-3">
+    Content larger than container
+  </Box>
+</Box>
+
+// Horizontal scrolling only
+<Box w="64" h="32" overflowX="scroll" overflowY="hidden" bg="surface-1" rounded="1">
+  <Box w="128" h="24" bg="accent-3">
+    Wide content that scrolls horizontally
+  </Box>
+</Box>
+
+// Vertical scrolling only
+<Box w="64" h="32" overflowX="hidden" overflowY="scroll" bg="surface-1" rounded="1">
+  <Stack direction="column" gap="2" p="2">
+    {Array.from({ length: 20 }, (_, i) => (
+      <Box key={i} p="2" bg="gray-3" rounded="1">
+        Item {i + 1}
+      </Box>
+    ))}
+  </Stack>
+</Box>
+
+// Auto overflow (scrolls when needed)
+<Box w="64" maxH="48" overflowY="auto" bg="surface-1" rounded="1" border="px" borderColor="gray-6">
+  <Box p="4">
+    <p>Content that might be long enough to scroll...</p>
+    <p>More content...</p>
+    <p>Even more content...</p>
+  </Box>
+</Box>
+
+// Scrollable container with specific axes
+<Box 
+  w="96" 
+  h="64" 
+  overflow="hidden"  // Base: hide overflow
+  overflowY="scroll" // Override: allow vertical scroll
+  bg="surface-1" 
+  rounded="2" 
+  border="px" 
+  borderColor="gray-6"
+  p="4"
+>
+  <Stack direction="column" gap="3">
+    {Array.from({ length: 20 }, (_, i) => (
+      <Box key={i} p="3" bg="gray-2" rounded="1">
+        Scrollable item {i + 1}
+      </Box>
+    ))}
   </Stack>
 </Box>
 ```
