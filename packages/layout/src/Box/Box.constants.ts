@@ -17,6 +17,10 @@ export type BaseStyleProps = {
   focus_borderColor: keyof typeof tokens.color;
   active_borderColor: keyof typeof tokens.color;
   focus_within_borderColor: keyof typeof tokens.color;
+  borderTopColor: keyof typeof tokens.color;
+  borderBottomColor: keyof typeof tokens.color;
+  borderLeftColor: keyof typeof tokens.color;
+  borderRightColor: keyof typeof tokens.color;
   borderWidth: keyof typeof tokens.spacing;
   borderTopWidth: keyof typeof tokens.spacing;
   borderBottomWidth: keyof typeof tokens.spacing;
@@ -232,6 +236,26 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     cssVar: "--active_borderColor",
     interactive: true,
     value: "var(--tgph-VARIABLE)",
+  },
+  borderTopColor: {
+    cssVar: "--border-color",
+    value: "var(--tgph-VARIABLE)",
+    direction: "top",
+  },
+  borderBottomColor: {
+    cssVar: "--border-color",
+    value: "var(--tgph-VARIABLE)",
+    direction: "bottom",
+  },
+  borderLeftColor: {
+    cssVar: "--border-color",
+    value: "var(--tgph-VARIABLE)",
+    direction: "left",
+  },
+  borderRightColor: {
+    cssVar: "--border-color",
+    value: "var(--tgph-VARIABLE)",
+    direction: "right",
   },
   borderWidth: {
     cssVar: "--border-width",
