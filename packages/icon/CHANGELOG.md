@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.3.0
+
+### Minor Changes
+
+- [#615](https://github.com/knocklabs/telegraph/pull/615) [`8d9f23c`](https://github.com/knocklabs/telegraph/commit/8d9f23cdc43701b6a281cd4ac0c6a1d5fdfe107a) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add spinner component and utilize within the button component
+
 ## 0.2.7
 
 ### Patch Changes

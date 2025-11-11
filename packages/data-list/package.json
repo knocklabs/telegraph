@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/data-list",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Flexible data list component for displaying label-value pairs in a structured, composable format.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/data-list",
   "author": "@knocklabs",
