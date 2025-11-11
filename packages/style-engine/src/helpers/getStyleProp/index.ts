@@ -1,2 +1,6 @@
 export { getStyleProp } from "./getStyleProp";
-export type { CssVarProp } from "./getStyleProp";
+export type {
+  CssVarProp,
+  NegativeSpacing,
+  WithNegativeSpacing,
+} from "./getStyleProp";
