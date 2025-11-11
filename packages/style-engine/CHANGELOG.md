@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.2.0
+
+### Minor Changes
+
+- [#619](https://github.com/knocklabs/telegraph/pull/619) [`aeb1c2b`](https://github.com/knocklabs/telegraph/commit/aeb1c2bf0db098320ecc960debf7f99ce0bb35d3) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add support for negative spacing values to the style engine
+
 ## 0.1.16
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @telegraph/input
 
+## 0.1.4
+
+### Patch Changes
+
+- [#620](https://github.com/knocklabs/telegraph/pull/620) [`2789747`](https://github.com/knocklabs/telegraph/commit/27897474bb1885ff126513205557f2a60242b82c) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add support for styling input's wrapping stack component
+
+- Updated dependencies [[`aeb1c2b`](https://github.com/knocklabs/telegraph/commit/aeb1c2bf0db098320ecc960debf7f99ce0bb35d3), [`7c5f127`](https://github.com/knocklabs/telegraph/commit/7c5f127d945bfe3a171032195e214454ac4291cf), [`5901b31`](https://github.com/knocklabs/telegraph/commit/5901b317bef94ae6ff3903ed5c8129bde6a4532b)]:
+  - @telegraph/layout@0.3.0
+  - @telegraph/typography@0.1.26
+
 ## 0.1.3
 
 ### Patch Changes

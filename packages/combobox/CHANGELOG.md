@@ -1,5 +1,20 @@
 # @telegraph/combobox
 
+## 0.1.18
+
+### Patch Changes
+
+- Updated dependencies [[`aeb1c2b`](https://github.com/knocklabs/telegraph/commit/aeb1c2bf0db098320ecc960debf7f99ce0bb35d3), [`2789747`](https://github.com/knocklabs/telegraph/commit/27897474bb1885ff126513205557f2a60242b82c), [`7c5f127`](https://github.com/knocklabs/telegraph/commit/7c5f127d945bfe3a171032195e214454ac4291cf), [`5901b31`](https://github.com/knocklabs/telegraph/commit/5901b317bef94ae6ff3903ed5c8129bde6a4532b)]:
+  - @telegraph/layout@0.3.0
+  - @telegraph/input@0.1.4
+  - @telegraph/button@0.3.1
+  - @telegraph/typography@0.1.26
+  - @telegraph/menu@0.1.15
+  - @telegraph/tag@0.0.109
+  - @telegraph/tooltip@0.0.59
+  - @telegraph/icon@0.3.1
+  - @telegraph/truncate@0.0.14
+
 ## 0.1.17
 
 ### Patch Changes
