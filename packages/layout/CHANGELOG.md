@@ -1,5 +1,20 @@
 # @telegraph/layout
 
+## 0.3.0
+
+### Minor Changes
+
+- [#619](https://github.com/knocklabs/telegraph/pull/619) [`aeb1c2b`](https://github.com/knocklabs/telegraph/commit/aeb1c2bf0db098320ecc960debf7f99ce0bb35d3) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add support for negative spacing values to the style engine
+
+### Patch Changes
+
+- [#618](https://github.com/knocklabs/telegraph/pull/618) [`7c5f127`](https://github.com/knocklabs/telegraph/commit/7c5f127d945bfe3a171032195e214454ac4291cf) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add overflowX and overflowY support to `<Box/>` component
+
+- [#621](https://github.com/knocklabs/telegraph/pull/621) [`5901b31`](https://github.com/knocklabs/telegraph/commit/5901b317bef94ae6ff3903ed5c8129bde6a4532b) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add support for directional border color
+
+- Updated dependencies [[`aeb1c2b`](https://github.com/knocklabs/telegraph/commit/aeb1c2bf0db098320ecc960debf7f99ce0bb35d3)]:
+  - @telegraph/style-engine@0.2.0
+
 ## 0.2.3
 
 ### Patch Changes
