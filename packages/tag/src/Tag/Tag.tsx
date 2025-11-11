@@ -213,7 +213,7 @@ type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
-        onCopy: () => void;
+        onCopy: (event: React.MouseEvent<HTMLButtonElement>) => void;
         textToCopy?: string;
       }
     | {
