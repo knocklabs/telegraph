@@ -71,22 +71,22 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 #### Spacing Props
 
-| Prop                   | Type           | Description                         |
-| ---------------------- | -------------- | ----------------------------------- |
-| `p` / `padding`        | `SpacingToken` | Padding on all sides                |
-| `px` / `paddingX`      | `SpacingToken` | Horizontal padding                  |
-| `py` / `paddingY`      | `SpacingToken` | Vertical padding                    |
-| `pt` / `paddingTop`    | `SpacingToken` | Top padding                         |
-| `pr` / `paddingRight`  | `SpacingToken` | Right padding                       |
-| `pb` / `paddingBottom` | `SpacingToken` | Bottom padding                      |
-| `pl` / `paddingLeft`   | `SpacingToken` | Left padding                        |
-| `m` / `margin`         | `SpacingToken` | Margin on all sides (supports `-2`) |
-| `mx` / `marginX`       | `SpacingToken` | Horizontal margin (supports `-2`)   |
-| `my` / `marginY`       | `SpacingToken` | Vertical margin (supports `-2`)     |
-| `mt` / `marginTop`     | `SpacingToken` | Top margin (supports `-2`)          |
-| `mr` / `marginRight`   | `SpacingToken` | Right margin (supports `-2`)        |
-| `mb` / `marginBottom`  | `SpacingToken` | Bottom margin (supports `-2`)       |
-| `ml` / `marginLeft`    | `SpacingToken` | Left margin (supports `-2`)         |
+| Prop                   | Type           | Description                              |
+| ---------------------- | -------------- | ---------------------------------------- |
+| `p` / `padding`        | `SpacingToken` | Padding on all sides                     |
+| `px` / `paddingX`      | `SpacingToken` | Horizontal padding                       |
+| `py` / `paddingY`      | `SpacingToken` | Vertical padding                         |
+| `pt` / `paddingTop`    | `SpacingToken` | Top padding                              |
+| `pr` / `paddingRight`  | `SpacingToken` | Right padding                            |
+| `pb` / `paddingBottom` | `SpacingToken` | Bottom padding                           |
+| `pl` / `paddingLeft`   | `SpacingToken` | Left padding                             |
+| `m` / `margin`         | `SpacingToken` | Margin on all sides (supports negatives) |
+| `mx` / `marginX`       | `SpacingToken` | Horizontal margin (supports negatives)   |
+| `my` / `marginY`       | `SpacingToken` | Vertical margin (supports negatives)     |
+| `mt` / `marginTop`     | `SpacingToken` | Top margin (supports negatives)          |
+| `mr` / `marginRight`   | `SpacingToken` | Right margin (supports negatives)        |
+| `mb` / `marginBottom`  | `SpacingToken` | Bottom margin (supports negatives)       |
+| `ml` / `marginLeft`    | `SpacingToken` | Left margin (supports negatives)         |
 
 #### Visual Props
 
@@ -115,25 +115,25 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 #### Layout Props
 
-| Prop                 | Type                                                               | Description                              |
-| -------------------- | ------------------------------------------------------------------ | ---------------------------------------- |
-| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode                             |
-| `w` / `width`        | `SpacingToken`                                                     | Width                                    |
-| `h` / `height`       | `SpacingToken`                                                     | Height                                   |
-| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width                            |
-| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height                           |
-| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width                            |
-| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height                           |
-| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type                            |
-| `top`                | `SpacingToken`                                                     | Top position offset (supports `-2`)      |
-| `right`              | `SpacingToken`                                                     | Right position offset (supports `-2`)    |
-| `bottom`             | `SpacingToken`                                                     | Bottom position offset (supports `-2`)   |
-| `left`               | `SpacingToken`                                                     | Left position offset (supports `-2`)     |
-| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order                      |
-| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior on both axes           |
-| `overflowX`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Horizontal overflow behavior             |
-| `overflowY`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Vertical overflow behavior               |
-| `alignSelf`          | `CSSProperties["alignSelf"]`                                       | Override flex alignment for this item    |
+| Prop                 | Type                                                               | Description                                 |
+| -------------------- | ------------------------------------------------------------------ | ------------------------------------------- |
+| `display`            | `"block" \| "inline-block" \| "inline" \| "flex" \| "inline-flex"` | Display mode                                |
+| `w` / `width`        | `SpacingToken`                                                     | Width                                       |
+| `h` / `height`       | `SpacingToken`                                                     | Height                                      |
+| `minW` / `minWidth`  | `SpacingToken`                                                     | Minimum width                               |
+| `minH` / `minHeight` | `SpacingToken`                                                     | Minimum height                              |
+| `maxW` / `maxWidth`  | `SpacingToken`                                                     | Maximum width                               |
+| `maxH` / `maxHeight` | `SpacingToken`                                                     | Maximum height                              |
+| `position`           | `"relative" \| "absolute" \| "fixed" \| "sticky"`                  | Position type                               |
+| `top`                | `SpacingToken`                                                     | Top position offset (supports negatives)    |
+| `right`              | `SpacingToken`                                                     | Right position offset (supports negatives)  |
+| `bottom`             | `SpacingToken`                                                     | Bottom position offset (supports negatives) |
+| `left`               | `SpacingToken`                                                     | Left position offset (supports negatives)   |
+| `zIndex`             | `ZIndexToken`                                                      | Z-index stack order                         |
+| `overflow`           | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Overflow behavior on both axes              |
+| `overflowX`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Horizontal overflow behavior                |
+| `overflowY`          | `"hidden" \| "visible" \| "scroll" \| "auto"`                      | Vertical overflow behavior                  |
+| `alignSelf`          | `CSSProperties["alignSelf"]`                                       | Override flex alignment for this item       |
 
 #### Interactive Props
 
@@ -639,14 +639,14 @@ import { Box } from "@telegraph/layout";
 </Box>
 
 // Scrollable container with specific axes
-<Box 
-  w="96" 
-  h="64" 
+<Box
+  w="96"
+  h="64"
   overflow="hidden"  // Base: hide overflow
   overflowY="scroll" // Override: allow vertical scroll
-  bg="surface-1" 
-  rounded="2" 
-  border="px" 
+  bg="surface-1"
+  rounded="2"
+  border="px"
   borderColor="gray-6"
   p="4"
 >
