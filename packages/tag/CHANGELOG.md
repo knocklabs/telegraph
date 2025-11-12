@@ -1,5 +1,11 @@
 # @telegraph/tag
 
+## 0.0.110
+
+### Patch Changes
+
+- [#617](https://github.com/knocklabs/telegraph/pull/617) [`0def9d5`](https://github.com/knocklabs/telegraph/commit/0def9d56bfe6ce7279a28b7fcdaa0e6ad88a6c80) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: properly type event through onCopy function
+
 ## 0.0.109
 
 ### Patch Changes
