@@ -38,6 +38,7 @@ const Label = ({
   const {
     color = "gray",
     weight = "medium",
+    size = "1",
     ...restTextProps
   } = textProps || {};
   return (
@@ -55,7 +56,13 @@ const Label = ({
           <Icon size="1" color="gray" {...icon} />
         </Stack>
       )}
-      <Text as="label" {...restTextProps} color={color} weight={weight}>
+      <Text
+        as="label"
+        {...restTextProps}
+        color={color}
+        weight={weight}
+        size={size}
+      >
         {children}
       </Text>
     </Stack>
@@ -71,13 +78,25 @@ const Value = ({ ...props }: ValueProps) => {
 type ItemProps = ListItemProps & {
   label: React.ReactNode | string;
   icon?: TgphComponentProps<typeof Icon>;
+  labelProps?: TgphComponentProps<typeof Label>;
+  valueProps?: TgphComponentProps<typeof Value>;
 };
 
-const Item = ({ label, direction, icon, children, ...props }: ItemProps) => {
+const Item = ({
+  label,
+  direction,
+  icon,
+  children,
+  labelProps,
+  valueProps,
+  ...props
+}: ItemProps) => {
   return (
     <ListItem direction={direction} {...props}>
-      <Label icon={icon}>{label}</Label>
-      <Value>{children}</Value>
+      <Label icon={icon} {...labelProps}>
+        {label}
+      </Label>
+      <Value {...valueProps}>{children}</Value>
     </ListItem>
   );
 };
