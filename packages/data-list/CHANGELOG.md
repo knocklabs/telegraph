@@ -1,5 +1,11 @@
 # @telegraph/data-list
 
+## 0.0.4
+
+### Patch Changes
+
+- [#624](https://github.com/knocklabs/telegraph/pull/624) [`794e5aa`](https://github.com/knocklabs/telegraph/commit/794e5aa8df38d6d687faceaa933a8fdda6da49a3) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: data-list label size, additional props for default component
+
 ## 0.0.3
 
 ### Patch Changes
