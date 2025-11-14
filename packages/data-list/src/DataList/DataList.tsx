@@ -1,6 +1,7 @@
 import { TgphComponentProps } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
@@ -24,6 +25,11 @@ const ListItem = ({
 type LabelProps = {
   textProps?: TgphComponentProps<typeof Text>;
   icon?: TgphComponentProps<typeof Icon>;
+  description?: React.ReactNode;
+  tooltipProps?: Omit<
+    Partial<TgphComponentProps<typeof Tooltip>>,
+    "enabled" | "label"
+  >;
 } & TgphComponentProps<typeof Stack>;
 
 const Label = ({
@@ -33,6 +39,8 @@ const Label = ({
   icon,
   children,
   textProps,
+  description,
+  tooltipProps,
   ...props
 }: LabelProps) => {
   const {
@@ -41,6 +49,7 @@ const Label = ({
     size = "1",
     ...restTextProps
   } = textProps || {};
+
   return (
     <Stack
       direction="row"
@@ -56,15 +65,19 @@ const Label = ({
           <Icon size="1" color="gray" {...icon} />
         </Stack>
       )}
-      <Text
-        as="label"
-        {...restTextProps}
-        color={color}
-        weight={weight}
-        size={size}
-      >
-        {children}
-      </Text>
+      <Tooltip label={description} enabled={!!description} {...tooltipProps}>
+        <Text
+          as="label"
+          {...restTextProps}
+          color={color}
+          weight={weight}
+          size={size}
+          borderBottom={description ? "px" : undefined}
+          borderStyle={description ? "dashed" : undefined}
+        >
+          {children}
+        </Text>
+      </Tooltip>
     </Stack>
   );
 };
@@ -78,6 +91,7 @@ const Value = ({ ...props }: ValueProps) => {
 type ItemProps = ListItemProps & {
   label: React.ReactNode | string;
   icon?: TgphComponentProps<typeof Icon>;
+  description?: React.ReactNode;
   labelProps?: TgphComponentProps<typeof Label>;
   valueProps?: TgphComponentProps<typeof Value>;
 };
@@ -87,13 +101,14 @@ const Item = ({
   direction,
   icon,
   children,
+  description,
   labelProps,
   valueProps,
   ...props
 }: ItemProps) => {
   return (
     <ListItem direction={direction} {...props}>
-      <Label icon={icon} {...labelProps}>
+      <Label icon={icon} description={description} {...labelProps}>
         {label}
       </Label>
       <Value {...valueProps}>{children}</Value>
