@@ -1,5 +1,11 @@
 # @telegraph/data-list
 
+## 0.0.5
+
+### Patch Changes
+
+- [#626](https://github.com/knocklabs/telegraph/pull/626) [`5634e8d`](https://github.com/knocklabs/telegraph/commit/5634e8dbedea588c793ea460ead27a0a39746ffa) Thanks [@connorlindsey](https://github.com/connorlindsey)! - feat: add description as tooltip
+
 ## 0.0.4
 
 ### Patch Changes
