@@ -46,6 +46,13 @@ export const Default: Story = {
         </DataList.Item>
         <DataList.Item
           {...args}
+          label="User ID*"
+          description="The unique identifier for the user"
+        >
+          <Input placeholder="Enter user ID" />
+        </DataList.Item>
+        <DataList.Item
+          {...args}
           icon={{ icon: CornerDownRight, ["aria-hidden"]: true }}
         >
           <Input />
