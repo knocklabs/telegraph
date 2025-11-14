@@ -26,6 +26,10 @@ type LabelProps = {
   textProps?: TgphComponentProps<typeof Text>;
   icon?: TgphComponentProps<typeof Icon>;
   description?: React.ReactNode;
+  tooltipProps?: Omit<
+    Partial<TgphComponentProps<typeof Tooltip>>,
+    "enabled" | "label"
+  >;
 } & TgphComponentProps<typeof Stack>;
 
 const Label = ({
@@ -36,6 +40,7 @@ const Label = ({
   children,
   textProps,
   description,
+  tooltipProps,
   ...props
 }: LabelProps) => {
   const {
@@ -60,7 +65,7 @@ const Label = ({
           <Icon size="1" color="gray" {...icon} />
         </Stack>
       )}
-      <Tooltip label={description} enabled={!!description}>
+      <Tooltip label={description} enabled={!!description} {...tooltipProps}>
         <Text
           as="label"
           {...restTextProps}

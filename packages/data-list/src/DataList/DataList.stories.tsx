@@ -47,6 +47,12 @@ export const Default: Story = {
         <DataList.Item
           {...args}
           label="User ID*"
+          labelProps={{
+            tooltipProps: {
+              align: "start",
+              side: "top",
+            },
+          }}
           description="The unique identifier for the user"
         >
           <Input placeholder="Enter user ID" />
