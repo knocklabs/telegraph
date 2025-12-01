@@ -138,4 +138,261 @@ describe("getStyleProp", () => {
       "--top": "calc(-1 * var(--tgph-spacing-8))",
     });
   });
+
+  describe("applyAxisValues", () => {
+    it("handles overflow on x-axis only", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowX: "hidden",
+        },
+        cssVars: {
+          overflowX: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "x",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "hidden visible",
+      });
+    });
+
+    it("handles overflow on y-axis only", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowY: "scroll",
+        },
+        cssVars: {
+          overflowY: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "y",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "visible scroll",
+      });
+    });
+
+    it("handles overflow on both axes", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflow: "auto",
+        },
+        cssVars: {
+          overflow: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "both",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "auto auto",
+      });
+    });
+
+    it("combines overflowX and overflowY correctly", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowX: "hidden",
+          overflowY: "scroll",
+        },
+        cssVars: {
+          overflowX: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "x",
+          },
+          overflowY: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "y",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "hidden scroll",
+      });
+    });
+
+    it("preserves y-axis value when setting x-axis", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowY: "auto",
+          overflowX: "hidden",
+        },
+        cssVars: {
+          overflowY: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "y",
+          },
+          overflowX: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "x",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "hidden auto",
+      });
+    });
+
+    it("preserves x-axis value when setting y-axis", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowX: "scroll",
+          overflowY: "hidden",
+        },
+        cssVars: {
+          overflowX: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "x",
+          },
+          overflowY: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "y",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "scroll hidden",
+      });
+    });
+
+    it("overflow both axes overrides previous individual x-axis value", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowX: "hidden",
+          overflow: "scroll",
+        },
+        cssVars: {
+          overflowX: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "x",
+          },
+          overflow: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "both",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "scroll scroll",
+      });
+    });
+
+    it("overflow both axes overrides previous individual y-axis value", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflowY: "hidden",
+          overflow: "auto",
+        },
+        cssVars: {
+          overflowY: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "y",
+          },
+          overflow: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "both",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "auto auto",
+      });
+    });
+
+    it("individual x-axis can override previous overflow both value", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflow: "scroll",
+          overflowX: "hidden",
+        },
+        cssVars: {
+          overflow: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "both",
+          },
+          overflowX: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "x",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "hidden scroll",
+      });
+    });
+
+    it("individual y-axis can override previous overflow both value", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          overflow: "scroll",
+          overflowY: "hidden",
+        },
+        cssVars: {
+          overflow: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "both",
+          },
+          overflowY: {
+            cssVar: "--overflow",
+            value: "VARIABLE",
+            axis: "y",
+          },
+        },
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--overflow": "scroll hidden",
+      });
+    });
+
+    it("handles all overflow values correctly", () => {
+      const overflowValues = ["hidden", "visible", "scroll", "auto"] as const;
+
+      overflowValues.forEach((value) => {
+        const { styleProp } = getStyleProp({
+          props: {
+            overflow: value,
+          },
+          cssVars: {
+            overflow: {
+              cssVar: "--overflow",
+              value: "VARIABLE",
+              axis: "both",
+            },
+          },
+        });
+
+        expect(styleProp).toStrictEqual({
+          "--overflow": `${value} ${value}`,
+        });
+      });
+    });
+  });
 });

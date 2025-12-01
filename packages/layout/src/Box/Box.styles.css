@@ -19,7 +19,7 @@
   --left: auto;
   --right: auto;
   --bottom: auto;
-  --overflow: visible;
+  --overflow: visible visible;
   --align-self: auto;
 
   background-color: var(--background-color);
@@ -43,8 +43,6 @@
   right: var(--right);
   bottom: var(--bottom);
   overflow: var(--overflow);
-  overflow-x: var(--overflow-x);
-  overflow-y: var(--overflow-y);
   align-self: var(--align-self);
 }
 
