@@ -1,5 +1,31 @@
 # @telegraph/relay
 
+## 0.1.27
+
+### Patch Changes
+
+- Updated dependencies [[`8ceb949`](https://github.com/knocklabs/telegraph/commit/8ceb949883d1df0bc279af1cbbdaead64a25e49e)]:
+  - @telegraph/style-engine@0.2.1
+  - @telegraph/layout@0.3.1
+  - @telegraph/button@0.3.2
+  - @telegraph/modal@0.1.16
+  - @telegraph/typography@0.1.27
+  - @telegraph/combobox@0.1.20
+  - @telegraph/filter@0.0.37
+  - @telegraph/input@0.1.5
+  - @telegraph/kbd@0.0.44
+  - @telegraph/menu@0.1.16
+  - @telegraph/popover@0.1.7
+  - @telegraph/radio@0.0.88
+  - @telegraph/segmented-control@0.1.15
+  - @telegraph/tabs@0.0.30
+  - @telegraph/tag@0.0.111
+  - @telegraph/tooltip@0.0.60
+  - @telegraph/icon@0.3.2
+  - @telegraph/textarea@0.1.5
+  - @telegraph/truncate@0.0.15
+  - @telegraph/select@0.0.74
+
 ## 0.1.26
 
 ### Patch Changes
