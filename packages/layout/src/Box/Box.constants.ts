@@ -380,14 +380,17 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   overflow: {
     cssVar: "--overflow",
     value: "VARIABLE",
+    axis: "both",
   },
   overflowX: {
-    cssVar: "--overflow-x",
+    cssVar: "--overflow",
     value: "VARIABLE",
+    axis: "x",
   },
   overflowY: {
-    cssVar: "--overflow-y",
+    cssVar: "--overflow",
     value: "VARIABLE",
+    axis: "y",
   },
   alignSelf: {
     cssVar: "--align-self",

@@ -11,10 +11,13 @@ type Direction =
   | "side-left"
   | "side-right";
 
+type Axis = "x" | "y" | "both";
+
 export type CssVarProp = {
   cssVar: string;
   value: string;
   direction?: Direction;
+  axis?: Axis;
   interactive?: boolean;
 };
 
@@ -157,6 +160,33 @@ const applyDirectionalValues = ({
   return newValuesString;
 };
 
+type ApplyAxisValuesProps = {
+  currentValueOfCssVar: string | undefined;
+  value: string;
+  axis: Axis;
+};
+
+const applyAxisValues = ({
+  currentValueOfCssVar = "visible visible",
+  value,
+  axis,
+}: ApplyAxisValuesProps) => {
+  const [x, y] = currentValueOfCssVar.split(" ");
+
+  // If the axis is x, we need to set the x value and keep the y value.
+  if (axis === "x") {
+    return `${value} ${y}`;
+  }
+
+  // If the axis is y, we need to set the y value and keep the x value.
+  if (axis === "y") {
+    return `${x} ${value}`;
+  }
+
+  // If the axis is both, we need to set the x and y values.
+  return `${value} ${value}`;
+};
+
 export type CssVarsPropObject<CssVars extends CssVarsPropObject<CssVars>> =
   Record<keyof CssVars, CssVarProp>;
 
@@ -270,6 +300,21 @@ export const getStyleProp = <
       styleProp = {
         ...styleProp,
         [cssVarName]: directionalValue,
+      };
+      return;
+    }
+
+    if (matchingCssVar.axis) {
+      const currentValueOfCssVar = styleProp?.[cssVarName];
+      const axisValue = applyAxisValues({
+        currentValueOfCssVar,
+        value: mappedValueOfCssVar,
+        axis: matchingCssVar.axis,
+      });
+
+      styleProp = {
+        ...styleProp,
+        [cssVarName]: axisValue,
       };
       return;
     }
