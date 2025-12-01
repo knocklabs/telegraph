@@ -1,5 +1,14 @@
 # @telegraph/layout
 
+## 0.3.1
+
+### Patch Changes
+
+- [#628](https://github.com/knocklabs/telegraph/pull/628) [`8ceb949`](https://github.com/knocklabs/telegraph/commit/8ceb949883d1df0bc279af1cbbdaead64a25e49e) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: properly support overflow prop
+
+- Updated dependencies [[`8ceb949`](https://github.com/knocklabs/telegraph/commit/8ceb949883d1df0bc279af1cbbdaead64a25e49e)]:
+  - @telegraph/style-engine@0.2.1
+
 ## 0.3.0
 
 ### Minor Changes
