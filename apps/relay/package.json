@@ -35,7 +35,7 @@
     "@telegraph/tooltip": "workspace:*",
     "@telegraph/truncate": "workspace:*",
     "@telegraph/typography": "workspace:*",
-    "ai": "^4.3.16",
+    "ai": "^5.0.105",
     "cookie": "^1.0.2",
     "google-auth-library": "^10.3.0",
     "jsonwebtoken": "^9.0.2",
