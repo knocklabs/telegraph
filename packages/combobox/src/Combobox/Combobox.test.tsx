@@ -186,6 +186,115 @@ describe("Combobox", () => {
 
       expect(trigger?.getAttribute("aria-expanded")).toBe("false");
     });
+
+    it("pressing enter on the trigger should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      expect(document.activeElement).toBe(trigger);
+
+      // Open combobox with enter
+      await user.keyboard("[Enter]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("pressing space on the trigger should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      expect(document.activeElement).toBe(trigger);
+
+      // Open combobox with space
+      await user.keyboard(" ");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("pressing arrow down on the trigger should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      expect(document.activeElement).toBe(trigger);
+
+      // Open combobox with space
+      await user.keyboard("[ArrowDown]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("pressing enter on the clear button should not open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect clearable />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Select an option first to show the clear button
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+      await user.keyboard("[ArrowDown]");
+      await user.keyboard("[Enter]");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+      );
+
+      await waitFor(() => expect(trigger?.textContent).toBe("Email"));
+
+      const clearButton = container.querySelector(
+        "[data-tgph-combobox-clear]",
+      ) as HTMLElement;
+      clearButton?.focus();
+
+      await waitFor(() => expect(clearButton).toHaveFocus());
+
+      await user.keyboard("[Enter]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "false");
+      await waitFor(() => expect(trigger?.textContent).toBe(""));
+    });
+
+    it("pressing space on the clear button should not open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxSingleSelect clearable />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Select an option first to show the clear button
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+      await user.keyboard("[ArrowDown]");
+      await user.keyboard("[Enter]");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+      );
+      await waitFor(() => expect(trigger?.textContent).toBe("Email"));
+
+      // Focus the clear button
+      const clearButton = container.querySelector(
+        "[data-tgph-combobox-clear]",
+      ) as HTMLElement;
+      clearButton?.focus();
+
+      // Press space on the clear button - this should clear the value but NOT open the combobox
+      await user.keyboard(" ");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+      );
+      await waitFor(() => expect(trigger?.textContent).toBe(""));
+    });
   });
 
   describe("Multi Select", () => {
@@ -253,6 +362,80 @@ describe("Combobox", () => {
       await user.keyboard("[Enter]");
 
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+    });
+
+    it("pressing enter on the trigger should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      expect(document.activeElement).toBe(trigger);
+
+      // Open combobox with enter
+      await user.keyboard("[Enter]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("pressing space on the trigger should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      expect(document.activeElement).toBe(trigger);
+
+      // Open combobox with space
+      await user.keyboard(" ");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("pressing arrow down on the trigger should open the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      // Tab to trigger
+      await user.tab();
+      expect(document.activeElement).toBe(trigger);
+
+      // Open combobox with space
+      await user.keyboard("[ArrowDown]");
+      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+    it("tag close button removes tag without opening the combobox", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ComboboxMultiSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await waitFor(() => expect(trigger?.textContent).toBe("EmailSMS"));
+
+      const wasOpen = trigger?.getAttribute("aria-expanded") === "true";
+
+      // Find and click the first tag's close button
+      const tagButtons = container.querySelectorAll(
+        "[data-tgph-combobox-tag-button]",
+      );
+
+      const firstTagButton = tagButtons[0];
+
+      // Click the tag button - should remove tag without toggling combobox state
+      await user.click(firstTagButton!);
+
+      // Verify the tag was removed
+      await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+
+      // Verify combobox state didn't toggle
+      const isOpen = trigger?.getAttribute("aria-expanded") === "true";
+      expect(isOpen).toBe(wasOpen);
     });
   });
 });

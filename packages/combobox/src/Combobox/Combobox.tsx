@@ -248,7 +248,6 @@ const Trigger = <V extends ChildrenValue>({
 
     return context.placeholder;
   }, [currentValue, context.placeholder]);
-
   return (
     <TelegraphMenu.Trigger
       {...props}
@@ -259,17 +258,19 @@ const Trigger = <V extends ChildrenValue>({
         context.triggerRef?.current?.focus();
       }}
       onKeyDown={(event: React.KeyboardEvent) => {
+        // If the event target isn't exactly the trigger we don't want anything to
+        // happen within this event handler. For example, if the `X` icon on a trigger
+        // tag is focused and the user presses `Enter`, this keydown event will trigger.
+        if (event.target !== context.triggerRef?.current) return;
+
         // Lets the user tab in and out of the combobox as usual
         if (event.key === "Tab") {
           event.stopPropagation();
           return;
         }
-        if (SELECT_KEYS.includes(event.key)) {
-          event.preventDefault();
-          return;
-        }
 
-        if (event.key === "ArrowDown") {
+        // Open the combobox when ArrowDown, Space, or Enter are pressed
+        if (event.key === "ArrowDown" || SELECT_KEYS.includes(event.key)) {
           // Don't allow the event to bubble up outside of the menu
           event.stopPropagation();
           event.preventDefault();
