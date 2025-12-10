@@ -40,16 +40,6 @@
     },
     "format:check": {
       "dependsOn": ["^format:check"]
-    },
-    "build:relay": {
-      "dependsOn": ["^build"],
-      "cache": false
-    },
-    "dev:relay": {
-      "persistent": true
-    },
-    "start:relay": {
-      "persistent": true
     }
   }
 }
