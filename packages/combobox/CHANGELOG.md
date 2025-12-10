@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.1.21
+
+### Patch Changes
+
+- [#636](https://github.com/knocklabs/telegraph/pull/636) [`8e068c8`](https://github.com/knocklabs/telegraph/commit/8e068c804d139fa9c3e43d1b9023c555000fe9de) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: space and enter should open combobox
+
 ## 0.1.20
 
 ### Patch Changes

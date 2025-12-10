@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/filter",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "A flexible filter component",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/filter",
   "author": "@knocklabs",
