@@ -104,6 +104,7 @@ const TriggerClear = <T extends TgphElement>({
         onKeyDown={(event: React.KeyboardEvent) => {
           if (event.key === "Enter" || event.key === " ") {
             event.stopPropagation();
+            event.preventDefault();
             handleClear();
           }
         }}
@@ -366,6 +367,7 @@ const TriggerTagButton = <T extends TgphElement>({
         // Stop the button "submit" action from triggering
         event.preventDefault();
       }}
+      data-tgph-combobox-tag-button
       {...props}
     >
       {children}
