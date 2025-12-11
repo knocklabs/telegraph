@@ -1,5 +1,11 @@
 # @telegraph/truncate
 
+## 0.0.16
+
+### Patch Changes
+
+- [#640](https://github.com/knocklabs/telegraph/pull/640) [`712f9fd`](https://github.com/knocklabs/telegraph/commit/712f9fd3604f5e89a8eed61548a2d63b5a3522c7) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add horizontal scrolling to overflowed segmented control
+
 ## 0.0.15
 
 ### Patch Changes
