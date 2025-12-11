@@ -8,6 +8,9 @@ import { AnimatePresence, LazyMotion, domAnimation } from "motion/react";
 import { div as MotionDiv } from "motion/react-m";
 import React from "react";
 
+// Use a tolerance of 1px to account for subpixel rendering and floating-point precision
+const SCROLL_TOLERANCE = 1;
+
 const SegmentedControlContextState = React.createContext<{
   value?: React.ComponentProps<typeof ToggleGroup.Root>["value"];
   size?: React.ComponentProps<typeof Button.Root>["size"];
@@ -73,16 +76,13 @@ const Root = ({
     const maxScrollPosition =
       containerRef.current.scrollWidth - containerRef.current.clientWidth;
 
-    // Use a tolerance of 1px to account for subpixel rendering and floating-point precision
-    const SCROLL_TOLERANCE = 1;
-
     // If the scroll position is at or near 0, this means that the leftmost option
     // is flush against the left edge of the container.
     if (newScrollPosition <= SCROLL_TOLERANCE) {
       return setScrollStatus("flushLeft");
     }
 
-    // If the scroll position is at or near the maximum, this means that the right most
+    // If the scroll position is at or near the maximum, this means that the rightmost
     // option is flush against the right edge of the container.
     if (newScrollPosition >= maxScrollPosition - SCROLL_TOLERANCE) {
       return setScrollStatus("flushRight");
