@@ -70,20 +70,21 @@ const Root = ({
   const updateScrollStatus = React.useCallback(() => {
     if (!containerRef.current) return;
     const newScrollPosition = containerRef.current.scrollLeft;
+    const maxScrollPosition =
+      containerRef.current.scrollWidth - containerRef.current.clientWidth;
 
-    // If the scroll position is 0, this means that the leftmost option
+    // Use a tolerance of 1px to account for subpixel rendering and floating-point precision
+    const SCROLL_TOLERANCE = 1;
+
+    // If the scroll position is at or near 0, this means that the leftmost option
     // is flush against the left edge of the container.
-    if (newScrollPosition === 0) {
+    if (newScrollPosition <= SCROLL_TOLERANCE) {
       return setScrollStatus("flushLeft");
     }
 
-    // If the scroll position is the same as the width of the container
-    // this means that the right most option is flush against the right
-    // edge of the container.
-    if (
-      newScrollPosition ===
-      containerRef.current.scrollWidth - containerRef.current.clientWidth
-    ) {
+    // If the scroll position is at or near the maximum, this means that the right most
+    // option is flush against the right edge of the container.
+    if (newScrollPosition >= maxScrollPosition - SCROLL_TOLERANCE) {
       return setScrollStatus("flushRight");
     }
 
