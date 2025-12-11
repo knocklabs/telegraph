@@ -35,7 +35,10 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
-    "@telegraph/layout": "workspace:^"
+    "@telegraph/layout": "workspace:^",
+    "@telegraph/truncate": "workspace:^",
+    "lucide-react": "^0.544.0",
+    "motion": "^12.23.12"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",

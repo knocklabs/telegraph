@@ -1,7 +1,7 @@
 import React from "react";
 
 type UseTruncateParams = {
-  tgphRef: React.RefObject<HTMLElement>;
+  tgphRef: React.RefObject<HTMLElement | null>;
 };
 
 const useTruncate = (
