@@ -10,6 +10,7 @@ import React from "react";
 
 // Use a tolerance of 1px to account for subpixel rendering and floating-point precision
 const SCROLL_TOLERANCE = 1;
+const SCROLL_OFFSET = 24;
 
 const SegmentedControlContextState = React.createContext<{
   value?: React.ComponentProps<typeof ToggleGroup.Root>["value"];
@@ -140,7 +141,8 @@ const Root = ({
       const optionOffsetLeft = activeOptionRef.offsetLeft;
       // Determine what the scroll status would be if the active option was scrolled into view.
       const newScrollStatus = deriveScrollStatus(optionOffsetLeft);
-      const scrollButtonWidth = (scrollButtonRef.current?.clientWidth ?? 0) + 1;
+      const scrollButtonWidth =
+        (scrollButtonRef.current?.clientWidth ?? 0) + SCROLL_OFFSET;
 
       // Set the scroll status so that the scroll buttons start in the correct position.
       setScrollStatus(newScrollStatus);
