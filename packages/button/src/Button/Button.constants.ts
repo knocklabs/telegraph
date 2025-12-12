@@ -232,8 +232,9 @@ export const BUTTON_COLOR_MAP = {
     },
     purple: {
       backgroundColor: "surface-1",
+      focus_backgroundColor: "surface-1",
       hover_backgroundColor: "purple-2",
-      focus_backgroundColor: "purple-2",
+      active_backgroundColor: "purple-3",
       default_buttonShadowColor: "purple-6",
       hover_buttonShadowColor: "purple-7",
       focus_buttonShadowColor: "purple-8",
