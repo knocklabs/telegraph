@@ -4,33 +4,42 @@ import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { useTruncate } from "@telegraph/truncate";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { AnimatePresence, LazyMotion, domAnimation } from "motion/react";
+import { LazyMotion, domAnimation } from "motion/react";
 import { div as MotionDiv } from "motion/react-m";
 import React from "react";
 
 // Use a tolerance of 1px to account for subpixel rendering and floating-point precision
 const SCROLL_TOLERANCE = 1;
+const SCROLL_OFFSET = 24;
 
 const SegmentedControlContextState = React.createContext<{
   value?: React.ComponentProps<typeof ToggleGroup.Root>["value"];
   size?: React.ComponentProps<typeof Button.Root>["size"];
-  truncated?: boolean;
+  showScrollButtons?: boolean;
+  activeOptionRef?: HTMLButtonElement | null;
+  setActiveOptionRef?: React.Dispatch<
+    React.SetStateAction<HTMLButtonElement | null>
+  >;
 }>({
   value: "",
   size: "1",
-  truncated: false,
+  showScrollButtons: false,
+  activeOptionRef: null,
+  setActiveOptionRef: () => {},
 });
 
 type RootProps = Omit<React.ComponentProps<typeof ToggleGroup.Root>, "type"> &
   TgphComponentProps<typeof Stack> & {
     type?: React.ComponentProps<typeof ToggleGroup.Root>["type"];
     size?: React.ComponentProps<typeof Button.Root>["size"];
+    scrollControls?: "arrows" | "none";
   };
 
 const Root = ({
   // ToggleGroup.Root Props
   type = "single",
   size = "1",
+  scrollControls = "arrows",
   value,
   defaultValue,
   onValueChange,
@@ -48,11 +57,18 @@ const Root = ({
   // segmented control is too wide to fit within the container.
   const containerRef = React.useRef<HTMLDivElement>(null);
   const { truncated } = useTruncate({ tgphRef: containerRef });
+  const scrollButtonRef = React.useRef<HTMLButtonElement>(null);
+  const showScrollButtons = scrollControls === "arrows" && truncated;
+
+  // We store the active option ref as a state value so that we can respond to it
+  // changing via an effect vs doing complicated ref status chasing.
+  const [activeOptionRef, setActiveOptionRef] =
+    React.useState<HTMLButtonElement | null>(null);
   const [scrollStatus, setScrollStatus] = React.useState<
     "flushLeft" | "flushRight" | "middle" | null
   >(null);
 
-  const handleScroll = React.useCallback((direction: "left" | "right") => {
+  const onScrollClick = React.useCallback((direction: "left" | "right") => {
     if (!containerRef.current) return;
 
     // We get the currentWidth so that we can scroll a meaningful amount.
@@ -70,44 +86,100 @@ const Root = ({
     });
   }, []);
 
-  const updateScrollStatus = React.useCallback(() => {
+  // Derive what the `scrollStatus` should be based on the current scroll position.
+  const deriveScrollStatus = React.useCallback(
+    (
+      currentScrollPosition: number,
+    ): "flushLeft" | "flushRight" | "middle" | null => {
+      if (!containerRef.current) return null;
+      const maxScrollPosition =
+        containerRef.current.scrollWidth - containerRef.current.clientWidth;
+
+      // If the scroll position is at or near 0, this means that the leftmost option
+      // is flush against the left edge of the container.
+      if (currentScrollPosition <= SCROLL_TOLERANCE) {
+        return "flushLeft";
+      }
+
+      // If the scroll position is at or near the maximum, this means that the rightmost
+      // option is flush against the right edge of the container.
+      if (currentScrollPosition >= maxScrollPosition - SCROLL_TOLERANCE) {
+        return "flushRight";
+      }
+
+      // If neither of these things are true, then the scroll position is
+      // somewhere in the middle and we need both buttons to be visible.
+      return "middle";
+    },
+    [],
+  );
+
+  // Update the `scrollStatus` on mount and each time the container is scrolled.
+  const handleScroll = React.useCallback(() => {
     if (!containerRef.current) return;
     const newScrollPosition = containerRef.current.scrollLeft;
-    const maxScrollPosition =
-      containerRef.current.scrollWidth - containerRef.current.clientWidth;
-
-    // If the scroll position is at or near 0, this means that the leftmost option
-    // is flush against the left edge of the container.
-    if (newScrollPosition <= SCROLL_TOLERANCE) {
-      return setScrollStatus("flushLeft");
-    }
-
-    // If the scroll position is at or near the maximum, this means that the rightmost
-    // option is flush against the right edge of the container.
-    if (newScrollPosition >= maxScrollPosition - SCROLL_TOLERANCE) {
-      return setScrollStatus("flushRight");
-    }
-
-    // If neither of these things are true, then the scroll position is
-    // somewhere in the middle and we need both buttons to be visible.
-    setScrollStatus("middle");
-  }, []);
+    const newScrollStatus = deriveScrollStatus(newScrollPosition);
+    setScrollStatus(newScrollStatus);
+  }, [deriveScrollStatus]);
 
   React.useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
 
     // Run the initial check to see if the container is truncated
-    updateScrollStatus();
-    container.addEventListener("scroll", updateScrollStatus);
+    handleScroll();
+    container.addEventListener("scroll", handleScroll);
     return () => {
-      container?.removeEventListener("scroll", updateScrollStatus);
+      container?.removeEventListener("scroll", handleScroll);
     };
-  }, [updateScrollStatus]);
+  }, [handleScroll]);
+
+  // When the active option is changed, ensure that it is in view.
+  const [hasRan, setHasRan] = React.useState(false);
+  React.useEffect(() => {
+    if (showScrollButtons && activeOptionRef) {
+      const optionOffsetLeft = activeOptionRef.offsetLeft;
+      // Determine what the scroll status would be if the active option was scrolled into view.
+      const newScrollStatus = deriveScrollStatus(optionOffsetLeft);
+      const scrollButtonWidth =
+        (scrollButtonRef.current?.clientWidth ?? 0) + SCROLL_OFFSET;
+
+      // Set the scroll status so that the scroll buttons start in the correct position.
+      setScrollStatus(newScrollStatus);
+
+      const newScrollPosition =
+        // If the active option would be behind the left scroll button, take the measurement of
+        // the scroll button width into account so that the active option is in view.
+        newScrollStatus === "flushRight" || newScrollStatus === "middle"
+          ? optionOffsetLeft - scrollButtonWidth
+          : optionOffsetLeft;
+
+      containerRef.current?.scrollTo({
+        left: newScrollPosition,
+        // If this is the first time we've run this effect, we choose to scroll to the active
+        // option instantly. This avoid animating to that value on mount.
+        behavior: hasRan ? "smooth" : "instant",
+      });
+
+      !hasRan && setHasRan(true);
+    }
+  }, [showScrollButtons, activeOptionRef, deriveScrollStatus, hasRan]);
 
   return (
-    <Box position="relative" overflow="hidden" rounded="2">
-      <SegmentedControlContextState.Provider value={{ value, size, truncated }}>
+    <Box
+      position="relative"
+      overflow={showScrollButtons ? "hidden" : "visible"}
+      rounded="2"
+    >
+      <SegmentedControlContextState.Provider
+        value={{
+          value,
+          size,
+          showScrollButtons,
+          activeOptionRef,
+          setActiveOptionRef,
+        }}
+      >
         {/* @ts-expect-error: radix's type props doesn't seem to be typed correctly, could be a bug? */}
         <ToggleGroup.Root
           asChild={true}
@@ -132,7 +204,7 @@ const Root = ({
               // hiding any scroll bars. The buttons that appear when the container is truncated
               // control the scroll. This means we don't need to worry about the browser's default
               // scroll bar overlapping the segmented control.
-              overflow="hidden"
+              overflow={showScrollButtons ? "hidden" : "visible"}
               position="relative"
               tgphRef={containerRef}
               {...props}
@@ -143,56 +215,65 @@ const Root = ({
         </ToggleGroup.Root>
       </SegmentedControlContextState.Provider>
       {/* We only load any of the truncation logic when the container is truncated. */}
-      {truncated && (
+      {showScrollButtons && (
         <LazyMotion features={domAnimation}>
-          <AnimatePresence>
-            {(scrollStatus === "flushRight" || scrollStatus === "middle") && (
-              <Box
-                key="left-scroll-button"
-                as={MotionDiv}
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-                position="absolute"
-                left="0"
-                top="0"
-                bottom="0"
-              >
-                <Button
-                  variant="outline"
-                  icon={{ icon: ChevronLeft, alt: "Scroll left" }}
-                  onClick={() => handleScroll("left")}
-                  size={size}
-                  aria-label="Scroll left to view more options"
-                  aria-controls={containerId}
-                />
-              </Box>
-            )}
-            {(scrollStatus === "flushLeft" || scrollStatus === "middle") && (
-              <Box
-                key="right-scroll-button"
-                as={MotionDiv}
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ duration: 0.2, type: "spring", bounce: 0 }}
-                position="absolute"
-                right="0"
-                top="0"
-                bottom="0"
-              >
-                <Button
-                  variant="outline"
-                  icon={{ icon: ChevronRight, alt: "Scroll right" }}
-                  onClick={() => handleScroll("right")}
-                  size={size}
-                  aria-label="Scroll right to view more options"
-                  aria-controls={containerId}
-                />
-              </Box>
-            )}
-          </AnimatePresence>
+          <Box
+            key="left-scroll-button"
+            as={MotionDiv}
+            animate={{
+              x:
+                scrollStatus === "flushRight" || scrollStatus === "middle"
+                  ? 0
+                  : "-100%",
+              display:
+                scrollStatus === "flushRight" || scrollStatus === "middle"
+                  ? "flex"
+                  : "none",
+            }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            position="absolute"
+            left="0"
+            top="0"
+            bottom="0"
+          >
+            <Button
+              variant="outline"
+              icon={{ icon: ChevronLeft, alt: "Scroll left" }}
+              onClick={() => onScrollClick("left")}
+              size={size}
+              aria-label="Scroll left to view more options"
+              aria-controls={containerId}
+            />
+          </Box>
+          <Box
+            key="right-scroll-button"
+            as={MotionDiv}
+            animate={{
+              x:
+                scrollStatus === "flushLeft" || scrollStatus === "middle"
+                  ? 0
+                  : "100%",
+              display:
+                scrollStatus === "flushLeft" || scrollStatus === "middle"
+                  ? "flex"
+                  : "none",
+            }}
+            transition={{ duration: 0.2, type: "spring", bounce: 0 }}
+            position="absolute"
+            right="0"
+            top="0"
+            bottom="0"
+            tgphRef={scrollButtonRef}
+          >
+            <Button
+              variant="outline"
+              icon={{ icon: ChevronRight, alt: "Scroll right" }}
+              onClick={() => onScrollClick("right")}
+              size={size}
+              aria-label="Scroll right to view more options"
+              aria-controls={containerId}
+            />
+          </Box>
         </LazyMotion>
       )}
     </Box>
@@ -225,9 +306,18 @@ const Option = ({
   style,
   ...props
 }: OptionProps) => {
-  const context = React.useContext(SegmentedControlContextState);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const { setActiveOptionRef, ...context } = React.useContext(
+    SegmentedControlContextState,
+  );
   const status = context.value === value ? "active" : "inactive";
   const derivedSize = context.size ?? size;
+
+  React.useEffect(() => {
+    if (status === "active") {
+      setActiveOptionRef?.(buttonRef.current);
+    }
+  }, [status, setActiveOptionRef]);
 
   return (
     <ToggleGroup.Item asChild={true} value={value} disabled={disabled}>
@@ -240,6 +330,9 @@ const Option = ({
             flexGrow: 1,
             ...style,
           }}
+          data-tgph-segmented-control-option
+          data-tgph-segmented-control-option-status={status}
+          tgphRef={buttonRef}
           {...props}
         />
       </RefToTgphRef>
