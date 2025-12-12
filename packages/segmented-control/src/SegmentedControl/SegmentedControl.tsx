@@ -164,7 +164,11 @@ const Root = ({
   }, [showScrollButtons, activeOptionRef, deriveScrollStatus, hasRan]);
 
   return (
-    <Box position="relative" overflow="hidden" rounded="2">
+    <Box
+      position="relative"
+      overflow={showScrollButtons ? "hidden" : "visible"}
+      rounded="2"
+    >
       <SegmentedControlContextState.Provider
         value={{
           value,
@@ -198,7 +202,7 @@ const Root = ({
               // hiding any scroll bars. The buttons that appear when the container is truncated
               // control the scroll. This means we don't need to worry about the browser's default
               // scroll bar overlapping the segmented control.
-              overflow="hidden"
+              overflow={showScrollButtons ? "hidden" : "visible"}
               position="relative"
               tgphRef={containerRef}
               {...props}
