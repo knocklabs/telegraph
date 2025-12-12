@@ -1,5 +1,14 @@
 # @telegraph/segmented-control
 
+## 0.1.17
+
+### Patch Changes
+
+- [#645](https://github.com/knocklabs/telegraph/pull/645) [`28543a2`](https://github.com/knocklabs/telegraph/commit/28543a2fb20c7a4dcfc35c91e7454b51e02ef061) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: ensure selected item in segmented control is within view on selection and initial mount
+
+- Updated dependencies [[`0c44b7c`](https://github.com/knocklabs/telegraph/commit/0c44b7ce809b4d5c37ea13ef31d95197f8ad0777)]:
+  - @telegraph/button@0.3.3
+
 ## 0.1.16
 
 ### Patch Changes

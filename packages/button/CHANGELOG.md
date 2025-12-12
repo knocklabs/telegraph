@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.3.3
+
+### Patch Changes
+
+- [#643](https://github.com/knocklabs/telegraph/pull/643) [`0c44b7c`](https://github.com/knocklabs/telegraph/commit/0c44b7ce809b4d5c37ea13ef31d95197f8ad0777) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: outline button has no bg color when focused
+
 ## 0.3.2
 
 ### Patch Changes
