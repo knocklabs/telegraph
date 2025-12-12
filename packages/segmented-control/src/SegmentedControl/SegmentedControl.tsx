@@ -307,15 +307,17 @@ const Option = ({
   ...props
 }: OptionProps) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const context = React.useContext(SegmentedControlContextState);
+  const { setActiveOptionRef, ...context } = React.useContext(
+    SegmentedControlContextState,
+  );
   const status = context.value === value ? "active" : "inactive";
   const derivedSize = context.size ?? size;
 
   React.useEffect(() => {
     if (status === "active") {
-      context.setActiveOptionRef?.(buttonRef.current);
+      setActiveOptionRef?.(buttonRef.current);
     }
-  }, [status, context]);
+  }, [status, setActiveOptionRef]);
 
   return (
     <ToggleGroup.Item asChild={true} value={value} disabled={disabled}>
