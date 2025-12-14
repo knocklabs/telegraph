@@ -46,6 +46,15 @@ const Root = <T extends TgphElement>({
   className,
   ...props
 }: RootProps<T>) => {
+  const borderProps =
+    variant === "soft"
+      ? {
+          borderColor: COLOR.Border.soft[color],
+          borderWidth: "px" as const,
+          borderStyle: "solid" as const,
+        }
+      : {};
+
   return (
     <TagContext.Provider value={{ size, color, variant }}>
       <Stack
@@ -57,6 +66,7 @@ const Root = <T extends TgphElement>({
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
         className={clsx("tgph-tag", className)}
+        {...borderProps}
         {...props}
         data-tag
       />

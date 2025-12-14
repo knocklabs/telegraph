@@ -48,6 +48,18 @@ export const COLOR = {
       purple: "purple-3",
     },
   },
+  Border: {
+    soft: {
+      default: "gray-5",
+      accent: "accent-5",
+      gray: "gray-5",
+      red: "red-5",
+      blue: "blue-5",
+      green: "green-5",
+      yellow: "yellow-5",
+      purple: "purple-5",
+    },
+  },
   Icon: {
     solid: {
       default: "white",
