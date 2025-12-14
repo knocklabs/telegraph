@@ -60,7 +60,7 @@ const Root = <T extends TgphElement>({
       <Stack
         as={as}
         align="center"
-        rounded="1"
+        rounded="full"
         display="inline-flex"
         pl={SPACING.Root[size]}
         backgroundColor={COLOR.Root[variant][color]}
@@ -142,8 +142,8 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           size={context.size}
           color={COLOR.Button[context.variant][context.color]}
           variant={context.variant}
-          roundedTopRight="1"
-          roundedBottomRight="1"
+          roundedTopRight="full"
+          roundedBottomRight="full"
           roundedTopLeft="0"
           roundedBottomLeft="0"
           position="relative"
@@ -184,8 +184,8 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
       color={COLOR.Button[context.variant][context.color]}
       variant={context.variant}
       icon={{ icon: X, alt: "close" }}
-      roundedTopRight="1"
-      roundedBottomRight="1"
+      roundedTopRight="full"
+      roundedBottomRight="full"
       roundedTopLeft="0"
       roundedBottomLeft="0"
       {...props}
