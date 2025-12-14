@@ -79,6 +79,7 @@ type TextProps<T extends TgphElement> = RemappedOmit<
   "as"
 > & {
   as?: T;
+  mono?: boolean;
 };
 
 const Text = <T extends TgphElement>({
@@ -86,6 +87,7 @@ const Text = <T extends TgphElement>({
   maxW = "40",
   overflow = "hidden",
   style,
+  mono,
   ...props
 }: TextProps<T>) => {
   const context = React.useContext(TagContext);
@@ -99,6 +101,7 @@ const Text = <T extends TgphElement>({
       maxW={maxW}
       overflow={overflow}
       internal_optionalAs={true}
+      {...(mono ? { family: "mono" as const } : {})}
       style={{
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",
@@ -220,6 +223,7 @@ type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root<T>> & {
     icon?: React.ComponentProps<typeof TelegraphIcon>;
     textProps?: React.ComponentProps<typeof Text>;
+    mono?: boolean;
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
@@ -240,6 +244,7 @@ const Default = <T extends TgphElement>({
   onRemove,
   onCopy,
   textToCopy,
+  mono,
   textProps = { maxW: "40" },
   children,
   ...props
@@ -247,7 +252,7 @@ const Default = <T extends TgphElement>({
   return (
     <Root color={color} size={size} variant={variant} {...props}>
       {icon && <Icon {...icon} />}
-      <Text as="span" {...textProps}>
+      <Text as="span" {...textProps} mono={mono}>
         {children}
       </Text>
       {onRemove && (
