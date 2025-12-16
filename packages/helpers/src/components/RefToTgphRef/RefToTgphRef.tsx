@@ -241,6 +241,8 @@ const RefToTgphRef = React.forwardRef<any, any>(
         // Step 1: Cleanup old ref (call with null)
         if (typeof prevRef === "function") {
           prevRef(null);
+        } else if (prevRef) {
+          (prevRef as React.MutableRefObject<unknown>).current = null;
         }
 
         // Step 2: Set new ref with current node
