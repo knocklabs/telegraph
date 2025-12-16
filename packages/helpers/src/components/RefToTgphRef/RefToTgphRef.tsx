@@ -192,7 +192,7 @@ const applyRefProps = (
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RefToTgphRef = React.forwardRef<any, any>(
-  ({ children: childrenProp, kind, ...props }, ref) => {
+  ({ children: childrenProp, ...props }, ref) => {
     /**
      * REF STABILIZATION ARCHITECTURE
      *
