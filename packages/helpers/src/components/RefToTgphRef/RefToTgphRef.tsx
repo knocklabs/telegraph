@@ -208,7 +208,6 @@ const RefToTgphRef = React.forwardRef<any, any>(
      * - Children receive the same function reference every render (no infinite loops)
      * - The function still forwards to the latest ref (functionality preserved)
      *
-     * IMPLEMENTATION:
      */
 
     // Storage for the latest ref callback/object from parent (e.g., Radix)
@@ -289,62 +288,5 @@ const RefToTgphRef = React.forwardRef<any, any>(
     return applyRefProps({ children: childrenProp, ...props }, stableRef);
   },
 );
-
-/**
- * TESTING & EDGE CASES:
- * ======================
- *
- * When testing this component, verify:
- *
- * 1. Ref forwarding works correctly:
- *    - The parent receives the DOM node/component instance
- *    - Telegraph components receive the ref via tgphRef
- *    - Third-party forwardRef components receive via ref
- *
- * 2. No infinite loops occur when:
- *    - Used with Radix components (Tooltip, Popover, etc.)
- *    - Used with components that frequently re-render
- *    - Used with controlled components
- *
- * 3. Ref changes are handled:
- *    - Old ref is called with null when ref changes
- *    - New ref is called with current node
- *    - This is rare but important for proper cleanup
- *
- * 4. Props are merged correctly:
- *    - Event handlers from both parent and child fire
- *    - Styles and classNames are merged
- *    - Child props override parent props
- *
- * COMMON USAGE PATTERNS:
- * ======================
- *
- * With Radix Tooltip:
- * ```tsx
- * <RadixTooltip.Trigger asChild>
- *   <RefToTgphRef>
- *     <Button>Hover me</Button>
- *   </RefToTgphRef>
- * </RadixTooltip.Trigger>
- * ```
- *
- * With Radix Popover:
- * ```tsx
- * <RadixPopover.Trigger asChild>
- *   <RefToTgphRef>
- *     <Button>Click me</Button>
- *   </RefToTgphRef>
- * </RadixPopover.Trigger>
- * ```
- *
- * With any Radix component that uses asChild:
- * ```tsx
- * <RadixComponent asChild>
- *   <RefToTgphRef>
- *     <TelegraphComponent />
- *   </RefToTgphRef>
- * </RadixComponent>
- * ```
- */
 
 export { RefToTgphRef };
