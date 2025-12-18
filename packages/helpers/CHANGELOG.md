@@ -1,5 +1,11 @@
 # @telegraph/helpers
 
+## 0.0.14
+
+### Patch Changes
+
+- [#650](https://github.com/knocklabs/telegraph/pull/650) [`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: infinite render issue with RefToTgphRef's interaction with radix's ref
+
 ## 0.0.13
 
 ### Patch Changes

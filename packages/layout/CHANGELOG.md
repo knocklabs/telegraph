@@ -1,5 +1,12 @@
 # @telegraph/layout
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37)]:
+  - @telegraph/helpers@0.0.14
+
 ## 0.3.1
 
 ### Patch Changes

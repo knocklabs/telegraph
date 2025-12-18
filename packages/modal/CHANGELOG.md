@@ -1,5 +1,17 @@
 # @telegraph/modal
 
+## 0.1.18
+
+### Patch Changes
+
+- [#648](https://github.com/knocklabs/telegraph/pull/648) [`0dee3a4`](https://github.com/knocklabs/telegraph/commit/0dee3a4fa9bc21019ed42338416311e83519a646) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-dialog from 1.1.14 to 1.1.15
+
+- Updated dependencies [[`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37)]:
+  - @telegraph/helpers@0.0.14
+  - @telegraph/button@0.3.4
+  - @telegraph/icon@0.3.3
+  - @telegraph/layout@0.3.2
+
 ## 0.1.17
 
 ### Patch Changes
