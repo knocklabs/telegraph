@@ -69,7 +69,6 @@ const Root = <T extends TgphElement>({
   id: idProp,
   name,
   className,
-  tgphRef,
   children,
   as,
   style,
