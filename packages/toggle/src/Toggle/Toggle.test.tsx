@@ -70,7 +70,7 @@ describe("Toggle", () => {
     expect(checkbox).not.toBeChecked();
 
     // Click the visual toggle switch
-    const toggle = container.querySelector("[data-tgph-toggle-sitch]");
+    const toggle = container.querySelector("[data-tgph-toggle-switch]");
     await user.click(toggle!);
 
     expect(checkbox).toBeChecked();
@@ -86,7 +86,7 @@ describe("Toggle", () => {
       />,
     );
 
-    const toggle = container.querySelector("[data-tgph-toggle-sitch]");
+    const toggle = container.querySelector("[data-tgph-toggle-switch]");
     await user.click(toggle!);
 
     expect(handleChange).toHaveBeenCalledWith(true);
@@ -106,7 +106,7 @@ describe("Toggle", () => {
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).not.toBeChecked();
 
-    const toggle = container.querySelector("[data-tgph-toggle-sitch]");
+    const toggle = container.querySelector("[data-tgph-toggle-switch]");
     await user.click(toggle!);
 
     expect(handleChange).toHaveBeenCalledWith(true);
@@ -142,7 +142,7 @@ describe("Toggle", () => {
       />,
     );
 
-    const toggle = container.querySelector("[data-tgph-toggle-sitch]");
+    const toggle = container.querySelector("[data-tgph-toggle-switch]");
     await user.click(toggle!);
 
     expect(handleChange).not.toHaveBeenCalled();
@@ -291,7 +291,7 @@ describe("Toggle", () => {
         <Toggle.Default indicator={true} defaultValue={false} />,
       );
       const indicator = container.querySelector("[data-tgph-toggle-indicator]");
-      const toggle = container.querySelector("[data-tgph-toggle-sitch]");
+      const toggle = container.querySelector("[data-tgph-toggle-switch]");
 
       expect(indicator).toHaveTextContent("Disabled");
 
