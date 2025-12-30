@@ -22,7 +22,11 @@ describe("Toggle", () => {
 
   it("is accessible when disabled", async () => {
     const { container } = render(
-      <Toggle.Default label="Enable notifications" disabled defaultValue={false} />,
+      <Toggle.Default
+        label="Enable notifications"
+        disabled
+        defaultValue={false}
+      />,
     );
     expectToHaveNoViolations(await axe(container));
   });
@@ -58,7 +62,9 @@ describe("Toggle", () => {
 
   it("can be toggled by clicking", async () => {
     const user = userEvent.setup();
-    const { container } = render(<Toggle.Default label="Enable notifications" />);
+    const { container } = render(
+      <Toggle.Default label="Enable notifications" />,
+    );
     const checkbox = screen.getByRole("checkbox");
 
     expect(checkbox).not.toBeChecked();
@@ -74,7 +80,10 @@ describe("Toggle", () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
     const { container } = render(
-      <Toggle.Default label="Enable notifications" onValueChange={handleChange} />,
+      <Toggle.Default
+        label="Enable notifications"
+        onValueChange={handleChange}
+      />,
     );
 
     const toggle = container.querySelector("[data-tgph-toggle-sitch]");
@@ -207,7 +216,9 @@ describe("Toggle", () => {
   });
 
   it("supports name attribute", () => {
-    render(<Toggle.Default label="Enable notifications" name="notifications" />);
+    render(
+      <Toggle.Default label="Enable notifications" name="notifications" />,
+    );
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).toHaveAttribute("name", "notifications");
   });
@@ -326,4 +337,3 @@ describe("Toggle", () => {
     });
   });
 });
-

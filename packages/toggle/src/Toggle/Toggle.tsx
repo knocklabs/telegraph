@@ -119,7 +119,7 @@ const Root = <T extends TgphElement>({
   );
 };
 
-type SwitchProps = TgphComponentProps<typeof Box>;
+type SwitchProps = TgphComponentProps<typeof Button.Root>;
 
 const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   const context = React.useContext(ToggleContext);
