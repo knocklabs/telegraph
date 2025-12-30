@@ -26,6 +26,7 @@ type InternalContextType = {
   value: boolean;
   disabled: boolean;
   id: string;
+  labelId: string;
   onValueChange: (value: boolean) => void;
   required?: boolean;
   name?: string;
@@ -37,6 +38,7 @@ const ToggleContext = React.createContext<InternalContextType>({
   value: false,
   disabled: false,
   id: "",
+  labelId: "",
   onValueChange: () => {},
   required: false,
   name: undefined,
@@ -82,6 +84,7 @@ const Root = <T extends TgphElement>({
 
   const generatedId = React.useId();
   const id = idProp || generatedId;
+  const labelId = `${id}-label`;
 
   return (
     <ToggleContext.Provider
@@ -91,6 +94,7 @@ const Root = <T extends TgphElement>({
         value,
         disabled,
         id,
+        labelId,
         onValueChange,
         required,
         name,
@@ -147,6 +151,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
         as="label"
         className={className}
         htmlFor={context.id}
+        aria-labelledby={context.labelId}
         color={context.value ? context.color : "gray"}
         rounded="full"
         align="center"
@@ -203,6 +208,7 @@ const Label = <T extends TgphElement>({
       <Text
         as={(as || "label") as T}
         htmlFor={context.id}
+        id={context.labelId}
         size={LABEL_SIZE_MAP[context.size]}
         data-tgph-toggle-label
         data-tgph-toggle-disabled={context.disabled}

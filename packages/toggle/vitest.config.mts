@@ -1,14 +1,10 @@
-import { defineProject, mergeConfig } from "vitest/config";
+import { defineProject } from "vitest/config";
 
-import { sharedConfig } from "../../vitest/config.mts";
-
-export default mergeConfig(
-  { ...sharedConfig },
-  defineProject({
-    test: {
-      name: "toggle",
-      environment: "jsdom",
-    },
-  }),
-);
-
+export default defineProject({
+  test: {
+    name: "toggle",
+    globals: true,
+    setupFiles: ["../../vitest/setup"],
+    environment: "jsdom",
+  },
+});

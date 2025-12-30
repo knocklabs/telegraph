@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { axe, expectToHaveNoViolations } from "vitest.axe";
+
+import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
 
 import { Toggle } from "./Toggle";
 
@@ -34,7 +35,9 @@ describe("Toggle", () => {
   it("is accessible with hidden label", async () => {
     const { container } = render(
       <Toggle.Root defaultValue={false}>
-        <Toggle.Label hidden>Enable notifications</Toggle.Label>
+        <Toggle.Label as="label" hidden>
+          Enable notifications
+        </Toggle.Label>
         <Toggle.Switch />
       </Toggle.Root>,
     );
@@ -194,7 +197,9 @@ describe("Toggle", () => {
   it("hides label visually when hidden prop is true", () => {
     render(
       <Toggle.Root defaultValue={false}>
-        <Toggle.Label hidden>Enable notifications</Toggle.Label>
+        <Toggle.Label as="label" hidden>
+          Enable notifications
+        </Toggle.Label>
         <Toggle.Switch />
       </Toggle.Root>,
     );
@@ -315,7 +320,7 @@ describe("Toggle", () => {
     it("works with Toggle.Root, Toggle.Switch, and Toggle.Label", () => {
       render(
         <Toggle.Root defaultValue={false}>
-          <Toggle.Label>Enable notifications</Toggle.Label>
+          <Toggle.Label as="label">Enable notifications</Toggle.Label>
           <Toggle.Switch />
         </Toggle.Root>,
       );
@@ -326,7 +331,7 @@ describe("Toggle", () => {
     it("works with Toggle.Root, Toggle.Label, and Toggle.Indicator", () => {
       render(
         <Toggle.Root defaultValue={false}>
-          <Toggle.Label>Enable notifications</Toggle.Label>
+          <Toggle.Label as="label">Enable notifications</Toggle.Label>
           <Toggle.Indicator />
           <Toggle.Switch />
         </Toggle.Root>,
