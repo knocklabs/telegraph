@@ -31,6 +31,7 @@ type InternalContextType = {
   required?: boolean;
   name?: string;
   color: TgphComponentProps<typeof Button.Root>["color"];
+  "aria-label"?: string;
 };
 
 const ToggleContext = React.createContext<InternalContextType>({
@@ -74,6 +75,7 @@ const Root = <T extends TgphElement>({
   children,
   as,
   style,
+  "aria-label": ariaLabel,
   ...props
 }: RootProps<T>) => {
   const [value, onValueChange] = useControllableState({
@@ -98,10 +100,10 @@ const Root = <T extends TgphElement>({
         onValueChange,
         required,
         name,
+        "aria-label": ariaLabel,
       }}
     >
       <Stack
-        as="label"
         direction="row"
         align="center"
         gap="2"
@@ -109,7 +111,6 @@ const Root = <T extends TgphElement>({
         justify="space-between"
         className={className}
         data-tgph-toggle-root
-        htmlFor={id}
         style={{
           cursor: disabled ? "not-allowed" : "pointer",
           ...style,
@@ -143,6 +144,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
           name={context.name}
           value="on"
           ref={inputRef}
+          aria-label={context["aria-label"]}
           data-tgph-toggle-input
         />
       </VisuallyHidden.Root>
