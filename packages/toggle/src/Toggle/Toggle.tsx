@@ -250,7 +250,7 @@ const Indicator = <T extends TgphElement>({
     <Tag
       as={as || "label"}
       size={size}
-      color={context.value ? "blue" : "gray"}
+      color={context.value ? context.color : "gray"}
       data-tgph-toggle-indicator
       htmlFor={context.id}
       style={{
