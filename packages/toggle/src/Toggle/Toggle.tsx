@@ -153,7 +153,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
         as="label"
         className={className}
         htmlFor={context.id}
-        aria-labelledby={context.labelId}
+        aria-labelledby={context["aria-label"] ? undefined : context.labelId}
         color={context.value ? context.color : "gray"}
         rounded="full"
         align="center"
