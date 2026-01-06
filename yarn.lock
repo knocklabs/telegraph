@@ -4609,7 +4609,6 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.1.11"
-    clsx: "npm:^2.1.1"
     eslint: "npm:^8.56.0"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.1.1"
