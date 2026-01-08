@@ -107,7 +107,7 @@ const Root = <T extends TgphElement>({
         direction="row"
         align="center"
         gap="2"
-        display="inline-flex"
+        display="flex"
         justify="space-between"
         className={className}
         data-tgph-toggle-root
