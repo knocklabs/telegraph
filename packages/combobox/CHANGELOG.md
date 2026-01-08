@@ -1,5 +1,17 @@
 # @telegraph/combobox
 
+## 0.1.25
+
+### Patch Changes
+
+- [#655](https://github.com/knocklabs/telegraph/pull/655) [`b32cee5`](https://github.com/knocklabs/telegraph/commit/b32cee572cdabc573814253d20444283aebfdbd2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-visually-hidden from 1.2.3 to 1.2.4
+
+- Updated dependencies [[`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372)]:
+  - @telegraph/icon@0.3.4
+  - @telegraph/button@0.3.5
+  - @telegraph/menu@0.1.19
+  - @telegraph/tag@0.0.114
+
 ## 0.1.24
 
 ### Patch Changes
