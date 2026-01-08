@@ -1,5 +1,12 @@
 # @telegraph/kbd
 
+## 0.0.46
+
+### Patch Changes
+
+- Updated dependencies [[`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372)]:
+  - @telegraph/icon@0.3.4
+
 ## 0.0.45
 
 ### Patch Changes

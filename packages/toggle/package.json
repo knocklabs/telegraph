@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/toggle",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Toggle component for Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/toggle",
   "author": "@knocklabs",

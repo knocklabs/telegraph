@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.3.4
+
+### Patch Changes
+
+- [#656](https://github.com/knocklabs/telegraph/pull/656) [`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: toggle component
+
 ## 0.3.3
 
 ### Patch Changes

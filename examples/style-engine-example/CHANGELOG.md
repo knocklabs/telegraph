@@ -1,5 +1,12 @@
 # @telegraph/style-engine-example
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.3.5
+
 ## 0.0.30
 
 ### Patch Changes
