@@ -1,5 +1,11 @@
 # @telegraph/toggle
 
+## 0.0.3
+
+### Patch Changes
+
+- [#659](https://github.com/knocklabs/telegraph/pull/659) [`f0aad38`](https://github.com/knocklabs/telegraph/commit/f0aad385e8041e83f9430b59351b1f439b951224) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: toggle package building wrong css file name
+
 ## 0.0.2
 
 ### Patch Changes
