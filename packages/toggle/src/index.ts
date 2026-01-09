@@ -1,2 +1,2 @@
 export { Toggle } from "./Toggle";
-export type { ToggleSize, ToggleState } from "./Toggle";
+export type { ToggleSize } from "./Toggle";
