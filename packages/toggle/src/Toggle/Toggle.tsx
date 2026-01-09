@@ -19,7 +19,6 @@ import {
   TOGGLE_SIZE_MAP,
   type ToggleSize,
 } from "./Toggle.constants";
-import "./Toggle.styles.css";
 
 type InternalContextType = {
   size: ToggleSize;

@@ -1,4 +1,5 @@
-import config from "@telegraph/postcss-config";
+import pkg from "@telegraph/postcss-config";
 
-export default config;
+const { styleEnginePostCssConfig } = pkg;
 
+export default styleEnginePostCssConfig;
