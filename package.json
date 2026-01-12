@@ -52,7 +52,7 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@manypkg/cli": "^0.25.1",
-    "@moonrepo/cli": "^1.28.2",
+    "@moonrepo/cli": "^1.41.7",
     "@storybook/addon-links": "^10.1.8",
     "@storybook/addon-onboarding": "^10.1.8",
     "@storybook/addon-themes": "^10.0.2",
