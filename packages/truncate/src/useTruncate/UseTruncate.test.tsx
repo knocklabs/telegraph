@@ -6,24 +6,30 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useTruncate } from "./useTruncate";
 
 // Mock ResizeObserver since it's not available in test environment
-let resizeCallback: (entries: ResizeObserverEntry[]) => void;
-const mockResizeObserver = vi.fn();
+let resizeCallback: ResizeObserverCallback | null = null;
+const mockObserver = {
+  observe() {},
+  unobserve() {},
+  disconnect() {},
+} as ResizeObserver;
 
-mockResizeObserver.mockImplementation((callback) => {
-  resizeCallback = callback;
-  return {
-    observe: () => null,
-    unobserve: () => null,
-    disconnect: () => null,
-  };
-});
+class MockResizeObserver {
+  constructor(callback: ResizeObserverCallback) {
+    resizeCallback = callback;
+  }
 
-vi.stubGlobal("ResizeObserver", mockResizeObserver);
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+vi.stubGlobal("ResizeObserver", MockResizeObserver);
 
 describe("useTruncate", () => {
   beforeEach(() => {
     // Reset all mocks before each test
     vi.clearAllMocks();
+    resizeCallback = null;
   });
 
   it("returns false when element is not truncated", () => {
@@ -97,7 +103,7 @@ describe("useTruncate", () => {
             contentRect: new DOMRect(),
             devicePixelContentBoxSize: [{ blockSize: 0, inlineSize: 0 }],
           } as ResizeObserverEntry;
-          resizeCallback([mockEntry]);
+          resizeCallback([mockEntry], mockObserver);
         }
       }, [width]);
 
