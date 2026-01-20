@@ -50,7 +50,7 @@
     "@telegraph/vite-config": "workspace:^",
     "eslint": "^8.56.0",
     "lightningcss": "^1.30.2",
-    "react": "^19.1.1",
+    "react": "^19.2.3",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },
