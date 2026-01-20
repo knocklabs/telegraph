@@ -1,5 +1,15 @@
 # @telegraph/textarea
 
+## 0.1.7
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/typography@0.1.29
+  - @telegraph/helpers@0.0.15
+
 ## 0.1.6
 
 ### Patch Changes

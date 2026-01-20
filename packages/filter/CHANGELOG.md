@@ -1,5 +1,18 @@
 # @telegraph/filter
 
+## 0.0.43
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/combobox@0.1.26
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/icon@0.3.5
+  - @telegraph/menu@0.1.20
+
 ## 0.0.42
 
 ### Patch Changes

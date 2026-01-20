@@ -1,5 +1,24 @@
 # @telegraph/combobox
 
+## 0.1.26
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/compose-refs@0.0.8
+  - @telegraph/typography@0.1.29
+  - @telegraph/truncate@0.0.18
+  - @telegraph/helpers@0.0.15
+  - @telegraph/tooltip@0.0.62
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/input@0.1.7
+  - @telegraph/icon@0.3.5
+  - @telegraph/menu@0.1.20
+  - @telegraph/tag@0.0.115
+
 ## 0.1.25
 
 ### Patch Changes
