@@ -7,12 +7,15 @@ import { useTruncate } from "./useTruncate";
 
 // Mock ResizeObserver since it's not available in test environment
 let resizeCallback: ResizeObserverCallback | null = null;
-let resizeObserverInstance: ResizeObserver | null = null;
+const mockObserver = {
+  observe() {},
+  unobserve() {},
+  disconnect() {},
+} as ResizeObserver;
 
 class MockResizeObserver {
   constructor(callback: ResizeObserverCallback) {
     resizeCallback = callback;
-    resizeObserverInstance = this;
   }
 
   observe() {}
@@ -27,7 +30,6 @@ describe("useTruncate", () => {
     // Reset all mocks before each test
     vi.clearAllMocks();
     resizeCallback = null;
-    resizeObserverInstance = null;
   });
 
   it("returns false when element is not truncated", () => {
@@ -93,7 +95,7 @@ describe("useTruncate", () => {
         // Update the scrollWidth based on the width prop
         currentScrollWidth = width === "50px" ? 50 : 200;
         // Trigger the resize observer callback
-        if (resizeCallback && resizeObserverInstance) {
+        if (resizeCallback) {
           const mockEntry = {
             target: proxyElement,
             borderBoxSize: [{ blockSize: 0, inlineSize: 0 }],
@@ -101,7 +103,7 @@ describe("useTruncate", () => {
             contentRect: new DOMRect(),
             devicePixelContentBoxSize: [{ blockSize: 0, inlineSize: 0 }],
           } as ResizeObserverEntry;
-          resizeCallback([mockEntry], resizeObserverInstance);
+          resizeCallback([mockEntry], mockObserver);
         }
       }, [width]);
 
