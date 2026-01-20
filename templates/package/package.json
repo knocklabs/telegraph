@@ -40,8 +40,8 @@
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^19.0.0",
     "eslint": "^8.56.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "typescript": "^5.5.4",
     "vite": "^6.0.11"
   },
