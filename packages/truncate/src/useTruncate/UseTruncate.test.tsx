@@ -6,24 +6,28 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useTruncate } from "./useTruncate";
 
 // Mock ResizeObserver since it's not available in test environment
-let resizeCallback: (entries: ResizeObserverEntry[]) => void;
-const mockResizeObserver = vi.fn();
+let resizeCallback: ResizeObserverCallback | null = null;
+let resizeObserverInstance: ResizeObserver | null = null;
 
-mockResizeObserver.mockImplementation((callback) => {
-  resizeCallback = callback;
-  return {
-    observe: () => null,
-    unobserve: () => null,
-    disconnect: () => null,
-  };
-});
+class MockResizeObserver {
+  constructor(callback: ResizeObserverCallback) {
+    resizeCallback = callback;
+    resizeObserverInstance = this;
+  }
 
-vi.stubGlobal("ResizeObserver", mockResizeObserver);
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+vi.stubGlobal("ResizeObserver", MockResizeObserver);
 
 describe("useTruncate", () => {
   beforeEach(() => {
     // Reset all mocks before each test
     vi.clearAllMocks();
+    resizeCallback = null;
+    resizeObserverInstance = null;
   });
 
   it("returns false when element is not truncated", () => {
@@ -89,7 +93,7 @@ describe("useTruncate", () => {
         // Update the scrollWidth based on the width prop
         currentScrollWidth = width === "50px" ? 50 : 200;
         // Trigger the resize observer callback
-        if (resizeCallback) {
+        if (resizeCallback && resizeObserverInstance) {
           const mockEntry = {
             target: proxyElement,
             borderBoxSize: [{ blockSize: 0, inlineSize: 0 }],
@@ -97,7 +101,7 @@ describe("useTruncate", () => {
             contentRect: new DOMRect(),
             devicePixelContentBoxSize: [{ blockSize: 0, inlineSize: 0 }],
           } as ResizeObserverEntry;
-          resizeCallback([mockEntry]);
+          resizeCallback([mockEntry], resizeObserverInstance);
         }
       }, [width]);
 
