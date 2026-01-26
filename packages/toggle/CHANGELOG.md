@@ -1,5 +1,11 @@
 # @telegraph/toggle
 
+## 0.0.5
+
+### Patch Changes
+
+- [#671](https://github.com/knocklabs/telegraph/pull/671) [`21fd751`](https://github.com/knocklabs/telegraph/commit/21fd75153b4156161e4219c1c9935e55d4fc6e51) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - Fix iconSize prop being spread onto DOM element in Toggle Switch component
+
 ## 0.0.4
 
 ### Patch Changes
