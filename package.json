@@ -65,7 +65,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^6.20.0",
-    "@vitest/coverage-v8": "4.0.17",
+    "@vitest/coverage-v8": "4.0.18",
     "eslint": "^8.56.0",
     "eslint-plugin-turbo": "^2.0.12",
     "husky": "^9.1.7",
@@ -80,7 +80,7 @@
     "storybook-addon-render-modes": "^0.0.11",
     "turbo": "^1.11.3",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "4.0.17",
+    "vitest": "4.0.18",
     "vitest-axe": "0.1.0"
   }
 }
