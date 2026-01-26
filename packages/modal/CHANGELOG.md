@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.1.21
+
+### Patch Changes
+
+- [#666](https://github.com/knocklabs/telegraph/pull/666) [`31e1ff7`](https://github.com/knocklabs/telegraph/commit/31e1ff71309215caaafdeb7085ada84a94fd07a2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-focus-scope from 1.1.7 to 1.1.8
+
 ## 0.1.20
 
 ### Patch Changes
