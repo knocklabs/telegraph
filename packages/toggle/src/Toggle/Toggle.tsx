@@ -127,7 +127,7 @@ type SwitchProps = TgphComponentProps<typeof Button.Root>;
 const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   const context = React.useContext(ToggleContext);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const sizeConfig = TOGGLE_SIZE_MAP[context.size];
+  const { iconSize, ...sizeConfig } = TOGGLE_SIZE_MAP[context.size];
 
   return (
     <Box position="relative">
@@ -170,7 +170,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
       >
         <Icon
           icon={context.value ? CheckCircle2 : Circle}
-          size={sizeConfig.iconSize}
+          size={iconSize}
           color={
             // If the toggle is disabled, we want to use the disabled color.
             context.disabled
