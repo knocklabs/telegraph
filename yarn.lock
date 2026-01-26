@@ -2859,7 +2859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-focus-scope@npm:1.1.7, @radix-ui/react-focus-scope@npm:^1.1.7":
+"@radix-ui/react-focus-scope@npm:1.1.7":
   version: 1.1.7
   resolution: "@radix-ui/react-focus-scope@npm:1.1.7"
   dependencies:
@@ -2877,6 +2877,27 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/8a6071331bdeeb79b223463de75caf759b8ad19339cab838e537b8dbb2db236891a1f4df252445c854d375d43d9d315dfcce0a6b01553a2984ec372bb8f1300e
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-focus-scope@npm:^1.1.8":
+  version: 1.1.8
+  resolution: "@radix-ui/react-focus-scope@npm:1.1.8"
+  dependencies:
+    "@radix-ui/react-compose-refs": "npm:1.1.2"
+    "@radix-ui/react-primitive": "npm:2.1.4"
+    "@radix-ui/react-use-callback-ref": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/ce316ffa868ca618a581e0154ca3385c2726d73632a9b32f2fa61d8fa611c1331685b1de44de3605822785bc3e79a612399177e0e78b4923bf35b0203f5b3167
   languageName: node
   linkType: hard
 
@@ -4341,7 +4362,7 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-dialog": "npm:^1.1.15"
-    "@radix-ui/react-focus-scope": "npm:^1.1.7"
+    "@radix-ui/react-focus-scope": "npm:^1.1.8"
     "@radix-ui/react-portal": "npm:^1.1.9"
     "@radix-ui/react-visually-hidden": "npm:^1.2.4"
     "@telegraph/button": "workspace:^"
