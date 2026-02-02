@@ -4544,7 +4544,7 @@ __metadata:
     "@telegraph/style-engine": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/typography": "workspace:^"
-    "@types/node": "npm:^22.13.11"
+    "@types/node": "npm:^25.2.0"
     "@types/react": "npm:^19.2.9"
     "@types/react-dom": "npm:^19"
     next: "npm:15.5.9"
@@ -4563,7 +4563,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/node": "npm:^22.13.11"
+    "@types/node": "npm:^25.2.0"
     "@types/postcss-import": "npm:^14.0.3"
     "@types/react": "npm:^19.2.9"
     eslint: "npm:^8.56.0"
@@ -5071,12 +5071,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.13.11":
-  version: 22.13.11
-  resolution: "@types/node@npm:22.13.11"
+"@types/node@npm:^25.2.0":
+  version: 25.2.0
+  resolution: "@types/node@npm:25.2.0"
   dependencies:
-    undici-types: "npm:~6.20.0"
-  checksum: 10c0/f6ee33d36372242535c38640fe7550a6640d8a775ec19b55bfc11775b521cba072d892ca92a912332ce01b317293d645c1bf767f3f882ec719f2404a3d2a5b96
+    undici-types: "npm:~7.16.0"
+  checksum: 10c0/89559ea0de5c8c2da051b384f2cd3161012446816e05d18841838f814e57eb1865f000622e903f08d14f5242736063ed4003a4a359730fdd367e35e2122a8fce
   languageName: node
   linkType: hard
 
@@ -14017,10 +14017,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.20.0":
-  version: 6.20.0
-  resolution: "undici-types@npm:6.20.0"
-  checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
+"undici-types@npm:~7.16.0":
+  version: 7.16.0
+  resolution: "undici-types@npm:7.16.0"
+  checksum: 10c0/3033e2f2b5c9f1504bdc5934646cb54e37ecaca0f9249c983f7b1fc2e87c6d18399ebb05dc7fd5419e02b2e915f734d872a65da2e3eeed1813951c427d33cc9a
   languageName: node
   linkType: hard
 
