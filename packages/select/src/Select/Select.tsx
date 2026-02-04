@@ -25,7 +25,7 @@ const Root = ({
       value={value}
       onValueChange={onValueChange}
       defaultValue={defaultValue}
-      closeOnSelect={!Array.isArray(value)}
+      closeOnSelect={!Array.isArray(value) && !Array.isArray(defaultValue)}
       {...props}
     >
       <Combobox.Trigger size={size} {...triggerProps} />

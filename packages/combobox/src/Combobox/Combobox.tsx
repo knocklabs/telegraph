@@ -522,8 +522,16 @@ const Options = <T extends TgphElement>({
         const valueToScrollTo = selectedValue ?? context.defaultScrollToValue;
 
         if (valueToScrollTo) {
-          const targetOption = optionsRef.current?.querySelector(
-            `[data-tgph-combobox-option-value="${valueToScrollTo}"]`,
+          // Find the target option by iterating through elements rather than
+          // using querySelector with string interpolation, which would fail
+          // if the value contains special characters like quotes or brackets
+          const options = optionsRef.current?.querySelectorAll(
+            "[data-tgph-combobox-option]",
+          );
+          const targetOption = Array.from(options || []).find(
+            (el) =>
+              el.getAttribute("data-tgph-combobox-option-value") ===
+              valueToScrollTo,
           );
 
           // Check if scrollIntoView is available (not available in jsdom)

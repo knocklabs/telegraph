@@ -940,6 +940,56 @@ describe("scroll to selected", () => {
     expect(selectedOption).not.toBeNull();
     expect(selectedOption?.getAttribute("aria-selected")).toBe("true");
   });
+
+  it("handles values with special characters that would break CSS selectors", async () => {
+    // Values that would break querySelector if used with string interpolation:
+    // - Double quotes: Option "A"
+    // - Brackets: Option [B]
+    // - Backslashes: Option \C
+    const specialValues = [
+      'Option "A"',
+      "Option [B]",
+      "Option \\C",
+      "Option 'D'",
+    ];
+
+    const user = userEvent.setup();
+    const { container } = render(
+      <Combobox.Root defaultValue='Option "A"' placeholder="Select an option">
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {specialValues.map((val) => (
+              <Combobox.Option key={val} value={val}>
+                {val}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Value should be displayed (with quotes in the value)
+    expect(trigger?.textContent).toBe('Option "A"');
+
+    // Open combobox - this triggers the scroll-to-selected logic
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Wait for scroll animation
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // The selected option should exist and be marked as selected
+    // We use getAttribute instead of querySelector to avoid the same issue
+    const allOptions = document.querySelectorAll("[data-tgph-combobox-option]");
+    const selectedOption = Array.from(allOptions).find(
+      (el) =>
+        el.getAttribute("data-tgph-combobox-option-value") === 'Option "A"',
+    );
+    expect(selectedOption).not.toBeNull();
+    expect(selectedOption?.getAttribute("aria-selected")).toBe("true");
+  });
 });
 
 const ComboboxWithDefaultScrollToValue = ({
