@@ -51,8 +51,8 @@
     "eslint": "^8.56.0",
     "globby": "^14.1.0",
     "lightningcss": "^1.30.2",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },
