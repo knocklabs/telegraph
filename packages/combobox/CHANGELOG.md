@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.1.27
+
+### Patch Changes
+
+- [#679](https://github.com/knocklabs/telegraph/pull/679) [`7111048`](https://github.com/knocklabs/telegraph/commit/71110486996cf8e447f503bf1aef63aeee1a6d4e) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add defaultValue and defaultScrollToValue, automatically scroll to value on open
+
 ## 0.1.26
 
 ### Patch Changes

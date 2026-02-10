@@ -550,3 +550,65 @@ export const MultiSelectWithCustomTrigger: Story = {
     );
   },
 };
+
+// Generate years from 1960 to 2060
+const years = Array.from({ length: 101 }, (_, i) => String(1960 + i));
+
+export const YearPicker: Story = {
+  render: ({ ...args }) => {
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          defaultValue="2025"
+          placeholder={"Select a year"}
+        >
+          <TelegraphCombobox.Trigger size="1" />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.Options maxHeight="64">
+              {years.map((year) => (
+                <TelegraphCombobox.Option key={year} value={year}>
+                  {year}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+export const YearPickerWithScrollToValue: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState<string | undefined>(undefined);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          defaultScrollToValue="2025"
+          placeholder={"Select a year"}
+        >
+          <TelegraphCombobox.Trigger size="1" />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.Options maxHeight="64">
+              {years.map((year) => (
+                <TelegraphCombobox.Option key={year} value={year}>
+                  {year}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};

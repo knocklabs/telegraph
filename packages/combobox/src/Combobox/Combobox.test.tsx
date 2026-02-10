@@ -1,7 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
@@ -778,5 +778,483 @@ describe("Custom Trigger", () => {
     await user.click(trigger!);
     await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
     expectToHaveNoViolations(await axe(container));
+  });
+});
+
+const ComboboxWithDefaultValue = ({
+  defaultValue,
+}: {
+  defaultValue: string;
+}) => {
+  return (
+    <Combobox.Root defaultValue={defaultValue} placeholder="Select a channel">
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Options>
+          {values.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {labels[index]}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+const ComboboxWithManyOptions = ({
+  defaultValue,
+}: {
+  defaultValue: string;
+}) => {
+  const years = Array.from({ length: 101 }, (_, i) => String(1960 + i));
+
+  return (
+    <Combobox.Root defaultValue={defaultValue} placeholder="Select a year">
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Options>
+          {years.map((year) => (
+            <Combobox.Option key={year} value={year}>
+              {year}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+describe("defaultValue", () => {
+  it("renders with defaultValue", async () => {
+    const { container } = render(
+      <ComboboxWithDefaultValue defaultValue="sms" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    expect(trigger?.textContent).toBe("SMS");
+  });
+
+  it("allows selecting a different value when defaultValue is provided", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <ComboboxWithDefaultValue defaultValue="email" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Initial value should be Email
+    expect(trigger?.textContent).toBe("Email");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Select SMS option
+    await user.keyboard("s");
+    await user.keyboard("[Enter]");
+
+    // Value should now be SMS
+    await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+  });
+
+  it("shows placeholder when defaultValue is not provided", async () => {
+    const { container } = render(
+      <Combobox.Root placeholder="Select a channel">
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    // When no value is provided, the placeholder is shown
+    expect(trigger?.textContent).toBe("Select a channel");
+  });
+
+  it("controlled value takes precedence over defaultValue", async () => {
+    const { container } = render(
+      <Combobox.Root
+        value="push"
+        defaultValue="sms"
+        placeholder="Select a channel"
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    // Controlled value (push) should take precedence
+    expect(trigger?.textContent).toBe("Push");
+  });
+
+  it("is accessible with defaultValue", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <ComboboxWithDefaultValue defaultValue="email" />,
+    );
+    expectToHaveNoViolations(await axe(container));
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+    expectToHaveNoViolations(await axe(container));
+  });
+});
+
+describe("scroll to selected", () => {
+  it("scrolls to selected option when opening with many options", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <ComboboxWithManyOptions defaultValue="2025" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Value should be 2025
+    expect(trigger?.textContent).toBe("2025");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Wait for scroll animation
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // The selected option should exist and be marked as selected
+    const selectedOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="2025"]',
+    );
+    expect(selectedOption).not.toBeNull();
+    expect(selectedOption?.getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("handles values with special characters that would break CSS selectors", async () => {
+    // Values that would break querySelector if used with string interpolation:
+    // - Double quotes: Option "A"
+    // - Brackets: Option [B]
+    // - Backslashes: Option \C
+    const specialValues = [
+      'Option "A"',
+      "Option [B]",
+      "Option \\C",
+      "Option 'D'",
+    ];
+
+    const user = userEvent.setup();
+    const { container } = render(
+      <Combobox.Root defaultValue='Option "A"' placeholder="Select an option">
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {specialValues.map((val) => (
+              <Combobox.Option key={val} value={val}>
+                {val}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Value should be displayed (with quotes in the value)
+    expect(trigger?.textContent).toBe('Option "A"');
+
+    // Open combobox - this triggers the scroll-to-selected logic
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Wait for scroll animation
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // The selected option should exist and be marked as selected
+    // We use getAttribute instead of querySelector to avoid the same issue
+    const allOptions = document.querySelectorAll("[data-tgph-combobox-option]");
+    const selectedOption = Array.from(allOptions).find(
+      (el) =>
+        el.getAttribute("data-tgph-combobox-option-value") === 'Option "A"',
+    );
+    expect(selectedOption).not.toBeNull();
+    expect(selectedOption?.getAttribute("aria-selected")).toBe("true");
+  });
+});
+
+const ComboboxWithDefaultScrollToValue = ({
+  defaultScrollToValue,
+}: {
+  defaultScrollToValue: string;
+}) => {
+  const years = Array.from({ length: 101 }, (_, i) => String(1960 + i));
+  const [value, setValue] = React.useState<string | undefined>(undefined);
+
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      defaultScrollToValue={defaultScrollToValue}
+      placeholder="Select a year"
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Options>
+          {years.map((year) => (
+            <Combobox.Option key={year} value={year}>
+              {year}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+describe("defaultScrollToValue", () => {
+  it("scrolls to defaultScrollToValue when no value is selected", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <ComboboxWithDefaultScrollToValue defaultScrollToValue="2025" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // No value should be selected initially
+    expect(trigger?.textContent).toBe("Select a year");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Wait for scroll animation
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // The defaultScrollToValue option should exist (but not be selected)
+    const targetOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="2025"]',
+    );
+    expect(targetOption).not.toBeNull();
+    expect(targetOption?.getAttribute("aria-selected")).toBe("false");
+  });
+
+  it("selected value takes precedence over defaultScrollToValue", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Combobox.Root
+        defaultValue="1990"
+        defaultScrollToValue="2025"
+        placeholder="Select a year"
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {Array.from({ length: 101 }, (_, i) => String(1960 + i)).map(
+              (year) => (
+                <Combobox.Option key={year} value={year}>
+                  {year}
+                </Combobox.Option>
+              ),
+            )}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Value should be 1990 (defaultValue)
+    expect(trigger?.textContent).toBe("1990");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Wait for scroll animation
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // The selected option (1990) should be marked as selected
+    const selectedOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="1990"]',
+    );
+    expect(selectedOption).not.toBeNull();
+    expect(selectedOption?.getAttribute("aria-selected")).toBe("true");
+
+    // defaultScrollToValue option should not be selected
+    const scrollToOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="2025"]',
+    );
+    expect(scrollToOption?.getAttribute("aria-selected")).toBe("false");
+  });
+});
+
+// Wrapper component to test controlled value changes from outside
+const ControlledComboboxWrapper = ({
+  initialValue,
+  onValueChange,
+}: {
+  initialValue: string;
+  onValueChange?: (value: string) => void;
+}) => {
+  const [value, setValue] = React.useState(initialValue);
+
+  const handleValueChange = (newValue: string) => {
+    setValue(newValue);
+    onValueChange?.(newValue);
+  };
+
+  return (
+    <div>
+      <button
+        data-testid="external-change-btn"
+        onClick={() => setValue("push")}
+      >
+        Change to Push
+      </button>
+      <button
+        data-testid="external-change-sms-btn"
+        onClick={() => setValue("sms")}
+      >
+        Change to SMS
+      </button>
+      <Combobox.Root
+        value={value}
+        onValueChange={handleValueChange}
+        placeholder="Select a channel"
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+          <Combobox.Empty />
+        </Combobox.Content>
+      </Combobox.Root>
+    </div>
+  );
+};
+
+describe("controlled value changes", () => {
+  it("updates trigger when value prop changes externally", async () => {
+    const user = userEvent.setup();
+    const { container, getByTestId } = render(
+      <ControlledComboboxWrapper initialValue="email" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Initial value should be Email
+    expect(trigger?.textContent).toBe("Email");
+
+    // Click the external button to change value to Push
+    await user.click(getByTestId("external-change-btn"));
+
+    // Trigger should now show Push
+    await waitFor(() => expect(trigger?.textContent).toBe("Push"));
+  });
+
+  it("updates selected option in dropdown when value changes externally", async () => {
+    const user = userEvent.setup();
+    const { container, getByTestId } = render(
+      <ControlledComboboxWrapper initialValue="email" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Email should be selected
+    const emailOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="email"]',
+    );
+    expect(emailOption?.getAttribute("aria-selected")).toBe("true");
+
+    // Close the combobox
+    await user.keyboard("[Escape]");
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "false");
+
+    // Change value externally to SMS
+    await user.click(getByTestId("external-change-sms-btn"));
+    await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+
+    // Open combobox again
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // SMS should now be selected
+    const smsOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="sms"]',
+    );
+    expect(smsOption?.getAttribute("aria-selected")).toBe("true");
+
+    // Email should no longer be selected
+    const emailOptionAfter = queryPortalElement(
+      '[data-tgph-combobox-option-value="email"]',
+    );
+    expect(emailOptionAfter?.getAttribute("aria-selected")).toBe("false");
+  });
+
+  it("calls onValueChange when selecting from dropdown in controlled mode", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const { container } = render(
+      <ControlledComboboxWrapper
+        initialValue="email"
+        onValueChange={onValueChange}
+      />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Open combobox
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+
+    // Select SMS
+    await user.keyboard("s");
+    await user.keyboard("[Enter]");
+
+    // onValueChange should have been called with "sms"
+    expect(onValueChange).toHaveBeenCalledWith("sms");
+  });
+
+  it("maintains controlled behavior - internal selection updates controlled value", async () => {
+    const user = userEvent.setup();
+    const { container, getByTestId } = render(
+      <ControlledComboboxWrapper initialValue="email" />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    // Initial value
+    expect(trigger?.textContent).toBe("Email");
+
+    // Select a new value from dropdown
+    await user.click(trigger!);
+    await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+    await user.keyboard("p"); // Focus Push
+    await user.keyboard("[Enter]");
+
+    // Value should be Push
+    await waitFor(() => expect(trigger?.textContent).toBe("Push"));
+
+    // Now change externally to SMS
+    await user.click(getByTestId("external-change-sms-btn"));
+    await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+
+    // Then change externally to Push again
+    await user.click(getByTestId("external-change-btn"));
+    await waitFor(() => expect(trigger?.textContent).toBe("Push"));
   });
 });

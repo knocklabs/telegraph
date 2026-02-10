@@ -70,3 +70,50 @@ export const MultiSelect: Story = {
     );
   },
 };
+
+// Generate years from 1960 to 2060
+const years = Array.from({ length: 101 }, (_, i) => String(1960 + i));
+
+export const YearPicker: Story = {
+  render: (args) => {
+    return (
+      <Select.Root
+        placeholder="Select a year"
+        defaultValue="2025"
+        size={args.size}
+        disabled={args.disabled}
+        optionsProps={{ maxHeight: "64" }}
+      >
+        {years.map((year) => (
+          <Select.Option key={year} value={year}>
+            {year}
+          </Select.Option>
+        ))}
+      </Select.Root>
+    );
+  },
+};
+
+export const YearPickerWithScrollToValue: Story = {
+  render: (args) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [value, setValue] = React.useState<string | undefined>(undefined);
+    return (
+      <Select.Root
+        placeholder="Select a year"
+        value={value}
+        onValueChange={setValue}
+        defaultScrollToValue="2025"
+        size={args.size}
+        disabled={args.disabled}
+        optionsProps={{ maxHeight: "64" }}
+      >
+        {years.map((year) => (
+          <Select.Option key={year} value={year}>
+            {year}
+          </Select.Option>
+        ))}
+      </Select.Root>
+    );
+  },
+};

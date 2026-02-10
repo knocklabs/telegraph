@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/combobox",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "description": "A styled menu, triggered by a Select, that combines an Input and Single- or Multi-select.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/combobox",
   "author": "@knocklabs",
@@ -59,8 +59,8 @@
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^19.2.9",
     "eslint": "^8.56.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },
