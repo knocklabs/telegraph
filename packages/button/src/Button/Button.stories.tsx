@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { tokens } from "@telegraph/style-engine";
 import * as Icons from "lucide-react";
 
 import { Button as TelegraphButton } from "./Button";
@@ -69,6 +70,12 @@ const meta: Meta<typeof TelegraphButton> = {
     },
     state: {
       options: ["default", "loading"],
+      control: {
+        type: "select",
+      },
+    },
+    family: {
+      options: Object.keys(tokens.family),
       control: {
         type: "select",
       },
