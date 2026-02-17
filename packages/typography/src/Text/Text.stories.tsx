@@ -10,13 +10,7 @@ const meta: Meta<typeof TelegraphText> = {
   component: TelegraphText,
   parameters: {
     controls: {
-      exclude: [
-        "internal_optionalAs",
-        "fontSize",
-        "leading",
-        "tracking",
-        "family",
-      ],
+      exclude: ["internal_optionalAs", "fontSize", "leading", "tracking"],
     },
   },
   argTypes: {
@@ -48,6 +42,12 @@ const meta: Meta<typeof TelegraphText> = {
     },
     align: {
       options: ["left", "center", "right"],
+      control: {
+        type: "select",
+      },
+    },
+    family: {
+      options: Object.keys(tokens.family),
       control: {
         type: "select",
       },
