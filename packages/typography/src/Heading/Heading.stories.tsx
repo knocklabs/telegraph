@@ -15,7 +15,6 @@ const meta: Meta<typeof TelegraphHeading> = {
         "fontSize",
         "leading",
         "tracking",
-        "family",
       ],
     },
   },
@@ -42,6 +41,12 @@ const meta: Meta<typeof TelegraphHeading> = {
     },
     align: {
       options: ["left", "center", "right"],
+      control: {
+        type: "select",
+      },
+    },
+    family: {
+      options: Object.keys(tokens.family),
       control: {
         type: "select",
       },

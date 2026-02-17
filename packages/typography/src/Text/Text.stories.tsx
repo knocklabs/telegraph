@@ -15,7 +15,6 @@ const meta: Meta<typeof TelegraphText> = {
         "fontSize",
         "leading",
         "tracking",
-        "family",
       ],
     },
   },
@@ -48,6 +47,12 @@ const meta: Meta<typeof TelegraphText> = {
     },
     align: {
       options: ["left", "center", "right"],
+      control: {
+        type: "select",
+      },
+    },
+    family: {
+      options: Object.keys(tokens.family),
       control: {
         type: "select",
       },
