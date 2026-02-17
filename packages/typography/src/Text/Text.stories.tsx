@@ -10,12 +10,7 @@ const meta: Meta<typeof TelegraphText> = {
   component: TelegraphText,
   parameters: {
     controls: {
-      exclude: [
-        "internal_optionalAs",
-        "fontSize",
-        "leading",
-        "tracking",
-      ],
+      exclude: ["internal_optionalAs", "fontSize", "leading", "tracking"],
     },
   },
   argTypes: {
