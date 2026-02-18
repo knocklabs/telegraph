@@ -5,13 +5,15 @@ import * as Portal from "@radix-ui/react-portal";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
-import { RefToTgphRef } from "@telegraph/helpers";
-import type {
-  PolymorphicProps,
-  TgphComponentProps,
-  TgphElement,
+import {
+  type PolymorphicProps,
+  RefToTgphRef,
+  RemappedOmit,
+  type TgphComponentProps,
+  type TgphElement,
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
+import { Heading as TelegraphHeading } from "@telegraph/typography";
 import { X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
@@ -340,6 +342,29 @@ const Footer = <T extends TgphElement>({
   );
 };
 
+type HeadingProps<T extends TgphElement> = RemappedOmit<
+  TgphComponentProps<typeof TelegraphHeading<T>>,
+  "as"
+> & {
+  as?: T;
+};
+
+const Heading = <T extends TgphElement = "h2">({
+  as,
+  size = "3",
+  weight = "medium",
+  ...props
+}: HeadingProps<T>) => {
+  return (
+    <TelegraphHeading
+      as={(as || "h2") as T}
+      size={size}
+      weight={weight}
+      {...props}
+    />
+  );
+};
+
 const Modal = {} as {
   Root: typeof Root;
   Content: typeof Content;
@@ -347,6 +372,7 @@ const Modal = {} as {
   Body: typeof Body;
   Header: typeof Header;
   Footer: typeof Footer;
+  Heading: typeof Heading;
 };
 
 Object.assign(Modal, {
@@ -356,6 +382,7 @@ Object.assign(Modal, {
   Body,
   Header,
   Footer,
+  Heading,
 });
 
 export { Modal };
