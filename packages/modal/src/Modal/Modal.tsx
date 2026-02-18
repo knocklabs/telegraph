@@ -346,17 +346,22 @@ type HeadingProps<T extends TgphElement> = RemappedOmit<
   TgphComponentProps<typeof TelegraphHeading<T>>,
   "as"
 > & {
-  as: T;
+  as?: T;
 };
 
-const Heading = <T extends TgphElement>({
+const Heading = <T extends TgphElement = "h2">({
   as,
   size = "3",
   weight = "medium",
   ...props
 }: HeadingProps<T>) => {
   return (
-    <TelegraphHeading as={as} size={size} weight={weight} {...props} />
+    <TelegraphHeading
+      as={(as || "h2") as T}
+      size={size}
+      weight={weight}
+      {...props}
+    />
   );
 };
 
