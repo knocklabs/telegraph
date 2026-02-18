@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.1.28
+
+### Patch Changes
+
+- [#682](https://github.com/knocklabs/telegraph/pull/682) [`5196b27`](https://github.com/knocklabs/telegraph/commit/5196b2774b2aa218da7fa721ee59fd16049d18de) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-portal from 1.1.9 to 1.1.10
+
 ## 0.1.27
 
 ### Patch Changes
