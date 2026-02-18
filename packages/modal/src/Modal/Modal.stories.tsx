@@ -215,7 +215,9 @@ const NestedModal = ({
       >
         <TelegraphModal.Content>
           <TelegraphModal.Header>
-            <TelegraphModal.Heading>Nested Modal {depth}</TelegraphModal.Heading>
+            <TelegraphModal.Heading>
+              Nested Modal {depth}
+            </TelegraphModal.Heading>
             <TelegraphModal.Close />
           </TelegraphModal.Header>
           <TelegraphModal.Body>

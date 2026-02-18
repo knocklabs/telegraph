@@ -6,9 +6,9 @@ import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
 import {
+  type PolymorphicProps,
   RefToTgphRef,
   RemappedOmit,
-  type PolymorphicProps,
   type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
