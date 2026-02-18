@@ -49,7 +49,7 @@ export const BasicModal = () => {
       <Modal.Root open={open} onOpenChange={setOpen} a11yTitle="Settings">
         <Modal.Content>
           <Modal.Header>
-            <h2>Settings</h2>
+            <Modal.Heading>Settings</Modal.Heading>
             <Modal.Close />
           </Modal.Header>
 
@@ -130,6 +130,18 @@ Footer section typically containing action buttons.
 
 Inherits all Stack props for layout and styling.
 
+### `<Modal.Heading>`
+
+Standardized heading component for modal titles with consistent styling.
+
+| Prop     | Type                                              | Default    | Description        |
+| -------- | ------------------------------------------------- | ---------- | ------------------ |
+| `as`     | `TgphElement`                                     | `"h2"`     | HTML element type  |
+| `size`   | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| ... ` | `"3"`      | Heading size       |
+| `weight` | `"regular" \| "medium" \| "semi-bold" \| "bold"` | `"medium"` | Font weight        |
+
+Inherits all Heading props from `@telegraph/typography` for additional styling.
+
 ### `<Modal.Close>`
 
 Close button that dismisses the modal.
@@ -168,7 +180,7 @@ const BasicModal = () => {
       <Modal.Root open={open} onOpenChange={setOpen} a11yTitle="Basic Modal">
         <Modal.Content>
           <Modal.Header>
-            <h2>Modal Title</h2>
+            <Modal.Heading>Modal Title</Modal.Heading>
             <Modal.Close />
           </Modal.Header>
 
@@ -195,7 +207,7 @@ const ConfirmationModal = ({ open, onClose, onConfirm, title, message }) => (
       <Modal.Header>
         <Stack direction="row" align="center" gap="2">
           <Icon icon={AlertTriangle} color="red" />
-          <h2>{title}</h2>
+          <Modal.Heading>{title}</Modal.Heading>
         </Stack>
         <Modal.Close />
       </Modal.Header>
@@ -248,7 +260,7 @@ const FormModal = ({ open, onClose, onSubmit }) => {
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Add User">
       <Modal.Content>
         <Modal.Header>
-          <h2>Add New User</h2>
+          <Modal.Heading>Add New User</Modal.Heading>
           <Modal.Close />
         </Modal.Header>
 
@@ -304,7 +316,7 @@ const FullScreenModal = ({ open, onClose, children }) => (
   <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Full Screen View">
     <Modal.Content w="screen" maxW="screen" h="screen" rounded="0">
       <Modal.Header>
-        <h2>Full Screen Modal</h2>
+        <Modal.Heading>Full Screen Modal</Modal.Heading>
         <Modal.Close />
       </Modal.Header>
 
@@ -342,7 +354,7 @@ const StackedModalsExample = () => {
       >
         <Modal.Content>
           <Modal.Header>
-            <h2>First Modal</h2>
+            <Modal.Heading>First Modal</Modal.Heading>
             <Modal.Close />
           </Modal.Header>
 
@@ -363,7 +375,7 @@ const StackedModalsExample = () => {
       >
         <Modal.Content>
           <Modal.Header>
-            <h2>Second Modal</h2>
+            <Modal.Heading>Second Modal</Modal.Heading>
             <Modal.Close />
           </Modal.Header>
 
@@ -384,7 +396,7 @@ const StackedModalsExample = () => {
       >
         <Modal.Content>
           <Modal.Header>
-            <h2>Third Modal</h2>
+            <Modal.Heading>Third Modal</Modal.Heading>
             <Modal.Close />
           </Modal.Header>
 
@@ -423,7 +435,7 @@ const CustomFocusModal = ({ open, onClose }) => {
     >
       <Modal.Content>
         <Modal.Header>
-          <h2>Custom Focus Management</h2>
+          <Modal.Heading>Custom Focus Management</Modal.Heading>
           <Modal.Close />
         </Modal.Header>
 
@@ -464,7 +476,7 @@ const LoadingModal = ({ open, onClose }) => {
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Save Changes">
       <Modal.Content>
         <Modal.Header>
-          <h2>Save Changes</h2>
+          <Modal.Heading>Save Changes</Modal.Heading>
           <Modal.Close disabled={loading} />
         </Modal.Header>
 
@@ -509,7 +521,7 @@ const AnimatedModal = ({ open, onClose }) => (
       transition={{ duration: 0.2 }}
     >
       <Modal.Header>
-        <h2>Animated Modal</h2>
+        <Modal.Heading>Animated Modal</Modal.Heading>
         <Modal.Close />
       </Modal.Header>
 
@@ -551,7 +563,7 @@ const ControlledModal = () => {
       >
         <Modal.Content>
           <Modal.Header>
-            <h2>Controlled Modal</h2>
+            <Modal.Heading>Controlled Modal</Modal.Heading>
             {canClose && <Modal.Close />}
           </Modal.Header>
 
@@ -598,7 +610,7 @@ const WizardModal = ({ open, onClose }) => {
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Setup Wizard">
       <Modal.Content>
         <Modal.Header>
-          <h2>{steps[currentStep].title}</h2>
+          <Modal.Heading>{steps[currentStep].title}</Modal.Heading>
           <Modal.Close />
         </Modal.Header>
 
@@ -717,7 +729,7 @@ The modal component uses Telegraph design tokens for consistent styling:
 >
   <Modal.Content>
     <Modal.Header>
-      <h2>Delete Item</h2>
+      <Modal.Heading>Delete Item</Modal.Heading>
       <Modal.Close />
     </Modal.Header>
 
@@ -781,7 +793,7 @@ export const SettingsModal = ({ open, onClose, settings, onSave }) => {
     >
       <Modal.Content maxW="120">
         <Modal.Header>
-          <h2>Settings</h2>
+          <Modal.Heading>Settings</Modal.Heading>
           <Modal.Close />
         </Modal.Header>
 
@@ -874,7 +886,9 @@ export const ImageGalleryModal = ({
       <Modal.Content w="screen" maxW="screen" h="screen" rounded="0" p="0">
         <Modal.Header px="6" py="4">
           <Stack direction="row" align="center" justify="between" w="full">
-            <h2>{currentImage?.title || `Image ${currentIndex + 1}`}</h2>
+            <Modal.Heading>
+              {currentImage?.title || `Image ${currentIndex + 1}`}
+            </Modal.Heading>
             <Stack direction="row" gap="2">
               <Button
                 variant="ghost"
@@ -980,7 +994,7 @@ export const ExportModal = ({ open, onClose, onExport }) => {
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Export Data">
       <Modal.Content>
         <Modal.Header>
-          <h2>Export Data</h2>
+          <Modal.Heading>Export Data</Modal.Heading>
           <Modal.Close />
         </Modal.Header>
 

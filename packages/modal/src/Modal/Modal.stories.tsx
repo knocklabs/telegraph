@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import { Heading } from "@telegraph/typography";
 import React from "react";
 
 import { Modal as TelegraphModal } from "./Modal";
@@ -42,9 +41,7 @@ export const Modal: Story = {
         <Modal.Root open={open} onOpenChange={setOpen} a11yTitle="Modal title">
           <Modal.Content>
             <Modal.Header>
-              <Heading as="h2" size="3">
-                Modal title
-              </Heading>
+              <Modal.Heading>Modal title</Modal.Heading>
               <Modal.Close />
             </Modal.Header>
             <Modal.Body>Modal body</Modal.Body>
@@ -74,9 +71,7 @@ export const ScrollingModal: Story = {
         <Modal.Root open={open} onOpenChange={setOpen} a11yTitle="Modal title">
           <Modal.Content>
             <Modal.Header>
-              <Heading as="h2" size="3">
-                Modal title
-              </Heading>
+              <Modal.Heading>Modal title</Modal.Heading>
               <Modal.Close />
             </Modal.Header>
             <Modal.Body>
@@ -220,9 +215,7 @@ const NestedModal = ({
       >
         <TelegraphModal.Content>
           <TelegraphModal.Header>
-            <Heading as="h2" size="3">
-              Nested Modal {depth}
-            </Heading>
+            <TelegraphModal.Heading>Nested Modal {depth}</TelegraphModal.Heading>
             <TelegraphModal.Close />
           </TelegraphModal.Header>
           <TelegraphModal.Body>
