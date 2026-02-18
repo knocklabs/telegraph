@@ -3033,7 +3033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-portal@npm:1.1.9, @radix-ui/react-portal@npm:^1.1.9":
+"@radix-ui/react-portal@npm:1.1.9":
   version: 1.1.9
   resolution: "@radix-ui/react-portal@npm:1.1.9"
   dependencies:
@@ -3050,6 +3050,26 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/45b432497c722720c72c493a29ef6085bc84b50eafe79d48b45c553121b63e94f9cdb77a3a74b9c49126f8feb3feee009fe400d48b7759d3552396356b192cd7
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-portal@npm:^1.1.10":
+  version: 1.1.10
+  resolution: "@radix-ui/react-portal@npm:1.1.10"
+  dependencies:
+    "@radix-ui/react-primitive": "npm:2.1.4"
+    "@radix-ui/react-use-layout-effect": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/c8f77e2c9413f654f5232045888898eaac88d8d0515714c8ecdc25eea0dc20667639a1ead1528bfbb591ac9ae599de006879859ccb4c2b5c088b49f1af3a9c1a
   languageName: node
   linkType: hard
 
@@ -4085,7 +4105,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-dismissable-layer": "npm:^1.1.11"
     "@radix-ui/react-menu": "npm:^2.1.16"
-    "@radix-ui/react-portal": "npm:^1.1.9"
+    "@radix-ui/react-portal": "npm:^1.1.10"
     "@radix-ui/react-use-controllable-state": "npm:^1.2.2"
     "@radix-ui/react-visually-hidden": "npm:^1.2.4"
     "@telegraph/button": "workspace:^"
@@ -4352,7 +4372,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@radix-ui/react-dialog": "npm:^1.1.15"
     "@radix-ui/react-focus-scope": "npm:^1.1.8"
-    "@radix-ui/react-portal": "npm:^1.1.9"
+    "@radix-ui/react-portal": "npm:^1.1.10"
     "@radix-ui/react-visually-hidden": "npm:^1.2.4"
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
