@@ -76,7 +76,7 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
   return params.state;
 };
 
-const Root = <T extends TgphElement>({
+const Root = <T extends TgphElement = "button">({
   as,
   variant = "solid",
   size = "2",
