@@ -25,12 +25,10 @@ type RootBaseProps = {
   variant?: keyof typeof COLOR.Root;
 };
 
-type RootProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
-  T,
-  HTMLSpanElement
-> &
-  TgphComponentProps<typeof Stack> &
-  RootBaseProps;
+export type RootProps<T extends TgphElement = "span"> =
+  PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
+    Omit<TgphComponentProps<typeof Stack>, "as" | "tgphRef"> &
+    RootBaseProps;
 
 const TagContext = React.createContext<Required<RootBaseProps>>({
   size: "1",
@@ -38,7 +36,7 @@ const TagContext = React.createContext<Required<RootBaseProps>>({
   variant: "soft",
 });
 
-const Root = <T extends TgphElement>({
+const Root = <T extends TgphElement = "span">({
   as = "span" as T,
   size = "1",
   color = "default",
@@ -64,14 +62,14 @@ const Root = <T extends TgphElement>({
   );
 };
 
-type TextProps<T extends TgphElement> = RemappedOmit<
+export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
   TgphComponentProps<typeof TelegraphText<T>>,
   "as"
 > & {
   as?: T;
 };
 
-const Text = <T extends TgphElement>({
+const Text = <T extends TgphElement = "span">({
   as = "span" as T,
   maxW = "40",
   overflow = "hidden",
@@ -98,11 +96,11 @@ const Text = <T extends TgphElement>({
     />
   );
 };
-type ButtonProps<T extends TgphElement> = TgphComponentProps<
+export type ButtonProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof TelegraphButton<T>
 >;
 
-type CopyButtonProps = TgphComponentProps<typeof TelegraphButton.Root> & {
+export type CopyButtonProps = TgphComponentProps<typeof TelegraphButton.Root> & {
   textToCopy?: string;
 };
 
@@ -182,11 +180,11 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
     />
   );
 };
-type IconProps<T extends TgphElement> = TgphComponentProps<
+export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof TelegraphIcon<T>
 >;
 
-const Icon = <T extends TgphElement>({
+const Icon = <T extends TgphElement = "span">({
   icon,
   alt,
   "aria-hidden": ariaHidden,
@@ -206,7 +204,7 @@ const Icon = <T extends TgphElement>({
   );
 };
 
-type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
+export type DefaultProps<T extends TgphElement = "span"> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root<T>> & {
     icon?: React.ComponentProps<typeof TelegraphIcon>;
     textProps?: React.ComponentProps<typeof Text>;
@@ -222,7 +220,7 @@ type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
       }
   );
 
-const Default = <T extends TgphElement>({
+const Default = <T extends TgphElement = "span">({
   color = "default",
   size = "1",
   variant = "soft",

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
+import type { RootProps as ToggleRootProps, DefaultProps as ToggleProps } from "./Toggle";
 
 import { Toggle } from "./Toggle";
 
@@ -339,6 +340,47 @@ describe("Toggle", () => {
       expect(screen.getByText("Enable notifications")).toBeInTheDocument();
       const indicator = screen.getByText("Disabled");
       expect(indicator).toBeInTheDocument();
+    });
+  });
+
+  describe("type inheritance", () => {
+    it("accepts valid toggle-specific props", () => {
+      const validProps: ToggleProps = {
+        size: "2",
+        value: true,
+        onValueChange: () => {},
+        label: "Enable feature",
+      };
+      void validProps;
+    });
+
+    it("accepts inherited stack/layout props on Root", () => {
+      const validProps: ToggleRootProps = {
+        gap: "2",
+        padding: "1",
+        display: "flex",
+      };
+      void validProps;
+    });
+
+    it("rejects unknown props on type level", () => {
+      // @ts-expect-error unknown prop rejected on ToggleProps
+      const invalidProp: ToggleProps = { invalidProp: "invalid" };
+      void invalidProp;
+
+      // @ts-expect-error unknown prop rejected on ToggleRootProps
+      const invalidRootProp: ToggleRootProps = { invalidProp: "invalid" };
+      void invalidRootProp;
+    });
+
+    it("rejects unknown props in JSX", () => {
+      // @ts-expect-error unknown prop rejected on Toggle.Default JSX
+      const invalid = <Toggle.Default invalidProp="invalid" />;
+      void invalid;
+
+      // @ts-expect-error unknown prop rejected on Toggle.Root JSX
+      const invalidRoot = <Toggle.Root invalidProp="invalid" />;
+      void invalidRoot;
     });
   });
 });

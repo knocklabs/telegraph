@@ -12,16 +12,16 @@ import React from "react";
 
 import { COLOR, SIZE } from "./Input.constants";
 
-type BaseRootProps = {
+export type BaseRootProps = {
   size?: "1" | "2" | "3";
   variant?: "outline" | "ghost";
   errored?: boolean;
 };
 
-type RootProps<T extends TgphElement> = BaseRootProps & {
+export type RootProps<T extends TgphElement = "input"> = BaseRootProps & {
   textProps?: Omit<React.ComponentProps<typeof Text<T>>, "as">;
   stackProps?: Omit<React.ComponentProps<typeof Stack>, "as">;
-} & Omit<React.ComponentProps<typeof Text<T>>, "as">;
+} & Omit<React.ComponentProps<typeof Text<T>>, "as" | keyof BaseRootProps>;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
@@ -33,7 +33,7 @@ const InputContext = React.createContext<Required<InternalProps>>({
   variant: "outline",
 });
 
-const Root = <T extends TgphElement>({
+const Root = <T extends TgphElement = "input">({
   as = "input" as T,
   size = "2",
   variant = "outline",
@@ -104,7 +104,7 @@ const Root = <T extends TgphElement>({
   );
 };
 
-type SlotProps = React.ComponentPropsWithoutRef<typeof RadixSlot> & {
+export type SlotProps = React.ComponentPropsWithoutRef<typeof RadixSlot> & {
   size?: "1" | "2" | "3";
   position?: "leading" | "trailing";
 };
@@ -130,13 +130,14 @@ const Slot = React.forwardRef<SlotRef, SlotProps>(
   },
 );
 
-type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root> & {
+export type DefaultProps<T extends TgphElement = "input"> =
+  PolymorphicProps<T> &
+    TgphComponentProps<typeof Root> & {
     LeadingComponent?: React.ReactNode;
     TrailingComponent?: React.ReactNode;
   };
 
-const Default = <T extends TgphElement>({
+const Default = <T extends TgphElement = "input">({
   LeadingComponent,
   TrailingComponent,
   ...props

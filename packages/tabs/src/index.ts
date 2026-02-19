@@ -10,3 +10,6 @@ const TabsComponent = Object.assign(Tabs, {
 });
 
 export { TabsComponent as Tabs };
+export type { TabProps } from "./Tab";
+export type { TabListProps } from "./TabList";
+export type { TabsProps, TabPanelProps } from "./Tabs";

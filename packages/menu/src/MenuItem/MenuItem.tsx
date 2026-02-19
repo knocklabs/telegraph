@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 
-type MenuItemProps<T extends TgphElement> = TgphComponentProps<
+export type MenuItemProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof Button<T>
 > & {
   selected?: boolean | null;
@@ -14,7 +14,7 @@ type MenuItemProps<T extends TgphElement> = TgphComponentProps<
   textProps?: TgphComponentProps<typeof Button.Text>;
 };
 
-const MenuItem = <T extends TgphElement>({
+const MenuItem = <T extends TgphElement = "button">({
   variant = "ghost",
   size = "2",
   px = "2",

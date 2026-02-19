@@ -338,7 +338,7 @@ export const FilterMenu = ({
   const parameterContext = useParameterContext();
 
   // When the item is clicked, we navigate to the deeper menu
-  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClick = (event: React.MouseEvent) => {
     // Prevent the menu from auto closing on us
     event.preventDefault();
 
@@ -400,9 +400,7 @@ export const Option = ({ name, value, icon: optionIcon }: OptionProps) => {
     pluralNoun,
   } = useParameterContext();
 
-  const updateFilterState = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
+  const updateFilterState = (event: React.MouseEvent) => {
     // This block of code is to prevent the multi-select menu from auto-closing when the user clicks on an option
     const currentValue = stateControl.getValue(filterKey);
     const isRemoving = stateControl.isKeyValueActive(filterKey, value);

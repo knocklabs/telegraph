@@ -9,7 +9,7 @@ import type { Icon } from "@telegraph/icon";
 import { Box, Stack } from "@telegraph/layout";
 import React from "react";
 
-type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
+export type RootProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Root> &
   TgphComponentProps<typeof Stack>;
 
 type RadioButtonInternalContext = {
@@ -37,7 +37,7 @@ const Root = ({ value, children, onValueChange, ...props }: RootProps) => {
   );
 };
 
-type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>;
+export type ItemProps = React.ComponentPropsWithoutRef<typeof RadioGroup.Item>;
 type ItemRef = React.ElementRef<typeof RadioGroup.Item>;
 
 const Item = React.forwardRef<ItemRef, ItemProps>(
@@ -70,21 +70,20 @@ const Item = React.forwardRef<ItemRef, ItemProps>(
   },
 );
 
-type ItemTitleProps<T extends TgphElement> = TgphComponentProps<
+export type ItemTitleProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof Button.Text<T>
 >;
 
-const ItemTitle = <T extends TgphElement>({
+const ItemTitle = <T extends TgphElement = "span">({
   size = "2",
   ...props
 }: ItemTitleProps<T>) => {
   return <Button.Text as={"span"} size={size} {...props} />;
 };
 
-type ItemDescriptionProps<T extends TgphElement> = TgphComponentProps<
-  typeof Button.Text<T>
->;
-const ItemDescription = <T extends TgphElement>({
+export type ItemDescriptionProps<T extends TgphElement = "span"> =
+  TgphComponentProps<typeof Button.Text<T>>;
+const ItemDescription = <T extends TgphElement = "span">({
   size = "0",
   ...props
 }: ItemDescriptionProps<T>) => {
@@ -99,17 +98,17 @@ const ItemDescription = <T extends TgphElement>({
   );
 };
 
-type ItemIconProps<T extends TgphElement> = TgphComponentProps<
+export type ItemIconProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof Button.Icon<T>
 >;
 
-const ItemIcon = <T extends TgphElement>(props: ItemIconProps<T>) => {
+const ItemIcon = <T extends TgphElement = "span">(props: ItemIconProps<T>) => {
   return <Button.Icon color="gray" data-tgph-radio-card-icon {...props} />;
 };
 
 type DefaultIconProps = React.ComponentProps<typeof Icon>;
 
-type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
+export type DefaultProps = React.ComponentPropsWithoutRef<typeof Root> & {
   options: Array<
     {
       title?: string;

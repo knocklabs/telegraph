@@ -42,12 +42,16 @@ type InternalProps = {
   state: Required<RootBaseProps>["state"] | "disabled" | "active";
 };
 
-type RootProps<T extends TgphElement> = Omit<
+export type RootProps<T extends TgphElement = "button"> = Omit<
   TgphComponentProps<typeof Stack>,
-  "tgphRef"
+  "tgphRef" | "as" | "onClick"
 > &
-  PolymorphicPropsWithTgphRef<T, HTMLButtonElement> &
-  RootBaseProps;
+  Omit<PolymorphicPropsWithTgphRef<T, HTMLButtonElement>, "onClick"> &
+  RootBaseProps & {
+    onClick?:
+      | ((event: React.MouseEvent<HTMLButtonElement>) => void)
+      | ((...args: never[]) => void);
+  };
 
 const ButtonContext = React.createContext<
   Required<Omit<RootBaseProps, "color" | "as" | "state"> & InternalProps>
@@ -163,13 +167,13 @@ const Root = <T extends TgphElement>({
   );
 };
 
-type IconProps<T extends TgphElement> = TgphComponentProps<
+export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof TelegraphIcon<T>
 > & {
   internal_iconType?: "leading" | "trailing";
 };
 
-const Icon = <T extends TgphElement>({
+const Icon = <T extends TgphElement = "span">({
   size,
   color,
   variant,
@@ -214,14 +218,14 @@ const Icon = <T extends TgphElement>({
   );
 };
 
-type TextProps<T extends TgphElement> = RemappedOmit<
+export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
   TgphComponentProps<typeof TelegraphText<T>>,
   "as"
 > & {
   as?: T;
 };
 
-const Text = <T extends TgphElement>({
+const Text = <T extends TgphElement = "span">({
   as,
   color,
   size,
@@ -267,11 +271,12 @@ type BaseDefaultProps =
       leadingIcon?: never;
       trailingIcon?: never;
     };
-type DefaultProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root> &
-  BaseDefaultProps;
+export type DefaultProps<T extends TgphElement = "button"> =
+  Omit<PolymorphicProps<T>, "onClick"> &
+    TgphComponentProps<typeof Root> &
+    BaseDefaultProps;
 
-const Default = <T extends TgphElement>({
+const Default = <T extends TgphElement = "button">({
   leadingIcon,
   trailingIcon,
   icon,

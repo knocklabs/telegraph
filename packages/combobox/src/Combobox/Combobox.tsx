@@ -42,7 +42,7 @@ type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
   : "truncate" | "wrap";
 
-type RootProps<
+export type RootProps<
   O extends (Option | Array<Option>) | (string | Array<string>),
   LB extends boolean,
 > = {
@@ -216,7 +216,7 @@ type TriggerBaseProps = RemappedOmit<
   "children"
 >;
 
-type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
+export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
   children?:
     | React.ReactNode
@@ -343,11 +343,11 @@ const Trigger = <V extends ChildrenValue>({
   );
 };
 
-type ContentProps<T extends TgphElement> = TgphComponentProps<
+export type ContentProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof TelegraphMenu.Content<T>
 >;
 
-const Content = <T extends TgphElement>({
+const Content = <T extends TgphElement = "div">({
   style,
   children,
   tgphRef,
@@ -497,9 +497,11 @@ const Content = <T extends TgphElement>({
   );
 };
 
-type OptionsProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>>;
+export type OptionsProps<T extends TgphElement = "div"> = TgphComponentProps<
+  typeof Stack<T>
+>;
 
-const Options = <T extends TgphElement>({
+const Options = <T extends TgphElement = "div">({
   tgphRef,
   ...props
 }: OptionsProps<T>) => {
@@ -562,7 +564,7 @@ const Options = <T extends TgphElement>({
         "--max-height": !props.maxHeight
           ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
           : undefined,
-      }}
+      } as React.CSSProperties}
       // Accessibility attributes
       role="listbox"
       tgphRef={composedRef}
@@ -571,7 +573,7 @@ const Options = <T extends TgphElement>({
   );
 };
 
-type OptionProps<T extends TgphElement> = TgphComponentProps<
+export type OptionProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof TelegraphMenu.Button<T>
 > & {
   value: DefinedOption["value"];
@@ -663,8 +665,8 @@ const Option = <T extends TgphElement>({
     return (
       <TelegraphMenu.Button
         type="button"
-        onSelect={handleSelection}
-        onKeyDown={handleSelection}
+        onSelect={handleSelection as (event: Event) => void}
+        onKeyDown={handleSelection as React.KeyboardEventHandler}
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : (selected ?? isSelected)}
@@ -686,7 +688,7 @@ const Option = <T extends TgphElement>({
   }
 };
 
-type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
+export type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
   label?: string;
 };
 
@@ -764,7 +766,9 @@ const Search = ({
   );
 };
 
-type EmptyProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>> & {
+export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
+  typeof Stack<T>
+> & {
   icon?: TgphComponentProps<typeof Icon> | null;
   message?: string | null;
 };
@@ -808,9 +812,9 @@ const Empty = <T extends TgphElement>({
   }
 };
 
-type CreateProps<
-  T extends TgphElement,
-  LB extends boolean,
+export type CreateProps<
+  T extends TgphElement = "button",
+  LB extends boolean = false,
 > = TgphComponentProps<typeof TelegraphMenu.Button<T>> & {
   leadingText?: string;
 } & (LB extends true

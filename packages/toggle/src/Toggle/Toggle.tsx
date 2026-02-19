@@ -45,7 +45,7 @@ const ToggleContext = React.createContext<InternalContextType>({
   color: "blue",
 });
 
-type RootBaseProps = {
+export type RootBaseProps = {
   size?: ToggleSize;
   value?: boolean;
   defaultValue?: boolean;
@@ -53,14 +53,14 @@ type RootBaseProps = {
   color?: TgphComponentProps<typeof Button.Root>["color"];
 };
 
-type RootProps<T extends TgphElement> = Omit<
+export type RootProps<T extends TgphElement = "div"> = Omit<
   TgphComponentProps<typeof Stack<T>>,
   "tgphRef" | "as"
 > &
   PolymorphicPropsWithTgphRef<T, HTMLInputElement> &
   RootBaseProps;
 
-const Root = <T extends TgphElement>({
+const Root = <T extends TgphElement = "div">({
   size = "2",
   color = "blue",
   value: valueProp,
@@ -122,7 +122,7 @@ const Root = <T extends TgphElement>({
   );
 };
 
-type SwitchProps = TgphComponentProps<typeof Button.Root>;
+export type SwitchProps = TgphComponentProps<typeof Button.Root>;
 
 const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   const context = React.useContext(ToggleContext);
@@ -191,11 +191,13 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   );
 };
 
-type LabelProps<T extends TgphElement> = TgphComponentProps<typeof Text<T>> & {
+export type LabelProps<T extends TgphElement = "label"> = TgphComponentProps<
+  typeof Text<T>
+> & {
   hidden?: boolean;
 };
 
-const Label = <T extends TgphElement>({
+const Label = <T extends TgphElement = "label">({
   hidden = false,
   as,
   style,
@@ -223,14 +225,13 @@ const Label = <T extends TgphElement>({
   );
 };
 
-type IndicatorProps<T extends TgphElement> = TgphComponentProps<
-  typeof Tag<T>
-> & {
-  enabledContent?: React.ReactNode;
-  disabledContent?: React.ReactNode;
-};
+export type IndicatorProps<T extends TgphElement = "span"> =
+  TgphComponentProps<typeof Tag<T>> & {
+    enabledContent?: React.ReactNode;
+    disabledContent?: React.ReactNode;
+  };
 
-const Indicator = <T extends TgphElement>({
+const Indicator = <T extends TgphElement = "span">({
   as,
   enabledContent = "Enabled",
   disabledContent = "Disabled",
@@ -263,14 +264,14 @@ const Indicator = <T extends TgphElement>({
   );
 };
 
-type DefaultProps<T extends TgphElement> = RootProps<T> & {
+export type DefaultProps<T extends TgphElement = "div"> = RootProps<T> & {
   label?: React.ReactNode;
   labelProps?: Omit<LabelProps<"label">, "as">;
   indicator?: boolean;
   indicatorProps?: Omit<IndicatorProps<"span">, "as">;
 };
 
-const Default = <T extends TgphElement>({
+const Default = <T extends TgphElement = "div">({
   label,
   labelProps,
   indicator,

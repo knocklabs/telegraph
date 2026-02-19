@@ -28,7 +28,10 @@ const SegmentedControlContextState = React.createContext<{
   setActiveOptionRef: () => {},
 });
 
-type RootProps = Omit<React.ComponentProps<typeof ToggleGroup.Root>, "type"> &
+export type RootProps = Omit<
+  React.ComponentProps<typeof ToggleGroup.Root>,
+  "type"
+> &
   TgphComponentProps<typeof Stack> & {
     type?: React.ComponentProps<typeof ToggleGroup.Root>["type"];
     size?: React.ComponentProps<typeof Button.Root>["size"];
@@ -294,7 +297,7 @@ const ButtonStyleProps: Record<
   },
 };
 
-type OptionProps = React.ComponentProps<typeof ToggleGroup.Item> &
+export type OptionProps = React.ComponentProps<typeof ToggleGroup.Item> &
   TgphComponentProps<typeof Button>;
 
 const Option = ({

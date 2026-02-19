@@ -15,7 +15,7 @@ import React from "react";
 import { TooltipContentProps } from "./Tooltip.constants";
 import { useTooltipGroup } from "./Tooltip.hooks";
 
-type TooltipBaseProps<T extends TgphElement> = {
+export type TooltipBaseProps<T extends TgphElement = "div"> = {
   label: string | React.ReactNode;
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
@@ -24,14 +24,13 @@ type TooltipBaseProps<T extends TgphElement> = {
   triggerRef?: React.RefObject<HTMLButtonElement>;
 };
 
-type TooltipProps<T extends TgphElement> = React.ComponentPropsWithoutRef<
-  typeof RadixTooltip.Root
-> &
-  React.ComponentPropsWithoutRef<typeof RadixTooltip.Provider> &
-  React.ComponentPropsWithoutRef<typeof RadixTooltip.Content> &
-  TooltipBaseProps<T>;
+export type TooltipProps<T extends TgphElement = "div"> =
+  React.ComponentPropsWithoutRef<typeof RadixTooltip.Root> &
+    React.ComponentPropsWithoutRef<typeof RadixTooltip.Provider> &
+    React.ComponentPropsWithoutRef<typeof RadixTooltip.Content> &
+    TooltipBaseProps<T>;
 
-const Tooltip = <T extends TgphElement>({
+const Tooltip = <T extends TgphElement = "div">({
   // Radix Tooltip Provider Props
   delayDuration = 400,
   skipDelayDuration,

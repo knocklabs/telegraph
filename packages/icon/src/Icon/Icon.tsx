@@ -25,14 +25,12 @@ type BaseIconProps = {
     }
 );
 
-type IconProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
-  T,
-  HTMLSpanElement
-> &
-  TgphComponentProps<typeof Box> &
-  BaseIconProps;
+export type IconProps<T extends TgphElement = "span"> =
+  PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
+    Omit<TgphComponentProps<typeof Box>, "as" | "tgphRef"> &
+    BaseIconProps;
 
-const Icon = <T extends TgphElement>({
+const Icon = <T extends TgphElement = "span">({
   as,
   size = "2",
   color = "default",
