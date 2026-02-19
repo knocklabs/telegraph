@@ -48,7 +48,7 @@ export type RootProps<T extends TgphElement = "button"> = Omit<
 > &
   Omit<PolymorphicPropsWithTgphRef<T, HTMLButtonElement>, "onClick"> &
   RootBaseProps & {
-    onClick?(event?: React.SyntheticEvent | Event): void;
+    onClick?(event: React.SyntheticEvent | Event): void;
   };
 
 const ButtonContext = React.createContext<
@@ -275,7 +275,7 @@ export type DefaultProps<T extends TgphElement = "button"> = Omit<
 > &
   TgphComponentProps<typeof Root> &
   BaseDefaultProps & {
-    onClick?(event?: React.SyntheticEvent | Event): void;
+    onClick?(event: React.SyntheticEvent | Event): void;
   };
 
 const Default = <T extends TgphElement = "button">({
