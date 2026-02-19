@@ -28,7 +28,10 @@ describe("MenuItem", () => {
 
     it("rejects unknown props on type level", () => {
       // @ts-expect-error unknown prop rejected on MenuItemProps
-      const invalidProp: MenuItemProps = { invalidProp: "invalid", children: "test" };
+      const invalidProp: MenuItemProps = {
+        invalidProp: "invalid",
+        children: "test",
+      };
       void invalidProp;
     });
 

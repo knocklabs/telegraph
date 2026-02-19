@@ -4,7 +4,6 @@ import { describe, expect, expectTypeOf, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import type { TextProps } from "./Text";
-
 import { Text } from "./Text";
 
 describe("Text", () => {

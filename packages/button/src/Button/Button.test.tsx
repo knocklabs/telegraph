@@ -200,9 +200,7 @@ describe("Button", () => {
         href: "/docs",
         children: "Docs",
       };
-      expectTypeOf(validAnchorProps.href).toEqualTypeOf<
-        string | undefined
-      >();
+      expectTypeOf(validAnchorProps.href).toEqualTypeOf<string | undefined>();
 
       const validButtonProps: ButtonProps = {
         children: "Save",
@@ -246,31 +244,44 @@ describe("Button", () => {
       void invalidButton;
 
       // @ts-expect-error unknown prop rejected on Button.Root JSX
-      const invalidRoot = <Button.Root invalidProp="invalid">Invalid</Button.Root>;
+      const invalidRoot = (
+        <Button.Root invalidProp="invalid">Invalid</Button.Root>
+      );
       void invalidRoot;
 
       // @ts-expect-error unknown prop rejected on Button.Text JSX
-      const invalidText = <Button.Text invalidProp="invalid">Invalid</Button.Text>;
+      const invalidText = (
+        <Button.Text invalidProp="invalid">Invalid</Button.Text>
+      );
       void invalidText;
     });
 
     it("onClick accepts diverse handler types", () => {
-      const mouseHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+      const syntheticHandler = (event: React.SyntheticEvent) => {
         void event;
       };
       const noArgHandler = () => {};
       const keyboardHandler = (event: KeyboardEvent) => {
         void event;
       };
+      const nativeMouseHandler = (event: MouseEvent) => {
+        void event;
+      };
 
-      const withMouseHandler: ButtonRootProps = { onClick: mouseHandler };
+      const withSyntheticHandler: ButtonRootProps = {
+        onClick: syntheticHandler,
+      };
       const withNoArgHandler: ButtonRootProps = { onClick: noArgHandler };
       const withKeyboardHandler: ButtonRootProps = {
         onClick: keyboardHandler,
       };
-      void withMouseHandler;
+      const withNativeMouseHandler: ButtonRootProps = {
+        onClick: nativeMouseHandler,
+      };
+      void withSyntheticHandler;
       void withNoArgHandler;
       void withKeyboardHandler;
+      void withNativeMouseHandler;
     });
 
     it("onClick accepts diverse handlers in JSX", () => {
@@ -279,9 +290,7 @@ describe("Button", () => {
       };
       const noArgHandler = () => {};
 
-      const withKeyboard = (
-        <Button onClick={keyboardHandler}>Click</Button>
-      );
+      const withKeyboard = <Button onClick={keyboardHandler}>Click</Button>;
       const withNoArg = <Button onClick={noArgHandler}>Click</Button>;
       const withInline = (
         <Button onClick={() => console.log("clicked")}>Click</Button>
@@ -299,9 +308,7 @@ describe("Button", () => {
       const withKeyboard = (
         <Button.Root onClick={keyboardHandler}>Click</Button.Root>
       );
-      const withInline = (
-        <Button.Root onClick={() => {}}>Click</Button.Root>
-      );
+      const withInline = <Button.Root onClick={() => {}}>Click</Button.Root>;
       void withKeyboard;
       void withInline;
     });

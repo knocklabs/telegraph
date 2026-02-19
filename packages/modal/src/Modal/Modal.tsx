@@ -238,9 +238,10 @@ const Overlay = ({ layer, children }: OverlayProps) => {
   );
 };
 
-export type ContentProps =
-  React.ComponentPropsWithoutRef<typeof Dialog.Content> &
-    TgphComponentProps<typeof Stack>;
+export type ContentProps = React.ComponentPropsWithoutRef<
+  typeof Dialog.Content
+> &
+  TgphComponentProps<typeof Stack>;
 type ContentRef = React.ElementRef<typeof Dialog.Content>;
 
 const Content = React.forwardRef<ContentRef, ContentProps>(

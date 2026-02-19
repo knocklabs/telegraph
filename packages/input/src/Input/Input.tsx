@@ -130,9 +130,11 @@ const Slot = React.forwardRef<SlotRef, SlotProps>(
   },
 );
 
-export type DefaultProps<T extends TgphElement = "input"> =
-  PolymorphicProps<T> &
-    TgphComponentProps<typeof Root> & {
+export type DefaultProps<T extends TgphElement = "input"> = Omit<
+  PolymorphicProps<T>,
+  keyof BaseRootProps
+> &
+  TgphComponentProps<typeof Root> & {
     LeadingComponent?: React.ReactNode;
     TrailingComponent?: React.ReactNode;
   };

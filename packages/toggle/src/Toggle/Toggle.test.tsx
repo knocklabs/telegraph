@@ -3,8 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
-import type { RootProps as ToggleRootProps, DefaultProps as ToggleProps } from "./Toggle";
 
+import type {
+  DefaultProps as ToggleProps,
+  RootProps as ToggleRootProps,
+} from "./Toggle";
 import { Toggle } from "./Toggle";
 
 describe("Toggle", () => {

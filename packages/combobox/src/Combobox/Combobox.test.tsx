@@ -4,13 +4,9 @@ import React from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
-import type {
-  ComboboxContentProps,
-  ComboboxOptionsProps,
-} from "./index";
-
 import { Combobox } from "./Combobox";
 import { findStringNodes } from "./Combobox.helpers";
+import type { ComboboxContentProps, ComboboxOptionsProps } from "./index";
 
 type Option = { value: string; label?: string };
 

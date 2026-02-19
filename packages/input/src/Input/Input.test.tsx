@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Input } from "./Input";
-import type { InputRootProps, InputProps } from "./index";
+import type { InputProps, InputRootProps } from "./index";
 
 describe("Input", () => {
   describe("type inheritance", () => {

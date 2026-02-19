@@ -1,7 +1,11 @@
 import { describe, it } from "vitest";
 
 import { Modal } from "./Modal";
-import type { ModalBodyProps, ModalHeaderProps, ModalFooterProps } from "./index";
+import type {
+  ModalBodyProps,
+  ModalFooterProps,
+  ModalHeaderProps,
+} from "./index";
 
 describe("Modal", () => {
   describe("type inheritance", () => {

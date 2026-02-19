@@ -48,9 +48,7 @@ export type RootProps<T extends TgphElement = "button"> = Omit<
 > &
   Omit<PolymorphicPropsWithTgphRef<T, HTMLButtonElement>, "onClick"> &
   RootBaseProps & {
-    onClick?:
-      | ((event: React.MouseEvent<HTMLButtonElement>) => void)
-      | ((...args: never[]) => void);
+    onClick?(event?: React.SyntheticEvent | Event): void;
   };
 
 const ButtonContext = React.createContext<
@@ -271,10 +269,14 @@ type BaseDefaultProps =
       leadingIcon?: never;
       trailingIcon?: never;
     };
-export type DefaultProps<T extends TgphElement = "button"> =
-  Omit<PolymorphicProps<T>, "onClick"> &
-    TgphComponentProps<typeof Root> &
-    BaseDefaultProps;
+export type DefaultProps<T extends TgphElement = "button"> = Omit<
+  PolymorphicProps<T>,
+  "onClick"
+> &
+  TgphComponentProps<typeof Root> &
+  BaseDefaultProps & {
+    onClick?(event?: React.SyntheticEvent | Event): void;
+  };
 
 const Default = <T extends TgphElement = "button">({
   leadingIcon,

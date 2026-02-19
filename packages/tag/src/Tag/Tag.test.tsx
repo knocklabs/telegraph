@@ -3,7 +3,11 @@ import { describe, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Tag } from "./Tag";
-import type { RootProps as TagRootProps, TextProps as TagTextProps, DefaultProps as TagProps } from "./Tag";
+import type {
+  DefaultProps as TagProps,
+  RootProps as TagRootProps,
+  TextProps as TagTextProps,
+} from "./Tag";
 
 describe("Tag", () => {
   it("should render without a11y violations", async () => {

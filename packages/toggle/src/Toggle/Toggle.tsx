@@ -225,11 +225,12 @@ const Label = <T extends TgphElement = "label">({
   );
 };
 
-export type IndicatorProps<T extends TgphElement = "span"> =
-  TgphComponentProps<typeof Tag<T>> & {
-    enabledContent?: React.ReactNode;
-    disabledContent?: React.ReactNode;
-  };
+export type IndicatorProps<T extends TgphElement = "span"> = TgphComponentProps<
+  typeof Tag<T>
+> & {
+  enabledContent?: React.ReactNode;
+  disabledContent?: React.ReactNode;
+};
 
 const Indicator = <T extends TgphElement = "span">({
   as,

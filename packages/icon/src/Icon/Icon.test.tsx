@@ -1,13 +1,6 @@
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Icon } from "./Icon";

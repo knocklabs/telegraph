@@ -17,7 +17,11 @@ describe("Tooltip", () => {
 
     it("rejects unknown props on type level", () => {
       // @ts-expect-error unknown prop rejected on TooltipProps
-      const invalidProp: TooltipProps = { label: "test", invalidProp: "invalid", children: null };
+      const invalidProp: TooltipProps = {
+        label: "test",
+        invalidProp: "invalid",
+        children: null,
+      };
       void invalidProp;
     });
   });

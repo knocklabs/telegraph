@@ -558,13 +558,15 @@ const Options = <T extends TgphElement = "div">({
       id={context.contentId}
       direction="column"
       gap="1"
-      style={{
-        overflowY: "auto",
-        // maxHeight defaults to available height - padding from edge of screen
-        "--max-height": !props.maxHeight
-          ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
-          : undefined,
-      } as React.CSSProperties}
+      style={
+        {
+          overflowY: "auto",
+          // maxHeight defaults to available height - padding from edge of screen
+          "--max-height": !props.maxHeight
+            ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
+            : undefined,
+        } as React.CSSProperties
+      }
       // Accessibility attributes
       role="listbox"
       tgphRef={composedRef}

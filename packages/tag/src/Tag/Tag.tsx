@@ -100,7 +100,9 @@ export type ButtonProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof TelegraphButton<T>
 >;
 
-export type CopyButtonProps = TgphComponentProps<typeof TelegraphButton.Root> & {
+export type CopyButtonProps = TgphComponentProps<
+  typeof TelegraphButton.Root
+> & {
   textToCopy?: string;
 };
 

@@ -148,9 +148,7 @@ describe("Box", () => {
 
   describe("type inheritance", () => {
     it("accepts valid polymorphic props", () => {
-      expectTypeOf<BoxProps<"a">["href"]>().toEqualTypeOf<
-        string | undefined
-      >();
+      expectTypeOf<BoxProps<"a">["href"]>().toEqualTypeOf<string | undefined>();
       expectTypeOf<BoxProps<"button">["disabled"]>().toEqualTypeOf<
         boolean | undefined
       >();

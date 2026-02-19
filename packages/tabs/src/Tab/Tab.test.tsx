@@ -25,13 +25,21 @@ describe("Tab", () => {
 
     it("rejects unknown props on type level", () => {
       // @ts-expect-error unknown prop rejected on TabProps
-      const invalidProp: TabProps = { value: "tab-1", invalidProp: "invalid", children: "test" };
+      const invalidProp: TabProps = {
+        value: "tab-1",
+        invalidProp: "invalid",
+        children: "test",
+      };
       void invalidProp;
     });
 
     it("rejects unknown props in JSX", () => {
       // @ts-expect-error unknown prop rejected on Tab JSX
-      const invalid = <Tab value="tab-1" invalidProp="invalid">Test</Tab>;
+      const invalid = (
+        <Tab value="tab-1" invalidProp="invalid">
+          Test
+        </Tab>
+      );
       void invalid;
     });
   });
