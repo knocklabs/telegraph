@@ -14,11 +14,11 @@ type BaseTextProps = Omit<StyleProps, "color"> & {
   size?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 };
 
-type TextProps<T extends TgphElement> = BaseTextProps &
+export type TextProps<T extends TgphElement = "span"> = BaseTextProps &
   Omit<TgphComponentProps<typeof Box<T>>, keyof BaseTextProps> &
   OptionalAsPropConfig<T>;
 
-const Text = <T extends TgphElement>({
+const Text = <T extends TgphElement = "span">({
   as,
   size = "2",
   weight = "regular",

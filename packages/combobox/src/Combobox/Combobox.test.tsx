@@ -6,6 +6,7 @@ import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
 import { findStringNodes } from "./Combobox.helpers";
+import type { ComboboxContentProps, ComboboxOptionsProps } from "./index";
 
 type Option = { value: string; label?: string };
 
@@ -1256,5 +1257,32 @@ describe("controlled value changes", () => {
     // Then change externally to Push again
     await user.click(getByTestId("external-change-btn"));
     await waitFor(() => expect(trigger?.textContent).toBe("Push"));
+  });
+});
+
+describe("Combobox type inheritance", () => {
+  it("accepts valid content props", () => {
+    const validProps: ComboboxContentProps = {};
+    void validProps;
+  });
+
+  it("accepts inherited stack/layout props on Options", () => {
+    const validProps: ComboboxOptionsProps = {
+      gap: "2",
+      padding: "1",
+    };
+    void validProps;
+  });
+
+  it("rejects unknown props on type level", () => {
+    // @ts-expect-error unknown prop rejected on ComboboxContentProps
+    const invalidProp: ComboboxContentProps = { invalidProp: "invalid" };
+    void invalidProp;
+
+    // @ts-expect-error unknown prop rejected on ComboboxOptionsProps
+    const invalidOptionsProp: ComboboxOptionsProps = {
+      invalidProp: "invalid",
+    };
+    void invalidOptionsProp;
   });
 });

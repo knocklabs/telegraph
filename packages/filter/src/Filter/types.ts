@@ -18,7 +18,7 @@ export type FilterContextValue = {
   searchValue: string;
   setSearchValue: (searchValue: string) => void;
   stateControl: InternalFilterState;
-  triggerRef: React.RefObject<HTMLDivElement>;
+  triggerRef: React.RefObject<HTMLDivElement | null>;
 };
 
 export type FilterProps = {

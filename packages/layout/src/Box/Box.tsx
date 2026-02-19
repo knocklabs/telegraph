@@ -7,13 +7,10 @@ import clsx from "clsx";
 
 import { StyleProps, cssVars } from "./Box.constants";
 
-type BoxProps<T extends TgphElement> = PolymorphicPropsWithTgphRef<
-  T,
-  HTMLElement
-> &
-  StyleProps;
+export type BoxProps<T extends TgphElement = "div"> =
+  PolymorphicPropsWithTgphRef<T, HTMLElement> & StyleProps;
 
-const Box = <T extends TgphElement>({
+const Box = <T extends TgphElement = "div">({
   as,
   className,
   tgphRef,

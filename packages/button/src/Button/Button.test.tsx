@@ -1,9 +1,18 @@
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Button } from "./Button";
+import type { ButtonProps, ButtonRootProps, ButtonTextProps } from "./Button";
 
 // Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
@@ -170,5 +179,156 @@ describe("Button", () => {
     );
     const anchor = container.querySelector("a");
     expect(anchor).not.toHaveAttribute("type");
+  });
+
+  describe("type inheritance", () => {
+    it("accepts valid polymorphic props", () => {
+      expectTypeOf<ButtonProps<"a">["href"]>().toEqualTypeOf<
+        string | undefined
+      >();
+      expectTypeOf<ButtonRootProps<"a">["href"]>().toEqualTypeOf<
+        string | undefined
+      >();
+      expectTypeOf<ButtonTextProps<"span">["as"]>().toEqualTypeOf<
+        "span" | undefined
+      >();
+    });
+
+    it("accepts valid default button props", () => {
+      const validAnchorProps: ButtonProps<"a"> = {
+        as: "a",
+        href: "/docs",
+        children: "Docs",
+      };
+      expectTypeOf(validAnchorProps.href).toEqualTypeOf<string | undefined>();
+
+      const validButtonProps: ButtonProps = {
+        children: "Save",
+        type: "button",
+      };
+      expectTypeOf(validButtonProps.type).toEqualTypeOf<
+        "button" | "submit" | "reset" | undefined
+      >();
+    });
+
+    it("rejects invalid prop values", () => {
+      // @ts-expect-error invalid size token
+      const invalidSize: ButtonProps = { size: "99" };
+      void invalidSize;
+
+      const invalidVariant: ButtonProps<"button"> = {
+        as: "button",
+        // @ts-expect-error invalid variant value
+        variant: "invalid",
+      };
+      void invalidVariant;
+    });
+
+    it("rejects unknown props on type level", () => {
+      // @ts-expect-error unknown prop rejected on ButtonProps
+      const invalidButtonProp: ButtonProps = { invalidProp: "invalid" };
+      void invalidButtonProp;
+
+      // @ts-expect-error unknown prop rejected on ButtonRootProps
+      const invalidRootProp: ButtonRootProps = { invalidProp: "invalid" };
+      void invalidRootProp;
+
+      // @ts-expect-error unknown prop rejected on ButtonTextProps
+      const invalidTextProp: ButtonTextProps = { invalidProp: "invalid" };
+      void invalidTextProp;
+    });
+
+    it("rejects unknown props in JSX", () => {
+      // @ts-expect-error unknown prop rejected on Button JSX
+      const invalidButton = <Button invalidProp="invalid">Invalid</Button>;
+      void invalidButton;
+
+      // @ts-expect-error unknown prop rejected on Button.Root JSX
+      const invalidRoot = (
+        <Button.Root invalidProp="invalid">Invalid</Button.Root>
+      );
+      void invalidRoot;
+
+      // @ts-expect-error unknown prop rejected on Button.Text JSX
+      const invalidText = (
+        <Button.Text invalidProp="invalid">Invalid</Button.Text>
+      );
+      void invalidText;
+    });
+
+    it("onClick accepts diverse handler types", () => {
+      const syntheticHandler = (event: React.SyntheticEvent) => {
+        void event;
+      };
+      const noArgHandler = () => {};
+      const keyboardHandler = (event: KeyboardEvent) => {
+        void event;
+      };
+      const nativeMouseHandler = (event: MouseEvent) => {
+        void event;
+      };
+
+      const withSyntheticHandler: ButtonRootProps = {
+        onClick: syntheticHandler,
+      };
+      const withNoArgHandler: ButtonRootProps = { onClick: noArgHandler };
+      const withKeyboardHandler: ButtonRootProps = {
+        onClick: keyboardHandler,
+      };
+      const withNativeMouseHandler: ButtonRootProps = {
+        onClick: nativeMouseHandler,
+      };
+      void withSyntheticHandler;
+      void withNoArgHandler;
+      void withKeyboardHandler;
+      void withNativeMouseHandler;
+    });
+
+    it("onClick accepts diverse handlers in JSX", () => {
+      const keyboardHandler = (event: KeyboardEvent) => {
+        void event;
+      };
+      const noArgHandler = () => {};
+
+      const withKeyboard = <Button onClick={keyboardHandler}>Click</Button>;
+      const withNoArg = <Button onClick={noArgHandler}>Click</Button>;
+      const withInline = (
+        <Button onClick={() => console.log("clicked")}>Click</Button>
+      );
+      void withKeyboard;
+      void withNoArg;
+      void withInline;
+    });
+
+    it("onClick accepts diverse handlers on Button.Root JSX", () => {
+      const keyboardHandler = (event: KeyboardEvent) => {
+        void event;
+      };
+
+      const withKeyboard = (
+        <Button.Root onClick={keyboardHandler}>Click</Button.Root>
+      );
+      const withInline = <Button.Root onClick={() => {}}>Click</Button.Root>;
+      void withKeyboard;
+      void withInline;
+    });
+
+    it("inherits Stack layout props", () => {
+      const withGap: ButtonRootProps = { gap: "2" };
+      const withAlign: ButtonRootProps = { align: "center" };
+      const withDirection: ButtonRootProps = { direction: "row" };
+      void withGap;
+      void withAlign;
+      void withDirection;
+    });
+
+    it("inherits Box style props", () => {
+      const withPadding: ButtonRootProps = { p: "2" };
+      const withBg: ButtonRootProps = { bg: "surface-1" };
+      const withRounded: ButtonRootProps = { rounded: "2" };
+      void withPadding;
+      void withBg;
+      void withRounded;
+    });
   });
 });

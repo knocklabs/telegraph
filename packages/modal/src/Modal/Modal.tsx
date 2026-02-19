@@ -21,7 +21,7 @@ import React from "react";
 
 import { useModalStacking } from "./ModalStacking";
 
-type RootProps = Omit<
+export type RootProps = Omit<
   React.ComponentPropsWithoutRef<typeof Dialog.Root>,
   "modal"
 > &
@@ -207,7 +207,7 @@ const RootComponent = ({
   );
 };
 
-type OverlayProps = TgphComponentProps<typeof Box> & {
+export type OverlayProps = TgphComponentProps<typeof Box> & {
   layer: number;
 };
 
@@ -238,7 +238,9 @@ const Overlay = ({ layer, children }: OverlayProps) => {
   );
 };
 
-type ContentProps = React.ComponentPropsWithoutRef<typeof Dialog.Content> &
+export type ContentProps = React.ComponentPropsWithoutRef<
+  typeof Dialog.Content
+> &
   TgphComponentProps<typeof Stack>;
 type ContentRef = React.ElementRef<typeof Dialog.Content>;
 
@@ -254,9 +256,11 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
   },
 );
 
-type CloseProps<T extends TgphElement> = TgphComponentProps<typeof Button<T>> &
+export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
+  typeof Button<T>
+> &
   Omit<React.ComponentPropsWithoutRef<typeof Dialog.Close>, "color">;
-const Close = <T extends TgphElement>({
+const Close = <T extends TgphElement = "button">({
   size = "1",
   variant = "ghost",
   ...props
@@ -273,10 +277,10 @@ const Close = <T extends TgphElement>({
   );
 };
 
-type BodyProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack>;
+export type BodyProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Stack>, "as">;
 
-const Body = <T extends TgphElement>({
+const Body = <T extends TgphElement = "div">({
   style,
   children,
   ...props
@@ -297,10 +301,10 @@ const Body = <T extends TgphElement>({
   );
 };
 
-type HeaderProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack>;
+export type HeaderProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Stack>, "as">;
 
-const Header = <T extends TgphElement>({
+const Header = <T extends TgphElement = "div">({
   children,
   ...props
 }: HeaderProps<T>) => {
@@ -319,10 +323,10 @@ const Header = <T extends TgphElement>({
   );
 };
 
-type FooterProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack>;
+export type FooterProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Stack>, "as">;
 
-const Footer = <T extends TgphElement>({
+const Footer = <T extends TgphElement = "div">({
   children,
   ...props
 }: FooterProps<T>) => {

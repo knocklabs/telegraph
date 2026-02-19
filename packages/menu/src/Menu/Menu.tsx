@@ -10,7 +10,7 @@ import React from "react";
 
 import { MenuItem } from "../MenuItem";
 
-type RootProps = React.ComponentProps<typeof RadixMenu.Root> & {
+export type RootProps = React.ComponentProps<typeof RadixMenu.Root> & {
   defaultOpen?: boolean;
 };
 
@@ -71,14 +71,14 @@ const Trigger = ({ asChild = true, tgphRef, children, ...props }: Anchor) => {
   );
 };
 
-type ContentProps<T extends TgphElement> = React.ComponentProps<
+export type ContentProps<T extends TgphElement = "div"> = React.ComponentProps<
   typeof RadixMenu.Content
 > &
   Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
     contentStackRef?: React.RefObject<HTMLDivElement>;
   };
 
-const Content = <T extends TgphElement>({
+const Content = <T extends TgphElement = "div">({
   direction = "column",
   gap = "1",
   rounded = "4",
@@ -127,12 +127,12 @@ const Content = <T extends TgphElement>({
   );
 };
 
-type ButtonProps<T extends TgphElement> = TgphComponentProps<
+export type ButtonProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof MenuItem<T>
 > &
   React.ComponentProps<typeof RadixMenu.Item>;
 
-const Button = <T extends TgphElement>({
+const Button = <T extends TgphElement = "button">({
   mx = "1",
   asChild = true,
   icon,
@@ -154,7 +154,9 @@ const Button = <T extends TgphElement>({
     >
       <RefToTgphRef>
         <MenuItem
-          onClick={onClick}
+          onClick={
+            onClick as React.MouseEventHandler<HTMLButtonElement> | undefined
+          }
           selected={selected}
           leadingIcon={combinedLeadingIcon}
           trailingIcon={trailingIcon}
@@ -172,7 +174,7 @@ const Button = <T extends TgphElement>({
   );
 };
 
-type DividerProps = TgphComponentProps<typeof Box>;
+export type DividerProps = TgphComponentProps<typeof Box>;
 
 const Divider = ({
   w = "full",

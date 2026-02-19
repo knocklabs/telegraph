@@ -14,11 +14,11 @@ type BaseHeadingProps = Omit<StyleProps, "color"> & {
   size?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 };
 
-type HeadingProps<T extends TgphElement> = BaseHeadingProps &
+export type HeadingProps<T extends TgphElement = "h2"> = BaseHeadingProps &
   Omit<TgphComponentProps<typeof Box<T>>, keyof BaseHeadingProps> &
   OptionalAsPropConfig<T>;
 
-const Heading = <T extends TgphElement>({
+const Heading = <T extends TgphElement = "h2">({
   as,
   size = "2",
   weight = "semi-bold",

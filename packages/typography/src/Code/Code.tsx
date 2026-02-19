@@ -17,11 +17,11 @@ type BaseCodeProps = Omit<StyleProps, "color"> & {
   size?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 };
 
-type CodeProps<T extends TgphElement> = BaseCodeProps &
+export type CodeProps<T extends TgphElement = "code"> = BaseCodeProps &
   Omit<TgphComponentProps<typeof Box<T>>, keyof BaseCodeProps> &
   OptionalAsPropConfig<T>;
 
-const Code = <T extends TgphElement>({
+const Code = <T extends TgphElement = "code">({
   as,
   size = "2",
   weight = "regular",

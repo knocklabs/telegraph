@@ -3,11 +3,11 @@ import { LoaderCircle } from "lucide-react";
 
 import { Icon } from "../Icon";
 
-type SpinnerProps<T extends TgphElement> = Partial<
+type SpinnerProps<T extends TgphElement = "span"> = Partial<
   TgphComponentProps<typeof Icon<T>>
 >;
 
-const Spinner = <T extends TgphElement>({
+const Spinner = <T extends TgphElement = "span">({
   color = "gray",
   icon = LoaderCircle,
   animation = "spin",
