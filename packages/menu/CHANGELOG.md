@@ -1,5 +1,18 @@
 # @telegraph/menu
 
+## 0.2.0
+
+### Minor Changes
+
+- [#688](https://github.com/knocklabs/telegraph/pull/688) [`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: invalid props on components would not throw type errors
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/button@0.4.0
+  - @telegraph/layout@0.4.0
+  - @telegraph/icon@0.4.0
+
 ## 0.1.20
 
 ### Patch Changes
