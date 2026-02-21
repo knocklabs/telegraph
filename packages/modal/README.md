@@ -818,7 +818,7 @@ export const SettingsModal = ({ open, onClose, settings, onSave }) => {
 
             <Stack direction="column" gap="2">
               <h3>Preferences</h3>
-              <Stack direction="row" align="center" justify="between">
+              <Stack direction="row" align="center" justify="space-between">
                 <label htmlFor="notifications">Email Notifications</label>
                 <Switch
                   id="notifications"
@@ -832,7 +832,7 @@ export const SettingsModal = ({ open, onClose, settings, onSave }) => {
                 />
               </Stack>
 
-              <Stack direction="row" align="center" justify="between">
+              <Stack direction="row" align="center" justify="space-between">
                 <label htmlFor="dark-mode">Dark Mode</label>
                 <Switch
                   id="dark-mode"
@@ -885,7 +885,7 @@ export const ImageGalleryModal = ({
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Image Gallery">
       <Modal.Content w="screen" maxW="screen" h="screen" rounded="0" p="0">
         <Modal.Header px="6" py="4">
-          <Stack direction="row" align="center" justify="between" w="full">
+          <Stack direction="row" align="center" justify="space-between" w="full">
             <Modal.Heading>
               {currentImage?.title || `Image ${currentIndex + 1}`}
             </Modal.Heading>

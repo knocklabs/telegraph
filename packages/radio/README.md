@@ -635,7 +635,7 @@ export const DeliveryOptionsForm = () => {
         options={deliveryOptions.map((option) => ({
           ...option,
           title: (
-            <Stack direction="row" justify="between" w="full">
+            <Stack direction="row" justify="space-between" w="full">
               <span>{option.title}</span>
               <span className="price">{option.price}</span>
             </Stack>

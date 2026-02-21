@@ -30,10 +30,10 @@ export default defineConfig(viteConfig);
 
 ```typescript
 // vite.config.ts
-import { defaultViteConfig, scopeCssViteConfig } from "@telegraph/vite-config";
+import { defaultViteConfig, scopedCssViteConfig } from "@telegraph/vite-config";
 import { mergeConfig } from "vite";
 
-export default mergeConfig(defaultViteConfig, scopeCssViteConfig);
+export default mergeConfig(defaultViteConfig, scopedCssViteConfig);
 ```
 
 ## What's Included
@@ -76,7 +76,7 @@ Base Vite configuration without CSS scoping, suitable for most Telegraph project
 - Development server configuration
 - Essential plugins
 
-### `scopeCssViteConfig`
+### `scopedCssViteConfig`
 
 Additional configuration for CSS scoping, used when you need isolated CSS modules.
 
