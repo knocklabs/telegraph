@@ -250,7 +250,7 @@ const Root = <
         }
         onValueChange={handleBaseValueChange}
         multiple={isMultipleSelectValue}
-        modal={modal}
+        modal={modal && false}
         disabled={disabled}
         isItemEqualToValue={
           legacyBehavior
@@ -937,7 +937,7 @@ const Search = ({
             />
           ) : null
         }
-        autoFocus
+        autoFocus={context.open}
         data-tgph-combobox-search
         aria-controls={context.contentId}
         {...props}
