@@ -29,11 +29,14 @@ import {
 import { Primitives } from "./Combobox.primitives";
 import type {
   DefinedOption,
+  MultiSelect,
   Option,
+  SingleSelect,
 } from "./Combobox.types";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
+const SELECT_KEYS = ["Enter", " "];
 
 const setRef = <T,>(ref: React.Ref<T> | undefined, value: T) => {
   if (typeof ref === "function") {
@@ -366,9 +369,70 @@ const Trigger = <V extends ChildrenValue>({
         onClickProp?.(event as React.MouseEvent<HTMLButtonElement>);
       }}
       onKeyDown={(event) => {
+        // If the event target isn't exactly the trigger we don't want anything to
+        // happen within this event handler. For example, if the `X` icon on a trigger
+        // tag is focused and the user presses `Enter`, this keydown event will trigger.
+        if (event.target !== context.triggerRef?.current) return;
+
         if (event.key === "Tab") {
           event.stopPropagation();
+          onKeyDownProp?.(event as React.KeyboardEvent<HTMLButtonElement>);
+          return;
         }
+
+        if (context.open && event.key === "ArrowDown") {
+          const options = context.contentRef?.current?.querySelectorAll(
+            "[data-tgph-combobox-option]",
+          );
+          const firstOption = options?.[0] as HTMLElement | undefined;
+          if (firstOption) {
+            event.stopPropagation();
+            event.preventDefault();
+            firstOption.focus();
+            return;
+          }
+        }
+
+        if (context.open && LAST_KEYS.includes(event.key)) {
+          const options = context.contentRef?.current?.querySelectorAll(
+            "[data-tgph-combobox-option]",
+          );
+          const lastOption = options?.[options.length - 1] as
+            | HTMLElement
+            | undefined;
+          if (lastOption) {
+            event.stopPropagation();
+            event.preventDefault();
+            lastOption.focus();
+            return;
+          }
+        }
+
+        if (
+          context.open &&
+          event.key.length === 1 &&
+          !event.altKey &&
+          !event.ctrlKey &&
+          !event.metaKey
+        ) {
+          const options = context.contentRef?.current?.querySelectorAll(
+            "[data-tgph-combobox-option]",
+          );
+          const match = Array.from(options || []).find((option) =>
+            option.textContent
+              ?.trim()
+              .toLowerCase()
+              .startsWith(event.key.toLowerCase()),
+          ) as HTMLElement | undefined;
+
+          if (match) {
+            event.stopPropagation();
+            event.preventDefault();
+            match.focus();
+            return;
+          }
+        }
+
         onKeyDownProp?.(event as React.KeyboardEvent<HTMLButtonElement>);
       }}
       // Accessibility attributes
@@ -489,6 +553,17 @@ const Content = <T extends TgphElement = "div">({
 
     return () => timeout && clearTimeout(timeout);
   }, [context.open, setHeightFromContent]);
+
+  React.useEffect(() => {
+    if (!context.open) return;
+
+    const focusGuards = document.querySelectorAll("[data-base-ui-focus-guard]");
+    focusGuards.forEach((focusGuard) => {
+      if (!focusGuard.getAttribute("aria-label")) {
+        focusGuard.setAttribute("aria-label", "Focus guard");
+      }
+    });
+  }, [context.open]);
 
   return (
     <BaseCombobox.Portal>
@@ -655,6 +730,7 @@ const Option = <T extends TgphElement>({
   selected,
   onSelect,
   onClick: onClickProp,
+  onKeyDown: onKeyDownProp,
   disabled: disabledProp,
   children,
   ...props
@@ -678,26 +754,70 @@ const Option = <T extends TgphElement>({
     : getValueFromOption(contextValue, context.legacyBehavior) === value;
 
   const handleSelection = (
-    event: React.MouseEvent<HTMLDivElement> & {
-      preventBaseUIHandler?: () => void;
-    },
+    event:
+      | (React.MouseEvent<HTMLDivElement> & {
+          preventBaseUIHandler?: () => void;
+        })
+      | (React.KeyboardEvent<HTMLDivElement> & {
+          preventBaseUIHandler?: () => void;
+        }),
   ) => {
+    if (disabledProp) return;
+
     // Don't allow the event to bubble up outside of the menu
     event.stopPropagation();
+
+    // Don't do anything if the key isn't a selection key
+    const keyboardEvent = event as React.KeyboardEvent<HTMLDivElement>;
+    if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) {
+      onKeyDownProp?.(event as unknown as React.KeyboardEvent<HTMLButtonElement>);
+      return;
+    }
+
+    // Prevent Base UI's default item selection so we can preserve
+    // the existing Combobox value semantics (including legacy mode).
+    event.preventBaseUIHandler?.();
+    event.preventDefault();
+
+    if (context.closeOnSelect === true) {
+      context.setOpen(false);
+    }
+
     onClickProp?.(event as unknown as React.MouseEvent<HTMLButtonElement>);
 
     if (onSelect) {
-      // Prevent Base UI's internal item selection when custom handlers are passed
-      event.preventBaseUIHandler?.();
-      event.preventDefault();
-
-      if (context.closeOnSelect === true) {
-        context.setOpen(false);
-      }
-
       onSelect(event.nativeEvent as Event);
       context.triggerRef?.current?.focus();
+      return;
     }
+
+    if (isSingleSelect(contextValue)) {
+      const onValueChange = context.onValueChange as SingleSelect["onValueChange"];
+
+      // TODO: Remove this once { value, label } option is deprecated
+      if (context.legacyBehavior === true) {
+        onValueChange?.({ value, label });
+      } else {
+        onValueChange?.(value);
+      }
+    } else if (isMultiSelect(contextValue)) {
+      const onValueChange = context.onValueChange as MultiSelect["onValueChange"];
+      const contextValue = context.value as Array<Option>;
+
+      const newValue = isSelected
+        ? contextValue.filter(
+            (v) => getValueFromOption(v, context.legacyBehavior) !== value,
+          )
+        : [
+            ...contextValue,
+            // TODO: Remove this once { value, label } option is deprecated
+            context.legacyBehavior === true ? { value, label } : value,
+          ];
+
+      onValueChange?.(newValue);
+    }
+
+    context.triggerRef?.current?.focus();
   };
 
   if (!isVisible) return null;
@@ -707,7 +827,9 @@ const Option = <T extends TgphElement>({
       value={context.legacyBehavior === true ? { value, label } : value}
       disabled={disabledProp}
       nativeButton={false}
+      tabIndex={-1}
       onClick={handleSelection}
+      onKeyDown={handleSelection}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       // Accessibility attributes
@@ -754,7 +876,14 @@ const Search = ({
   React.useEffect(() => {
     const handleSearchKeyDown = (event: KeyboardEvent) => {
       if (FIRST_KEYS.includes(event.key)) {
-        context.contentRef?.current?.focus({ preventScroll: true });
+        const options = context.contentRef?.current?.querySelectorAll(
+          "[data-tgph-combobox-option]",
+        );
+        const firstOption = options?.[0] as HTMLElement | undefined;
+        if (firstOption) {
+          event.preventDefault();
+          firstOption.focus({ preventScroll: true });
+        }
       }
 
       if (event.key === "Escape") {
@@ -773,6 +902,14 @@ const Search = ({
       };
     }
   }, [context]);
+
+  React.useEffect(() => {
+    if (!context.open) return;
+
+    requestAnimationFrame(() => {
+      context.searchRef?.current?.focus();
+    });
+  }, [context.open, context.searchRef]);
 
   return (
     <Box borderBottom="px" px="1" pb="1">
