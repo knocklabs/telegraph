@@ -38,14 +38,14 @@ const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 const SELECT_KEYS = ["Enter", " "];
 
-const setRef = <T,>(ref: React.Ref<T> | undefined, value: T) => {
+const setRef = <T,>(ref: React.Ref<T> | undefined, value: T | null) => {
   if (typeof ref === "function") {
-    ref(value);
+    ref(value as T);
     return;
   }
 
   if (ref && "current" in ref) {
-    (ref as React.MutableRefObject<T>).current = value;
+    (ref as React.MutableRefObject<T | null>).current = value;
   }
 };
 
@@ -345,7 +345,19 @@ const Trigger = <V extends ChildrenValue>({
 }: TriggerProps<V>) => {
   const context = React.useContext(ComboboxContext);
   const hasTags = isMultiSelect(context.value) && context.value.length > 0;
-  const composedTriggerRef = useComposedRefs(tgphRef, context.triggerRef);
+  const composedTriggerRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      setRef(
+        tgphRef as unknown as React.Ref<HTMLButtonElement> | undefined,
+        node,
+      );
+      setRef(
+        context.triggerRef as unknown as React.Ref<HTMLButtonElement> | undefined,
+        node,
+      );
+    },
+    [context.triggerRef, tgphRef],
+  );
 
   const currentValue = React.useMemo<
     DefinedOption | Array<DefinedOption | undefined> | undefined
@@ -366,14 +378,21 @@ const Trigger = <V extends ChildrenValue>({
     return undefined;
   }, [context.value, context.options, context.legacyBehavior]);
 
-  const getAriaLabelString = React.useCallback(() => {
+  const getAriaLabelString = React.useCallback((): string | undefined => {
     if (!currentValue) return context.placeholder;
     if (isSingleSelect(currentValue)) {
-      return currentValue?.label || currentValue?.value || context.placeholder;
+      if (typeof currentValue?.label === "string") {
+        return currentValue.label;
+      }
+      return currentValue?.value || context.placeholder;
     }
     if (isMultiSelect(currentValue)) {
       return (
-        currentValue.map((v) => v?.label || v?.value).join(", ") ||
+        currentValue
+          .map((v) =>
+            typeof v?.label === "string" ? v.label : (v?.value ?? ""),
+          )
+          .join(", ") ||
         context.placeholder
       );
     }
@@ -402,7 +421,11 @@ const Trigger = <V extends ChildrenValue>({
 
         if (event.key === "Tab") {
           event.stopPropagation();
-          onKeyDownProp?.(event as React.KeyboardEvent<HTMLButtonElement>);
+          (
+            onKeyDownProp as unknown as
+              | React.KeyboardEventHandler<HTMLElement>
+              | undefined
+          )?.(event as unknown as React.KeyboardEvent<HTMLElement>);
           return;
         }
 
@@ -459,7 +482,11 @@ const Trigger = <V extends ChildrenValue>({
           }
         }
 
-        onKeyDownProp?.(event as React.KeyboardEvent<HTMLButtonElement>);
+        (
+          onKeyDownProp as unknown as
+            | React.KeyboardEventHandler<HTMLElement>
+            | undefined
+        )?.(event as unknown as React.KeyboardEvent<HTMLElement>);
       }}
       // Accessibility attributes
       role="combobox"
@@ -631,7 +658,11 @@ const Content = <T extends TgphElement = "div">({
             onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
               // Don't allow the event to bubble up outside of the menu
               event.stopPropagation();
-              onKeyDownProp?.(event as React.KeyboardEvent<HTMLElement>);
+              (
+                onKeyDownProp as unknown as
+                  | React.KeyboardEventHandler<HTMLElement>
+                  | undefined
+              )?.(event as unknown as React.KeyboardEvent<HTMLElement>);
 
               // If the first option is focused and the user presses the up
               // arrow key, focus the search input
@@ -796,7 +827,11 @@ const Option = <T extends TgphElement>({
     // Don't do anything if the key isn't a selection key
     const keyboardEvent = event as React.KeyboardEvent<HTMLDivElement>;
     if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) {
-      onKeyDownProp?.(event as unknown as React.KeyboardEvent<HTMLButtonElement>);
+      (
+        onKeyDownProp as unknown as
+          | React.KeyboardEventHandler<HTMLElement>
+          | undefined
+      )?.(event as unknown as React.KeyboardEvent<HTMLElement>);
       return;
     }
 
@@ -1057,29 +1092,31 @@ const Create = <T extends TgphElement, LB extends boolean>({
   );
 
   if (context.searchQuery && !variableAlreadyExists(context.searchQuery)) {
+    const createOptionProps = {
+      leadingIcon: { icon: Plus, "aria-hidden": true },
+      mx: "1",
+      value: context.searchQuery,
+      label: `${leadingText} "${context.searchQuery}"`,
+      selected,
+      onSelect: () => {
+        if (onCreate && context.searchQuery) {
+          const value =
+            legacyBehavior === true
+              ? { value: context.searchQuery }
+              : context.searchQuery;
+
+          const create = onCreate as CreateProps<T, LB>["onCreate"];
+
+          create(value);
+
+          context.setSearchQuery?.("");
+        }
+      },
+      ...(props as Omit<OptionProps<T>, "value" | "label" | "selected">),
+    } as OptionProps<T>;
+
     return (
-      <Option
-        leadingIcon={{ icon: Plus, "aria-hidden": true }}
-        mx="1"
-        value={context.searchQuery}
-        label={`${leadingText} "${context.searchQuery}"`}
-        selected={selected}
-        onSelect={() => {
-          if (onCreate && context.searchQuery) {
-            const value =
-              legacyBehavior === true
-                ? { value: context.searchQuery }
-                : context.searchQuery;
-
-            const create = onCreate as CreateProps<T, LB>["onCreate"];
-
-            create(value);
-
-            context.setSearchQuery?.("");
-          }
-        }}
-        {...props}
-      />
+      <Option {...createOptionProps} />
     );
   }
 };
