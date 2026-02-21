@@ -380,7 +380,7 @@ export const TagFilter = ({ items, onFilter }) => {
 
 ```tsx
 import { Tag } from "@telegraph/tag";
-import { Link } from "next/link";
+import Link from "next/link";
 
 export const TagLinks = () => (
   <div>

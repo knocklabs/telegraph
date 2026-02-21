@@ -296,19 +296,21 @@ const ControlledMenu = () => {
 ### Menu with Custom Components
 
 ```tsx
-import { Avatar } from "@telegraph/avatar";
-import { Badge } from "@telegraph/badge";
+import { Tag } from "@telegraph/tag";
+import { Box } from "@telegraph/layout";
 import { Menu } from "@telegraph/menu";
 
 <Menu.Root>
   <Menu.Trigger>
-    <Avatar src="/user.jpg" alt="User menu" />
+    <Box as="img" src="/user.jpg" alt="User menu" w="8" h="8" rounded="full" />
   </Menu.Trigger>
 
   <Menu.Content>
     <Menu.Button
-      leadingComponent={<Avatar size="sm" src="/user.jpg" alt="" />}
-      trailingComponent={<Badge>Pro</Badge>}
+      leadingComponent={
+        <Box as="img" src="/user.jpg" alt="" w="5" h="5" rounded="full" />
+      }
+      trailingComponent={<Tag size="0">Pro</Tag>}
     >
       John Doe
     </Menu.Button>
@@ -485,7 +487,7 @@ const ContextMenu = ({ children }) => {
 
 ```tsx
 import { Menu } from "@telegraph/menu";
-import { Spinner } from "@telegraph/spinner";
+import { Spinner } from "@telegraph/icon";
 import { useState } from "react";
 
 const MenuWithLoading = () => {
@@ -510,7 +512,7 @@ const MenuWithLoading = () => {
         <Menu.Button onClick={handleAsyncAction} disabled={loading}>
           {loading ? (
             <Stack direction="row" align="center" gap="2">
-              <Spinner size="sm" />
+              <Spinner size="2" />
               Processing...
             </Stack>
           ) : (
@@ -599,7 +601,7 @@ The menu component uses Telegraph design tokens for consistent styling:
 <Menu.Root>
   <Menu.Trigger>
     <Button aria-label="User account menu">
-      <Avatar src="/user.jpg" alt="" />
+      <Box as="img" src="/user.jpg" alt="" w="8" h="8" rounded="full" />
     </Button>
   </Menu.Trigger>
 
@@ -636,22 +638,31 @@ The menu component uses Telegraph design tokens for consistent styling:
 ### User Profile Menu
 
 ```tsx
-import { Avatar } from "@telegraph/avatar";
-import { Badge } from "@telegraph/badge";
+import { Tag } from "@telegraph/tag";
+import { Box, Stack } from "@telegraph/layout";
 import { Menu } from "@telegraph/menu";
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
 
 export const UserProfileMenu = ({ user }) => (
   <Menu.Root>
     <Menu.Trigger>
-      <Avatar src={user.avatar} alt={`${user.name} menu`} />
+      <Box
+        as="img"
+        src={user.avatar}
+        alt={`${user.name} menu`}
+        w="8"
+        h="8"
+        rounded="full"
+      />
     </Menu.Trigger>
 
     <Menu.Content align="end">
       {/* User info */}
       <Menu.Button
-        leadingComponent={<Avatar size="sm" src={user.avatar} alt="" />}
-        trailingComponent={user.isPro && <Badge variant="accent">Pro</Badge>}
+        leadingComponent={
+          <Box as="img" src={user.avatar} alt="" w="5" h="5" rounded="full" />
+        }
+        trailingComponent={user.isPro && <Tag size="0" color="accent">Pro</Tag>}
       >
         {user.name}
       </Menu.Button>
@@ -691,7 +702,7 @@ export const TableRowMenu = ({ item, onAction }) => (
     <Menu.Trigger>
       <Button
         variant="ghost"
-        size="sm"
+        size="1"
         icon={{ icon: MoreVertical, alt: "Row actions" }}
       />
     </Menu.Trigger>

@@ -215,7 +215,7 @@ export const CustomRadioCards = ({ options, value, onValueChange }) => (
 
           <Stack direction="column" align="center" gap="1">
             {option.title && (
-              <RadioCards.ItemTitle size="3" weight="semibold">
+              <RadioCards.ItemTitle size="3" weight="semi-bold">
                 {option.title}
               </RadioCards.ItemTitle>
             )}
@@ -322,8 +322,24 @@ export const ConditionalRadio = ({ userPlan, options }) => {
 ### Responsive Layouts
 
 ```tsx
-import { useMediaQuery } from "@telegraph/helpers";
 import { RadioCards } from "@telegraph/radio";
+import { useEffect, useState } from "react";
+
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    setMatches(mediaQuery.matches);
+
+    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
+    mediaQuery.addEventListener("change", listener);
+
+    return () => mediaQuery.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+};
 
 export const ResponsiveRadioCards = ({ options, ...props }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -348,14 +364,14 @@ export const ResponsiveRadioCards = ({ options, ...props }) => {
 
 ```tsx
 import { RadioCards } from "@telegraph/radio";
-import { Skeleton } from "@telegraph/skeleton";
+import { Box, Stack } from "@telegraph/layout";
 
 export const RadioCardsWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
     return (
       <Stack direction="row" gap="1">
         {[1, 2, 3].map((i) => (
-          <Skeleton key={i} width="120px" height="80px" />
+          <Box key={i} w="32" h="20" bg="gray-3" rounded="2" />
         ))}
       </Stack>
     );
@@ -541,9 +557,10 @@ export const ContactMethodSelector = () => {
 ### Advanced Example
 
 ```tsx
-import { Badge } from "@telegraph/badge";
 import { Box, Stack } from "@telegraph/layout";
 import { RadioCards } from "@telegraph/radio";
+import { Tag } from "@telegraph/tag";
+import { Text } from "@telegraph/typography";
 
 export const PricingPlanSelector = () => {
   const [selectedPlan, setSelectedPlan] = useState("pro");
@@ -562,15 +579,15 @@ export const PricingPlanSelector = () => {
 
             <Stack direction="column" align="center" gap="2">
               <Stack direction="row" align="center" gap="2">
-                <RadioCards.ItemTitle size="3" weight="semibold">
+                <RadioCards.ItemTitle size="3" weight="semi-bold">
                   {plan.title}
                 </RadioCards.ItemTitle>
-                {plan.popular && <Badge variant="accent">Popular</Badge>}
+                {plan.popular && <Tag size="0" color="accent">Popular</Tag>}
               </Stack>
 
-              <Box fontSize="2xl" fontWeight="bold" color="primary">
+              <Text as="span" size="5" weight="bold">
                 ${plan.price}/mo
-              </Box>
+              </Text>
 
               <RadioCards.ItemDescription align="center">
                 {plan.description}
@@ -579,9 +596,9 @@ export const PricingPlanSelector = () => {
 
             <Stack direction="column" gap="1" w="full">
               {plan.features.map((feature, index) => (
-                <Box key={index} fontSize="sm" color="gray-11">
+                <Text key={index} as="span" size="1" color="gray">
                   ✓ {feature}
-                </Box>
+                </Text>
               ))}
             </Stack>
           </Stack>

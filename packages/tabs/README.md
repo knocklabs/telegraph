@@ -263,7 +263,7 @@ Use tabs as navigation links with the polymorphic `as` prop:
 
 ```tsx
 import { Tabs } from "@telegraph/tabs";
-import { Link } from "next/link";
+import Link from "next/link";
 
 export const NavigationTabs = ({ currentPath }) => (
   <Tabs value={currentPath}>

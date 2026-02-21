@@ -319,13 +319,13 @@ export const ConditionalSegmentedControl = ({ userRole, permissions }) => {
 
 ```tsx
 import { SegmentedControl } from "@telegraph/segmented-control";
-import { Skeleton } from "@telegraph/skeleton";
+import { Box } from "@telegraph/layout";
 
 export const SegmentedControlWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
     return (
       <div className="segmented-control-skeleton">
-        <Skeleton width="200px" height="32px" />
+        <Box w="80" h="8" bg="gray-3" rounded="2" />
       </div>
     );
   }
@@ -380,8 +380,24 @@ export const DynamicSegmentedControl = () => {
 ### Responsive Design
 
 ```tsx
-import { useMediaQuery } from "@telegraph/helpers";
 import { SegmentedControl } from "@telegraph/segmented-control";
+import { useEffect, useState } from "react";
+
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    setMatches(mediaQuery.matches);
+
+    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
+    mediaQuery.addEventListener("change", listener);
+
+    return () => mediaQuery.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+};
 
 export const ResponsiveSegmentedControl = ({ options, ...props }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");

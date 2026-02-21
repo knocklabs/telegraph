@@ -384,11 +384,11 @@ export const ConditionalSelect = ({ userRole, permissions }) => {
 
 ```tsx
 import { Select } from "@telegraph/select";
-import { Skeleton } from "@telegraph/skeleton";
+import { Box } from "@telegraph/layout";
 
 export const SelectWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
-    return <Skeleton width="200px" height="32px" />;
+    return <Box w="80" h="8" bg="gray-3" rounded="2" />;
   }
 
   return (

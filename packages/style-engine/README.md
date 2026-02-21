@@ -48,7 +48,7 @@ import { getStyleProp, useStyleEngine } from "@telegraph/style-engine";
 const cssVars = {
   p: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all",
   },
   bg: {
@@ -196,7 +196,7 @@ module.exports = {
 /* Your custom styles */
 .my-component {
   background: var(--tgph-gray-2);
-  padding: var(--tgph-space-3);
+  padding: var(--tgph-spacing-3);
   border-radius: var(--tgph-radius-2);
 }
 ```
@@ -213,49 +213,49 @@ const cssVars = {
   // Spacing
   p: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all",
   },
   pt: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "top",
   },
   pr: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "right",
   },
   pb: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "bottom",
   },
   pl: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "left",
   },
   px: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "x",
   },
   py: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "y",
   },
 
   // Margin
   m: {
     cssVar: "--tgph-margin",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all",
   },
   mt: {
     cssVar: "--tgph-margin",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "top",
   },
   // ... more margin variants
@@ -321,7 +321,7 @@ import { useStyleEngine } from "@telegraph/style-engine";
 const responsiveCssVars = {
   p: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all",
   },
 } as const;
@@ -355,7 +355,7 @@ export const ResponsiveBox = ({ children, ...props }) => {
 // Memoize CSS variable definitions
 const cssVars = useMemo(
   () => ({
-    p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
+    p: { cssVar: "--tgph-padding", value: "var(--tgph-spacing-VARIABLE)" },
     bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
   }),
   [],
@@ -393,7 +393,7 @@ const customCssVars = {
 The Style Engine integrates deeply with Telegraph design tokens:
 
 - **Color System**: `var(--tgph-blue-9)`, `var(--tgph-gray-3)`, etc.
-- **Spacing Scale**: `var(--tgph-space-1)` through `var(--tgph-space-12)`
+- **Spacing Scale**: `var(--tgph-spacing-1)` through `var(--tgph-spacing-12)`
 - **Typography**: Font sizes, weights, and line heights
 - **Radius Scale**: Border radius values
 - **Shadows**: Box shadow definitions
@@ -404,8 +404,8 @@ The Style Engine integrates deeply with Telegraph design tokens:
 ```css
 .custom-component {
   /* Spacing tokens */
-  padding: var(--tgph-space-4);
-  margin: var(--tgph-space-2) var(--tgph-space-3);
+  padding: var(--tgph-spacing-4);
+  margin: var(--tgph-spacing-2) var(--tgph-spacing-3);
 
   /* Color tokens */
   background: var(--tgph-blue-3);
@@ -458,7 +458,7 @@ npm ls @telegraph/tokens @telegraph/button
 ```tsx
 // Ensure cssVars object uses 'as const'
 const cssVars = {
-  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
+  p: { cssVar: "--tgph-padding", value: "var(--tgph-spacing-VARIABLE)" },
 } as const; // <- Important!
 ```
 
@@ -470,7 +470,7 @@ const cssVars = {
 import { useStyleEngine } from "@telegraph/style-engine";
 
 const cssVars = {
-  p: { cssVar: "--tgph-padding", value: "var(--tgph-space-VARIABLE)" },
+  p: { cssVar: "--tgph-padding", value: "var(--tgph-spacing-VARIABLE)" },
   bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
 } as const;
 
@@ -497,37 +497,37 @@ const advancedCssVars = {
   // Spacing
   p: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all",
   },
   pt: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "top",
   },
   pr: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "right",
   },
   pb: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "bottom",
   },
   pl: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "left",
   },
   px: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "x",
   },
   py: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "y",
   },
 
@@ -592,7 +592,7 @@ const buttonCssVars = {
   },
   p: {
     cssVar: "--tgph-padding",
-    value: "var(--tgph-space-VARIABLE)",
+    value: "var(--tgph-spacing-VARIABLE)",
     direction: "all"
   }
 } as const;
@@ -630,7 +630,7 @@ export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
 
 .custom-button {
   background: var(--tgph-button-variant, var(--tgph-blue-9));
-  padding: var(--tgph-padding, var(--tgph-space-2) var(--tgph-space-3));
+  padding: var(--tgph-padding, var(--tgph-spacing-2) var(--tgph-spacing-3));
   font-size: var(--tgph-button-size, var(--tgph-font-size-1));
   border-radius: var(--tgph-radius-2);
   border: none;
