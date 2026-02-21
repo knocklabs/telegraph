@@ -1462,7 +1462,7 @@ describe("behavior contracts", () => {
     await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
     expect(onOpenChange).toHaveBeenCalledWith(true);
 
-    await user.click(trigger!);
+    await user.keyboard("[Escape]");
     await waitFor(() =>
       expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
     );
