@@ -1,5 +1,5 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
-import * as Portal from "@radix-ui/react-portal";
+import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
@@ -12,7 +12,7 @@ import {
 import { Icon } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
-import { Menu as TelegraphMenu } from "@telegraph/menu";
+import { Menu as TelegraphMenu, MenuItem } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
 import React from "react";
@@ -29,14 +29,22 @@ import {
 import { Primitives } from "./Combobox.primitives";
 import type {
   DefinedOption,
-  MultiSelect,
   Option,
-  SingleSelect,
 } from "./Combobox.types";
 
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
-const SELECT_KEYS = ["Enter", " "];
+
+const setRef = <T,>(ref: React.Ref<T> | undefined, value: T) => {
+  if (typeof ref === "function") {
+    ref(value);
+    return;
+  }
+
+  if (ref && "current" in ref) {
+    (ref as React.MutableRefObject<T>).current = value;
+  }
+};
 
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
@@ -80,7 +88,7 @@ export const ComboboxContext = React.createContext<
     onOpenToggle: () => void;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
-    triggerRef?: React.RefObject<HTMLDivElement>;
+    triggerRef?: React.RefObject<HTMLButtonElement>;
     searchRef?: React.RefObject<HTMLInputElement>;
     contentRef?: React.RefObject<HTMLDivElement>;
     options: Array<DefinedOption>;
@@ -125,7 +133,7 @@ const Root = <
 }: RootProps<O, LB>) => {
   const contentId = React.useId();
   const triggerId = React.useId();
-  const triggerRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
   const searchRef = React.useRef<HTMLInputElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
@@ -145,6 +153,48 @@ const Root = <
     defaultProp: defaultValueProp as O,
     onChange: onValueChangeProp as (value: O) => void,
   });
+
+  const isMultipleSelectValue = React.useMemo(() => {
+    return (
+      Array.isArray(value) ||
+      Array.isArray(valueProp) ||
+      Array.isArray(defaultValueProp)
+    );
+  }, [defaultValueProp, value, valueProp]);
+
+  const handleBaseOpenChange = React.useCallback(
+    (
+      nextOpen: boolean,
+      eventDetails?: {
+        reason?: string;
+      },
+    ) => {
+      const isCloseFromSelection =
+        nextOpen === false && eventDetails?.reason === "item-press";
+
+      if (closeOnSelect === false && isCloseFromSelection) {
+        return;
+      }
+
+      setOpen(nextOpen);
+    },
+    [closeOnSelect, setOpen],
+  );
+
+  const handleBaseValueChange = React.useCallback(
+    (nextValue: unknown) => {
+      const normalizedValue = isMultipleSelectValue
+        ? ((Array.isArray(nextValue) ? nextValue : []) as O)
+        : ((nextValue === null ? undefined : nextValue) as O);
+
+      setValue(normalizedValue);
+
+      if (closeOnSelect) {
+        setOpen(false);
+      }
+    },
+    [closeOnSelect, isMultipleSelectValue, setOpen, setValue],
+  );
 
   const onOpenToggle = React.useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
@@ -177,7 +227,7 @@ const Root = <
         disabled,
         searchQuery,
         setSearchQuery,
-        triggerRef: triggerRef as React.RefObject<HTMLDivElement>,
+        triggerRef: triggerRef as React.RefObject<HTMLButtonElement>,
         searchRef: searchRef as React.RefObject<HTMLInputElement>,
         contentRef: contentRef as React.RefObject<HTMLDivElement>,
         errored,
@@ -187,14 +237,46 @@ const Root = <
         defaultScrollToValue,
       }}
     >
-      <TelegraphMenu.Root
+      <BaseCombobox.Root
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={handleBaseOpenChange}
+        value={
+          isMultipleSelectValue
+            ? ((Array.isArray(value) ? value : []) as Array<Option>)
+            : ((value ?? null) as Option | null)
+        }
+        onValueChange={handleBaseValueChange}
+        multiple={isMultipleSelectValue}
         modal={modal}
+        disabled={disabled}
+        isItemEqualToValue={
+          legacyBehavior
+            ? (itemValue: unknown, selectedValue: unknown) =>
+                getValueFromOption(itemValue as Option, true) ===
+                getValueFromOption(selectedValue as Option, true)
+            : undefined
+        }
+        itemToStringValue={
+          legacyBehavior
+            ? (itemValue: unknown) =>
+                getValueFromOption(itemValue as Option, true) || ""
+            : undefined
+        }
+        itemToStringLabel={
+          legacyBehavior
+            ? (itemValue: unknown) => {
+                const option = itemValue as DefinedOption;
+                if (typeof option?.label === "string") {
+                  return option.label;
+                }
+                return option?.value || "";
+              }
+            : undefined
+        }
         {...props}
       >
         {children}
-      </TelegraphMenu.Root>
+      </BaseCombobox.Root>
     </ComboboxContext.Provider>
   );
 };
@@ -226,10 +308,15 @@ export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
 const Trigger = <V extends ChildrenValue>({
   size = "1",
   children,
+  tgphRef,
+  onClick: onClickProp,
+  onKeyDown: onKeyDownProp,
+  disabled: _disabled,
   ...props
 }: TriggerProps<V>) => {
   const context = React.useContext(ComboboxContext);
   const hasTags = isMultiSelect(context.value) && context.value.length > 0;
+  const composedTriggerRef = useComposedRefs(tgphRef, context.triggerRef);
 
   const currentValue = React.useMemo<
     DefinedOption | Array<DefinedOption | undefined> | undefined
@@ -264,41 +351,39 @@ const Trigger = <V extends ChildrenValue>({
 
     return context.placeholder;
   }, [currentValue, context.placeholder]);
-  return (
-    <TelegraphMenu.Trigger
-      {...props}
-      asChild
-      onClick={(event: React.MouseEvent) => {
-        event.preventDefault();
-        context.onOpenToggle();
-        context.triggerRef?.current?.focus();
-      }}
-      onKeyDown={(event: React.KeyboardEvent) => {
-        // If the event target isn't exactly the trigger we don't want anything to
-        // happen within this event handler. For example, if the `X` icon on a trigger
-        // tag is focused and the user presses `Enter`, this keydown event will trigger.
-        if (event.target !== context.triggerRef?.current) return;
 
-        // Lets the user tab in and out of the combobox as usual
+  return (
+    <BaseCombobox.Trigger
+      ref={composedTriggerRef as React.Ref<HTMLButtonElement>}
+      id={context.triggerId}
+      type="button"
+      style={{
+        all: "unset",
+        width: "100%",
+        display: "block",
+      }}
+      onClick={(event) => {
+        onClickProp?.(event as React.MouseEvent<HTMLButtonElement>);
+      }}
+      onKeyDown={(event) => {
         if (event.key === "Tab") {
           event.stopPropagation();
-          return;
         }
-
-        // Open the combobox when ArrowDown, Space, or Enter are pressed
-        if (event.key === "ArrowDown" || SELECT_KEYS.includes(event.key)) {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-          event.preventDefault();
-          context.onOpenToggle();
-          return;
-        }
+        onKeyDownProp?.(event as React.KeyboardEvent<HTMLButtonElement>);
       }}
-      tgphRef={context.triggerRef}
+      // Accessibility attributes
+      role="combobox"
+      aria-label={getAriaLabelString()}
+      aria-controls={context.contentId}
+      aria-expanded={context.open}
+      aria-haspopup="listbox"
+      // Custom attributes
+      data-tgph-combobox-trigger
+      data-tgph-combobox-trigger-open={context.open}
+      disabled={context.disabled}
     >
       <TelegraphButton.Root
-        id={context.triggerId}
-        type="button"
+        as="span"
         bg="surface-1"
         variant="outline"
         align="center"
@@ -311,16 +396,6 @@ const Trigger = <V extends ChildrenValue>({
         size={size}
         color={context.errored ? "red" : "gray"}
         justify="space-between"
-        // Accessibility attributes
-        role="combobox"
-        aria-label={getAriaLabelString()}
-        aria-controls={context.contentId}
-        aria-expanded={context.open}
-        aria-haspopup="listbox"
-        // Custom attributes
-        data-tgph-combobox-trigger
-        data-tgph-combobox-trigger-open={context.open}
-        disabled={context.disabled}
         {...props}
       >
         {children ? (
@@ -339,7 +414,7 @@ const Trigger = <V extends ChildrenValue>({
           </>
         )}
       </TelegraphButton.Root>
-    </TelegraphMenu.Trigger>
+    </BaseCombobox.Trigger>
   );
 };
 
@@ -351,11 +426,11 @@ const Content = <T extends TgphElement = "div">({
   style,
   children,
   tgphRef,
+  onKeyDown: onKeyDownProp,
   ...props
 }: ContentProps<T>) => {
   const context = React.useContext(ComboboxContext);
-  const hasInteractedOutside = React.useRef(false);
-  const composedRef = useComposedRefs<unknown>(tgphRef, context.contentRef);
+  const popupRef = useComposedRefs<unknown>(tgphRef);
 
   const internalContentRef = React.useRef(null);
 
@@ -416,12 +491,7 @@ const Content = <T extends TgphElement = "div">({
   }, [context.open, setHeightFromContent]);
 
   return (
-    <Portal.Root asChild>
-      {/* 
-        We add radix's dismissable layer here so that we can swallow any escape
-        key presses to prevent cases like a modal closing when we close the
-        combobox 
-      */}
+    <BaseCombobox.Portal>
       <DismissableLayer
         onEscapeKeyDown={(event) => {
           if (context.open) {
@@ -432,68 +502,57 @@ const Content = <T extends TgphElement = "div">({
           }
         }}
       >
-        <TelegraphMenu.Content
-          className="tgph"
-          mt="1"
-          onCloseAutoFocus={(event: Event) => {
-            if (!hasInteractedOutside.current) {
-              context.triggerRef?.current?.focus();
-            }
+        <BaseCombobox.Positioner sideOffset={4}>
+          <BaseCombobox.Popup
+            className="tgph"
+            initialFocus={false}
+            finalFocus={context.triggerRef}
+            style={{
+              width: "var(--tgph-combobox-trigger-width)",
+              transition: "min-height 200ms ease-in-out",
+              minHeight: height ? `${height}px` : "0",
+              ...style,
+              ...{
+                "--tgph-combobox-content-transform-origin":
+                  "var(--transform-origin)",
+                "--tgph-combobox-content-available-width":
+                  "var(--available-width)",
+                "--tgph-combobox-content-available-height":
+                  "calc(var(--available-height) - var(--tgph-spacing-8))",
+                "--tgph-combobox-trigger-width": "var(--anchor-width)",
+                "--tgph-combobox-trigger-height": "var(--anchor-height)",
+              },
+            }}
+            {...(props as React.ComponentProps<typeof BaseCombobox.Popup>)}
+            ref={popupRef as React.Ref<HTMLDivElement>}
+            data-tgph-combobox-content
+            data-tgph-combobox-content-open={context.open}
+            onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+              // Don't allow the event to bubble up outside of the menu
+              event.stopPropagation();
+              onKeyDownProp?.(event as React.KeyboardEvent<HTMLElement>);
 
-            hasInteractedOutside.current = false;
+              // If the first option is focused and the user presses the up
+              // arrow key, focus the search input
+              const options = context.contentRef?.current?.querySelectorAll(
+                "[data-tgph-combobox-option]",
+              );
 
-            event.preventDefault();
-          }}
-          bg="surface-1"
-          style={{
-            width: "var(--tgph-combobox-trigger-width)",
-            transition: "min-height 200ms ease-in-out",
-            minHeight: height ? `${height}px` : "0",
-            ...style,
-            ...{
-              "--tgph-combobox-content-transform-origin":
-                "var(--radix-popper-transform-origin)",
-              "--tgph-combobox-content-available-width":
-                "var(--radix-popper-available-width)",
-              "--tgph-combobox-content-available-height":
-                "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-              "--tgph-combobox-trigger-width":
-                "var(--radix-popper-anchor-width)",
-              "--tgph-combobox-trigger-height":
-                "var(--radix-popper-anchor-height)",
-            },
-          }}
-          {...props}
-          tgphRef={composedRef}
-          data-tgph-combobox-content
-          data-tgph-combobox-content-open={context.open}
-          // Cancel out accessibility attirbutes related to aria menu
-          role={undefined}
-          aria-orientation={undefined}
-          onKeyDown={(event: React.KeyboardEvent) => {
-            // Don't allow the event to bubble up outside of the menu
-            event.stopPropagation();
-
-            // If the first option is focused and the user presses the up
-            // arrow key, focus the search input
-            const options = context.contentRef?.current?.querySelectorAll(
-              "[data-tgph-combobox-option]",
-            );
-
-            if (
-              document.activeElement === options?.[0] &&
-              LAST_KEYS.includes(event.key)
-            ) {
-              context.searchRef?.current?.focus();
-            }
-          }}
-        >
-          <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-            {children}
-          </Stack>
-        </TelegraphMenu.Content>
+              if (
+                document.activeElement === options?.[0] &&
+                LAST_KEYS.includes(event.key)
+              ) {
+                context.searchRef?.current?.focus();
+              }
+            }}
+          >
+            <Stack bg="surface-1" direction="column" gap="1" tgphRef={internalContentRef}>
+              {children}
+            </Stack>
+          </BaseCombobox.Popup>
+        </BaseCombobox.Positioner>
       </DismissableLayer>
-    </Portal.Root>
+    </BaseCombobox.Portal>
   );
 };
 
@@ -503,11 +562,16 @@ export type OptionsProps<T extends TgphElement = "div"> = TgphComponentProps<
 
 const Options = <T extends TgphElement = "div">({
   tgphRef,
+  children,
   ...props
 }: OptionsProps<T>) => {
   const context = React.useContext(ComboboxContext);
   const optionsRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = useComposedRefs<unknown>(tgphRef, optionsRef);
+  const composedRef = useComposedRefs<unknown>(
+    tgphRef,
+    optionsRef,
+    context.contentRef,
+  );
 
   // Scroll to the selected option (or defaultScrollToValue) when the combobox opens
   React.useEffect(() => {
@@ -554,10 +618,12 @@ const Options = <T extends TgphElement = "div">({
   ]);
 
   return (
-    <Stack
+    <BaseCombobox.List
       id={context.contentId}
-      direction="column"
-      gap="1"
+      // Accessibility attributes
+      role="listbox"
+      tabIndex={-1}
+      ref={composedRef as React.Ref<HTMLDivElement>}
       style={
         {
           overflowY: "auto",
@@ -567,11 +633,11 @@ const Options = <T extends TgphElement = "div">({
             : undefined,
         } as React.CSSProperties
       }
-      // Accessibility attributes
-      role="listbox"
-      tgphRef={composedRef}
-      {...props}
-    />
+    >
+      <Stack direction="column" gap="1" {...props}>
+        {children}
+      </Stack>
+    </BaseCombobox.List>
   );
 };
 
@@ -588,6 +654,8 @@ const Option = <T extends TgphElement>({
   label,
   selected,
   onSelect,
+  onClick: onClickProp,
+  disabled: disabledProp,
   children,
   ...props
 }: OptionProps<T>) => {
@@ -609,85 +677,59 @@ const Option = <T extends TgphElement>({
       )
     : getValueFromOption(contextValue, context.legacyBehavior) === value;
 
-  const handleSelection = (event: Event | React.KeyboardEvent) => {
+  const handleSelection = (
+    event: React.MouseEvent<HTMLDivElement> & {
+      preventBaseUIHandler?: () => void;
+    },
+  ) => {
     // Don't allow the event to bubble up outside of the menu
     event.stopPropagation();
-
-    // Don't do anything if the key isn't a selection key
-    const keyboardEvent = event as React.KeyboardEvent;
-    if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) return;
-
-    // Don't bubble up the event
-    event.preventDefault();
-
-    if (context.closeOnSelect === true) {
-      context.setOpen(false);
-    }
+    onClickProp?.(event as unknown as React.MouseEvent<HTMLButtonElement>);
 
     if (onSelect) {
-      // Need to convert to non keyboard type event
-      // since onSelect is expecting a mouse event
-      // and we've handled the keyboard event already
-      const onSelectEvent = event as unknown as Event;
-      return onSelect(onSelectEvent);
-    }
+      // Prevent Base UI's internal item selection when custom handlers are passed
+      event.preventBaseUIHandler?.();
+      event.preventDefault();
 
-    if (isSingleSelect(contextValue)) {
-      const onValueChange =
-        context.onValueChange as SingleSelect["onValueChange"];
-
-      // TODO: Remove this once { value, label } option is deprecated
-      if (context.legacyBehavior === true) {
-        onValueChange?.({ value, label });
-      } else {
-        onValueChange?.(value);
+      if (context.closeOnSelect === true) {
+        context.setOpen(false);
       }
-    } else if (isMultiSelect(contextValue)) {
-      const onValueChange =
-        context.onValueChange as MultiSelect["onValueChange"];
-      const contextValue = context.value as Array<Option>;
 
-      const newValue = isSelected
-        ? contextValue.filter(
-            (v) => getValueFromOption(v, context.legacyBehavior) !== value,
-          )
-        : [
-            ...contextValue,
-            // TODO: Remove this once { value, label } option is deprecated
-            context.legacyBehavior === true ? { value, label } : value,
-          ];
-
-      onValueChange?.(newValue);
+      onSelect(event.nativeEvent as Event);
+      context.triggerRef?.current?.focus();
     }
-
-    context.triggerRef?.current?.focus();
   };
 
-  if (isVisible) {
-    return (
-      <TelegraphMenu.Button
-        type="button"
-        onSelect={handleSelection as (event: Event) => void}
-        onKeyDown={handleSelection as React.KeyboardEventHandler}
+  if (!isVisible) return null;
+
+  return (
+    <BaseCombobox.Item
+      value={context.legacyBehavior === true ? { value, label } : value}
+      disabled={disabledProp}
+      nativeButton={false}
+      onClick={handleSelection}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      // Accessibility attributes
+      role="option"
+      aria-selected={isSelected ? "true" : "false"}
+      // Custom attributes
+      data-tgph-combobox-option
+      data-tgph-combobox-option-focused={isFocused}
+      data-tgph-combobox-option-value={value}
+      data-tgph-combobox-option-label={label}
+    >
+      <MenuItem
+        as="span"
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : (selected ?? isSelected)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        // Accessibility attributes
-        role="option"
-        aria-selected={isSelected ? "true" : "false"}
-        // Custom attributes
-        data-tgph-combobox-option
-        data-tgph-combobox-option-focused={isFocused}
-        data-tgph-combobox-option-value={value}
-        data-tgph-combobox-option-label={label}
-        {...props}
+        {...(props as TgphComponentProps<typeof MenuItem<"span">>)}
       >
         {label || children || value}
-      </TelegraphMenu.Button>
-    );
-  }
+      </MenuItem>
+    </BaseCombobox.Item>
+  );
 };
 
 export type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
