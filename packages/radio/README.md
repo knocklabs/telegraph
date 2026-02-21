@@ -319,47 +319,6 @@ export const ConditionalRadio = ({ userPlan, options }) => {
 };
 ```
 
-### Responsive Layouts
-
-```tsx
-import { RadioCards } from "@telegraph/radio";
-import { useEffect, useState } from "react";
-
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
-
-    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
-    mediaQuery.addEventListener("change", listener);
-
-    return () => mediaQuery.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-};
-
-export const ResponsiveRadioCards = ({ options, ...props }) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <RadioCards
-      direction={isMobile ? "column" : "row"}
-      options={options.map((option) => ({
-        ...option,
-        // Adjust descriptions for mobile
-        description: isMobile
-          ? option.shortDescription || option.description
-          : option.description,
-      }))}
-      {...props}
-    />
-  );
-};
-```
-
 ### Loading States
 
 ```tsx

@@ -335,29 +335,6 @@ export const InteractiveList = () => {
 };
 ```
 
-### Responsive Layout
-
-```tsx
-import { DataList } from "@telegraph/data-list";
-import { Text } from "@telegraph/typography";
-import { useMediaQuery } from "your-hooks";
-
-export const ResponsiveList = () => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <DataList.List>
-      <DataList.Item
-        label="Description"
-        direction={isMobile ? "column" : "row"}
-      >
-        <Text as="span">This switches to column layout on mobile devices</Text>
-      </DataList.Item>
-    </DataList.List>
-  );
-};
-```
-
 ### User Settings Example
 
 ```tsx

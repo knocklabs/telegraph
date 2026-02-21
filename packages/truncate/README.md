@@ -218,38 +218,6 @@ export const ArticlePreview = ({
 
 ## Advanced Usage
 
-### Responsive Truncation
-
-```tsx
-import { TruncatedText } from "@telegraph/truncate";
-import { useEffect, useState } from "react";
-
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
-
-    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
-    mediaQuery.addEventListener("change", listener);
-
-    return () => mediaQuery.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-};
-
-export const ResponsiveTruncatedText = ({ children }: { children: string }) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  const isTablet = useMediaQuery("(max-width: 1024px)");
-
-  const maxWidth = isMobile ? "30" : isTablet ? "50" : "80";
-
-  return <TruncatedText maxWidth={maxWidth}>{children}</TruncatedText>;
-};
-```
-
 ### Dynamic Content Monitoring
 
 ```tsx

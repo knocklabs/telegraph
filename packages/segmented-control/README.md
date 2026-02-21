@@ -377,50 +377,6 @@ export const DynamicSegmentedControl = () => {
 };
 ```
 
-### Responsive Design
-
-```tsx
-import { SegmentedControl } from "@telegraph/segmented-control";
-import { useEffect, useState } from "react";
-
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
-
-    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
-    mediaQuery.addEventListener("change", listener);
-
-    return () => mediaQuery.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-};
-
-export const ResponsiveSegmentedControl = ({ options, ...props }) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <SegmentedControl.Root
-      orientation={isMobile ? "vertical" : "horizontal"}
-      {...props}
-    >
-      {options.map((option) => (
-        <SegmentedControl.Option
-          key={option.value}
-          value={option.value}
-          size={isMobile ? "2" : "1"}
-        >
-          {isMobile ? option.shortLabel || option.label : option.label}
-        </SegmentedControl.Option>
-      ))}
-    </SegmentedControl.Root>
-  );
-};
-```
-
 ### With Tooltips
 
 ```tsx

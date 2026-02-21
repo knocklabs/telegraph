@@ -312,43 +312,6 @@ export const StyledBox = ({ children, ...props }: StyledBoxProps) => {
 };
 ```
 
-### Responsive Styles
-
-```tsx
-import { useStyleEngine } from "@telegraph/style-engine";
-
-// Define responsive CSS variables
-const responsiveCssVars = {
-  p: {
-    cssVar: "--tgph-padding",
-    value: "var(--tgph-spacing-VARIABLE)",
-    direction: "all",
-  },
-} as const;
-
-// Responsive component
-export const ResponsiveBox = ({ children, ...props }) => {
-  const { styleProp, otherProps } = useStyleEngine({
-    props,
-    cssVars: responsiveCssVars,
-  });
-
-  return (
-    <div className="responsive-box" style={styleProp} {...otherProps}>
-      {children}
-    </div>
-  );
-};
-```
-
-```css
-@media (min-width: 768px) {
-  .responsive-box {
-    --tgph-padding: var(--tgph-spacing-6);
-  }
-}
-```
-
 ### Performance Optimization
 
 ```tsx

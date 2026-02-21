@@ -256,43 +256,6 @@ export const AlignmentExamples = () => (
 
 ## Advanced Usage
 
-### Responsive Typography
-
-```tsx
-import { Heading, Text } from "@telegraph/typography";
-import { useEffect, useState } from "react";
-
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
-
-    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
-    mediaQuery.addEventListener("change", listener);
-
-    return () => mediaQuery.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-};
-
-export const ResponsiveTypography = ({ title, content }) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <div>
-      <Heading as="h1" size={isMobile ? "5" : "7"}>
-        {title}
-      </Heading>
-
-      <Text size={isMobile ? "1" : "2"}>{content}</Text>
-    </div>
-  );
-};
-```
-
 ### Custom Typography Components
 
 ```tsx
