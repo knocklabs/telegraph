@@ -27,6 +27,11 @@ const queryPortalElement = (selector: string) =>
   document.querySelector(selector);
 const queryPortalElements = (selector: string) =>
   document.querySelectorAll(selector);
+const queryPortalOptionByText = (text: string) => {
+  return Array.from(queryPortalElements("[data-tgph-combobox-option]")).find(
+    (option) => option.textContent === text,
+  );
+};
 
 const ComboboxSingleSelect = ({ ...props }) => {
   const [value, setValue] = React.useState<string>(values[0]!);
@@ -1148,6 +1153,163 @@ const ControlledComboboxWrapper = ({
   );
 };
 
+const ControlledOpenComboboxWrapper = ({
+  onOpenChange,
+}: {
+  onOpenChange?: (open: boolean) => void;
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState<string>(values[0]!);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  };
+
+  return (
+    <div>
+      <button data-testid="external-open-btn" onClick={() => setOpen(true)}>
+        Open
+      </button>
+      <button data-testid="external-close-btn" onClick={() => setOpen(false)}>
+        Close
+      </button>
+      <Combobox.Root
+        open={open}
+        onOpenChange={handleOpenChange}
+        value={value}
+        onValueChange={setValue}
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+          <Combobox.Empty />
+        </Combobox.Content>
+      </Combobox.Root>
+    </div>
+  );
+};
+
+const SingleSelectCloseOnSelectCombobox = ({
+  closeOnSelect,
+}: {
+  closeOnSelect: boolean;
+}) => {
+  const [value, setValue] = React.useState<string>(values[0]!);
+
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      closeOnSelect={closeOnSelect}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Options>
+          {values.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {labels[index]}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+const SearchResetCombobox = () => {
+  const [value, setValue] = React.useState<Array<string>>([]);
+
+  return (
+    <Combobox.Root value={value} onValueChange={setValue} closeOnSelect={false}>
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Search />
+        <Combobox.Options>
+          {values.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {labels[index]}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+const CreatableCombobox = ({
+  onCreate,
+}: {
+  onCreate?: (value: string) => void;
+}) => {
+  const [value, setValue] = React.useState<string | undefined>(undefined);
+
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      placeholder="Select a channel"
+      closeOnSelect={false}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Search />
+        <Combobox.Options>
+          {values.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {labels[index]}
+            </Combobox.Option>
+          ))}
+          <Combobox.Create values={values} onCreate={onCreate} />
+        </Combobox.Options>
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+const CreatableLegacyCombobox = ({
+  onCreate,
+}: {
+  onCreate: (value: Option) => void;
+}) => {
+  const [value, setValue] = React.useState<Option | undefined>(undefined);
+
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      placeholder="Select a channel"
+      closeOnSelect={false}
+      legacyBehavior={true}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Search />
+        <Combobox.Options>
+          {valuesLegacy.map((option) => (
+            <Combobox.Option key={option.value} value={option.value}>
+              {option.label}
+            </Combobox.Option>
+          ))}
+          <Combobox.Create
+            values={valuesLegacy}
+            onCreate={onCreate}
+            legacyBehavior={true}
+          />
+        </Combobox.Options>
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
 describe("controlled value changes", () => {
   it("updates trigger when value prop changes externally", async () => {
     const user = userEvent.setup();
@@ -1257,6 +1419,170 @@ describe("controlled value changes", () => {
     // Then change externally to Push again
     await user.click(getByTestId("external-change-btn"));
     await waitFor(() => expect(trigger?.textContent).toBe("Push"));
+  });
+});
+
+describe("behavior contracts", () => {
+  it("supports defaultOpen", () => {
+    const { container } = render(
+      <Combobox.Root defaultOpen defaultValue="email">
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+          <Combobox.Empty />
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+
+    const content = queryPortalElement("[data-tgph-combobox-content]");
+    expect(content?.getAttribute("data-tgph-combobox-content-open")).toBe(
+      "true",
+    );
+  });
+
+  it("supports controlled open state and emits onOpenChange", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { container, getByTestId } = render(
+      <ControlledOpenComboboxWrapper onOpenChange={onOpenChange} />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    expect(trigger?.getAttribute("aria-expanded")).toBe("false");
+
+    await user.click(trigger!);
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+    );
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+
+    await user.click(getByTestId("external-open-btn"));
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+
+    await user.click(getByTestId("external-close-btn"));
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+    );
+  });
+
+  it("keeps the combobox open on selection when closeOnSelect is false", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <SingleSelectCloseOnSelectCombobox closeOnSelect={false} />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+
+    const smsOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="sms"]',
+    );
+    await user.click(smsOption!);
+
+    await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+    expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("resets the search query when the combobox closes", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<SearchResetCombobox />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+
+    const searchInput = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(searchInput, "web");
+
+    await waitFor(() => {
+      const options = queryPortalElements("[data-tgph-combobox-option]");
+      expect(options.length).toBe(1);
+    });
+
+    await user.keyboard("[Escape]");
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+    );
+
+    await user.click(trigger!);
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+
+    const reopenedSearchInput = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    expect(reopenedSearchInput.value).toBe("");
+
+    await waitFor(() => {
+      const options = queryPortalElements("[data-tgph-combobox-option]");
+      expect(options.length).toBe(values.length);
+    });
+  });
+
+  it("only renders create for missing values and emits string payload", async () => {
+    const user = userEvent.setup();
+    const onCreate = vi.fn();
+    const { container } = render(<CreatableCombobox onCreate={onCreate} />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+
+    const searchInput = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(searchInput, "email");
+
+    expect(queryPortalOptionByText('Create "email"')).toBeUndefined();
+
+    await user.clear(searchInput);
+    await user.type(searchInput, "fax");
+
+    const createOption = queryPortalOptionByText('Create "fax"');
+    expect(createOption).toBeDefined();
+
+    await user.click(createOption!);
+
+    expect(onCreate).toHaveBeenCalledWith("fax");
+    expect(searchInput.value).toBe("");
+  });
+
+  it("emits legacy object payload from create when legacyBehavior is true", async () => {
+    const user = userEvent.setup();
+    const onCreate = vi.fn();
+    const { container } = render(
+      <CreatableLegacyCombobox onCreate={onCreate} />,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() => expect(trigger?.getAttribute("aria-expanded")).toBe("true"));
+
+    const searchInput = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(searchInput, "pager");
+
+    const createOption = queryPortalOptionByText('Create "pager"');
+    expect(createOption).toBeDefined();
+
+    await user.click(createOption!);
+
+    expect(onCreate).toHaveBeenCalledWith({ value: "pager" });
   });
 });
 
