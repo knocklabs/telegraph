@@ -639,6 +639,13 @@ const Content = <T extends TgphElement = "div">({
               width: "var(--tgph-combobox-trigger-width)",
               transition: "min-height 200ms ease-in-out",
               minHeight: height ? `${height}px` : "0",
+              backgroundColor: "var(--tgph-surface-1)",
+              border: "var(--tgph-spacing-px) solid var(--tgph-gray-8)",
+              borderRadius: "var(--tgph-rounded-4)",
+              boxShadow: "var(--tgph-shadow-2)",
+              padding: "var(--tgph-spacing-1) 0",
+              overflowY: "auto",
+              zIndex: "var(--tgph-zIndex-popover)",
               ...style,
               ...{
                 "--tgph-combobox-content-transform-origin":
@@ -678,7 +685,7 @@ const Content = <T extends TgphElement = "div">({
               }
             }}
           >
-            <Stack bg="surface-1" direction="column" gap="1" tgphRef={internalContentRef}>
+            <Stack direction="column" gap="1" tgphRef={internalContentRef}>
               {children}
             </Stack>
           </BaseCombobox.Popup>

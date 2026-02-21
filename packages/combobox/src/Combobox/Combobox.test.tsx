@@ -1448,6 +1448,33 @@ describe("behavior contracts", () => {
     );
   });
 
+  it("renders popover border styles on open content container", () => {
+    render(
+      <Combobox.Root defaultOpen defaultValue="email">
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+          <Combobox.Empty />
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    const content = queryPortalElement("[data-tgph-combobox-content]");
+    const contentStyle = content?.getAttribute("style") ?? "";
+
+    expect(contentStyle).toContain(
+      "border: var(--tgph-spacing-px) solid var(--tgph-gray-8)",
+    );
+    expect(contentStyle).toContain("border-radius: var(--tgph-rounded-4)");
+    expect(contentStyle).toContain("box-shadow: var(--tgph-shadow-2)");
+  });
+
   it("supports controlled open state and emits onOpenChange", async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();
