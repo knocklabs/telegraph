@@ -79,12 +79,12 @@ The main select container component.
 | --------------- | ------------------------------------- | ------------- | --------------------------------------- |
 | `value`         | `string \| string[]`                  | `undefined`   | Selected value(s)                       |
 | `onValueChange` | `(value: string \| string[]) => void` | `undefined`   | Called when selection changes           |
-| `size`          | `"0" \| "1" \| "2" \| "3" \| "4"`     | `"1"`         | Size of the trigger button              |
-| `placeholder`   | `string`                              | `"Select..."` | Placeholder text when no value selected |
+| `size`          | `"0" \| "1" \| "2" \| "3"`           | `"1"`         | Size of the trigger button              |
+| `placeholder`   | `string`                              | `undefined`   | Placeholder text when no value selected |
 | `disabled`      | `boolean`                             | `false`       | Whether the select is disabled          |
-| `triggerProps`  | `ComboboxTriggerProps`                | `{}`          | Props passed to the trigger button      |
-| `contentProps`  | `ComboboxContentProps`                | `{}`          | Props passed to the dropdown content    |
-| `optionsProps`  | `ComboboxOptionsProps`                | `{}`          | Props passed to the options container   |
+| `triggerProps`  | `ComboboxTriggerProps`                | `undefined`   | Props passed to the trigger button      |
+| `contentProps`  | `ComboboxContentProps`                | `undefined`   | Props passed to the dropdown content    |
+| `optionsProps`  | `ComboboxOptionsProps`                | `undefined`   | Props passed to the options container   |
 
 ### `<Select.Option>`
 

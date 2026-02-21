@@ -448,8 +448,8 @@ Title text component for radio items.
 
 | Prop       | Type                                  | Default     | Description        |
 | ---------- | ------------------------------------- | ----------- | ------------------ |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"`     | `"2"`       | Text size          |
-| `weight`   | `"regular" \| "medium" \| "semibold"` | `"regular"` | Font weight        |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Text size |
+| `weight`   | `"regular" \| "medium" \| "semi-bold" \| "bold"` | `"medium"` | Font weight        |
 | `children` | `ReactNode`                           | -           | Title text content |
 
 ### `<RadioCards.ItemDescription>`
@@ -458,8 +458,8 @@ Description text component for radio items.
 
 | Prop       | Type                              | Default  | Description              |
 | ---------- | --------------------------------- | -------- | ------------------------ |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"` | `"0"`    | Text size                |
-| `color`    | `"gray" \| "primary" \| "accent"` | `"gray"` | Text color               |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"0"` | Text size |
+| `color`    | `"default" \| "gray" \| "red" \| "beige" \| "blue" \| "green" \| "yellow" \| "purple" \| "accent" \| "white" \| "black" \| "disabled"` | `"gray"` | Text color |
 | `children` | `ReactNode`                       | -        | Description text content |
 
 ### `<RadioCards.ItemIcon>`
@@ -470,8 +470,8 @@ Icon component for radio items.
 | ------- | ---------------------------------------- | -------- | ----------------------------- |
 | `icon`  | `LucideIcon`                             | -        | Lucide icon component         |
 | `alt`   | `string`                                 | -        | Alternative text for the icon |
-| `size`  | `"1" \| "2" \| "3" \| "4" \| "5" \| "6"` | `"4"`    | Icon size                     |
-| `color` | `"gray" \| "primary" \| "accent"`        | `"gray"` | Icon color                    |
+| `size`  | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Icon size |
+| `color` | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"gray"` | Icon color |
 
 ## Examples
 

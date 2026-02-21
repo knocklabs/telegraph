@@ -65,7 +65,7 @@ A text component that automatically truncates content with an ellipsis and shows
 | Prop           | Type                               | Default     | Description                                                     |
 | -------------- | ---------------------------------- | ----------- | --------------------------------------------------------------- |
 | `maxWidth`     | `string`                           | `undefined` | Maximum width of the text container                             |
-| `tooltipProps` | `Partial<TooltipIfTruncatedProps>` | `{}`        | Props to pass to the underlying TooltipIfTruncated component    |
+| `tooltipProps` | `Partial<TgphComponentProps<typeof TooltipIfTruncated>>` | `undefined` | Props to pass to the underlying TooltipIfTruncated component |
 | `...TextProps` | `TgphComponentProps<typeof Text>`  | -           | All props from [@telegraph/typography](../typography/README.md) |
 
 ### `<TooltipIfTruncated>`
@@ -74,7 +74,7 @@ A component that conditionally shows a tooltip only when its content is truncate
 
 | Prop              | Type                                 | Default     | Description                                                                   |
 | ----------------- | ------------------------------------ | ----------- | ----------------------------------------------------------------------------- |
-| `label`           | `string`                             | `undefined` | The text to show in the tooltip. If not provided, will use the content's text |
+| `label`           | `string \| ReactNode`                | `undefined` | The text to show in the tooltip. If not provided, will use the content's text |
 | `children`        | `ReactNode`                          | -           | **Required.** Content to monitor for truncation                               |
 | `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -           | All props from [@telegraph/tooltip](../tooltip/README.md)                     |
 
@@ -86,7 +86,7 @@ A hook that detects whether an element's content is truncated.
 
 | Name     | Type                                        | Description                                                           |
 | -------- | ------------------------------------------- | --------------------------------------------------------------------- |
-| `params` | `{ tgphRef: React.RefObject<HTMLElement> }` | A ref to the element to check for truncation                          |
+| `params` | `{ tgphRef: React.RefObject<HTMLElement \| null> }` | A ref to the element to check for truncation                          |
 | `deps`   | `React.DependencyList`                      | Optional dependencies to re-run the truncation check when they change |
 
 #### Returns

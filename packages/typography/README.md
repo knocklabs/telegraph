@@ -69,11 +69,11 @@ Semantic heading component for page and section titles with proper hierarchy.
 
 | Prop     | Type                                                          | Default      | Description          |
 | -------- | ------------------------------------------------------------- | ------------ | -------------------- |
-| `as`     | `"h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"`                | `"h2"`       | HTML heading element |
-| `size`   | `"1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"4"`        | Visual size scale    |
+| `as`     | `TgphElement`                                                   | required      | HTML element/component to render |
+| `size`   | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"`        | Visual size scale    |
 | `color`  | `TypographyColor`                                             | `"default"`  | Text color           |
 | `align`  | `"left" \| "center" \| "right"`                               | `"left"`     | Text alignment       |
-| `weight` | `"regular" \| "medium" \| "semibold" \| "bold"`               | `"semibold"` | Font weight          |
+| `weight` | `"regular" \| "medium" \| "semi-bold" \| "bold"`              | `"semi-bold"` | Font weight         |
 
 ### `<Text>`
 
@@ -81,27 +81,11 @@ Flexible text component for body content, labels, and inline text.
 
 | Prop     | Type                                                                 | Default     | Description            |
 | -------- | -------------------------------------------------------------------- | ----------- | ---------------------- |
-| `as`     | `TextElement`                                                        | `"p"`       | HTML element to render |
+| `as`     | `TgphElement`                                                       | required    | HTML element/component to render |
 | `size`   | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"`       | Visual size scale      |
 | `color`  | `TypographyColor`                                                    | `"default"` | Text color             |
 | `align`  | `"left" \| "center" \| "right"`                                      | `"left"`    | Text alignment         |
-| `weight` | `"regular" \| "medium" \| "semibold" \| "bold"`                      | `"regular"` | Font weight            |
-
-#### TextElement Type
-
-```tsx
-type TextElement =
-  | "p"
-  | "span"
-  | "div"
-  | "label"
-  | "em"
-  | "strong"
-  | "b"
-  | "i"
-  | "pre"
-  | "code";
-```
+| `weight` | `"regular" \| "medium" \| "semi-bold" \| "bold"`                     | `"regular"` | Font weight            |
 
 ### `<Code>`
 
@@ -109,9 +93,9 @@ Inline code component for displaying code snippets and technical content.
 
 | Prop      | Type                                        | Default     | Description       |
 | --------- | ------------------------------------------- | ----------- | ----------------- |
-| `size`    | `"0" \| "1" \| "2" \| "3" \| "4"`           | `"1"`       | Visual size scale |
+| `size`    | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Visual size scale |
 | `color`   | `TypographyColor`                           | `"default"` | Text color        |
-| `variant` | `"solid" \| "soft" \| "outline" \| "ghost"` | `"soft"`    | Visual style      |
+| `variant` | `"soft" \| "ghost"`                         | `"soft"`    | Visual style      |
 
 #### TypographyColor Type
 
@@ -120,13 +104,15 @@ type TypographyColor =
   | "default"
   | "gray"
   | "red"
+  | "beige"
   | "blue"
   | "green"
   | "yellow"
   | "purple"
   | "accent"
   | "disabled"
-  | "white";
+  | "white"
+  | "black";
 ```
 
 ## Typography Scale

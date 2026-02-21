@@ -75,7 +75,7 @@ Individual option button within the segmented control.
 | ---------- | --------------------------------- | ------- | --------------------------------- |
 | `value`    | `string`                          | -       | Unique identifier for this option |
 | `disabled` | `boolean`                         | `false` | Disable this specific option      |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"` | `"1"`   | Button size                       |
+| `size`     | `"0" \| "1" \| "2" \| "3"` | `"1"`   | Button size                       |
 | `children` | `ReactNode`                       | -       | Content of the option             |
 
 ## Usage Patterns

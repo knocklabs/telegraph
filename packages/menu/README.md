@@ -100,7 +100,7 @@ The dropdown content container that holds menu items.
 | `border`      | `SpacingToken`                           | `"px"`     | Border width                  |
 | `borderColor` | `ColorToken`                             | `"gray-8"` | Border color                  |
 
-All Box props are also supported for additional styling.
+All Stack props are also supported for additional styling.
 
 ### `<Menu.Button>`
 

@@ -45,7 +45,7 @@ Container component that wraps data list items.
 | ------------- | ---------------------- | ---------- | ------------------------------------- |
 | `direction`   | `"column" \| "row"`    | `"column"` | Layout direction of list items        |
 | `gap`         | `keyof tokens.spacing` | `"4"`      | Gap between list items                |
-| All Box props | -                      | -          | Inherits all Box component properties |
+| All Stack props | -                    | -          | Inherits all Stack component properties |
 
 ### `<DataList.Item>`
 
