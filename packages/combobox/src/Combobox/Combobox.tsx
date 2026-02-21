@@ -211,6 +211,32 @@ const Root = <
     }
   }, [open]);
 
+  React.useEffect(() => {
+    const applyFocusGuardA11yLabels = () => {
+      const focusGuards = document.querySelectorAll(
+        "[data-base-ui-focus-guard]",
+      );
+      focusGuards.forEach((focusGuard) => {
+        if (!focusGuard.getAttribute("aria-label")) {
+          focusGuard.setAttribute("aria-label", "Focus guard");
+        }
+      });
+    };
+
+    applyFocusGuardA11yLabels();
+
+    const observer = new MutationObserver(() => {
+      applyFocusGuardA11yLabels();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <ComboboxContext.Provider
       value={{
