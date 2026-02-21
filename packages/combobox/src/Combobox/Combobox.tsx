@@ -1112,7 +1112,10 @@ const Create = <T extends TgphElement, LB extends boolean>({
           context.setSearchQuery?.("");
         }
       },
-      ...(props as Omit<OptionProps<T>, "value" | "label" | "selected">),
+      ...(props as unknown as Omit<
+        OptionProps<T>,
+        "value" | "label" | "selected"
+      >),
     } as OptionProps<T>;
 
     return (
