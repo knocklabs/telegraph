@@ -215,7 +215,7 @@ export const CustomRadioCards = ({ options, value, onValueChange }) => (
 
           <Stack direction="column" align="center" gap="1">
             {option.title && (
-              <RadioCards.ItemTitle size="3" weight="semibold">
+              <RadioCards.ItemTitle size="3" weight="semi-bold">
                 {option.title}
               </RadioCards.ItemTitle>
             )}
@@ -319,43 +319,18 @@ export const ConditionalRadio = ({ userPlan, options }) => {
 };
 ```
 
-### Responsive Layouts
-
-```tsx
-import { useMediaQuery } from "@telegraph/helpers";
-import { RadioCards } from "@telegraph/radio";
-
-export const ResponsiveRadioCards = ({ options, ...props }) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <RadioCards
-      direction={isMobile ? "column" : "row"}
-      options={options.map((option) => ({
-        ...option,
-        // Adjust descriptions for mobile
-        description: isMobile
-          ? option.shortDescription || option.description
-          : option.description,
-      }))}
-      {...props}
-    />
-  );
-};
-```
-
 ### Loading States
 
 ```tsx
 import { RadioCards } from "@telegraph/radio";
-import { Skeleton } from "@telegraph/skeleton";
+import { Box, Stack } from "@telegraph/layout";
 
 export const RadioCardsWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
     return (
       <Stack direction="row" gap="1">
         {[1, 2, 3].map((i) => (
-          <Skeleton key={i} width="120px" height="80px" />
+          <Box key={i} w="32" h="20" bg="gray-3" rounded="2" />
         ))}
       </Stack>
     );
@@ -473,8 +448,8 @@ Title text component for radio items.
 
 | Prop       | Type                                  | Default     | Description        |
 | ---------- | ------------------------------------- | ----------- | ------------------ |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"`     | `"2"`       | Text size          |
-| `weight`   | `"regular" \| "medium" \| "semibold"` | `"regular"` | Font weight        |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Text size |
+| `weight`   | `"regular" \| "medium" \| "semi-bold" \| "bold"` | `"medium"` | Font weight        |
 | `children` | `ReactNode`                           | -           | Title text content |
 
 ### `<RadioCards.ItemDescription>`
@@ -483,8 +458,8 @@ Description text component for radio items.
 
 | Prop       | Type                              | Default  | Description              |
 | ---------- | --------------------------------- | -------- | ------------------------ |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4"` | `"0"`    | Text size                |
-| `color`    | `"gray" \| "primary" \| "accent"` | `"gray"` | Text color               |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"0"` | Text size |
+| `color`    | `"default" \| "gray" \| "red" \| "beige" \| "blue" \| "green" \| "yellow" \| "purple" \| "accent" \| "white" \| "black" \| "disabled"` | `"gray"` | Text color |
 | `children` | `ReactNode`                       | -        | Description text content |
 
 ### `<RadioCards.ItemIcon>`
@@ -495,8 +470,8 @@ Icon component for radio items.
 | ------- | ---------------------------------------- | -------- | ----------------------------- |
 | `icon`  | `LucideIcon`                             | -        | Lucide icon component         |
 | `alt`   | `string`                                 | -        | Alternative text for the icon |
-| `size`  | `"1" \| "2" \| "3" \| "4" \| "5" \| "6"` | `"4"`    | Icon size                     |
-| `color` | `"gray" \| "primary" \| "accent"`        | `"gray"` | Icon color                    |
+| `size`  | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Icon size |
+| `color` | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"gray"` | Icon color |
 
 ## Examples
 
@@ -541,9 +516,10 @@ export const ContactMethodSelector = () => {
 ### Advanced Example
 
 ```tsx
-import { Badge } from "@telegraph/badge";
 import { Box, Stack } from "@telegraph/layout";
 import { RadioCards } from "@telegraph/radio";
+import { Tag } from "@telegraph/tag";
+import { Text } from "@telegraph/typography";
 
 export const PricingPlanSelector = () => {
   const [selectedPlan, setSelectedPlan] = useState("pro");
@@ -562,15 +538,15 @@ export const PricingPlanSelector = () => {
 
             <Stack direction="column" align="center" gap="2">
               <Stack direction="row" align="center" gap="2">
-                <RadioCards.ItemTitle size="3" weight="semibold">
+                <RadioCards.ItemTitle size="3" weight="semi-bold">
                   {plan.title}
                 </RadioCards.ItemTitle>
-                {plan.popular && <Badge variant="accent">Popular</Badge>}
+                {plan.popular && <Tag size="0" color="accent">Popular</Tag>}
               </Stack>
 
-              <Box fontSize="2xl" fontWeight="bold" color="primary">
+              <Text as="span" size="5" weight="bold">
                 ${plan.price}/mo
-              </Box>
+              </Text>
 
               <RadioCards.ItemDescription align="center">
                 {plan.description}
@@ -579,9 +555,9 @@ export const PricingPlanSelector = () => {
 
             <Stack direction="column" gap="1" w="full">
               {plan.features.map((feature, index) => (
-                <Box key={index} fontSize="sm" color="gray-11">
+                <Text key={index} as="span" size="1" color="gray">
                   ✓ {feature}
-                </Box>
+                </Text>
               ))}
             </Stack>
           </Stack>
@@ -635,7 +611,7 @@ export const DeliveryOptionsForm = () => {
         options={deliveryOptions.map((option) => ({
           ...option,
           title: (
-            <Stack direction="row" justify="between" w="full">
+            <Stack direction="row" justify="space-between" w="full">
               <span>{option.title}</span>
               <span className="price">{option.price}</span>
             </Stack>

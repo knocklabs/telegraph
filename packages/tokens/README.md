@@ -41,7 +41,7 @@ import "@telegraph/tokens/light.css";
 .my-component {
   background: var(--tgph-blue-3);
   color: var(--tgph-blue-11);
-  padding: var(--tgph-space-4);
+  padding: var(--tgph-spacing-4);
   border-radius: var(--tgph-radius-2);
   font-size: var(--tgph-font-size-2);
 }
@@ -49,14 +49,16 @@ import "@telegraph/tokens/light.css";
 
 ```tsx
 // Using tokens in JavaScript
-import { tokens } from "@telegraph/tokens";
+import telegraphTokens from "@telegraph/tokens";
+
+const { tokens } = telegraphTokens;
 
 const MyComponent = () => (
   <div
     style={{
       background: tokens["--tgph-blue-3"],
       color: tokens["--tgph-blue-11"],
-      padding: tokens["--tgph-space-4"],
+      padding: tokens["--tgph-spacing-4"],
       borderRadius: tokens["--tgph-radius-2"],
       fontSize: tokens["--tgph-font-size-2"],
     }}
@@ -110,14 +112,14 @@ Consistent spacing system based on a 4px grid with exponential scaling.
 
 | Token             | Value  | Rem       | Usage                          |
 | ----------------- | ------ | --------- | ------------------------------ |
-| `--tgph-space-1`  | `4px`  | `0.25rem` | Minimal spacing, tight layouts |
-| `--tgph-space-2`  | `8px`  | `0.5rem`  | Small gaps, compact components |
-| `--tgph-space-3`  | `12px` | `0.75rem` | Component padding              |
-| `--tgph-space-4`  | `16px` | `1rem`    | Standard spacing unit          |
-| `--tgph-space-5`  | `20px` | `1.25rem` | Comfortable spacing            |
-| `--tgph-space-6`  | `24px` | `1.5rem`  | Section spacing                |
-| `--tgph-space-8`  | `32px` | `2rem`    | Large gaps                     |
-| `--tgph-space-12` | `48px` | `3rem`    | Major layout spacing           |
+| `--tgph-spacing-1`  | `4px`  | `0.25rem` | Minimal spacing, tight layouts |
+| `--tgph-spacing-2`  | `8px`  | `0.5rem`  | Small gaps, compact components |
+| `--tgph-spacing-3`  | `12px` | `0.75rem` | Component padding              |
+| `--tgph-spacing-4`  | `16px` | `1rem`    | Standard spacing unit          |
+| `--tgph-spacing-5`  | `20px` | `1.25rem` | Comfortable spacing            |
+| `--tgph-spacing-6`  | `24px` | `1.5rem`  | Section spacing                |
+| `--tgph-spacing-8`  | `32px` | `2rem`    | Large gaps                     |
+| `--tgph-spacing-12` | `48px` | `3rem`    | Major layout spacing           |
 
 ### Typography Scale
 
@@ -185,7 +187,7 @@ Responsive design breakpoints for consistent layouts.
   background: var(--tgph-gray-1);
   border: 1px solid var(--tgph-gray-6);
   border-radius: var(--tgph-radius-3);
-  padding: var(--tgph-space-4);
+  padding: var(--tgph-spacing-4);
   box-shadow: var(--tgph-shadow-2);
 }
 
@@ -193,7 +195,7 @@ Responsive design breakpoints for consistent layouts.
   color: var(--tgph-gray-12);
   font-size: var(--tgph-font-size-4);
   line-height: var(--tgph-line-height-4);
-  margin-bottom: var(--tgph-space-2);
+  margin-bottom: var(--tgph-spacing-2);
 }
 
 .card-content {
@@ -206,11 +208,13 @@ Responsive design breakpoints for consistent layouts.
 ### JavaScript/TypeScript Usage
 
 ```tsx
-import { tokens } from "@telegraph/tokens";
+import telegraphTokens from "@telegraph/tokens";
+
+const { tokens } = telegraphTokens;
 
 // Access individual tokens
 const primaryColor = tokens["--tgph-blue-9"];
-const spacing = tokens["--tgph-space-4"];
+const spacing = tokens["--tgph-spacing-4"];
 
 // Use in React styles
 const Button = ({ children, variant = "primary" }) => {
@@ -221,7 +225,7 @@ const Button = ({ children, variant = "primary" }) => {
       variant === "primary"
         ? tokens["--tgph-blue-contrast"]
         : tokens["--tgph-gray-11"],
-    padding: `${tokens["--tgph-space-2"]} ${tokens["--tgph-space-4"]}`,
+    padding: `${tokens["--tgph-spacing-2"]} ${tokens["--tgph-spacing-4"]}`,
     borderRadius: tokens["--tgph-radius-2"],
     border: "none",
     fontSize: tokens["--tgph-font-size-2"],
@@ -292,14 +296,16 @@ fs.writeFileSync("dist/tokens.d.ts", generateTypes(tokens));
 // Styled Components integration
 // Emotion integration
 import { css } from "@emotion/react";
-import { tokens } from "@telegraph/tokens";
+import telegraphTokens from "@telegraph/tokens";
 import styled from "styled-components";
+
+const { tokens } = telegraphTokens;
 
 const StyledCard = styled.div`
   background: ${tokens["--tgph-gray-1"]};
   border: 1px solid ${tokens["--tgph-gray-6"]};
   border-radius: ${tokens["--tgph-radius-3"]};
-  padding: ${tokens["--tgph-space-4"]};
+  padding: ${tokens["--tgph-spacing-4"]};
   box-shadow: ${tokens["--tgph-shadow-2"]};
 `;
 
@@ -307,7 +313,7 @@ const cardStyles = css`
   background: ${tokens["--tgph-gray-1"]};
   border: 1px solid ${tokens["--tgph-gray-6"]};
   border-radius: ${tokens["--tgph-radius-3"]};
-  padding: ${tokens["--tgph-space-4"]};
+  padding: ${tokens["--tgph-spacing-4"]};
   box-shadow: ${tokens["--tgph-shadow-2"]};
 `;
 ```
@@ -316,7 +322,9 @@ const cardStyles = css`
 
 ```tsx
 // Token documentation component
-import { tokens } from "@telegraph/tokens";
+import telegraphTokens from "@telegraph/tokens";
+
+const { tokens } = telegraphTokens;
 
 const ColorSwatches = () => {
   const colorTokens = Object.entries(tokens)
@@ -355,7 +363,7 @@ The tokens package is the foundation of Telegraph's design system:
 
 Examples:
 --tgph-blue-9          // Color: blue, scale 9
---tgph-space-4         // Spacing: scale 4
+--tgph-spacing-4       // Spacing: scale 4
 --tgph-font-size-2     // Typography: font size scale 2
 --tgph-radius-3        // Border radius: scale 3
 ```
@@ -396,7 +404,7 @@ Examples:
   background: var(--tgph-blue-3);
   border: 1px solid var(--tgph-blue-6);
   color: var(--tgph-blue-11);
-  padding: var(--tgph-space-3) var(--tgph-space-4);
+  padding: var(--tgph-spacing-3) var(--tgph-spacing-4);
   border-radius: var(--tgph-radius-2);
   font-size: var(--tgph-font-size-1);
 }
@@ -405,8 +413,10 @@ Examples:
 ### Advanced Example
 
 ```tsx
-import { tokens } from "@telegraph/tokens";
+import telegraphTokens from "@telegraph/tokens";
 import { useMemo } from "react";
+
+const { tokens } = telegraphTokens;
 
 export const ThemeableButton = ({
   variant = "primary",
@@ -441,15 +451,15 @@ export const ThemeableButton = ({
 
     const sizeStyles = {
       small: {
-        padding: `${tokens["--tgph-space-1"]} ${tokens["--tgph-space-3"]}`,
+        padding: `${tokens["--tgph-spacing-1"]} ${tokens["--tgph-spacing-3"]}`,
         fontSize: tokens["--tgph-font-size-0"],
       },
       medium: {
-        padding: `${tokens["--tgph-space-2"]} ${tokens["--tgph-space-4"]}`,
+        padding: `${tokens["--tgph-spacing-2"]} ${tokens["--tgph-spacing-4"]}`,
         fontSize: tokens["--tgph-font-size-1"],
       },
       large: {
-        padding: `${tokens["--tgph-space-3"]} ${tokens["--tgph-space-5"]}`,
+        padding: `${tokens["--tgph-spacing-3"]} ${tokens["--tgph-spacing-5"]}`,
         fontSize: tokens["--tgph-font-size-2"],
       },
     };
@@ -468,14 +478,16 @@ export const ThemeableButton = ({
 ### Real-world Example
 
 ```tsx
-import { tokens } from "@telegraph/tokens";
+import telegraphTokens from "@telegraph/tokens";
+
+const { tokens } = telegraphTokens;
 
 export const DashboardCard = ({ title, value, trend, trendValue }) => {
   const cardStyles = {
     background: tokens["--tgph-gray-1"],
     border: `1px solid ${tokens["--tgph-gray-6"]}`,
     borderRadius: tokens["--tgph-radius-3"],
-    padding: tokens["--tgph-space-6"],
+    padding: tokens["--tgph-spacing-6"],
     boxShadow: tokens["--tgph-shadow-2"],
     transition: "all 0.2s ease",
   };
@@ -484,7 +496,7 @@ export const DashboardCard = ({ title, value, trend, trendValue }) => {
     color: tokens["--tgph-gray-11"],
     fontSize: tokens["--tgph-font-size-1"],
     fontWeight: "500",
-    marginBottom: tokens["--tgph-space-2"],
+    marginBottom: tokens["--tgph-spacing-2"],
     textTransform: "uppercase",
     letterSpacing: "0.5px",
   };
@@ -494,13 +506,13 @@ export const DashboardCard = ({ title, value, trend, trendValue }) => {
     fontSize: tokens["--tgph-font-size-7"],
     fontWeight: "700",
     lineHeight: tokens["--tgph-line-height-7"],
-    marginBottom: tokens["--tgph-space-3"],
+    marginBottom: tokens["--tgph-spacing-3"],
   };
 
   const trendStyles = {
     display: "flex",
     alignItems: "center",
-    gap: tokens["--tgph-space-2"],
+    gap: tokens["--tgph-spacing-2"],
     fontSize: tokens["--tgph-font-size-0"],
     fontWeight: "500",
     color:
@@ -512,8 +524,8 @@ export const DashboardCard = ({ title, value, trend, trendValue }) => {
   };
 
   const indicatorStyles = {
-    width: tokens["--tgph-space-2"],
-    height: tokens["--tgph-space-2"],
+    width: tokens["--tgph-spacing-2"],
+    height: tokens["--tgph-spacing-2"],
     borderRadius: tokens["--tgph-radius-full"],
     backgroundColor:
       trend === "up"

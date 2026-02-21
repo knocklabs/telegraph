@@ -461,7 +461,7 @@ export const HelpDialog = ({ open, onClose }) => (
 );
 
 const ShortcutRow = ({ keys, action }) => (
-  <Stack direction="row" align="center" justify="between">
+  <Stack direction="row" align="center" justify="space-between">
     <Stack direction="row" gap="1" align="center">
       {keys.map((key, index) => (
         <Stack key={index} direction="row" align="center" gap="1">
@@ -540,7 +540,7 @@ export const GameHUD = () => (
         </Stack>
       </Stack>
 
-      <Stack direction="row" justify="between" align="center">
+      <Stack direction="row" justify="space-between" align="center">
         <Text size="0" color="white">
           Jump
         </Text>

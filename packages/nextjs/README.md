@@ -17,7 +17,6 @@ npm install @telegraph/nextjs
 ```
 import { withTelegraph } from "@telegraph/nextjs";
 
-const nextConfig = {};
-
-export default withTelegraph(nextConfig);
+// withTelegraph currently returns a config factory
+export default withTelegraph()();
 ```

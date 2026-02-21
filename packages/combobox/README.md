@@ -85,7 +85,7 @@ The button that triggers the combobox dropdown.
 
 | Prop          | Type                | Default     | Description            |
 | ------------- | ------------------- | ----------- | ---------------------- |
-| `size`        | `"1" \| "2" \| "3"` | `"2"`       | Size of the trigger    |
+| `size`        | `"0" \| "1" \| "2" \| "3"` | `"1"` | Size of the trigger    |
 | `placeholder` | `string`            | `undefined` | Placeholder text       |
 | `children`    | `ReactNode`         | `undefined` | Custom trigger content |
 
@@ -328,8 +328,8 @@ Individual selectable option item.
 | Prop       | Type      | Default     | Description          |
 | ---------- | --------- | ----------- | -------------------- |
 | `value`    | `string`  | required    | Option value         |
-| `label`    | `string`  | `undefined` | Display label        |
-| `selected` | `boolean` | `undefined` | Force selected state |
+| `label`    | `string \| ReactNode` | `undefined` | Display label        |
+| `selected` | `boolean \| null`     | `undefined` | Force selected state |
 
 ### `<Combobox.Search>`
 
