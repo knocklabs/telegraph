@@ -1,2 +1,1 @@
 export { Autocomplete } from "./Autocomplete";
-export { Combobox } from "./Combobox";

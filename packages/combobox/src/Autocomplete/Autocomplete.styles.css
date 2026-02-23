@@ -1,0 +1,7 @@
+[data-tgph-autocomplete-content] {
+  box-sizing: border-box;
+}
+
+[data-tgph-autocomplete-option][data-active="true"] {
+  background-color: var(--tgph-gray-3);
+}
