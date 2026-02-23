@@ -40,7 +40,7 @@
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
-    "motion": "^12.23.12"
+    "motion": "^12.34.3"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
