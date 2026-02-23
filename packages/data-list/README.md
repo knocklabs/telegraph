@@ -45,7 +45,7 @@ Container component that wraps data list items.
 | ------------- | ---------------------- | ---------- | ------------------------------------- |
 | `direction`   | `"column" \| "row"`    | `"column"` | Layout direction of list items        |
 | `gap`         | `keyof tokens.spacing` | `"4"`      | Gap between list items                |
-| All Box props | -                      | -          | Inherits all Box component properties |
+| All Stack props | -                    | -          | Inherits all Stack component properties |
 
 ### `<DataList.Item>`
 
@@ -330,29 +330,6 @@ export const InteractiveList = () => {
           </Button>
         </DataList.Value>
       </DataList.ListItem>
-    </DataList.List>
-  );
-};
-```
-
-### Responsive Layout
-
-```tsx
-import { DataList } from "@telegraph/data-list";
-import { Text } from "@telegraph/typography";
-import { useMediaQuery } from "your-hooks";
-
-export const ResponsiveList = () => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <DataList.List>
-      <DataList.Item
-        label="Description"
-        direction={isMobile ? "column" : "row"}
-      >
-        <Text as="span">This switches to column layout on mobile devices</Text>
-      </DataList.Item>
     </DataList.List>
   );
 };

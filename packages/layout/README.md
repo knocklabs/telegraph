@@ -184,7 +184,7 @@ import { Box } from "@telegraph/layout";
   as="button"
   p="3"
   bg="accent-3"
-  hover_bg="accent-4"
+  hover_backgroundColor="accent-4"
   rounded="1"
   onClick={handleClick}
 >
@@ -330,7 +330,7 @@ import { Box, Stack } from "@telegraph/layout";
   Article content
 </Box>
 
-<Box as="button" p="2" bg="accent-3" hover_bg="accent-4">
+<Box as="button" p="2" bg="accent-3" hover_backgroundColor="accent-4">
   Button
 </Box>
 
@@ -453,7 +453,7 @@ export const AppLayout = ({ children }) => (
       borderBottom="px"
       borderColor="gray-6"
     >
-      <Stack direction="row" align="center" justify="between">
+      <Stack direction="row" align="center" justify="space-between">
         <Box>Logo</Box>
         <Stack direction="row" gap="4">
           <Box>Nav item 1</Box>
@@ -474,10 +474,10 @@ export const AppLayout = ({ children }) => (
         borderColor="gray-6"
       >
         <Stack direction="column" gap="2">
-          <Box p="2" rounded="1" hover_bg="gray-3">
+          <Box p="2" rounded="1" hover_backgroundColor="gray-3">
             Sidebar item 1
           </Box>
-          <Box p="2" rounded="1" hover_bg="gray-3">
+          <Box p="2" rounded="1" hover_backgroundColor="gray-3">
             Sidebar item 2
           </Box>
         </Stack>
@@ -757,7 +757,7 @@ The layout components use Telegraph design tokens for consistent styling:
       <Box as="button"
            p="2"
            bg="accent-3"
-           focus_bg="accent-4"
+           focus_backgroundColor="accent-4"
            focus_borderColor="accent-8"
            border="px"
            borderColor="accent-6"
@@ -795,7 +795,7 @@ export const Dashboard = () => (
   <Box minH="screen" bg="surface-1">
     {/* Top bar */}
     <Box p="4" bg="surface-2" borderBottom="px" borderColor="gray-6">
-      <Stack direction="row" align="center" justify="between">
+      <Stack direction="row" align="center" justify="space-between">
         <h1>Dashboard</h1>
         <Box as="button" p="2" bg="accent-3" rounded="1">
           Profile
@@ -848,7 +848,7 @@ export const Dashboard = () => (
               <h2>Activity Feed</h2>
               <Stack direction="column" gap="2" mt="4">
                 {[1, 2, 3].map((i) => (
-                  <Box key={i} p="2" rounded="1" hover_bg="gray-2">
+                  <Box key={i} p="2" rounded="1" hover_backgroundColor="gray-2">
                     Activity item {i}
                   </Box>
                 ))}
@@ -897,14 +897,14 @@ export const Modal = ({ children, onClose }) => (
     >
       <Stack direction="column" gap="4">
         {/* Header */}
-        <Stack direction="row" align="center" justify="between">
+        <Stack direction="row" align="center" justify="space-between">
           <h2>Modal Title</h2>
           <Box
             as="button"
             w="8"
             h="8"
             rounded="1"
-            hover_bg="gray-3"
+            hover_backgroundColor="gray-3"
             onClick={onClose}
           >
             ×
@@ -916,7 +916,7 @@ export const Modal = ({ children, onClose }) => (
 
         {/* Actions */}
         <Stack direction="row" gap="2" justify="end">
-          <Box as="button" p="2" px="4" rounded="1" hover_bg="gray-3">
+          <Box as="button" p="2" px="4" rounded="1" hover_backgroundColor="gray-3">
             Cancel
           </Box>
           <Box
@@ -924,7 +924,7 @@ export const Modal = ({ children, onClose }) => (
             p="2"
             px="4"
             bg="accent-3"
-            hover_bg="accent-4"
+            hover_backgroundColor="accent-4"
             rounded="1"
           >
             Confirm

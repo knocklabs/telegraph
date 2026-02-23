@@ -142,20 +142,19 @@ import { Button } from "@telegraph/button";
 ### Rich Content Popover
 
 ```tsx
-import { Avatar } from "@telegraph/avatar";
 import { Button } from "@telegraph/button";
-import { Stack } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
 import { Popover } from "@telegraph/popover";
 
 <Popover.Root>
   <Popover.Trigger>
-    <Avatar src="/user.jpg" alt="User info" />
+    <Box as="img" src="/user.jpg" alt="User info" w="8" h="8" rounded="full" />
   </Popover.Trigger>
 
   <Popover.Content px="4" py="3" maxW="80">
     <Stack direction="column" gap="2">
       <Stack direction="row" align="center" gap="2">
-        <Avatar size="sm" src="/user.jpg" alt="" />
+        <Box as="img" src="/user.jpg" alt="" w="5" h="5" rounded="full" />
         <Stack direction="column" gap="0">
           <strong>John Doe</strong>
           <span>Software Engineer</span>
@@ -191,10 +190,10 @@ import { Popover } from "@telegraph/popover";
         <Input placeholder="Description" />
       </Stack>
       <Stack direction="row" gap="2" justify="end">
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="1">
           Cancel
         </Button>
-        <Button size="sm">Add</Button>
+        <Button size="1">Add</Button>
       </Stack>
     </Stack>
   </Popover.Content>
@@ -465,10 +464,10 @@ const FormPopover = () => {
           </Stack>
 
           <Stack direction="row" gap="2" justify="end">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="1">
               Cancel
             </Button>
-            <Button size="sm" onClick={handleSubmit}>
+            <Button size="1" onClick={handleSubmit}>
               Add Contact
             </Button>
           </Stack>
@@ -607,7 +606,7 @@ The popover component uses Telegraph design tokens for consistent styling:
 <Popover.Root>
   <Popover.Trigger>
     <Button aria-label="Show user profile information">
-      <Avatar src="/user.jpg" alt="" />
+      <Box as="img" src="/user.jpg" alt="" w="8" h="8" rounded="full" />
     </Button>
   </Popover.Trigger>
 
@@ -645,27 +644,33 @@ The popover component uses Telegraph design tokens for consistent styling:
 ### User Profile Card
 
 ```tsx
-import { Avatar } from "@telegraph/avatar";
-import { Badge } from "@telegraph/badge";
 import { Button } from "@telegraph/button";
-import { Stack } from "@telegraph/layout";
+import { Tag } from "@telegraph/tag";
+import { Box, Stack } from "@telegraph/layout";
 import { Popover } from "@telegraph/popover";
 
 export const UserProfilePopover = ({ user }) => (
   <Popover.Root>
     <Popover.Trigger>
-      <Avatar src={user.avatar} alt={`${user.name} profile`} />
+      <Box
+        as="img"
+        src={user.avatar}
+        alt={`${user.name} profile`}
+        w="8"
+        h="8"
+        rounded="full"
+      />
     </Popover.Trigger>
 
     <Popover.Content side="bottom" align="start" px="4" py="3" maxW="80">
       <Stack direction="column" gap="3">
         {/* Header */}
         <Stack direction="row" align="center" gap="3">
-          <Avatar src={user.avatar} alt="" />
+          <Box as="img" src={user.avatar} alt="" w="8" h="8" rounded="full" />
           <Stack direction="column" gap="1">
             <Stack direction="row" align="center" gap="2">
               <strong>{user.name}</strong>
-              {user.isOnline && <Badge variant="success">Online</Badge>}
+              {user.isOnline && <Tag size="0" color="green">Online</Tag>}
             </Stack>
             <span>{user.role}</span>
           </Stack>
@@ -685,10 +690,10 @@ export const UserProfilePopover = ({ user }) => (
 
         {/* Actions */}
         <Stack direction="row" gap="2">
-          <Button size="sm" flex="1">
+          <Button size="1" flex="1">
             Message
           </Button>
-          <Button size="sm" variant="outline" flex="1">
+          <Button size="1" variant="outline" flex="1">
             View Profile
           </Button>
         </Stack>
@@ -709,7 +714,7 @@ import { Archive, Copy, Download, Share, Trash } from "lucide-react";
 export const QuickActionsPopover = ({ item, onAction }) => (
   <Popover.Root>
     <Popover.Trigger>
-      <Button variant="ghost" size="sm">
+      <Button variant="ghost" size="1">
         Actions
       </Button>
     </Popover.Trigger>
@@ -718,7 +723,7 @@ export const QuickActionsPopover = ({ item, onAction }) => (
       <Stack direction="column" gap="1">
         <Button
           variant="ghost"
-          size="sm"
+          size="1"
           justify="start"
           leadingIcon={{ icon: Copy, alt: "" }}
           onClick={() => onAction("copy", item)}
@@ -728,7 +733,7 @@ export const QuickActionsPopover = ({ item, onAction }) => (
 
         <Button
           variant="ghost"
-          size="sm"
+          size="1"
           justify="start"
           leadingIcon={{ icon: Download, alt: "" }}
           onClick={() => onAction("download", item)}
@@ -738,7 +743,7 @@ export const QuickActionsPopover = ({ item, onAction }) => (
 
         <Button
           variant="ghost"
-          size="sm"
+          size="1"
           justify="start"
           leadingIcon={{ icon: Share, alt: "" }}
           onClick={() => onAction("share", item)}
@@ -750,7 +755,7 @@ export const QuickActionsPopover = ({ item, onAction }) => (
 
         <Button
           variant="ghost"
-          size="sm"
+          size="1"
           justify="start"
           leadingIcon={{ icon: Archive, alt: "" }}
           onClick={() => onAction("archive", item)}
@@ -760,7 +765,7 @@ export const QuickActionsPopover = ({ item, onAction }) => (
 
         <Button
           variant="ghost"
-          size="sm"
+          size="1"
           justify="start"
           leadingIcon={{ icon: Trash, alt: "" }}
           color="red"
@@ -831,10 +836,10 @@ export const ColorPickerPopover = ({ value, onChange }) => {
           </Stack>
 
           <Stack direction="row" gap="2" justify="end">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="1">
               Cancel
             </Button>
-            <Button size="sm" onClick={() => onChange(selectedColor)}>
+            <Button size="1" onClick={() => onChange(selectedColor)}>
               Apply
             </Button>
           </Stack>
@@ -849,7 +854,6 @@ export const ColorPickerPopover = ({ value, onChange }) => {
 
 ```tsx
 import { Button } from "@telegraph/button";
-import { Checkbox } from "@telegraph/checkbox";
 import { Input } from "@telegraph/input";
 import { Stack } from "@telegraph/layout";
 import { Popover } from "@telegraph/popover";
@@ -932,38 +936,42 @@ export const SearchFilterPopover = ({ onApplyFilters }) => {
 
             {/* Checkboxes */}
             <Stack direction="column" gap="2">
-              <Checkbox
-                checked={filters.inStock}
-                onCheckedChange={(checked) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    inStock: checked,
-                  }))
-                }
-              >
+              <label>
+                <input
+                  type="checkbox"
+                  checked={filters.inStock}
+                  onChange={(event) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      inStock: event.target.checked,
+                    }))
+                  }
+                />
                 In Stock Only
-              </Checkbox>
+              </label>
 
-              <Checkbox
-                checked={filters.featured}
-                onCheckedChange={(checked) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    featured: checked,
-                  }))
-                }
-              >
+              <label>
+                <input
+                  type="checkbox"
+                  checked={filters.featured}
+                  onChange={(event) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      featured: event.target.checked,
+                    }))
+                  }
+                />
                 Featured Products
-              </Checkbox>
+              </label>
             </Stack>
           </Stack>
 
           {/* Actions */}
           <Stack direction="row" gap="2" justify="end">
-            <Button variant="outline" size="sm" onClick={handleReset}>
+            <Button variant="outline" size="1" onClick={handleReset}>
               Reset
             </Button>
-            <Button size="sm" onClick={handleApply}>
+            <Button size="1" onClick={handleApply}>
               Apply Filters
             </Button>
           </Stack>

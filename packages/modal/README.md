@@ -453,8 +453,8 @@ const CustomFocusModal = ({ open, onClose }) => {
 
 ```tsx
 import { Button } from "@telegraph/button";
+import { Spinner } from "@telegraph/icon";
 import { Modal } from "@telegraph/modal";
-import { Spinner } from "@telegraph/spinner";
 import { useState } from "react";
 
 const LoadingModal = ({ open, onClose }) => {
@@ -775,7 +775,7 @@ import { Button } from "@telegraph/button";
 import { Input } from "@telegraph/input";
 import { Stack } from "@telegraph/layout";
 import { Modal } from "@telegraph/modal";
-import { Switch } from "@telegraph/switch";
+import { Toggle } from "@telegraph/toggle";
 
 export const SettingsModal = ({ open, onClose, settings, onSave }) => {
   const [localSettings, setLocalSettings] = useState(settings);
@@ -818,29 +818,29 @@ export const SettingsModal = ({ open, onClose, settings, onSave }) => {
 
             <Stack direction="column" gap="2">
               <h3>Preferences</h3>
-              <Stack direction="row" align="center" justify="between">
+              <Stack direction="row" align="center" justify="space-between">
                 <label htmlFor="notifications">Email Notifications</label>
-                <Switch
+                <Toggle.Default
                   id="notifications"
-                  checked={localSettings.emailNotifications}
-                  onCheckedChange={(checked) =>
+                  value={localSettings.emailNotifications}
+                  onValueChange={(value) =>
                     setLocalSettings((prev) => ({
                       ...prev,
-                      emailNotifications: checked,
+                      emailNotifications: value,
                     }))
                   }
                 />
               </Stack>
 
-              <Stack direction="row" align="center" justify="between">
+              <Stack direction="row" align="center" justify="space-between">
                 <label htmlFor="dark-mode">Dark Mode</label>
-                <Switch
+                <Toggle.Default
                   id="dark-mode"
-                  checked={localSettings.darkMode}
-                  onCheckedChange={(checked) =>
+                  value={localSettings.darkMode}
+                  onValueChange={(value) =>
                     setLocalSettings((prev) => ({
                       ...prev,
-                      darkMode: checked,
+                      darkMode: value,
                     }))
                   }
                 />
@@ -885,7 +885,7 @@ export const ImageGalleryModal = ({
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Image Gallery">
       <Modal.Content w="screen" maxW="screen" h="screen" rounded="0" p="0">
         <Modal.Header px="6" py="4">
-          <Stack direction="row" align="center" justify="between" w="full">
+          <Stack direction="row" align="center" justify="space-between" w="full">
             <Modal.Heading>
               {currentImage?.title || `Image ${currentIndex + 1}`}
             </Modal.Heading>
@@ -967,7 +967,6 @@ export const ImageGalleryModal = ({
 
 ```tsx
 import { Button } from "@telegraph/button";
-import { Checkbox } from "@telegraph/checkbox";
 import { Stack } from "@telegraph/layout";
 import { Modal } from "@telegraph/modal";
 import { RadioCards } from "@telegraph/radio";
@@ -1037,18 +1036,22 @@ export const ExportModal = ({ open, onClose, onExport }) => {
             <Stack direction="column" gap="2">
               <h3>Options</h3>
               <Stack direction="column" gap="2">
-                <Checkbox
-                  checked={includeHeaders}
-                  onCheckedChange={setIncludeHeaders}
-                >
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={includeHeaders}
+                    onChange={(event) => setIncludeHeaders(event.target.checked)}
+                  />
                   Include column headers
-                </Checkbox>
-                <Checkbox
-                  checked={includeMetadata}
-                  onCheckedChange={setIncludeMetadata}
-                >
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={includeMetadata}
+                    onChange={(event) => setIncludeMetadata(event.target.checked)}
+                  />
                   Include metadata
-                </Checkbox>
+                </label>
               </Stack>
             </Stack>
           </Stack>

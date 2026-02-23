@@ -78,8 +78,8 @@ The main tag component with built-in interactive features.
 | `variant`    | `"soft" \| "solid"` | `"soft"`         | Visual style variant                |
 | `icon`       | `IconProps`         | `undefined`      | Icon to display at the start        |
 | `onRemove`   | `() => void`        | `undefined`      | Makes tag removable with X button   |
-| `onCopy`     | `() => void`        | `undefined`      | Adds copy button functionality      |
-| `textToCopy` | `string`            | `undefined`      | Text to copy (defaults to children) |
+| `onCopy`     | `(event: React.MouseEvent<HTMLButtonElement>) => void` | `undefined` | Adds copy button functionality |
+| `textToCopy` | `string`            | `undefined`      | Text to copy to clipboard |
 | `textProps`  | `TextProps`         | `{ maxW: "40" }` | Props passed to the text component  |
 
 #### TagColor Type
@@ -380,7 +380,7 @@ export const TagFilter = ({ items, onFilter }) => {
 
 ```tsx
 import { Tag } from "@telegraph/tag";
-import { Link } from "next/link";
+import Link from "next/link";
 
 export const TagLinks = () => (
   <div>
@@ -541,7 +541,7 @@ Remove button component.
 
 | Prop      | Type         | Default                     | Description               |
 | --------- | ------------ | --------------------------- | ------------------------- |
-| `onClick` | `() => void` | -                           | Click handler for removal |
+| `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void` | - | Click handler for removal |
 | `icon`    | `IconProps`  | `{ icon: X, alt: "close" }` | Button icon configuration |
 
 ### `<Tag.CopyButton>`
@@ -550,7 +550,7 @@ Copy functionality button with animation.
 
 | Prop         | Type         | Default | Description               |
 | ------------ | ------------ | ------- | ------------------------- |
-| `onClick`    | `() => void` | -       | Additional click handler  |
+| `onClick`    | `(event: React.MouseEvent<HTMLButtonElement>) => void` | - | Additional click handler |
 | `textToCopy` | `string`     | -       | Text to copy to clipboard |
 
 ## Examples
