@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@knocklabs/typescript-config/react-library.json",
+  "display": "@telegraph/link",
+  "compilerOptions": {
+    "outDir": "dist",
+    "paths": {
+      "vitest.*": ["../../vitest/*"]
+    },
+    "types": ["@testing-library/jest-dom", "node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
+}

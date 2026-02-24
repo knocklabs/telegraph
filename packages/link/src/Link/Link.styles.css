@@ -1,0 +1,32 @@
+[data-tgph-link] {
+  appearance: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out,
+    filter 0.2s ease-in-out;
+}
+[data-tgph-link] [data-link-text] {
+  text-decoration-line: none;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+[data-tgph-link]:hover,
+[data-tgph-link]:focus-visible {
+  border-bottom-color: var(--border-color);
+}
+
+[data-tgph-link]:focus {
+  filter: brightness(0.8);
+}
+
+[data-tgph-link]:focus-visible {
+  outline: 2px solid var(--tgph-blue-8);
+  outline-offset: 2px;
+  border-radius: var(--tgph-rounded-1);
+  filter: brightness(0.8);
+}
