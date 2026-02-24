@@ -36,7 +36,6 @@
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "clsx": "^2.1.1",
     "lucide-react": "^0.544.0"
   },
   "devDependencies": {
