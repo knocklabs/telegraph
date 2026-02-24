@@ -5,7 +5,9 @@ import * as Icons from "lucide-react";
 import { Link as TelegraphLink } from "./Link";
 import { LINK_SIZE_MAP, LINK_WEIGHT_MAP } from "./Link.constants";
 
-const LINK_COLOR_OPTIONS: Array<NonNullable<React.ComponentProps<typeof TelegraphLink>["color"]>> = [
+const LINK_COLOR_OPTIONS: Array<
+  NonNullable<React.ComponentProps<typeof TelegraphLink>["color"]>
+> = [
   "default",
   "gray",
   "red",
