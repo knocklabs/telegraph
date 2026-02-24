@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.2.1
+
+### Patch Changes
+
+- [#693](https://github.com/knocklabs/telegraph/pull/693) [`4ab1d02`](https://github.com/knocklabs/telegraph/commit/4ab1d02cf51db16024e7098d4c9f9b963b8fac37) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.23.12 to 12.34.3
+
 ## 0.2.0
 
 ### Minor Changes
