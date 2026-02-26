@@ -10,7 +10,7 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import React from "react";
 
-type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
+export type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
   defaultOpen?: boolean;
 };
 
@@ -48,7 +48,7 @@ const Root = ({
   );
 };
 
-type TriggerProps = React.ComponentProps<typeof RadixPopover.Trigger> & {
+export type TriggerProps = React.ComponentProps<typeof RadixPopover.Trigger> & {
   tgphRef?: React.RefObject<HTMLButtonElement>;
 };
 
@@ -74,7 +74,7 @@ const Trigger = ({
   );
 };
 
-type ContentProps<T extends TgphElement> = React.ComponentProps<
+export type ContentProps<T extends TgphElement = "div"> = React.ComponentProps<
   typeof RadixPopover.Content
 > &
   Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
@@ -82,7 +82,7 @@ type ContentProps<T extends TgphElement> = React.ComponentProps<
     skipAnimation?: boolean;
   };
 
-const Content = <T extends TgphElement>({
+const Content = <T extends TgphElement = "div">({
   direction = "column",
   gap = "1",
   rounded = "4",

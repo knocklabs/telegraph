@@ -5,13 +5,15 @@ import * as Portal from "@radix-ui/react-portal";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
-import { RefToTgphRef } from "@telegraph/helpers";
-import type {
-  PolymorphicProps,
-  TgphComponentProps,
-  TgphElement,
+import {
+  type PolymorphicProps,
+  RefToTgphRef,
+  RemappedOmit,
+  type TgphComponentProps,
+  type TgphElement,
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
+import { Heading as TelegraphHeading } from "@telegraph/typography";
 import { X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
@@ -19,7 +21,7 @@ import React from "react";
 
 import { useModalStacking } from "./ModalStacking";
 
-type RootProps = Omit<
+export type RootProps = Omit<
   React.ComponentPropsWithoutRef<typeof Dialog.Root>,
   "modal"
 > &
@@ -205,7 +207,7 @@ const RootComponent = ({
   );
 };
 
-type OverlayProps = TgphComponentProps<typeof Box> & {
+export type OverlayProps = TgphComponentProps<typeof Box> & {
   layer: number;
 };
 
@@ -236,7 +238,9 @@ const Overlay = ({ layer, children }: OverlayProps) => {
   );
 };
 
-type ContentProps = React.ComponentPropsWithoutRef<typeof Dialog.Content> &
+export type ContentProps = React.ComponentPropsWithoutRef<
+  typeof Dialog.Content
+> &
   TgphComponentProps<typeof Stack>;
 type ContentRef = React.ElementRef<typeof Dialog.Content>;
 
@@ -252,9 +256,11 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
   },
 );
 
-type CloseProps<T extends TgphElement> = TgphComponentProps<typeof Button<T>> &
+export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
+  typeof Button<T>
+> &
   Omit<React.ComponentPropsWithoutRef<typeof Dialog.Close>, "color">;
-const Close = <T extends TgphElement>({
+const Close = <T extends TgphElement = "button">({
   size = "1",
   variant = "ghost",
   ...props
@@ -271,10 +277,10 @@ const Close = <T extends TgphElement>({
   );
 };
 
-type BodyProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack>;
+export type BodyProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Stack>, "as">;
 
-const Body = <T extends TgphElement>({
+const Body = <T extends TgphElement = "div">({
   style,
   children,
   ...props
@@ -295,10 +301,10 @@ const Body = <T extends TgphElement>({
   );
 };
 
-type HeaderProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack>;
+export type HeaderProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Stack>, "as">;
 
-const Header = <T extends TgphElement>({
+const Header = <T extends TgphElement = "div">({
   children,
   ...props
 }: HeaderProps<T>) => {
@@ -317,10 +323,10 @@ const Header = <T extends TgphElement>({
   );
 };
 
-type FooterProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Stack>;
+export type FooterProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Stack>, "as">;
 
-const Footer = <T extends TgphElement>({
+const Footer = <T extends TgphElement = "div">({
   children,
   ...props
 }: FooterProps<T>) => {
@@ -340,6 +346,29 @@ const Footer = <T extends TgphElement>({
   );
 };
 
+type HeadingProps<T extends TgphElement> = RemappedOmit<
+  TgphComponentProps<typeof TelegraphHeading<T>>,
+  "as"
+> & {
+  as?: T;
+};
+
+const Heading = <T extends TgphElement = "h2">({
+  as,
+  size = "3",
+  weight = "medium",
+  ...props
+}: HeadingProps<T>) => {
+  return (
+    <TelegraphHeading
+      as={(as || "h2") as T}
+      size={size}
+      weight={weight}
+      {...props}
+    />
+  );
+};
+
 const Modal = {} as {
   Root: typeof Root;
   Content: typeof Content;
@@ -347,6 +376,7 @@ const Modal = {} as {
   Body: typeof Body;
   Header: typeof Header;
   Footer: typeof Footer;
+  Heading: typeof Heading;
 };
 
 Object.assign(Modal, {
@@ -356,6 +386,7 @@ Object.assign(Modal, {
   Body,
   Header,
   Footer,
+  Heading,
 });
 
 export { Modal };

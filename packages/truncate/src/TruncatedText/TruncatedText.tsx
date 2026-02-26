@@ -3,11 +3,11 @@ import { Text } from "@telegraph/typography";
 
 import { TooltipIfTruncated } from "../TooltipIfTruncated";
 
-type TruncatedTextProps<T extends TgphElement> = {
+export type TruncatedTextProps<T extends TgphElement = "span"> = {
   tooltipProps?: Partial<TgphComponentProps<typeof TooltipIfTruncated>>;
 } & TgphComponentProps<typeof Text<T>>;
 
-const TruncatedText = <T extends TgphElement>({
+const TruncatedText = <T extends TgphElement = "span">({
   tooltipProps,
   style,
   ...props

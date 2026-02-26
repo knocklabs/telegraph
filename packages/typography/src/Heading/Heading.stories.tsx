@@ -10,13 +10,7 @@ const meta: Meta<typeof TelegraphHeading> = {
   component: TelegraphHeading,
   parameters: {
     controls: {
-      exclude: [
-        "internal_optionalAs",
-        "fontSize",
-        "leading",
-        "tracking",
-        "family",
-      ],
+      exclude: ["internal_optionalAs", "fontSize", "leading", "tracking"],
     },
   },
   argTypes: {
@@ -42,6 +36,12 @@ const meta: Meta<typeof TelegraphHeading> = {
     },
     align: {
       options: ["left", "center", "right"],
+      control: {
+        type: "select",
+      },
+    },
+    family: {
+      options: Object.keys(tokens.family),
       control: {
         type: "select",
       },

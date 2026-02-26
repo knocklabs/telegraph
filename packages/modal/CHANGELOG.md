@@ -1,5 +1,74 @@
 # @telegraph/modal
 
+## 0.2.1
+
+### Patch Changes
+
+- [#693](https://github.com/knocklabs/telegraph/pull/693) [`4ab1d02`](https://github.com/knocklabs/telegraph/commit/4ab1d02cf51db16024e7098d4c9f9b963b8fac37) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.23.12 to 12.34.3
+
+## 0.2.0
+
+### Minor Changes
+
+- [#688](https://github.com/knocklabs/telegraph/pull/688) [`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: invalid props on components would not throw type errors
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/typography@0.2.0
+  - @telegraph/button@0.4.0
+  - @telegraph/layout@0.4.0
+  - @telegraph/icon@0.4.0
+
+## 0.1.22
+
+### Patch Changes
+
+- [#686](https://github.com/knocklabs/telegraph/pull/686) [`e93b9a6`](https://github.com/knocklabs/telegraph/commit/e93b9a6c120dcc4b3cba129c21d43e892f56c87f) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add Modal.Heading component to standardize modal titles with default size 3 and medium weight
+
+- [#682](https://github.com/knocklabs/telegraph/pull/682) [`5196b27`](https://github.com/knocklabs/telegraph/commit/5196b2774b2aa218da7fa721ee59fd16049d18de) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-portal from 1.1.9 to 1.1.10
+
+## 0.1.21
+
+### Patch Changes
+
+- [#666](https://github.com/knocklabs/telegraph/pull/666) [`31e1ff7`](https://github.com/knocklabs/telegraph/commit/31e1ff71309215caaafdeb7085ada84a94fd07a2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-focus-scope from 1.1.7 to 1.1.8
+
+## 0.1.20
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/style-engine@0.2.2
+  - @telegraph/helpers@0.0.15
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/icon@0.3.5
+
+## 0.1.19
+
+### Patch Changes
+
+- [#655](https://github.com/knocklabs/telegraph/pull/655) [`b32cee5`](https://github.com/knocklabs/telegraph/commit/b32cee572cdabc573814253d20444283aebfdbd2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-visually-hidden from 1.2.3 to 1.2.4
+
+- Updated dependencies [[`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372)]:
+  - @telegraph/icon@0.3.4
+  - @telegraph/button@0.3.5
+
+## 0.1.18
+
+### Patch Changes
+
+- [#648](https://github.com/knocklabs/telegraph/pull/648) [`0dee3a4`](https://github.com/knocklabs/telegraph/commit/0dee3a4fa9bc21019ed42338416311e83519a646) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-dialog from 1.1.14 to 1.1.15
+
+- Updated dependencies [[`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37)]:
+  - @telegraph/helpers@0.0.14
+  - @telegraph/button@0.3.4
+  - @telegraph/icon@0.3.3
+  - @telegraph/layout@0.3.2
+
 ## 0.1.17
 
 ### Patch Changes

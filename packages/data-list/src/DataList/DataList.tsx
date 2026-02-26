@@ -5,13 +5,13 @@ import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
-type ListProps = TgphComponentProps<typeof Stack>;
+export type ListProps = TgphComponentProps<typeof Stack>;
 
 const List = ({ direction = "column", gap = "4", ...props }: ListProps) => {
   return <Stack direction={direction} gap={gap} {...props} />;
 };
 
-type ListItemProps = TgphComponentProps<typeof Stack>;
+export type ListItemProps = TgphComponentProps<typeof Stack>;
 
 const ListItem = ({
   direction = "row",
@@ -22,7 +22,7 @@ const ListItem = ({
   return <Stack direction={direction} gap={gap} align={align} {...props} />;
 };
 
-type LabelProps = {
+export type LabelProps = {
   textProps?: TgphComponentProps<typeof Text>;
   icon?: TgphComponentProps<typeof Icon>;
   description?: React.ReactNode;
@@ -82,13 +82,13 @@ const Label = ({
   );
 };
 
-type ValueProps = TgphComponentProps<typeof Stack>;
+export type ValueProps = TgphComponentProps<typeof Stack>;
 
 const Value = ({ ...props }: ValueProps) => {
   return <Stack {...props} />;
 };
 
-type ItemProps = ListItemProps & {
+export type ItemProps = ListItemProps & {
   label: React.ReactNode | string;
   icon?: TgphComponentProps<typeof Icon>;
   description?: React.ReactNode;

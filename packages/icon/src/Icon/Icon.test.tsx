@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Icon } from "./Icon";
+import type { IconProps } from "./Icon";
 
 // Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
@@ -74,6 +75,44 @@ describe("Icon", () => {
     expect(container.firstChild).toHaveStyle({
       "--height": "var(--tgph-spacing-12)",
       "--width": "var(--tgph-spacing-12)",
+    });
+  });
+
+  describe("type inheritance", () => {
+    it("accepts valid icon-specific props", () => {
+      const validProps: IconProps = {
+        icon: Bell,
+        alt: "notification",
+        size: "2",
+        color: "default",
+      };
+      void validProps;
+    });
+
+    it("accepts valid layout props from Box", () => {
+      const validProps: IconProps = {
+        icon: Bell,
+        alt: "notification",
+        padding: "1",
+        margin: "2",
+      };
+      void validProps;
+    });
+
+    it("rejects unknown props on type level", () => {
+      // @ts-expect-error unknown prop rejected on IconProps
+      const invalidProp: IconProps = {
+        icon: Bell,
+        alt: "test",
+        invalidProp: "invalid",
+      };
+      void invalidProp;
+    });
+
+    it("rejects unknown props in JSX", () => {
+      // @ts-expect-error unknown prop rejected on Icon JSX
+      const invalid = <Icon icon={Bell} alt="test" invalidProp="invalid" />;
+      void invalid;
     });
   });
 });

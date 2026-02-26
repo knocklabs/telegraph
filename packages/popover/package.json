@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/popover",
-  "version": "0.1.7",
+  "version": "0.2.1",
   "description": "Displays content in a portal, triggered by a button.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/popover",
   "author": "@knocklabs",
@@ -36,7 +36,7 @@
     "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "motion": "^12.23.12"
+    "motion": "^12.34.3"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
@@ -44,10 +44,10 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^19.1.11",
+    "@types/react": "^19.2.9",
     "eslint": "^8.56.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },

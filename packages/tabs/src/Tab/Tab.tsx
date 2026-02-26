@@ -16,14 +16,14 @@ import React from "react";
  * @property {TabIconProps} leadingIcon - Icon to display on the left side of the tab
  * @property {TabIconProps} trailingIcon - Icon to display on the right side of the tab
  */
-export type TabProps<T extends TgphElement> = {
+export type TabProps<T extends TgphElement = "button"> = {
   value: string;
 } & TgphComponentProps<typeof MenuItem<T>>;
 
 /**
  * Tab component that uses RadixTabs.Trigger with MenuItem styling
  */
-const Tab = <T extends TgphElement>({
+const Tab = <T extends TgphElement = "button">({
   disabled = false,
   value,
   children,

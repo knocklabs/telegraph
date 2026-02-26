@@ -10,11 +10,11 @@ import { Box } from "../Box";
 
 import { StyleProps, cssVars } from "./Stack.constants";
 
-type StackProps<T extends TgphElement> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Box> &
+export type StackProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<TgphComponentProps<typeof Box>, "as"> &
   StyleProps;
 
-const Stack = <T extends TgphElement>({
+const Stack = <T extends TgphElement = "div">({
   className,
   ...props
 }: StackProps<T>) => {

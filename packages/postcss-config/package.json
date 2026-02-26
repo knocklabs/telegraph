@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/postcss-config",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/postcss-config",
@@ -18,7 +18,7 @@
     "format:check": "prettier \"src/**/*.{js,ts,tsx}\" --check"
   },
   "dependencies": {
-    "@csstools/postcss-global-data": "^3.1.0",
+    "@csstools/postcss-global-data": "^4.0.0",
     "@telegraph/tokens": "workspace:^",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",

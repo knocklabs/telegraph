@@ -9,7 +9,7 @@ import React from "react";
 
 import { useTruncate } from "../useTruncate";
 
-type TooltipIfTruncatedProps = Optional<
+export type TooltipIfTruncatedProps = Optional<
   TgphComponentProps<typeof Tooltip>,
   "label"
 >;

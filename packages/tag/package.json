@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tag",
-  "version": "0.0.112",
+  "version": "0.1.1",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tag",
   "author": "@knocklabs",
   "license": "MIT",
@@ -40,7 +40,7 @@
     "@telegraph/typography": "workspace:^",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
-    "motion": "^12.23.12"
+    "motion": "^12.34.3"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
@@ -48,10 +48,10 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^19.1.11",
+    "@types/react": "^19.2.9",
     "eslint": "^8.56.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },

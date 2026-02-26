@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/kbd",
-  "version": "0.0.44",
+  "version": "0.1.0",
   "description": "Styled element for keyboard input or hotkey.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/kbd",
   "author": "@knocklabs",
@@ -45,10 +45,10 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^19.1.11",
+    "@types/react": "^19.2.9",
     "eslint": "^8.56.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },

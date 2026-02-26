@@ -1,5 +1,64 @@
 # @telegraph/tag
 
+## 0.1.1
+
+### Patch Changes
+
+- [#693](https://github.com/knocklabs/telegraph/pull/693) [`4ab1d02`](https://github.com/knocklabs/telegraph/commit/4ab1d02cf51db16024e7098d4c9f9b963b8fac37) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.23.12 to 12.34.3
+
+- Updated dependencies [[`4ab1d02`](https://github.com/knocklabs/telegraph/commit/4ab1d02cf51db16024e7098d4c9f9b963b8fac37)]:
+  - @telegraph/tooltip@0.1.1
+
+## 0.1.0
+
+### Minor Changes
+
+- [#688](https://github.com/knocklabs/telegraph/pull/688) [`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: invalid props on components would not throw type errors
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/typography@0.2.0
+  - @telegraph/tooltip@0.1.0
+  - @telegraph/button@0.4.0
+  - @telegraph/layout@0.4.0
+  - @telegraph/icon@0.4.0
+
+## 0.0.115
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/compose-refs@0.0.8
+  - @telegraph/typography@0.1.29
+  - @telegraph/helpers@0.0.15
+  - @telegraph/tooltip@0.0.62
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/icon@0.3.5
+
+## 0.0.114
+
+### Patch Changes
+
+- Updated dependencies [[`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372)]:
+  - @telegraph/icon@0.3.4
+  - @telegraph/button@0.3.5
+
+## 0.0.113
+
+### Patch Changes
+
+- Updated dependencies [[`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37)]:
+  - @telegraph/helpers@0.0.14
+  - @telegraph/button@0.3.4
+  - @telegraph/icon@0.3.3
+  - @telegraph/layout@0.3.2
+  - @telegraph/tooltip@0.0.61
+  - @telegraph/typography@0.1.28
+
 ## 0.0.112
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/select",
-  "version": "0.0.77",
+  "version": "0.0.84",
   "description": "A simple select component built on top of @telegraph/combobox",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/select",
   "author": "@knocklabs",
@@ -39,10 +39,10 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^19.1.11",
+    "@types/react": "^19.2.9",
     "eslint": "^8.56.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },

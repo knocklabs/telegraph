@@ -1,5 +1,61 @@
 # @telegraph/filter
 
+## 0.1.0
+
+### Minor Changes
+
+- [#688](https://github.com/knocklabs/telegraph/pull/688) [`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: invalid props on components would not throw type errors
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/combobox@0.2.0
+  - @telegraph/button@0.4.0
+  - @telegraph/layout@0.4.0
+  - @telegraph/icon@0.4.0
+  - @telegraph/menu@0.2.0
+
+## 0.0.44
+
+### Patch Changes
+
+- Updated dependencies [[`7111048`](https://github.com/knocklabs/telegraph/commit/71110486996cf8e447f503bf1aef63aeee1a6d4e)]:
+  - @telegraph/combobox@0.1.27
+
+## 0.0.43
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/combobox@0.1.26
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/icon@0.3.5
+  - @telegraph/menu@0.1.20
+
+## 0.0.42
+
+### Patch Changes
+
+- Updated dependencies [[`b32cee5`](https://github.com/knocklabs/telegraph/commit/b32cee572cdabc573814253d20444283aebfdbd2), [`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372)]:
+  - @telegraph/combobox@0.1.25
+  - @telegraph/icon@0.3.4
+  - @telegraph/button@0.3.5
+  - @telegraph/menu@0.1.19
+
+## 0.0.41
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.3.4
+  - @telegraph/combobox@0.1.24
+  - @telegraph/icon@0.3.3
+  - @telegraph/layout@0.3.2
+  - @telegraph/menu@0.1.18
+
 ## 0.0.40
 
 ### Patch Changes

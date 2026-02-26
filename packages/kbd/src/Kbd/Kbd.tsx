@@ -7,7 +7,7 @@ import { colorMap, sizeMap } from "./Kbd.constants";
 import { getIconOrKey } from "./Kbd.helpers";
 import { usePressed } from "./Kbd.hooks";
 
-type KbdProps = {
+export type KbdProps = {
   size?: keyof typeof sizeMap;
   contrast?: boolean;
   label: string;

@@ -1,8 +1,9 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
 
 import { Box } from "./Box";
+import type { BoxProps } from "./Box";
 
 describe("Box", () => {
   describe("borderColor", () => {
@@ -142,6 +143,36 @@ describe("Box", () => {
       expect(box).toHaveStyle({
         "--border-color": "var(--tgph-red-11) 0 var(--tgph-blue-9) 0",
       });
+    });
+  });
+
+  describe("type inheritance", () => {
+    it("accepts valid polymorphic props", () => {
+      expectTypeOf<BoxProps<"a">["href"]>().toEqualTypeOf<string | undefined>();
+      expectTypeOf<BoxProps<"button">["disabled"]>().toEqualTypeOf<
+        boolean | undefined
+      >();
+    });
+
+    it("accepts valid style props", () => {
+      const validProps: BoxProps = {
+        padding: "2",
+        margin: "1",
+        display: "flex",
+      };
+      void validProps;
+    });
+
+    it("rejects unknown props on type level", () => {
+      // @ts-expect-error unknown prop rejected on BoxProps
+      const invalidProp: BoxProps = { invalidProp: "invalid" };
+      void invalidProp;
+    });
+
+    it("rejects unknown props in JSX", () => {
+      // @ts-expect-error unknown prop rejected on Box JSX
+      const invalid = <Box invalidProp="invalid" />;
+      void invalid;
     });
   });
 });

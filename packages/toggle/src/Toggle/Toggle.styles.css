@@ -1,0 +1,41 @@
+[data-tgph-toggle-switch] {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+/* Focus ring when input receives keyboard focus */
+:has([data-tgph-toggle-input]:focus-visible) [data-tgph-toggle-switch] {
+  outline: 2px solid var(--tgph-blue-8);
+  outline-offset: 2px;
+}
+
+/* Icon inside the knob */
+[data-tgph-toggle-icon] {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Move icon with knob when checked */
+[data-tgph-toggle-switch][data-tgph-toggle-checked="true"]
+  [data-tgph-toggle-icon] {
+  transform: translateX(calc(100% - var(--tgph-spacing-1)));
+}
+
+/* Label styling */
+[data-tgph-toggle-label] {
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-tgph-toggle-label][data-tgph-toggle-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--tgph-gray-9);
+}
+
+/* Override the background color of the gray button to match the design spec. */
+[data-tgph-toggle-switch][data-tgph-toggle-checked="false"]:not(
+    [data-tgph-button-state="disabled"]
+  ) {
+  background-color: var(--tgph-gray-7) !important;
+}

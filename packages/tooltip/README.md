@@ -42,13 +42,13 @@ import { Info } from "lucide-react";
 export const TooltipExample = () => (
   <div>
     {/* Basic tooltip */}
-    <Tooltip content="This button saves your changes">
+    <Tooltip label="This button saves your changes">
       <Button>Save</Button>
     </Tooltip>
 
     {/* Rich content tooltip */}
     <Tooltip
-      content={
+      label={
         <div>
           <strong>Pro Tip:</strong>
           <br />
@@ -70,13 +70,13 @@ The main tooltip component that wraps content and provides contextual informatio
 
 | Prop                      | Type                                     | Default     | Description                                                  |
 | ------------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
-| `content`                 | `ReactNode`                              | -           | **Required.** Content to display in the tooltip              |
-| `side`                    | `"top" \| "right" \| "bottom" \| "left"` | `"top"`     | Preferred placement side                                     |
+| `label`                   | `string \| ReactNode`                    | -           | **Required.** Content to display in the tooltip              |
+| `side`                    | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"`  | Preferred placement side                                     |
 | `align`                   | `"start" \| "center" \| "end"`           | `"center"`  | Alignment relative to the trigger                            |
 | `sideOffset`              | `number`                                 | `4`         | Distance from the trigger element                            |
 | `alignOffset`             | `number`                                 | `0`         | Offset along the alignment axis                              |
-| `delayDuration`           | `number`                                 | `700`       | Delay before showing tooltip (ms)                            |
-| `skipDelayDuration`       | `number`                                 | `300`       | Skip delay if another tooltip was recently shown             |
+| `delayDuration`           | `number`                                 | `400`       | Delay before showing tooltip (ms)                            |
+| `skipDelayDuration`       | `number`                                 | -           | Skip delay if another tooltip was recently shown             |
 | `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content |
 | `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges           |
 | `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                               |
@@ -91,7 +91,7 @@ import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
 
 export const BasicTooltip = () => (
-  <Tooltip content="Click to save your work">
+  <Tooltip label="Click to save your work">
     <Button>Save</Button>
   </Tooltip>
 );
@@ -105,19 +105,19 @@ import { Tooltip } from "@telegraph/tooltip";
 
 export const PositionedTooltips = () => (
   <div>
-    <Tooltip content="Tooltip on top" side="top">
+    <Tooltip label="Tooltip on top" side="top">
       <Button>Top</Button>
     </Tooltip>
 
-    <Tooltip content="Tooltip on right" side="right">
+    <Tooltip label="Tooltip on right" side="right">
       <Button>Right</Button>
     </Tooltip>
 
-    <Tooltip content="Tooltip on bottom" side="bottom">
+    <Tooltip label="Tooltip on bottom" side="bottom">
       <Button>Bottom</Button>
     </Tooltip>
 
-    <Tooltip content="Tooltip on left" side="left">
+    <Tooltip label="Tooltip on left" side="left">
       <Button>Left</Button>
     </Tooltip>
   </div>
@@ -133,7 +133,7 @@ import { Mail, Phone, User } from "lucide-react";
 
 export const RichContentTooltip = () => (
   <Tooltip
-    content={
+    label={
       <div className="user-tooltip">
         <div className="user-header">
           <User size={20} />
@@ -164,12 +164,12 @@ import { Tooltip } from "@telegraph/tooltip";
 export const CustomDelayTooltips = () => (
   <div>
     {/* Instant tooltip */}
-    <Tooltip content="Shows immediately" delayDuration={0}>
+    <Tooltip label="Shows immediately" delayDuration={0}>
       <Button>Instant</Button>
     </Tooltip>
 
     {/* Slow tooltip */}
-    <Tooltip content="Takes time to show" delayDuration={1500}>
+    <Tooltip label="Takes time to show" delayDuration={1500}>
       <Button>Slow</Button>
     </Tooltip>
   </div>
@@ -183,7 +183,7 @@ import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
 
 export const DisabledTooltip = () => (
-  <Tooltip content="This action is not available right now">
+  <Tooltip label="This action is not available right now">
     <span>
       {" "}
       {/* Wrapper needed for disabled elements */}
@@ -202,7 +202,7 @@ import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
 
 export const ConditionalTooltip = ({ showTooltip, user }) => (
-  <Tooltip content={showTooltip ? `Hello, ${user.name}!` : undefined}>
+  <Tooltip label={showTooltip ? `Hello, ${user.name}!` : "Sign in to continue"}>
     <Button>{user.isLoggedIn ? "Dashboard" : "Sign In"}</Button>
   </Tooltip>
 );
@@ -213,11 +213,11 @@ export const ConditionalTooltip = ({ showTooltip, user }) => (
 ```tsx
 import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
-import { Link } from "next/link";
+import Link from "next/link";
 
 export const InteractiveTooltip = () => (
   <Tooltip
-    content={
+    label={
       <div className="interactive-tooltip">
         <p>Need help with this feature?</p>
         <div className="tooltip-actions">
@@ -255,7 +255,7 @@ export const FormWithTooltips = () => (
       <label htmlFor="username">
         Username
         <Tooltip
-          content="Username must be 3-20 characters long and contain only letters, numbers, and underscores"
+          label="Username must be 3-20 characters long and contain only letters, numbers, and underscores"
           side="right"
         >
           <HelpCircle size={16} className="help-icon" />
@@ -268,7 +268,7 @@ export const FormWithTooltips = () => (
       <label htmlFor="email">
         Email Address
         <Tooltip
-          content="We'll use this email for account notifications and password recovery"
+          label="We'll use this email for account notifications and password recovery"
           side="right"
         >
           <HelpCircle size={16} className="help-icon" />
@@ -288,15 +288,15 @@ import { Tooltip } from "@telegraph/tooltip";
 
 export const ArrowTooltips = () => (
   <div className="tooltip-demo-grid">
-    <Tooltip content="Aligned to start" align="start">
+    <Tooltip label="Aligned to start" align="start">
       <Button>Start</Button>
     </Tooltip>
 
-    <Tooltip content="Centered alignment" align="center">
+    <Tooltip label="Centered alignment" align="center">
       <Button>Center</Button>
     </Tooltip>
 
-    <Tooltip content="Aligned to end" align="end">
+    <Tooltip label="Aligned to end" align="end">
       <Button>End</Button>
     </Tooltip>
   </div>
@@ -310,7 +310,7 @@ import { Tooltip } from "@telegraph/tooltip";
 
 export const ChartTooltip = ({ dataPoint }) => (
   <Tooltip
-    content={
+    label={
       <div className="chart-tooltip">
         <div className="tooltip-title">{dataPoint.label}</div>
         <div className="tooltip-value">
@@ -345,7 +345,7 @@ import { Tooltip } from "@telegraph/tooltip";
 export const KeyboardTooltips = () => (
   <div className="keyboard-shortcuts">
     <Tooltip
-      content={
+      label={
         <div>
           Quick save: <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>
         </div>
@@ -355,7 +355,7 @@ export const KeyboardTooltips = () => (
     </Tooltip>
 
     <Tooltip
-      content={
+      label={
         <div>
           Copy: <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd>
           <br />
@@ -402,7 +402,7 @@ export const StatusTooltips = ({ status }) => {
   const config = statusConfig[status];
 
   return (
-    <Tooltip content={config.message}>
+    <Tooltip label={config.message}>
       <config.icon size={20} className={`status-icon status-${config.color}`} />
     </Tooltip>
   );
@@ -418,21 +418,21 @@ import { Settings, User } from "lucide-react";
 
 export const NestedTooltips = () => (
   <div className="nested-tooltip-example">
-    <Tooltip content="User account settings">
+    <Tooltip label="User account settings">
       <Button icon={{ icon: User, alt: "User" }}>Profile</Button>
     </Tooltip>
 
     <Tooltip
-      content={
+      label={
         <div>
           <div>Advanced Settings</div>
           <div className="nested-actions">
-            <Tooltip content="Manage account preferences" side="right">
+            <Tooltip label="Manage account preferences" side="right">
               <Button size="0" variant="ghost">
                 Preferences
               </Button>
             </Tooltip>
-            <Tooltip content="Security and privacy settings" side="right">
+            <Tooltip label="Security and privacy settings" side="right">
               <Button size="0" variant="ghost">
                 Security
               </Button>
@@ -488,7 +488,7 @@ import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
 
 export const BasicExample = () => (
-  <Tooltip content="This will save your current work">
+  <Tooltip label="This will save your current work">
     <Button>Save Changes</Button>
   </Tooltip>
 );
@@ -497,14 +497,14 @@ export const BasicExample = () => (
 ### Advanced Example
 
 ```tsx
-import { Badge } from "@telegraph/badge";
+import { Tag } from "@telegraph/tag";
 import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
 import { Calendar, Mail, MapPin, User } from "lucide-react";
 
 export const UserProfileTooltip = ({ user }) => (
   <Tooltip
-    content={
+    label={
       <div className="user-profile-tooltip">
         <div className="user-header">
           <div className="user-avatar">
@@ -512,9 +512,9 @@ export const UserProfileTooltip = ({ user }) => (
           </div>
           <div className="user-info">
             <h4>{user.name}</h4>
-            <Badge variant="soft" color="green">
+            <Tag variant="soft" color="green">
               Online
-            </Badge>
+            </Tag>
           </div>
         </div>
 
@@ -555,7 +555,7 @@ export const UserProfileTooltip = ({ user }) => (
 ### Real-world Example
 
 ```tsx
-import { Badge } from "@telegraph/badge";
+import { Tag } from "@telegraph/tag";
 import { Button } from "@telegraph/button";
 import { Tooltip } from "@telegraph/tooltip";
 import {
@@ -576,18 +576,18 @@ export const ApplicationHeader = ({ user, notifications }) => (
     </div>
 
     <nav className="header-nav">
-      <Tooltip content="View all notifications">
+      <Tooltip label="View all notifications">
         <Button variant="ghost" icon={{ icon: Bell, alt: "Notifications" }}>
           {notifications.length > 0 && (
-            <Badge variant="solid" color="red" size="0">
+            <Tag variant="solid" color="red" size="0">
               {notifications.length}
-            </Badge>
+            </Tag>
           )}
         </Button>
       </Tooltip>
 
       <Tooltip
-        content={
+        label={
           <div className="feature-tooltip">
             <div className="tooltip-header">
               <Zap size={16} />
@@ -613,7 +613,7 @@ export const ApplicationHeader = ({ user, notifications }) => (
       </Tooltip>
 
       <Tooltip
-        content={
+        label={
           <div className="help-tooltip">
             <div className="help-section">
               <h4>Need Help?</h4>
@@ -641,7 +641,7 @@ export const ApplicationHeader = ({ user, notifications }) => (
       </Tooltip>
 
       <Tooltip
-        content={
+        label={
           <div className="user-menu-tooltip">
             <div className="user-info">
               <div className="user-avatar">
@@ -650,13 +650,13 @@ export const ApplicationHeader = ({ user, notifications }) => (
               <div>
                 <div className="user-name">{user.name}</div>
                 <div className="user-email">{user.email}</div>
-                <Badge
+                <Tag
                   variant="soft"
                   color={user.plan === "premium" ? "purple" : "gray"}
                   size="0"
                 >
                   {user.plan}
-                </Badge>
+                </Tag>
               </div>
             </div>
 

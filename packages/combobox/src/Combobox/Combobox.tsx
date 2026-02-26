@@ -42,11 +42,12 @@ type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
   : "truncate" | "wrap";
 
-type RootProps<
+export type RootProps<
   O extends (Option | Array<Option>) | (string | Array<string>),
   LB extends boolean,
 > = {
   value?: O;
+  defaultValue?: O;
   onValueChange?: (value: O) => void;
   layout?: LayoutValue<O>;
   open?: boolean;
@@ -59,6 +60,11 @@ type RootProps<
   clearable?: boolean;
   disabled?: boolean;
   legacyBehavior?: LB;
+  /**
+   * The value to scroll to when the combobox opens, if no value is selected.
+   * Useful for long lists where you want to start at a specific position.
+   */
+  defaultScrollToValue?: string;
   children?: React.ReactNode;
 };
 
@@ -79,6 +85,7 @@ export const ComboboxContext = React.createContext<
     contentRef?: React.RefObject<HTMLDivElement>;
     options: Array<DefinedOption>;
     legacyBehavior: boolean;
+    defaultScrollToValue?: string;
   }
 >({
   value: undefined,
@@ -106,11 +113,13 @@ const Root = <
   open: openProp,
   onOpenChange: onOpenChangeProp,
   defaultOpen: defaultOpenProp,
-  value,
-  onValueChange,
+  value: valueProp,
+  defaultValue: defaultValueProp,
+  onValueChange: onValueChangeProp,
   errored,
   placeholder,
   layout,
+  defaultScrollToValue,
   children,
   ...props
 }: RootProps<O, LB>) => {
@@ -129,6 +138,12 @@ const Root = <
     prop: openProp,
     defaultProp: defaultOpenProp ?? false,
     onChange: onOpenChangeProp,
+  });
+
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValueProp as O,
+    onChange: onValueChangeProp as (value: O) => void,
   });
 
   const onOpenToggle = React.useCallback(() => {
@@ -152,7 +167,7 @@ const Root = <
         // Need to cast this to avoid type errors
         // because the type of onValueChange is not
         // consistent with the value type
-        onValueChange: onValueChange as (value: Option | Array<Option>) => void,
+        onValueChange: setValue as (value: Option | Array<Option>) => void,
         placeholder,
         open,
         setOpen,
@@ -169,6 +184,7 @@ const Root = <
         layout,
         options,
         legacyBehavior,
+        defaultScrollToValue,
       }}
     >
       <TelegraphMenu.Root
@@ -200,7 +216,7 @@ type TriggerBaseProps = RemappedOmit<
   "children"
 >;
 
-type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
+export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
   children?:
     | React.ReactNode
@@ -327,11 +343,11 @@ const Trigger = <V extends ChildrenValue>({
   );
 };
 
-type ContentProps<T extends TgphElement> = TgphComponentProps<
+export type ContentProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof TelegraphMenu.Content<T>
 >;
 
-const Content = <T extends TgphElement>({
+const Content = <T extends TgphElement = "div">({
   style,
   children,
   tgphRef,
@@ -481,31 +497,85 @@ const Content = <T extends TgphElement>({
   );
 };
 
-type OptionsProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>>;
+export type OptionsProps<T extends TgphElement = "div"> = TgphComponentProps<
+  typeof Stack<T>
+>;
 
-const Options = <T extends TgphElement>({ ...props }: OptionsProps<T>) => {
+const Options = <T extends TgphElement = "div">({
+  tgphRef,
+  ...props
+}: OptionsProps<T>) => {
   const context = React.useContext(ComboboxContext);
+  const optionsRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = useComposedRefs<unknown>(tgphRef, optionsRef);
+
+  // Scroll to the selected option (or defaultScrollToValue) when the combobox opens
+  React.useEffect(() => {
+    if (context.open && optionsRef.current) {
+      // Small delay to ensure the DOM has rendered
+      requestAnimationFrame(() => {
+        const selectedValue = isSingleSelect(context.value)
+          ? getValueFromOption(context.value, context.legacyBehavior)
+          : isMultiSelect(context.value) && context.value.length > 0
+            ? getValueFromOption(context.value[0], context.legacyBehavior)
+            : null;
+
+        // Use selected value if available, otherwise fall back to defaultScrollToValue
+        const valueToScrollTo = selectedValue ?? context.defaultScrollToValue;
+
+        if (valueToScrollTo) {
+          // Find the target option by iterating through elements rather than
+          // using querySelector with string interpolation, which would fail
+          // if the value contains special characters like quotes or brackets
+          const options = optionsRef.current?.querySelectorAll(
+            "[data-tgph-combobox-option]",
+          );
+          const targetOption = Array.from(options || []).find(
+            (el) =>
+              el.getAttribute("data-tgph-combobox-option-value") ===
+              valueToScrollTo,
+          );
+
+          // Check if scrollIntoView is available (not available in jsdom)
+          if (
+            targetOption &&
+            typeof targetOption.scrollIntoView === "function"
+          ) {
+            targetOption.scrollIntoView({ block: "center" });
+          }
+        }
+      });
+    }
+  }, [
+    context.open,
+    context.value,
+    context.legacyBehavior,
+    context.defaultScrollToValue,
+  ]);
 
   return (
     <Stack
       id={context.contentId}
       direction="column"
       gap="1"
-      style={{
-        overflowY: "auto",
-        // maxHeight defaults to available height - padding from edge of screen
-        "--max-height": !props.maxHeight
-          ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
-          : undefined,
-      }}
+      style={
+        {
+          overflowY: "auto",
+          // maxHeight defaults to available height - padding from edge of screen
+          "--max-height": !props.maxHeight
+            ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
+            : undefined,
+        } as React.CSSProperties
+      }
       // Accessibility attributes
       role="listbox"
+      tgphRef={composedRef}
       {...props}
     />
   );
 };
 
-type OptionProps<T extends TgphElement> = TgphComponentProps<
+export type OptionProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof TelegraphMenu.Button<T>
 > & {
   value: DefinedOption["value"];
@@ -597,8 +667,8 @@ const Option = <T extends TgphElement>({
     return (
       <TelegraphMenu.Button
         type="button"
-        onSelect={handleSelection}
-        onKeyDown={handleSelection}
+        onSelect={handleSelection as (event: Event) => void}
+        onKeyDown={handleSelection as React.KeyboardEventHandler}
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : (selected ?? isSelected)}
@@ -620,7 +690,7 @@ const Option = <T extends TgphElement>({
   }
 };
 
-type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
+export type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
   label?: string;
 };
 
@@ -698,7 +768,9 @@ const Search = ({
   );
 };
 
-type EmptyProps<T extends TgphElement> = TgphComponentProps<typeof Stack<T>> & {
+export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
+  typeof Stack<T>
+> & {
   icon?: TgphComponentProps<typeof Icon> | null;
   message?: string | null;
 };
@@ -742,9 +814,9 @@ const Empty = <T extends TgphElement>({
   }
 };
 
-type CreateProps<
-  T extends TgphElement,
-  LB extends boolean,
+export type CreateProps<
+  T extends TgphElement = "button",
+  LB extends boolean = false,
 > = TgphComponentProps<typeof TelegraphMenu.Button<T>> & {
   leadingText?: string;
 } & (LB extends true

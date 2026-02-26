@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/style-engine-example",
-  "version": "0.0.29",
+  "version": "0.0.33",
   "private": true,
   "scripts": {
     "dev:examples": "next dev --turbopack",
@@ -13,16 +13,16 @@
     "@telegraph/layout": "workspace:^",
     "@telegraph/tokens": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "next": "15.5.7",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "next": "16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/style-engine": "workspace:^",
-    "@types/node": "^22.13.11",
-    "@types/react": "^19.1.11",
+    "@types/node": "^25.2.3",
+    "@types/react": "^19.2.9",
     "@types/react-dom": "^19",
     "typescript": "^5.9.3"
   },

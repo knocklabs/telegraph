@@ -1,5 +1,42 @@
 # @telegraph/style-engine-example
 
+## 0.0.33
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/typography@0.2.0
+  - @telegraph/button@0.4.0
+  - @telegraph/layout@0.4.0
+
+## 0.0.32
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/typography@0.1.29
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/tokens@0.1.3
+
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.3.5
+
+## 0.0.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.3.4
+  - @telegraph/layout@0.3.2
+  - @telegraph/typography@0.1.28
+
 ## 0.0.29
 
 ### Patch Changes

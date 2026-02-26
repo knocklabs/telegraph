@@ -1,5 +1,48 @@
 # @telegraph/radio
 
+## 0.1.0
+
+### Minor Changes
+
+- [#688](https://github.com/knocklabs/telegraph/pull/688) [`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: invalid props on components would not throw type errors
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/button@0.4.0
+  - @telegraph/layout@0.4.0
+  - @telegraph/icon@0.4.0
+
+## 0.0.92
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/helpers@0.0.15
+  - @telegraph/button@0.3.6
+  - @telegraph/layout@0.3.3
+  - @telegraph/icon@0.3.5
+
+## 0.0.91
+
+### Patch Changes
+
+- Updated dependencies [[`a8c2402`](https://github.com/knocklabs/telegraph/commit/a8c24027d5a341ab53f4e72e0f6c0fe74d0d0372)]:
+  - @telegraph/icon@0.3.4
+  - @telegraph/button@0.3.5
+
+## 0.0.90
+
+### Patch Changes
+
+- Updated dependencies [[`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37)]:
+  - @telegraph/helpers@0.0.14
+  - @telegraph/button@0.3.4
+  - @telegraph/icon@0.3.3
+  - @telegraph/layout@0.3.2
+
 ## 0.0.89
 
 ### Patch Changes

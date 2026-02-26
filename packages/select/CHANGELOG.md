@@ -1,5 +1,60 @@
 # @telegraph/select
 
+## 0.0.84
+
+### Patch Changes
+
+- Updated dependencies [[`4ab1d02`](https://github.com/knocklabs/telegraph/commit/4ab1d02cf51db16024e7098d4c9f9b963b8fac37)]:
+  - @telegraph/combobox@0.2.1
+
+## 0.0.83
+
+### Patch Changes
+
+- Updated dependencies [[`8d55540`](https://github.com/knocklabs/telegraph/commit/8d5554005bea4695560efbee9ea4333ccddfc1bf)]:
+  - @telegraph/combobox@0.2.0
+
+## 0.0.82
+
+### Patch Changes
+
+- Updated dependencies [[`5196b27`](https://github.com/knocklabs/telegraph/commit/5196b2774b2aa218da7fa721ee59fd16049d18de)]:
+  - @telegraph/combobox@0.1.28
+
+## 0.0.81
+
+### Patch Changes
+
+- [#679](https://github.com/knocklabs/telegraph/pull/679) [`7111048`](https://github.com/knocklabs/telegraph/commit/71110486996cf8e447f503bf1aef63aeee1a6d4e) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: add defaultValue and defaultScrollToValue, automatically scroll to value on open
+
+- Updated dependencies [[`7111048`](https://github.com/knocklabs/telegraph/commit/71110486996cf8e447f503bf1aef63aeee1a6d4e)]:
+  - @telegraph/combobox@0.1.27
+
+## 0.0.80
+
+### Patch Changes
+
+- [#653](https://github.com/knocklabs/telegraph/pull/653) [`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump react and @types/react
+
+- Updated dependencies [[`d6c6aa9`](https://github.com/knocklabs/telegraph/commit/d6c6aa9cb0e11ba96df7d7efd479c8e4652fc029)]:
+  - @telegraph/combobox@0.1.26
+  - @telegraph/helpers@0.0.15
+
+## 0.0.79
+
+### Patch Changes
+
+- Updated dependencies [[`b32cee5`](https://github.com/knocklabs/telegraph/commit/b32cee572cdabc573814253d20444283aebfdbd2)]:
+  - @telegraph/combobox@0.1.25
+
+## 0.0.78
+
+### Patch Changes
+
+- Updated dependencies [[`c7ffe1d`](https://github.com/knocklabs/telegraph/commit/c7ffe1d85a0320dec6a05b1fd386ba0092c48e37)]:
+  - @telegraph/helpers@0.0.14
+  - @telegraph/combobox@0.1.24
+
 ## 0.0.77
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/modal",
-  "version": "0.1.17",
+  "version": "0.2.1",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/modal",
   "author": "@knocklabs",
   "license": "MIT",
@@ -29,17 +29,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.1.14",
-    "@radix-ui/react-focus-scope": "^1.1.7",
-    "@radix-ui/react-portal": "^1.1.9",
-    "@radix-ui/react-visually-hidden": "^1.2.3",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-focus-scope": "^1.1.8",
+    "@radix-ui/react-portal": "^1.1.10",
+    "@radix-ui/react-visually-hidden": "^1.2.4",
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/style-engine": "workspace:^",
+    "@telegraph/typography": "workspace:^",
     "lucide-react": "^0.544.0",
-    "motion": "^12.23.12"
+    "motion": "^12.34.3"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
@@ -47,10 +48,10 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/react": "^19.1.11",
+    "@types/react": "^19.2.9",
     "eslint": "^8.56.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },
