@@ -1,3 +1,5 @@
+import type { CssVarProp } from "@telegraph/style-engine";
+
 export const SIZE = {
   Root: {
     "0": {
@@ -14,14 +16,14 @@ export const SIZE = {
 
 export const SPACING = {
   Root: {
-    "0": "1",
-    "1": "1_5",
-    "2": "2",
+    "0": "1_5",
+    "1": "2",
+    "2": "2_5",
   },
   Text: {
-    "0": "1",
-    "1": "1_5",
-    "2": "2",
+    "0": "1_5",
+    "1": "2",
+    "2": "2_5",
   },
 } as const;
 
@@ -38,14 +40,26 @@ export const COLOR = {
       purple: "purple-9",
     },
     soft: {
-      default: "gray-3",
-      accent: "accent-3",
-      gray: "gray-3",
-      red: "red-3",
-      blue: "blue-3",
-      green: "green-3",
-      yellow: "yellow-3",
-      purple: "purple-3",
+      default: "gray-2",
+      accent: "accent-2",
+      gray: "gray-2",
+      red: "red-2",
+      blue: "blue-2",
+      green: "green-2",
+      yellow: "yellow-2",
+      purple: "purple-2",
+    },
+  },
+  Border: {
+    soft: {
+      default: "gray-4",
+      accent: "accent-4",
+      gray: "gray-4",
+      red: "red-4",
+      blue: "blue-4",
+      green: "green-4",
+      yellow: "yellow-4",
+      purple: "purple-4",
     },
   },
   Icon: {
@@ -113,5 +127,23 @@ export const COLOR = {
       yellow: "yellow",
       purple: "purple",
     },
+  },
+} as const;
+
+export const VARIANT = {
+  Button: {
+    solid: "solid",
+    soft: "ghost",
+  },
+} as const;
+
+export type BaseStyleProps = {
+  tagBorderColor: string;
+};
+
+export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
+  tagBorderColor: {
+    cssVar: "--box-shadow",
+    value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
   },
 } as const;

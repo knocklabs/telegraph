@@ -9,6 +9,7 @@ import type {
 } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
+import { useStyleEngine } from "@telegraph/style-engine";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
 import { clsx } from "clsx";
@@ -17,7 +18,7 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import React from "react";
 
-import { COLOR, SIZE, SPACING } from "./Tag.constants";
+import { COLOR, SIZE, SPACING, VARIANT, cssVars } from "./Tag.constants";
 
 type RootBaseProps = {
   size?: "0" | "1" | "2";
@@ -42,19 +43,33 @@ const Root = <T extends TgphElement = "span">({
   color = "default",
   variant = "soft",
   className,
+  style,
   ...props
 }: RootProps<T>) => {
+  const { styleProp, otherProps } = useStyleEngine({
+    props: {
+      ...(variant === "soft"
+        ? { tagBorderColor: COLOR.Border.soft[color] }
+        : {}),
+      style,
+    },
+    cssVars,
+  });
+
   return (
     <TagContext.Provider value={{ size, color, variant }}>
       <Stack
         as={as}
         align="center"
-        rounded="1"
+        rounded="full"
+        overflow="hidden"
         display="inline-flex"
         pl={SPACING.Root[size]}
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
         className={clsx("tgph-tag", className)}
+        style={styleProp}
+        {...otherProps}
         {...props}
         data-tag
       />
@@ -131,14 +146,10 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           }}
           size={context.size}
           color={COLOR.Button[context.variant][context.color]}
-          variant={context.variant}
-          roundedTopRight="1"
-          roundedBottomRight="1"
-          roundedTopLeft="0"
-          roundedBottomLeft="0"
+          variant={VARIANT.Button[context.variant]}
+          rounded="0"
           position="relative"
           overflow="hidden"
-          p="2"
           {...props}
         >
           <TelegraphButton.Icon
@@ -172,12 +183,9 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
     <TelegraphButton
       size={context.size}
       color={COLOR.Button[context.variant][context.color]}
-      variant={context.variant}
+      variant={VARIANT.Button[context.variant]}
       icon={{ icon: X, alt: "close" }}
-      roundedTopRight="1"
-      roundedBottomRight="1"
-      roundedTopLeft="0"
-      roundedBottomLeft="0"
+      rounded="0"
       {...props}
     />
   );
@@ -234,10 +242,16 @@ const Default = <T extends TgphElement = "span">({
   children,
   ...props
 }: DefaultProps<T>) => {
+  const hasButtons = !!(onRemove || onCopy);
+  const finalTextProps = {
+    ...textProps,
+    ...(hasButtons ? { mr: "0" } : {}),
+  };
+
   return (
     <Root color={color} size={size} variant={variant} {...props}>
       {icon && <Icon {...icon} />}
-      <Text as="span" {...textProps}>
+      <Text as="span" {...finalTextProps}>
         {children}
       </Text>
       {onRemove && (
