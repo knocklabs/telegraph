@@ -48,7 +48,9 @@ const Root = <T extends TgphElement = "span">({
 }: RootProps<T>) => {
   const { styleProp, otherProps } = useStyleEngine({
     props: {
-      ...(variant === "soft" ? { tagBorderColor: COLOR.Border.soft[color] } : {}),
+      ...(variant === "soft"
+        ? { tagBorderColor: COLOR.Border.soft[color] }
+        : {}),
       style,
     },
     cssVars,
