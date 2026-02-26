@@ -1,3 +1,5 @@
+import type { CssVarProp } from "@telegraph/style-engine";
+
 export const SIZE = {
   Root: {
     "0": {
@@ -132,5 +134,16 @@ export const VARIANT = {
   Button: {
     solid: "solid",
     soft: "ghost",
+  },
+} as const;
+
+export type BaseStyleProps = {
+  tagBorderColor: string;
+};
+
+export const cssVars: Record<keyof BaseStyleProps, CssVarProp> = {
+  tagBorderColor: {
+    cssVar: "--box-shadow",
+    value: "inset 0 0 0 1px var(--tgph-VARIABLE)",
   },
 } as const;
