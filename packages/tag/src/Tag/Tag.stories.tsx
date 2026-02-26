@@ -37,11 +37,6 @@ const meta: Meta<typeof TelegraphTag> = {
         type: "boolean",
       },
     },
-    mono: {
-      control: {
-        type: "boolean",
-      },
-    },
     icon: {
       options: Object.keys(Icons),
       control: {
@@ -91,6 +86,5 @@ export const Tag: Story = {
     size: "2",
     onCopy: false,
     onRemove: false,
-    mono: false,
   },
 };
