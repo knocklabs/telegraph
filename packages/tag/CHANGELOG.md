@@ -1,5 +1,11 @@
 # @telegraph/tag
 
+## 0.1.2
+
+### Patch Changes
+
+- [#699](https://github.com/knocklabs/telegraph/pull/699) [`a737d0f`](https://github.com/knocklabs/telegraph/commit/a737d0fe8a3a5fe5bbc1142bd7a6dd70f76b2c5e) Thanks [@ksorathia](https://github.com/ksorathia)! - refactor: update Tag component styling with borders, pill shape, and improved spacing
+
 ## 0.1.1
 
 ### Patch Changes
