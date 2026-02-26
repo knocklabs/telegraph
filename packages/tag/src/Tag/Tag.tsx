@@ -17,7 +17,7 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import React from "react";
 
-import { COLOR, SIZE, SPACING } from "./Tag.constants";
+import { COLOR, SIZE, SPACING, VARIANT } from "./Tag.constants";
 
 type RootBaseProps = {
   size?: "0" | "1" | "2";
@@ -142,7 +142,7 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           }}
           size={context.size}
           color={COLOR.Button[context.variant][context.color]}
-          variant={context.variant === "soft" ? "ghost" : context.variant}
+          variant={VARIANT.Button[context.variant]}
           rounded="0"
           position="relative"
           overflow="hidden"
@@ -179,7 +179,7 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
     <TelegraphButton
       size={context.size}
       color={COLOR.Button[context.variant][context.color]}
-      variant={context.variant === "soft" ? "ghost" : context.variant}
+      variant={VARIANT.Button[context.variant]}
       icon={{ icon: X, alt: "close" }}
       rounded="0"
       {...props}

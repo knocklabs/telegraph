@@ -127,3 +127,10 @@ export const COLOR = {
     },
   },
 } as const;
+
+export const VARIANT = {
+  Button: {
+    solid: "solid",
+    soft: "ghost",
+  },
+} as const;
