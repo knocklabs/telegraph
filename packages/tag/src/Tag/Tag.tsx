@@ -44,12 +44,12 @@ const Root = <T extends TgphElement = "span">({
   className,
   ...props
 }: RootProps<T>) => {
-  const borderProps =
+  const shadowProps =
     variant === "soft"
       ? {
-          borderColor: COLOR.Border.soft[color],
-          borderWidth: "px" as const,
-          borderStyle: "solid" as const,
+          style: {
+            boxShadow: `inset 0 0 0 1px var(--tgph-${COLOR.Border.soft[color]})`,
+          },
         }
       : {};
 
@@ -65,7 +65,7 @@ const Root = <T extends TgphElement = "span">({
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
         className={clsx("tgph-tag", className)}
-        {...borderProps}
+        {...shadowProps}
         {...props}
         data-tag
       />
