@@ -59,6 +59,7 @@ const Root = <T extends TgphElement = "span">({
         as={as}
         align="center"
         rounded="full"
+        overflow="hidden"
         display="inline-flex"
         pl={SPACING.Root[size]}
         backgroundColor={COLOR.Root[variant][color]}
@@ -144,14 +145,10 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           }}
           size={context.size}
           color={COLOR.Button[context.variant][context.color]}
-          variant={context.variant}
-          roundedTopRight="full"
-          roundedBottomRight="full"
-          roundedTopLeft="0"
-          roundedBottomLeft="0"
+          variant={context.variant === "soft" ? "ghost" : context.variant}
+          rounded="0"
           position="relative"
           overflow="hidden"
-          p="2"
           {...props}
         >
           <TelegraphButton.Icon
@@ -185,12 +182,9 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
     <TelegraphButton
       size={context.size}
       color={COLOR.Button[context.variant][context.color]}
-      variant={context.variant}
+      variant={context.variant === "soft" ? "ghost" : context.variant}
       icon={{ icon: X, alt: "close" }}
-      roundedTopRight="full"
-      roundedBottomRight="full"
-      roundedTopLeft="0"
-      roundedBottomLeft="0"
+      rounded="0"
       {...props}
     />
   );
@@ -249,10 +243,16 @@ const Default = <T extends TgphElement = "span">({
   children,
   ...props
 }: DefaultProps<T>) => {
+  const hasButtons = !!(onRemove || onCopy);
+  const finalTextProps = {
+    ...textProps,
+    ...(hasButtons ? { mr: "0" } : {}),
+  };
+
   return (
     <Root color={color} size={size} variant={variant} {...props}>
       {icon && <Icon {...icon} />}
-      <Text as="span" {...textProps} mono={mono}>
+      <Text as="span" {...finalTextProps} mono={mono}>
         {children}
       </Text>
       {onRemove && (

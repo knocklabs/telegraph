@@ -14,14 +14,14 @@ export const SIZE = {
 
 export const SPACING = {
   Root: {
-    "0": "1",
-    "1": "1_5",
-    "2": "2",
+    "0": "1_5",
+    "1": "2",
+    "2": "2_5",
   },
   Text: {
-    "0": "1",
-    "1": "1_5",
-    "2": "2",
+    "0": "1_5",
+    "1": "2",
+    "2": "2_5",
   },
 } as const;
 
@@ -38,26 +38,26 @@ export const COLOR = {
       purple: "purple-9",
     },
     soft: {
-      default: "gray-3",
-      accent: "accent-3",
-      gray: "gray-3",
-      red: "red-3",
-      blue: "blue-3",
-      green: "green-3",
-      yellow: "yellow-3",
-      purple: "purple-3",
+      default: "gray-2",
+      accent: "accent-2",
+      gray: "gray-2",
+      red: "red-2",
+      blue: "blue-2",
+      green: "green-2",
+      yellow: "yellow-2",
+      purple: "purple-2",
     },
   },
   Border: {
     soft: {
-      default: "gray-5",
-      accent: "accent-5",
-      gray: "gray-5",
-      red: "red-5",
-      blue: "blue-5",
-      green: "green-5",
-      yellow: "yellow-5",
-      purple: "purple-5",
+      default: "gray-4",
+      accent: "accent-4",
+      gray: "gray-4",
+      red: "red-4",
+      blue: "blue-4",
+      green: "green-4",
+      yellow: "yellow-4",
+      purple: "purple-4",
     },
   },
   Icon: {
