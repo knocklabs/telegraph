@@ -2,58 +2,45 @@ import type { TgphComponentProps } from "@telegraph/helpers";
 import { Text } from "@telegraph/typography";
 import React from "react";
 
-import {
-  type Size,
-  type State,
-  type Variant,
-  sizeMap,
-  stateMap,
-  variantMap,
-} from "./TextArea.constants";
-
-const deriveState = ({ disabled, errored }: TextAreaBaseProps): State => {
-  if (disabled) return "disabled";
-  if (errored) return "error";
-  return "default";
-};
+import { COLOR, SIZE } from "./TextArea.constants";
 
 type TextAreaBaseProps = {
-  size?: Size;
-  variant?: Variant;
+  size?: "1" | "2" | "3";
+  variant?: "outline" | "ghost";
   errored?: boolean;
   disabled?: boolean;
   resize?: "both" | "vertical" | "horizontal" | "none";
-  textProps?: Omit<React.ComponentProps<typeof Text>, "as">;
 };
 
-type TextAreaProps = TextAreaBaseProps &
-  TgphComponentProps<typeof Text> &
-  React.ComponentPropsWithoutRef<"textarea">;
+type TextAreaProps = TextAreaBaseProps & {
+  textProps?: Omit<React.ComponentProps<typeof Text>, "as">;
+} & Omit<React.ComponentProps<typeof Text>, "as" | keyof TextAreaBaseProps>;
 
 const TextArea = ({
   size = "2",
   variant = "outline",
-  rounded = "2",
   resize = "both",
   disabled,
   errored,
   textProps,
+  tgphRef,
   ...props
 }: TextAreaProps) => {
-  const derivedState = deriveState({ disabled, errored });
+  const state = disabled ? "disabled" : errored ? "error" : "default";
 
   return (
     <Text
       as="textarea"
+      tgphRef={tgphRef}
       data-tgph-textarea
-      data-tgph-textarea-state={derivedState}
-      data-tgph-textarea-resize={resize}
+      data-tgph-textarea-state={state}
       data-tgph-textarea-variant={variant}
-      rounded={rounded}
+      data-tgph-textarea-size={size}
+      data-tgph-textarea-resize={resize}
       disabled={disabled}
-      {...sizeMap[size]}
-      {...variantMap[variant]}
-      {...stateMap[derivedState]}
+      w="full"
+      {...SIZE[size]}
+      {...COLOR[state][variant]}
       {...textProps}
       {...props}
     />

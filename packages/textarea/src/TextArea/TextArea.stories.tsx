@@ -2,21 +2,15 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Stack } from "@telegraph/layout";
 
 import { TextArea } from "./TextArea";
-import { sizeMap } from "./TextArea.constants";
+import { COLOR, SIZE } from "./TextArea.constants";
 
-const meta = {
+const meta: Meta<typeof TextArea> = {
   title: "Components/TextArea",
   component: TextArea,
   tags: ["autodocs"],
-} satisfies Meta<typeof TextArea>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
   argTypes: {
     size: {
-      options: Object.keys(sizeMap),
+      options: Object.keys(SIZE),
       control: {
         type: "select",
       },
@@ -28,7 +22,7 @@ export const Default: Story = {
       },
     },
     variant: {
-      options: ["outline", "ghost"],
+      options: Object.keys(COLOR.default),
       control: {
         type: "select",
       },
@@ -53,6 +47,12 @@ export const Default: Story = {
     errored: false,
   },
 };
+
+export default meta;
+
+type Story = StoryObj<typeof TextArea>;
+
+export const Default: Story = {};
 
 export const Sizes: Story = {
   render: () => (

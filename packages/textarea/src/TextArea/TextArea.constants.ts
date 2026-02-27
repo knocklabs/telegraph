@@ -1,66 +1,83 @@
-import type { TgphComponentProps } from "@telegraph/helpers";
-import type { Text } from "@telegraph/typography";
-
-export type Size = "1" | "2" | "3";
-export type Variant = "outline" | "ghost";
-export type State = "default" | "disabled" | "error";
-
-type SizeMap = {
-  [key in Size]: Partial<
-    Pick<TgphComponentProps<typeof Text>, "p" | "size" | "px" | "py">
-  >;
-};
-
-type VariantMap = {
-  [key in Variant]: Partial<
-    Pick<TgphComponentProps<typeof Text>, "border" | "borderColor">
-  >;
-};
-
-type StateMap = {
-  [key in State]: Partial<
-    Pick<TgphComponentProps<typeof Text>, "bg" | "borderColor">
-  >;
-};
-
-export const sizeMap: SizeMap = {
+export const SIZE = {
   "1": {
     px: "1_5",
     py: "1",
     size: "1",
+    rounded: "2",
   },
   "2": {
     px: "2",
     py: "1_5",
     size: "2",
+    rounded: "2",
   },
   "3": {
     px: "3",
     py: "2",
     size: "3",
+    rounded: "2",
   },
-};
+} as const;
 
-export const variantMap: VariantMap = {
-  outline: {
-    border: "px",
-  },
-  ghost: {
-    border: "px",
-    borderColor: "transparent",
-  },
-};
-
-export const stateMap: StateMap = {
+export const COLOR = {
   default: {
-    bg: "surface-3",
+    outline: {
+      bg: "surface-3",
+      border: "px",
+      borderColor: "gray-6",
+      hover_borderColor: "gray-7",
+      hover_backgroundColor: "surface-2",
+      active_borderColor: "blue-8",
+      active_backgroundColor: "surface-3",
+      focus_borderColor: "blue-8",
+      focus_backgroundColor: "surface-3",
+    },
+    ghost: {
+      bg: "transparent",
+      border: "px",
+      borderColor: "transparent",
+      hover_borderColor: "gray-7",
+      hover_backgroundColor: "surface-2",
+      active_borderColor: "blue-8",
+      active_backgroundColor: "surface-3",
+      focus_borderColor: "blue-8",
+      focus_backgroundColor: "surface-3",
+    },
   },
   disabled: {
-    bg: "gray-2",
-    borderColor: "gray-2",
+    outline: {
+      bg: "gray-2",
+      border: "px",
+      borderColor: "gray-2",
+    },
+    ghost: {
+      bg: "transparent",
+      border: "px",
+      borderColor: "transparent",
+    },
   },
   error: {
-    borderColor: "red-6",
-    bg: "surface-3",
+    outline: {
+      bg: "surface-3",
+      border: "px",
+      borderColor: "red-6",
+      hover_borderColor: "red-7",
+      hover_backgroundColor: "surface-2",
+      active_borderColor: "blue-8",
+      active_backgroundColor: "surface-3",
+      focus_borderColor: "blue-8",
+      focus_backgroundColor: "surface-3",
+    },
+    ghost: {
+      bg: "surface-3",
+      border: "px",
+      borderColor: "red-6",
+      hover_borderColor: "red-7",
+      hover_backgroundColor: "surface-2",
+      active_borderColor: "blue-8",
+      active_backgroundColor: "surface-3",
+      focus_borderColor: "blue-8",
+      focus_backgroundColor: "surface-3",
+    },
   },
-};
+} as const;
