@@ -52,12 +52,15 @@ export const variantMap: VariantMap = {
 };
 
 export const stateMap: StateMap = {
-  default: {},
+  default: {
+    bg: "surface-3",
+  },
   disabled: {
     bg: "gray-2",
     borderColor: "gray-2",
   },
   error: {
     borderColor: "red-6",
+    bg: "surface-3",
   },
 };
