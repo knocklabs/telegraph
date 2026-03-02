@@ -78,9 +78,9 @@ export const COLOR = {
     },
     disabled: {
       outline: {
-        bg: "surface-3",
+        bg: "gray-2",
         border: "px",
-        borderColor: "gray-3",
+        borderColor: "transparent",
       },
       ghost: {
         bg: "transparent",

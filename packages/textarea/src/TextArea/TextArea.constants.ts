@@ -48,7 +48,7 @@ export const COLOR = {
     outline: {
       bg: "gray-2",
       border: "px",
-      borderColor: "gray-2",
+      borderColor: "transparent",
     },
     ghost: {
       bg: "transparent",
