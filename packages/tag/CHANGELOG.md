@@ -1,5 +1,14 @@
 # @telegraph/tag
 
+## 0.1.3
+
+### Patch Changes
+
+- [#707](https://github.com/knocklabs/telegraph/pull/707) [`1ff27ad`](https://github.com/knocklabs/telegraph/commit/1ff27ad41c1a39bd76fa3c841a02d5baa74484e3) Thanks [@kylemcd](https://github.com/kylemcd)! - fix: remove tag overflow hidden prop to fix cut off issue
+
+- Updated dependencies []:
+  - @telegraph/tooltip@0.1.2
+
 ## 0.1.2
 
 ### Patch Changes
