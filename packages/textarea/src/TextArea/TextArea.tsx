@@ -16,6 +16,15 @@ type TextAreaProps = TextAreaBaseProps & {
   textProps?: Omit<React.ComponentProps<typeof Text>, "as">;
 } & Omit<React.ComponentProps<typeof Text>, "as" | keyof TextAreaBaseProps>;
 
+const deriveState = ({
+  disabled,
+  errored,
+}: Pick<TextAreaBaseProps, "disabled" | "errored">) => {
+  if (disabled) return "disabled" as const;
+  if (errored) return "error" as const;
+  return "default" as const;
+};
+
 const TextArea = ({
   size = "2",
   variant = "outline",
@@ -26,7 +35,7 @@ const TextArea = ({
   tgphRef,
   ...props
 }: TextAreaProps) => {
-  const state = disabled ? "disabled" : errored ? "error" : "default";
+  const state = deriveState({ disabled, errored });
 
   return (
     <Text
