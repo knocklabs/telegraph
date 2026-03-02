@@ -5,8 +5,8 @@ import type React from "react";
 import { COLOR, SIZE } from "./TextArea.constants";
 
 type TextAreaBaseProps = {
-  size?: "1" | "2" | "3";
-  variant?: "outline" | "ghost";
+  size?: keyof typeof SIZE;
+  variant?: keyof (typeof COLOR)[keyof typeof COLOR];
   errored?: boolean;
   disabled?: boolean;
   resize?: "both" | "vertical" | "horizontal" | "none";
