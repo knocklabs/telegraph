@@ -2,11 +2,11 @@ import { type AcceptedPlugin, type PluginCreator, type Root } from "postcss";
 
 // Using require() instead of import to prevent ESM-related bugs in PostCSS.
 // ESM = ECMAScript Modules (the import/export syntax)
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const nodePath = require("path");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const nodeFs = require("fs");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const nodePath = require("node:path");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const nodeFs = require("node:fs");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const postcss = require("postcss");
 
 type PkgJson = {

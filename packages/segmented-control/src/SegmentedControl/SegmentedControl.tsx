@@ -164,7 +164,9 @@ const Root = ({
         behavior: hasRan ? "smooth" : "instant",
       });
 
-      !hasRan && setHasRan(true);
+      if (!hasRan) {
+        setHasRan(true);
+      }
     }
   }, [showScrollButtons, activeOptionRef, deriveScrollStatus, hasRan]);
 
