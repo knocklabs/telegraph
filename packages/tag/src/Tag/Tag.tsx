@@ -62,7 +62,6 @@ const Root = <T extends TgphElement = "span">({
         as={as}
         align="center"
         rounded="full"
-        overflow="hidden"
         display="inline-flex"
         pl={SPACING.Root[size]}
         backgroundColor={COLOR.Root[variant][color]}
