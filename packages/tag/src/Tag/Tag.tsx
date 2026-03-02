@@ -62,9 +62,8 @@ const Root = <T extends TgphElement = "span">({
         as={as}
         align="center"
         rounded="full"
-        overflow="hidden"
         display="inline-flex"
-        pl={SPACING.Root[size]}
+        pl={SPACING.Root[size].pl}
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
         className={clsx("tgph-tag", className)}
@@ -98,7 +97,7 @@ const Text = <T extends TgphElement = "span">({
       size={context.size}
       color={COLOR.Text[context.variant][context.color]}
       weight="medium"
-      mr={SPACING.Text[context.size]}
+      mr={SPACING.Text[context.size].mr}
       maxW={maxW}
       overflow={overflow}
       internal_optionalAs={true}
@@ -152,6 +151,9 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           rounded="0"
           position="relative"
           overflow="hidden"
+          borderTopRightRadius="full"
+          borderBottomRightRadius="full"
+          ml={SPACING.Button[context.size].ml}
           {...props}
         >
           <TelegraphButton.Icon
@@ -188,6 +190,9 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
       variant={VARIANT.Button[context.variant]}
       icon={{ icon: X, alt: "close" }}
       rounded="0"
+      borderTopRightRadius="full"
+      borderBottomRightRadius="full"
+      ml={SPACING.Button[context.size].ml}
       {...props}
     />
   );
