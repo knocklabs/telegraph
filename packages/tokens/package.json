@@ -48,7 +48,7 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "eslint": "^8.56.0",
+    "eslint": "^10.0.2",
     "lightningcss": "^1.31.1",
     "react": "^19.2.4",
     "typescript": "^5.9.3",
