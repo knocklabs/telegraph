@@ -151,6 +151,8 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           rounded="0"
           position="relative"
           overflow="hidden"
+          borderTopRightRadius="full"
+          borderBottomRightRadius="full"
           {...props}
         >
           <TelegraphButton.Icon
@@ -256,7 +258,12 @@ const Default = <T extends TgphElement = "span">({
         {children}
       </Text>
       {onRemove && (
-        <Button onClick={onRemove} icon={{ icon: X, alt: "Remove" }} />
+        <Button
+          onClick={onRemove}
+          icon={{ icon: X, alt: "Remove" }}
+          borderTopRightRadius="full"
+          borderBottomRightRadius="full"
+        />
       )}
       {onCopy && <CopyButton onClick={onCopy} textToCopy={textToCopy} />}
     </Root>
