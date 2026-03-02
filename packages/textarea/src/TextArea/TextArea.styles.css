@@ -1,7 +1,6 @@
 [data-tgph-textarea] {
   appearance: none;
   outline: none;
-  font-family: inherit;
 }
 
 [data-tgph-textarea-state="disabled"] {
