@@ -1,5 +1,11 @@
 # @telegraph/appearance
 
+## 0.0.13
+
+### Patch Changes
+
+- [#704](https://github.com/knocklabs/telegraph/pull/704) [`b954d02`](https://github.com/knocklabs/telegraph/commit/b954d0263ccde551736b07fed21b13f5bf78d9fb) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @radix-ui/react-slot from 1.2.3 to 1.2.4
+
 ## 0.0.12
 
 ### Patch Changes

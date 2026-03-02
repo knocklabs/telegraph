@@ -1,5 +1,12 @@
 # @telegraph/tooltip
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`b954d02`](https://github.com/knocklabs/telegraph/commit/b954d0263ccde551736b07fed21b13f5bf78d9fb)]:
+  - @telegraph/appearance@0.0.13
+
 ## 0.1.1
 
 ### Patch Changes
