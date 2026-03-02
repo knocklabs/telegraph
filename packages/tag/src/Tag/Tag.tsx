@@ -66,6 +66,7 @@ const Root = <T extends TgphElement = "span">({
         pl={SPACING.Root[size]}
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
+        gap={SIZE.Root[size].gap}
         className={clsx("tgph-tag", className)}
         style={styleProp}
         {...otherProps}

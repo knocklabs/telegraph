@@ -4,12 +4,15 @@ export const SIZE = {
   Root: {
     "0": {
       h: "5",
+      gap: "0_5",
     },
     "1": {
       h: "6",
+      gap: "1",
     },
     "2": {
       h: "8",
+      gap: "1_5",
     },
   },
 } as const;
