@@ -141,7 +141,9 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
             // Still run onClick incase the consumer wants to do something else
             onClick?.(event);
             setCopied(true);
-            textToCopy && navigator.clipboard.writeText(textToCopy);
+            if (textToCopy) {
+              void navigator.clipboard.writeText(textToCopy);
+            }
             event.currentTarget?.blur();
           }}
           size={context.size}
