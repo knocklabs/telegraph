@@ -63,10 +63,9 @@ const Root = <T extends TgphElement = "span">({
         align="center"
         rounded="full"
         display="inline-flex"
-        pl={SPACING.Root[size]}
+        pl={SPACING.Root[size].pl}
         backgroundColor={COLOR.Root[variant][color]}
         h={SIZE.Root[size].h}
-        gap={SIZE.Root[size].gap}
         className={clsx("tgph-tag", className)}
         style={styleProp}
         {...otherProps}
@@ -98,7 +97,7 @@ const Text = <T extends TgphElement = "span">({
       size={context.size}
       color={COLOR.Text[context.variant][context.color]}
       weight="medium"
-      mr={SPACING.Text[context.size]}
+      mr={SPACING.Text[context.size].mr}
       maxW={maxW}
       overflow={overflow}
       internal_optionalAs={true}
@@ -154,6 +153,7 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
           overflow="hidden"
           borderTopRightRadius="full"
           borderBottomRightRadius="full"
+          ml={SPACING.Button[context.size].ml}
           {...props}
         >
           <TelegraphButton.Icon
@@ -190,6 +190,9 @@ const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
       variant={VARIANT.Button[context.variant]}
       icon={{ icon: X, alt: "close" }}
       rounded="0"
+      borderTopRightRadius="full"
+      borderBottomRightRadius="full"
+      ml={SPACING.Button[context.size].ml}
       {...props}
     />
   );
@@ -259,12 +262,7 @@ const Default = <T extends TgphElement = "span">({
         {children}
       </Text>
       {onRemove && (
-        <Button
-          onClick={onRemove}
-          icon={{ icon: X, alt: "Remove" }}
-          borderTopRightRadius="full"
-          borderBottomRightRadius="full"
-        />
+        <Button onClick={onRemove} icon={{ icon: X, alt: "Remove" }} />
       )}
       {onCopy && <CopyButton onClick={onCopy} textToCopy={textToCopy} />}
     </Root>
