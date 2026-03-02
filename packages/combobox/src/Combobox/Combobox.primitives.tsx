@@ -350,6 +350,11 @@ const TriggerTagButton = <T extends TgphElement>({
     <Tag.Button
       icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
       height="full"
+      onPointerDown={(event: React.PointerEvent) => {
+        // Prevent the trigger button from toggling on pointer down
+        event.stopPropagation();
+        event.preventDefault();
+      }}
       onClick={(event: React.MouseEvent) => {
         if (!context.onValueChange) return;
         const onValueChange =
