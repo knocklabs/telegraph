@@ -69,7 +69,10 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: () => (
     <Stack direction="column" gap="4">
-      <TextArea variant="outline" textProps={{ placeholder: "Outline variant" }} />
+      <TextArea
+        variant="outline"
+        textProps={{ placeholder: "Outline variant" }}
+      />
       <TextArea variant="ghost" textProps={{ placeholder: "Ghost variant" }} />
     </Stack>
   ),

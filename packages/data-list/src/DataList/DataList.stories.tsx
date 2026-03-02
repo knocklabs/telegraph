@@ -66,7 +66,8 @@ export const Default: Story = {
         <DataList.Item {...args}>
           <TextArea
             textProps={{
-              value: "This is content within a text area that stretches a few lines.",
+              value:
+                "This is content within a text area that stretches a few lines.",
             }}
           />
         </DataList.Item>
