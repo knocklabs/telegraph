@@ -41,8 +41,10 @@ const meta: Meta<typeof TextArea> = {
   args: {
     size: "2",
     variant: "outline",
-    value: "",
-    placeholder: "Enter text here...",
+    textProps: {
+      value: "",
+      placeholder: "Enter text here...",
+    },
     disabled: false,
     errored: false,
   },
@@ -57,9 +59,9 @@ export const Default: Story = {};
 export const Sizes: Story = {
   render: () => (
     <Stack direction="column" gap="4">
-      <TextArea size="1" placeholder="Size 1" />
-      <TextArea size="2" placeholder="Size 2" />
-      <TextArea size="3" placeholder="Size 3" />
+      <TextArea size="1" textProps={{ placeholder: "Size 1" }} />
+      <TextArea size="2" textProps={{ placeholder: "Size 2" }} />
+      <TextArea size="3" textProps={{ placeholder: "Size 3" }} />
     </Stack>
   ),
 };
@@ -67,8 +69,8 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: () => (
     <Stack direction="column" gap="4">
-      <TextArea variant="outline" placeholder="Outline variant" />
-      <TextArea variant="ghost" placeholder="Ghost variant" />
+      <TextArea variant="outline" textProps={{ placeholder: "Outline variant" }} />
+      <TextArea variant="ghost" textProps={{ placeholder: "Ghost variant" }} />
     </Stack>
   ),
 };
@@ -76,9 +78,9 @@ export const Variants: Story = {
 export const States: Story = {
   render: () => (
     <Stack direction="column" gap="4">
-      <TextArea placeholder="Default state" />
-      <TextArea placeholder="Disabled state" disabled />
-      <TextArea placeholder="Error state" errored />
+      <TextArea textProps={{ placeholder: "Default state" }} />
+      <TextArea textProps={{ placeholder: "Disabled state" }} disabled />
+      <TextArea textProps={{ placeholder: "Error state" }} errored />
     </Stack>
   ),
 };

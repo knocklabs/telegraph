@@ -1,6 +1,6 @@
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Text } from "@telegraph/typography";
-import React from "react";
+import { Text, type TextProps } from "@telegraph/typography";
+import type React from "react";
 
 import { COLOR, SIZE } from "./TextArea.constants";
 
@@ -10,11 +10,12 @@ type TextAreaBaseProps = {
   errored?: boolean;
   disabled?: boolean;
   resize?: "both" | "vertical" | "horizontal" | "none";
+  tgphRef?: React.Ref<HTMLTextAreaElement>;
 };
 
 type TextAreaProps = TextAreaBaseProps & {
-  textProps?: Omit<React.ComponentProps<typeof Text>, "as">;
-} & Omit<React.ComponentProps<typeof Text>, "as" | keyof TextAreaBaseProps>;
+  textProps?: Omit<TextProps<"textarea">, "as">;
+};
 
 const deriveState = ({
   disabled,
@@ -31,9 +32,8 @@ const TextArea = ({
   resize = "both",
   disabled,
   errored,
-  textProps,
   tgphRef,
-  ...props
+  textProps,
 }: TextAreaProps) => {
   const state = deriveState({ disabled, errored });
 
@@ -51,7 +51,6 @@ const TextArea = ({
       {...SIZE[size]}
       {...COLOR[state][variant]}
       {...textProps}
-      {...props}
     />
   );
 };
