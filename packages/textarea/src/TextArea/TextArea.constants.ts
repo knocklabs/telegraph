@@ -105,10 +105,22 @@ export const stateMap: StateMap = {
     outline: {
       bg: "gray-2",
       borderColor: "transparent",
+      hover_borderColor: undefined,
+      hover_backgroundColor: undefined,
+      active_borderColor: undefined,
+      active_backgroundColor: undefined,
+      focus_borderColor: undefined,
+      focus_backgroundColor: undefined,
     },
     ghost: {
       bg: "transparent",
       borderColor: "transparent",
+      hover_borderColor: undefined,
+      hover_backgroundColor: undefined,
+      active_borderColor: undefined,
+      active_backgroundColor: undefined,
+      focus_borderColor: undefined,
+      focus_backgroundColor: undefined,
     },
   },
   error: {
