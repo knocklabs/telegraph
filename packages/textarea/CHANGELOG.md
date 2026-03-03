@@ -1,5 +1,11 @@
 # @telegraph/textarea
 
+## 0.1.9
+
+### Patch Changes
+
+- [#701](https://github.com/knocklabs/telegraph/pull/701) [`16e678c`](https://github.com/knocklabs/telegraph/commit/16e678c5e8bc7f13613116954bc15099a8694bb7) Thanks [@ksorathia](https://github.com/ksorathia)! - Add surface-3 background color for interactive outlined variants.
+
 ## 0.1.8
 
 ### Patch Changes
