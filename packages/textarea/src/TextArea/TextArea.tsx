@@ -8,6 +8,15 @@ import {
   variantMap,
 } from "./TextArea.constants";
 
+const deriveState = ({
+  disabled,
+  errored,
+}: Pick<TextAreaBaseProps, "disabled" | "errored">) => {
+  if (disabled) return "disabled";
+  if (errored) return "error";
+  return "default";
+};
+
 type TextAreaTextProps = Omit<TextProps<"textarea">, "as">;
 
 type TextAreaBaseProps = {
@@ -20,15 +29,6 @@ type TextAreaBaseProps = {
 };
 
 type TextAreaProps = TextAreaBaseProps & TextAreaTextProps;
-
-const deriveState = ({
-  disabled,
-  errored,
-}: Pick<TextAreaBaseProps, "disabled" | "errored">) => {
-  if (disabled) return "disabled";
-  if (errored) return "error";
-  return "default";
-};
 
 const TextArea = ({
   size = "2",
