@@ -5,6 +5,7 @@ export const color = {
   surface: {
     1: { light: "#FFFFFF", dark: "#18191B"},
     2: { light: "#FDFDFC", dark: "#101112"},
+    3: { light: "#FFFFFF", dark: "#101112"},
   },
   alpha: {
     white: {

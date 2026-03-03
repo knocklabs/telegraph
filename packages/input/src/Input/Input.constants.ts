@@ -58,19 +58,21 @@ export const COLOR = {
   Container: {
     default: {
       outline: {
-        bg: "surface-1",
+        bg: "surface-3",
         border: "px",
         borderColor: "gray-6",
+        hover_backgroundColor: "surface-2",
         hover_borderColor: "gray-7",
+        focus_within_backgroundColor: "surface-3",
         focus_within_borderColor: "blue-8",
       },
       ghost: {
         bg: "transparent",
         border: "px",
         borderColor: "transparent",
-        hover_backgroundColor: "gray-3",
-        hover_borderColor: "transparent",
-        focus_within_backgroundColor: "gray-4",
+        hover_backgroundColor: "surface-2",
+        hover_borderColor: "gray-7",
+        focus_within_backgroundColor: "surface-3",
         focus_within_borderColor: "blue-8",
       },
     },
@@ -78,7 +80,7 @@ export const COLOR = {
       outline: {
         bg: "gray-2",
         border: "px",
-        borderColor: "gray-2",
+        borderColor: "transparent",
       },
       ghost: {
         bg: "transparent",
@@ -88,14 +90,22 @@ export const COLOR = {
     },
     error: {
       outline: {
-        bg: "surface-1",
+        bg: "surface-3",
         border: "px",
         borderColor: "red-6",
+        hover_backgroundColor: "surface-2",
+        hover_borderColor: "red-7",
+        focus_within_backgroundColor: "surface-3",
+        focus_within_borderColor: "blue-8",
       },
       ghost: {
-        bg: "transparent",
+        bg: "surface-3",
         border: "px",
         borderColor: "red-6",
+        hover_backgroundColor: "surface-2",
+        hover_borderColor: "red-7",
+        focus_within_backgroundColor: "surface-3",
+        focus_within_borderColor: "blue-8",
       },
     },
   },
