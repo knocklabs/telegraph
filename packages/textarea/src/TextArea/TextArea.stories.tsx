@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Stack } from "@telegraph/layout";
 
 import { TextArea } from "./TextArea";
-import { COLOR, SIZE } from "./TextArea.constants";
+import { sizeMap, variantMap } from "./TextArea.constants";
 
 const meta: Meta<typeof TextArea> = {
   title: "Components/TextArea",
@@ -10,7 +10,7 @@ const meta: Meta<typeof TextArea> = {
   tags: ["autodocs"],
   argTypes: {
     size: {
-      options: Object.keys(SIZE),
+      options: Object.keys(sizeMap),
       control: {
         type: "select",
       },
@@ -22,7 +22,7 @@ const meta: Meta<typeof TextArea> = {
       },
     },
     variant: {
-      options: Object.keys(COLOR.default),
+      options: Object.keys(variantMap),
       control: {
         type: "select",
       },

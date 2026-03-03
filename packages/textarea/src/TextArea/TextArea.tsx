@@ -2,11 +2,17 @@ import type { TgphComponentProps } from "@telegraph/helpers";
 import { Text, type TextProps } from "@telegraph/typography";
 import type React from "react";
 
-import { COLOR, SIZE } from "./TextArea.constants";
+import {
+  type Size,
+  type Variant,
+  sizeMap,
+  stateMap,
+  variantMap,
+} from "./TextArea.constants";
 
 type TextAreaBaseProps = {
-  size?: keyof typeof SIZE;
-  variant?: keyof (typeof COLOR)[keyof typeof COLOR];
+  size?: Size;
+  variant?: Variant;
   errored?: boolean;
   disabled?: boolean;
   resize?: "both" | "vertical" | "horizontal" | "none";
@@ -48,8 +54,9 @@ const TextArea = ({
       data-tgph-textarea-resize={resize}
       disabled={disabled}
       w="full"
-      {...SIZE[size]}
-      {...COLOR[state][variant]}
+      {...sizeMap[size]}
+      {...variantMap[variant]}
+      {...stateMap[state][variant]}
       {...textProps}
     />
   );
