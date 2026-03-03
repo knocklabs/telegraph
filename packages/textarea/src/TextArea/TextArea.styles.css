@@ -3,6 +3,10 @@
   outline: none;
 }
 
+[data-tgph-textarea]::placeholder {
+  color: var(--tgph-gray-10);
+}
+
 [data-tgph-textarea-state="disabled"] {
   cursor: not-allowed;
 }
