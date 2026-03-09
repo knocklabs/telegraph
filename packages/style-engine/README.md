@@ -102,7 +102,6 @@ Core function that processes style props and returns CSS variables.
 {
   styleProp: Record<string, string>; // CSS custom properties (including pseudo-class vars)
   otherProps: Record<string, unknown>; // Non-style props (including unmatched pseudo sub-props)
-  interactive: boolean; // Whether component has pseudo-class styles
 }
 ```
 
@@ -174,7 +173,7 @@ Any style prop can be used inside pseudo-class objects. The style engine automat
 1. When `getStyleProp` encounters a pseudo-class object (e.g., `_hover={{ bg: "gray-3" }}`), it resolves each sub-prop against the `cssVars` config
 2. Matched sub-props generate CSS variables prefixed with the pseudo state (e.g., `--hover--background-color: var(--tgph-gray-3)`)
 3. Unmatched sub-props are collected in `otherProps` for pass-through to child components
-4. If any pseudo-class props are resolved, `interactive` returns `true`
+4. CSS rules use cascade fallbacks (`var(--hover--bg, var(--bg))`), so if no pseudo vars are set, the base value is used — no extra class needed
 
 **Type helper:**
 
@@ -334,17 +333,13 @@ type StyledBoxProps = WithPseudo<StyleProps> &
   React.HTMLAttributes<HTMLDivElement>;
 
 export const StyledBox = ({ children, ...props }: StyledBoxProps) => {
-  const { styleProp, otherProps, interactive } = useStyleEngine({
+  const { styleProp, otherProps } = useStyleEngine({
     props,
     cssVars,
   });
 
   return (
-    <div
-      className={interactive ? "tgph-interactive" : undefined}
-      style={styleProp}
-      {...otherProps}
-    >
+    <div className="tgph-styled-box" style={styleProp} {...otherProps}>
       {children}
     </div>
   );
@@ -544,20 +539,13 @@ const advancedCssVars = {
 } as const;
 
 export const AdvancedBox = ({ children, ...props }) => {
-  const { styleProp, otherProps, interactive } = useStyleEngine({
+  const { styleProp, otherProps } = useStyleEngine({
     props,
     cssVars: advancedCssVars,
   });
 
   return (
-    <div
-      className={interactive ? "tgph-interactive" : undefined}
-      style={{
-        ...styleProp,
-        transition: interactive ? "all 0.2s ease" : undefined,
-      }}
-      {...otherProps}
-    >
+    <div className="tgph-advanced-box" style={styleProp} {...otherProps}>
       {children}
     </div>
   );
@@ -608,7 +596,7 @@ type CustomButtonProps = {
 
 export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
   ({ children, ...props }, ref) => {
-    const { styleProp, otherProps, interactive } = useStyleEngine({
+    const { styleProp, otherProps } = useStyleEngine({
       props,
       cssVars: buttonCssVars
     });
@@ -616,7 +604,7 @@ export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
     return (
       <button
         ref={ref}
-        className={`custom-button ${interactive ? "custom-button--interactive" : ""}`}
+        className="custom-button"
         style={styleProp}
         {...otherProps}
       >

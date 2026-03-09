@@ -17,10 +17,6 @@
   transition: color 0.2s ease-in-out;
 }
 
-.tgph-button:hover {
-  box-shadow: var(--hover--box-shadow, var(--box-shadow));
-}
-
 .tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-text] {
   --color: var(
     --hover--tgph-button-text-color,
@@ -33,10 +29,6 @@
     --hover--tgph-button-text-color,
     var(--tgph-button-text-color)
   ) !important;
-}
-
-.tgph-button:focus {
-  box-shadow: var(--focus--box-shadow, var(--box-shadow));
 }
 
 .tgph-button[data-tgph-button-state="active"] {

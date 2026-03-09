@@ -329,12 +329,11 @@ export const getStyleProp = <
 ): {
   styleProp: StyleProp<CssVars>;
   otherProps: OtherProps<CssVars, Props>;
-  interactive: boolean;
 } => {
   const { cssVars } = params;
 
   if (!params?.props || Object.keys(params.props).length === 0) {
-    return { styleProp: {}, otherProps: {}, interactive: false };
+    return { styleProp: {}, otherProps: {} };
   }
 
   // Assign the additional styles to the style object so that it can be passed
@@ -343,7 +342,6 @@ export const getStyleProp = <
 
   let styleProp: StyleProp<CssVars> = style;
   const otherProps: OtherProps<CssVars, Props> = {};
-  let interactive = false;
 
   Object.keys(props).forEach((_key) => {
     const key = _key as keyof typeof props;
@@ -397,9 +395,6 @@ export const getStyleProp = <
         });
       }
 
-      if (hasMatched) {
-        interactive = true;
-      }
       return;
     }
 
@@ -424,5 +419,5 @@ export const getStyleProp = <
     styleProp = applyCssVar(styleProp, matchingCssVar, mappedValueOfCssVar);
   });
 
-  return { styleProp, otherProps, interactive };
+  return { styleProp, otherProps };
 };

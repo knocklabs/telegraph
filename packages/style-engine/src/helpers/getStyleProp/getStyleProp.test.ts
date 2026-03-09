@@ -414,7 +414,7 @@ describe("getStyleProp", () => {
     };
 
     it("generates hover pseudo CSS variables from object prop", () => {
-      const { styleProp, interactive } = getStyleProp({
+      const { styleProp } = getStyleProp({
         props: {
           backgroundColor: "gray-2",
           _hover: { backgroundColor: "gray-3" },
@@ -426,11 +426,10 @@ describe("getStyleProp", () => {
         "--background-color": "var(--tgph-gray-2)",
         "--hover--background-color": "var(--tgph-gray-3)",
       });
-      expect(interactive).toBe(true);
     });
 
     it("generates focus pseudo CSS variables from object prop", () => {
-      const { styleProp, interactive } = getStyleProp({
+      const { styleProp } = getStyleProp({
         props: {
           backgroundColor: "gray-2",
           _focus: { backgroundColor: "gray-4" },
@@ -442,7 +441,6 @@ describe("getStyleProp", () => {
         "--background-color": "var(--tgph-gray-2)",
         "--focus--background-color": "var(--tgph-gray-4)",
       });
-      expect(interactive).toBe(true);
     });
 
     it("generates active pseudo CSS variables from object prop", () => {
@@ -537,18 +535,6 @@ describe("getStyleProp", () => {
       expect(otherProps).toStrictEqual({
         _hover: { unknownProp: "value" },
       });
-    });
-
-    it("sets interactive=true only when pseudo props match cssVars", () => {
-      // All pseudo props are unrecognized
-      const { interactive } = getStyleProp({
-        props: {
-          _hover: { unknownProp: "value" },
-        },
-        cssVars,
-      });
-
-      expect(interactive).toBe(false);
     });
 
     it("handles directional properties in pseudo state", () => {

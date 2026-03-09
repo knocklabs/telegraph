@@ -55,16 +55,12 @@ describe("interactive PostCSS plugin", () => {
 
       // Verify selectors in order
       expect(rules[0].selector).toBe(".tgph-box");
-      expect(rules[1].selector).toBe(".tgph-box--interactive:hover");
-      expect(rules[2].selector).toBe(".tgph-box--interactive:focus-visible");
-      expect(rules[3].selector).toBe(".tgph-box--interactive:active");
-      expect(rules[4].selector).toBe(
-        ".tgph-box--interactive:has(:focus-visible)",
-      );
-      expect(rules[5].selector).toContain(".tgph-box--interactive:disabled");
-      expect(rules[5].selector).toContain(
-        '.tgph-box--interactive[aria-disabled="true"]',
-      );
+      expect(rules[1].selector).toBe(".tgph-box:hover");
+      expect(rules[2].selector).toBe(".tgph-box:focus-visible");
+      expect(rules[3].selector).toBe(".tgph-box:active");
+      expect(rules[4].selector).toBe(".tgph-box:has(:focus-visible)");
+      expect(rules[5].selector).toContain(".tgph-box:disabled");
+      expect(rules[5].selector).toContain('.tgph-box[aria-disabled="true"]');
     });
 
     it("generates correct cascade fallback values", async () => {
@@ -347,11 +343,11 @@ describe("interactive PostCSS plugin", () => {
 
       // First batch
       expect(rules[0].selector).toBe(".tgph-box");
-      expect(rules[1].selector).toBe(".tgph-box--interactive:hover");
+      expect(rules[1].selector).toBe(".tgph-box:hover");
 
       // Second batch
       expect(rules[6].selector).toBe(".tgph-button");
-      expect(rules[7].selector).toBe(".tgph-button--interactive:hover");
+      expect(rules[7].selector).toBe(".tgph-button:hover");
 
       // Verify the button hover uses box-shadow, not background-color
       expect(rules[7].declarations).toEqual([
@@ -375,7 +371,7 @@ describe("interactive PostCSS plugin", () => {
       const output = await run(input);
       const rules = parseRules(output);
 
-      expect(rules[1].selector).toBe(".my-custom-component--interactive:hover");
+      expect(rules[1].selector).toBe(".my-custom-component:hover");
     });
 
     it("handles selector with extra whitespace in the directive", async () => {
@@ -389,7 +385,7 @@ describe("interactive PostCSS plugin", () => {
       const output = await run(input);
       const rules = parseRules(output);
 
-      expect(rules[1].selector).toBe(".tgph-box--interactive:hover");
+      expect(rules[1].selector).toBe(".tgph-box:hover");
     });
   });
 
@@ -454,11 +450,9 @@ describe("interactive PostCSS plugin", () => {
 
       // The disabled rule (last generated one) should have both selectors
       const disabledRule = rules[rules.length - 1];
+      expect(disabledRule.selector).toContain(".tgph-box:disabled");
       expect(disabledRule.selector).toContain(
-        ".tgph-box--interactive:disabled",
-      );
-      expect(disabledRule.selector).toContain(
-        '.tgph-box--interactive[aria-disabled="true"]',
+        '.tgph-box[aria-disabled="true"]',
       );
     });
   });
