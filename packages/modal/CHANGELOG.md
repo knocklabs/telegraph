@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.2.2
+
+### Patch Changes
+
+- [#709](https://github.com/knocklabs/telegraph/pull/709) [`560071e`](https://github.com/knocklabs/telegraph/commit/560071edb330493cb5db6fe9230158555cdc7da2) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - mike-kno-11947-telegraph-fix-border-color-to-look-better-in-dark-and-light
+
 ## 0.2.1
 
 ### Patch Changes
