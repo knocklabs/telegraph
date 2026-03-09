@@ -139,23 +139,23 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 
 Any style prop can be used inside a pseudo-class object. The pseudo-class props accept an object containing any combination of Box style props:
 
-| Prop          | Type                     | CSS Selector                        | Description                           |
-| ------------- | ------------------------ | ----------------------------------- | ------------------------------------- |
-| `hover`       | `Partial<BoxStyleProps>` | `:hover`                            | Styles applied on mouse over          |
-| `focus`       | `Partial<BoxStyleProps>` | `:focus-visible`                    | Styles applied on keyboard focus      |
-| `active`      | `Partial<BoxStyleProps>` | `:active`                           | Styles applied on mouse down          |
-| `focusWithin` | `Partial<BoxStyleProps>` | `:has(:focus-visible)`              | Styles applied when a child has focus |
-| `disabled`    | `Partial<BoxStyleProps>` | `:disabled, [aria-disabled="true"]` | Styles applied when disabled          |
+| Prop           | Type                     | CSS Selector                        | Description                           |
+| -------------- | ------------------------ | ----------------------------------- | ------------------------------------- |
+| `_hover`       | `Partial<BoxStyleProps>` | `:hover`                            | Styles applied on mouse over          |
+| `_focus`       | `Partial<BoxStyleProps>` | `:focus-visible`                    | Styles applied on keyboard focus      |
+| `_active`      | `Partial<BoxStyleProps>` | `:active`                           | Styles applied on mouse down          |
+| `_focusWithin` | `Partial<BoxStyleProps>` | `:has(:focus-visible)`              | Styles applied when a child has focus |
+| `_disabled`    | `Partial<BoxStyleProps>` | `:disabled, [aria-disabled="true"]` | Styles applied when disabled          |
 
 ```tsx
 // Any style prop works inside pseudo-class objects
 <Box
   bg="gray-2"
-  hover={{ bg: "gray-3", shadow: "1" }}
-  focus={{ borderColor: "blue-8" }}
-  active={{ bg: "gray-4" }}
-  focusWithin={{ borderColor: "accent-6" }}
-  disabled={{ bg: "gray-1" }}
+  _hover={{ bg: "gray-3", shadow: "1" }}
+  _focus={{ borderColor: "blue-8" }}
+  _active={{ bg: "gray-4" }}
+  _focusWithin={{ borderColor: "accent-6" }}
+  _disabled={{ bg: "gray-1" }}
 />
 ```
 
@@ -195,7 +195,7 @@ import { Box } from "@telegraph/layout";
   as="button"
   p="3"
   bg="accent-3"
-  hover={{ bg: "accent-4" }}
+  _hover={{ bg: "accent-4" }}
   rounded="1"
   onClick={handleClick}
 >
@@ -341,7 +341,7 @@ import { Box, Stack } from "@telegraph/layout";
   Article content
 </Box>
 
-<Box as="button" p="2" bg="accent-3" hover={{ bg: "accent-4" }}>
+<Box as="button" p="2" bg="accent-3" _hover={{ bg: "accent-4" }}>
   Button
 </Box>
 
@@ -366,7 +366,7 @@ import { Box } from "@telegraph/layout";
 <Box
   p="3"
   bg="surface-1"
-  hover={{ bg: "surface-2", borderColor: "accent-6" }}
+  _hover={{ bg: "surface-2", borderColor: "accent-6" }}
   border="px"
   borderColor="gray-6"
   rounded="2"
@@ -379,7 +379,7 @@ import { Box } from "@telegraph/layout";
   as="button"
   p="3"
   bg="accent-3"
-  focus={{ bg: "accent-4", borderColor: "accent-8" }}
+  _focus={{ bg: "accent-4", borderColor: "accent-8" }}
   border="px"
   borderColor="accent-6"
   rounded="2"
@@ -391,8 +391,8 @@ import { Box } from "@telegraph/layout";
 <Box
   p="4"
   bg="surface-1"
-  hover={{ bg: "surface-2", borderColor: "accent-6" }}
-  focusWithin={{ bg: "surface-2", borderColor: "accent-6" }}
+  _hover={{ bg: "surface-2", borderColor: "accent-6" }}
+  _focusWithin={{ bg: "surface-2", borderColor: "accent-6" }}
   border="px"
   borderColor="gray-6"
   rounded="2"
@@ -481,10 +481,10 @@ export const AppLayout = ({ children }) => (
         borderColor="gray-6"
       >
         <Stack direction="column" gap="2">
-          <Box p="2" rounded="1" hover={{ bg: "gray-3" }}>
+          <Box p="2" rounded="1" _hover={{ bg: "gray-3" }}>
             Sidebar item 1
           </Box>
-          <Box p="2" rounded="1" hover={{ bg: "gray-3" }}>
+          <Box p="2" rounded="1" _hover={{ bg: "gray-3" }}>
             Sidebar item 2
           </Box>
         </Stack>
@@ -508,7 +508,7 @@ export const CardGrid = ({ items }) => (
         bg="surface-1"
         rounded="2"
         shadow="1"
-        hover={{ shadow: "2", borderColor: "accent-6" }}
+        _hover={{ shadow: "2", borderColor: "accent-6" }}
         border="px"
         borderColor="gray-6"
         minW="72"
@@ -763,7 +763,7 @@ The layout components use Telegraph design tokens for consistent styling:
       <Box as="button"
            p="2"
            bg="accent-3"
-           focus={{ bg: "accent-4", borderColor: "accent-8" }}
+           _focus={{ bg: "accent-4", borderColor: "accent-8" }}
            border="px"
            borderColor="accent-6"
            rounded="1">
@@ -853,7 +853,7 @@ export const Dashboard = () => (
               <h2>Activity Feed</h2>
               <Stack direction="column" gap="2" mt="4">
                 {[1, 2, 3].map((i) => (
-                  <Box key={i} p="2" rounded="1" hover={{ bg: "gray-2" }}>
+                  <Box key={i} p="2" rounded="1" _hover={{ bg: "gray-2" }}>
                     Activity item {i}
                   </Box>
                 ))}
@@ -909,7 +909,7 @@ export const Modal = ({ children, onClose }) => (
             w="8"
             h="8"
             rounded="1"
-            hover={{ bg: "gray-3" }}
+            _hover={{ bg: "gray-3" }}
             onClick={onClose}
           >
             ×
@@ -921,7 +921,7 @@ export const Modal = ({ children, onClose }) => (
 
         {/* Actions */}
         <Stack direction="row" gap="2" justify="end">
-          <Box as="button" p="2" px="4" rounded="1" hover={{ bg: "gray-3" }}>
+          <Box as="button" p="2" px="4" rounded="1" _hover={{ bg: "gray-3" }}>
             Cancel
           </Box>
           <Box
@@ -929,7 +929,7 @@ export const Modal = ({ children, onClose }) => (
             p="2"
             px="4"
             bg="accent-3"
-            hover={{ bg: "accent-4" }}
+            _hover={{ bg: "accent-4" }}
             rounded="1"
           >
             Confirm
@@ -952,7 +952,7 @@ export const Card = ({ title, description, image, actions }) => (
     bg="surface-1"
     rounded="2"
     shadow="1"
-    hover={{ shadow: "2", borderColor: "accent-6" }}
+    _hover={{ shadow: "2", borderColor: "accent-6" }}
     border="px"
     borderColor="gray-6"
     maxW="sm"

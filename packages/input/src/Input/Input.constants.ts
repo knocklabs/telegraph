@@ -61,11 +61,11 @@ export const COLOR = {
         bg: "surface-3",
         border: "px",
         borderColor: "gray-6",
-        hover: {
+        _hover: {
           backgroundColor: "surface-2",
           borderColor: "gray-7",
         },
-        focusWithin: {
+        _focusWithin: {
           backgroundColor: "surface-3",
           borderColor: "blue-8",
         },
@@ -74,11 +74,11 @@ export const COLOR = {
         bg: "transparent",
         border: "px",
         borderColor: "transparent",
-        hover: {
+        _hover: {
           backgroundColor: "surface-2",
           borderColor: "gray-7",
         },
-        focusWithin: {
+        _focusWithin: {
           backgroundColor: "surface-3",
           borderColor: "blue-8",
         },
@@ -101,11 +101,11 @@ export const COLOR = {
         bg: "surface-3",
         border: "px",
         borderColor: "red-6",
-        hover: {
+        _hover: {
           backgroundColor: "surface-2",
           borderColor: "red-7",
         },
-        focusWithin: {
+        _focusWithin: {
           backgroundColor: "surface-3",
           borderColor: "blue-8",
         },
@@ -114,11 +114,11 @@ export const COLOR = {
         bg: "surface-3",
         border: "px",
         borderColor: "red-6",
-        hover: {
+        _hover: {
           backgroundColor: "surface-2",
           borderColor: "red-7",
         },
-        focusWithin: {
+        _focusWithin: {
           backgroundColor: "surface-3",
           borderColor: "blue-8",
         },

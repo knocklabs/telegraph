@@ -18,47 +18,51 @@ export type CssVarProp = {
   value: string;
   direction?: Direction;
   axis?: Axis;
-  interactive?: boolean;
 };
 
 // Supported pseudo-class states for the object syntax
+// Prefixed with underscore to avoid collisions with native HTML attributes
+// (e.g. `disabled`) and common component props (e.g. `active`).
 export const PSEUDO_STATES = [
-  "hover",
-  "focus",
-  "active",
-  "focusWithin",
-  "disabled",
+  "_hover",
+  "_focus",
+  "_active",
+  "_focusWithin",
+  "_disabled",
 ] as const;
 
 export type PseudoState = (typeof PSEUDO_STATES)[number];
 
 // Maps pseudo state names to CSS variable prefixes
 const PSEUDO_CSS_PREFIX: Record<PseudoState, string> = {
-  hover: "hover",
-  focus: "focus",
-  active: "active",
-  focusWithin: "focus-within",
-  disabled: "disabled",
+  _hover: "hover",
+  _focus: "focus",
+  _active: "active",
+  _focusWithin: "focus-within",
+  _disabled: "disabled",
 };
 
 /**
  * Adds pseudo-class variant props to a style props type.
  *
  * Given a base style props type, this creates a new type that also
- * accepts `hover`, `focus`, `active`, `focusWithin`, and `disabled`
+ * accepts `_hover`, `_focus`, `_active`, `_focusWithin`, and `_disabled`
  * props as objects containing any of the base style props.
+ *
+ * Prefixed with underscore to avoid collisions with native HTML attributes
+ * (e.g. `disabled`) and common component props (e.g. `active`).
  *
  * @example
  * type BoxStyle = { bg: ColorToken; p: SpacingToken };
  * type BoxStyleWithPseudo = WithPseudo<BoxStyle>;
- * // Allows: { bg: "gray-2", hover: { bg: "gray-3" }, focus: { p: "4" } }
+ * // Allows: { bg: "gray-2", _hover: { bg: "gray-3" }, _focus: { p: "4" } }
  */
 export type WithPseudo<Props> = Props & {
-  hover?: Partial<Props>;
-  focus?: Partial<Props>;
-  active?: Partial<Props>;
-  focusWithin?: Partial<Props>;
-  disabled?: Partial<Props>;
+  _hover?: Partial<Props>;
+  _focus?: Partial<Props>;
+  _active?: Partial<Props>;
+  _focusWithin?: Partial<Props>;
+  _disabled?: Partial<Props>;
 };
 
 // Helper type to create negative spacing values
@@ -416,12 +420,6 @@ export const getStyleProp = <
     }
 
     const mappedValueOfCssVar = resolveValue(matchingCssVar, matchingPropValue);
-
-    // If the style contains an interactive prop, set the interactive flag to true
-    // so that the component can include the interactive class
-    if (matchingCssVar.interactive) {
-      interactive = true;
-    }
 
     styleProp = applyCssVar(styleProp, matchingCssVar, mappedValueOfCssVar);
   });

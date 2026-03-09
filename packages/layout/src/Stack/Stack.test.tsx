@@ -37,18 +37,18 @@ describe("Stack", () => {
   describe("pseudo-class types", () => {
     it("accepts Box style props in pseudo objects", () => {
       const valid: StackProps = {
-        hover: { backgroundColor: "gray-3", borderColor: "blue-5" },
-        focus: { bg: "blue-2", shadow: "1" },
-        active: { bg: "red-3" },
-        focusWithin: { borderColor: "blue-8" },
-        disabled: { bg: "gray-2" },
+        _hover: { backgroundColor: "gray-3", borderColor: "blue-5" },
+        _focus: { bg: "blue-2", shadow: "1" },
+        _active: { bg: "red-3" },
+        _focusWithin: { borderColor: "blue-8" },
+        _disabled: { bg: "gray-2" },
       };
       void valid;
     });
 
     it("accepts shorthand props in pseudo objects", () => {
       const valid: StackProps = {
-        hover: { p: "4", m: "2", rounded: "2", w: "10" },
+        _hover: { p: "4", m: "2", rounded: "2", w: "10" },
       };
       void valid;
     });
@@ -56,7 +56,7 @@ describe("Stack", () => {
     it("rejects invalid color tokens in pseudo objects", () => {
       const invalid: StackProps = {
         // @ts-expect-error invalid color token in hover
-        hover: { bg: "not-a-color" },
+        _hover: { bg: "not-a-color" },
       };
       void invalid;
     });
@@ -64,7 +64,7 @@ describe("Stack", () => {
     it("rejects unknown props in pseudo objects", () => {
       const invalid: StackProps = {
         // @ts-expect-error unknown prop in hover
-        hover: { foo: "bar" },
+        _hover: { foo: "bar" },
       };
       void invalid;
     });
@@ -72,7 +72,7 @@ describe("Stack", () => {
     it("rejects invalid spacing tokens in pseudo objects", () => {
       const invalid: StackProps = {
         // @ts-expect-error invalid spacing token in focus
-        focus: { padding: "not-a-spacing-token" },
+        _focus: { padding: "not-a-spacing-token" },
       };
       void invalid;
     });

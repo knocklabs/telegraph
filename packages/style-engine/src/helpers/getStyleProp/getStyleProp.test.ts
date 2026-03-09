@@ -417,7 +417,7 @@ describe("getStyleProp", () => {
       const { styleProp, interactive } = getStyleProp({
         props: {
           backgroundColor: "gray-2",
-          hover: { backgroundColor: "gray-3" },
+          _hover: { backgroundColor: "gray-3" },
         },
         cssVars,
       });
@@ -433,7 +433,7 @@ describe("getStyleProp", () => {
       const { styleProp, interactive } = getStyleProp({
         props: {
           backgroundColor: "gray-2",
-          focus: { backgroundColor: "gray-4" },
+          _focus: { backgroundColor: "gray-4" },
         },
         cssVars,
       });
@@ -448,7 +448,7 @@ describe("getStyleProp", () => {
     it("generates active pseudo CSS variables from object prop", () => {
       const { styleProp } = getStyleProp({
         props: {
-          active: { backgroundColor: "gray-5" },
+          _active: { backgroundColor: "gray-5" },
         },
         cssVars,
       });
@@ -461,7 +461,7 @@ describe("getStyleProp", () => {
     it("generates focusWithin pseudo CSS variables", () => {
       const { styleProp } = getStyleProp({
         props: {
-          focusWithin: { borderColor: "blue-8" },
+          _focusWithin: { borderColor: "blue-8" },
         },
         cssVars,
       });
@@ -474,7 +474,7 @@ describe("getStyleProp", () => {
     it("generates disabled pseudo CSS variables", () => {
       const { styleProp } = getStyleProp({
         props: {
-          disabled: { backgroundColor: "gray-2" },
+          _disabled: { backgroundColor: "gray-2" },
         },
         cssVars,
       });
@@ -488,9 +488,9 @@ describe("getStyleProp", () => {
       const { styleProp } = getStyleProp({
         props: {
           backgroundColor: "gray-2",
-          hover: { backgroundColor: "gray-3" },
-          focus: { backgroundColor: "gray-4" },
-          active: { backgroundColor: "gray-5" },
+          _hover: { backgroundColor: "gray-3" },
+          _focus: { backgroundColor: "gray-4" },
+          _active: { backgroundColor: "gray-5" },
         },
         cssVars,
       });
@@ -506,7 +506,7 @@ describe("getStyleProp", () => {
     it("handles multiple properties within a single pseudo state", () => {
       const { styleProp } = getStyleProp({
         props: {
-          hover: {
+          _hover: {
             backgroundColor: "gray-3",
             borderColor: "blue-5",
           },
@@ -523,7 +523,7 @@ describe("getStyleProp", () => {
     it("passes through unmatched pseudo props in otherProps", () => {
       const { styleProp, otherProps } = getStyleProp({
         props: {
-          hover: {
+          _hover: {
             backgroundColor: "gray-3",
             unknownProp: "value",
           },
@@ -535,7 +535,7 @@ describe("getStyleProp", () => {
         "--hover--background-color": "var(--tgph-gray-3)",
       });
       expect(otherProps).toStrictEqual({
-        hover: { unknownProp: "value" },
+        _hover: { unknownProp: "value" },
       });
     });
 
@@ -543,7 +543,7 @@ describe("getStyleProp", () => {
       // All pseudo props are unrecognized
       const { interactive } = getStyleProp({
         props: {
-          hover: { unknownProp: "value" },
+          _hover: { unknownProp: "value" },
         },
         cssVars,
       });
@@ -554,7 +554,7 @@ describe("getStyleProp", () => {
     it("handles directional properties in pseudo state", () => {
       const { styleProp } = getStyleProp({
         props: {
-          hover: { padding: "4" },
+          _hover: { padding: "4" },
         },
         cssVars,
       });
@@ -569,7 +569,7 @@ describe("getStyleProp", () => {
       const { styleProp, otherProps } = getStyleProp({
         props: {
           backgroundColor: "gray-2",
-          hover: { backgroundColor: "gray-3" },
+          _hover: { backgroundColor: "gray-3" },
           unknownProp: "passthrough",
         },
         cssVars,

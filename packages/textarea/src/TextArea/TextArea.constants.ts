@@ -18,7 +18,7 @@ type VariantMap = {
   [key in Variant]: Partial<
     Pick<
       TgphComponentProps<typeof Text>,
-      "border" | "borderColor" | "hover" | "active" | "focus"
+      "border" | "borderColor" | "_hover" | "_active" | "_focus"
     >
   >;
 };
@@ -28,7 +28,7 @@ type StateMap = {
     [key in Variant]: Partial<
       Pick<
         TgphComponentProps<typeof Text>,
-        "bg" | "borderColor" | "hover" | "active" | "focus"
+        "bg" | "borderColor" | "_hover" | "_active" | "_focus"
       >
     >;
   };
@@ -59,15 +59,15 @@ export const variantMap: VariantMap = {
   outline: {
     border: "px",
     borderColor: "gray-6",
-    hover: {
+    _hover: {
       borderColor: "gray-7",
       backgroundColor: "surface-2",
     },
-    active: {
+    _active: {
       borderColor: "blue-8",
       backgroundColor: "surface-3",
     },
-    focus: {
+    _focus: {
       borderColor: "blue-8",
       backgroundColor: "surface-3",
     },
@@ -75,15 +75,15 @@ export const variantMap: VariantMap = {
   ghost: {
     border: "px",
     borderColor: "transparent",
-    hover: {
+    _hover: {
       borderColor: "gray-7",
       backgroundColor: "surface-2",
     },
-    active: {
+    _active: {
       borderColor: "blue-8",
       backgroundColor: "surface-3",
     },
-    focus: {
+    _focus: {
       borderColor: "blue-8",
       backgroundColor: "surface-3",
     },
@@ -103,30 +103,30 @@ export const stateMap: StateMap = {
     outline: {
       bg: "gray-2",
       borderColor: "transparent",
-      hover: undefined,
-      active: undefined,
-      focus: undefined,
+      _hover: undefined,
+      _active: undefined,
+      _focus: undefined,
     },
     ghost: {
       bg: "transparent",
       borderColor: "transparent",
-      hover: undefined,
-      active: undefined,
-      focus: undefined,
+      _hover: undefined,
+      _active: undefined,
+      _focus: undefined,
     },
   },
   error: {
     outline: {
       bg: "surface-3",
       borderColor: "red-6",
-      hover: {
+      _hover: {
         borderColor: "red-7",
       },
     },
     ghost: {
       bg: "surface-3",
       borderColor: "red-6",
-      hover: {
+      _hover: {
         borderColor: "red-7",
       },
     },

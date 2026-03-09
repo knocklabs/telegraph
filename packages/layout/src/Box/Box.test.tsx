@@ -165,26 +165,26 @@ describe("Box", () => {
 
     it("accepts pseudo-class object props", () => {
       const validPseudo: BoxProps = {
-        hover: { backgroundColor: "gray-3" },
-        focus: { borderColor: "blue-5" },
+        _hover: { backgroundColor: "gray-3" },
+        _focus: { borderColor: "blue-5" },
       };
       void validPseudo;
     });
 
     it("accepts all pseudo states with various props", () => {
       const allStates: BoxProps = {
-        hover: { bg: "gray-3", shadow: "1" },
-        focus: { borderColor: "blue-5", p: "4" },
-        active: { bg: "red-3" },
-        focusWithin: { borderColor: "blue-8" },
-        disabled: { bg: "gray-2", rounded: "2" },
+        _hover: { bg: "gray-3", shadow: "1" },
+        _focus: { borderColor: "blue-5", p: "4" },
+        _active: { bg: "red-3" },
+        _focusWithin: { borderColor: "blue-8" },
+        _disabled: { bg: "gray-2", rounded: "2" },
       };
       void allStates;
     });
 
     it("accepts shorthand props in pseudo objects", () => {
       const shorthands: BoxProps = {
-        hover: { p: "4", m: "2", rounded: "2", w: "10", h: "8" },
+        _hover: { p: "4", m: "2", rounded: "2", w: "10", h: "8" },
       };
       void shorthands;
     });
@@ -192,7 +192,7 @@ describe("Box", () => {
     it("rejects invalid color tokens in pseudo objects", () => {
       const invalid: BoxProps = {
         // @ts-expect-error invalid color token in hover
-        hover: { bg: "not-a-color" },
+        _hover: { bg: "not-a-color" },
       };
       void invalid;
     });
@@ -200,7 +200,7 @@ describe("Box", () => {
     it("rejects unknown props in pseudo objects", () => {
       const invalid: BoxProps = {
         // @ts-expect-error unknown prop in hover
-        hover: { foo: "bar" },
+        _hover: { foo: "bar" },
       };
       void invalid;
     });
@@ -208,7 +208,7 @@ describe("Box", () => {
     it("rejects invalid spacing tokens in pseudo objects", () => {
       const invalid: BoxProps = {
         // @ts-expect-error invalid spacing token in hover
-        hover: { padding: "not-a-spacing-token" },
+        _hover: { padding: "not-a-spacing-token" },
       };
       void invalid;
     });
@@ -216,7 +216,7 @@ describe("Box", () => {
     it("rejects invalid values in focus pseudo object", () => {
       const invalid: BoxProps = {
         // @ts-expect-error invalid color token in focus
-        focus: { borderColor: "fake-color" },
+        _focus: { borderColor: "fake-color" },
       };
       void invalid;
     });
@@ -224,7 +224,7 @@ describe("Box", () => {
     it("rejects invalid values in disabled pseudo object", () => {
       const invalid: BoxProps = {
         // @ts-expect-error invalid shadow token in disabled
-        disabled: { shadow: "not-a-shadow" },
+        _disabled: { shadow: "not-a-shadow" },
       };
       void invalid;
     });

@@ -154,24 +154,25 @@ type Direction =
 
 ### Pseudo-Class Support
 
-Any style prop can be used inside pseudo-class objects. The style engine automatically handles `hover`, `focus`, `active`, `focusWithin`, and `disabled` props:
+Any style prop can be used inside pseudo-class objects. The style engine automatically handles `_hover`, `_focus`, `_active`, `_focusWithin`, and `_disabled` props:
 
 ```tsx
 // Pseudo-class props accept objects containing any style props
+// Prefixed with _ to avoid collisions with native HTML attributes (e.g. disabled)
 <StyledBox
   bg="gray-2"
-  hover={{ bg: "gray-3", shadow: "1" }}
-  focus={{ borderColor: "blue-8" }}
-  active={{ bg: "gray-4" }}
-  focusWithin={{ borderColor: "accent-6" }}
-  disabled={{ bg: "gray-1" }}
+  _hover={{ bg: "gray-3", shadow: "1" }}
+  _focus={{ borderColor: "blue-8" }}
+  _active={{ bg: "gray-4" }}
+  _focusWithin={{ borderColor: "accent-6" }}
+  _disabled={{ bg: "gray-1" }}
 />
 ```
 
 **How it works:**
 
-1. When `getStyleProp` encounters a pseudo-class object (e.g., `hover={{ bg: "gray-3" }}`), it resolves each sub-prop against the `cssVars` config
-2. Matched sub-props generate CSS variables prefixed with the pseudo state (e.g., `--hover-background-color: var(--tgph-gray-3)`)
+1. When `getStyleProp` encounters a pseudo-class object (e.g., `_hover={{ bg: "gray-3" }}`), it resolves each sub-prop against the `cssVars` config
+2. Matched sub-props generate CSS variables prefixed with the pseudo state (e.g., `--hover--background-color: var(--tgph-gray-3)`)
 3. Unmatched sub-props are collected in `otherProps` for pass-through to child components
 4. If any pseudo-class props are resolved, `interactive` returns `true`
 
@@ -186,7 +187,7 @@ type MyComponentProps = WithPseudo<{
   p?: SpacingToken;
   // ... other style props
 }>;
-// Result includes: hover?: { bg?: ColorToken; p?: SpacingToken; ... }, focus?: { ... }, etc.
+// Result includes: _hover?: { bg?: ColorToken; p?: SpacingToken; ... }, _focus?: { ... }, etc.
 ```
 
 ## PostCSS Plugin
@@ -567,7 +568,7 @@ export const AdvancedBox = ({ children, ...props }) => {
   p="4"
   px="6"
   bg="blue-3"
-  hover={{ bg: "blue-4" }}
+  _hover={{ bg: "blue-4" }}
   rounded="2"
   w="200px"
 >
