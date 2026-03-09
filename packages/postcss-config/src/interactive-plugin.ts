@@ -24,7 +24,7 @@ const PSEUDO_SELECTORS: Record<string, string[]> = {
   hover: [":hover"],
   focus: [":focus-visible"],
   active: [":active"],
-  "focus-within": [":has(:focus-visible)"],
+  "focus-within": [":has(:focus-within)"],
   disabled: [":disabled", '[aria-disabled="true"]'],
 };
 
@@ -69,16 +69,16 @@ function extractInteractiveDeclarations(rule: Rule): InteractiveDeclaration[] {
  *
  * Examples:
  *   buildSelector(".tgph-box", "hover")
- *     => ".tgph-box:hover"
+ *     => ".tgph-box--interactive:hover"
  *   buildSelector(".tgph-box", "disabled")
- *     => ".tgph-box:disabled, .tgph-box[aria-disabled=\"true\"]"
+ *     => ".tgph-box--interactive:disabled, .tgph-box--interactive[aria-disabled=\"true\"]"
  */
 function buildSelector(baseSelector: string, state: string): string {
   const pseudoSelectors = PSEUDO_SELECTORS[state];
   if (!pseudoSelectors) return "";
 
   return pseudoSelectors
-    .map((pseudo) => `${baseSelector}${pseudo}`)
+    .map((pseudo) => `${baseSelector}--interactive${pseudo}`)
     .join(",\n");
 }
 
@@ -97,15 +97,15 @@ function buildSelector(baseSelector: string, state: string): string {
  *   @telegraph interactive(.tgph-box);
  *
  * Output (appended):
- *   .tgph-box:hover {
+ *   .tgph-box--interactive:hover {
  *     background-color: var(--hover--background-color, var(--background-color));
  *     border-color: var(--hover--border-color, var(--border-color));
  *   }
- *   .tgph-box:focus-visible { ... }
- *   .tgph-box:active { ... }
- *   .tgph-box:has(:focus-visible) { ... }
- *   .tgph-box:disabled,
- *   .tgph-box[aria-disabled="true"] { ... }
+ *   .tgph-box--interactive:focus-visible { ... }
+ *   .tgph-box--interactive:active { ... }
+ *   .tgph-box--interactive:has(:focus-within) { ... }
+ *   .tgph-box--interactive:disabled,
+ *   .tgph-box--interactive[aria-disabled="true"] { ... }
  */
 const interactivePlugin = (): AcceptedPlugin => {
   return {

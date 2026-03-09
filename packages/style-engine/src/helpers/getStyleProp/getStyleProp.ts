@@ -329,11 +329,12 @@ export const getStyleProp = <
 ): {
   styleProp: StyleProp<CssVars>;
   otherProps: OtherProps<CssVars, Props>;
+  interactive: boolean;
 } => {
   const { cssVars } = params;
 
   if (!params?.props || Object.keys(params.props).length === 0) {
-    return { styleProp: {}, otherProps: {} };
+    return { styleProp: {}, otherProps: {}, interactive: false };
   }
 
   // Assign the additional styles to the style object so that it can be passed
@@ -342,6 +343,7 @@ export const getStyleProp = <
 
   let styleProp: StyleProp<CssVars> = style;
   const otherProps: OtherProps<CssVars, Props> = {};
+  let interactive = false;
 
   Object.keys(props).forEach((_key) => {
     const key = _key as keyof typeof props;
@@ -355,7 +357,6 @@ export const getStyleProp = <
       const pseudoState = _key as PseudoState;
       const pseudoProps = props[key] as Record<string, string | undefined>;
       const unmatchedPseudoProps: Record<string, string> = {};
-      let hasMatched = false;
 
       Object.keys(pseudoProps).forEach((pseudoPropKey) => {
         const propValue = pseudoProps[pseudoPropKey];
@@ -370,7 +371,6 @@ export const getStyleProp = <
           return;
         }
 
-        hasMatched = true;
         const mappedValue = resolveValue(matchingCssVar, propValue);
         const pseudoCssVarName = createPseudoCssVarName(
           matchingCssVar.cssVar,
@@ -393,6 +393,16 @@ export const getStyleProp = <
         Object.assign(otherProps, {
           [_key]: { ...existingPseudo, ...unmatchedPseudoProps },
         });
+      }
+
+      // If any pseudo sub-props were matched against cssVars at this level,
+      // mark as interactive so the component adds the scoping class.
+      // This prevents pseudo-class CSS rules from cascading into child elements.
+      if (
+        Object.keys(pseudoProps).length >
+        Object.keys(unmatchedPseudoProps).length
+      ) {
+        interactive = true;
       }
 
       return;
@@ -419,5 +429,5 @@ export const getStyleProp = <
     styleProp = applyCssVar(styleProp, matchingCssVar, mappedValueOfCssVar);
   });
 
-  return { styleProp, otherProps };
+  return { styleProp, otherProps, interactive };
 };
