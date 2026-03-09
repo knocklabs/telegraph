@@ -69,4 +69,7 @@ export const cssVars = {
   ...shorthandCssVars,
 } as const;
 
+// Note: Pseudo-class types (hover, focus, etc.) are inherited from Box's
+// StyleProps via StackProps intersection. Stack does not re-define WithPseudo
+// to avoid narrowing the pseudo-class object type for downstream consumers.
 export type StyleProps = Partial<BaseStyleProps & ShorthandStyleProps>;

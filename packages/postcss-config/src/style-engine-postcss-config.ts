@@ -1,5 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const interactivePlugin = require("./interactive-plugin").default;
+
 export default {
   plugins: [
+    // Must run before other plugins so that the generated rules are available
+    // for subsequent processing (e.g. autoprefixer, discard-empty).
+    interactivePlugin(),
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("postcss-discard-empty"),
     // eslint-disable-next-line @typescript-eslint/no-require-imports

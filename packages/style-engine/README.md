@@ -79,6 +79,7 @@ The Style Engine is the foundational CSS-in-JS system that enables Telegraph's d
 
 - **Prop-to-CSS Mapping**: Converts React props to CSS custom properties
 - **Type Safety**: Full TypeScript support for style props
+- **Pseudo-Class Support**: Object-based pseudo-class styling (hover, focus, active, etc.)
 - **Design Token Integration**: Seamless integration with Telegraph tokens
 - **Build-time Optimization**: PostCSS plugin for automatic CSS bundling
 - **Responsive Support**: Built-in responsive breakpoint system
@@ -99,9 +100,9 @@ Core function that processes style props and returns CSS variables.
 
 ```tsx
 {
-  styleProp: Record<string, string>; // CSS custom properties
-  otherProps: Record<string, unknown>; // Non-style props
-  interactive: boolean; // Whether component has interactive styles
+  styleProp: Record<string, string>; // CSS custom properties (including pseudo-class vars)
+  otherProps: Record<string, unknown>; // Non-style props (including unmatched pseudo sub-props)
+  interactive: boolean; // Whether component has pseudo-class styles
 }
 ```
 
@@ -135,7 +136,6 @@ type CssVarProp = {
   cssVar: string; // CSS custom property name
   value: string; // Value template (use VARIABLE for prop value)
   direction?: Direction; // For directional properties
-  interactive?: boolean; // Mark as interactive style
 };
 
 type Direction =
@@ -152,18 +152,56 @@ type Direction =
   | "side-right"; // Corner sides
 ```
 
+### Pseudo-Class Support
+
+Any style prop can be used inside pseudo-class objects. The style engine automatically handles `hover`, `focus`, `active`, `focusWithin`, and `disabled` props:
+
+```tsx
+// Pseudo-class props accept objects containing any style props
+<StyledBox
+  bg="gray-2"
+  hover={{ bg: "gray-3", shadow: "1" }}
+  focus={{ borderColor: "blue-8" }}
+  active={{ bg: "gray-4" }}
+  focusWithin={{ borderColor: "accent-6" }}
+  disabled={{ bg: "gray-1" }}
+/>
+```
+
+**How it works:**
+
+1. When `getStyleProp` encounters a pseudo-class object (e.g., `hover={{ bg: "gray-3" }}`), it resolves each sub-prop against the `cssVars` config
+2. Matched sub-props generate CSS variables prefixed with the pseudo state (e.g., `--hover-background-color: var(--tgph-gray-3)`)
+3. Unmatched sub-props are collected in `otherProps` for pass-through to child components
+4. If any pseudo-class props are resolved, `interactive` returns `true`
+
+**Type helper:**
+
+```tsx
+import { type WithPseudo } from "@telegraph/style-engine";
+
+// Wraps a style props type to include pseudo-class object variants
+type MyComponentProps = WithPseudo<{
+  bg?: ColorToken;
+  p?: SpacingToken;
+  // ... other style props
+}>;
+// Result includes: hover?: { bg?: ColorToken; p?: SpacingToken; ... }, focus?: { ... }, etc.
+```
+
 ## PostCSS Plugin
 
 The PostCSS plugin automatically includes CSS from Telegraph packages.
 
 ### At-Rules
 
-| Rule                      | Description                       |
-| ------------------------- | --------------------------------- |
-| `@telegraph tokens`       | Include default design tokens CSS |
-| `@telegraph tokens-light` | Include light theme tokens        |
-| `@telegraph tokens-dark`  | Include dark theme tokens         |
-| `@telegraph components`   | Include all component stylesheets |
+| Rule                                 | Description                                                       |
+| ------------------------------------ | ----------------------------------------------------------------- |
+| `@telegraph tokens`                  | Include default design tokens CSS                                 |
+| `@telegraph tokens-light`            | Include light theme tokens                                        |
+| `@telegraph tokens-dark`             | Include dark theme tokens                                         |
+| `@telegraph components`              | Include all component stylesheets                                 |
+| `@telegraph interactive(<selector>)` | Auto-generate pseudo-class CSS rules for a component (build-time) |
 
 ### Configuration
 
@@ -206,7 +244,11 @@ module.exports = {
 ### Building Custom Components
 
 ```tsx
-import { type CssVarProp, useStyleEngine } from "@telegraph/style-engine";
+import {
+  type CssVarProp,
+  type WithPseudo,
+  useStyleEngine,
+} from "@telegraph/style-engine";
 
 // Define comprehensive CSS variable mappings
 const cssVars = {
@@ -267,16 +309,9 @@ const cssVars = {
   // Layout
   w: { cssVar: "--tgph-width", value: "VARIABLE" },
   h: { cssVar: "--tgph-height", value: "VARIABLE" },
-
-  // Interactive states
-  hoverBg: {
-    cssVar: "--tgph-hover-background",
-    value: "var(--tgph-color-VARIABLE)",
-    interactive: true,
-  },
 } as const;
 
-type StyledBoxProps = {
+type StyleProps = {
   p?: string;
   pt?: string;
   pr?: string;
@@ -290,9 +325,12 @@ type StyledBoxProps = {
   color?: string;
   w?: string;
   h?: string;
-  hoverBg?: string;
   children?: React.ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>;
+};
+
+// WithPseudo adds hover, focus, active, focusWithin, disabled object props
+type StyledBoxProps = WithPseudo<StyleProps> &
+  React.HTMLAttributes<HTMLDivElement>;
 
 export const StyledBox = ({ children, ...props }: StyledBoxProps) => {
   const { styleProp, otherProps, interactive } = useStyleEngine({
@@ -452,9 +490,7 @@ export const SimpleBox = (props) => {
 ### Advanced Example
 
 ```tsx
-import {
-  useStyleEngine,
-} from "@telegraph/style-engine";
+import { useStyleEngine } from "@telegraph/style-engine";
 
 const advancedCssVars = {
   // Spacing
@@ -494,13 +530,8 @@ const advancedCssVars = {
     direction: "y",
   },
 
-  // Colors & States
+  // Colors
   bg: { cssVar: "--tgph-background", value: "var(--tgph-color-VARIABLE)" },
-  hoverBg: {
-    cssVar: "--tgph-hover-bg",
-    value: "var(--tgph-color-VARIABLE)",
-    interactive: true,
-  },
 
   // Layout
   w: { cssVar: "--tgph-width", value: "VARIABLE" },
@@ -531,8 +562,15 @@ export const AdvancedBox = ({ children, ...props }) => {
   );
 };
 
-// Usage
-<AdvancedBox p="4" px="6" bg="blue-3" hoverBg="blue-4" rounded="2" w="200px">
+// Usage — pseudo-class styles use object syntax
+<AdvancedBox
+  p="4"
+  px="6"
+  bg="blue-3"
+  hover={{ bg: "blue-4" }}
+  rounded="2"
+  w="200px"
+>
   Interactive Content
 </AdvancedBox>;
 ```
@@ -577,7 +615,7 @@ export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
     return (
       <button
         ref={ref}
-        className={`custom-button ${interactive ? "interactive" : ""}`}
+        className={`custom-button ${interactive ? "custom-button--interactive" : ""}`}
         style={styleProp}
         {...otherProps}
       >
@@ -587,7 +625,7 @@ export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
   }
 );
 
-// Corresponding CSS
+// Corresponding CSS — use @telegraph interactive() to auto-generate pseudo rules
 /* button.css */
 @telegraph tokens;
 
@@ -601,9 +639,8 @@ export const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
   transition: all 0.2s ease;
 }
 
-.custom-button.interactive:hover {
-  background: var(--tgph-blue-10);
-}
+/* Auto-generates :hover, :focus-visible, :active, :has(:focus-visible), :disabled rules */
+@telegraph interactive(.custom-button);
 ```
 
 ## References
