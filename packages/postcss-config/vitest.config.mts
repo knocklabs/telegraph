@@ -8,6 +8,7 @@ export default mergeConfig(
     test: {
       name: "postcss-config",
       environment: "node",
+      setupFiles: [],
     },
   }),
 );
