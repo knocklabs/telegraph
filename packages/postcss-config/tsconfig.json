@@ -3,6 +3,8 @@
   "extends": "@knocklabs/typescript-config/base.json",
   "display": "@telegraph/postcss-config",
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "dist"
   },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.ts", "dist", "node_modules"]
 }

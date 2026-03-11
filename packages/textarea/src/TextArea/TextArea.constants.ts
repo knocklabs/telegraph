@@ -18,14 +18,7 @@ type VariantMap = {
   [key in Variant]: Partial<
     Pick<
       TgphComponentProps<typeof Text>,
-      | "border"
-      | "borderColor"
-      | "hover_borderColor"
-      | "hover_backgroundColor"
-      | "active_borderColor"
-      | "active_backgroundColor"
-      | "focus_borderColor"
-      | "focus_backgroundColor"
+      "border" | "borderColor" | "_hover" | "_active" | "_focus"
     >
   >;
 };
@@ -35,14 +28,7 @@ type StateMap = {
     [key in Variant]: Partial<
       Pick<
         TgphComponentProps<typeof Text>,
-        | "bg"
-        | "borderColor"
-        | "hover_borderColor"
-        | "hover_backgroundColor"
-        | "active_borderColor"
-        | "active_backgroundColor"
-        | "focus_borderColor"
-        | "focus_backgroundColor"
+        "bg" | "borderColor" | "_hover" | "_active" | "_focus"
       >
     >;
   };
@@ -73,22 +59,34 @@ export const variantMap: VariantMap = {
   outline: {
     border: "px",
     borderColor: "gray-6",
-    hover_borderColor: "gray-7",
-    hover_backgroundColor: "surface-2",
-    active_borderColor: "blue-8",
-    active_backgroundColor: "surface-3",
-    focus_borderColor: "blue-8",
-    focus_backgroundColor: "surface-3",
+    _hover: {
+      borderColor: "gray-7",
+      backgroundColor: "surface-2",
+    },
+    _active: {
+      borderColor: "blue-8",
+      backgroundColor: "surface-3",
+    },
+    _focus: {
+      borderColor: "blue-8",
+      backgroundColor: "surface-3",
+    },
   },
   ghost: {
     border: "px",
     borderColor: "transparent",
-    hover_borderColor: "gray-7",
-    hover_backgroundColor: "surface-2",
-    active_borderColor: "blue-8",
-    active_backgroundColor: "surface-3",
-    focus_borderColor: "blue-8",
-    focus_backgroundColor: "surface-3",
+    _hover: {
+      borderColor: "gray-7",
+      backgroundColor: "surface-2",
+    },
+    _active: {
+      borderColor: "blue-8",
+      backgroundColor: "surface-3",
+    },
+    _focus: {
+      borderColor: "blue-8",
+      backgroundColor: "surface-3",
+    },
   },
 };
 
@@ -105,34 +103,32 @@ export const stateMap: StateMap = {
     outline: {
       bg: "gray-2",
       borderColor: "transparent",
-      hover_borderColor: undefined,
-      hover_backgroundColor: undefined,
-      active_borderColor: undefined,
-      active_backgroundColor: undefined,
-      focus_borderColor: undefined,
-      focus_backgroundColor: undefined,
+      _hover: undefined,
+      _active: undefined,
+      _focus: undefined,
     },
     ghost: {
       bg: "transparent",
       borderColor: "transparent",
-      hover_borderColor: undefined,
-      hover_backgroundColor: undefined,
-      active_borderColor: undefined,
-      active_backgroundColor: undefined,
-      focus_borderColor: undefined,
-      focus_backgroundColor: undefined,
+      _hover: undefined,
+      _active: undefined,
+      _focus: undefined,
     },
   },
   error: {
     outline: {
       bg: "surface-3",
       borderColor: "red-6",
-      hover_borderColor: "red-7",
+      _hover: {
+        borderColor: "red-7",
+      },
     },
     ghost: {
       bg: "surface-3",
       borderColor: "red-6",
-      hover_borderColor: "red-7",
+      _hover: {
+        borderColor: "red-7",
+      },
     },
   },
 };

@@ -1,6 +1,8 @@
-export { getStyleProp } from "./getStyleProp";
+export { getStyleProp, PSEUDO_STATES } from "./getStyleProp";
 export type {
   CssVarProp,
   NegativeSpacing,
   WithNegativeSpacing,
+  PseudoState,
+  WithPseudo,
 } from "./getStyleProp";

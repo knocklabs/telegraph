@@ -395,4 +395,179 @@ describe("getStyleProp", () => {
       });
     });
   });
+
+  describe("pseudo-class object props", () => {
+    const cssVars = {
+      backgroundColor: {
+        cssVar: "--background-color",
+        value: "var(--tgph-VARIABLE)",
+      },
+      borderColor: {
+        cssVar: "--border-color",
+        value: "var(--tgph-VARIABLE)",
+      },
+      padding: {
+        cssVar: "--padding",
+        value: "var(--tgph-spacing-VARIABLE)",
+        direction: "all" as const,
+      },
+    };
+
+    it("generates hover pseudo CSS variables from object prop", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          backgroundColor: "gray-2",
+          _hover: { backgroundColor: "gray-3" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--background-color": "var(--tgph-gray-2)",
+        "--hover--background-color": "var(--tgph-gray-3)",
+      });
+    });
+
+    it("generates focus pseudo CSS variables from object prop", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          backgroundColor: "gray-2",
+          _focus: { backgroundColor: "gray-4" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--background-color": "var(--tgph-gray-2)",
+        "--focus--background-color": "var(--tgph-gray-4)",
+      });
+    });
+
+    it("generates active pseudo CSS variables from object prop", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          _active: { backgroundColor: "gray-5" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--active--background-color": "var(--tgph-gray-5)",
+      });
+    });
+
+    it("generates focusWithin pseudo CSS variables", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          _focusWithin: { borderColor: "blue-8" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--focus-within--border-color": "var(--tgph-blue-8)",
+      });
+    });
+
+    it("generates disabled pseudo CSS variables", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          _disabled: { backgroundColor: "gray-2" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--disabled--background-color": "var(--tgph-gray-2)",
+      });
+    });
+
+    it("handles multiple pseudo states simultaneously", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          backgroundColor: "gray-2",
+          _hover: { backgroundColor: "gray-3" },
+          _focus: { backgroundColor: "gray-4" },
+          _active: { backgroundColor: "gray-5" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--background-color": "var(--tgph-gray-2)",
+        "--hover--background-color": "var(--tgph-gray-3)",
+        "--focus--background-color": "var(--tgph-gray-4)",
+        "--active--background-color": "var(--tgph-gray-5)",
+      });
+    });
+
+    it("handles multiple properties within a single pseudo state", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          _hover: {
+            backgroundColor: "gray-3",
+            borderColor: "blue-5",
+          },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--hover--background-color": "var(--tgph-gray-3)",
+        "--hover--border-color": "var(--tgph-blue-5)",
+      });
+    });
+
+    it("passes through unmatched pseudo props in otherProps", () => {
+      const { styleProp, otherProps } = getStyleProp({
+        props: {
+          _hover: {
+            backgroundColor: "gray-3",
+            unknownProp: "value",
+          },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--hover--background-color": "var(--tgph-gray-3)",
+      });
+      expect(otherProps).toStrictEqual({
+        _hover: { unknownProp: "value" },
+      });
+    });
+
+    it("handles directional properties in pseudo state", () => {
+      const { styleProp } = getStyleProp({
+        props: {
+          _hover: { padding: "4" },
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--hover--padding":
+          "var(--tgph-spacing-4) var(--tgph-spacing-4) var(--tgph-spacing-4) var(--tgph-spacing-4)",
+      });
+    });
+
+    it("does not interfere with base prop processing", () => {
+      const { styleProp, otherProps } = getStyleProp({
+        props: {
+          backgroundColor: "gray-2",
+          _hover: { backgroundColor: "gray-3" },
+          unknownProp: "passthrough",
+        },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--background-color": "var(--tgph-gray-2)",
+        "--hover--background-color": "var(--tgph-gray-3)",
+      });
+      expect(otherProps).toStrictEqual({
+        unknownProp: "passthrough",
+      });
+    });
+  });
 });

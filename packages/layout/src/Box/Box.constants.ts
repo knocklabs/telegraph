@@ -1,5 +1,9 @@
 import type { tokens } from "@telegraph/style-engine";
-import type { CssVarProp, WithNegativeSpacing } from "@telegraph/style-engine";
+import type {
+  CssVarProp,
+  WithNegativeSpacing,
+  WithPseudo,
+} from "@telegraph/style-engine";
 import type { CSSProperties } from "react";
 
 // Type that allows both positive and negative spacing values
@@ -8,15 +12,7 @@ type SpacingValue = WithNegativeSpacing<keyof typeof tokens.spacing>;
 export type BaseStyleProps = {
   display: "block" | "inline-block" | "inline" | "flex" | "inline-flex";
   backgroundColor: keyof typeof tokens.color;
-  hover_backgroundColor: keyof typeof tokens.color;
-  focus_backgroundColor: keyof typeof tokens.color;
-  active_backgroundColor: keyof typeof tokens.color;
-  focus_within_backgroundColor: keyof typeof tokens.color;
   borderColor: keyof typeof tokens.color;
-  hover_borderColor: keyof typeof tokens.color;
-  focus_borderColor: keyof typeof tokens.color;
-  active_borderColor: keyof typeof tokens.color;
-  focus_within_borderColor: keyof typeof tokens.color;
   borderTopColor: keyof typeof tokens.color;
   borderBottomColor: keyof typeof tokens.color;
   borderLeftColor: keyof typeof tokens.color;
@@ -119,26 +115,6 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     cssVar: "--background-color",
     value: "var(--tgph-VARIABLE)",
   },
-  hover_backgroundColor: {
-    cssVar: "--hover_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  focus_backgroundColor: {
-    cssVar: "--focus_backgroundColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  active_backgroundColor: {
-    cssVar: "--active_backgroundColor",
-    interactive: true,
-    value: "var(--tgph-VARIABLE)",
-  },
-  focus_within_backgroundColor: {
-    cssVar: "--focus_within_backgroundColor",
-    interactive: true,
-    value: "var(--tgph-VARIABLE)",
-  },
   borderStyle: {
     cssVar: "--border-style",
     value: "var(--tgph-border-style-VARIABLE)",
@@ -215,26 +191,6 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   },
   borderColor: {
     cssVar: "--border-color",
-    value: "var(--tgph-VARIABLE)",
-  },
-  hover_borderColor: {
-    cssVar: "--hover_borderColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  focus_borderColor: {
-    cssVar: "--focus_borderColor",
-    value: "var(--tgph-VARIABLE)",
-    interactive: true,
-  },
-  focus_within_borderColor: {
-    cssVar: "--focus_within_borderColor",
-    interactive: true,
-    value: "var(--tgph-VARIABLE)",
-  },
-  active_borderColor: {
-    cssVar: "--active_borderColor",
-    interactive: true,
     value: "var(--tgph-VARIABLE)",
   },
   borderTopColor: {
@@ -444,4 +400,6 @@ export const cssVars = {
   ...shorthandCssVars,
 } as const;
 
-export type StyleProps = Partial<BaseStyleProps & ShorthandStyleProps>;
+export type StyleProps = WithPseudo<
+  Partial<BaseStyleProps & ShorthandStyleProps>
+>;

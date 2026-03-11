@@ -1,8 +1,5 @@
 .tgph-button {
-  --tgph-button-hover-shadow: none;
-  --tgph-button-focus-shadow: none;
-  --tgph-button-active-shadow: none;
-  --tgph-button-hover-text-color: none;
+  --tgph-button-text-color: none;
 
   appearance: none;
   cursor: pointer;
@@ -20,25 +17,23 @@
   transition: color 0.2s ease-in-out;
 }
 
-.tgph-button:hover {
-  box-shadow: var(--tgph-button-hover-shadow);
-}
-
 .tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-text] {
-  --color: var(--tgph-button-hover-text-color) !important;
+  --color: var(
+    --hover--tgph-button-text-color,
+    var(--tgph-button-text-color)
+  ) !important;
 }
 
 .tgph-button:not([data-tgph-button-state="disabled"]):hover [data-button-icon] {
-  --color: var(--tgph-button-hover-text-color) !important;
-}
-
-.tgph-button:focus {
-  box-shadow: var(--tgph-button-focus-shadow);
+  --color: var(
+    --hover--tgph-button-text-color,
+    var(--tgph-button-text-color)
+  ) !important;
 }
 
 .tgph-button[data-tgph-button-state="active"] {
-  box-shadow: var(--tgph-button-active-shadow);
-  background-color: var(--active_backgroundColor);
+  box-shadow: var(--active--box-shadow, var(--box-shadow));
+  background-color: var(--active--background-color, var(--background-color));
 }
 
 /* We choose to manage the disabled background-color here as there are only two variations */

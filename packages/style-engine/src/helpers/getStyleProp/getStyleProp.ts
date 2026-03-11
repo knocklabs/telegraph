@@ -18,7 +18,51 @@ export type CssVarProp = {
   value: string;
   direction?: Direction;
   axis?: Axis;
-  interactive?: boolean;
+};
+
+// Supported pseudo-class states for the object syntax
+// Prefixed with underscore to avoid collisions with native HTML attributes
+// (e.g. `disabled`) and common component props (e.g. `active`).
+export const PSEUDO_STATES = [
+  "_hover",
+  "_focus",
+  "_active",
+  "_focusWithin",
+  "_disabled",
+] as const;
+
+export type PseudoState = (typeof PSEUDO_STATES)[number];
+
+// Maps pseudo state names to CSS variable prefixes
+const PSEUDO_CSS_PREFIX: Record<PseudoState, string> = {
+  _hover: "hover",
+  _focus: "focus",
+  _active: "active",
+  _focusWithin: "focus-within",
+  _disabled: "disabled",
+};
+
+/**
+ * Adds pseudo-class variant props to a style props type.
+ *
+ * Given a base style props type, this creates a new type that also
+ * accepts `_hover`, `_focus`, `_active`, `_focusWithin`, and `_disabled`
+ * props as objects containing any of the base style props.
+ *
+ * Prefixed with underscore to avoid collisions with native HTML attributes
+ * (e.g. `disabled`) and common component props (e.g. `active`).
+ *
+ * @example
+ * type BoxStyle = { bg: ColorToken; p: SpacingToken };
+ * type BoxStyleWithPseudo = WithPseudo<BoxStyle>;
+ * // Allows: { bg: "gray-2", _hover: { bg: "gray-3" }, _focus: { p: "4" } }
+ */
+export type WithPseudo<Props> = Props & {
+  _hover?: Partial<Props>;
+  _focus?: Partial<Props>;
+  _active?: Partial<Props>;
+  _focusWithin?: Partial<Props>;
+  _disabled?: Partial<Props>;
 };
 
 // Helper type to create negative spacing values
@@ -215,6 +259,68 @@ type GetStylePropParams<CssVars, Props> = {
   cssVars: CssVars;
 };
 
+// Resolves a single prop value against its matching CssVarProp definition.
+// Returns the mapped CSS variable value string, handling negative spacing.
+const resolveValue = (
+  matchingCssVar: CssVarProp,
+  propValue: string,
+): string => {
+  const isNegative = typeof propValue === "string" && propValue.startsWith("-");
+
+  if (isNegative) {
+    const positiveValue = propValue.slice(1);
+    const positiveVar = matchingCssVar.value.replace("VARIABLE", positiveValue);
+    return `calc(-1 * ${positiveVar})`;
+  }
+
+  return matchingCssVar.value.replace("VARIABLE", propValue);
+};
+
+// Applies a resolved CSS variable value to the styleProp object,
+// handling directional and axis properties.
+const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
+  styleProp: StyleProp<CssVars>,
+  matchingCssVar: CssVarProp,
+  mappedValue: string,
+  cssVarNameOverride?: string,
+): StyleProp<CssVars> => {
+  const cssVarName = (cssVarNameOverride ??
+    matchingCssVar.cssVar) as keyof StyleProp<CssVars>;
+
+  if (matchingCssVar.direction) {
+    const currentValueOfCssVar = styleProp?.[cssVarName];
+    const directionalValue = applyDirectionalValues({
+      currentValueOfCssVar,
+      value: mappedValue,
+      direction: matchingCssVar.direction,
+    });
+    return { ...styleProp, [cssVarName]: directionalValue };
+  }
+
+  if (matchingCssVar.axis) {
+    const currentValueOfCssVar = styleProp?.[cssVarName];
+    const axisValue = applyAxisValues({
+      currentValueOfCssVar,
+      value: mappedValue,
+      axis: matchingCssVar.axis,
+    });
+    return { ...styleProp, [cssVarName]: axisValue };
+  }
+
+  return { ...styleProp, [cssVarName]: mappedValue };
+};
+
+// Creates a state-prefixed CSS variable name from a base CSS variable.
+// e.g. ("--background-color", "hover") => "--hover--background-color"
+const createPseudoCssVarName = (
+  baseCssVar: string,
+  pseudoState: PseudoState,
+): string => {
+  const prefix = PSEUDO_CSS_PREFIX[pseudoState];
+  const baseName = baseCssVar.replace(/^--/, "");
+  return `--${prefix}--${baseName}`;
+};
+
 export const getStyleProp = <
   CssVars extends CssVarsPropObject<CssVars>,
   Props extends Record<string, unknown>,
@@ -241,6 +347,67 @@ export const getStyleProp = <
 
   Object.keys(props).forEach((_key) => {
     const key = _key as keyof typeof props;
+
+    // Check if this is a pseudo-class object prop (hover, focus, active, etc.)
+    if (
+      PSEUDO_STATES.includes(_key as PseudoState) &&
+      typeof props[key] === "object" &&
+      props[key] !== null
+    ) {
+      const pseudoState = _key as PseudoState;
+      const pseudoProps = props[key] as Record<string, string | undefined>;
+      const unmatchedPseudoProps: Record<string, string> = {};
+
+      Object.keys(pseudoProps).forEach((pseudoPropKey) => {
+        const propValue = pseudoProps[pseudoPropKey];
+        if (!propValue) return;
+
+        const cssVarsKey = pseudoPropKey as unknown as keyof typeof cssVars;
+        const matchingCssVar = cssVars?.[cssVarsKey];
+
+        if (!matchingCssVar) {
+          // Collect unmatched pseudo props to pass through to otherProps
+          unmatchedPseudoProps[pseudoPropKey] = propValue;
+          return;
+        }
+
+        const mappedValue = resolveValue(matchingCssVar, propValue);
+        const pseudoCssVarName = createPseudoCssVarName(
+          matchingCssVar.cssVar,
+          pseudoState,
+        );
+
+        styleProp = applyCssVar(
+          styleProp,
+          matchingCssVar,
+          mappedValue,
+          pseudoCssVarName,
+        );
+      });
+
+      // Pass through any unmatched pseudo props so downstream components
+      // can process them (e.g. Button passes hover.backgroundColor to Box)
+      if (Object.keys(unmatchedPseudoProps).length > 0) {
+        const existingPseudo =
+          (otherProps as Record<string, unknown>)[_key] || {};
+        Object.assign(otherProps, {
+          [_key]: { ...existingPseudo, ...unmatchedPseudoProps },
+        });
+      }
+
+      // If any pseudo sub-props were matched against cssVars at this level,
+      // mark as interactive so the component adds the scoping class.
+      // This prevents pseudo-class CSS rules from cascading into child elements.
+      if (
+        Object.keys(pseudoProps).length >
+        Object.keys(unmatchedPseudoProps).length
+      ) {
+        interactive = true;
+      }
+
+      return;
+    }
+
     const cssVarsKey = key as unknown as keyof typeof cssVars;
     const matchingCssVar = cssVars?.[cssVarsKey];
 
@@ -257,72 +424,9 @@ export const getStyleProp = <
       return;
     }
 
-    // Handle negative spacing values
-    let mappedValueOfCssVar: string;
-    const isNegative =
-      typeof matchingPropValue === "string" &&
-      matchingPropValue.startsWith("-");
+    const mappedValueOfCssVar = resolveValue(matchingCssVar, matchingPropValue);
 
-    if (isNegative) {
-      // Remove the "-" prefix to get the actual token key
-      const positiveValue = matchingPropValue.slice(1);
-      // Replace VARIABLE with the positive token and wrap in calc()
-      const positiveVar = matchingCssVar.value.replace(
-        "VARIABLE",
-        positiveValue,
-      );
-      mappedValueOfCssVar = `calc(-1 * ${positiveVar})`;
-    } else {
-      // Replace the VARIABLE placeholder with the actual value of the prop
-      mappedValueOfCssVar = matchingCssVar.value.replace(
-        "VARIABLE",
-        matchingPropValue,
-      );
-    }
-
-    const cssVarName = matchingCssVar.cssVar as keyof StyleProp<CssVars>;
-
-    // If the style contains an interactive prop, set the interactive flag to true
-    // so that the component can include the interactive class
-    if (matchingCssVar.interactive) {
-      interactive = true;
-    }
-
-    if (matchingCssVar.direction) {
-      const currentValueOfCssVar = styleProp?.[cssVarName];
-
-      const directionalValue = applyDirectionalValues({
-        currentValueOfCssVar,
-        value: mappedValueOfCssVar,
-        direction: matchingCssVar.direction,
-      });
-
-      styleProp = {
-        ...styleProp,
-        [cssVarName]: directionalValue,
-      };
-      return;
-    }
-
-    if (matchingCssVar.axis) {
-      const currentValueOfCssVar = styleProp?.[cssVarName];
-      const axisValue = applyAxisValues({
-        currentValueOfCssVar,
-        value: mappedValueOfCssVar,
-        axis: matchingCssVar.axis,
-      });
-
-      styleProp = {
-        ...styleProp,
-        [cssVarName]: axisValue,
-      };
-      return;
-    }
-
-    styleProp = {
-      ...styleProp,
-      [cssVarName]: mappedValueOfCssVar,
-    };
+    styleProp = applyCssVar(styleProp, matchingCssVar, mappedValueOfCssVar);
   });
 
   return { styleProp, otherProps, interactive };

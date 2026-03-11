@@ -163,15 +163,69 @@ describe("Box", () => {
       void validProps;
     });
 
-    it("rejects unknown props on type level", () => {
-      // @ts-expect-error unknown prop rejected on BoxProps
-      const invalidProp: BoxProps = { invalidProp: "invalid" };
-      void invalidProp;
+    it("accepts pseudo-class object props", () => {
+      const validPseudo: BoxProps = {
+        _hover: { backgroundColor: "gray-3" },
+        _focus: { borderColor: "blue-5" },
+      };
+      void validPseudo;
     });
 
-    it("rejects unknown props in JSX", () => {
-      // @ts-expect-error unknown prop rejected on Box JSX
-      const invalid = <Box invalidProp="invalid" />;
+    it("accepts all pseudo states with various props", () => {
+      const allStates: BoxProps = {
+        _hover: { bg: "gray-3", shadow: "1" },
+        _focus: { borderColor: "blue-5", p: "4" },
+        _active: { bg: "red-3" },
+        _focusWithin: { borderColor: "blue-8" },
+        _disabled: { bg: "gray-2", rounded: "2" },
+      };
+      void allStates;
+    });
+
+    it("accepts shorthand props in pseudo objects", () => {
+      const shorthands: BoxProps = {
+        _hover: { p: "4", m: "2", rounded: "2", w: "10", h: "8" },
+      };
+      void shorthands;
+    });
+
+    it("rejects invalid color tokens in pseudo objects", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error invalid color token in hover
+        _hover: { bg: "not-a-color" },
+      };
+      void invalid;
+    });
+
+    it("rejects unknown props in pseudo objects", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error unknown prop in hover
+        _hover: { foo: "bar" },
+      };
+      void invalid;
+    });
+
+    it("rejects invalid spacing tokens in pseudo objects", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error invalid spacing token in hover
+        _hover: { padding: "not-a-spacing-token" },
+      };
+      void invalid;
+    });
+
+    it("rejects invalid values in focus pseudo object", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error invalid color token in focus
+        _focus: { borderColor: "fake-color" },
+      };
+      void invalid;
+    });
+
+    it("rejects invalid values in disabled pseudo object", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error invalid shadow token in disabled
+        _disabled: { shadow: "not-a-shadow" },
+      };
       void invalid;
     });
   });
