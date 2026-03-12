@@ -1403,13 +1403,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/cascade-layer-name-parser@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@csstools/cascade-layer-name-parser@npm:3.0.0"
+"@csstools/cascade-layer-name-parser@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@csstools/cascade-layer-name-parser@npm:2.0.5"
   peerDependencies:
-    "@csstools/css-parser-algorithms": ^4.0.0
-    "@csstools/css-tokenizer": ^4.0.0
-  checksum: 10c0/657b325261dfa567e26b56a1a6a00fcfc877b9e95ce8ae3595ec95c89323fc2123dad7a4ca79bede8dec475ccc41d9d528470b0be01c4f22104f6962f2bfb40c
+    "@csstools/css-parser-algorithms": ^3.0.5
+    "@csstools/css-tokenizer": ^3.0.4
+  checksum: 10c0/b6c73d5c8132f922edc88b9df5272c93c9753945f1e1077b80d03b314076ffe03c2cc9bf6cbc85501ee7c7f27e477263df96997c9125fd2fd0cfe82fe2d7c141
   languageName: node
   linkType: hard
 
@@ -1443,6 +1443,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@csstools/css-parser-algorithms@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@csstools/css-parser-algorithms@npm:3.0.5"
+  peerDependencies:
+    "@csstools/css-tokenizer": ^3.0.4
+  checksum: 10c0/d9a1c888bd43849ae3437ca39251d5c95d2c8fd6b5ccdb7c45491dfd2c1cbdc3075645e80901d120e4d2c1993db9a5b2d83793b779dbbabcfb132adb142eb7f7
+  languageName: node
+  linkType: hard
+
 "@csstools/css-parser-algorithms@npm:^4.0.0":
   version: 4.0.0
   resolution: "@csstools/css-parser-algorithms@npm:4.0.0"
@@ -1459,6 +1468,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@csstools/css-tokenizer@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@csstools/css-tokenizer@npm:3.0.4"
+  checksum: 10c0/3b589f8e9942075a642213b389bab75a2d50d05d203727fcdac6827648a5572674caff07907eff3f9a2389d86a4ee47308fafe4f8588f4a77b7167c588d2559f
+  languageName: node
+  linkType: hard
+
 "@csstools/css-tokenizer@npm:^4.0.0":
   version: 4.0.0
   resolution: "@csstools/css-tokenizer@npm:4.0.0"
@@ -1466,13 +1482,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/media-query-list-parser@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@csstools/media-query-list-parser@npm:5.0.0"
+"@csstools/media-query-list-parser@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@csstools/media-query-list-parser@npm:4.0.3"
   peerDependencies:
-    "@csstools/css-parser-algorithms": ^4.0.0
-    "@csstools/css-tokenizer": ^4.0.0
-  checksum: 10c0/dbc22654769eca02c182f3a57be02cd5b8d0b958adc8397e66770b64b0e8fcd32faa93a3f6a99e1457bde11862485de3cd83a31dac7b03925d32f9891b31ccfd
+    "@csstools/css-parser-algorithms": ^3.0.5
+    "@csstools/css-tokenizer": ^3.0.4
+  checksum: 10c0/e29d856d57e9a036694662163179fc061a99579f05e7c3c35438b3e063790ae8a9ee9f1fb4b4693d8fc7672ae0801764fe83762ab7b9df2921fcc6172cfd5584
   languageName: node
   linkType: hard
 
@@ -4718,7 +4734,7 @@ __metadata:
     eslint: "npm:^10.0.2"
     postcss: "npm:^8.5.6"
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
-    postcss-custom-media: "npm:^12.0.1"
+    postcss-custom-media: "npm:^11.0.6"
     postcss-discard-empty: "npm:^7.0.1"
     typescript: "npm:^5.9.3"
   languageName: unknown
@@ -12124,17 +12140,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-custom-media@npm:^12.0.1":
-  version: 12.0.1
-  resolution: "postcss-custom-media@npm:12.0.1"
+"postcss-custom-media@npm:^11.0.6":
+  version: 11.0.6
+  resolution: "postcss-custom-media@npm:11.0.6"
   dependencies:
-    "@csstools/cascade-layer-name-parser": "npm:^3.0.0"
-    "@csstools/css-parser-algorithms": "npm:^4.0.0"
-    "@csstools/css-tokenizer": "npm:^4.0.0"
-    "@csstools/media-query-list-parser": "npm:^5.0.0"
+    "@csstools/cascade-layer-name-parser": "npm:^2.0.5"
+    "@csstools/css-parser-algorithms": "npm:^3.0.5"
+    "@csstools/css-tokenizer": "npm:^3.0.4"
+    "@csstools/media-query-list-parser": "npm:^4.0.3"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/93f964613e3d3e73ba86d13386a9ea981bda5f334607a843434ef55cfa3773e3989224c8032b66b03731cc822a19fc110994be2c83cac99f2b06eeb66dac66f2
+  checksum: 10c0/62dcb2858fd490d90aab32062621d58892a7b2a54948ee63af81a2cd61807a11815d28d4ef6bc800c5e142ac73098f7e56822c7cc63192eb20d5b16071543a73
   languageName: node
   linkType: hard
 
