@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.3.0
+
+### Minor Changes
+
+- [#714](https://github.com/knocklabs/telegraph/pull/714) [`627e61c`](https://github.com/knocklabs/telegraph/commit/627e61c3b17ccfc36f5fb835bb5f21a092efca95) Thanks [@kylemcd](https://github.com/kylemcd)! - feat: hover, focus, etc states as component props
+
 ## 0.2.2
 
 ### Patch Changes
