@@ -1991,6 +1991,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@github-ui/storybook-addon-performance-panel@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@github-ui/storybook-addon-performance-panel@npm:1.1.4"
+  peerDependencies:
+    "@storybook/icons": ^2.0.0
+    "@storybook/react": ^10.0.0
+    react: ^19
+    storybook: ^10
+  peerDependenciesMeta:
+    "@storybook/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 10c0/f15ac31a3e9681f31775c810144f7f5ba6e8cf7f869fd775b78cbad5b3b519ab9c81a69b69cb07379fd99b9b73016fbb4c496ff0f0df3e803b3ee0968b05cfb8
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -2443,6 +2460,7 @@ __metadata:
     "@changesets/cli": "npm:^2.29.8"
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
+    "@github-ui/storybook-addon-performance-panel": "npm:^1.1.4"
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@manypkg/cli": "npm:^0.25.1"
     "@moonrepo/cli": "npm:^1.41.7"
