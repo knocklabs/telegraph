@@ -1,9 +1,11 @@
 import React from "react";
-import { Preview } from "@storybook/react-vite";
+import { definePreview } from "@storybook/react-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import addonPerformancePanel from "@github-ui/storybook-addon-performance-panel";
 import "./global.css";
 
-const preview: Preview = {
+export default definePreview({
+  addons: [addonPerformancePanel()],
   decorators: [
     (Story) => (
       <div className="tgph">
@@ -19,6 +21,4 @@ const preview: Preview = {
       attributeName: "data-tgph-appearance",
     }),
   ],
-};
-
-export default preview;
+});

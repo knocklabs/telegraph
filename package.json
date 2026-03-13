@@ -51,6 +51,7 @@
     "@changesets/cli": "^2.29.8",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@github-ui/storybook-addon-performance-panel": "^1.1.4",
     "@knocklabs/eslint-config": "^0.0.5",
     "@manypkg/cli": "^0.25.1",
     "@moonrepo/cli": "^1.41.7",
