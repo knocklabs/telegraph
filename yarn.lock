@@ -2460,7 +2460,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.56.1"
     "@vitest/coverage-v8": "npm:4.0.18"
     eslint: "npm:^10.0.2"
-    eslint-plugin-react-hooks: "npm:7.1.0-canary-e0cc7202-20260227"
+    eslint-plugin-react-hooks: "npm:7.1.0-canary-52684925-20251110"
     eslint-plugin-turbo: "npm:^2.8.12"
     husky: "npm:^9.1.7"
     jsdom: "npm:^28.1.0"
@@ -8473,9 +8473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:7.1.0-canary-e0cc7202-20260227":
-  version: 7.1.0-canary-e0cc7202-20260227
-  resolution: "eslint-plugin-react-hooks@npm:7.1.0-canary-e0cc7202-20260227"
+"eslint-plugin-react-hooks@npm:7.1.0-canary-52684925-20251110":
+  version: 7.1.0-canary-52684925-20251110
+  resolution: "eslint-plugin-react-hooks@npm:7.1.0-canary-52684925-20251110"
   dependencies:
     "@babel/core": "npm:^7.24.4"
     "@babel/parser": "npm:^7.24.4"
@@ -8483,8 +8483,8 @@ __metadata:
     zod: "npm:^3.25.0 || ^4.0.0"
     zod-validation-error: "npm:^3.5.0 || ^4.0.0"
   peerDependencies:
-    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/51bd0a2acaef8b834f428663afbb62a5bf8b2f84cb2e904f3f050c9f66cc993c2e301066182b1612e82206c89f4508c9cb21cfea09ccb913c938b43e73efd827
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
+  checksum: 10c0/84205901eb4e52421c195cb57a20adc7486c3577e995e8ec6cd341882f4d6e0108528d707d6835db90240ffc969653ba7bf963989da4ed3a0df9a0f2e524dbb9
   languageName: node
   linkType: hard
 
