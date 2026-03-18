@@ -22,6 +22,7 @@ export default {
     "@storybook/addon-links",
     "@storybook/addon-onboarding",
     "@storybook/addon-themes",
+    "@github-ui/storybook-addon-performance-panel",
   ],
   core: {
     builder: "@storybook/builder-vite", // 👈 The builder enabled here.
