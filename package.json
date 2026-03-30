@@ -54,7 +54,7 @@
     "@github-ui/storybook-addon-performance-panel": "^1.1.4",
     "@knocklabs/eslint-config": "^0.0.5",
     "@manypkg/cli": "^0.25.1",
-    "@moonrepo/cli": "^1.41.7",
+    "@moonrepo/cli": "^2.1.1",
     "@storybook/addon-links": "^10.2.10",
     "@storybook/addon-onboarding": "^10.2.10",
     "@storybook/addon-themes": "^10.2.10",
