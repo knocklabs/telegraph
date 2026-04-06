@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import core from "@actions/core";
+import * as core from "@actions/core";
 
 const bytesToKilobytes = (bytes) => parseFloat((bytes / 1024).toFixed(2));
 
