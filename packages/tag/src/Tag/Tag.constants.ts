@@ -87,7 +87,7 @@ export const COLOR = {
       accent: "white",
       blue: "white",
       green: "white",
-      yellow: "contrast",
+      yellow: "black",
       purple: "white",
     },
     soft: {
@@ -109,7 +109,7 @@ export const COLOR = {
       red: "white",
       blue: "white",
       green: "white",
-      yellow: "contrast",
+      yellow: "black",
       purple: "white",
     },
     soft: {
