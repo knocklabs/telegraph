@@ -54,8 +54,8 @@ export type RootProps<T extends TgphElement = "button"> = Omit<
 const ButtonContext = React.createContext<
   Required<Omit<RootBaseProps, "color" | "as" | "state"> & InternalProps>
 >({
-  variant: "solid",
-  size: "2",
+  variant: "outline",
+  size: "1",
   color: "default",
   state: "default",
   layout: "default",
@@ -78,8 +78,8 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
 
 const Root = <T extends TgphElement = "button">({
   as,
-  variant = "solid",
-  size = "2",
+  variant = "outline",
+  size = "1",
   color = "default",
   state: stateProp = "default",
   active = false,
