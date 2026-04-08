@@ -1,5 +1,17 @@
 # @telegraph/typography
 
+## 0.3.0
+
+### Minor Changes
+
+- [#736](https://github.com/knocklabs/telegraph/pull/736) [`1de6cf1`](https://github.com/knocklabs/telegraph/commit/1de6cf1874835db4389f5e7f14fbcc694229a5de) Thanks [@ksorathia](https://github.com/ksorathia)! - Update code soft variant to use border color instead of bg color. Adjusted spacing on both variants.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/layout@0.5.0
+  - @telegraph/style-engine@0.3.1
+
 ## 0.2.1
 
 ### Patch Changes

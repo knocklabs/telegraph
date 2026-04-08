@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/typography",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Shared build utilities for Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/typography",
   "author": "@knocklabs",
