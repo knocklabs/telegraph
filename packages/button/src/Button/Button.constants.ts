@@ -34,6 +34,7 @@ export const BUTTON_COLOR_MAP = {
       backgroundColor: "gray-12",
       _hover: {
         backgroundColor: "gray-11",
+        buttonTextColor: "contrast",
       },
       _focus: {
         backgroundColor: "gray-10",
@@ -111,6 +112,7 @@ export const BUTTON_COLOR_MAP = {
       backgroundColor: "yellow-9",
       _hover: {
         backgroundColor: "yellow-10",
+        buttonTextColor: "black",
       },
       _focus: {
         backgroundColor: "yellow-11",
@@ -563,7 +565,7 @@ export const TEXT_COLOR_MAP = {
     accent: "white",
     green: "white",
     blue: "white",
-    yellow: "contrast",
+    yellow: "black",
     purple: "white",
     disabled: "disabled",
   },
@@ -617,7 +619,7 @@ export const ICON_COLOR_MAP = {
     accent: "white",
     green: "white",
     blue: "white",
-    yellow: "contrast",
+    yellow: "black",
     purple: "white",
     disabled: "disabled",
   },
