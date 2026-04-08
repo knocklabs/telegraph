@@ -1,11 +1,11 @@
-export const SOFT_VARIANT_BG_COLOR_MAP = {
-  default: "gray-3",
-  gray: "gray-3",
-  red: "red-3",
-  beige: "beige-3",
-  blue: "blue-3",
-  green: "green-3",
-  yellow: "yellow-3",
-  purple: "purple-3",
-  accent: "accent-3",
+export const SOFT_VARIANT_BORDER_COLOR_MAP = {
+  default: "gray-4",
+  gray: "gray-4",
+  red: "red-4",
+  beige: "beige-4",
+  blue: "blue-4",
+  green: "green-4",
+  yellow: "yellow-4",
+  purple: "purple-4",
+  accent: "accent-4",
 } as const;

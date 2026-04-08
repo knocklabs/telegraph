@@ -9,7 +9,7 @@ import clsx from "clsx";
 
 import { COLOR_MAP, type StyleProps, cssVars } from "../constants";
 
-import { SOFT_VARIANT_BG_COLOR_MAP } from "./Code.constants";
+import { SOFT_VARIANT_BORDER_COLOR_MAP } from "./Code.constants";
 
 type BaseCodeProps = Omit<StyleProps, "color"> & {
   variant?: "soft" | "ghost";
@@ -23,7 +23,7 @@ export type CodeProps<T extends TgphElement = "code"> = BaseCodeProps &
 
 const Code = <T extends TgphElement = "code">({
   as,
-  size = "2",
+  size = "1",
   weight = "regular",
   variant = "soft",
   align = "left",
@@ -53,16 +53,20 @@ const Code = <T extends TgphElement = "code">({
     <Box
       as={as as TgphElement}
       className={clsx("tgph-code", className)}
-      bg={
+      bg={variant === "soft" ? "gray-2" : "transparent"}
+      display="inline"
+      m="0"
+      px={variant === "soft" ? "0_5" : "0"}
+      pt={variant === "soft" ? "0_5" : "0"}
+      pb={variant === "soft" ? "px" : "0"}
+      border="px"
+      borderColor={
         variant === "soft"
-          ? SOFT_VARIANT_BG_COLOR_MAP[
-              color as keyof typeof SOFT_VARIANT_BG_COLOR_MAP
+          ? SOFT_VARIANT_BORDER_COLOR_MAP[
+              color as keyof typeof SOFT_VARIANT_BORDER_COLOR_MAP
             ]
           : "transparent"
       }
-      display="inline"
-      m="0"
-      px="1"
       rounded="1"
       style={styleProp}
       {...otherProps}
