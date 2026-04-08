@@ -75,9 +75,9 @@ const meta: Meta<typeof TelegraphButton> = {
     },
   },
   args: {
-    size: "2",
-    color: "accent",
-    variant: "solid",
+    size: "1",
+    color: "default",
+    variant: "outline",
     children: "Button",
     disabled: false,
     active: false,

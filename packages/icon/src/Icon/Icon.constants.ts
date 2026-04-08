@@ -25,6 +25,7 @@ export const COLOR_MAP = {
     white: "var(--tgph-white)",
     disabled: "var(--tgph-gray-9)",
     black: "var(--tgph-black)",
+    contrast: "var(--tgph-gray-1)",
   },
   secondary: {
     default: "var(--tgph-gray-11)",
@@ -39,5 +40,6 @@ export const COLOR_MAP = {
     white: "var(--tgph-white)",
     disabled: "var(--tgph-gray-8)",
     black: "var(--tgph-black)",
+    contrast: "var(--tgph-gray-1)",
   },
 } as const;

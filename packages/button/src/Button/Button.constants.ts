@@ -34,7 +34,6 @@ export const BUTTON_COLOR_MAP = {
       backgroundColor: "gray-12",
       _hover: {
         backgroundColor: "gray-11",
-        buttonTextColor: "gray-1",
       },
       _focus: {
         backgroundColor: "gray-10",
@@ -112,7 +111,6 @@ export const BUTTON_COLOR_MAP = {
       backgroundColor: "yellow-9",
       _hover: {
         backgroundColor: "yellow-10",
-        buttonTextColor: "white",
       },
       _focus: {
         backgroundColor: "yellow-11",
@@ -559,13 +557,13 @@ export const TEXT_SIZE_MAP = {
 
 export const TEXT_COLOR_MAP = {
   solid: {
-    default: "white",
+    default: "contrast",
     gray: "white",
     red: "white",
     accent: "white",
     green: "white",
     blue: "white",
-    yellow: "white",
+    yellow: "contrast",
     purple: "white",
     disabled: "disabled",
   },
@@ -613,13 +611,13 @@ export const ICON_SIZE_MAP = {
 
 export const ICON_COLOR_MAP = {
   solid: {
-    default: "white",
+    default: "contrast",
     gray: "white",
     red: "white",
     accent: "white",
     green: "white",
     blue: "white",
-    yellow: "white",
+    yellow: "contrast",
     purple: "white",
     disabled: "disabled",
   },

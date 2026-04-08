@@ -2,10 +2,10 @@
 .tgph-heading,
 .tgph-code {
   --color: var(--tgph-gray-12);
-  --font-size: var(--tgph-text-2);
+  --font-size: var(--tgph-text-1);
   --weight: var(--tgph-weight-regular);
-  --leading: var(--tgph-leading-2);
-  --tracking: var(--tgph-tracking-2);
+  --leading: var(--tgph-leading-1);
+  --tracking: var(--tgph-tracking-1);
   --text-align: left;
   --font-family: var(--tgph-family-sans);
   --text-overflow: clip;
