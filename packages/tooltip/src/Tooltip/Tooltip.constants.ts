@@ -14,7 +14,6 @@ export const TooltipContentProps: Record<
   TgphComponentProps<typeof Stack>
 > = {
   light: {
-    border: "px",
     shadow: "2",
   },
 

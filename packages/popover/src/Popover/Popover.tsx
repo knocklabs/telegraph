@@ -87,8 +87,6 @@ const Content = <T extends TgphElement = "div">({
   gap = "1",
   rounded = "4",
   py = "1",
-  border = "px",
-  borderColor = "gray-6",
   shadow = "2",
   side = "bottom",
   sideOffset = 4,
@@ -177,8 +175,6 @@ const Content = <T extends TgphElement = "div">({
             direction={direction}
             gap={gap}
             rounded={rounded}
-            border={border}
-            borderColor={borderColor}
             py={py}
             shadow={shadow}
             style={{
