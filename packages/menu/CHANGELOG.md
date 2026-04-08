@@ -1,5 +1,18 @@
 # @telegraph/menu
 
+## 0.3.0
+
+### Minor Changes
+
+- [#734](https://github.com/knocklabs/telegraph/pull/734) [`d3b6fee`](https://github.com/knocklabs/telegraph/commit/d3b6fee0e7cd308151efdc5921164d324ccaf045) Thanks [@ksorathia](https://github.com/ksorathia)! - Update shadow tokens to work in light and dark modes. Adjust modal, popover, menu, and tooltip to rely on shadow to apply border
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @telegraph/button@0.5.1
+  - @telegraph/icon@0.4.1
+  - @telegraph/layout@0.5.0
+
 ## 0.2.2
 
 ### Patch Changes
