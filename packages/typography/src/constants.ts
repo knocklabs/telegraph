@@ -63,5 +63,6 @@ export const COLOR_MAP = {
   accent: "accent-11",
   white: "white",
   black: "black",
+  contrast: "gray-1",
   disabled: "gray-9",
 } as const;

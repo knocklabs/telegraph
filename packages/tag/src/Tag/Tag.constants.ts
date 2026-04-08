@@ -81,13 +81,13 @@ export const COLOR = {
   },
   Icon: {
     solid: {
-      default: "white",
+      default: "contrast",
       gray: "white",
       red: "white",
       accent: "white",
       blue: "white",
       green: "white",
-      yellow: "white",
+      yellow: "black",
       purple: "white",
     },
     soft: {
@@ -103,13 +103,13 @@ export const COLOR = {
   },
   Text: {
     solid: {
-      default: "white",
+      default: "contrast",
       gray: "white",
       accent: "white",
       red: "white",
       blue: "white",
       green: "white",
-      yellow: "white",
+      yellow: "black",
       purple: "white",
     },
     soft: {
