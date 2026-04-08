@@ -34,7 +34,7 @@ export const BUTTON_COLOR_MAP = {
       backgroundColor: "gray-12",
       _hover: {
         backgroundColor: "gray-11",
-        buttonTextColor: "contrast",
+        buttonTextColor: "gray-1",
       },
       _focus: {
         backgroundColor: "gray-10",
