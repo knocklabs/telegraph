@@ -24,6 +24,26 @@ type DepObject = Record<
 >;
 
 /**
+ * Traverses up the directory tree from a given start path to find the nearest package.json.
+ * Returns the directory containing that package.json, or undefined if none is found.
+ * Used to resolve the correct consumer package when process.cwd() may be the monorepo root.
+ */
+function findNearestPackageJsonDir(start: string): string | undefined {
+  let current = start;
+
+  while (true) {
+    const pkgJsonPath = nodePath.join(current, "package.json");
+    if (nodeFs.existsSync(pkgJsonPath)) {
+      return current;
+    }
+
+    const parent = nodePath.dirname(current);
+    if (parent === current) return undefined;
+    current = parent;
+  }
+}
+
+/**
  * Traverses up the directory tree to find the root of the monorepo by looking for a package.json with workspaces.
  * This is needed to properly resolve workspace dependencies in a monorepo setup.
  */
@@ -77,12 +97,23 @@ const getTelegraphDepsFromPackageJson = (
 /**
  * Gets all Telegraph dependencies recursively, including dependencies of dependencies.
  * Handles both normal npm dependencies and workspace dependencies in a monorepo.
+ *
+ * @param cssFilePath - The absolute path of the CSS file being processed by PostCSS.
+ *   When provided, we walk up from the CSS file's directory to find the nearest
+ *   package.json. This ensures we read the *consumer's* package.json rather than
+ *   the monorepo root's package.json (which has no @telegraph/* deps), fixing the
+ *   Turborepo issue where process.cwd() is always the repo root during builds.
  */
-function getTelegraphDeps(): DepObject {
-  const pkgPath = nodePath.resolve(process.cwd(), "package.json");
+function getTelegraphDeps(cssFilePath?: string): DepObject {
+  // Prefer to start from the CSS file's directory so we find the consumer's
+  // package.json. Fall back to process.cwd() for in-memory PostCSS usage.
+  const startDir = cssFilePath ? nodePath.dirname(cssFilePath) : process.cwd();
+  const consumerDir = findNearestPackageJsonDir(startDir) ?? process.cwd();
+
+  const pkgPath = nodePath.resolve(consumerDir, "package.json");
   const pkg = JSON.parse(nodeFs.readFileSync(pkgPath, "utf8"));
-  const topLevelDeps = getTelegraphDepsFromPackageJson(pkg, process.cwd());
-  const monorepoRoot = findMonorepoRoot();
+  const topLevelDeps = getTelegraphDepsFromPackageJson(pkg, consumerDir);
+  const monorepoRoot = findMonorepoRoot(consumerDir);
 
   const recursivelyGetTelegraphDeps = (deps: DepObject): DepObject => {
     if (!deps || Object.keys(deps).length === 0) {
@@ -103,14 +134,50 @@ function getTelegraphDeps(): DepObject {
           "package.json",
         );
         searchPath = monorepoRoot;
+        // Workspace deps are hoisted to the monorepo root's node_modules.
+        // The path stored in DepObject was set relative to consumerDir when the
+        // dep was first recorded, so correct it to the monorepo root here so
+        // that getCssStyles() can find the actual dist/css/default.css file.
+        allDeps[dep.name] = {
+          ...dep,
+          path: nodePath.resolve(monorepoRoot, "node_modules", dep.name),
+        };
       } else {
-        pkgJsonPath = nodePath.resolve(
-          process.cwd(),
+        // Non-workspace dep: try consumerDir/node_modules first, then fall
+        // back to monorepoRoot/node_modules. Yarn (and other package managers)
+        // hoist all deps to the root node_modules regardless of whether they
+        // use workspace: protocol, so a pinned semver dep like "0.1.1" will
+        // typically live at the monorepo root, not the consumer package dir.
+        const localPkgJsonPath = nodePath.resolve(
+          consumerDir,
           "node_modules",
           dep.name,
           "package.json",
         );
-        searchPath = process.cwd();
+        const rootPkgJsonPath =
+          monorepoRoot &&
+          nodePath.resolve(
+            monorepoRoot,
+            "node_modules",
+            dep.name,
+            "package.json",
+          );
+
+        if (nodeFs.existsSync(localPkgJsonPath)) {
+          pkgJsonPath = localPkgJsonPath;
+          searchPath = consumerDir;
+        } else if (rootPkgJsonPath && nodeFs.existsSync(rootPkgJsonPath)) {
+          pkgJsonPath = rootPkgJsonPath;
+          searchPath = monorepoRoot!;
+          // Correct the stored path so getCssStyles() finds the right dist/css/ dir.
+          allDeps[dep.name] = {
+            ...dep,
+            path: nodePath.resolve(monorepoRoot!, "node_modules", dep.name),
+          };
+        } else {
+          pkgJsonPath = localPkgJsonPath; // will throw on readFileSync, caught below
+          searchPath = consumerDir;
+        }
       }
 
       try {
@@ -170,6 +237,7 @@ function getCssStyles({
 
 type BuildTelegraphCssParams = {
   root: Root;
+  cssFilePath?: string;
   config: {
     tokens: Array<"light" | "dark" | "default">;
     components: boolean;
@@ -183,8 +251,12 @@ type BuildTelegraphCssParams = {
  * 3. Reading their CSS files
  * 4. Appending all CSS to the PostCSS Root node
  */
-const buildTelegraphCss = async ({ root, config }: BuildTelegraphCssParams) => {
-  const deps = getTelegraphDeps();
+const buildTelegraphCss = async ({
+  root,
+  cssFilePath,
+  config,
+}: BuildTelegraphCssParams) => {
+  const deps = getTelegraphDeps(cssFilePath);
 
   const depsWithoutTokens =
     config.components === true
@@ -237,6 +309,11 @@ const styleEnginePostCssPlugin = (): AcceptedPlugin => {
           telegraph() {},
         },
         async Once(root) {
+          // Use the CSS file's path so getTelegraphDeps walks up from the
+          // consumer package rather than from process.cwd() (which may be the
+          // monorepo root when Turborepo is running the build).
+          const cssFilePath = root.source?.input?.file;
+
           const run = {
             tokens: [] as BuildTelegraphCssParams["config"]["tokens"],
             components: false,
@@ -265,6 +342,7 @@ const styleEnginePostCssPlugin = (): AcceptedPlugin => {
 
           await buildTelegraphCss({
             root,
+            cssFilePath,
             config: {
               tokens: run.tokens,
               components: run.components,
