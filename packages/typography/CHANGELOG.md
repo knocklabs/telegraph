@@ -1,5 +1,16 @@
 # @telegraph/typography
 
+## 0.4.0
+
+### Minor Changes
+
+- [#737](https://github.com/knocklabs/telegraph/pull/737) [`3c100cf`](https://github.com/knocklabs/telegraph/commit/3c100cf78d2b322f674e2f170860f938ea3b69a3) Thanks [@ksorathia](https://github.com/ksorathia)! - Adds a contrast color variable to text, to be used in solid default and solid yellow button and tag variants
+
+### Patch Changes
+
+- Updated dependencies [[`3de7713`](https://github.com/knocklabs/telegraph/commit/3de7713a8a4bba66ad07e8b3eb40acffcf79b5a4)]:
+  - @telegraph/style-engine@0.3.2
+
 ## 0.3.0
 
 ### Minor Changes

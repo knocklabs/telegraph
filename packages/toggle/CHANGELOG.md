@@ -1,5 +1,15 @@
 # @telegraph/toggle
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`3c100cf`](https://github.com/knocklabs/telegraph/commit/3c100cf78d2b322f674e2f170860f938ea3b69a3)]:
+  - @telegraph/typography@0.4.0
+  - @telegraph/button@0.6.0
+  - @telegraph/icon@0.5.0
+  - @telegraph/tag@0.2.0
+
 ## 0.1.2
 
 ### Patch Changes
