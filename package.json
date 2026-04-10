@@ -55,6 +55,8 @@
     "@knocklabs/eslint-config": "^0.0.5",
     "@manypkg/cli": "^0.25.1",
     "@moonrepo/cli": "^2.1.1",
+    "@storybook/addon-a11y": "^10.3.3",
+    "@storybook/addon-docs": "^10.3.3",
     "@storybook/addon-links": "^10.3.1",
     "@storybook/addon-onboarding": "^10.3.1",
     "@storybook/addon-themes": "^10.3.4",

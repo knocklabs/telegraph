@@ -17,12 +17,17 @@ const viteFinal: ViteFinal = (config) => {
 
 export default {
   framework: "@storybook/react-vite",
-  stories: ["../packages/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)"],
+  stories: [
+    "../packages/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../packages/**/*.mdx",
+  ],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-onboarding",
     "@storybook/addon-themes",
     "@github-ui/storybook-addon-performance-panel",
+    "@storybook/addon-docs",
+    "@storybook/addon-a11y"
   ],
   core: {
     builder: "@storybook/builder-vite", // 👈 The builder enabled here.
