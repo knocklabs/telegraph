@@ -50,7 +50,7 @@ function WeightRow({ label, weightKey, isLast = false }: WeightRowProps) {
 
 export function TypographyWeights() {
   return (
-    <div style={{ fontFamily: "var(--tgph-family-sans)" }}>
+    <div style={{ fontFamily: "var(--tgph-family-sans)", backgroundColor: "var(--tgph-surface-1)", color: "var(--tgph-gray-12)", padding: "var(--tgph-spacing-4) var(--tgph-spacing-6)", borderRadius: "var(--tgph-rounded-4)" }}>
       <WeightRow label={`Regular / ${weight.regular}`} weightKey="regular" />
       <WeightRow label={`Medium / ${weight.medium}`} weightKey="medium" />
       <WeightRow label={`Semi-bold / ${weight["semi-bold"]}`} weightKey="semi-bold" isLast />

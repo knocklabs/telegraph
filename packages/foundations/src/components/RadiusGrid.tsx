@@ -24,6 +24,10 @@ export function RadiusGrid() {
         flexWrap: "wrap",
         alignItems: "flex-start",
         fontFamily: "var(--tgph-family-sans)",
+        backgroundColor: "var(--tgph-surface-1)",
+        color: "var(--tgph-gray-12)",
+        padding: "var(--tgph-spacing-6)",
+        borderRadius: "var(--tgph-rounded-4)",
       }}
     >
       {STEPS.map((step) => (

@@ -63,6 +63,10 @@ export function TypographyFamilies() {
         display: "flex",
         gap: "var(--tgph-spacing-4)",
         flexWrap: "wrap",
+        backgroundColor: "var(--tgph-surface-1)",
+        color: "var(--tgph-gray-12)",
+        padding: "var(--tgph-spacing-6)",
+        borderRadius: "var(--tgph-rounded-4)",
       }}
     >
       <FamilyCard

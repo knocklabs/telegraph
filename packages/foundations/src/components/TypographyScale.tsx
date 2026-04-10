@@ -13,6 +13,8 @@ export function TypographyScale() {
         width: "100%",
         borderCollapse: "collapse",
         fontFamily: "var(--tgph-family-sans)",
+        backgroundColor: "var(--tgph-surface-1)",
+        color: "var(--tgph-gray-12)",
       }}
     >
       <thead>

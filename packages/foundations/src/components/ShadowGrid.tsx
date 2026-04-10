@@ -29,6 +29,10 @@ export function ShadowGrid() {
         gap: "var(--tgph-spacing-2)",
         alignItems: "flex-start",
         fontFamily: "var(--tgph-family-sans)",
+        backgroundColor: "var(--tgph-surface-1)",
+        color: "var(--tgph-gray-12)",
+        padding: "var(--tgph-spacing-4)",
+        borderRadius: "var(--tgph-rounded-4)",
       }}
     >
       {STEPS.map((step) => (

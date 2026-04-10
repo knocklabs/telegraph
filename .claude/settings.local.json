@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(node -e ':*)",
-      "Bash(node --input-type=module)"
+      "Bash(node --input-type=module)",
+      "Bash(npx storybook:*)"
     ]
   }
 }

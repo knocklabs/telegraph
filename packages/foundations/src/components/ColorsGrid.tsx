@@ -199,7 +199,7 @@ function BaseColorsSection() {
 
 export function ColorsGrid() {
   return (
-    <div style={{ fontFamily: "var(--tgph-family-sans)" }}>
+    <div style={{ fontFamily: "var(--tgph-family-sans)", backgroundColor: "var(--tgph-surface-1)", color: "var(--tgph-gray-12)", padding: "var(--tgph-spacing-6)", borderRadius: "var(--tgph-rounded-4)" }}>
       <h2 style={{ ...sectionHeadingStyle, marginTop: 0 }}>Palettes</h2>
       {PALETTES.map((name) => (
         <PaletteRow key={name} name={name} />
