@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node -e ':*)",
       "Bash(node --input-type=module)",
-      "Bash(npx storybook:*)"
+      "Bash(npx storybook:*)",
+      "WebFetch(domain:www.radix-ui.com)"
     ]
   }
 }

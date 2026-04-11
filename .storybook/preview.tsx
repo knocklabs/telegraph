@@ -18,7 +18,7 @@ export default definePreview({
     },
     options: {
       storySort: {
-        order: ["Foundations", "Components"],
+        order: ["Tokens", "Layout", "Components"],
       },
     },
   },
