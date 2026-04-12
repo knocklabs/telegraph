@@ -33,16 +33,18 @@ export const Default: Story = {
     return (
       <DataList.List maxW="160">
         <DataList.Item {...args}>
-          <Text as="span">Text</Text>
+          <Text size="1" as="span">
+            Text
+          </Text>
         </DataList.Item>
         <DataList.Item {...args}>
-          <Text as="span">
+          <Text size="1" as="span">
             Really really really long text that just keeps going and going and
             going. Why is this text so so so so so long?
           </Text>
         </DataList.Item>
         <DataList.Item {...args}>
-          <Input />
+          <Input size="1" w="full" />
         </DataList.Item>
         <DataList.Item
           {...args}
@@ -55,16 +57,21 @@ export const Default: Story = {
           }}
           description="The unique identifier for the user"
         >
-          <Input placeholder="Enter user ID" />
+          <Input
+            size="1"
+            stackProps={{ w: "full" }}
+            placeholder="Enter user ID"
+          />
         </DataList.Item>
         <DataList.Item
           {...args}
           icon={{ icon: CornerDownRight, ["aria-hidden"]: true }}
         >
-          <Input />
+          <Input size="1" />
         </DataList.Item>
         <DataList.Item {...args}>
           <TextArea
+            size="1"
             textProps={{
               value:
                 "This is content within a text area that stretches a few lines.",
@@ -72,7 +79,7 @@ export const Default: Story = {
           />
         </DataList.Item>
         <DataList.Item {...args} direction="column">
-          <Text as="span">
+          <Text size="1" as="span">
             This is a column data list item with really really really long text
             that just keeps going and going and going. Why is this text so so so
             so so long?
