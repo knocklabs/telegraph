@@ -44,7 +44,7 @@ export const Default: Story = {
           </Text>
         </DataList.Item>
         <DataList.Item {...args}>
-          <Input size="1" w="full" />
+          <Input size="1" stackProps={{ w: "full" }} />
         </DataList.Item>
         <DataList.Item
           {...args}
@@ -67,11 +67,12 @@ export const Default: Story = {
           {...args}
           icon={{ icon: CornerDownRight, ["aria-hidden"]: true }}
         >
-          <Input size="1" />
+          <Input size="1" stackProps={{ w: "full" }} />
         </DataList.Item>
         <DataList.Item {...args}>
           <TextArea
             size="1"
+            w="full"
             textProps={{
               value:
                 "This is content within a text area that stretches a few lines.",

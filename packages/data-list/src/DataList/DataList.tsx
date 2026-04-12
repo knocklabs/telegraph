@@ -87,7 +87,7 @@ const Label = ({
 export type ValueProps = TgphComponentProps<typeof Stack>;
 
 const Value = ({
-  direction = "column",
+  direction = "row",
   w = "full",
   minW = "0",
   ...props
