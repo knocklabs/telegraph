@@ -1,5 +1,11 @@
 # @telegraph/menu
 
+## 0.3.2
+
+### Patch Changes
+
+- [#764](https://github.com/knocklabs/telegraph/pull/764) [`f9dcbe7`](https://github.com/knocklabs/telegraph/commit/f9dcbe7bd8c79afd3dd25329b1f6ea6df202f85a) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.34.3 to 12.38.0
+
 ## 0.3.1
 
 ### Patch Changes

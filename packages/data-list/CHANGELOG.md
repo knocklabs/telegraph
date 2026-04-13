@@ -1,5 +1,16 @@
 # @telegraph/data-list
 
+## 0.2.0
+
+### Minor Changes
+
+- [#746](https://github.com/knocklabs/telegraph/pull/746) [`a1f2d79`](https://github.com/knocklabs/telegraph/commit/a1f2d79d904ab66c1d9494c0a27dbdd7426984f1) Thanks [@ksorathia](https://github.com/ksorathia)! - Standardize row layouts in `DataList`
+
+### Patch Changes
+
+- Updated dependencies [[`f9dcbe7`](https://github.com/knocklabs/telegraph/commit/f9dcbe7bd8c79afd3dd25329b1f6ea6df202f85a)]:
+  - @telegraph/tooltip@0.2.2
+
 ## 0.1.4
 
 ### Patch Changes
