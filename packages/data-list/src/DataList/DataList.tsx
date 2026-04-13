@@ -34,7 +34,6 @@ export type LabelProps = {
 
 const Label = ({
   maxW = "36",
-  maxH = "6",
   w = "full",
   icon,
   children,
@@ -57,26 +56,27 @@ const Label = ({
       gap="2"
       maxW={maxW}
       w={w}
-      maxH={maxH}
       {...props}
     >
       {icon && (
         <Stack alignSelf="center">
-          <Icon size="1" color="gray" {...icon} />
+          <Icon size="0" color="gray" {...icon} />
         </Stack>
       )}
       <Tooltip label={description} enabled={!!description} {...tooltipProps}>
-        <Text
-          as="label"
-          {...restTextProps}
-          color={color}
-          weight={weight}
-          size={size}
-          borderBottom={description ? "px" : undefined}
-          borderStyle={description ? "dashed" : undefined}
-        >
-          {children}
-        </Text>
+        <Stack direction="row" align="center" minH="6">
+          <Text
+            as="label"
+            {...restTextProps}
+            color={color}
+            weight={weight}
+            size={size}
+            borderBottom={description ? "px" : undefined}
+            borderStyle={description ? "dashed" : undefined}
+          >
+            {children}
+          </Text>
+        </Stack>
       </Tooltip>
     </Stack>
   );
@@ -84,8 +84,8 @@ const Label = ({
 
 export type ValueProps = TgphComponentProps<typeof Stack>;
 
-const Value = ({ ...props }: ValueProps) => {
-  return <Stack {...props} />;
+const Value = ({ w = "full", minW = "0", ...props }: ValueProps) => {
+  return <Stack w={w} minW={minW} {...props} />;
 };
 
 export type ItemProps = ListItemProps & {
