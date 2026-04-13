@@ -1,6 +1,6 @@
 export default {
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         assetFileNames: (assetInfo: { name: string }) => {
           // Rename the generated "style.css" file to "default.css"

@@ -38,6 +38,6 @@
     "@telegraph/vite-config": "workspace:^",
     "eslint": "^10.2.0",
     "typescript": "^5.9.3",
-    "vite": "^6.4.1"
+    "vite": "^8.0.0"
   }
 }
