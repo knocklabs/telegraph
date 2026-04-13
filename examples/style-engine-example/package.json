@@ -24,7 +24,7 @@
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "repository": "https://github.com/knocklabs/telegraph/tree/main/examples/style-engine-example"
 }
