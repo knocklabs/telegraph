@@ -2501,7 +2501,7 @@ __metadata:
     "@github-ui/storybook-addon-performance-panel": "npm:^1.1.4"
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@manypkg/cli": "npm:^0.25.1"
-    "@moonrepo/cli": "npm:^2.1.1"
+    "@moonrepo/cli": "npm:^2.2.0"
     "@storybook/addon-links": "npm:^10.3.1"
     "@storybook/addon-onboarding": "npm:^10.3.1"
     "@storybook/addon-themes": "npm:^10.3.4"
@@ -2692,16 +2692,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@moonrepo/cli@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/cli@npm:2.1.1"
+"@moonrepo/cli@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/cli@npm:2.2.0"
   dependencies:
-    "@moonrepo/core-linux-arm64-gnu": "npm:2.1.1"
-    "@moonrepo/core-linux-arm64-musl": "npm:2.1.1"
-    "@moonrepo/core-linux-x64-gnu": "npm:2.1.1"
-    "@moonrepo/core-linux-x64-musl": "npm:2.1.1"
-    "@moonrepo/core-macos-arm64": "npm:2.1.1"
-    "@moonrepo/core-windows-x64-msvc": "npm:2.1.1"
+    "@moonrepo/core-linux-arm64-gnu": "npm:2.2.0"
+    "@moonrepo/core-linux-arm64-musl": "npm:2.2.0"
+    "@moonrepo/core-linux-x64-gnu": "npm:2.2.0"
+    "@moonrepo/core-linux-x64-musl": "npm:2.2.0"
+    "@moonrepo/core-macos-arm64": "npm:2.2.0"
+    "@moonrepo/core-macos-x64": "npm:2.2.0"
+    "@moonrepo/core-windows-x64-msvc": "npm:2.2.0"
     detect-libc: "npm:^2.1.2"
   dependenciesMeta:
     "@moonrepo/core-linux-arm64-gnu":
@@ -2714,53 +2715,62 @@ __metadata:
       optional: true
     "@moonrepo/core-macos-arm64":
       optional: true
+    "@moonrepo/core-macos-x64":
+      optional: true
     "@moonrepo/core-windows-x64-msvc":
       optional: true
   bin:
     moon: moon.js
     moonx: moonx.js
-  checksum: 10c0/a55174d050f4699e8a6e0a0e96ad50658d9c026e64c12af602a8a199efc54bd441c00a341b434f9c4b1d1ed44d6bef509adf986a42b273d84973fbef760e71ff
+  checksum: 10c0/ea151ba3ed457a68d4e8ad797a75e3343d1a8715421aa63d4f3ec54473f14180a79ef456d17b2bfcab08ce11e8c7c913305d840fb79a1e914a244edf7837c73d
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-arm64-gnu@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/core-linux-arm64-gnu@npm:2.1.1"
+"@moonrepo/core-linux-arm64-gnu@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-linux-arm64-gnu@npm:2.2.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-arm64-musl@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/core-linux-arm64-musl@npm:2.1.1"
+"@moonrepo/core-linux-arm64-musl@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-linux-arm64-musl@npm:2.2.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-x64-gnu@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/core-linux-x64-gnu@npm:2.1.1"
+"@moonrepo/core-linux-x64-gnu@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-linux-x64-gnu@npm:2.2.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-x64-musl@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/core-linux-x64-musl@npm:2.1.1"
+"@moonrepo/core-linux-x64-musl@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-linux-x64-musl@npm:2.2.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@moonrepo/core-macos-arm64@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/core-macos-arm64@npm:2.1.1"
+"@moonrepo/core-macos-arm64@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-macos-arm64@npm:2.2.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@moonrepo/core-windows-x64-msvc@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@moonrepo/core-windows-x64-msvc@npm:2.1.1"
+"@moonrepo/core-macos-x64@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-macos-x64@npm:2.2.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@moonrepo/core-windows-x64-msvc@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@moonrepo/core-windows-x64-msvc@npm:2.2.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
