@@ -45,6 +45,15 @@
   "resolutions": {
     "parse5": "^7.2.1"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix --report-unused-disable-directives --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.{js,cjs,mjs}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@actions/core": "^3.0.0",
     "@changesets/changelog-github": "^0.5.2",
@@ -73,6 +82,7 @@
     "eslint-plugin-turbo": "^2.9.0",
     "husky": "^9.1.7",
     "jsdom": "^28.1.0",
+    "lint-staged": "^16.4.0",
     "postcss-import": "^16.1.1",
     "postcss-import-ext-glob": "^2.1.1",
     "prettier": "^3.8.1",
