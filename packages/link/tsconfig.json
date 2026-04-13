@@ -5,10 +5,21 @@
   "compilerOptions": {
     "outDir": "dist",
     "paths": {
-      "vitest.*": ["../../vitest/*"]
+      "vitest.*": [
+        "../../vitest/*"
+      ]
     },
-    "types": ["@testing-library/jest-dom", "node"]
+    "types": [
+      "@testing-library/jest-dom",
+      "node"
+    ],
+    "rootDir": "src"
   },
-  "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }
