@@ -39,7 +39,7 @@
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "lucide-react": "^0.544.0",
-    "motion": "^12.34.3"
+    "motion": "^12.38.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",
