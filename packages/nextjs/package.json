@@ -37,7 +37,7 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/vite-config": "workspace:^",
     "eslint": "^10.2.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "vite": "^8.0.0"
   }
 }

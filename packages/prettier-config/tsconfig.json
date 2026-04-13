@@ -4,6 +4,7 @@
   "display": "@telegraph/prettier-config",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "src",
     "allowJs": true
   },
 }

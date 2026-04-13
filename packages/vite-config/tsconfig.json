@@ -4,5 +4,6 @@
   "display": "@telegraph/vite-config",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "src"
   },
 }
