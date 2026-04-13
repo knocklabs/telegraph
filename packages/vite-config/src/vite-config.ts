@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react";
 import { createRequire } from "node:module";
 import { resolve } from "path";
-import { type PreRenderedAsset } from "rollup";
+import { type Rollup } from "vite";
 import dts from "vite-plugin-dts";
 
 const require = createRequire(import.meta.url);
@@ -30,6 +30,12 @@ const buildTimeInfo = {
 
 export default {
   build: {
+    // Ensure LightningCSS emits -webkit-appearance and -webkit-user-select vendor
+    // prefixes to match autoprefixer's output from the PostCSS config. Vite 8 uses
+    // LightningCSS for CSS minification and derives its browser targets from
+    // build.cssTarget (not css.lightningcss.targets). Setting ios13 here ensures
+    // prefixes are preserved for iOS < 15.4 where they are still required.
+    cssTarget: ["ios13", "safari13", "chrome80", "firefox80", "edge80"],
     sourcemap: true,
     lib: {
       entry: "src/index.ts",
@@ -44,10 +50,10 @@ export default {
         return "cjs/[name].js";
       },
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [...allDependencies],
       output: {
-        assetFileNames: (assetInfo: PreRenderedAsset) => {
+        assetFileNames: (assetInfo: Rollup.PreRenderedAsset) => {
           if (assetInfo?.name?.endsWith(".css")) {
             return "css/[name].css";
           }

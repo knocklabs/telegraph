@@ -15,7 +15,3 @@ updates:
         patterns:
           - "react"
           - "react-dom"
-    ignore:
-      # vite >7 breaks storybook
-      - dependency-name: "vite"
-        versions: [">=7.0.0"]
