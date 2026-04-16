@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.3"
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",
