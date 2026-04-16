@@ -20,7 +20,7 @@
   "dependencies": {
     "@csstools/postcss-global-data": "^4.0.0",
     "@telegraph/tokens": "workspace:^",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.5.0",
     "postcss": "^8.5.6",
     "postcss-combine-duplicated-selectors": "^10.0.3",
     "postcss-custom-media": "^11.0.6",
