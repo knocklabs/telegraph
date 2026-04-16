@@ -1,5 +1,16 @@
 # @telegraph/menu
 
+## 0.3.3
+
+### Patch Changes
+
+- [#773](https://github.com/knocklabs/telegraph/pull/773) [`fdcd5cb`](https://github.com/knocklabs/telegraph/commit/fdcd5cbb07108dd0df83d471a53bc578566a00c1) Thanks [@kylemcd](https://github.com/kylemcd)! - fix(KNO-12734): Wrap menu content in a portal to fix Safari rendering issues and match Popover component behavior; remove resulting double portal from Combobox
+
+- Updated dependencies []:
+  - @telegraph/button@0.6.0
+  - @telegraph/helpers@0.0.15
+  - @telegraph/layout@0.5.0
+
 ## 0.3.2
 
 ### Patch Changes
