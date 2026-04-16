@@ -1,5 +1,11 @@
 # @telegraph/prettier-config
 
+## 0.0.8
+
+### Patch Changes
+
+- [#772](https://github.com/knocklabs/telegraph/pull/772) [`73fac7c`](https://github.com/knocklabs/telegraph/commit/73fac7ca245b176820f1460f6d53c73cef9b479c) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump prettier from 3.8.1 to 3.8.3
+
 ## 0.0.7
 
 ### Patch Changes

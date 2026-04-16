@@ -1,5 +1,14 @@
 # @telegraph/postcss-config
 
+## 0.1.2
+
+### Patch Changes
+
+- [#769](https://github.com/knocklabs/telegraph/pull/769) [`4d9742b`](https://github.com/knocklabs/telegraph/commit/4d9742b5307990a866c31ff587a929daecc7b86a) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump autoprefixer from 10.4.21 to 10.5.0
+
+- Updated dependencies []:
+  - @telegraph/tokens@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes
