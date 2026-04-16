@@ -93,33 +93,37 @@ const Content = <T extends TgphElement = "div">({
   ...props
 }: ContentProps<T>) => {
   return (
-    <RadixMenu.Content
-      onInteractOutside={onInteractOutside}
-      onKeyDown={onKeyDown}
-      onCloseAutoFocus={onCloseAutoFocus}
-      asChild
-      sideOffset={sideOffset}
-      {...props}
-      // Need to cast this type since RadixMenu.Content doesn't accept tgphRef
-      ref={tgphRef as React.LegacyRef<HTMLDivElement>}
-    >
-      <RefToTgphRef>
-        <Stack
-          bg="surface-1"
-          direction={direction}
-          gap={gap}
-          rounded={rounded}
-          py={py}
-          shadow={shadow}
-          style={{
-            overflowY: "auto",
-          }}
-          zIndex="popover"
-        >
-          {children}
-        </Stack>
-      </RefToTgphRef>
-    </RadixMenu.Content>
+    <RadixMenu.Portal>
+      <RadixMenu.Content
+        onInteractOutside={onInteractOutside}
+        onKeyDown={onKeyDown}
+        onCloseAutoFocus={onCloseAutoFocus}
+        asChild
+        sideOffset={sideOffset}
+        {...props}
+        // Need to cast this type since RadixMenu.Content doesn't accept tgphRef
+        ref={tgphRef as React.LegacyRef<HTMLDivElement>}
+      >
+        <RefToTgphRef>
+          <Stack
+            bg="surface-1"
+            // Add tgph class so that this always works in portals
+            className="tgph"
+            direction={direction}
+            gap={gap}
+            rounded={rounded}
+            py={py}
+            shadow={shadow}
+            style={{
+              overflowY: "auto",
+            }}
+            zIndex="popover"
+          >
+            {children}
+          </Stack>
+        </RefToTgphRef>
+      </RadixMenu.Content>
+    </RadixMenu.Portal>
   );
 };
 
