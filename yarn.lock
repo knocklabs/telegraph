@@ -1628,32 +1628,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-array@npm:^0.23.4":
-  version: 0.23.4
-  resolution: "@eslint/config-array@npm:0.23.4"
+"@eslint/config-array@npm:^0.23.5":
+  version: 0.23.5
+  resolution: "@eslint/config-array@npm:0.23.5"
   dependencies:
-    "@eslint/object-schema": "npm:^3.0.4"
+    "@eslint/object-schema": "npm:^3.0.5"
     debug: "npm:^4.3.1"
     minimatch: "npm:^10.2.4"
-  checksum: 10c0/813ce3588e67d615218219e77526ca4c742405c293f209f5c0ff945fec50a9a8007c7d82c5af8fa82c1a506b57f4dc37cef0e96b2366c41c257dd267862ece95
+  checksum: 10c0/b24833c4c76e78ee075d306cd3f095db46b2db0f90cc13a6ee6e4275f9889731c05bf5403ab5fefb79c756e07ac9184ed0e04570341382f9eccbccc80e6d1a0c
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.5.4":
-  version: 0.5.4
-  resolution: "@eslint/config-helpers@npm:0.5.4"
+"@eslint/config-helpers@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "@eslint/config-helpers@npm:0.5.5"
   dependencies:
-    "@eslint/core": "npm:^1.2.0"
-  checksum: 10c0/211bbfaba53fde341768eafbfdcceeca5587264c0a952d4c70b8b72c440df60e5b0e9bac33893c671dc556275a1b0c5d28c8023e843a127be216a773a11ae762
+    "@eslint/core": "npm:^1.2.1"
+  checksum: 10c0/18889c062cd6bdbd4cd92fe57318c44465ea66184aa0ba204a4420712c66764c64093a7905b6c2ffde23e51b268ca2cec1a39c605d336bebf17ee1ba4f0fc0bb
   languageName: node
   linkType: hard
 
-"@eslint/core@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@eslint/core@npm:1.2.0"
+"@eslint/core@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@eslint/core@npm:1.2.1"
   dependencies:
     "@types/json-schema": "npm:^7.0.15"
-  checksum: 10c0/e564945218f7f3910dfd0f57bf7852072060f560c241f5ed96a7b13e9f7fed4cc5707ee5eb44653f2bf4f9576ee7b7921f55cc5ac96f72343d0c5e80818fe2bf
+  checksum: 10c0/10979b40588ecfef771fcb5013a542a35fb30692cc95a65f3481b0b36fbd89f5679efeb30d57f4eed35203d859aabace2a620177d6c536f71b299a1af2f3398f
   languageName: node
   linkType: hard
 
@@ -1681,20 +1681,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/object-schema@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "@eslint/object-schema@npm:3.0.4"
-  checksum: 10c0/fedfc0acf5d899c9f58106c9d718fae4f4d5e6e21f0aa33b2333c746873d979ff9e295a09668bd7bf2a41f82dd886ebd3a73d023ce3c8722a1f24bd143842162
+"@eslint/object-schema@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@eslint/object-schema@npm:3.0.5"
+  checksum: 10c0/1db337431f520b99e9edda64ef5fafd7ec6a029843eeb608753025125b6649d861d843cffafafd3c4e37926d7d5f9ec0c6a8e3665c13c3da2144e8132892e92e
   languageName: node
   linkType: hard
 
-"@eslint/plugin-kit@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@eslint/plugin-kit@npm:0.7.0"
+"@eslint/plugin-kit@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "@eslint/plugin-kit@npm:0.7.1"
   dependencies:
-    "@eslint/core": "npm:^1.2.0"
+    "@eslint/core": "npm:^1.2.1"
     levn: "npm:^0.4.1"
-  checksum: 10c0/ea96c393dc1424f1a74fdd253478eda6cf864f31527d9472bd379decc5195da0b141fcb2dc767d7fe296184a3f26c91a19b2e5445be9b6a9b48b1bed9d18b737
+  checksum: 10c0/335b0c1c46fd906cb50bd5ce442b9cee18dc44342ce35c718ba4a63d1aa51d2797f16a517b2f4fe371ccd777b6862fafb2dc8195e00e69197ef4cb17ab32c01b
   languageName: node
   linkType: hard
 
@@ -2246,7 +2246,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.58.2"
     "@typescript-eslint/parser": "npm:^8.58.2"
     "@vitest/coverage-v8": "npm:4.1.4"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-turbo: "npm:^2.9.6"
     husky: "npm:^9.1.7"
@@ -3879,7 +3879,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -3906,7 +3906,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -3944,7 +3944,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
@@ -3966,7 +3966,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -3992,7 +3992,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4018,7 +4018,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4039,7 +4039,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4063,7 +4063,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4091,7 +4091,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4117,7 +4117,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4144,7 +4144,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4169,7 +4169,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4197,7 +4197,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
@@ -4230,7 +4230,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
@@ -4251,7 +4251,7 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/vite-config": "workspace:^"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.0"
   languageName: unknown
@@ -4271,7 +4271,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4293,7 +4293,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     autoprefixer: "npm:^10.5.0"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     postcss: "npm:^8.5.10"
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.6"
@@ -4328,7 +4328,7 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4354,7 +4354,7 @@ __metadata:
     "@telegraph/truncate": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
@@ -4379,7 +4379,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4423,7 +4423,7 @@ __metadata:
     "@types/node": "npm:^25.5.0"
     "@types/postcss-import": "npm:^14.0.3"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     globby: "npm:^16.1.1"
     lightningcss: "npm:^1.32.0"
     postcss: "npm:^8.5.10"
@@ -4454,7 +4454,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4483,7 +4483,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
@@ -4508,7 +4508,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4537,7 +4537,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lucide-react: "npm:^0.544.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4557,7 +4557,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     lightningcss: "npm:^1.32.0"
     react: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4583,7 +4583,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
@@ -4608,7 +4608,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4634,7 +4634,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.9"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     react: "npm:^19.2.5"
     react-dom: "npm:^19.2.5"
     typescript: "npm:^6.0.2"
@@ -4653,7 +4653,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^6.0.0"
-    eslint: "npm:^10.2.0"
+    eslint: "npm:^10.2.1"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.0"
     vite-plugin-dts: "npm:^4.5.4"
@@ -8290,16 +8290,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "eslint@npm:10.2.0"
+"eslint@npm:^10.2.1":
+  version: 10.2.1
+  resolution: "eslint@npm:10.2.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
-    "@eslint/config-array": "npm:^0.23.4"
-    "@eslint/config-helpers": "npm:^0.5.4"
-    "@eslint/core": "npm:^1.2.0"
-    "@eslint/plugin-kit": "npm:^0.7.0"
+    "@eslint/config-array": "npm:^0.23.5"
+    "@eslint/config-helpers": "npm:^0.5.5"
+    "@eslint/core": "npm:^1.2.1"
+    "@eslint/plugin-kit": "npm:^0.7.1"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
     "@humanwhocodes/retry": "npm:^0.4.2"
@@ -8331,7 +8331,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/c275115f8937c243125986bf8f7d5c09bdc083f4a9fba8a77ad15a15989f05732f5037fe990cc1bc22dd887cf16060f57b8949dc5f1055d5020689adff49e219
+  checksum: 10c0/176795a3794a785502fa5cd14a9609264c2be5405552d20fed3e499bd465c29639c91ac44619ae66787b0fb7494e72d112550a2136a735d92a26bc6a7af4915c
   languageName: node
   linkType: hard
 
