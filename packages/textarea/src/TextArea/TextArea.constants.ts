@@ -93,7 +93,7 @@ export const variantMap: VariantMap = {
 export const stateMap: StateMap = {
   default: {
     outline: {
-      bg: "surface-3",
+      bg: "surface-1",
     },
     ghost: {
       bg: "transparent",
