@@ -243,7 +243,7 @@ export const BUTTON_COLOR_MAP = {
   },
   outline: {
     default: {
-      backgroundColor: "surface-3",
+      backgroundColor: "surface-1",
       buttonShadowColor: "gray-6",
       _hover: {
         backgroundColor: "gray-2",

@@ -58,7 +58,7 @@ export const COLOR = {
   Container: {
     default: {
       outline: {
-        bg: "surface-3",
+        bg: "surface-1",
         border: "px",
         borderColor: "gray-6",
         _hover: {
@@ -98,7 +98,7 @@ export const COLOR = {
     },
     error: {
       outline: {
-        bg: "surface-3",
+        bg: "surface-1",
         border: "px",
         borderColor: "red-6",
         _hover: {
@@ -111,7 +111,7 @@ export const COLOR = {
         },
       },
       ghost: {
-        bg: "surface-3",
+        bg: "surface-1",
         border: "px",
         borderColor: "red-6",
         _hover: {

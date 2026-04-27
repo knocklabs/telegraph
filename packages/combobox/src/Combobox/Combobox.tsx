@@ -298,7 +298,7 @@ const Trigger = <V extends ChildrenValue>({
       <TelegraphButton.Root
         id={context.triggerId}
         type="button"
-        bg="surface-3"
+        bg="surface-1"
         variant="outline"
         align="center"
         minH={TRIGGER_MIN_HEIGHT[size]}
