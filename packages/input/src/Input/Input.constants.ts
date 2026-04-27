@@ -62,7 +62,7 @@ export const COLOR = {
         border: "px",
         borderColor: "gray-6",
         _hover: {
-          backgroundColor: "surface-1",
+          backgroundColor: "surface-2",
           borderColor: "gray-7",
         },
         _focusWithin: {
