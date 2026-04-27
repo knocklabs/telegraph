@@ -117,14 +117,14 @@ export const stateMap: StateMap = {
   },
   error: {
     outline: {
-      bg: "surface-3",
+      bg: "surface-1",
       borderColor: "red-6",
       _hover: {
         borderColor: "red-7",
       },
     },
     ghost: {
-      bg: "surface-3",
+      bg: "surface-1",
       borderColor: "red-6",
       _hover: {
         borderColor: "red-7",
