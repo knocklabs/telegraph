@@ -1,5 +1,11 @@
 # @telegraph/button
 
+## 0.7.0
+
+### Minor Changes
+
+- [#780](https://github.com/knocklabs/telegraph/pull/780) [`12ed121`](https://github.com/knocklabs/telegraph/commit/12ed1211ce7d8ad9316660b4f6fea4f5528a78a5) Thanks [@ksorathia](https://github.com/ksorathia)! - Swap in surface-1 bg color for Button, Combobox, Input and TextArea's default variants
+
 ## 0.6.0
 
 ### Minor Changes

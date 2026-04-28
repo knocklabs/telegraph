@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/tabs",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Standardized tabs component for navigation",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tabs",
   "author": "@knocklabs",
