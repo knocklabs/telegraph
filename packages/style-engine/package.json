@@ -45,7 +45,7 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.6.0",
     "@types/postcss-import": "^14.0.3",
     "@types/react": "^19.2.9",
     "eslint": "^10.2.1",
