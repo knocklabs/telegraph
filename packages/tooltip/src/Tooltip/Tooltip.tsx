@@ -1,6 +1,5 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { OverrideAppearance } from "@telegraph/appearance";
 import {
   RefToTgphRef,
   type TgphComponentProps,
@@ -12,14 +11,13 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import React from "react";
 
-import { TooltipContentProps } from "./Tooltip.constants";
 import { useTooltipGroup } from "./Tooltip.hooks";
 
 export type TooltipBaseProps<T extends TgphElement = "div"> = {
   label: string | React.ReactNode;
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
-  appearance?: TgphComponentProps<typeof OverrideAppearance>["appearance"];
+
   skipAnimation?: boolean;
   triggerRef?: React.RefObject<HTMLButtonElement>;
 };
@@ -60,7 +58,7 @@ const Tooltip = <T extends TgphElement = "div">({
   labelProps,
   // Telegraph Props
   enabled = true,
-  appearance = "dark",
+
   triggerRef,
   children,
 }: TooltipProps<T>) => {
@@ -147,53 +145,51 @@ const Tooltip = <T extends TgphElement = "div">({
                 zIndex: `var(--tgph-zIndex-tooltip)`,
               }}
             >
-              <OverrideAppearance appearance={appearance} asChild>
-                <Stack
-                  as={motion.div}
-                  // Add tgph class so that this always works in portals
-                  className="tgph"
-                  initial={
-                    shouldAnimate && !skipAnimation
-                      ? {
-                          opacity: 0,
-                          scale: 0.5,
-                          ...deriveAnimationBasedOnSide(side),
-                        }
-                      : {}
-                  }
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    x: 0,
-                    y: 0,
-                  }}
-                  transition={{
-                    duration: 0.1,
-                    type: "spring",
-                    bounce: 0,
-                  }}
-                  bg="gray-1"
-                  rounded="3"
-                  py="2"
-                  px="3"
-                  align="center"
-                  justify="center"
-                  style={{
-                    transformOrigin:
-                      "var(--radix-tooltip-content-transform-origin)",
-                  }}
-                  {...(labelProps ? { labelProps } : {})}
-                  {...TooltipContentProps[appearance]}
-                >
-                  {typeof label === "string" ? (
-                    <Text as="span" size="1">
-                      {label}
-                    </Text>
-                  ) : (
-                    label
-                  )}
-                </Stack>
-              </OverrideAppearance>
+              <Stack
+                as={motion.div}
+                // Add tgph class so that this always works in portals
+                className="tgph"
+                initial={
+                  shouldAnimate && !skipAnimation
+                    ? {
+                        opacity: 0,
+                        scale: 0.8,
+                        ...deriveAnimationBasedOnSide(side),
+                      }
+                    : {}
+                }
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                transition={{
+                  duration: 0.1,
+                  type: "spring",
+                  bounce: 0,
+                }}
+                bg="surface-1"
+                shadow="2"
+                rounded="3"
+                py="1_5"
+                px="2"
+                align="center"
+                justify="center"
+                style={{
+                  transformOrigin:
+                    "var(--radix-tooltip-content-transform-origin)",
+                }}
+                {...(labelProps ? { labelProps } : {})}
+              >
+                {typeof label === "string" ? (
+                  <Text as="span" size="1">
+                    {label}
+                  </Text>
+                ) : (
+                  label
+                )}
+              </Stack>
             </RadixTooltip.Content>
           </RadixTooltip.Portal>
         </RadixTooltip.Root>
