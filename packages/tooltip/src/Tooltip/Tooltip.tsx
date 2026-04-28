@@ -43,7 +43,7 @@ const Tooltip = <T extends TgphElement = "div">({
   onPointerDownOutside,
   forceMount,
   side = "bottom",
-  sideOffset = 2,
+  sideOffset = 4,
   align = "center",
   alignOffset,
   avoidCollisions,
