@@ -1,5 +1,11 @@
 # @telegraph/tooltip
 
+## 0.3.0
+
+### Minor Changes
+
+- [#782](https://github.com/knocklabs/telegraph/pull/782) [`c335807`](https://github.com/knocklabs/telegraph/commit/c33580795d3e75d921449a5684ff7aaff1c2c482) Thanks [@ksorathia](https://github.com/ksorathia)! - Remove appearance modifier from Tooltip
+
 ## 0.2.2
 
 ### Patch Changes
