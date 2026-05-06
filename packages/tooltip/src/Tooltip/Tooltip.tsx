@@ -17,6 +17,14 @@ export type TooltipBaseProps<T extends TgphElement = "div"> = {
   label: string | React.ReactNode;
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
+  /**
+   * When `true`, prevents focus events from instantly opening the tooltip.
+   * Useful when a parent component (e.g. Select/Combobox) moves DOM focus on
+   * hover, which would otherwise bypass `delayDuration` via Radix's composed
+   * `onFocus` handler.
+   * @default false
+   */
+  disableFocusOpen?: boolean;
 
   skipAnimation?: boolean;
   triggerRef?: React.RefObject<HTMLButtonElement>;
@@ -58,6 +66,7 @@ const Tooltip = <T extends TgphElement = "div">({
   labelProps,
   // Telegraph Props
   enabled = true,
+  disableFocusOpen = false,
 
   triggerRef,
   children,
@@ -123,7 +132,13 @@ const Tooltip = <T extends TgphElement = "div">({
           onOpenChange={setOpen}
         >
           <RadixTooltip.Trigger asChild={true} ref={triggerRef}>
-            <RefToTgphRef>{children}</RefToTgphRef>
+            <RefToTgphRef
+              {...(disableFocusOpen
+                ? { onFocus: (e: React.FocusEvent) => e.preventDefault() }
+                : {})}
+            >
+              {children}
+            </RefToTgphRef>
           </RadixTooltip.Trigger>
           <RadixTooltip.Portal>
             <RadixTooltip.Content
@@ -180,7 +195,7 @@ const Tooltip = <T extends TgphElement = "div">({
                   transformOrigin:
                     "var(--radix-tooltip-content-transform-origin)",
                 }}
-                {...(labelProps ? { labelProps } : {})}
+                {...(labelProps ?? {})}
               >
                 {typeof label === "string" ? (
                   <Text as="span" size="1">

@@ -15,6 +15,15 @@ describe("Tooltip", () => {
       void validProps;
     });
 
+    it("accepts disableFocusOpen prop", () => {
+      const propsWithDisableFocusOpen: TooltipProps = {
+        label: "Tooltip text",
+        disableFocusOpen: true,
+        children: null,
+      };
+      void propsWithDisableFocusOpen;
+    });
+
     it("rejects unknown props on type level", () => {
       // @ts-expect-error unknown prop rejected on TooltipProps
       const invalidProp: TooltipProps = {
