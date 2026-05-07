@@ -78,6 +78,7 @@ The main tooltip component that wraps content and provides contextual informatio
 | `delayDuration`           | `number`                                 | `400`       | Delay before showing tooltip (ms)                            |
 | `skipDelayDuration`       | `number`                                 | -           | Skip delay if another tooltip was recently shown             |
 | `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content |
+| `disableFocusOpen`        | `boolean`                                | `false`     | Prevent focus events from instantly opening the tooltip      |
 | `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges           |
 | `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                               |
 | `hideWhenDetached`        | `boolean`                                | `false`     | Hide tooltip when trigger is not visible                     |
@@ -175,6 +176,26 @@ export const CustomDelayTooltips = () => (
   </div>
 );
 ```
+
+### Disable Focus-Triggered Open
+
+When wrapping elements inside a `Select` or `Combobox` (where DOM focus moves to the highlighted option on hover), the tooltip can open instantly — bypassing `delayDuration`. Use `disableFocusOpen` to suppress the focus-triggered open:
+
+```tsx
+import { Tooltip } from "@telegraph/tooltip";
+
+export const ListItemTooltip = ({ item }) => (
+  <Tooltip
+    label={item.description}
+    disableFocusOpen
+    delayDuration={500}
+  >
+    <li>{item.name}</li>
+  </Tooltip>
+);
+```
+
+> **Accessibility note:** When `disableFocusOpen` is enabled, keyboard-only users navigating with arrow keys will not trigger the tooltip on focus. The tooltip remains accessible via hover (`delayDuration`) and pointer interaction.
 
 ### Disabled Elements
 
@@ -452,7 +473,7 @@ export const NestedTooltips = () => (
 
 - ✅ **Keyboard Navigation**: Full keyboard support with proper focus management
 - ✅ **Screen Reader Support**: Proper ARIA attributes and announcements
-- ✅ **Focus Management**: Tooltips appear on focus for keyboard users
+- ✅ **Focus Management**: Tooltips appear on focus for keyboard users (unless `disableFocusOpen` is set)
 - ✅ **High Contrast**: Compatible with high contrast modes
 - ✅ **Reduced Motion**: Respects user's motion preferences
 
