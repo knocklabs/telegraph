@@ -1,5 +1,13 @@
 # @telegraph/tooltip
 
+## 0.4.0
+
+### Minor Changes
+
+- [#790](https://github.com/knocklabs/telegraph/pull/790) [`03cfc99`](https://github.com/knocklabs/telegraph/commit/03cfc99c839a753e81d0d1fec2f7b167c0160038) Thanks [@meryldakin](https://github.com/meryldakin)! - feat(tooltip): add `disableFocusOpen` prop and fix `labelProps` spread bug
+  - Added `disableFocusOpen` prop to suppress focus-triggered instant opens (useful when parent components like Select/Combobox move DOM focus on hover, bypassing `delayDuration`).
+  - Fixed `labelProps` spread: replaced `{...(labelProps ? { labelProps } : {})}` with `{...(labelProps ?? {})}` so props correctly merge onto the inner Stack.
+
 ## 0.3.0
 
 ### Minor Changes
