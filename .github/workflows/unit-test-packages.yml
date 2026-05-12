@@ -3,6 +3,9 @@ name: Unit Test Packages
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 concurrency:
   group: unit-test-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

@@ -3,6 +3,9 @@ name: Check Project Formatting
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 concurrency:
   group: format-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

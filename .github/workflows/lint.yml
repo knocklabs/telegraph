@@ -3,6 +3,9 @@ name: Lint Project
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 concurrency:
   group: lint-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

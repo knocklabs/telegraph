@@ -3,6 +3,9 @@ name: Check Package Sizes
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 concurrency:
   group: check-package-sizes-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
