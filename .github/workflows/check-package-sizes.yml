@@ -43,7 +43,7 @@ jobs:
           previous-package-sizes: ${{ steps.main-package-sizes.outputs.package-sizes }}
         id: compare-package-sizes
       - name: Find Comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@d2dae40ed151c634e4189471272b57e76ec19ba8 # v1.3.0
         id: fc
         with:
           token: ${{ secrets.KNOCK_ENG_BOT_GITHUB_TOKEN }} 
@@ -52,14 +52,14 @@ jobs:
           body-includes: ### Package size differences
       - name: Create comment
         if: steps.fc.outputs.comment-id == ''
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae # v1.4.5
         with:
           token: ${{ secrets.KNOCK_ENG_BOT_GITHUB_TOKEN }} 
           issue-number: ${{ github.event.pull_request.number }}
           body: ${{ steps.compare-package-sizes.outputs.pr-comment }}
       - name: Update comment
         if: steps.fc.outputs.comment-id != ''
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae # v1.4.5
         with:
           token: ${{ secrets.KNOCK_ENG_BOT_GITHUB_TOKEN }} 
           comment-id: ${{ steps.fc.outputs.comment-id }}

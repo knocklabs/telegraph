@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Latest
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -22,7 +22,7 @@ jobs:
         run: yarn --immutable
       - name: Cache Build
         id: build-packages-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             **/dist
