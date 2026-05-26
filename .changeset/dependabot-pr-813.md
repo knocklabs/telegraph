@@ -1,6 +1,7 @@
 ---
 "@telegraph/button": patch
 "@telegraph/combobox": patch
+"@telegraph/filter": patch
 "@telegraph/icon": patch
 "@telegraph/kbd": patch
 "@telegraph/link": patch
