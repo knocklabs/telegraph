@@ -2267,7 +2267,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:4.1.5"
     eslint: "npm:^10.2.1"
     eslint-plugin-react-hooks: "npm:^7.1.1"
-    eslint-plugin-turbo: "npm:^2.9.9"
+    eslint-plugin-turbo: "npm:^2.9.14"
     husky: "npm:^9.1.7"
     jsdom: "npm:^29.0.2"
     lint-staged: "npm:^17.0.2"
@@ -8624,15 +8624,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-turbo@npm:^2.9.9":
-  version: 2.9.9
-  resolution: "eslint-plugin-turbo@npm:2.9.9"
+"eslint-plugin-turbo@npm:^2.9.14":
+  version: 2.9.14
+  resolution: "eslint-plugin-turbo@npm:2.9.14"
   dependencies:
     dotenv: "npm:16.0.3"
   peerDependencies:
     eslint: ">6.6.0"
     turbo: ">2.0.0"
-  checksum: 10c0/9fd03c82c9b1517b9d5b7aa474e51be2a38119d139c15c08e78a2e6d7f5a38d2c036d9600f280a3926ff3b987dfe6577b7b74a46187650325a4b86d10bddcacb
+  checksum: 10c0/73ec366f6220d4adb00ef795e3cb5cc759728016456d6842e8fc8fa3f4c64e48a37d2c33d10971aa8533ed9e01d55497c85fe0624b6e3b9e59a3a9af17be8a8f
   languageName: node
   linkType: hard
 
