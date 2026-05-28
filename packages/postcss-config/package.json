@@ -24,7 +24,7 @@
     "postcss": "^8.5.15",
     "postcss-combine-duplicated-selectors": "^10.0.3",
     "postcss-custom-media": "^11.0.6",
-    "postcss-discard-empty": "^7.0.1"
+    "postcss-discard-empty": "^8.0.0"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",

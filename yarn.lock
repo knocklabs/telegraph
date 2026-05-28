@@ -4760,7 +4760,7 @@ __metadata:
     postcss: "npm:^8.5.15"
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.6"
-    postcss-discard-empty: "npm:^7.0.1"
+    postcss-discard-empty: "npm:^8.0.0"
     typescript: "npm:^6.0.2"
   languageName: unknown
   linkType: soft
@@ -12281,12 +12281,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-discard-empty@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "postcss-discard-empty@npm:7.0.1"
+"postcss-discard-empty@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "postcss-discard-empty@npm:8.0.0"
   peerDependencies:
-    postcss: ^8.4.32
-  checksum: 10c0/c11c5571f573a147db911d2d82b4102eff2930fa1d5cc63c25c2cbd9f496a91a7364075f322b61e0eb9c217fc86f06680deb0fb858a32e29148abd7cb2617f8f
+    postcss: ^8.5.14
+  checksum: 10c0/67e82e2fe7114a5810195a56ec051ee17f537dca0677a242fa81e050c0cb6e55f64971c9ae468a4f7b4acfa88ff63d342365aa00ec844b6e6fad8ed300fd7d4f
   languageName: node
   linkType: hard
 
