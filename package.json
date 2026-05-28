@@ -57,7 +57,7 @@
   "devDependencies": {
     "@actions/core": "^3.0.1",
     "@changesets/changelog-github": "^0.6.0",
-    "@changesets/cli": "^2.30.0",
+    "@changesets/cli": "^2.31.0",
     "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
     "@github-ui/storybook-addon-performance-panel": "^1.1.4",
