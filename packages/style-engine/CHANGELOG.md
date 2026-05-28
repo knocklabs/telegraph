@@ -1,5 +1,11 @@
 # @telegraph/style-engine
 
+## 0.3.4
+
+### Patch Changes
+
+- [#808](https://github.com/knocklabs/telegraph/pull/808) [`4fd635b`](https://github.com/knocklabs/telegraph/commit/4fd635b22e5b77669951d4b046b72d35fc52ace9) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.14 to 8.5.15
+
 ## 0.3.3
 
 ### Patch Changes

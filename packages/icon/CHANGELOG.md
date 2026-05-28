@@ -1,5 +1,11 @@
 # @telegraph/icon
 
+## 0.5.1
+
+### Patch Changes
+
+- [#813](https://github.com/knocklabs/telegraph/pull/813) [`ef0aa8e`](https://github.com/knocklabs/telegraph/commit/ef0aa8e6bcf08c7108a3e3cc0261d543faaf2bb2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump lucide-react from 0.544.0 to 1.14.0
+
 ## 0.5.0
 
 ### Minor Changes
