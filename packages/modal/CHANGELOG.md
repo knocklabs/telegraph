@@ -1,5 +1,16 @@
 # @telegraph/modal
 
+## 0.3.4
+
+### Patch Changes
+
+- [#813](https://github.com/knocklabs/telegraph/pull/813) [`ef0aa8e`](https://github.com/knocklabs/telegraph/commit/ef0aa8e6bcf08c7108a3e3cc0261d543faaf2bb2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump lucide-react from 0.544.0 to 1.14.0
+
+- Updated dependencies [[`4fd635b`](https://github.com/knocklabs/telegraph/commit/4fd635b22e5b77669951d4b046b72d35fc52ace9), [`ef0aa8e`](https://github.com/knocklabs/telegraph/commit/ef0aa8e6bcf08c7108a3e3cc0261d543faaf2bb2)]:
+  - @telegraph/style-engine@0.3.4
+  - @telegraph/button@0.7.1
+  - @telegraph/icon@0.5.1
+
 ## 0.3.3
 
 ### Patch Changes
