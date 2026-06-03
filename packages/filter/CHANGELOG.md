@@ -1,5 +1,15 @@
 # @telegraph/filter
 
+## 0.1.6
+
+### Patch Changes
+
+- [#818](https://github.com/knocklabs/telegraph/pull/818) [`595de43`](https://github.com/knocklabs/telegraph/commit/595de43078651f125657cbe8072a9e5a3f095a12) Thanks [@kylemcd](https://github.com/kylemcd)! - Fix checkmark flash in Menu/Combobox/Select on open. Menu item checkmarks no longer briefly appear selected for every item before normalizing — the motion element now initializes at its target state (`initial={false}`) instead of flashing visible on mount. Also hoisted the `LazyMotion` provider from each `MenuItem` up into `Menu.Content` so it's instantiated once per menu rather than per item.
+
+- Updated dependencies [[`595de43`](https://github.com/knocklabs/telegraph/commit/595de43078651f125657cbe8072a9e5a3f095a12)]:
+  - @telegraph/menu@0.3.6
+  - @telegraph/combobox@0.3.4
+
 ## 0.1.5
 
 ### Patch Changes
