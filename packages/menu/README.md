@@ -401,7 +401,7 @@ import { Menu } from "@telegraph/menu";
 ```
 
 `Menu.SubTrigger` adds a trailing chevron by default; pass your own
-`trailingIcon` (or `trailingIcon={undefined}`) to override it. Submenus nest
+`trailingIcon` or a `trailingComponent` to replace it. Submenus nest
 arbitrarily — a `Menu.SubContent` can contain another `Menu.Sub`.
 
 ### Menu with Keyboard Shortcuts

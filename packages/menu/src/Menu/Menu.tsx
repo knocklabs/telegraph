@@ -222,17 +222,21 @@ const SubTrigger = <T extends TgphElement = "button">({
   leadingComponent,
   trailingComponent,
   tgphRef,
+  onClick,
   ...props
 }: SubTriggerProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
-  // Default to a chevron so the item reads as "opens a submenu", but allow
-  // callers to override it (or pass `trailingIcon={undefined}` to remove it).
-  // Annotating with `typeof trailingIcon` keeps `aria-hidden` as the literal
-  // `true` the icon type requires instead of widening it to `boolean`.
-  const combinedTrailingIcon: typeof trailingIcon = trailingIcon ?? {
-    icon: ChevronRight,
-    "aria-hidden": true,
-  };
+  // Default to a chevron so the item reads as "opens a submenu". Only apply it
+  // when the caller supplies neither a trailing icon nor a trailing component —
+  // `MenuItemTrailing` renders `trailingIcon` in preference to
+  // `trailingComponent`, so an unconditional default would hide a caller's
+  // `trailingComponent`. Annotating with `typeof trailingIcon` keeps
+  // `aria-hidden` as the literal `true` the icon type requires instead of
+  // widening it to `boolean`.
+  const combinedTrailingIcon: typeof trailingIcon =
+    trailingIcon === undefined && trailingComponent === undefined
+      ? { icon: ChevronRight, "aria-hidden": true }
+      : trailingIcon;
   return (
     <RadixMenu.SubTrigger
       {...props}
@@ -241,6 +245,12 @@ const SubTrigger = <T extends TgphElement = "button">({
     >
       <RefToTgphRef>
         <MenuItem
+          // Pass onClick only to MenuItem (not also via {...props} to
+          // RadixMenu.SubTrigger) so RefToTgphRef doesn't compose a
+          // caller-supplied handler twice. Mirrors Menu.Button.
+          onClick={
+            onClick as React.MouseEventHandler<HTMLButtonElement> | undefined
+          }
           leadingIcon={combinedLeadingIcon}
           trailingIcon={combinedTrailingIcon}
           leadingComponent={leadingComponent}
