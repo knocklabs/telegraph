@@ -120,6 +120,48 @@ Individual menu item that can be clicked or selected.
 
 Inherits all Button props for additional styling.
 
+### `<Menu.Sub>`
+
+Groups a `Menu.SubTrigger` with its `Menu.SubContent` to create a nested submenu
+that opens on hover/focus. Render it inside a `Menu.Content`.
+
+| Prop           | Type                      | Default     | Description                      |
+| -------------- | ------------------------- | ----------- | -------------------------------- |
+| `open`         | `boolean`                 | `undefined` | Controlled open state            |
+| `defaultOpen`  | `boolean`                 | `false`     | Initial open state (uncontrolled)|
+| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes |
+
+### `<Menu.SubTrigger>`
+
+The item inside a `Menu.Sub` that opens the submenu on hover (or `→` / `Enter`).
+Accepts the same props as `Menu.Button` and defaults to a trailing chevron icon.
+
+| Prop           | Type              | Default        | Description                                   |
+| -------------- | ----------------- | -------------- | --------------------------------------------- |
+| `children`     | `React.ReactNode` | required       | Trigger label                                 |
+| `trailingIcon` | `IconProps`       | `ChevronRight` | Trailing icon; pass your own to override      |
+| `leadingIcon`  | `IconProps`       | `undefined`    | Icon before text                              |
+| `disabled`     | `boolean`         | `false`        | Whether the submenu trigger is disabled       |
+
+Inherits all `Menu.Button` props.
+
+### `<Menu.SubContent>`
+
+The container for a submenu's items. Always opens to the side of its trigger
+(`right`, flipping to `left` on collision); `side` and `align` are managed
+automatically and are not accepted.
+
+| Prop          | Type           | Default | Description                           |
+| ------------- | -------------- | ------- | ------------------------------------- |
+| `sideOffset`  | `number`       | `0`     | Distance from the trigger             |
+| `alignOffset` | `number`       | `0`     | Offset along the trigger's edge       |
+| `gap`         | `SpacingToken` | `"1"`   | Gap between menu items                |
+| `py`          | `SpacingToken` | `"1"`   | Vertical padding                      |
+| `rounded`     | `RoundedToken` | `"4"`   | Border radius                         |
+| `shadow`      | `ShadowToken`  | `"2"`   | Drop shadow                           |
+
+All Stack props are also supported for additional styling.
+
 ### `<Menu.Divider>`
 
 Visual separator between menu sections.
@@ -325,9 +367,13 @@ import { Menu } from "@telegraph/menu";
 
 ### Nested Menus (Submenus)
 
+Use `Menu.Sub`, `Menu.SubTrigger`, and `Menu.SubContent` to nest a menu that
+opens on hover (and via `→` / `Enter` for keyboard users). The submenu opens to
+the side of its trigger automatically and stays open while the pointer moves
+toward it.
+
 ```tsx
 import { Menu } from "@telegraph/menu";
-import { ChevronRight } from "lucide-react";
 
 <Menu.Root>
   <Menu.Trigger>
@@ -338,26 +384,25 @@ import { ChevronRight } from "lucide-react";
     <Menu.Button>New File</Menu.Button>
     <Menu.Button>Open File</Menu.Button>
 
-    {/* Submenu trigger */}
-    <Menu.Root>
-      <Menu.Trigger>
-        <Menu.Button trailingIcon={{ icon: ChevronRight, alt: "" }}>
-          Recent Files
-        </Menu.Button>
-      </Menu.Trigger>
-
-      <Menu.Content side="right" sideOffset={-4}>
+    {/* Submenu — opens on hover, no need for a nested Menu.Root */}
+    <Menu.Sub>
+      <Menu.SubTrigger>Recent Files</Menu.SubTrigger>
+      <Menu.SubContent>
         <Menu.Button>Document1.pdf</Menu.Button>
         <Menu.Button>Spreadsheet.xlsx</Menu.Button>
         <Menu.Button>Presentation.pptx</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
+      </Menu.SubContent>
+    </Menu.Sub>
 
     <Menu.Divider />
     <Menu.Button color="red">Delete File</Menu.Button>
   </Menu.Content>
 </Menu.Root>;
 ```
+
+`Menu.SubTrigger` adds a trailing chevron by default; pass your own
+`trailingIcon` or a `trailingComponent` to replace it. Submenus nest
+arbitrarily — a `Menu.SubContent` can contain another `Menu.Sub`.
 
 ### Menu with Keyboard Shortcuts
 
@@ -436,51 +481,6 @@ import { Copy, Cut, Paste, Redo, Undo } from "lucide-react";
     </Menu.Button>
   </Menu.Content>
 </Menu.Root>;
-```
-
-### Context Menu
-
-```tsx
-import { Menu } from "@telegraph/menu";
-import { useState } from "react";
-
-const ContextMenu = ({ children }) => {
-  const [contextMenu, setContextMenu] = useState(null);
-
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    setContextMenu({
-      x: event.clientX,
-      y: event.clientY,
-    });
-  };
-
-  const handleClose = () => {
-    setContextMenu(null);
-  };
-
-  return (
-    <>
-      <div onContextMenu={handleContextMenu}>{children}</div>
-
-      {contextMenu && (
-        <Menu.Root open={!!contextMenu} onOpenChange={handleClose}>
-          <Menu.Content
-            style={{
-              position: "fixed",
-              left: contextMenu.x,
-              top: contextMenu.y,
-            }}
-          >
-            <Menu.Button onClick={handleClose}>Copy</Menu.Button>
-            <Menu.Button onClick={handleClose}>Paste</Menu.Button>
-            <Menu.Button onClick={handleClose}>Delete</Menu.Button>
-          </Menu.Content>
-        </Menu.Root>
-      )}
-    </>
-  );
-};
 ```
 
 ### Menu with Loading States
@@ -575,16 +575,21 @@ The menu component uses Telegraph design tokens for consistent styling:
 | `Escape`          | Close menu                                    |
 | `Arrow Down`      | Navigate to next item                         |
 | `Arrow Up`        | Navigate to previous item                     |
+| `Arrow Right`     | Open submenu (when focused on a `SubTrigger`) |
+| `Arrow Left`      | Close submenu and return to its trigger       |
 | `Home`            | Navigate to first item                        |
 | `End`             | Navigate to last item                         |
 | `Tab`             | Close menu and move to next focusable element |
 
+Typeahead is also supported: type the first characters of an item to focus it.
+
 ### ARIA Attributes
 
-- `role="menu"` on menu content
-- `role="menuitem"` on menu buttons
-- `aria-expanded` on trigger
-- `aria-haspopup="menu"` on trigger
+- `role="menu"` on menu (and submenu) content
+- `role="menuitem"` on menu buttons and submenu triggers
+- `aria-expanded` on the trigger and on each `Menu.SubTrigger`
+- `aria-haspopup="menu"` on the trigger and on each `Menu.SubTrigger`
+- `aria-controls` linking a `SubTrigger` to its `SubContent`
 - `aria-disabled` on disabled items
 - `aria-checked` on selectable items
 

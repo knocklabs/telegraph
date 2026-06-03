@@ -2,7 +2,15 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { Archive, Cog, CornerUpLeft, Ellipsis, Pencil } from "lucide-react";
+import {
+  Archive,
+  Cog,
+  CornerUpLeft,
+  Ellipsis,
+  FileText,
+  Pencil,
+  Share2,
+} from "lucide-react";
 
 import { Menu as TelegraphMenu } from "./Menu";
 
@@ -42,6 +50,7 @@ export const Default: Story = {
           <TelegraphMenu.Trigger>
             <Button
               variant="outline"
+              aria-label="Workflow actions"
               leadingIcon={{ icon: Ellipsis, "aria-hidden": true }}
             />
           </TelegraphMenu.Trigger>
@@ -68,6 +77,66 @@ export const Default: Story = {
               disabled={true}
             >
               Reset all uncomitted changes
+            </TelegraphMenu.Button>
+          </TelegraphMenu.Content>
+        </TelegraphMenu.Root>
+      </Stack>
+    );
+  },
+};
+
+export const WithSubmenu: Story = {
+  render: ({ ...args }) => {
+    return (
+      <Stack m="20" align="center" justify="center">
+        <TelegraphMenu.Root {...args}>
+          <TelegraphMenu.Trigger>
+            <Button
+              variant="outline"
+              aria-label="Workflow actions"
+              leadingIcon={{ icon: Ellipsis, "aria-hidden": true }}
+            />
+          </TelegraphMenu.Trigger>
+          <TelegraphMenu.Content {...args}>
+            <TelegraphMenu.Button
+              leadingIcon={{ icon: Pencil, "aria-hidden": true }}
+            >
+              Edit workflow steps
+            </TelegraphMenu.Button>
+
+            {/* Hover this item to open the submenu to the side */}
+            <TelegraphMenu.Sub>
+              <TelegraphMenu.SubTrigger
+                leadingIcon={{ icon: Share2, "aria-hidden": true }}
+              >
+                Share
+              </TelegraphMenu.SubTrigger>
+              <TelegraphMenu.SubContent>
+                <TelegraphMenu.Button>Copy link</TelegraphMenu.Button>
+                <TelegraphMenu.Button>Invite teammate</TelegraphMenu.Button>
+
+                {/* Submenus can nest arbitrarily */}
+                <TelegraphMenu.Sub>
+                  <TelegraphMenu.SubTrigger
+                    leadingIcon={{ icon: FileText, "aria-hidden": true }}
+                  >
+                    Export as
+                  </TelegraphMenu.SubTrigger>
+                  <TelegraphMenu.SubContent>
+                    <TelegraphMenu.Button>PDF</TelegraphMenu.Button>
+                    <TelegraphMenu.Button>CSV</TelegraphMenu.Button>
+                    <TelegraphMenu.Button>JSON</TelegraphMenu.Button>
+                  </TelegraphMenu.SubContent>
+                </TelegraphMenu.Sub>
+              </TelegraphMenu.SubContent>
+            </TelegraphMenu.Sub>
+
+            <TelegraphMenu.Divider />
+            <TelegraphMenu.Button
+              color="red"
+              leadingIcon={{ icon: Archive, "aria-hidden": true }}
+            >
+              Archive workflow
             </TelegraphMenu.Button>
           </TelegraphMenu.Content>
         </TelegraphMenu.Root>
