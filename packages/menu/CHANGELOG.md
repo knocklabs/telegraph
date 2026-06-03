@@ -1,5 +1,13 @@
 # @telegraph/menu
 
+## 0.4.0
+
+### Minor Changes
+
+- [#821](https://github.com/knocklabs/telegraph/pull/821) [`ee56d9e`](https://github.com/knocklabs/telegraph/commit/ee56d9e381f06232a0d03b1db72a4c6ba04da334) Thanks [@kylemcd](https://github.com/kylemcd)! - Add hover-to-open submenus to Menu via `Menu.Sub`, `Menu.SubTrigger`, and `Menu.SubContent`. These wrap Radix's submenu primitives, so a submenu now opens on hover (and `→` / `Enter`), coordinates open/close with its parent, supports keyboard navigation and "safe triangle" pointer tracking, and positions itself to the side automatically. `Menu.SubTrigger` defaults to a trailing chevron. This replaces the previous nested-`Menu.Root` workaround, which only opened on click.
+
+  Combobox, Select, Filter, and Tabs receive a patch release so they ship against the new Menu.
+
 ## 0.3.6
 
 ### Patch Changes
