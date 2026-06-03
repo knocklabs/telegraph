@@ -177,16 +177,36 @@ const Button = <T extends TgphElement = "button">({
   );
 };
 
-export type SubProps = React.ComponentProps<typeof RadixMenu.Sub>;
+export type SubProps = React.ComponentProps<typeof RadixMenu.Sub> & {
+  defaultOpen?: boolean;
+};
 
 /**
  * Groups a `SubTrigger` with its `SubContent` to form a nested submenu that
- * opens on hover/focus. Thin pass-through to Radix's `Sub`, which manages its
- * own open state (use `open`/`onOpenChange` to control it). Note: Radix's `Sub`
- * does not support `defaultOpen`.
+ * opens on hover/focus. Works uncontrolled by default; pass `open`/`onOpenChange`
+ * to control it, or `defaultOpen` to set the initial state.
+ *
+ * Note: the underlying `RadixMenu.Sub` is controlled-only (it has no internal
+ * uncontrolled state), so we manage open state here via `useControllableState`,
+ * mirroring `Menu.Root`. Without this the submenu would never open on hover.
  */
-const Sub = ({ children, ...props }: SubProps) => {
-  return <RadixMenu.Sub {...props}>{children}</RadixMenu.Sub>;
+const Sub = ({
+  open: openProp,
+  onOpenChange: onOpenChangeProp,
+  defaultOpen: defaultOpenProp,
+  children,
+  ...props
+}: SubProps) => {
+  const [open = false, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpenProp ?? false,
+    onChange: onOpenChangeProp,
+  });
+  return (
+    <RadixMenu.Sub open={open} onOpenChange={setOpen} {...props}>
+      {children}
+    </RadixMenu.Sub>
+  );
 };
 
 export type SubTriggerProps<T extends TgphElement = "button"> =

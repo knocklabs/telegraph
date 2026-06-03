@@ -43,9 +43,14 @@ describe("Menu", () => {
       void validProps;
     });
 
-    it("rejects defaultOpen (not supported by Radix Sub)", () => {
-      // @ts-expect-error Sub is controlled-only; defaultOpen is not supported
-      const invalidProps: MenuSubProps = { defaultOpen: true };
+    it("accepts defaultOpen for uncontrolled use", () => {
+      const validProps: MenuSubProps = { defaultOpen: true };
+      void validProps;
+    });
+
+    it("rejects mistyped known props", () => {
+      // @ts-expect-error open must be a boolean, not a string
+      const invalidProps: MenuSubProps = { open: "yes" };
       void invalidProps;
     });
   });

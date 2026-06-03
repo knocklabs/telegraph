@@ -128,10 +128,8 @@ that opens on hover/focus. Render it inside a `Menu.Content`.
 | Prop           | Type                      | Default     | Description                      |
 | -------------- | ------------------------- | ----------- | -------------------------------- |
 | `open`         | `boolean`                 | `undefined` | Controlled open state            |
+| `defaultOpen`  | `boolean`                 | `false`     | Initial open state (uncontrolled)|
 | `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes |
-
-> Note: unlike `Menu.Root`, `Menu.Sub` does not support `defaultOpen` (Radix
-> manages the uncontrolled open state internally).
 
 ### `<Menu.SubTrigger>`
 
