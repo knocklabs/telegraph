@@ -120,6 +120,50 @@ Individual menu item that can be clicked or selected.
 
 Inherits all Button props for additional styling.
 
+### `<Menu.Sub>`
+
+Groups a `Menu.SubTrigger` with its `Menu.SubContent` to create a nested submenu
+that opens on hover/focus. Render it inside a `Menu.Content`.
+
+| Prop           | Type                      | Default     | Description                      |
+| -------------- | ------------------------- | ----------- | -------------------------------- |
+| `open`         | `boolean`                 | `undefined` | Controlled open state            |
+| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes |
+
+> Note: unlike `Menu.Root`, `Menu.Sub` does not support `defaultOpen` (Radix
+> manages the uncontrolled open state internally).
+
+### `<Menu.SubTrigger>`
+
+The item inside a `Menu.Sub` that opens the submenu on hover (or `→` / `Enter`).
+Accepts the same props as `Menu.Button` and defaults to a trailing chevron icon.
+
+| Prop           | Type              | Default        | Description                                   |
+| -------------- | ----------------- | -------------- | --------------------------------------------- |
+| `children`     | `React.ReactNode` | required       | Trigger label                                 |
+| `trailingIcon` | `IconProps`       | `ChevronRight` | Trailing icon; pass your own to override      |
+| `leadingIcon`  | `IconProps`       | `undefined`    | Icon before text                              |
+| `disabled`     | `boolean`         | `false`        | Whether the submenu trigger is disabled       |
+
+Inherits all `Menu.Button` props.
+
+### `<Menu.SubContent>`
+
+The container for a submenu's items. Always opens to the side of its trigger
+(`right`, flipping to `left` on collision); `side` and `align` are managed
+automatically and are not accepted.
+
+| Prop          | Type           | Default | Description                           |
+| ------------- | -------------- | ------- | ------------------------------------- |
+| `sideOffset`  | `number`       | `0`     | Distance from the trigger             |
+| `alignOffset` | `number`       | `0`     | Offset along the trigger's edge       |
+| `gap`         | `SpacingToken` | `"1"`   | Gap between menu items                |
+| `py`          | `SpacingToken` | `"1"`   | Vertical padding                      |
+| `rounded`     | `RoundedToken` | `"4"`   | Border radius                         |
+| `shadow`      | `ShadowToken`  | `"2"`   | Drop shadow                           |
+
+All Stack props are also supported for additional styling.
+
 ### `<Menu.Divider>`
 
 Visual separator between menu sections.
@@ -325,9 +369,13 @@ import { Menu } from "@telegraph/menu";
 
 ### Nested Menus (Submenus)
 
+Use `Menu.Sub`, `Menu.SubTrigger`, and `Menu.SubContent` to nest a menu that
+opens on hover (and via `→` / `Enter` for keyboard users). The submenu opens to
+the side of its trigger automatically and stays open while the pointer moves
+toward it.
+
 ```tsx
 import { Menu } from "@telegraph/menu";
-import { ChevronRight } from "lucide-react";
 
 <Menu.Root>
   <Menu.Trigger>
@@ -338,26 +386,25 @@ import { ChevronRight } from "lucide-react";
     <Menu.Button>New File</Menu.Button>
     <Menu.Button>Open File</Menu.Button>
 
-    {/* Submenu trigger */}
-    <Menu.Root>
-      <Menu.Trigger>
-        <Menu.Button trailingIcon={{ icon: ChevronRight, alt: "" }}>
-          Recent Files
-        </Menu.Button>
-      </Menu.Trigger>
-
-      <Menu.Content side="right" sideOffset={-4}>
+    {/* Submenu — opens on hover, no need for a nested Menu.Root */}
+    <Menu.Sub>
+      <Menu.SubTrigger>Recent Files</Menu.SubTrigger>
+      <Menu.SubContent>
         <Menu.Button>Document1.pdf</Menu.Button>
         <Menu.Button>Spreadsheet.xlsx</Menu.Button>
         <Menu.Button>Presentation.pptx</Menu.Button>
-      </Menu.Content>
-    </Menu.Root>
+      </Menu.SubContent>
+    </Menu.Sub>
 
     <Menu.Divider />
     <Menu.Button color="red">Delete File</Menu.Button>
   </Menu.Content>
 </Menu.Root>;
 ```
+
+`Menu.SubTrigger` adds a trailing chevron by default; pass your own
+`trailingIcon` (or `trailingIcon={undefined}`) to override it. Submenus nest
+arbitrarily — a `Menu.SubContent` can contain another `Menu.Sub`.
 
 ### Menu with Keyboard Shortcuts
 

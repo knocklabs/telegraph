@@ -6,6 +6,7 @@ import {
   type TgphElement,
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
+import { ChevronRight } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import React from "react";
 
@@ -106,6 +107,7 @@ const Content = <T extends TgphElement = "div">({
         ref={tgphRef as React.LegacyRef<HTMLDivElement>}
       >
         <RefToTgphRef>
+          {/* Keep this Stack surface in sync with `SubContent` below. */}
           <Stack
             bg="surface-1"
             // Add tgph class so that this always works in portals
@@ -175,6 +177,120 @@ const Button = <T extends TgphElement = "button">({
   );
 };
 
+export type SubProps = React.ComponentProps<typeof RadixMenu.Sub>;
+
+/**
+ * Groups a `SubTrigger` with its `SubContent` to form a nested submenu that
+ * opens on hover/focus. Thin pass-through to Radix's `Sub`, which manages its
+ * own open state (use `open`/`onOpenChange` to control it). Note: Radix's `Sub`
+ * does not support `defaultOpen`.
+ */
+const Sub = ({ children, ...props }: SubProps) => {
+  return <RadixMenu.Sub {...props}>{children}</RadixMenu.Sub>;
+};
+
+export type SubTriggerProps<T extends TgphElement = "button"> =
+  TgphComponentProps<typeof MenuItem<T>> &
+    React.ComponentProps<typeof RadixMenu.SubTrigger>;
+
+const SubTrigger = <T extends TgphElement = "button">({
+  mx = "1",
+  asChild = true,
+  icon,
+  leadingIcon,
+  trailingIcon,
+  leadingComponent,
+  trailingComponent,
+  tgphRef,
+  ...props
+}: SubTriggerProps<T>) => {
+  const combinedLeadingIcon = leadingIcon || icon;
+  // Default to a chevron so the item reads as "opens a submenu", but allow
+  // callers to override it (or pass `trailingIcon={undefined}` to remove it).
+  // Annotating with `typeof trailingIcon` keeps `aria-hidden` as the literal
+  // `true` the icon type requires instead of widening it to `boolean`.
+  const combinedTrailingIcon: typeof trailingIcon = trailingIcon ?? {
+    icon: ChevronRight,
+    "aria-hidden": true,
+  };
+  return (
+    <RadixMenu.SubTrigger
+      {...props}
+      asChild={asChild}
+      ref={tgphRef as React.LegacyRef<HTMLDivElement>}
+    >
+      <RefToTgphRef>
+        <MenuItem
+          leadingIcon={combinedLeadingIcon}
+          trailingIcon={combinedTrailingIcon}
+          leadingComponent={leadingComponent}
+          trailingComponent={trailingComponent}
+          data-tgph-menu-button
+          mx={mx}
+          style={{
+            flexShrink: 0,
+          }}
+          {...props}
+        />
+      </RefToTgphRef>
+    </RadixMenu.SubTrigger>
+  );
+};
+
+export type SubContentProps<T extends TgphElement = "div"> =
+  React.ComponentProps<typeof RadixMenu.SubContent> &
+    Omit<TgphComponentProps<typeof Stack<T>>, "align">;
+
+const SubContent = <T extends TgphElement = "div">({
+  direction = "column",
+  gap = "1",
+  rounded = "4",
+  py = "1",
+  shadow = "2",
+  // Submenus open to the side with no gap by default; `side`/`align` are
+  // managed by Radix and intentionally not accepted here.
+  sideOffset = 0,
+  children,
+  onInteractOutside,
+  onKeyDown,
+  tgphRef,
+  ...props
+}: SubContentProps<T>) => {
+  return (
+    <RadixMenu.Portal>
+      <RadixMenu.SubContent
+        onInteractOutside={onInteractOutside}
+        onKeyDown={onKeyDown}
+        asChild
+        sideOffset={sideOffset}
+        {...props}
+        // Need to cast this type since RadixMenu.SubContent doesn't accept tgphRef
+        ref={tgphRef as React.LegacyRef<HTMLDivElement>}
+      >
+        <RefToTgphRef>
+          {/* Keep this Stack surface in sync with `Content` above. */}
+          <Stack
+            bg="surface-1"
+            // Add tgph class so that this always works in portals
+            className="tgph"
+            direction={direction}
+            gap={gap}
+            rounded={rounded}
+            py={py}
+            shadow={shadow}
+            style={{
+              overflowY: "auto",
+            }}
+            zIndex="popover"
+          >
+            <LazyMotion features={domAnimation}>{children}</LazyMotion>
+          </Stack>
+        </RefToTgphRef>
+      </RadixMenu.SubContent>
+    </RadixMenu.Portal>
+  );
+};
+
 export type DividerProps = TgphComponentProps<typeof Box>;
 
 const Divider = ({
@@ -190,6 +306,9 @@ const Menu = {} as {
   Trigger: typeof Trigger;
   Content: typeof Content;
   Button: typeof Button;
+  Sub: typeof Sub;
+  SubTrigger: typeof SubTrigger;
+  SubContent: typeof SubContent;
   Divider: typeof Divider;
 };
 
@@ -198,6 +317,9 @@ Object.assign(Menu, {
   Trigger,
   Content,
   Button,
+  Sub,
+  SubTrigger,
+  SubContent,
   Divider,
 });
 

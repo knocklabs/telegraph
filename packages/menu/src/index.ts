@@ -3,6 +3,9 @@ export type {
   MenuRootProps,
   MenuContentProps,
   MenuButtonProps,
+  MenuSubProps,
+  MenuSubTriggerProps,
+  MenuSubContentProps,
   MenuDividerProps,
 } from "./Menu";
 export { MenuItem } from "./MenuItem";
