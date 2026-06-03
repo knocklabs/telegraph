@@ -6,6 +6,7 @@ import {
   type TgphElement,
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
+import { LazyMotion, domAnimation } from "motion/react";
 import React from "react";
 
 import { MenuItem } from "../MenuItem";
@@ -119,7 +120,7 @@ const Content = <T extends TgphElement = "div">({
             }}
             zIndex="popover"
           >
-            {children}
+            <LazyMotion features={domAnimation}>{children}</LazyMotion>
           </Stack>
         </RefToTgphRef>
       </RadixMenu.Content>
