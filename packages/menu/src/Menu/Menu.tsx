@@ -10,7 +10,7 @@ import { ChevronRight } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import React from "react";
 
-import { MenuItem } from "../MenuItem";
+import { MenuItem, type MenuItemProps } from "../MenuItem";
 
 export type RootProps = React.ComponentProps<typeof RadixMenu.Root> & {
   defaultOpen?: boolean;
@@ -210,8 +210,7 @@ const Sub = ({
 };
 
 export type SubTriggerProps<T extends TgphElement = "button"> =
-  TgphComponentProps<typeof MenuItem<T>> &
-    React.ComponentProps<typeof RadixMenu.SubTrigger>;
+  MenuItemProps<T> & React.ComponentProps<typeof RadixMenu.SubTrigger>;
 
 const SubTrigger = <T extends TgphElement = "button">({
   mx = "1",

@@ -50,6 +50,7 @@ export const Default: Story = {
           <TelegraphMenu.Trigger>
             <Button
               variant="outline"
+              aria-label="Workflow actions"
               leadingIcon={{ icon: Ellipsis, "aria-hidden": true }}
             />
           </TelegraphMenu.Trigger>
@@ -92,6 +93,7 @@ export const WithSubmenu: Story = {
           <TelegraphMenu.Trigger>
             <Button
               variant="outline"
+              aria-label="Workflow actions"
               leadingIcon={{ icon: Ellipsis, "aria-hidden": true }}
             />
           </TelegraphMenu.Trigger>

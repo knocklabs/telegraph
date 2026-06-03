@@ -483,51 +483,6 @@ import { Copy, Cut, Paste, Redo, Undo } from "lucide-react";
 </Menu.Root>;
 ```
 
-### Context Menu
-
-```tsx
-import { Menu } from "@telegraph/menu";
-import { useState } from "react";
-
-const ContextMenu = ({ children }) => {
-  const [contextMenu, setContextMenu] = useState(null);
-
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    setContextMenu({
-      x: event.clientX,
-      y: event.clientY,
-    });
-  };
-
-  const handleClose = () => {
-    setContextMenu(null);
-  };
-
-  return (
-    <>
-      <div onContextMenu={handleContextMenu}>{children}</div>
-
-      {contextMenu && (
-        <Menu.Root open={!!contextMenu} onOpenChange={handleClose}>
-          <Menu.Content
-            style={{
-              position: "fixed",
-              left: contextMenu.x,
-              top: contextMenu.y,
-            }}
-          >
-            <Menu.Button onClick={handleClose}>Copy</Menu.Button>
-            <Menu.Button onClick={handleClose}>Paste</Menu.Button>
-            <Menu.Button onClick={handleClose}>Delete</Menu.Button>
-          </Menu.Content>
-        </Menu.Root>
-      )}
-    </>
-  );
-};
-```
-
 ### Menu with Loading States
 
 ```tsx
@@ -620,16 +575,21 @@ The menu component uses Telegraph design tokens for consistent styling:
 | `Escape`          | Close menu                                    |
 | `Arrow Down`      | Navigate to next item                         |
 | `Arrow Up`        | Navigate to previous item                     |
+| `Arrow Right`     | Open submenu (when focused on a `SubTrigger`) |
+| `Arrow Left`      | Close submenu and return to its trigger       |
 | `Home`            | Navigate to first item                        |
 | `End`             | Navigate to last item                         |
 | `Tab`             | Close menu and move to next focusable element |
 
+Typeahead is also supported: type the first characters of an item to focus it.
+
 ### ARIA Attributes
 
-- `role="menu"` on menu content
-- `role="menuitem"` on menu buttons
-- `aria-expanded` on trigger
-- `aria-haspopup="menu"` on trigger
+- `role="menu"` on menu (and submenu) content
+- `role="menuitem"` on menu buttons and submenu triggers
+- `aria-expanded` on the trigger and on each `Menu.SubTrigger`
+- `aria-haspopup="menu"` on the trigger and on each `Menu.SubTrigger`
+- `aria-controls` linking a `SubTrigger` to its `SubContent`
 - `aria-disabled` on disabled items
 - `aria-checked` on selectable items
 
