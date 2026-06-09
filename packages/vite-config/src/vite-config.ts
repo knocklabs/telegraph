@@ -86,6 +86,12 @@ export default {
         "src/**/*.test.tsx",
         "src/**/*.test.ts",
       ],
+      // Pin the declaration root to src so every package emits to
+      // dist/types/index.d.ts. The emitted layout follows the TypeScript
+      // compiler's rootDir; packages whose tsconfig omits `rootDir` otherwise
+      // emit to dist/types/src/..., breaking the `types` entrypoint declared in
+      // package.json. Forcing it here keeps all packages consistent.
+      compilerOptions: { rootDir: resolve(process.cwd(), "src") },
       outDirs: "dist/types",
     }),
     react(),

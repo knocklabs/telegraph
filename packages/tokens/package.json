@@ -4,7 +4,7 @@
   "author": "@knocklabs",
   "license": "MIT",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tokens",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
