@@ -1,5 +1,14 @@
 # @telegraph/typography
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [[`f9c6e1c`](https://github.com/knocklabs/telegraph/commit/f9c6e1c078a1bd3d6a8e5eb0ce2dd6713ccc781e), [`f71d0e6`](https://github.com/knocklabs/telegraph/commit/f71d0e6f91310a771393b01d0f3ab99579c8d5f3)]:
+  - @telegraph/helpers@0.0.16
+  - @telegraph/layout@0.5.1
+  - @telegraph/style-engine@0.3.5
+
 ## 0.4.0
 
 ### Minor Changes

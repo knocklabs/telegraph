@@ -1,5 +1,42 @@
 # @telegraph/vite-config
 
+## 0.0.17
+
+### Patch Changes
+
+- [#824](https://github.com/knocklabs/telegraph/pull/824) [`59808f3`](https://github.com/knocklabs/telegraph/commit/59808f3b4cd7db06bb57db4b3417c215867d7a1d) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump vite-plugin-dts from 4.5.4 to 5.0.1
+
+- [#825](https://github.com/knocklabs/telegraph/pull/825) [`a566c9a`](https://github.com/knocklabs/telegraph/commit/a566c9ab8c6befd8330427c3c3f0ed64b9ddb436) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump vite from 8.0.13 to 8.0.14
+
+- [#830](https://github.com/knocklabs/telegraph/pull/830) [`f9c6e1c`](https://github.com/knocklabs/telegraph/commit/f9c6e1c078a1bd3d6a8e5eb0ce2dd6713ccc781e) Thanks [@kylemcd](https://github.com/kylemcd)! - fix(vite-config): emit declaration files to a consistent `dist/types` root
+
+  Pin the TypeScript declaration root to `src` in the shared dts plugin config so
+  every package emits its types to `dist/types/index.d.ts`. Previously, packages
+  whose tsconfig omitted `rootDir` emitted to `dist/types/src/index.d.ts`, which
+  did not match the `types` entrypoint declared in their `package.json`, so
+  consumers received no type definitions (`@telegraph/compose-refs`, `helpers`,
+  `input`, `modal`, `nextjs`, `tokens`).
+
+  Pinning the declaration root also repairs degraded type emission that depended
+  on the inferred root: `@telegraph/tabs` previously emitted a dangling
+  `TgphElement` reference (`error TS2304: Cannot find name 'TgphElement'` for
+  consumers), and `@telegraph/modal`'s `Content` prop type was widened to `any`.
+  Both now emit correct, fully-resolved types.
+
+  Also corrects the stale top-level `types` field in `@telegraph/tokens`.
+
+- [#827](https://github.com/knocklabs/telegraph/pull/827) [`f71d0e6`](https://github.com/knocklabs/telegraph/commit/f71d0e6f91310a771393b01d0f3ab99579c8d5f3) Thanks [@kylemcd](https://github.com/kylemcd)! - fix(vite-config): externalize Node built-in modules in the Rolldown bundle
+
+  The shared Vite build config only externalized each package's declared
+  dependencies, never Node built-ins. Under Vite 8 / Rolldown, runtime
+  `require("node:path")` / `require("node:fs")` calls were inlined as empty-object
+  stubs, so `@telegraph/style-engine`'s PostCSS plugin threw
+  `TypeError: t.dirname is not a function` and broke every consumer build.
+
+  Add `builtinModules` (bare and `node:`-prefixed) to the Rolldown `external`
+  list. Republishes `@telegraph/style-engine` (0.3.5) so its `dist/cjs/postcss.js`
+  emits real `require("node:path")` / `require("node:fs")` again.
+
 ## 0.0.16
 
 ### Patch Changes

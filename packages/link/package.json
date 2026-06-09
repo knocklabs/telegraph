@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/link",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Link component in Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/link",
   "author": "@knocklabs",

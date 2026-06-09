@@ -1,5 +1,24 @@
 # @telegraph/style-engine
 
+## 0.3.5
+
+### Patch Changes
+
+- [#827](https://github.com/knocklabs/telegraph/pull/827) [`f71d0e6`](https://github.com/knocklabs/telegraph/commit/f71d0e6f91310a771393b01d0f3ab99579c8d5f3) Thanks [@kylemcd](https://github.com/kylemcd)! - fix(vite-config): externalize Node built-in modules in the Rolldown bundle
+
+  The shared Vite build config only externalized each package's declared
+  dependencies, never Node built-ins. Under Vite 8 / Rolldown, runtime
+  `require("node:path")` / `require("node:fs")` calls were inlined as empty-object
+  stubs, so `@telegraph/style-engine`'s PostCSS plugin threw
+  `TypeError: t.dirname is not a function` and broke every consumer build.
+
+  Add `builtinModules` (bare and `node:`-prefixed) to the Rolldown `external`
+  list. Republishes `@telegraph/style-engine` (0.3.5) so its `dist/cjs/postcss.js`
+  emits real `require("node:path")` / `require("node:fs")` again.
+
+- Updated dependencies [[`f9c6e1c`](https://github.com/knocklabs/telegraph/commit/f9c6e1c078a1bd3d6a8e5eb0ce2dd6713ccc781e)]:
+  - @telegraph/tokens@0.2.1
+
 ## 0.3.4
 
 ### Patch Changes
