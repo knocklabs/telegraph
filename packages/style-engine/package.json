@@ -48,7 +48,7 @@
     "@types/node": "^25.7.0",
     "@types/postcss-import": "^14.0.3",
     "@types/react": "^19.2.14",
-    "eslint": "^10.2.1",
+    "eslint": "^10.4.0",
     "globby": "^16.2.0",
     "lightningcss": "^1.32.0",
     "react": "^19.2.6",
