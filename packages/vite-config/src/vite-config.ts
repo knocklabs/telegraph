@@ -86,7 +86,7 @@ export default {
         "src/**/*.test.tsx",
         "src/**/*.test.ts",
       ],
-      outDir: "dist/types",
+      outDirs: "dist/types",
     }),
     react(),
   ],
