@@ -805,14 +805,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/changelog-github@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@changesets/changelog-github@npm:0.6.0"
+"@changesets/changelog-github@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "@changesets/changelog-github@npm:0.7.0"
   dependencies:
     "@changesets/get-github-info": "npm:^0.8.0"
     "@changesets/types": "npm:^6.1.0"
     dotenv: "npm:^8.1.0"
-  checksum: 10c0/b2f20cfda2b663e2209b496de900469886afb4106b3a90ab39e2bcf6b8cd4c57f4870d50b60906a99116b1d444784db08c17f893eb2742094b376a336a94a5cf
+  checksum: 10c0/8054f8d5057e79eccf6658712603c9df04906f6b9c7a8b3581e63d178328ca9ba7cb27e4f2241115c3c3430099dd92ebdea097be86921d0a3cd0d07e06e896eb
   languageName: node
   linkType: hard
 
@@ -1658,12 +1658,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.5.5":
-  version: 0.5.5
-  resolution: "@eslint/config-helpers@npm:0.5.5"
+"@eslint/config-helpers@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@eslint/config-helpers@npm:0.6.0"
   dependencies:
     "@eslint/core": "npm:^1.2.1"
-  checksum: 10c0/18889c062cd6bdbd4cd92fe57318c44465ea66184aa0ba204a4420712c66764c64093a7905b6c2ffde23e51b268ca2cec1a39c605d336bebf17ee1ba4f0fc0bb
+  checksum: 10c0/f9af20e8b60b0ba27edb74b8eb40c0c5d51a9bf9baf9e053bb57833a87cb0a1c49b4dfaad88fc24d49c907ad1324c8a0b668684fa9c321351dac4bc9155ec10a
   languageName: node
   linkType: hard
 
@@ -1708,12 +1708,12 @@ __metadata:
   linkType: hard
 
 "@eslint/plugin-kit@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "@eslint/plugin-kit@npm:0.7.1"
+  version: 0.7.2
+  resolution: "@eslint/plugin-kit@npm:0.7.2"
   dependencies:
     "@eslint/core": "npm:^1.2.1"
     levn: "npm:^0.4.1"
-  checksum: 10c0/335b0c1c46fd906cb50bd5ce442b9cee18dc44342ce35c718ba4a63d1aa51d2797f16a517b2f4fe371ccd777b6862fafb2dc8195e00e69197ef4cb17ab32c01b
+  checksum: 10c0/aafba08077bcd6d7dde6c2e21db18086046a88f914f29971a84cac9ad2d48952ded1b293e665e523805297eff756522dafa16f0062195e2c7143dcd1d47d11ed
   languageName: node
   linkType: hard
 
@@ -2244,7 +2244,7 @@ __metadata:
   resolution: "@knocklabs/telegraph@workspace:."
   dependencies:
     "@actions/core": "npm:^3.0.1"
-    "@changesets/changelog-github": "npm:^0.6.0"
+    "@changesets/changelog-github": "npm:^0.7.0"
     "@changesets/cli": "npm:^2.31.0"
     "@commitlint/cli": "npm:^20.5.2"
     "@commitlint/config-conventional": "npm:^20.5.0"
@@ -2265,7 +2265,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.58.2"
     "@typescript-eslint/parser": "npm:^8.58.2"
     "@vitest/coverage-v8": "npm:4.1.5"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     eslint-plugin-react-hooks: "npm:^7.1.1"
     eslint-plugin-turbo: "npm:^2.9.14"
     husky: "npm:^9.1.7"
@@ -2787,10 +2787,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxc-project/types@npm:=0.130.0":
-  version: 0.130.0
-  resolution: "@oxc-project/types@npm:0.130.0"
-  checksum: 10c0/7ec8c03407b0bcb235b930c62859e6efcb3fe5cbaa5db98770d760df5c3e6b3e28a0ad22c2e35d1addede8065b40000c3822c5235dde2959af226639eb870000
+"@oxc-project/types@npm:=0.132.0":
+  version: 0.132.0
+  resolution: "@oxc-project/types@npm:0.132.0"
+  checksum: 10c0/d0ca5e98be0b873d69e4f0f743eb35026833603dac11db9d55f2b5438251b381b886dc556fe3175a17b673f8e2073c49bde88d7e6e702aa09298c22b8b5504e1
   languageName: node
   linkType: hard
 
@@ -3745,9 +3745,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-android-arm64@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-android-arm64@npm:1.0.1"
+"@rolldown/binding-android-arm64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-android-arm64@npm:1.0.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
@@ -3759,9 +3759,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-darwin-arm64@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-darwin-arm64@npm:1.0.1"
+"@rolldown/binding-darwin-arm64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-darwin-arm64@npm:1.0.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
@@ -3773,9 +3773,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-darwin-x64@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-darwin-x64@npm:1.0.1"
+"@rolldown/binding-darwin-x64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-darwin-x64@npm:1.0.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -3787,9 +3787,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-freebsd-x64@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-freebsd-x64@npm:1.0.1"
+"@rolldown/binding-freebsd-x64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-freebsd-x64@npm:1.0.2"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
@@ -3801,9 +3801,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-arm-gnueabihf@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.1"
+"@rolldown/binding-linux-arm-gnueabihf@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-arm-gnueabihf@npm:1.0.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -3815,9 +3815,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-arm64-gnu@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-arm64-gnu@npm:1.0.1"
+"@rolldown/binding-linux-arm64-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-arm64-gnu@npm:1.0.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -3829,9 +3829,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-arm64-musl@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-arm64-musl@npm:1.0.1"
+"@rolldown/binding-linux-arm64-musl@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-arm64-musl@npm:1.0.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
@@ -3843,9 +3843,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-ppc64-gnu@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-ppc64-gnu@npm:1.0.1"
+"@rolldown/binding-linux-ppc64-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-ppc64-gnu@npm:1.0.2"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
@@ -3857,9 +3857,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-s390x-gnu@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-s390x-gnu@npm:1.0.1"
+"@rolldown/binding-linux-s390x-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-s390x-gnu@npm:1.0.2"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
@@ -3871,9 +3871,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-x64-gnu@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-x64-gnu@npm:1.0.1"
+"@rolldown/binding-linux-x64-gnu@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-x64-gnu@npm:1.0.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -3885,9 +3885,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-linux-x64-musl@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-linux-x64-musl@npm:1.0.1"
+"@rolldown/binding-linux-x64-musl@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-linux-x64-musl@npm:1.0.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -3899,9 +3899,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-openharmony-arm64@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-openharmony-arm64@npm:1.0.1"
+"@rolldown/binding-openharmony-arm64@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-openharmony-arm64@npm:1.0.2"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
@@ -3917,9 +3917,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-wasm32-wasi@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-wasm32-wasi@npm:1.0.1"
+"@rolldown/binding-wasm32-wasi@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-wasm32-wasi@npm:1.0.2"
   dependencies:
     "@emnapi/core": "npm:1.10.0"
     "@emnapi/runtime": "npm:1.10.0"
@@ -3935,9 +3935,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-win32-arm64-msvc@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-win32-arm64-msvc@npm:1.0.1"
+"@rolldown/binding-win32-arm64-msvc@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-win32-arm64-msvc@npm:1.0.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -3949,9 +3949,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/binding-win32-x64-msvc@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rolldown/binding-win32-x64-msvc@npm:1.0.1"
+"@rolldown/binding-win32-x64-msvc@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@rolldown/binding-win32-x64-msvc@npm:1.0.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4231,11 +4231,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4258,12 +4258,12 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4296,13 +4296,13 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4318,11 +4318,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4344,11 +4344,11 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4370,12 +4370,12 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4391,11 +4391,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4415,12 +4415,12 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4443,11 +4443,11 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4469,12 +4469,12 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4496,11 +4496,11 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4521,12 +4521,12 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4549,13 +4549,13 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4582,13 +4582,13 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4603,9 +4603,9 @@ __metadata:
     "@knocklabs/prettier-config": "npm:^0.0.1"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/vite-config": "workspace:^"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   languageName: unknown
   linkType: soft
 
@@ -4623,12 +4623,12 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4645,7 +4645,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     autoprefixer: "npm:^10.5.0"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     postcss: "npm:^8.5.15"
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.6"
@@ -4680,11 +4680,11 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4706,13 +4706,13 @@ __metadata:
     "@telegraph/truncate": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4731,11 +4731,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4775,14 +4775,14 @@ __metadata:
     "@types/node": "npm:^25.7.0"
     "@types/postcss-import": "npm:^14.0.3"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     globby: "npm:^16.2.0"
     lightningcss: "npm:^1.32.0"
     postcss: "npm:^8.5.15"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4806,11 +4806,11 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4835,13 +4835,13 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4860,11 +4860,11 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4889,12 +4889,12 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4909,11 +4909,11 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     lightningcss: "npm:^1.32.0"
     react: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
   languageName: unknown
@@ -4935,12 +4935,12 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4960,11 +4960,11 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4986,11 +4986,11 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.14"
     clsx: "npm:^2.1.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -5005,9 +5005,9 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^6.0.0"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.0"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.12"
+    vite: "npm:^8.0.14"
     vite-plugin-dts: "npm:^5.0.1"
   languageName: unknown
   linkType: soft
@@ -8489,14 +8489,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.2.1":
-  version: 10.2.1
-  resolution: "eslint@npm:10.2.1"
+"eslint@npm:^10.4.0":
+  version: 10.4.0
+  resolution: "eslint@npm:10.4.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
     "@eslint/config-array": "npm:^0.23.5"
-    "@eslint/config-helpers": "npm:^0.5.5"
+    "@eslint/config-helpers": "npm:^0.6.0"
     "@eslint/core": "npm:^1.2.1"
     "@eslint/plugin-kit": "npm:^0.7.1"
     "@humanfs/node": "npm:^0.16.6"
@@ -8530,7 +8530,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/176795a3794a785502fa5cd14a9609264c2be5405552d20fed3e499bd465c29639c91ac44619ae66787b0fb7494e72d112550a2136a735d92a26bc6a7af4915c
+  checksum: 10c0/6bf644dc08fa5a6b23157d23a4a4638d45823d03a67da1daac8dc1085b03934fa98013efd2eac2cd6ec90fe88d36b336bdf38d5f000325f22d823a15f2031426
   languageName: node
   linkType: hard
 
@@ -12042,7 +12042,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.14, postcss@npm:^8.5.15":
+"postcss@npm:^8.5.15":
   version: 8.5.15
   resolution: "postcss@npm:8.5.15"
   dependencies:
@@ -12709,26 +12709,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rolldown@npm:1.0.1":
-  version: 1.0.1
-  resolution: "rolldown@npm:1.0.1"
+"rolldown@npm:1.0.2":
+  version: 1.0.2
+  resolution: "rolldown@npm:1.0.2"
   dependencies:
-    "@oxc-project/types": "npm:=0.130.0"
-    "@rolldown/binding-android-arm64": "npm:1.0.1"
-    "@rolldown/binding-darwin-arm64": "npm:1.0.1"
-    "@rolldown/binding-darwin-x64": "npm:1.0.1"
-    "@rolldown/binding-freebsd-x64": "npm:1.0.1"
-    "@rolldown/binding-linux-arm-gnueabihf": "npm:1.0.1"
-    "@rolldown/binding-linux-arm64-gnu": "npm:1.0.1"
-    "@rolldown/binding-linux-arm64-musl": "npm:1.0.1"
-    "@rolldown/binding-linux-ppc64-gnu": "npm:1.0.1"
-    "@rolldown/binding-linux-s390x-gnu": "npm:1.0.1"
-    "@rolldown/binding-linux-x64-gnu": "npm:1.0.1"
-    "@rolldown/binding-linux-x64-musl": "npm:1.0.1"
-    "@rolldown/binding-openharmony-arm64": "npm:1.0.1"
-    "@rolldown/binding-wasm32-wasi": "npm:1.0.1"
-    "@rolldown/binding-win32-arm64-msvc": "npm:1.0.1"
-    "@rolldown/binding-win32-x64-msvc": "npm:1.0.1"
+    "@oxc-project/types": "npm:=0.132.0"
+    "@rolldown/binding-android-arm64": "npm:1.0.2"
+    "@rolldown/binding-darwin-arm64": "npm:1.0.2"
+    "@rolldown/binding-darwin-x64": "npm:1.0.2"
+    "@rolldown/binding-freebsd-x64": "npm:1.0.2"
+    "@rolldown/binding-linux-arm-gnueabihf": "npm:1.0.2"
+    "@rolldown/binding-linux-arm64-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-arm64-musl": "npm:1.0.2"
+    "@rolldown/binding-linux-ppc64-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-s390x-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-x64-gnu": "npm:1.0.2"
+    "@rolldown/binding-linux-x64-musl": "npm:1.0.2"
+    "@rolldown/binding-openharmony-arm64": "npm:1.0.2"
+    "@rolldown/binding-wasm32-wasi": "npm:1.0.2"
+    "@rolldown/binding-win32-arm64-msvc": "npm:1.0.2"
+    "@rolldown/binding-win32-x64-msvc": "npm:1.0.2"
     "@rolldown/pluginutils": "npm:^1.0.0"
   dependenciesMeta:
     "@rolldown/binding-android-arm64":
@@ -12762,8 +12762,8 @@ __metadata:
     "@rolldown/binding-win32-x64-msvc":
       optional: true
   bin:
-    rolldown: bin/cli.mjs
-  checksum: 10c0/0631c071874e1471c33923905061fa514fce2bd43c2e741adcddcaa4d9beaa2ba7a5d14af130d53753d838823e15b59f5acef7d24fb83ffb7aef15933b78e7d3
+    rolldown: ./bin/cli.mjs
+  checksum: 10c0/628327a6e3122c0b62880f1c87d54095394e5138a6af2e6e7b2f67ef4c4b11f1421db68c9a5bb4e1be161465a863ab4f68f15076ce895cd4bb3d0ba18a3b20b1
   languageName: node
   linkType: hard
 
@@ -13764,12 +13764,12 @@ __metadata:
   linkType: hard
 
 "tinyglobby@npm:^0.2.16":
-  version: 0.2.16
-  resolution: "tinyglobby@npm:0.2.16"
+  version: 0.2.17
+  resolution: "tinyglobby@npm:0.2.17"
   dependencies:
     fdir: "npm:^6.5.0"
     picomatch: "npm:^4.0.4"
-  checksum: 10c0/f2e09fd93dd95c41e522113b686ff6f7c13020962f8698a864a257f3d7737599afc47722b7ab726e12f8a813f779906187911ff8ee6701ede65072671a7e934b
+  checksum: 10c0/7f7bb0f197c88bc4b20c231e0deca4240ca3bf313a88f5a7fee93a872b84966a4d50220947c0455ad07a60b3b360961c5b7fd979222aeb716a9f99b412002e4c
   languageName: node
   linkType: hard
 
@@ -14251,9 +14251,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-dts@npm:1.0.1":
-  version: 1.0.1
-  resolution: "unplugin-dts@npm:1.0.1"
+"unplugin-dts@npm:1.0.2":
+  version: 1.0.2
+  resolution: "unplugin-dts@npm:1.0.2"
   dependencies:
     "@rollup/pluginutils": "npm:^5.1.4"
     "@volar/typescript": "npm:^2.4.26"
@@ -14290,7 +14290,7 @@ __metadata:
       optional: true
     webpack:
       optional: true
-  checksum: 10c0/48870162a2442eff8e9769d3f2f97e7d4459769d69254c13d448e1afb45c48d10f36af7d868761d0629cd4a8aff2f8a94b585dbc89c91394a64cff17a72f2ca0
+  checksum: 10c0/c220bcf1de09da2c8570dfb0694967a9dd4f0240b71de6656a864051ed6af5a1f413180676abdf13cf4047c34fff930deeb1ee2519f205d66c4aac626927d281
   languageName: node
   linkType: hard
 
@@ -14489,10 +14489,10 @@ __metadata:
   linkType: hard
 
 "vite-plugin-dts@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "vite-plugin-dts@npm:5.0.1"
+  version: 5.0.2
+  resolution: "vite-plugin-dts@npm:5.0.2"
   dependencies:
-    unplugin-dts: "npm:1.0.1"
+    unplugin-dts: "npm:1.0.2"
   peerDependencies:
     "@microsoft/api-extractor": ">=7"
     rollup: ">=3"
@@ -14504,7 +14504,7 @@ __metadata:
       optional: true
     vite:
       optional: true
-  checksum: 10c0/c8dc517e696d27b822c7e3aee5e707d92604bc5a75c71a2eb0c3db50b5cc5d22da8193578519dd7c9456a84e33b2471138007d54ed43c302d176b3131161f220
+  checksum: 10c0/dabccc6602dcd8c3e262adf26b38594ab5d86d5d9da7b1eb967e991ab81b311e1fc424cd5910a0a4d7ad763022261b6605217b2a6035c94a3fb5d49538237c9f
   languageName: node
   linkType: hard
 
@@ -14578,15 +14578,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^8.0.12":
-  version: 8.0.13
-  resolution: "vite@npm:8.0.13"
+"vite@npm:^8.0.14":
+  version: 8.0.14
+  resolution: "vite@npm:8.0.14"
   dependencies:
     fsevents: "npm:~2.3.3"
     lightningcss: "npm:^1.32.0"
     picomatch: "npm:^4.0.4"
-    postcss: "npm:^8.5.14"
-    rolldown: "npm:1.0.1"
+    postcss: "npm:^8.5.15"
+    rolldown: "npm:1.0.2"
     tinyglobby: "npm:^0.2.16"
   peerDependencies:
     "@types/node": ^20.19.0 || >=22.12.0
@@ -14631,7 +14631,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/8f4d6fd30c3be710f76dba8ee7cd156902200e649884911cfa8e6e5f7ad4dd5b6933bdd4f0c46c0169c49ddce9ce1bfab6d395df9d176c0d959e3ba0e5ee54e4
+  checksum: 10c0/1ff99b4daadc64aed5f9e40387ecf39fd3bca45c1a5c4fa4aa82197de901930f0507af8d75c54715e2744c99575913947efb625653a78ef6df3997c5613970bd
   languageName: node
   linkType: hard
 
