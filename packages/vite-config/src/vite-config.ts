@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react";
-import { createRequire } from "node:module";
+import { builtinModules, createRequire } from "node:module";
 import { resolve } from "path";
 import { type Rollup } from "vite";
 import dts from "vite-plugin-dts";
@@ -22,6 +22,14 @@ const allDependencies = [
   // Need to declare these as external as well since they're
   // not explicitly listed in the package.json
   "react/jsx-runtime",
+];
+
+// Externalize Node built-ins (both bare and `node:`-prefixed). Rolldown does not
+// auto-externalize these, so without this a runtime `require("node:path")` /
+// `require("node:fs")` gets inlined as an empty-object stub. See KNO-13579.
+const nodeBuiltins = [
+  ...builtinModules,
+  ...builtinModules.map((name) => `node:${name}`),
 ];
 
 const buildTimeInfo = {
@@ -51,7 +59,7 @@ export default {
       },
     },
     rolldownOptions: {
-      external: [...allDependencies],
+      external: [...allDependencies, ...nodeBuiltins],
       output: {
         assetFileNames: (assetInfo: Rollup.PreRenderedAsset) => {
           if (assetInfo?.name?.endsWith(".css")) {
