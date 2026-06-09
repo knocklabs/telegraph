@@ -1,5 +1,34 @@
 # @telegraph/modal
 
+## 0.3.5
+
+### Patch Changes
+
+- [#830](https://github.com/knocklabs/telegraph/pull/830) [`f9c6e1c`](https://github.com/knocklabs/telegraph/commit/f9c6e1c078a1bd3d6a8e5eb0ce2dd6713ccc781e) Thanks [@kylemcd](https://github.com/kylemcd)! - fix(vite-config): emit declaration files to a consistent `dist/types` root
+
+  Pin the TypeScript declaration root to `src` in the shared dts plugin config so
+  every package emits its types to `dist/types/index.d.ts`. Previously, packages
+  whose tsconfig omitted `rootDir` emitted to `dist/types/src/index.d.ts`, which
+  did not match the `types` entrypoint declared in their `package.json`, so
+  consumers received no type definitions (`@telegraph/compose-refs`, `helpers`,
+  `input`, `modal`, `nextjs`, `tokens`).
+
+  Pinning the declaration root also repairs degraded type emission that depended
+  on the inferred root: `@telegraph/tabs` previously emitted a dangling
+  `TgphElement` reference (`error TS2304: Cannot find name 'TgphElement'` for
+  consumers), and `@telegraph/modal`'s `Content` prop type was widened to `any`.
+  Both now emit correct, fully-resolved types.
+
+  Also corrects the stale top-level `types` field in `@telegraph/tokens`.
+
+- Updated dependencies [[`f9c6e1c`](https://github.com/knocklabs/telegraph/commit/f9c6e1c078a1bd3d6a8e5eb0ce2dd6713ccc781e), [`f71d0e6`](https://github.com/knocklabs/telegraph/commit/f71d0e6f91310a771393b01d0f3ab99579c8d5f3)]:
+  - @telegraph/helpers@0.0.16
+  - @telegraph/layout@0.5.1
+  - @telegraph/style-engine@0.3.5
+  - @telegraph/button@0.7.2
+  - @telegraph/icon@0.5.2
+  - @telegraph/typography@0.4.1
+
 ## 0.3.4
 
 ### Patch Changes
