@@ -21,6 +21,8 @@ npm install @telegraph/helpers
 ```tsx
 import { Button } from "@telegraph/button";
 import {
+  callLegacyDismissHandlers,
+  getBaseUIMotionOffset,
   PolymorphicProps,
   RefToTgphRef,
   TgphElement,
@@ -52,6 +54,12 @@ const [open, setOpen] = useControllableState({
   defaultProp: false,
   onChange: onOpenChange,
 });
+
+// Legacy Radix-style dismissal and animation compatibility for Base UI wrappers
+const shouldCancelDismiss = callLegacyDismissHandlers(eventDetails, {
+  onEscapeKeyDown,
+});
+const initial = { opacity: 0, ...getBaseUIMotionOffset(side) };
 ```
 
 ## API Reference
@@ -372,6 +380,35 @@ import type { ComponentProps } from "react";
     ),
   )}
 />;
+```
+
+### Base UI Compatibility Utilities
+
+Small helpers for preserving legacy Radix-style Telegraph behavior while
+wrapping Base UI primitives.
+
+```tsx
+import {
+  callLegacyDismissHandlers,
+  getBaseUIMotionOffset,
+  getBaseUIPositionerVisibilityStyle,
+} from "@telegraph/helpers";
+
+const shouldCancelDismiss = callLegacyDismissHandlers(eventDetails, {
+  onEscapeKeyDown,
+  onPointerDownOutside,
+});
+
+const initial = {
+  opacity: 0,
+  ...getBaseUIMotionOffset(side),
+};
+
+const positionerStyle = getBaseUIPositionerVisibilityStyle({
+  anchorHidden,
+  hideWhenDetached,
+  zIndex: "var(--tgph-zIndex-tooltip)",
+});
 ```
 
 ## React Hooks

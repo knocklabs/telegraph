@@ -32,8 +32,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-popover": "^1.1.15",
-    "@radix-ui/react-use-controllable-state": "^1.2.2",
+    "@base-ui/react": "^1.5.0",
+    "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "motion": "^12.38.0"

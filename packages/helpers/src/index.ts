@@ -22,6 +22,14 @@ export { useControllableState } from "./hooks/useControllableState";
 export { useDeterminateState } from "./hooks/useDeterminateState";
 
 export {
+  callLegacyDismissHandlers,
   createTgphBaseUIRender,
+  getBaseUIMotionOffset,
+  getBaseUIPositionerVisibilityStyle,
+  type BaseUIChangeDetails,
+  type BaseUIFloatingSide,
+  type BaseUIPositionerVisibilityStyleParams,
+  type LegacyDismissEventHandler,
+  type LegacyDismissHandlers,
   type TgphBaseUIRenderElement,
 } from "./base-ui";

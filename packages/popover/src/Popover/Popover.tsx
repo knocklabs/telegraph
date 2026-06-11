@@ -1,195 +1,405 @@
-import * as RadixPopover from "@radix-ui/react-popover";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import { Popover as BasePopover } from "@base-ui/react/popover";
+import { useComposedRefs } from "@telegraph/compose-refs";
 import {
-  RefToTgphRef,
-  TgphComponentProps,
-  TgphElement,
+  type LegacyDismissEventHandler,
+  type LegacyDismissHandlers,
+  type TgphComponentProps,
+  type TgphElement,
+  callLegacyDismissHandlers,
+  createTgphBaseUIRender,
+  getBaseUIMotionOffset,
+  getBaseUIPositionerVisibilityStyle,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
-import React from "react";
+import {
+  type ComponentProps,
+  type ComponentPropsWithoutRef,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
+  type RefObject,
+  createContext,
+  forwardRef,
+  isValidElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 
-export type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
-  defaultOpen?: boolean;
+import { NO_COLLISION_AVOIDANCE } from "./Popover.helpers";
+
+type BasePopoverRootProps = ComponentProps<typeof BasePopover.Root>;
+type BasePopoverTriggerProps = ComponentPropsWithoutRef<
+  typeof BasePopover.Trigger
+>;
+type BasePopoverPositionerProps = ComponentPropsWithoutRef<
+  typeof BasePopover.Positioner
+>;
+type BasePopoverPopupProps = ComponentPropsWithoutRef<typeof BasePopover.Popup>;
+type PopoverRootActions = BasePopover.Root.Actions;
+type MotionAnimationCompleteHandler = NonNullable<
+  ComponentProps<typeof motion.div>["onAnimationComplete"]
+>;
+
+export type RootProps = Omit<BasePopoverRootProps, "onOpenChange"> & {
+  onOpenChange?: (open: boolean) => void;
 };
 
-type PopoverContextProps = {
+type PopoverCompatibilityContextProps = {
+  closeAnimationRef: {
+    current: {
+      pendingCloseUnmount: boolean;
+      preventUnmountOnClose: boolean;
+    };
+  };
+  contentCallbacksRef: {
+    current: LegacyDismissHandlers;
+  };
+  rootActionsRef: RefObject<PopoverRootActions | null>;
+};
+
+type PopoverPopupRenderState = {
   open: boolean;
-  setOpen: (open: boolean) => void;
 };
 
-const PopoverContext = React.createContext<PopoverContextProps>({
-  open: false,
-  setOpen: () => {},
-});
+const PopoverCompatibilityContext =
+  createContext<PopoverCompatibilityContextProps | null>(null);
 
-const Root = ({
-  open: openProp,
-  onOpenChange: onOpenChangeProp,
-  defaultOpen: defaultOpenProp,
-  children,
-  ...props
-}: RootProps) => {
-  const [open = false, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpenProp ?? false,
-    onChange: onOpenChangeProp,
+const Root = ({ actionsRef, children, onOpenChange, ...props }: RootProps) => {
+  const internalRootActionsRef = useRef<PopoverRootActions | null>(null);
+  const rootActionsRef = actionsRef ?? internalRootActionsRef;
+  const closeAnimationRef = useRef({
+    pendingCloseUnmount: false,
+    preventUnmountOnClose: false,
   });
+  const contentCallbacksRef = useRef<LegacyDismissHandlers>({});
+  const compatibilityContext = useMemo<PopoverCompatibilityContextProps>(
+    () => ({
+      closeAnimationRef,
+      contentCallbacksRef,
+      rootActionsRef,
+    }),
+    [rootActionsRef],
+  );
+  const handleOpenChange = useCallback<
+    NonNullable<BasePopoverRootProps["onOpenChange"]>
+  >(
+    (open, eventDetails) => {
+      if (
+        !open &&
+        callLegacyDismissHandlers(eventDetails, contentCallbacksRef.current)
+      ) {
+        // Legacy Radix outside/escape handlers could prevent dismissal, so
+        // translate that prevention back into Base UI's cancel API.
+        eventDetails.cancel();
+        return;
+      }
+
+      if (open) {
+        closeAnimationRef.current.pendingCloseUnmount = false;
+      }
+
+      if (!open && closeAnimationRef.current.preventUnmountOnClose) {
+        // Keep the popup mounted through its exit animation; the content calls
+        // Base UI's action ref to unmount once motion reports completion.
+        closeAnimationRef.current.pendingCloseUnmount = true;
+        eventDetails.preventUnmountOnClose();
+      }
+
+      onOpenChange?.(open);
+    },
+    [onOpenChange],
+  );
 
   return (
     <LazyMotion features={domAnimation}>
-      <PopoverContext.Provider value={{ open, setOpen }}>
-        <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
+      <PopoverCompatibilityContext.Provider value={compatibilityContext}>
+        <BasePopover.Root
+          actionsRef={rootActionsRef}
+          onOpenChange={handleOpenChange}
+          {...props}
+        >
           {children}
-        </RadixPopover.Root>
-      </PopoverContext.Provider>
+        </BasePopover.Root>
+      </PopoverCompatibilityContext.Provider>
     </LazyMotion>
   );
 };
 
-export type TriggerProps = React.ComponentProps<typeof RadixPopover.Trigger> & {
-  tgphRef?: React.RefObject<HTMLButtonElement>;
+export type TriggerProps = Omit<BasePopoverTriggerProps, "render"> & {
+  asChild?: boolean;
+  children?: ReactNode;
+  tgphRef?: Ref<HTMLButtonElement>;
 };
 
-const Trigger = ({
-  asChild = true,
-  tgphRef,
-  children,
-  ...props
-}: TriggerProps) => {
-  const context = React.useContext(PopoverContext);
+const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
+  ({ asChild = true, tgphRef, children, ...props }, forwardedRef) => {
+    const triggerRef = useComposedRefs<HTMLButtonElement>(
+      forwardedRef,
+      tgphRef,
+    );
 
-  return (
-    <RadixPopover.Trigger
-      onClick={() => {
-        context.setOpen(!context.open);
-      }}
-      asChild={asChild}
-      {...props}
-      ref={tgphRef}
-    >
-      <RefToTgphRef>{children}</RefToTgphRef>
-    </RadixPopover.Trigger>
-  );
-};
+    if (!asChild || !isValidElement(children)) {
+      return (
+        <BasePopover.Trigger {...props} ref={triggerRef}>
+          {children}
+        </BasePopover.Trigger>
+      );
+    }
 
-export type ContentProps<T extends TgphElement = "div"> = React.ComponentProps<
-  typeof RadixPopover.Content
+    return (
+      <BasePopover.Trigger
+        {...props}
+        ref={triggerRef}
+        render={createTgphBaseUIRender(children as ReactElement)}
+      />
+    );
+  },
+);
+
+export type ContentProps<T extends TgphElement = "div"> = Omit<
+  BasePopoverPositionerProps,
+  "children" | "className" | "render"
 > &
+  Omit<BasePopoverPopupProps, "children" | "className" | "render" | "style"> &
   Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
-    contentStackRef?: React.RefObject<HTMLDivElement>;
+    avoidCollisions?: boolean;
+    contentStackRef?: Ref<HTMLDivElement>;
+    forceMount?: boolean;
+    hideWhenDetached?: boolean;
+    onCloseAutoFocus?: LegacyDismissEventHandler;
+    onEscapeKeyDown?: LegacyDismissHandlers["onEscapeKeyDown"];
+    onFocusOutside?: LegacyDismissHandlers["onFocusOutside"];
+    onInteractOutside?: LegacyDismissEventHandler;
+    onOpenAutoFocus?: LegacyDismissEventHandler;
+    onPointerDownOutside?: LegacyDismissHandlers["onPointerDownOutside"];
     skipAnimation?: boolean;
   };
 
 const Content = <T extends TgphElement = "div">({
+  align = "center",
+  alignOffset,
+  anchor,
+  arrowPadding,
+  children,
+  avoidCollisions,
+  collisionAvoidance,
+  collisionBoundary,
+  collisionPadding,
+  contentStackRef,
   direction = "column",
+  disableAnchorTracking,
+  finalFocus,
+  forceMount,
   gap = "1",
+  hideWhenDetached,
+  initialFocus,
+  onCloseAutoFocus,
+  onEscapeKeyDown,
+  onFocusOutside,
+  onInteractOutside,
+  onOpenAutoFocus,
+  onPointerDownOutside,
+  positionMethod,
   rounded = "4",
   py = "1",
   shadow = "2",
   side = "bottom",
   sideOffset = 4,
-  align = "center",
+  skipAnimation,
+  sticky,
   bg = "surface-1",
-  alignOffset,
   tgphRef,
   style,
-  skipAnimation,
-  children,
   ...props
 }: ContentProps<T>) => {
-  const deriveAnimationBasedOnSide = (side: ContentProps<T>["side"]) => {
-    const ANIMATION_OFFSET = 5;
-    if (side === "top") {
-      return {
-        y: -ANIMATION_OFFSET,
-      };
-    }
+  const compatibilityContext = useContext(PopoverCompatibilityContext);
+  const contentRef = useComposedRefs<HTMLElement>(
+    tgphRef as Ref<HTMLElement>,
+    contentStackRef as Ref<HTMLElement>,
+  );
+  const shouldAnimate = !skipAnimation;
+  const resolvedCollisionAvoidance =
+    collisionAvoidance ??
+    (avoidCollisions === false ? NO_COLLISION_AVOIDANCE : undefined);
+  // Base UI unmounts immediately on close unless we explicitly hold the popup
+  // mounted, which is only needed for animated, non-force-mounted content.
+  const shouldManageCloseAnimation = shouldAnimate && !forceMount;
+  const resolvedInitialFocus =
+    initialFocus ??
+    (onOpenAutoFocus
+      ? () => {
+          const event = new Event("openAutoFocus", { cancelable: true });
+          onOpenAutoFocus(event);
 
-    if (side === "bottom") {
-      return {
-        y: ANIMATION_OFFSET,
-      };
-    }
+          // Base UI uses `false` to cancel autofocus; Radix used
+          // preventDefault on the synthetic lifecycle event.
+          return event.defaultPrevented ? false : true;
+        }
+      : undefined);
+  const resolvedFinalFocus =
+    finalFocus ??
+    (onCloseAutoFocus
+      ? () => {
+          const event = new Event("closeAutoFocus", { cancelable: true });
+          onCloseAutoFocus(event);
 
-    if (side === "left") {
-      return {
-        x: -ANIMATION_OFFSET,
-      };
-    }
-
-    if (side === "right") {
-      return {
-        x: ANIMATION_OFFSET,
-      };
-    }
+          // Preserve Radix's close autofocus contract while using Base UI's
+          // boolean finalFocus callback shape.
+          return event.defaultPrevented ? false : true;
+        }
+      : undefined);
+  const { onAnimationComplete, ...stackProps } = props as typeof props & {
+    onAnimationComplete?: MotionAnimationCompleteHandler;
   };
 
+  useEffect(() => {
+    if (!compatibilityContext) {
+      return;
+    }
+
+    // Tell the root whether this content needs Base UI's unmount prevented
+    // until the exit animation has had a chance to complete.
+    compatibilityContext.closeAnimationRef.current = {
+      ...compatibilityContext.closeAnimationRef.current,
+      preventUnmountOnClose: shouldManageCloseAnimation,
+    };
+
+    return () => {
+      if (compatibilityContext.closeAnimationRef.current.pendingCloseUnmount) {
+        // A controlled parent can stop rendering Content as soon as it sees
+        // onOpenChange(false); in that case the motion callback below will not
+        // fire, so finish Base UI's deferred unmount from cleanup.
+        compatibilityContext.rootActionsRef.current?.unmount();
+      }
+
+      compatibilityContext.closeAnimationRef.current = {
+        ...compatibilityContext.closeAnimationRef.current,
+        pendingCloseUnmount: false,
+        preventUnmountOnClose: false,
+      };
+    };
+  }, [compatibilityContext, shouldManageCloseAnimation]);
+
+  useEffect(() => {
+    if (!compatibilityContext) {
+      return;
+    }
+
+    // Store the latest legacy dismiss callbacks where Root can reach them from
+    // Base UI's single `onOpenChange` dismissal details callback.
+    compatibilityContext.contentCallbacksRef.current = {
+      onEscapeKeyDown,
+      onFocusOutside,
+      onInteractOutside,
+      onPointerDownOutside,
+    };
+
+    return () => {
+      compatibilityContext.contentCallbacksRef.current = {};
+    };
+  }, [
+    compatibilityContext,
+    onEscapeKeyDown,
+    onFocusOutside,
+    onInteractOutside,
+    onPointerDownOutside,
+  ]);
+  const closedAnimation = shouldAnimate
+    ? {
+        opacity: 0.5,
+        scale: 0.6,
+        ...getBaseUIMotionOffset(side),
+      }
+    : undefined;
+
   return (
-    <RadixPopover.Portal>
-      <RadixPopover.Content
-        asChild
-        side={side}
-        sideOffset={sideOffset}
+    <BasePopover.Portal keepMounted={forceMount}>
+      <BasePopover.Positioner
         align={align}
         alignOffset={alignOffset}
-        {...props}
-        ref={tgphRef}
+        anchor={anchor}
+        arrowPadding={arrowPadding}
+        collisionAvoidance={resolvedCollisionAvoidance}
+        collisionBoundary={collisionBoundary}
+        collisionPadding={collisionPadding}
+        disableAnchorTracking={disableAnchorTracking}
+        positionMethod={positionMethod}
+        side={side}
+        sideOffset={sideOffset}
+        sticky={sticky}
+        style={(state) =>
+          getBaseUIPositionerVisibilityStyle({
+            anchorHidden: state.anchorHidden,
+            hideWhenDetached,
+          })
+        }
       >
-        <RefToTgphRef>
-          <Stack
-            as={motion.div}
-            // Add tgph class so that this always works in portals
-            className="tgph"
-            initial={
-              skipAnimation
-                ? undefined
-                : {
-                    opacity: 0.5,
-                    scale: 0.6,
-                    ...deriveAnimationBasedOnSide(side),
+        <BasePopover.Popup
+          initialFocus={resolvedInitialFocus}
+          finalFocus={resolvedFinalFocus}
+          render={createTgphBaseUIRender((state: PopoverPopupRenderState) => (
+            <Stack
+              as={motion.div}
+              className="tgph"
+              initial={closedAnimation}
+              animate={
+                shouldAnimate
+                  ? state.open
+                    ? {
+                        opacity: 1,
+                        scale: 1,
+                        x: 0,
+                        y: 0,
+                      }
+                    : closedAnimation
+                  : undefined
+              }
+              exit={closedAnimation}
+              transition={{
+                duration: 0.1,
+                type: "spring",
+                bounce: 0,
+              }}
+              bg={bg}
+              data-state={state.open ? "open" : "closed"}
+              direction={direction}
+              gap={gap}
+              rounded={rounded}
+              py={py}
+              shadow={shadow}
+              style={{
+                overflowY: "auto",
+                transformOrigin: "var(--transform-origin)",
+                ...style,
+              }}
+              tgphRef={contentRef}
+              zIndex="popover"
+              key="tgph-popover-content"
+              {...stackProps}
+              onAnimationComplete={(definition) => {
+                onAnimationComplete?.(definition);
+
+                if (!state.open && shouldManageCloseAnimation) {
+                  // The root held the popup mounted for the exit animation; now
+                  // that motion is done, ask Base UI to finish the unmount.
+                  if (compatibilityContext) {
+                    compatibilityContext.closeAnimationRef.current.pendingCloseUnmount = false;
                   }
-            }
-            animate={{
-              opacity: 1,
-              scale: 1,
-              x: 0,
-              y: 0,
-            }}
-            exit={
-              skipAnimation
-                ? undefined
-                : {
-                    opacity: 0.5,
-                    scale: 0.6,
-                    ...deriveAnimationBasedOnSide(side),
-                  }
-            }
-            transition={{
-              duration: 0.1,
-              type: "spring",
-              bounce: 0,
-            }}
-            bg={bg}
-            direction={direction}
-            gap={gap}
-            rounded={rounded}
-            py={py}
-            shadow={shadow}
-            style={{
-              overflowY: "auto",
-              transformOrigin: "var(--radix-tooltip-content-transform-origin)",
-              ...style,
-            }}
-            zIndex="popover"
-            key="tgph-popover-content"
-          >
-            {children}
-          </Stack>
-        </RefToTgphRef>
-      </RadixPopover.Content>
-    </RadixPopover.Portal>
+                  compatibilityContext?.rootActionsRef.current?.unmount();
+                }
+              }}
+            >
+              {children}
+            </Stack>
+          ))}
+        />
+      </BasePopover.Positioner>
+    </BasePopover.Portal>
   );
 };
 
