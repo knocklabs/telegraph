@@ -182,7 +182,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
           }
           bg="white"
           rounded="full"
-          mx="0_5"
+          mx="px"
           data-tgph-toggle-icon
           aria-hidden
         />

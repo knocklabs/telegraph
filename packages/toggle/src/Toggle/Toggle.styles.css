@@ -19,7 +19,7 @@
 /* Move icon with knob when checked */
 [data-tgph-toggle-switch][data-tgph-toggle-checked="true"]
   [data-tgph-toggle-icon] {
-  transform: translateX(calc(100% - var(--tgph-spacing-1)));
+  transform: translateX(calc(100% - var(--tgph-spacing-0_5)));
 }
 
 /* Label styling */
