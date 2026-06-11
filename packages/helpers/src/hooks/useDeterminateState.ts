@@ -7,7 +7,7 @@
  * to the user that the action is being processed.
  *
  */
-import React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type UseDeterminateStateParams<T> = {
   value: T;
@@ -20,9 +20,9 @@ const useDeterminateState = <T>({
   determinateValue,
   minDurationMs = 1000,
 }: UseDeterminateStateParams<T>): T => {
-  const [state, setState] = React.useState<T>(value);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const startTimeRef = React.useRef<number | null>(null);
+  const [state, setState] = useState<T>(value);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const startTimeRef = useRef<number | null>(null);
 
   const clearExistingTimeout = () => {
     if (timeoutRef.current) {
@@ -31,7 +31,7 @@ const useDeterminateState = <T>({
     }
   };
 
-  const handleTransition = React.useCallback(() => {
+  const handleTransition = useCallback(() => {
     if (value === determinateValue) {
       clearExistingTimeout();
       setState(determinateValue);
@@ -55,7 +55,7 @@ const useDeterminateState = <T>({
     }
   }, [value, determinateValue, minDurationMs]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     handleTransition();
     return clearExistingTimeout;
   }, [value, handleTransition]);

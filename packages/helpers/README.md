@@ -19,9 +19,12 @@ npm install @telegraph/helpers
 ## Quick Start
 
 ```tsx
+import { Button } from "@telegraph/button";
 import {
   PolymorphicProps,
   RefToTgphRef,
+  TgphElement,
+  createTgphBaseUIRender,
   useDeterminateState,
 } from "@telegraph/helpers";
 
@@ -31,11 +34,14 @@ type ButtonProps<T extends TgphElement> = PolymorphicProps<T> & {
 };
 
 // Hook for loading states with minimum duration
-const { state } = useDeterminateState({
+const state = useDeterminateState({
   value: isLoading ? "loading" : "idle",
   determinateValue: "loading",
   minDurationMs: 1000,
 });
+
+// Base UI render bridge for Telegraph components
+const renderTrigger = createTgphBaseUIRender(<Button>Open</Button>);
 ```
 
 ## API Reference
@@ -276,6 +282,49 @@ const FormExample = () => {
 };
 ```
 
+### `createTgphBaseUIRender`
+
+Helper for adapting Base UI `render` callbacks to Telegraph components that
+use `tgphRef`.
+
+```tsx
+import { Popover } from "@base-ui/react/popover";
+import { Button } from "@telegraph/button";
+import { createTgphBaseUIRender } from "@telegraph/helpers";
+
+const PopoverExample = () => (
+  <Popover.Root>
+    <Popover.Trigger
+      render={createTgphBaseUIRender(<Button>Open Popover</Button>)}
+    />
+    <Popover.Portal>
+      <Popover.Positioner>
+        <Popover.Popup>{/* Popover content */}</Popover.Popup>
+      </Popover.Positioner>
+    </Popover.Portal>
+  </Popover.Root>
+);
+```
+
+The helper accepts a React element or a state callback. It preserves Base UI
+props, event handlers, class names, styles, native refs, custom `forwardRef`
+children, and Telegraph `tgphRef` children.
+
+```tsx
+import { Popover } from "@base-ui/react/popover";
+import { Button } from "@telegraph/button";
+import { createTgphBaseUIRender } from "@telegraph/helpers";
+import type { ComponentProps } from "react";
+
+<Popover.Trigger
+  render={createTgphBaseUIRender<ComponentProps<"button">, { open: boolean }>(
+    (state) => (
+      <Button>{state.open ? "Close" : "Open"}</Button>
+    ),
+  )}
+/>;
+```
+
 ## React Hooks
 
 ### `useDeterminateState`
@@ -487,6 +536,30 @@ const Popover = ({ trigger, content, ...props }: PopoverProps) => (
 />;
 ```
 
+```tsx
+import { Popover } from "@base-ui/react/popover";
+import { Button } from "@telegraph/button";
+import { PolymorphicProps, createTgphBaseUIRender } from "@telegraph/helpers";
+import type { ReactNode } from "react";
+
+type BasePopoverProps = PolymorphicProps<"div"> & {
+  content: ReactNode;
+};
+
+const BasePopover = ({ children, content, ...props }: BasePopoverProps) => (
+  <Popover.Root>
+    <Popover.Trigger
+      render={createTgphBaseUIRender(<Button>{children}</Button>)}
+    />
+    <Popover.Portal>
+      <Popover.Positioner>
+        <Popover.Popup {...props}>{content}</Popover.Popup>
+      </Popover.Positioner>
+    </Popover.Portal>
+  </Popover.Root>
+);
+```
+
 ## TypeScript
 
 ### Utility Type Examples
@@ -522,6 +595,7 @@ type PublicUser = RemappedOmit<User, "email">;
 ```tsx
 import {
   PolymorphicProps,
+  PolymorphicPropsWithTgphRef,
   TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
@@ -563,10 +637,11 @@ type ConditionalProps<T extends TgphElement> = PolymorphicProps<T> &
 
 ### Component Development
 
-1. **Use `RefToTgphRef` with external libraries**: Ensures ref compatibility
-2. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
-3. **Type polymorphic components properly**: Use appropriate helper types
-4. **Test type constraints**: Verify TypeScript catches errors correctly
+1. **Use `createTgphBaseUIRender` with Base UI `render` props**: Preserves Base UI props while forwarding refs to Telegraph `tgphRef`
+2. **Use `RefToTgphRef` with external libraries**: Ensures ref compatibility
+3. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
+4. **Type polymorphic components properly**: Use appropriate helper types
+5. **Test type constraints**: Verify TypeScript catches errors correctly
 
 ## References
 

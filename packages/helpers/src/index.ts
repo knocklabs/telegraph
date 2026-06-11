@@ -14,3 +14,8 @@ export type {
 export { RefToTgphRef } from "./components/RefToTgphRef";
 
 export { useDeterminateState } from "./hooks/useDeterminateState";
+
+export {
+  createTgphBaseUIRender,
+  type TgphBaseUIRenderElement,
+} from "./base-ui";
