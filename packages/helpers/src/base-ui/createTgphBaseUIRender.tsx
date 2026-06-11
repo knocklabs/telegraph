@@ -1,31 +1,15 @@
-import { mergeProps } from "@base-ui/react/merge-props";
 import type { ComponentRenderFn, HTMLProps } from "@base-ui/react/use-render";
-import {
-  type ComponentPropsWithRef,
-  type ReactElement,
-  type Ref,
-  type RefAttributes,
-  cloneElement,
-  isValidElement,
-} from "react";
+import { type ReactElement, type Ref, isValidElement } from "react";
 
-import { RefToTgphRef } from "../components/RefToTgphRef";
+import { TgphSlot } from "../components/TgphSlot";
 
 type PropsWithRef = HTMLProps & {
   ref?: Ref<unknown>;
 };
 
-type CloneableProps = Record<string, unknown> & RefAttributes<unknown>;
-
-type IntrinsicMergeProps = ComponentPropsWithRef<"button">;
-
 type TgphBaseUIRenderElement<State = Record<string, unknown>> =
   | ReactElement
   | ((state: State) => ReactElement);
-
-const isIntrinsicElement = (element: ReactElement) => {
-  return typeof element.type === "string";
-};
 
 const getRenderElement = <State = Record<string, unknown>,>(
   element: TgphBaseUIRenderElement<State>,
@@ -36,6 +20,19 @@ const getRenderElement = <State = Record<string, unknown>,>(
   }
 
   return element;
+};
+
+const renderWithTgphSlot = (
+  props: PropsWithRef,
+  renderElement: ReactElement,
+) => {
+  const { ref, ...slotProps } = props;
+
+  return (
+    <TgphSlot {...slotProps} ref={ref as Ref<HTMLElement>}>
+      {renderElement}
+    </TgphSlot>
+  );
 };
 
 const createTgphBaseUIRender = <
@@ -51,19 +48,7 @@ const createTgphBaseUIRender = <
       return renderElement;
     }
 
-    if (isIntrinsicElement(renderElement)) {
-      const { ref } = props as PropsWithRef;
-
-      return cloneElement(renderElement as ReactElement<CloneableProps>, {
-        ...mergeProps(
-          props as IntrinsicMergeProps,
-          renderElement.props as IntrinsicMergeProps,
-        ),
-        ref,
-      });
-    }
-
-    return <RefToTgphRef {...props}>{renderElement}</RefToTgphRef>;
+    return renderWithTgphSlot(props as PropsWithRef, renderElement);
   };
 };
 

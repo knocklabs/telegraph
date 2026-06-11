@@ -69,6 +69,12 @@ export const BasicTabs = () => (
 );
 ```
 
+## Implementation Notes
+
+Tabs are backed by Base UI Tabs primitives and keep the Telegraph public API,
+data attributes, styling hooks, and `tgphRef` behavior stable for existing
+consumers.
+
 ## API Reference
 
 ### `<Tabs>`
@@ -88,9 +94,10 @@ The root container component that provides tab state management and context.
 
 Container for tab buttons that manages keyboard navigation.
 
-| Prop   | Type      | Default | Description                                              |
-| ------ | --------- | ------- | -------------------------------------------------------- |
-| `loop` | `boolean` | `true`  | Whether keyboard navigation loops from last to first tab |
+| Prop              | Type      | Default | Description                                                  |
+| ----------------- | --------- | ------- | ------------------------------------------------------------ |
+| `loop`            | `boolean` | `true`  | Whether keyboard navigation loops from last to first tab     |
+| `activateOnFocus` | `boolean` | `true`  | Whether arrow-key focus also activates the newly focused tab |
 
 ### `<Tabs.Tab>`
 
@@ -124,8 +131,11 @@ Content panel associated with a specific tab.
 | Prop                   | Type               | Default  | Description                                       |
 | ---------------------- | ------------------ | -------- | ------------------------------------------------- |
 | `value`                | `string`           | -        | **Required.** ID of the tab this panel belongs to |
-| `forceMount`           | `boolean`          | `false`  | Whether to force mounting when tab is inactive    |
+| `forceMount`           | `boolean`          | `false`  | Whether to keep the panel mounted when inactive   |
 | `forceBackgroundMount` | `"once" \| "none"` | `"none"` | Background mounting strategy for performance      |
+
+Inactive kept panels remain mounted for compatibility, but are hidden from
+layout and assistive technology until their tab is active.
 
 ## Usage Patterns
 
@@ -306,7 +316,7 @@ export const OptimizedTabs = () => (
       <LargeDataTable />
     </Tabs.Panel>
 
-    {/* Render once on component mount */}
+    {/* Keep mounted in the background when inactive */}
     <Tabs.Panel value="charts" forceBackgroundMount="once">
       <ExpensiveCharts />
     </Tabs.Panel>

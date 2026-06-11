@@ -1,10 +1,20 @@
-import * as RadixTabs from "@radix-ui/react-tabs";
-import { RefToTgphRef, TgphComponentProps } from "@telegraph/helpers";
+import { Tabs as BaseTabs } from "@base-ui/react/tabs";
+import {
+  type TgphComponentProps,
+  createTgphBaseUIRender,
+} from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
-import React from "react";
+import { type ComponentProps } from "react";
+
+type BaseTabsRootProps = ComponentProps<typeof BaseTabs.Root>;
+type TabsValue = string;
 
 export type TabsProps = TgphComponentProps<typeof Box> &
-  React.ComponentProps<typeof RadixTabs.Root>;
+  Pick<BaseTabsRootProps, "orientation"> & {
+    defaultValue?: TabsValue;
+    value?: TabsValue;
+    onValueChange?: (value: TabsValue) => void;
+  };
 
 /**
  * Root component for Tabs
@@ -15,21 +25,32 @@ const Tabs = ({
   defaultValue,
   value,
   onValueChange,
+  orientation,
   ...props
 }: TabsProps) => {
+  const baseDefaultValue =
+    defaultValue ?? (value === undefined ? null : undefined);
+  const handleValueChange: BaseTabsRootProps["onValueChange"] | undefined =
+    onValueChange
+      ? (nextValue) => {
+          if (typeof nextValue === "string") {
+            onValueChange(nextValue);
+          }
+        }
+      : undefined;
+
   return (
-    <RadixTabs.Root
-      defaultValue={defaultValue}
+    <BaseTabs.Root
+      defaultValue={baseDefaultValue}
       value={value}
-      onValueChange={onValueChange}
-      asChild
-    >
-      <RefToTgphRef>
+      onValueChange={handleValueChange}
+      orientation={orientation}
+      render={createTgphBaseUIRender(
         <Box data-tgph-tabs="" {...props}>
           {children}
-        </Box>
-      </RefToTgphRef>
-    </RadixTabs.Root>
+        </Box>,
+      )}
+    />
   );
 };
 

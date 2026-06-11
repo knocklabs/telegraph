@@ -1,12 +1,27 @@
-import * as RadixTabs from "@radix-ui/react-tabs";
-import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
+import { Tabs as BaseTabs } from "@base-ui/react/tabs";
+import {
+  type TgphComponentProps,
+  createTgphBaseUIRender,
+} from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
-import React from "react";
+import {
+  type CSSProperties,
+  type ComponentPropsWithoutRef,
+  type Ref,
+} from "react";
 
-export type TabPanelProps = TgphComponentProps<typeof Box> &
-  React.ComponentProps<typeof RadixTabs.Content> & {
-    forceBackgroundMount?: "once" | "none";
-  };
+type BasePanelRenderProps = ComponentPropsWithoutRef<"div"> & {
+  ref?: Ref<HTMLDivElement>;
+};
+type BasePanelState = {
+  hidden: boolean;
+};
+
+export type TabPanelProps = TgphComponentProps<typeof Box> & {
+  value: string;
+  forceMount?: boolean;
+  forceBackgroundMount?: "once" | "none";
+};
 
 /**
  * Content panel associated with a Tab
@@ -19,32 +34,39 @@ const TabPanel = ({
   forceBackgroundMount = "none",
   ...props
 }: TabPanelProps) => {
-  const shouldForceMount = forceBackgroundMount === "once" || forceMount;
+  const shouldKeepMounted = forceBackgroundMount === "once" || forceMount;
+
+  const getPanelStyle = (state: BasePanelState): CSSProperties | undefined => {
+    if (!shouldKeepMounted) {
+      return props.style;
+    }
+
+    return {
+      visibility: state.hidden ? "hidden" : "visible",
+      overflow: state.hidden ? "hidden" : "visible",
+      height: state.hidden ? 0 : "auto",
+      ...props.style,
+    };
+  };
 
   return (
-    <RadixTabs.Content value={value} forceMount={shouldForceMount} asChild>
-      <RefToTgphRef>
-        <Box
-          data-tgph-tab-panel=""
-          {...props}
-          style={{
-            ...(shouldForceMount && {
-              visibility: "var(--radix-tabs-content-visibility, visible)",
-              overflow: "var(--radix-tabs-content-overflow, visible)",
-              height: "var(--radix-tabs-content-height, auto)",
-            }),
-            ...props.style,
-          }}
-          aria-hidden={
-            shouldForceMount
-              ? "var(--radix-tabs-content-aria-hidden, false)"
-              : undefined
-          }
-        >
-          {children}
-        </Box>
-      </RefToTgphRef>
-    </RadixTabs.Content>
+    <BaseTabs.Panel
+      value={value}
+      keepMounted={shouldKeepMounted}
+      render={createTgphBaseUIRender<BasePanelRenderProps, BasePanelState>(
+        (state) => (
+          <Box
+            data-tgph-tab-panel=""
+            data-state={state.hidden ? "inactive" : "active"}
+            {...props}
+            style={getPanelStyle(state)}
+            aria-hidden={shouldKeepMounted && state.hidden ? true : undefined}
+          >
+            {children}
+          </Box>
+        ),
+      )}
+    />
   );
 };
 

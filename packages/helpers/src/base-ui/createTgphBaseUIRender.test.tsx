@@ -76,6 +76,29 @@ describe("createTgphBaseUIRender", () => {
     expect(ref.current).toBe(screen.getByTestId("telegraph-button"));
   });
 
+  it("composes Base UI refs with existing tgphRef props", () => {
+    const baseUIRef = createRef<HTMLButtonElement>();
+    const childRef = createRef<HTMLButtonElement>();
+    const renderButton = createTgphBaseUIRender<BaseUIRenderProps>(
+      <TelegraphButton tgphRef={childRef}>Open</TelegraphButton>,
+    );
+
+    render(
+      renderButton(
+        {
+          "data-testid": "telegraph-button",
+          ref: baseUIRef,
+        },
+        {},
+      ),
+    );
+
+    const button = screen.getByTestId("telegraph-button");
+
+    expect(baseUIRef.current).toBe(button);
+    expect(childRef.current).toBe(button);
+  });
+
   it("preserves ref support for custom forwardRef children", () => {
     const ref = createRef<HTMLButtonElement>();
     const renderButton = createTgphBaseUIRender<BaseUIRenderProps>(

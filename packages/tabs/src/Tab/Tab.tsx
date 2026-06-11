@@ -1,11 +1,19 @@
-import * as RadixTabs from "@radix-ui/react-tabs";
+import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import {
-  RefToTgphRef,
   type TgphComponentProps,
   type TgphElement,
+  createTgphBaseUIRender,
 } from "@telegraph/helpers";
 import { MenuItem } from "@telegraph/menu";
-import React from "react";
+import { type ComponentPropsWithoutRef, type Ref } from "react";
+
+type BaseTabRenderProps = ComponentPropsWithoutRef<"button"> & {
+  ref?: Ref<HTMLElement>;
+};
+
+type BaseTabState = {
+  active: boolean;
+};
 
 /**
  * Props for the Tab component
@@ -21,7 +29,7 @@ export type TabProps<T extends TgphElement = "button"> = {
 } & TgphComponentProps<typeof MenuItem<T>>;
 
 /**
- * Tab component that uses RadixTabs.Trigger with MenuItem styling
+ * Tab component that uses Base UI Tabs.Tab with MenuItem styling
  */
 const Tab = <T extends TgphElement = "button">({
   disabled = false,
@@ -47,39 +55,42 @@ const Tab = <T extends TgphElement = "button">({
     : icon
       ? ({ ...defaultIconProps, ...icon } as const)
       : undefined;
+  const nativeButton = !props.as || props.as === "button";
 
   return (
-    <RadixTabs.Trigger
+    <BaseTabs.Tab
       value={value}
       disabled={disabled}
       onClick={onClick}
-      asChild
-    >
-      <RefToTgphRef>
-        <MenuItem
-          leadingIcon={combinedLeadingIcon}
-          trailingIcon={
-            trailingIcon && { ...defaultIconProps, ...trailingIcon }
-          }
-          disabled={disabled}
-          py="4"
-          px="2"
-          fontWeight="medium"
-          position="relative"
-          data-tgph-tab=""
-          gap="2"
-          color="gray"
-          size="1"
-          // Important for styling the active color
-          textProps={{
-            "data-tgph-tab-text": "",
-          }}
-          {...props}
-        >
-          {children}
-        </MenuItem>
-      </RefToTgphRef>
-    </RadixTabs.Trigger>
+      nativeButton={nativeButton}
+      render={createTgphBaseUIRender<BaseTabRenderProps, BaseTabState>(
+        (state) => (
+          <MenuItem
+            leadingIcon={combinedLeadingIcon}
+            trailingIcon={
+              trailingIcon && { ...defaultIconProps, ...trailingIcon }
+            }
+            disabled={disabled}
+            py="4"
+            px="2"
+            fontWeight="medium"
+            position="relative"
+            data-tgph-tab=""
+            data-state={state.active ? "active" : "inactive"}
+            gap="2"
+            color="gray"
+            size="1"
+            // Important for styling the active color
+            textProps={{
+              "data-tgph-tab-text": "",
+            }}
+            {...props}
+          >
+            {children}
+          </MenuItem>
+        ),
+      )}
+    />
   );
 };
 
