@@ -50,15 +50,19 @@ import "@telegraph/tokens/light.css";
 ```tsx
 // Using tokens in JavaScript
 import telegraphTokens from "@telegraph/tokens";
+import cssVariablesMap from "@telegraph/tokens/css-variables-map";
+import flattenedCssVariablesMap from "@telegraph/tokens/flattened-css-variables-map";
 
 const { tokens } = telegraphTokens;
+const blueBackground = cssVariablesMap.color["blue-3"];
+const compactGap = flattenedCssVariablesMap.spacing["2"];
 
 const MyComponent = () => (
   <div
     style={{
-      background: tokens["--tgph-blue-3"],
+      background: blueBackground,
       color: tokens["--tgph-blue-11"],
-      padding: tokens["--tgph-spacing-4"],
+      padding: compactGap,
       borderRadius: tokens["--tgph-radius-2"],
       fontSize: tokens["--tgph-font-size-2"],
     }}
@@ -110,8 +114,8 @@ Telegraph uses a semantic color system with 12-step scales for each color, provi
 
 Consistent spacing system based on a 4px grid with exponential scaling.
 
-| Token             | Value  | Rem       | Usage                          |
-| ----------------- | ------ | --------- | ------------------------------ |
+| Token               | Value  | Rem       | Usage                          |
+| ------------------- | ------ | --------- | ------------------------------ |
 | `--tgph-spacing-1`  | `4px`  | `0.25rem` | Minimal spacing, tight layouts |
 | `--tgph-spacing-2`  | `8px`  | `0.5rem`  | Small gaps, compact components |
 | `--tgph-spacing-3`  | `12px` | `0.75rem` | Component padding              |

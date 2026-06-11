@@ -17,7 +17,9 @@ const deriveState = ({
   return "default";
 };
 
-type TextAreaTextProps = Omit<TextProps<"textarea">, "as">;
+type TextAreaTextProps = Omit<TextProps<"textarea">, "as"> & {
+  as?: "textarea";
+};
 
 type TextAreaBaseProps = {
   size?: Size;
@@ -31,6 +33,7 @@ type TextAreaBaseProps = {
 type TextAreaProps = TextAreaBaseProps & TextAreaTextProps;
 
 const TextArea = ({
+  as = "textarea",
   size = "2",
   variant = "outline",
   resize = "both",
@@ -43,7 +46,7 @@ const TextArea = ({
 
   return (
     <Text
-      as="textarea"
+      as={as}
       data-tgph-textarea
       data-tgph-textarea-state={derivedState}
       data-tgph-textarea-variant={variant}

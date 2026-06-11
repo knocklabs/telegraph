@@ -159,6 +159,8 @@ describe("Box", () => {
         padding: "2",
         margin: "1",
         display: "flex",
+        direction: "column",
+        maxH: "400px",
       };
       void validProps;
     });
@@ -184,7 +186,14 @@ describe("Box", () => {
 
     it("accepts shorthand props in pseudo objects", () => {
       const shorthands: BoxProps = {
-        _hover: { p: "4", m: "2", rounded: "2", w: "10", h: "8" },
+        _hover: {
+          p: "4",
+          m: "2",
+          rounded: "2",
+          w: "10",
+          h: "8",
+          maxH: "400px",
+        },
       };
       void shorthands;
     });
@@ -227,6 +236,26 @@ describe("Box", () => {
         _disabled: { shadow: "not-a-shadow" },
       };
       void invalid;
+    });
+  });
+
+  describe("flex and size compatibility props", () => {
+    it("applies direction to the flex-direction css variable", () => {
+      const { container } = render(<Box direction="column" />);
+      const box = container.querySelector(".tgph-box");
+
+      expect(box).toHaveStyle({
+        "--flex-direction": "column",
+      });
+    });
+
+    it("passes raw maxH css values through unchanged", () => {
+      const { container } = render(<Box maxH="400px" />);
+      const box = container.querySelector(".tgph-box");
+
+      expect(box).toHaveStyle({
+        "--max-height": "400px",
+      });
     });
   });
 });
