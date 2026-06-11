@@ -1,7 +1,7 @@
 [data-tgph-toggle-switch] {
   position: relative;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
 }
 
@@ -13,13 +13,13 @@
 
 /* Icon inside the knob */
 [data-tgph-toggle-icon] {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Move icon with knob when checked */
 [data-tgph-toggle-switch][data-tgph-toggle-checked="true"]
   [data-tgph-toggle-icon] {
-  transform: translateX(calc(100% - var(--tgph-spacing-1)));
+  transform: translateX(calc(100% - var(--tgph-spacing-0_5)));
 }
 
 /* Label styling */

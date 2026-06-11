@@ -7,7 +7,7 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
-import { Box, Stack } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import { Tag } from "@telegraph/tag";
 import { Text } from "@telegraph/typography";
 import { CheckCircle2, Circle } from "lucide-react";
@@ -130,7 +130,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   const { iconSize, ...sizeConfig } = TOGGLE_SIZE_MAP[context.size];
 
   return (
-    <Box position="relative">
+    <Stack position="relative" align="center">
       {/* Hidden native checkbox for accessibility */}
       <VisuallyHidden.Root>
         <input
@@ -182,12 +182,12 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
           }
           bg="white"
           rounded="full"
-          mx="0_5"
+          ml="px"
           data-tgph-toggle-icon
           aria-hidden
         />
       </Button.Root>
-    </Box>
+    </Stack>
   );
 };
 

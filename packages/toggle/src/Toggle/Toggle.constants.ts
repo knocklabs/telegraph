@@ -1,14 +1,14 @@
 // Size mappings for the toggle component
 export const TOGGLE_SIZE_MAP = {
   "1": {
-    w: "7",
-    h: "4",
-    iconSize: "1",
+    w: "9",
+    h: "5",
+    iconSize: "3",
   },
   "2": {
-    w: "8",
-    h: "5",
-    iconSize: "2",
+    w: "10",
+    h: "6",
+    iconSize: "4",
   },
 } as const;
 
