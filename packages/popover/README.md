@@ -1,6 +1,6 @@
 # 💬 Popover
 
-> Accessible popover component with positioning, animations, and portal rendering built on Radix UI.
+> Accessible popover component with positioning, animations, and portal rendering built on Base UI.
 
 ![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/9b5022e3-b02c-4582-ba57-3d6171e45e44)
 
@@ -92,6 +92,8 @@ The popover content container that appears in a portal.
 | `skipAnimation` | `boolean`                                | `false`       | Whether to skip enter/exit animations |
 
 Inherits all Stack props for additional styling.
+
+Popover is implemented with Base UI Popover primitives and rendered through Telegraph layout components, so the public API, styling tokens, and `tgphRef` support remain stable while the underlying headless behavior comes from Base UI.
 
 ## Usage Patterns
 
@@ -645,9 +647,9 @@ The popover component uses Telegraph design tokens for consistent styling:
 
 ```tsx
 import { Button } from "@telegraph/button";
-import { Tag } from "@telegraph/tag";
 import { Box, Stack } from "@telegraph/layout";
 import { Popover } from "@telegraph/popover";
+import { Tag } from "@telegraph/tag";
 
 export const UserProfilePopover = ({ user }) => (
   <Popover.Root>
@@ -670,7 +672,11 @@ export const UserProfilePopover = ({ user }) => (
           <Stack direction="column" gap="1">
             <Stack direction="row" align="center" gap="2">
               <strong>{user.name}</strong>
-              {user.isOnline && <Tag size="0" color="green">Online</Tag>}
+              {user.isOnline && (
+                <Tag size="0" color="green">
+                  Online
+                </Tag>
+              )}
             </Stack>
             <span>{user.role}</span>
           </Stack>
@@ -984,7 +990,7 @@ export const SearchFilterPopover = ({ onApplyFilters }) => {
 
 ## References
 
-- [Radix UI Popover](https://www.radix-ui.com/docs/primitives/components/popover)
+- [Base UI Popover](https://base-ui.com/react/components/popover)
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/popover)
 
 ## Contributing

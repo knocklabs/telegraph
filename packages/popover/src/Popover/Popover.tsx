@@ -1,195 +1,300 @@
-import * as RadixPopover from "@radix-ui/react-popover";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import { Popover as BasePopover } from "@base-ui/react/popover";
 import {
-  RefToTgphRef,
-  TgphComponentProps,
-  TgphElement,
+  type TgphComponentProps,
+  type TgphElement,
+  createTgphBaseUIRender,
 } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
-import React from "react";
+import {
+  type ComponentProps,
+  type ComponentPropsWithoutRef,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
+  createContext,
+  forwardRef,
+  isValidElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 
-export type RootProps = React.ComponentProps<typeof RadixPopover.Root> & {
-  defaultOpen?: boolean;
+import {
+  type LegacyContentCallbacks,
+  type LegacyDismissEventHandler,
+  callLegacyDismissHandlers,
+  composeRefs,
+  getMotionOffsetBySide,
+} from "./Popover.helpers";
+
+type BasePopoverRootProps = ComponentProps<typeof BasePopover.Root>;
+type BasePopoverTriggerProps = ComponentPropsWithoutRef<
+  typeof BasePopover.Trigger
+>;
+type BasePopoverPositionerProps = ComponentPropsWithoutRef<
+  typeof BasePopover.Positioner
+>;
+type BasePopoverPopupProps = ComponentPropsWithoutRef<typeof BasePopover.Popup>;
+
+export type RootProps = Omit<BasePopoverRootProps, "onOpenChange"> & {
+  onOpenChange?: (open: boolean) => void;
 };
 
-type PopoverContextProps = {
+type PopoverCompatibilityContextProps = {
+  contentCallbacksRef: {
+    current: LegacyContentCallbacks;
+  };
+};
+
+type PopoverPopupRenderState = {
   open: boolean;
-  setOpen: (open: boolean) => void;
 };
 
-const PopoverContext = React.createContext<PopoverContextProps>({
-  open: false,
-  setOpen: () => {},
-});
+const PopoverCompatibilityContext =
+  createContext<PopoverCompatibilityContextProps | null>(null);
 
-const Root = ({
-  open: openProp,
-  onOpenChange: onOpenChangeProp,
-  defaultOpen: defaultOpenProp,
-  children,
-  ...props
-}: RootProps) => {
-  const [open = false, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpenProp ?? false,
-    onChange: onOpenChangeProp,
-  });
+const Root = ({ children, onOpenChange, ...props }: RootProps) => {
+  const contentCallbacksRef = useRef<LegacyContentCallbacks>({});
+  const handleOpenChange = useCallback<
+    NonNullable<BasePopoverRootProps["onOpenChange"]>
+  >(
+    (open, eventDetails) => {
+      if (
+        !open &&
+        callLegacyDismissHandlers(eventDetails, contentCallbacksRef.current)
+      ) {
+        eventDetails.cancel();
+        return;
+      }
+
+      onOpenChange?.(open);
+    },
+    [onOpenChange],
+  );
 
   return (
     <LazyMotion features={domAnimation}>
-      <PopoverContext.Provider value={{ open, setOpen }}>
-        <RadixPopover.Root open={open} onOpenChange={setOpen} {...props}>
+      <PopoverCompatibilityContext.Provider value={{ contentCallbacksRef }}>
+        <BasePopover.Root onOpenChange={handleOpenChange} {...props}>
           {children}
-        </RadixPopover.Root>
-      </PopoverContext.Provider>
+        </BasePopover.Root>
+      </PopoverCompatibilityContext.Provider>
     </LazyMotion>
   );
 };
 
-export type TriggerProps = React.ComponentProps<typeof RadixPopover.Trigger> & {
-  tgphRef?: React.RefObject<HTMLButtonElement>;
+export type TriggerProps = Omit<BasePopoverTriggerProps, "render"> & {
+  asChild?: boolean;
+  children?: ReactNode;
+  tgphRef?: Ref<HTMLButtonElement>;
 };
 
-const Trigger = ({
-  asChild = true,
-  tgphRef,
-  children,
-  ...props
-}: TriggerProps) => {
-  const context = React.useContext(PopoverContext);
+const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
+  ({ asChild = true, tgphRef, children, ...props }, forwardedRef) => {
+    const triggerRef = composeRefs(forwardedRef, tgphRef);
 
-  return (
-    <RadixPopover.Trigger
-      onClick={() => {
-        context.setOpen(!context.open);
-      }}
-      asChild={asChild}
-      {...props}
-      ref={tgphRef}
-    >
-      <RefToTgphRef>{children}</RefToTgphRef>
-    </RadixPopover.Trigger>
-  );
-};
+    if (!asChild || !isValidElement(children)) {
+      return (
+        <BasePopover.Trigger {...props} ref={triggerRef}>
+          {children}
+        </BasePopover.Trigger>
+      );
+    }
 
-export type ContentProps<T extends TgphElement = "div"> = React.ComponentProps<
-  typeof RadixPopover.Content
+    return (
+      <BasePopover.Trigger
+        {...props}
+        ref={triggerRef}
+        render={createTgphBaseUIRender(children as ReactElement)}
+      />
+    );
+  },
+);
+
+export type ContentProps<T extends TgphElement = "div"> = Omit<
+  BasePopoverPositionerProps,
+  "children" | "className" | "render"
 > &
+  Omit<BasePopoverPopupProps, "children" | "className" | "render" | "style"> &
   Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
-    contentStackRef?: React.RefObject<HTMLDivElement>;
+    contentStackRef?: Ref<HTMLDivElement>;
+    forceMount?: boolean;
+    onCloseAutoFocus?: LegacyDismissEventHandler;
+    onEscapeKeyDown?: LegacyContentCallbacks["onEscapeKeyDown"];
+    onFocusOutside?: LegacyContentCallbacks["onFocusOutside"];
+    onInteractOutside?: LegacyDismissEventHandler;
+    onOpenAutoFocus?: LegacyDismissEventHandler;
+    onPointerDownOutside?: LegacyContentCallbacks["onPointerDownOutside"];
     skipAnimation?: boolean;
   };
 
 const Content = <T extends TgphElement = "div">({
+  align = "center",
+  alignOffset,
+  anchor,
+  arrowPadding,
+  children,
+  collisionAvoidance,
+  collisionBoundary,
+  collisionPadding,
+  contentStackRef,
   direction = "column",
+  disableAnchorTracking,
+  finalFocus,
+  forceMount,
   gap = "1",
+  initialFocus,
+  onCloseAutoFocus,
+  onEscapeKeyDown,
+  onFocusOutside,
+  onInteractOutside,
+  onOpenAutoFocus,
+  onPointerDownOutside,
+  positionMethod,
   rounded = "4",
   py = "1",
   shadow = "2",
   side = "bottom",
   sideOffset = 4,
-  align = "center",
+  skipAnimation,
+  sticky,
   bg = "surface-1",
-  alignOffset,
   tgphRef,
   style,
-  skipAnimation,
-  children,
   ...props
 }: ContentProps<T>) => {
-  const deriveAnimationBasedOnSide = (side: ContentProps<T>["side"]) => {
-    const ANIMATION_OFFSET = 5;
-    if (side === "top") {
-      return {
-        y: -ANIMATION_OFFSET,
-      };
+  const compatibilityContext = useContext(PopoverCompatibilityContext);
+  const contentRef = composeRefs(tgphRef, contentStackRef);
+  const resolvedInitialFocus =
+    initialFocus ??
+    (() => {
+      if (!onOpenAutoFocus) {
+        return true;
+      }
+
+      const event = new Event("openAutoFocus", { cancelable: true });
+      onOpenAutoFocus(event);
+
+      return event.defaultPrevented ? false : true;
+    });
+  const resolvedFinalFocus =
+    finalFocus ??
+    (() => {
+      if (!onCloseAutoFocus) {
+        return true;
+      }
+
+      const event = new Event("closeAutoFocus", { cancelable: true });
+      onCloseAutoFocus(event);
+
+      return event.defaultPrevented ? false : true;
+    });
+
+  useEffect(() => {
+    if (!compatibilityContext) {
+      return;
     }
 
-    if (side === "bottom") {
-      return {
-        y: ANIMATION_OFFSET,
-      };
-    }
+    compatibilityContext.contentCallbacksRef.current = {
+      onCloseAutoFocus,
+      onEscapeKeyDown,
+      onFocusOutside,
+      onInteractOutside,
+      onOpenAutoFocus,
+      onPointerDownOutside,
+    };
 
-    if (side === "left") {
-      return {
-        x: -ANIMATION_OFFSET,
-      };
-    }
-
-    if (side === "right") {
-      return {
-        x: ANIMATION_OFFSET,
-      };
-    }
-  };
+    return () => {
+      compatibilityContext.contentCallbacksRef.current = {};
+    };
+  }, [
+    compatibilityContext,
+    onCloseAutoFocus,
+    onEscapeKeyDown,
+    onFocusOutside,
+    onInteractOutside,
+    onOpenAutoFocus,
+    onPointerDownOutside,
+  ]);
 
   return (
-    <RadixPopover.Portal>
-      <RadixPopover.Content
-        asChild
-        side={side}
-        sideOffset={sideOffset}
+    <BasePopover.Portal keepMounted={forceMount}>
+      <BasePopover.Positioner
         align={align}
         alignOffset={alignOffset}
-        {...props}
-        ref={tgphRef}
+        anchor={anchor}
+        arrowPadding={arrowPadding}
+        collisionAvoidance={collisionAvoidance}
+        collisionBoundary={collisionBoundary}
+        collisionPadding={collisionPadding}
+        disableAnchorTracking={disableAnchorTracking}
+        positionMethod={positionMethod}
+        side={side}
+        sideOffset={sideOffset}
+        sticky={sticky}
       >
-        <RefToTgphRef>
-          <Stack
-            as={motion.div}
-            // Add tgph class so that this always works in portals
-            className="tgph"
-            initial={
-              skipAnimation
-                ? undefined
-                : {
-                    opacity: 0.5,
-                    scale: 0.6,
-                    ...deriveAnimationBasedOnSide(side),
-                  }
-            }
-            animate={{
-              opacity: 1,
-              scale: 1,
-              x: 0,
-              y: 0,
-            }}
-            exit={
-              skipAnimation
-                ? undefined
-                : {
-                    opacity: 0.5,
-                    scale: 0.6,
-                    ...deriveAnimationBasedOnSide(side),
-                  }
-            }
-            transition={{
-              duration: 0.1,
-              type: "spring",
-              bounce: 0,
-            }}
-            bg={bg}
-            direction={direction}
-            gap={gap}
-            rounded={rounded}
-            py={py}
-            shadow={shadow}
-            style={{
-              overflowY: "auto",
-              transformOrigin: "var(--radix-tooltip-content-transform-origin)",
-              ...style,
-            }}
-            zIndex="popover"
-            key="tgph-popover-content"
-          >
-            {children}
-          </Stack>
-        </RefToTgphRef>
-      </RadixPopover.Content>
-    </RadixPopover.Portal>
+        <BasePopover.Popup
+          initialFocus={resolvedInitialFocus}
+          finalFocus={resolvedFinalFocus}
+          render={createTgphBaseUIRender((state: PopoverPopupRenderState) => (
+            <Stack
+              as={motion.div}
+              className="tgph"
+              initial={
+                skipAnimation
+                  ? undefined
+                  : {
+                      opacity: 0.5,
+                      scale: 0.6,
+                      ...getMotionOffsetBySide(side),
+                    }
+              }
+              animate={{
+                opacity: 1,
+                scale: 1,
+                x: 0,
+                y: 0,
+              }}
+              exit={
+                skipAnimation
+                  ? undefined
+                  : {
+                      opacity: 0.5,
+                      scale: 0.6,
+                      ...getMotionOffsetBySide(side),
+                    }
+              }
+              transition={{
+                duration: 0.1,
+                type: "spring",
+                bounce: 0,
+              }}
+              bg={bg}
+              data-state={state.open ? "open" : "closed"}
+              direction={direction}
+              gap={gap}
+              rounded={rounded}
+              py={py}
+              shadow={shadow}
+              style={{
+                overflowY: "auto",
+                transformOrigin: "var(--transform-origin)",
+                ...style,
+              }}
+              tgphRef={contentRef}
+              zIndex="popover"
+              key="tgph-popover-content"
+              {...props}
+            >
+              {children}
+            </Stack>
+          ))}
+        />
+      </BasePopover.Positioner>
+    </BasePopover.Portal>
   );
 };
 
