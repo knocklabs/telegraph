@@ -1,5 +1,11 @@
 # @telegraph/toggle
 
+## 0.2.0
+
+### Minor Changes
+
+- [#835](https://github.com/knocklabs/telegraph/pull/835) [`4ac7ba0`](https://github.com/knocklabs/telegraph/commit/4ac7ba0652482a99a616652cc71cf906e97a84c4) Thanks [@ksorathia](https://github.com/ksorathia)! - Adjust spacing and size of Toggle to vertically center align elements
+
 ## 0.1.6
 
 ### Patch Changes
