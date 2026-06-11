@@ -69,28 +69,38 @@ export const BasicTabs = () => (
 );
 ```
 
+## Implementation Notes
+
+Tabs are backed by Base UI Tabs primitives and keep the Telegraph public API,
+data attributes, styling hooks, and `tgphRef` behavior stable for existing
+consumers.
+
+Controlled tab values can be `null` when no tab is selected, such as when the
+current/default value no longer matches a rendered tab.
+
 ## API Reference
 
 ### `<Tabs>`
 
 The root container component that provides tab state management and context.
 
-| Prop            | Type                         | Default        | Description                                   |
-| --------------- | ---------------------------- | -------------- | --------------------------------------------- |
-| `defaultValue`  | `string`                     | `undefined`    | ID of the initially active tab (uncontrolled) |
-| `value`         | `string`                     | `undefined`    | Currently active tab ID (controlled)          |
-| `onValueChange` | `(value: string) => void`    | `undefined`    | Called when the active tab changes            |
-| `disabled`      | `boolean`                    | `false`        | Disables all tabs when true                   |
-| `orientation`   | `"horizontal" \| "vertical"` | `"horizontal"` | Layout orientation                            |
-| `dir`           | `"ltr" \| "rtl"`             | `"ltr"`        | Text direction                                |
+| Prop            | Type                              | Default        | Description                                   |
+| --------------- | --------------------------------- | -------------- | --------------------------------------------- |
+| `defaultValue`  | `string`                          | `undefined`    | ID of the initially active tab (uncontrolled) |
+| `value`         | `string`                          | `undefined`    | Currently active tab ID (controlled)          |
+| `onValueChange` | `(value: string) => void`         | `undefined`    | Called when the active tab changes            |
+| `disabled`      | `boolean`                         | `false`        | Disables all tabs when true                   |
+| `orientation`   | `"horizontal" \| "vertical"`      | `"horizontal"` | Layout orientation                            |
+| `dir`           | `"ltr" \| "rtl"`                  | `"ltr"`        | Text direction                                |
 
 ### `<Tabs.List>`
 
 Container for tab buttons that manages keyboard navigation.
 
-| Prop   | Type      | Default | Description                                              |
-| ------ | --------- | ------- | -------------------------------------------------------- |
-| `loop` | `boolean` | `true`  | Whether keyboard navigation loops from last to first tab |
+| Prop              | Type      | Default | Description                                                  |
+| ----------------- | --------- | ------- | ------------------------------------------------------------ |
+| `loop`            | `boolean` | `true`  | Whether keyboard navigation loops from last to first tab     |
+| `activateOnFocus` | `boolean` | `true`  | Whether arrow-key focus also activates the newly focused tab |
 
 ### `<Tabs.Tab>`
 
@@ -124,8 +134,11 @@ Content panel associated with a specific tab.
 | Prop                   | Type               | Default  | Description                                       |
 | ---------------------- | ------------------ | -------- | ------------------------------------------------- |
 | `value`                | `string`           | -        | **Required.** ID of the tab this panel belongs to |
-| `forceMount`           | `boolean`          | `false`  | Whether to force mounting when tab is inactive    |
+| `forceMount`           | `boolean`          | `false`  | Whether to keep the panel mounted when inactive   |
 | `forceBackgroundMount` | `"once" \| "none"` | `"none"` | Background mounting strategy for performance      |
+
+Inactive kept panels remain mounted for compatibility, but are hidden from
+layout and assistive technology until their tab is active.
 
 ## Usage Patterns
 
@@ -199,7 +212,7 @@ import { Tabs } from "@telegraph/tabs";
 import { useState } from "react";
 
 export const ControlledTabs = () => {
-  const [activeTab, setActiveTab] = useState("tab1");
+  const [activeTab, setActiveTab] = useState<string | null>("tab1");
 
   return (
     <div>
@@ -306,7 +319,7 @@ export const OptimizedTabs = () => (
       <LargeDataTable />
     </Tabs.Panel>
 
-    {/* Render once on component mount */}
+    {/* Keep mounted in the background when inactive */}
     <Tabs.Panel value="charts" forceBackgroundMount="once">
       <ExpensiveCharts />
     </Tabs.Panel>
@@ -325,7 +338,7 @@ export const DynamicTabs = () => {
     { id: "tab1", title: "Tab 1", content: "Content 1" },
     { id: "tab2", title: "Tab 2", content: "Content 2" },
   ]);
-  const [activeTab, setActiveTab] = useState("tab1");
+  const [activeTab, setActiveTab] = useState<string | null>("tab1");
 
   const addTab = () => {
     const newId = `tab${tabs.length + 1}`;
@@ -344,8 +357,8 @@ export const DynamicTabs = () => {
     const newTabs = tabs.filter((tab) => tab.id !== tabId);
     setTabs(newTabs);
 
-    if (activeTab === tabId && newTabs.length > 0) {
-      setActiveTab(newTabs[0].id);
+    if (activeTab === tabId) {
+      setActiveTab(newTabs[0]?.id ?? null);
     }
   };
 
@@ -396,7 +409,7 @@ export const FormTabs = () => {
     preferences: { theme: "light", notifications: true },
     billing: { plan: "free", cardNumber: "" },
   });
-  const [currentTab, setCurrentTab] = useState("personal");
+  const [currentTab, setCurrentTab] = useState<string | null>("personal");
 
   const updateFormData = (section: string, data: any) => {
     setFormData((prev) => ({
@@ -602,7 +615,7 @@ import { BarChart, Bell, Settings, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const DashboardTabs = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState<string | null>("overview");
   const [notifications, setNotifications] = useState(3);
 
   // Simulate notification updates
@@ -693,7 +706,7 @@ import { useState } from "react";
 
 export const MediaLibrary = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [currentTab, setCurrentTab] = useState("documents");
+  const [currentTab, setCurrentTab] = useState<string | null>("documents");
 
   const fileTypes = {
     documents: {
@@ -769,7 +782,7 @@ export const MediaLibrary = () => {
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/tabs)
-- [Radix UI Tabs](https://www.radix-ui.com/primitives/docs/components/tabs) - Base primitive
+- [Base UI Tabs](https://base-ui.com/react/components/tabs) - Base primitive
 
 ## Contributing
 

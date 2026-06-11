@@ -5,7 +5,7 @@ import {
   createRef,
   forwardRef,
 } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { createTgphBaseUIRender } from "./createTgphBaseUIRender";
 
@@ -96,6 +96,29 @@ describe("createTgphBaseUIRender", () => {
     );
 
     const button = screen.getByTestId("native-button");
+
+    expect(baseUIRef.current).toBe(button);
+    expect(childRef.current).toBe(button);
+  });
+
+  it("composes Base UI refs with existing tgphRef props", () => {
+    const baseUIRef = createRef<HTMLButtonElement>();
+    const childRef = createRef<HTMLButtonElement>();
+    const renderButton = createTgphBaseUIRender<BaseUIRenderProps>(
+      <TelegraphButton tgphRef={childRef}>Open</TelegraphButton>,
+    );
+
+    render(
+      renderButton(
+        {
+          "data-testid": "telegraph-button",
+          ref: baseUIRef,
+        },
+        {},
+      ),
+    );
+
+    const button = screen.getByTestId("telegraph-button");
 
     expect(baseUIRef.current).toBe(button);
     expect(childRef.current).toBe(button);

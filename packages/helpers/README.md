@@ -355,7 +355,9 @@ const PopoverExample = () => (
 
 The helper accepts a React element or a state callback. It preserves Base UI
 props, event handlers, class names, styles, native refs, custom `forwardRef`
-children, and Telegraph `tgphRef` children.
+children, and Telegraph `tgphRef` children. When the child already has its own
+`tgphRef`, the helper composes it with the Base UI ref so both refs receive the
+same rendered element.
 
 ```tsx
 import { Popover } from "@base-ui/react/popover";
