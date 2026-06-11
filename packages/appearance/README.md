@@ -82,11 +82,19 @@ import { Appearance } from "@telegraph/appearance";
 </Appearance>;
 ```
 
-| Prop         | Type                | Default                   | Description                                    |
-| ------------ | ------------------- | ------------------------- | ---------------------------------------------- |
-| `appearance` | `"light" \| "dark"` | `undefined`               | Specific appearance to apply (uses current global appearance when omitted) |
-| `inverted`   | `boolean`           | `false`                   | Whether to invert the current appearance       |
-| `asChild`    | `boolean`           | `false`                   | Render as child element instead of div wrapper |
+| Prop         | Type                | Default     | Description                                                                           |
+| ------------ | ------------------- | ----------- | ------------------------------------------------------------------------------------- |
+| `appearance` | `"light" \| "dark"` | `undefined` | Specific appearance to apply (uses current global appearance when omitted)            |
+| `inverted`   | `boolean`           | `false`     | Whether to invert the current appearance                                              |
+| `asChild`    | `boolean`           | `false`     | Merge appearance props into a single child element instead of rendering a div wrapper |
+
+```tsx
+import { Appearance } from "@telegraph/appearance";
+
+<Appearance appearance="dark" asChild>
+  <section>This section receives data-tgph-appearance directly</section>
+</Appearance>;
+```
 
 #### `<InvertedAppearance>`
 

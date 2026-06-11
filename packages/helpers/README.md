@@ -24,7 +24,10 @@ import {
   PolymorphicProps,
   RefToTgphRef,
   TgphElement,
+  TgphSlot,
+  VisuallyHidden,
   createTgphBaseUIRender,
+  useControllableState,
   useDeterminateState,
 } from "@telegraph/helpers";
 
@@ -42,6 +45,13 @@ const state = useDeterminateState({
 
 // Base UI render bridge for Telegraph components
 const renderTrigger = createTgphBaseUIRender(<Button>Open</Button>);
+
+// Controlled/uncontrolled state bridge for component primitives
+const [open, setOpen] = useControllableState({
+  prop: openProp,
+  defaultProp: false,
+  onChange: onOpenChange,
+});
 ```
 
 ## API Reference
@@ -282,6 +292,44 @@ const FormExample = () => {
 };
 ```
 
+### `TgphSlot`
+
+Component for merging wrapper props into a single child element while preserving
+native refs, custom `forwardRef` children, and Telegraph `tgphRef` children.
+
+```tsx
+import { TgphSlot } from "@telegraph/helpers";
+
+<TgphSlot data-state="open" className="trigger">
+  <button type="button">Open</button>
+</TgphSlot>;
+```
+
+### `VisuallyHidden`
+
+Component for rendering accessible text that should remain available to assistive
+technology without being visible in the UI.
+
+```tsx
+import { VisuallyHidden } from "@telegraph/helpers";
+import { Text } from "@telegraph/typography";
+
+<VisuallyHidden>
+  <Text as="label" htmlFor="search">
+    Search
+  </Text>
+</VisuallyHidden>;
+```
+
+Use `asChild` when the hidden styles need to be applied directly to a specific
+element.
+
+```tsx
+<VisuallyHidden asChild>
+  <label htmlFor="email">Email</label>
+</VisuallyHidden>
+```
+
 ### `createTgphBaseUIRender`
 
 Helper for adapting Base UI `render` callbacks to Telegraph components that
@@ -326,6 +374,28 @@ import type { ComponentProps } from "react";
 ```
 
 ## React Hooks
+
+### `useControllableState`
+
+Hook for component primitives that support both controlled and uncontrolled
+usage.
+
+```tsx
+import { useControllableState } from "@telegraph/helpers";
+
+const [open, setOpen] = useControllableState({
+  prop: openProp,
+  defaultProp: false,
+  onChange: onOpenChange,
+});
+```
+
+The hook mirrors Telegraph's controlled prop conventions:
+
+- `prop` controls the state when it is not `undefined`.
+- `defaultProp` seeds uncontrolled state.
+- `onChange` is called only when the next value differs from the current value.
+- Updater functions are supported, matching React's `setState` ergonomics.
 
 ### `useDeterminateState`
 
@@ -638,10 +708,11 @@ type ConditionalProps<T extends TgphElement> = PolymorphicProps<T> &
 ### Component Development
 
 1. **Use `createTgphBaseUIRender` with Base UI `render` props**: Preserves Base UI props while forwarding refs to Telegraph `tgphRef`
-2. **Use `RefToTgphRef` with external libraries**: Ensures ref compatibility
-3. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
-4. **Type polymorphic components properly**: Use appropriate helper types
-5. **Test type constraints**: Verify TypeScript catches errors correctly
+2. **Use `TgphSlot` for single-child prop composition**: Replaces Radix Slot-style prop merging while preserving native refs and `tgphRef`
+3. **Use `RefToTgphRef` with external libraries**: Ensures ref compatibility
+4. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
+5. **Type polymorphic components properly**: Use appropriate helper types
+6. **Test type constraints**: Verify TypeScript catches errors correctly
 
 ## References
 

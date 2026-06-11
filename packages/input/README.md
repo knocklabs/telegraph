@@ -73,23 +73,25 @@ For advanced use cases, use the composition API:
 
 Container component that wraps the input and slots.
 
-| Prop         | Type                   | Default     | Description                         |
-| ------------ | ---------------------- | ----------- | ----------------------------------- |
-| `size`       | `"1" \| "2" \| "3"`    | `"2"`       | Input size                          |
-| `variant`    | `"outline" \| "ghost"` | `"outline"` | Visual style variant                |
-| `errored`    | `boolean`              | `false`     | Shows error state styling           |
-| `disabled`   | `boolean`              | `false`     | Disables the input                  |
-| `textProps`  | `object`               | `undefined` | Props to pass to the inner Text component  |
-| `stackProps` | `object`               | `undefined` | Props to pass to the Stack container       |
-| `as`         | `TgphElement`          | `"input"`   | HTML element or component to render |
+| Prop         | Type                   | Default     | Description                               |
+| ------------ | ---------------------- | ----------- | ----------------------------------------- |
+| `size`       | `"1" \| "2" \| "3"`    | `"2"`       | Input size                                |
+| `variant`    | `"outline" \| "ghost"` | `"outline"` | Visual style variant                      |
+| `errored`    | `boolean`              | `false`     | Shows error state styling                 |
+| `disabled`   | `boolean`              | `false`     | Disables the input                        |
+| `textProps`  | `object`               | `undefined` | Props to pass to the inner Text component |
+| `stackProps` | `object`               | `undefined` | Props to pass to the Stack container      |
+| `as`         | `TgphElement`          | `"input"`   | HTML element or component to render       |
 
 #### `<Input.Slot>`
 
-Wrapper for leading and trailing components.
+Wrapper for leading and trailing components. Props passed to `Input.Slot` are
+merged into its single child, and refs are forwarded to that child.
 
 | Prop       | Type                      | Default     | Description          |
 | ---------- | ------------------------- | ----------- | -------------------- |
 | `position` | `"leading" \| "trailing"` | `"leading"` | Position of the slot |
+| `size`     | `"1" \| "2" \| "3"`       | Root size   | Slot size override   |
 
 ## Usage Patterns
 

@@ -3551,7 +3551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-slot@npm:1.2.4, @radix-ui/react-slot@npm:^1.2.4":
+"@radix-ui/react-slot@npm:1.2.4":
   version: 1.2.4
   resolution: "@radix-ui/react-slot@npm:1.2.4"
   dependencies:
@@ -4316,7 +4316,7 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-slot": "npm:^1.2.4"
+    "@telegraph/helpers": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
@@ -4524,7 +4524,6 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-slot": "npm:^1.2.4"
     "@telegraph/compose-refs": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/layout": "workspace:^"
