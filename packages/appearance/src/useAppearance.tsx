@@ -1,5 +1,10 @@
-import { Slot } from "@radix-ui/react-slot";
-import React from "react";
+import { TgphSlot } from "@telegraph/helpers";
+import {
+  type ComponentPropsWithoutRef,
+  type PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
 
 type Appearance = "light" | "dark";
 
@@ -7,9 +12,9 @@ type UseAppearanceParams = {
   appearanceOverride?: Appearance;
 };
 
-const useAppearance = (params: UseAppearanceParams = {}) => {
-  const [appearance, setAppearance] = React.useState<Appearance>(
-    params?.appearanceOverride || "light",
+const useAppearance = ({ appearanceOverride }: UseAppearanceParams = {}) => {
+  const [appearance, setAppearance] = useState<Appearance>(
+    appearanceOverride || "light",
   );
 
   // Collection of helper props to apply to elements to set their appearance
@@ -22,7 +27,7 @@ const useAppearance = (params: UseAppearanceParams = {}) => {
   const darkAppearanceProps = { "data-tgph-appearance": "dark" };
 
   const handleAppearanceChange = (newAppearance: Appearance) => {
-    if (document) {
+    if (typeof document !== "undefined") {
       setAppearance(newAppearance);
       document.documentElement.setAttribute(
         "data-tgph-appearance",
@@ -33,21 +38,28 @@ const useAppearance = (params: UseAppearanceParams = {}) => {
 
   // Observer for the `html` element to detect changes in the data-tgph-appearance
   // and update the appearance state accordingly
-  React.useEffect(() => {
-    if (!document) return;
+  useEffect(() => {
+    if (appearanceOverride) {
+      setAppearance(appearanceOverride);
+      return;
+    }
+
+    if (typeof document === "undefined") return;
 
     const mutationsCallback = (mutations: MutationRecord[]) => {
-      for (const mutation of mutations) {
-        if (
+      const appearanceMutation = mutations.find((mutation) => {
+        return (
           mutation.type === "attributes" &&
           mutation.attributeName === "data-tgph-appearance"
-        ) {
-          setAppearance(
-            document.documentElement.getAttribute(
-              "data-tgph-appearance",
-            ) as Appearance,
-          );
-        }
+        );
+      });
+
+      if (appearanceMutation) {
+        setAppearance(
+          document.documentElement.getAttribute(
+            "data-tgph-appearance",
+          ) as Appearance,
+        );
       }
     };
 
@@ -66,7 +78,7 @@ const useAppearance = (params: UseAppearanceParams = {}) => {
         observer.disconnect();
       }
     };
-  }, []);
+  }, [appearanceOverride]);
 
   const toggleAppearance = () => {
     const newAppearance = appearance === "light" ? "dark" : "light";
@@ -85,11 +97,13 @@ const useAppearance = (params: UseAppearanceParams = {}) => {
   };
 };
 
-type AppearanceProps = React.PropsWithChildren<{
-  appearance?: Appearance;
-  inverted?: boolean;
-  asChild?: boolean;
-}>;
+type AppearanceProps = PropsWithChildren<
+  ComponentPropsWithoutRef<"div"> & {
+    appearance?: Appearance;
+    inverted?: boolean;
+    asChild?: boolean;
+  }
+>;
 
 // Applies the data attribute to the element to set the appearance
 // of its children
@@ -107,7 +121,7 @@ const Appearance = ({
     ? invertedAppearanceProps
     : appearanceProps;
 
-  const Component = asChild ? Slot : "div";
+  const Component = asChild ? TgphSlot : "div";
 
   return <Component {...derivedAppearanceProps} {...props} />;
 };
@@ -124,7 +138,7 @@ const OverrideAppearance = ({
   const derivedAppearanceProps =
     appearance === "light" ? lightAppearanceProps : darkAppearanceProps;
 
-  const Component = asChild ? Slot : "div";
+  const Component = asChild ? TgphSlot : "div";
   return <Component {...derivedAppearanceProps} {...props} />;
 };
 

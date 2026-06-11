@@ -24,7 +24,10 @@ import {
   PolymorphicProps,
   RefToTgphRef,
   TgphElement,
+  TgphSlot,
+  VisuallyHidden,
   createTgphBaseUIRender,
+  useControllableState,
   useDeterminateState,
 } from "@telegraph/helpers";
 
@@ -42,6 +45,13 @@ const state = useDeterminateState({
 
 // Base UI render bridge for Telegraph components
 const renderTrigger = createTgphBaseUIRender(<Button>Open</Button>);
+
+// Controlled/uncontrolled state bridge for component primitives
+const [open, setOpen] = useControllableState({
+  prop: openProp,
+  defaultProp: false,
+  onChange: onOpenChange,
+});
 ```
 
 ## API Reference
@@ -222,39 +232,38 @@ const CustomButton = ({
 
 ### `RefToTgphRef`
 
-Component for handling ref forwarding between external libraries (like Radix) and Telegraph components.
+Component for handling ref forwarding between external libraries and Telegraph
+components.
 
 ```tsx
-import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@telegraph/button";
 import { RefToTgphRef } from "@telegraph/helpers";
 
-// Radix expects a `ref` prop, but Telegraph uses `tgphRef`
-<Popover.Trigger asChild>
-  <RefToTgphRef>
-    <Button>Open Popover</Button>
-  </RefToTgphRef>
-</Popover.Trigger>;
+// Use when an external primitive passes a React `ref` to a single child,
+// but the Telegraph child expects `tgphRef`.
+<RefToTgphRef>
+  <Button>Open</Button>
+</RefToTgphRef>;
 ```
 
 #### Use Cases
 
-**With Radix UI Primitives:**
+**With Base UI render props:**
 
 ```tsx
-import * as Dialog from "@radix-ui/react-dialog";
+import { Popover } from "@base-ui/react/popover";
 import { Button } from "@telegraph/button";
-import { RefToTgphRef } from "@telegraph/helpers";
+import { createTgphBaseUIRender } from "@telegraph/helpers";
 
-const DialogExample = () => (
-  <Dialog.Root>
-    <Dialog.Trigger asChild>
-      <RefToTgphRef>
-        <Button>Open Dialog</Button>
-      </RefToTgphRef>
-    </Dialog.Trigger>
-    <Dialog.Content>{/* Dialog content */}</Dialog.Content>
-  </Dialog.Root>
+const PopoverExample = () => (
+  <Popover.Root>
+    <Popover.Trigger render={createTgphBaseUIRender(<Button>Open</Button>)} />
+    <Popover.Portal>
+      <Popover.Positioner>
+        <Popover.Popup>{/* Popover content */}</Popover.Popup>
+      </Popover.Positioner>
+    </Popover.Portal>
+  </Popover.Root>
 );
 ```
 
@@ -280,6 +289,44 @@ const FormExample = () => {
     />
   );
 };
+```
+
+### `TgphSlot`
+
+Component for merging wrapper props into a single child element while preserving
+native refs, custom `forwardRef` children, and Telegraph `tgphRef` children.
+
+```tsx
+import { TgphSlot } from "@telegraph/helpers";
+
+<TgphSlot data-state="open" className="trigger">
+  <button type="button">Open</button>
+</TgphSlot>;
+```
+
+### `VisuallyHidden`
+
+Component for rendering accessible text that should remain available to assistive
+technology without being visible in the UI.
+
+```tsx
+import { VisuallyHidden } from "@telegraph/helpers";
+import { Text } from "@telegraph/typography";
+
+<VisuallyHidden>
+  <Text as="label" htmlFor="search">
+    Search
+  </Text>
+</VisuallyHidden>;
+```
+
+Use `asChild` when the hidden styles need to be applied directly to a specific
+element.
+
+```tsx
+<VisuallyHidden asChild>
+  <label htmlFor="email">Email</label>
+</VisuallyHidden>
 ```
 
 ### `createTgphBaseUIRender`
@@ -326,6 +373,28 @@ import type { ComponentProps } from "react";
 ```
 
 ## React Hooks
+
+### `useControllableState`
+
+Hook for component primitives that support both controlled and uncontrolled
+usage.
+
+```tsx
+import { useControllableState } from "@telegraph/helpers";
+
+const [open, setOpen] = useControllableState({
+  prop: openProp,
+  defaultProp: false,
+  onChange: onOpenChange,
+});
+```
+
+The hook mirrors Telegraph's controlled prop conventions:
+
+- `prop` controls the state when it is not `undefined`.
+- `defaultProp` seeds uncontrolled state.
+- `onChange` is called only when the next value differs from the current value.
+- Updater functions are supported, matching React's `setState` ergonomics.
 
 ### `useDeterminateState`
 
@@ -511,32 +580,6 @@ const Card = ({ variant, children, ...props }: CardProps) => {
 ### Integration with External Libraries
 
 ```tsx
-import * as RadixPopover from "@radix-ui/react-popover";
-import { Button } from "@telegraph/button";
-import { PolymorphicProps, RefToTgphRef } from "@telegraph/helpers";
-
-type PopoverProps = PolymorphicProps<"div"> & {
-  trigger: React.ReactNode;
-  content: React.ReactNode;
-};
-
-const Popover = ({ trigger, content, ...props }: PopoverProps) => (
-  <RadixPopover.Root>
-    <RadixPopover.Trigger asChild>
-      <RefToTgphRef>{trigger}</RefToTgphRef>
-    </RadixPopover.Trigger>
-    <RadixPopover.Content {...props}>{content}</RadixPopover.Content>
-  </RadixPopover.Root>
-);
-
-// Usage:
-<Popover
-  trigger={<Button>Open Menu</Button>}
-  content={<div>Popover content</div>}
-/>;
-```
-
-```tsx
 import { Popover } from "@base-ui/react/popover";
 import { Button } from "@telegraph/button";
 import { PolymorphicProps, createTgphBaseUIRender } from "@telegraph/helpers";
@@ -638,10 +681,11 @@ type ConditionalProps<T extends TgphElement> = PolymorphicProps<T> &
 ### Component Development
 
 1. **Use `createTgphBaseUIRender` with Base UI `render` props**: Preserves Base UI props while forwarding refs to Telegraph `tgphRef`
-2. **Use `RefToTgphRef` with external libraries**: Ensures ref compatibility
-3. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
-4. **Type polymorphic components properly**: Use appropriate helper types
-5. **Test type constraints**: Verify TypeScript catches errors correctly
+2. **Use `TgphSlot` for single-child prop composition**: Preserves native refs and `tgphRef`
+3. **Use `RefToTgphRef` with external libraries**: Ensures ref compatibility
+4. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
+5. **Type polymorphic components properly**: Use appropriate helper types
+6. **Test type constraints**: Verify TypeScript catches errors correctly
 
 ## References
 

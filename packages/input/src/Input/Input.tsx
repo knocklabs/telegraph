@@ -1,14 +1,23 @@
-import { Slot as RadixSlot } from "@radix-ui/react-slot";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import type {
   PolymorphicProps,
   Required,
   TgphComponentProps,
   TgphElement,
+  TgphSlotProps,
 } from "@telegraph/helpers";
+import { TgphSlot } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
-import React from "react";
+import {
+  type ComponentProps,
+  type MouseEvent,
+  type ReactNode,
+  createContext,
+  forwardRef,
+  useContext,
+  useRef,
+} from "react";
 
 import { COLOR, SIZE } from "./Input.constants";
 
@@ -19,15 +28,15 @@ export type BaseRootProps = {
 };
 
 export type RootProps<T extends TgphElement = "input"> = BaseRootProps & {
-  textProps?: Omit<React.ComponentProps<typeof Text<T>>, "as">;
-  stackProps?: Omit<React.ComponentProps<typeof Stack>, "as">;
-} & Omit<React.ComponentProps<typeof Text<T>>, "as" | keyof BaseRootProps>;
+  textProps?: Omit<ComponentProps<typeof Text<T>>, "as">;
+  stackProps?: Omit<ComponentProps<typeof Stack>, "as">;
+} & Omit<ComponentProps<typeof Text<T>>, "as" | keyof BaseRootProps>;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
 };
 
-const InputContext = React.createContext<Required<InternalProps>>({
+const InputContext = createContext<Required<InternalProps>>({
   state: "default",
   size: "2",
   variant: "outline",
@@ -46,7 +55,7 @@ const Root = <T extends TgphElement = "input">({
   ...props
 }: RootProps<T>) => {
   const Component = as;
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const composedRefs = useComposedRefs(tgphRef, inputRef);
 
   const state = disabled ? "disabled" : errored ? "error" : "default";
@@ -55,7 +64,7 @@ const Root = <T extends TgphElement = "input">({
     <InputContext.Provider value={{ size, variant, state }}>
       <Stack
         // Focus the input when clicking on the container
-        onPointerDown={(event: React.MouseEvent<HTMLDivElement>) => {
+        onPointerDown={(event: MouseEvent<HTMLDivElement>) => {
           const target = event.target as HTMLElement;
 
           // Make sure we're not clicking on an interactive element
@@ -104,15 +113,17 @@ const Root = <T extends TgphElement = "input">({
   );
 };
 
-export type SlotProps = React.ComponentPropsWithoutRef<typeof RadixSlot> & {
+export type SlotProps = Omit<TgphSlotProps, "size"> & {
   size?: "1" | "2" | "3";
   position?: "leading" | "trailing";
 };
-type SlotRef = React.ElementRef<typeof RadixSlot>;
+type SlotRef = HTMLElement;
 
-const Slot = React.forwardRef<SlotRef, SlotProps>(
+const Slot = forwardRef<SlotRef, SlotProps>(
   ({ position = "leading", ...props }, forwardedRef) => {
-    const context = React.useContext(InputContext);
+    const context = useContext(InputContext);
+    const slotSize = props.size ?? context.size;
+
     return (
       <Stack
         align="center"
@@ -120,11 +131,11 @@ const Slot = React.forwardRef<SlotRef, SlotProps>(
         h="full"
         data-tgph-input-slot
         data-tgph-input-slot-position={position}
-        data-tgph-input-slot-size={props.size ?? context.size}
+        data-tgph-input-slot-size={slotSize}
         {...(position === "leading" && SIZE.SlotLeading[context.size])}
         {...(position === "trailing" && SIZE.SlotTrailing[context.size])}
       >
-        <RadixSlot size={context.size} {...props} ref={forwardedRef} />
+        <TgphSlot size={slotSize} {...props} ref={forwardedRef} />
       </Stack>
     );
   },
@@ -135,8 +146,8 @@ export type DefaultProps<T extends TgphElement = "input"> = Omit<
   keyof BaseRootProps
 > &
   TgphComponentProps<typeof Root> & {
-    LeadingComponent?: React.ReactNode;
-    TrailingComponent?: React.ReactNode;
+    LeadingComponent?: ReactNode;
+    TrailingComponent?: ReactNode;
   };
 
 const Default = <T extends TgphElement = "input">({
