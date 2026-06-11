@@ -75,6 +75,8 @@ export const ActionSelector = () => {
 ### `<RadioCards>`
 
 The main component that renders a radio group with card-style options.
+RadioCards is backed by Base UI Radio primitives and keeps the Telegraph public
+API, styling hooks, and `tgphRef` behavior stable.
 
 | Prop            | Type                                                     | Default     | Description                          |
 | --------------- | -------------------------------------------------------- | ----------- | ------------------------------------ |
@@ -100,7 +102,7 @@ type RadioOption = {
 For custom layouts, use the individual components:
 
 - **`<RadioCards.Root>`** - Radio group container
-- **`<RadioCards.Item>`** - Individual radio button item
+- **`<RadioCards.Item>`** - Individual radio button item rendered as a Telegraph button
 - **`<RadioCards.ItemTitle>`** - Title text component
 - **`<RadioCards.ItemDescription>`** - Description text component
 - **`<RadioCards.ItemIcon>`** - Icon component
@@ -630,7 +632,7 @@ export const DeliveryOptionsForm = () => {
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/radio)
-- [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group)
+- [Base UI Radio](https://base-ui.com/react/components/radio)
 
 ## Contributing
 

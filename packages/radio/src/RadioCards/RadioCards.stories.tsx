@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Bell, DoorClosed } from "lucide-react";
-import React from "react";
+import { useState } from "react";
 
 import { RadioCards as TelegraphRadioCards } from "./RadioCards";
 
@@ -25,27 +25,66 @@ export default meta;
 
 type StorybookRadioCardsType = StoryObj<typeof TelegraphRadioCards>;
 
+const defaultOptions = [
+  {
+    icon: { icon: Bell, alt: "Bell" },
+    title: "Option 1",
+    description: "Description 1",
+    value: "1",
+  },
+  {
+    icon: { icon: DoorClosed, alt: "Door" },
+    title: "Option 2",
+    description: "Description 2",
+    value: "2",
+  },
+];
+
 export const RadioCards: StorybookRadioCardsType = {
   render: ({ direction }) => {
     //eslint-disable-next-line
-    const [value, setValue] = React.useState("1");
+    const [value, setValue] = useState("1");
     return (
       <TelegraphRadioCards
         value={value}
         onValueChange={(value) => setValue(value)}
         direction={direction}
+        options={defaultOptions}
+      />
+    );
+  },
+};
+
+export const Vertical: StorybookRadioCardsType = {
+  render: () => {
+    //eslint-disable-next-line
+    const [value, setValue] = useState("1");
+    return (
+      <TelegraphRadioCards
+        value={value}
+        onValueChange={(value) => setValue(value)}
+        direction="column"
+        orientation="vertical"
+        options={defaultOptions}
+      />
+    );
+  },
+};
+
+export const DisabledOption: StorybookRadioCardsType = {
+  render: () => {
+    //eslint-disable-next-line
+    const [value, setValue] = useState("1");
+    return (
+      <TelegraphRadioCards
+        value={value}
+        onValueChange={(value) => setValue(value)}
+        direction="row"
         options={[
+          defaultOptions[0],
           {
-            icon: { icon: Bell, alt: "Bell" },
-            title: "Option 1",
-            description: "Description 1",
-            value: "1",
-          },
-          {
-            icon: { icon: DoorClosed, alt: "Door" },
-            title: "Option 2",
-            description: "Description 2",
-            value: "2",
+            ...defaultOptions[1],
+            disabled: true,
           },
         ]}
       />
