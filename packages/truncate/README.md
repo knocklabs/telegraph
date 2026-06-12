@@ -72,13 +72,13 @@ A text component that automatically truncates content with an ellipsis and shows
 
 A component that conditionally shows a tooltip only when its content is truncated.
 
-| Prop              | Type                                 | Default     | Description                                                                   |
-| ----------------- | ------------------------------------ | ----------- | ----------------------------------------------------------------------------- |
-| `label`           | `string \| ReactNode`                | `undefined` | The text to show in the tooltip. If not provided, will use the content's text |
-| `children`        | `ReactNode`                          | -           | **Required.** Content to monitor for truncation                               |
-| `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -           | All props from [@telegraph/tooltip](../tooltip/README.md)                     |
+| Prop              | Type                                 | Default     | Description                                                                                |
+| ----------------- | ------------------------------------ | ----------- | ------------------------------------------------------------------------------------------ |
+| `label`           | `string \| ReactNode`                | `undefined` | The text to show in the tooltip. When provided, it takes precedence over the child content |
+| `children`        | `ReactNode`                          | -           | **Required.** Content to monitor for truncation                                            |
+| `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -           | All props from [@telegraph/tooltip](../tooltip/README.md)                                  |
 
-`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It continues to pass tooltip props through unchanged and only enables the tooltip when `useTruncate` detects overflow.
+`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It measures the wrapped child with `useTruncate`, passes that same element ref to Tooltip as the trigger, and only enables the tooltip when overflow is detected. Tooltip props continue to pass through unchanged, including focus and hover behavior such as `disableFocusOpen`.
 
 ### `useTruncate`
 

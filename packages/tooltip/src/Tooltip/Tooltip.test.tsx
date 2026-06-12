@@ -1,3 +1,4 @@
+import { Button } from "@telegraph/button";
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -283,6 +284,21 @@ describe("Tooltip", () => {
       transformOrigin: "var(--transform-origin)",
     });
     expect(container).not.toContainElement(content);
+  });
+
+  it("renders string labels around Telegraph triggers without dropping typography props", async () => {
+    render(
+      <Tooltip defaultOpen label="Telegraph trigger context" skipAnimation>
+        <Button>Hover target</Button>
+      </Tooltip>,
+    );
+
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(
+      "Telegraph trigger context",
+    );
+    expect(
+      screen.getByRole("button", { name: "Hover target" }),
+    ).toHaveAttribute("data-state", "open");
   });
 
   it("preserves existing trigger descriptions when linking the tooltip", async () => {

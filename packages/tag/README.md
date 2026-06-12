@@ -71,16 +71,16 @@ export const TagExamples = () => (
 
 The main tag component with built-in interactive features.
 
-| Prop         | Type                | Default          | Description                         |
-| ------------ | ------------------- | ---------------- | ----------------------------------- |
-| `size`       | `"0" \| "1" \| "2"` | `"1"`            | Size of the tag                     |
-| `color`      | `TagColor`          | `"default"`      | Color scheme of the tag             |
-| `variant`    | `"soft" \| "solid"` | `"soft"`         | Visual style variant                |
-| `icon`       | `IconProps`         | `undefined`      | Icon to display at the start        |
-| `onRemove`   | `() => void`        | `undefined`      | Makes tag removable with X button   |
-| `onCopy`     | `(event: React.MouseEvent<HTMLButtonElement>) => void` | `undefined` | Adds copy button functionality |
-| `textToCopy` | `string`            | `undefined`      | Text to copy to clipboard |
-| `textProps`  | `TextProps`         | `{ maxW: "40" }` | Props passed to the text component  |
+| Prop         | Type                                                   | Default          | Description                        |
+| ------------ | ------------------------------------------------------ | ---------------- | ---------------------------------- |
+| `size`       | `"0" \| "1" \| "2"`                                    | `"1"`            | Size of the tag                    |
+| `color`      | `TagColor`                                             | `"default"`      | Color scheme of the tag            |
+| `variant`    | `"soft" \| "solid"`                                    | `"soft"`         | Visual style variant               |
+| `icon`       | `IconProps`                                            | `undefined`      | Icon to display at the start       |
+| `onRemove`   | `() => void`                                           | `undefined`      | Makes tag removable with X button  |
+| `onCopy`     | `(event: React.MouseEvent<HTMLButtonElement>) => void` | `undefined`      | Adds copy button functionality     |
+| `textToCopy` | `string`                                               | `undefined`      | Text to copy to clipboard          |
+| `textProps`  | `TextProps`                                            | `{ maxW: "40" }` | Props passed to the text component |
 
 #### TagColor Type
 
@@ -499,7 +499,7 @@ export const AnimatedTags = ({ tags, onRemove }) => (
 ### ARIA Attributes
 
 - Icons include proper `alt` attributes or `aria-hidden="true"`
-- Copy button includes tooltip with descriptive text
+- Copy button includes descriptive text through the Base UI-backed `@telegraph/tooltip` package
 - Remove button includes clear action description
 - Motion respects `prefers-reduced-motion` preference
 
@@ -539,19 +539,19 @@ Icon component with contextual styling.
 
 Remove button component.
 
-| Prop      | Type         | Default                     | Description               |
-| --------- | ------------ | --------------------------- | ------------------------- |
-| `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void` | - | Click handler for removal |
-| `icon`    | `IconProps`  | `{ icon: X, alt: "close" }` | Button icon configuration |
+| Prop      | Type                                                   | Default                     | Description               |
+| --------- | ------------------------------------------------------ | --------------------------- | ------------------------- |
+| `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void` | -                           | Click handler for removal |
+| `icon`    | `IconProps`                                            | `{ icon: X, alt: "close" }` | Button icon configuration |
 
 ### `<Tag.CopyButton>`
 
 Copy functionality button with animation.
 
-| Prop         | Type         | Default | Description               |
-| ------------ | ------------ | ------- | ------------------------- |
-| `onClick`    | `(event: React.MouseEvent<HTMLButtonElement>) => void` | - | Additional click handler |
-| `textToCopy` | `string`     | -       | Text to copy to clipboard |
+| Prop         | Type                                                   | Default | Description               |
+| ------------ | ------------------------------------------------------ | ------- | ------------------------- |
+| `onClick`    | `(event: React.MouseEvent<HTMLButtonElement>) => void` | -       | Additional click handler  |
+| `textToCopy` | `string`                                               | -       | Text to copy to clipboard |
 
 ## Examples
 

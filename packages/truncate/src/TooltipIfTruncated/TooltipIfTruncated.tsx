@@ -5,7 +5,7 @@ import {
 } from "@telegraph/helpers";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
-import { type ReactNode, type RefObject, isValidElement, useRef } from "react";
+import { type ReactNode, isValidElement, useRef } from "react";
 
 import { useTruncate } from "../useTruncate";
 
@@ -19,19 +19,16 @@ const TooltipIfTruncated = ({
   children,
   ...props
 }: TooltipIfTruncatedProps) => {
-  const truncateRef = useRef<HTMLButtonElement>(null);
-  const { truncated } = useTruncate(
-    { tgphRef: truncateRef as RefObject<HTMLElement> },
-    [children],
-  );
+  const truncateRef = useRef<HTMLElement>(null);
+  const { truncated } = useTruncate({ tgphRef: truncateRef }, [children]);
 
   const textToDisplayInTooltip = (() => {
+    if (label !== undefined) return label;
     if (typeof children === "string") return children;
     if (isValidElement(children)) {
       const childProps = children.props as Record<string, unknown>;
       return childProps.children;
     }
-    return label;
   })();
 
   return (
@@ -42,7 +39,7 @@ const TooltipIfTruncated = ({
         </Text>
       }
       enabled={truncated}
-      triggerRef={truncateRef as RefObject<HTMLButtonElement>}
+      triggerRef={truncateRef}
       {...props}
     >
       <RefToTgphRef>{children}</RefToTgphRef>

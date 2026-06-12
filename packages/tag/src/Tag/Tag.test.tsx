@@ -1,5 +1,6 @@
-import { render } from "@testing-library/react";
-import { describe, it } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Tag } from "./Tag";
@@ -21,6 +22,20 @@ describe("Tag", () => {
     );
     const results = await axe(container);
     expectToHaveNoViolations(results);
+  });
+
+  it("shows the copy affordance tooltip through the migrated Tooltip", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Tag size="2" color="default" onCopy={() => {}}>
+        Copyable
+      </Tag>,
+    );
+
+    await user.hover(screen.getByRole("button", { name: "Copy text" }));
+
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Copy text");
   });
 
   describe("type inheritance", () => {

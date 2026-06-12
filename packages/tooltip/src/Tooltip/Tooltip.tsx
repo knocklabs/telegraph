@@ -13,6 +13,7 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import {
   Children,
+  type ComponentPropsWithRef,
   type ComponentPropsWithoutRef,
   type ReactNode,
   type RefObject,
@@ -31,6 +32,9 @@ type BaseTooltipProviderProps = ComponentPropsWithoutRef<
   typeof BaseTooltip.Provider
 >;
 type BaseTooltipTriggerProps = ComponentPropsWithoutRef<
+  typeof BaseTooltip.Trigger
+>;
+type BaseTooltipTriggerPropsWithRef = ComponentPropsWithRef<
   typeof BaseTooltip.Trigger
 >;
 type BaseTooltipPortalProps = ComponentPropsWithoutRef<
@@ -72,17 +76,23 @@ type LegacyTooltipRootProps = Omit<
   open?: BaseTooltipRootProps["open"];
 };
 
-type LegacyTooltipPositionerProps = Omit<
-  BaseTooltipPositionerProps,
-  "children" | "className" | "render" | "style"
+type LegacyTooltipPositionerProps = Partial<
+  Omit<
+    BaseTooltipPositionerProps,
+    "align" | "children" | "className" | "render" | "side" | "style"
+  >
 > & {
+  align?: BaseTooltipPositionerProps["align"];
   avoidCollisions?: boolean;
   hideWhenDetached?: boolean;
+  side?: BaseTooltipPositionerProps["side"];
 };
 
-type LegacyTooltipPopupProps = Omit<
-  BaseTooltipPopupProps,
-  "children" | "className" | "render" | "style"
+type LegacyTooltipPopupProps = Partial<
+  Omit<
+    BaseTooltipPopupProps,
+    "align" | "children" | "className" | "render" | "side" | "style"
+  >
 > & {
   "aria-label"?: BaseTooltipPopupProps["aria-label"];
   forceMount?: BaseTooltipPortalProps["keepMounted"];
@@ -94,7 +104,7 @@ type LegacyTooltipPopupProps = Omit<
 
 export type TooltipBaseProps<T extends TgphElement = "div"> = {
   children?: ReactNode;
-  label: ReactNode;
+  label?: ReactNode;
   labelProps?: TgphComponentProps<typeof Stack<T>>;
   enabled?: boolean;
   asChild?: boolean;
@@ -103,7 +113,7 @@ export type TooltipBaseProps<T extends TgphElement = "div"> = {
   disableFocusOpen?: boolean;
   skipAnimation?: boolean;
   style?: TgphComponentProps<typeof Stack<T>>["style"];
-  triggerRef?: RefObject<HTMLButtonElement>;
+  triggerRef?: RefObject<HTMLElement | null>;
 };
 
 export type TooltipProps<T extends TgphElement = "div"> =
@@ -212,6 +222,8 @@ const Tooltip = <T extends TgphElement = "div">({
     [existingAriaDescribedBy, resolvedOpen ? tooltipId : undefined]
       .filter(Boolean)
       .join(" ") || undefined;
+  const resolvedTriggerRef =
+    triggerRef as BaseTooltipTriggerPropsWithRef["ref"];
 
   const handleOpenChange = useCallback<
     NonNullable<BaseTooltipRootProps["onOpenChange"]>
@@ -278,7 +290,7 @@ const Tooltip = <T extends TgphElement = "div">({
               data-state={triggerDataState}
               delay={derivedDelayDuration}
               onFocus={handleFocus}
-              ref={triggerRef}
+              ref={resolvedTriggerRef}
               render={createTgphBaseUIRender(
                 cloneElement(children, {
                   "aria-describedby": triggerAriaDescribedBy,
@@ -292,7 +304,7 @@ const Tooltip = <T extends TgphElement = "div">({
               data-state={triggerDataState}
               delay={derivedDelayDuration}
               onFocus={handleFocus}
-              ref={triggerRef}
+              ref={resolvedTriggerRef}
             >
               {children}
             </BaseTooltip.Trigger>
