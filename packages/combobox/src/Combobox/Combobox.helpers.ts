@@ -2,6 +2,10 @@ import React from "react";
 
 import type { DefinedOption, Option } from "./Combobox.types";
 
+export const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
+export const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
+export const SELECT_KEYS = ["Enter", " "];
+
 export const isMultiSelect = (
   value: Option | Array<Option> | undefined,
 ): value is Array<Option> => {
@@ -23,16 +27,18 @@ export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
     children: React.ReactNode,
     options: Array<React.ReactNode> = [],
   ) => {
+    // Options can be wrapped in grouping/layout components, so walk the child
+    // tree instead of assuming direct Combobox.Option children.
     const childrenArray = React.Children.toArray(children);
 
     childrenArray.forEach((child) => {
       if (React.isValidElement(child)) {
         const childProps = child.props as Record<string, unknown>;
         if (childProps.value) {
-          // If it has a value prop, it's an option
+          // Combobox.Option is identified by its public value prop.
           options.push(child);
         } else if (childProps.children) {
-          // If it has children, recursively search them
+          // Non-option wrappers may still contain options further down.
           recursivelyFindOptionElements(
             childProps.children as React.ReactNode,
             options,
@@ -69,10 +75,29 @@ export const getValueFromOption = (
   if (!option) return undefined;
 
   if (legacyBehavior === true) {
+    // Legacy callers store selected values as { value, label } objects.
     return (option as DefinedOption)?.value;
   }
 
+  // Newer callers store the selected value directly as a string.
   return option as string;
+};
+
+export const getOptionAccessibleLabel = (option?: DefinedOption) => {
+  if (!option) {
+    return undefined;
+  }
+
+  if (typeof option.label === "string" && option.label !== "") {
+    return option.label;
+  }
+
+  if (typeof option.label === "number" || typeof option.label === "bigint") {
+    // aria-label needs text; React labels fall back to value below.
+    return String(option.label);
+  }
+
+  return option.value;
 };
 
 export const getCurrentOption = (
@@ -103,6 +128,8 @@ export const doesOptionMatchSearchQuery = ({
   value,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
+  // Search both the option value and any rendered text because labels can be
+  // supplied through nested React children.
   const childStrings = findStringNodes(children);
 
   return (

@@ -1,12 +1,11 @@
-import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
+  VisuallyHidden,
+  useControllableState,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
@@ -21,6 +20,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type KeyboardEventHandler as ReactKeyboardEventHandler,
   type ReactNode,
+  type Ref,
   type RefObject,
   createContext,
   useCallback,
@@ -34,8 +34,12 @@ import {
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
+  FIRST_KEYS,
+  LAST_KEYS,
+  SELECT_KEYS,
   doesOptionMatchSearchQuery,
   getCurrentOption,
+  getOptionAccessibleLabel,
   getOptions,
   getValueFromOption,
   isMultiSelect,
@@ -48,26 +52,6 @@ import type {
   Option,
   SingleSelect,
 } from "./Combobox.types";
-
-const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
-const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
-const SELECT_KEYS = ["Enter", " "];
-
-export const getOptionAccessibleLabel = (option?: DefinedOption) => {
-  if (!option) {
-    return undefined;
-  }
-
-  if (typeof option.label === "string" && option.label !== "") {
-    return option.label;
-  }
-
-  if (typeof option.label === "number" || typeof option.label === "bigint") {
-    return String(option.label);
-  }
-
-  return option.value;
-};
 
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
@@ -91,10 +75,8 @@ export type RootProps<
   clearable?: boolean;
   disabled?: boolean;
   legacyBehavior?: LB;
-  /**
-   * The value to scroll to when the combobox opens, if no value is selected.
-   * Useful for long lists where you want to start at a specific position.
-   */
+  // The value to scroll to when the combobox opens if no value is selected.
+  // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
   children?: ReactNode;
 };
@@ -114,6 +96,7 @@ export const ComboboxContext = createContext<
     triggerRef?: RefObject<HTMLButtonElement>;
     searchRef?: RefObject<HTMLInputElement>;
     contentRef?: RefObject<HTMLDivElement>;
+    onEscapeKeyDown?: (event: KeyboardEvent) => void;
     options: Array<DefinedOption>;
     legacyBehavior: boolean;
     defaultScrollToValue?: string;
@@ -165,12 +148,16 @@ const Root = <
   }, [children]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+  // Keep open state controllable like the old menu-backed implementation while
+  // still allowing uncontrolled usage through defaultOpen.
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: defaultOpenProp ?? false,
     onChange: onOpenChangeProp,
   });
 
+  // The selected value can be a string, legacy option object, or array of
+  // either; this shared helper preserves that public contract.
   const [value, setValue] = useControllableState({
     prop: valueProp,
     defaultProp: defaultValueProp as O,
@@ -193,9 +180,8 @@ const Root = <
         contentId,
         triggerId,
         value,
-        // Need to cast this to avoid type errors
-        // because the type of onValueChange is not
-        // consistent with the value type
+        // Context consumers handle the runtime single/multi branches below, so
+        // expose one setter shape here and narrow it at the selection site.
         onValueChange: setValue as (value: Option | Array<Option>) => void,
         placeholder,
         open,
@@ -263,6 +249,8 @@ const Trigger = <V extends ChildrenValue>({
   >(() => {
     if (!context.value) return undefined;
     if (isSingleSelect(context.value)) {
+      // Convert the public selected value back to the option object so custom
+      // trigger render functions receive the same shape as before the rewrite.
       return getCurrentOption(
         context.value,
         context.options,
@@ -270,6 +258,8 @@ const Trigger = <V extends ChildrenValue>({
       );
     }
     if (isMultiSelect(context.value)) {
+      // Preserve array order from the selected value while resolving each entry
+      // against the current option list.
       return context.value.map((v) =>
         getCurrentOption(v, context.options, context.legacyBehavior),
       );
@@ -280,9 +270,13 @@ const Trigger = <V extends ChildrenValue>({
   const getAriaLabelString = useCallback(() => {
     if (!currentValue) return context.placeholder;
     if (isSingleSelect(currentValue)) {
+      // The visible option label may be a React node, so derive a text-only
+      // fallback before assigning it to aria-label.
       return getOptionAccessibleLabel(currentValue) || context.placeholder;
     }
     if (isMultiSelect(currentValue)) {
+      // Multi-select trigger text is rendered as tags; expose the same selected
+      // values as a comma-separated text label for assistive tech.
       return (
         currentValue
           .map((option) => getOptionAccessibleLabel(option))
@@ -311,6 +305,14 @@ const Trigger = <V extends ChildrenValue>({
         // Lets the user tab in and out of the combobox as usual
         if (event.key === "Tab") {
           event.stopPropagation();
+          return;
+        }
+
+        if (event.key === "Escape") {
+          event.stopPropagation();
+          event.preventDefault();
+          context.setOpen(false);
+          context.triggerRef?.current?.focus();
           return;
         }
 
@@ -379,11 +381,15 @@ export type ContentProps<T extends TgphElement = "div"> = TgphComponentProps<
 const Content = <T extends TgphElement = "div">({
   style,
   children,
+  onEscapeKeyDown,
   tgphRef,
   ...props
 }: ContentProps<T>) => {
   const context = useContext(ComboboxContext);
+  const { open, setOpen, triggerRef } = context;
   const hasInteractedOutside = useRef(false);
+  const handledEscapeKeyDownRef = useRef(false);
+  const handledEscapeKeyDownTimeoutRef = useRef<number | undefined>(undefined);
   const composedRef = useComposedRefs<unknown>(tgphRef, context.contentRef);
 
   const internalContentRef = useRef(null);
@@ -391,6 +397,53 @@ const Content = <T extends TgphElement = "div">({
   const [height, setHeight] = useState(0);
   const [initialAnimationComplete, setInitialAnimationComplete] =
     useState(false);
+
+  const markEscapeKeyDownHandled = useCallback(() => {
+    handledEscapeKeyDownRef.current = true;
+    window.clearTimeout(handledEscapeKeyDownTimeoutRef.current);
+    handledEscapeKeyDownTimeoutRef.current = window.setTimeout(() => {
+      handledEscapeKeyDownRef.current = false;
+    }, 0);
+  }, []);
+
+  const handleEscapeKeyDownEvent = useCallback(
+    (event: KeyboardEvent) => {
+      markEscapeKeyDownHandled();
+      event.stopPropagation();
+      onEscapeKeyDown?.(event);
+
+      if (event.defaultPrevented) {
+        return true;
+      }
+
+      if (open) {
+        event.preventDefault();
+        setOpen(false);
+        triggerRef?.current?.focus();
+      }
+
+      return true;
+    },
+    [markEscapeKeyDownHandled, onEscapeKeyDown, open, setOpen, triggerRef],
+  );
+
+  const handleEscapeKeyDown = (event: ReactKeyboardEvent) => {
+    if (event.key !== "Escape") {
+      return false;
+    }
+
+    const baseUIEvent = event as ReactKeyboardEvent & {
+      preventBaseUIHandler?: () => void;
+    };
+
+    baseUIEvent.preventBaseUIHandler?.();
+
+    if (event.defaultPrevented || event.nativeEvent.defaultPrevented) {
+      return true;
+    }
+
+    return handleEscapeKeyDownEvent(event.nativeEvent);
+  };
 
   const setHeightFromContent = useCallback(
     (element: Element) => {
@@ -414,7 +467,7 @@ const Content = <T extends TgphElement = "div">({
         setHeightFromContent(element);
       }
     });
-    // Attatch the observer once the initial animation completes
+    // Attach the observer once the initial animation completes
     // and the content ref is available
     if (internalContentRef.current && initialAnimationComplete) {
       observer.observe(internalContentRef.current);
@@ -434,32 +487,57 @@ const Content = <T extends TgphElement = "div">({
   // we add a timeout here to ensure that the DOM element has responded to
   // the state changes first
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (context.open) {
-      timeout = setTimeout(() => {
-        setHeightFromContent(internalContentRef.current as unknown as Element);
-      }, 10);
+    if (!context.open) {
+      return undefined;
     }
 
-    return () => timeout && clearTimeout(timeout);
+    const timeout = window.setTimeout(() => {
+      setHeightFromContent(internalContentRef.current as unknown as Element);
+    }, 10);
+
+    return () => window.clearTimeout(timeout);
   }, [context.open, setHeightFromContent]);
 
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(handledEscapeKeyDownTimeoutRef.current);
+    };
+  }, []);
+
+  const contentContext = {
+    ...context,
+    onEscapeKeyDown,
+  };
+
   return (
-    <DismissableLayer
-      onEscapeKeyDown={(event) => {
-        if (context.open) {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-          event.preventDefault();
-          context.setOpen(false);
-        }
-      }}
-    >
+    <ComboboxContext.Provider value={contentContext}>
       <TelegraphMenu.Content
         className="tgph"
         mt="1"
+        onEscapeKeyDown={(event: KeyboardEvent) => {
+          if (handledEscapeKeyDownRef.current) {
+            handledEscapeKeyDownRef.current = false;
+            return;
+          }
+
+          onEscapeKeyDown?.(event);
+
+          if (event.defaultPrevented) {
+            // Consumer escape handlers can keep the popup open.
+            return;
+          }
+
+          if (context.open) {
+            // Don't allow the event to bubble up outside of the menu
+            event.stopPropagation();
+            event.preventDefault();
+            context.setOpen(false);
+          }
+        }}
         onCloseAutoFocus={(event: Event) => {
           if (!hasInteractedOutside.current) {
+            // Menu close autofocus would otherwise move focus away from the
+            // combobox trigger after keyboard selection or Escape close.
             context.triggerRef?.current?.focus();
           }
 
@@ -489,10 +567,14 @@ const Content = <T extends TgphElement = "div">({
         tgphRef={composedRef}
         data-tgph-combobox-content
         data-tgph-combobox-content-open={context.open}
-        // Cancel out accessibility attirbutes related to aria menu
+        // Cancel out accessibility attributes related to aria menu
         role={undefined}
         aria-orientation={undefined}
         onKeyDown={(event: ReactKeyboardEvent) => {
+          if (handleEscapeKeyDown(event)) {
+            return;
+          }
+
           // Don't allow the event to bubble up outside of the menu
           event.stopPropagation();
 
@@ -506,6 +588,8 @@ const Content = <T extends TgphElement = "div">({
             document.activeElement === options?.[0] &&
             LAST_KEYS.includes(event.key)
           ) {
+            // Moving backward from the first option should return focus to search,
+            // matching the previous keyboard loop inside the combobox popup.
             context.searchRef?.current?.focus();
           }
         }}
@@ -514,7 +598,7 @@ const Content = <T extends TgphElement = "div">({
           {children}
         </Stack>
       </TelegraphMenu.Content>
-    </DismissableLayer>
+    </ComboboxContext.Provider>
   );
 };
 
@@ -530,7 +614,7 @@ const Options = <T extends TgphElement = "div">({
   const optionsRef = useRef<HTMLDivElement>(null);
   const composedRef = useComposedRefs<unknown>(tgphRef, optionsRef);
 
-  // Scroll to the selected option (or defaultScrollToValue) when the combobox opens
+  // Scroll to the selected option or defaultScrollToValue when the combobox opens.
   useEffect(() => {
     if (context.open && optionsRef.current) {
       // Small delay to ensure the DOM has rendered
@@ -541,7 +625,8 @@ const Options = <T extends TgphElement = "div">({
             ? getValueFromOption(context.value[0], context.legacyBehavior)
             : null;
 
-        // Use selected value if available, otherwise fall back to defaultScrollToValue
+        // Prefer the current selection, then fall back to the explicit initial
+        // scroll target for long lists.
         const valueToScrollTo = selectedValue ?? context.defaultScrollToValue;
 
         if (valueToScrollTo) {
@@ -596,8 +681,9 @@ const Options = <T extends TgphElement = "div">({
   );
 };
 
-export type OptionProps<T extends TgphElement = "button"> = TgphComponentProps<
-  typeof TelegraphMenu.Button<T>
+export type OptionProps<T extends TgphElement = "button"> = Omit<
+  TgphComponentProps<typeof TelegraphMenu.Button<T>>,
+  "label"
 > & {
   value: DefinedOption["value"];
   label?: DefinedOption["label"];
@@ -611,11 +697,18 @@ const Option = <T extends TgphElement>({
   onSelect,
   children,
   closeOnClick,
+  tgphRef,
   ...props
 }: OptionProps<T>) => {
   const context = useContext(ComboboxContext);
+  const { onEscapeKeyDown, setOpen, triggerRef } = context;
   const [isFocused, setIsFocused] = useState(false);
   const contextValue = context.value;
+  const optionRef = useRef<HTMLElement>(null);
+  const composedRef = useComposedRefs<HTMLElement>(
+    tgphRef as Ref<HTMLElement>,
+    optionRef,
+  );
 
   const isVisible =
     !context.searchQuery ||
@@ -631,25 +724,76 @@ const Option = <T extends TgphElement>({
       )
     : getValueFromOption(contextValue, context.legacyBehavior) === value;
 
-  const handleSelection = (event: Event | ReactKeyboardEvent) => {
-    // Don't allow the event to bubble up outside of the menu
-    event.stopPropagation();
+  useEffect(() => {
+    const option = optionRef.current;
+    if (!option) {
+      return undefined;
+    }
 
-    // Don't do anything if the key isn't a selection key
+    const handleOptionKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      event.stopPropagation();
+      onEscapeKeyDown?.(event);
+
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      event.preventDefault();
+      setOpen(false);
+      triggerRef?.current?.focus();
+    };
+
+    option.addEventListener("keydown", handleOptionKeyDown);
+
+    return () => {
+      option.removeEventListener("keydown", handleOptionKeyDown);
+    };
+  }, [onEscapeKeyDown, setOpen, triggerRef]);
+
+  const handleSelection = (event: Event | ReactKeyboardEvent) => {
     const keyboardEvent = event as ReactKeyboardEvent;
-    if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) return;
+    if (keyboardEvent.key === "Escape") {
+      event.stopPropagation();
+      context.onEscapeKeyDown?.(keyboardEvent.nativeEvent);
+
+      if (
+        event.defaultPrevented ||
+        keyboardEvent.nativeEvent.defaultPrevented
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      context.setOpen(false);
+      context.triggerRef?.current?.focus();
+      return;
+    }
+
+    if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) {
+      // Let non-selection keys bubble to the content layer so Escape dismissal
+      // and popup-level navigation shims still run from focused options.
+      return;
+    }
+
+    // Don't allow selection events to bubble up outside of the menu.
+    event.stopPropagation();
 
     // Don't bubble up the event
     event.preventDefault();
 
     if (context.closeOnSelect === true) {
+      // Close before emitting value changes so controlled callers see the old
+      // menu-backed ordering of open/value updates.
       context.setOpen(false);
     }
 
     if (onSelect) {
-      // Need to convert to non keyboard type event
-      // since onSelect is expecting a mouse event
-      // and we've handled the keyboard event already
+      // Menu onSelect receives an Event; keyboard selection is already handled
+      // here, so bridge the event shape for the public override callback.
       const onSelectEvent = event as unknown as Event;
       return onSelect(onSelectEvent);
     }
@@ -660,6 +804,7 @@ const Option = <T extends TgphElement>({
 
       // TODO: Remove this once { value, label } option is deprecated
       if (context.legacyBehavior === true) {
+        // Legacy single select still emits the option object shape.
         onValueChange?.({ value, label });
       } else {
         onValueChange?.(value);
@@ -676,13 +821,16 @@ const Option = <T extends TgphElement>({
         : [
             ...contextValue,
             // TODO: Remove this once { value, label } option is deprecated
+            // Preserve the legacy array item shape when that mode is enabled.
             context.legacyBehavior === true ? { value, label } : value,
           ];
 
       onValueChange?.(newValue);
     }
 
-    context.triggerRef?.current?.focus();
+    if (context.closeOnSelect === true) {
+      context.triggerRef?.current?.focus();
+    }
   };
 
   if (isVisible) {
@@ -705,6 +853,11 @@ const Option = <T extends TgphElement>({
         data-tgph-combobox-option-focused={isFocused}
         data-tgph-combobox-option-value={value}
         data-tgph-combobox-option-label={label}
+        tgphRef={
+          composedRef as TgphComponentProps<
+            typeof TelegraphMenu.Button<T>
+          >["tgphRef"]
+        }
         {...props}
       >
         {label || children || value}
@@ -735,11 +888,13 @@ const Search = ({
   useEffect(() => {
     const handleSearchKeyDown = (event: KeyboardEvent) => {
       if (FIRST_KEYS.includes(event.key)) {
+        // Arrowing down from the search input should transfer focus into the
+        // options list without scrolling the popup.
         context.contentRef?.current?.focus({ preventScroll: true });
       }
 
       if (event.key === "Escape") {
-        context.setOpen(false);
+        return;
       }
 
       event.stopPropagation();
@@ -757,11 +912,11 @@ const Search = ({
 
   return (
     <Box borderBottom="px" px="1" pb="1">
-      <VisuallyHidden.Root>
+      <VisuallyHidden>
         <Text as="label" htmlFor={id}>
           {label}
         </Text>
-      </VisuallyHidden.Root>
+      </VisuallyHidden>
       <TelegraphInput
         id={id}
         variant="ghost"
@@ -867,6 +1022,8 @@ const Create = <T extends TgphElement, LB extends boolean>({
   const variableAlreadyExists = useCallback(
     (searchQuery: string | undefined) => {
       if (!values || values?.length === 0) return false;
+      // Compare through getValueFromOption so create works for both string
+      // values and legacy { value, label } options.
       return values.some(
         (v) => getValueFromOption(v, legacyBehavior) === searchQuery,
       );
@@ -891,6 +1048,8 @@ const Create = <T extends TgphElement, LB extends boolean>({
 
             const create = onCreate as CreateProps<T, LB>["onCreate"];
 
+            // The conditional prop type keeps public APIs precise, but runtime
+            // creation narrows through the legacyBehavior branch above.
             create(value);
 
             context.setSearchQuery?.("");

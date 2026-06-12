@@ -59,6 +59,21 @@ export const SingleSelectExample = () => {
 
 ## API Reference
 
+## Implementation Notes
+
+Combobox keeps the existing Telegraph compound API while using the Base UI-backed
+Telegraph Menu primitives for popup positioning, portal rendering, dismissal,
+and focus restoration. The package no longer depends on Radix directly.
+
+The public value contracts remain unchanged: string values are the recommended
+mode, `legacyBehavior` still supports `{ value, label }` objects for backwards
+compatibility, and single- vs multi-select behavior is still inferred from the
+shape of `value` / `defaultValue`.
+
+When `closeOnSelect={false}`, the dropdown stays open after selection and focus
+remains on the selected option so keyboard users can continue through the list
+without returning to the trigger first.
+
 ### `<Combobox.Root>`
 
 The root component that manages the state and context for the combobox.
@@ -83,11 +98,11 @@ The root component that manages the state and context for the combobox.
 
 The button that triggers the combobox dropdown.
 
-| Prop          | Type                | Default     | Description            |
-| ------------- | ------------------- | ----------- | ---------------------- |
-| `size`        | `"0" \| "1" \| "2" \| "3"` | `"1"` | Size of the trigger    |
-| `placeholder` | `string`            | `undefined` | Placeholder text       |
-| `children`    | `ReactNode`         | `undefined` | Custom trigger content |
+| Prop          | Type                       | Default     | Description            |
+| ------------- | -------------------------- | ----------- | ---------------------- |
+| `size`        | `"0" \| "1" \| "2" \| "3"` | `"1"`       | Size of the trigger    |
+| `placeholder` | `string`                   | `undefined` | Placeholder text       |
+| `children`    | `ReactNode`                | `undefined` | Custom trigger content |
 
 ### Other Components
 
@@ -325,9 +340,9 @@ export const CustomTrigger = () => (
 
 Individual selectable option item.
 
-| Prop       | Type      | Default     | Description          |
-| ---------- | --------- | ----------- | -------------------- |
-| `value`    | `string`  | required    | Option value         |
+| Prop       | Type                  | Default     | Description          |
+| ---------- | --------------------- | ----------- | -------------------- |
+| `value`    | `string`              | required    | Option value         |
 | `label`    | `string \| ReactNode` | `undefined` | Display label        |
 | `selected` | `boolean \| null`     | `undefined` | Force selected state |
 
@@ -410,6 +425,7 @@ const [value, setValue] = useState<{ value: string; label?: string }>();
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/combobox)
+- [Base UI Menu](https://base-ui.com/react/components/menu/)
 - [ARIA Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
 
 ## Contributing
