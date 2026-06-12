@@ -46,6 +46,7 @@ This configuration provides optimized Vite settings specifically tailored for Te
 - **TypeScript Support**: Proper TypeScript configuration and path resolution
 - **Asset Handling**: Optimized asset processing and public path configuration
 - **Plugin Integration**: Pre-configured plugins for Telegraph development
+- **Dependency Externalization**: Package dependencies, peer dependencies, dev dependencies, and their subpath imports stay external in library builds
 
 ## API Reference
 

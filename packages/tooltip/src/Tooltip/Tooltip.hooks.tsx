@@ -1,11 +1,17 @@
-import React from "react";
+import {
+  type ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type TooltipGroupContextState = {
   groupOpen: boolean;
   setGroupOpen?: (open: boolean) => void;
 };
 
-const TooltipContext = React.createContext<TooltipGroupContextState>({
+const TooltipContext = createContext<TooltipGroupContextState>({
   groupOpen: false,
   setGroupOpen: () => {},
 });
@@ -16,31 +22,24 @@ type UseTooltipGroupParams = {
 };
 
 const useTooltipGroup = ({ open, delay = 600 }: UseTooltipGroupParams) => {
-  const context = React.useContext(TooltipContext);
+  const context = useContext(TooltipContext);
 
-  // If the open prop is set to true, we set the groupOpen state to true
-  // If the open prop is set to false, we set the groupOpen state to false after a delay
-  // to ensure that another tooltip is not opened while this one is closed.
-  React.useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (context.setGroupOpen) {
-      if (open === true) {
-        context.setGroupOpen(true);
-      }
-
-      if (open === false) {
-        timer = setTimeout(() => {
-          if (context.setGroupOpen) {
-            context.setGroupOpen(false);
-          }
-        }, delay);
-      }
+  useEffect(() => {
+    if (!context.setGroupOpen) {
+      return;
     }
 
+    if (open === true) {
+      context.setGroupOpen(true);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      context.setGroupOpen?.(false);
+    }, delay);
+
     return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
+      clearTimeout(timer);
     };
   }, [open, context, delay]);
 
@@ -50,11 +49,11 @@ const useTooltipGroup = ({ open, delay = 600 }: UseTooltipGroupParams) => {
 };
 
 type TooltipGroupProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const TooltipGroupProvider = ({ children }: TooltipGroupProviderProps) => {
-  const [groupOpen, setGroupOpen] = React.useState<boolean>(false);
+  const [groupOpen, setGroupOpen] = useState<boolean>(false);
 
   return (
     <TooltipContext.Provider value={{ groupOpen, setGroupOpen }}>
