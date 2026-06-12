@@ -1,9 +1,4 @@
-import * as Dialog from "@radix-ui/react-dialog";
-import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
-import { FocusScope } from "@radix-ui/react-focus-scope";
-import * as Portal from "@radix-ui/react-portal";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Button } from "@telegraph/button";
 import {
   type PolymorphicProps,
@@ -11,21 +6,73 @@ import {
   RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
+  VisuallyHidden,
+  createTgphBaseUIRender,
+  useControllableState,
 } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { Heading as TelegraphHeading } from "@telegraph/typography";
 import { X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
-import React from "react";
+import {
+  type ComponentProps,
+  type ComponentPropsWithoutRef,
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 
+import {
+  BASE_UI_DISMISS_REASONS,
+  type BaseUIPreventableEvent,
+  type LegacyContentCallbacks,
+  callAutoFocusHandler,
+  callLegacyDismissHandlers,
+  callLegacyEventHandler,
+} from "./Modal.helpers";
 import { useModalStacking } from "./ModalStacking";
 
-export type RootProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Dialog.Root>,
-  "modal"
-> &
-  React.ComponentPropsWithoutRef<typeof FocusScope> &
+type BaseDialogRootProps = ComponentProps<typeof BaseDialog.Root>;
+type BaseDialogPopupProps = ComponentPropsWithoutRef<typeof BaseDialog.Popup>;
+type BaseDialogCloseProps = ComponentPropsWithoutRef<typeof BaseDialog.Close>;
+
+type LegacyFocusScopeProps = {
+  loop?: boolean;
+  onMountAutoFocus?: (event: Event) => void;
+  onUnmountAutoFocus?: (event: Event) => void;
+  trapped?: boolean;
+};
+
+type ModalCompatibilityContextProps = {
+  contentCallbacksRef: {
+    current: LegacyContentCallbacks;
+  };
+  requestClose: () => void;
+  requestPointerDismiss: (event: BaseUIPreventableEvent) => void;
+  rootFocusCallbacksRef: {
+    current: Pick<
+      LegacyFocusScopeProps,
+      "onMountAutoFocus" | "onUnmountAutoFocus"
+    >;
+  };
+};
+
+type RootDialogProps = Pick<
+  BaseDialogRootProps,
+  "children" | "defaultOpen" | "open"
+> & {
+  onOpenChange?: (open: boolean) => void;
+};
+
+const ModalCompatibilityContext =
+  createContext<ModalCompatibilityContextProps | null>(null);
+
+export type RootProps = RootDialogProps &
+  LegacyFocusScopeProps &
   TgphComponentProps<typeof Stack> & {
     a11yTitle: string;
     a11yDescription?: string;
@@ -47,7 +94,7 @@ const Root = ({
   const stacking = useModalStacking();
   const id = props.a11yTitle;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!open && stacking.layers.includes(id)) {
       stacking.removeLayer(id);
     }
@@ -70,7 +117,7 @@ const RootComponent = ({
   a11yTitle,
   a11yDescription,
   children,
-  // Focus scope props
+  loop: _loop,
   trapped,
   onMountAutoFocus,
   onUnmountAutoFocus,
@@ -82,7 +129,18 @@ const RootComponent = ({
   // different modal rendering patterns.
   const id = a11yTitle;
   const stacking = useModalStacking();
-  React.useEffect(() => {
+  const contentCallbacksRef = useRef<LegacyContentCallbacks>({});
+  const suppressNextRootDismissRef = useRef(false);
+  const rootFocusCallbacksRef = useRef<
+    ModalCompatibilityContextProps["rootFocusCallbacksRef"]["current"]
+  >({});
+
+  rootFocusCallbacksRef.current = {
+    onMountAutoFocus,
+    onUnmountAutoFocus,
+  };
+
+  useEffect(() => {
     if (!stacking || !open || stacking.layers.includes(id)) return;
     stacking.addLayer(id);
   }, [id, stacking, open]);
@@ -90,117 +148,230 @@ const RootComponent = ({
   const layer = stacking.layers?.indexOf(id) || 0;
   const layersLength = stacking.layers?.length || 0;
   const isStacked = layer !== 0;
-  const isTopLayer = id === stacking.layers[stacking.layers.length - 1];
+  const isTopLayer =
+    layersLength === 0 || id === stacking.layers[stacking.layers.length - 1];
+  const trappedFocus = typeof trapped === "boolean" ? trapped : isTopLayer;
+  const requestClose = useCallback(() => {
+    const hasLayers = stacking?.layers?.length > 0;
+
+    if (hasLayers) {
+      if (id !== stacking.layers[stacking.layers.length - 1]) {
+        return;
+      }
+
+      stacking.removeLayer(id);
+      onOpenChange(false);
+      return;
+    }
+
+    onOpenChange(false);
+  }, [id, onOpenChange, stacking]);
+  const closeFromPointerDismiss = useCallback(
+    (event: BaseUIPreventableEvent) => {
+      const nativeEvent = (event.nativeEvent ?? event) as Event;
+      const callbacks = contentCallbacksRef.current;
+      const pointerDismissPrevented = callLegacyEventHandler(
+        callbacks.onPointerDownOutside,
+        nativeEvent as MouseEvent | PointerEvent | TouchEvent,
+      );
+      const interactDismissPrevented = callLegacyEventHandler(
+        callbacks.onInteractOutside,
+        nativeEvent,
+      );
+
+      if (
+        pointerDismissPrevented ||
+        interactDismissPrevented ||
+        event.defaultPrevented
+      ) {
+        event.preventDefault();
+        event.stopPropagation?.();
+        event.preventBaseUIHandler?.();
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation?.();
+      event.preventBaseUIHandler?.();
+      requestClose();
+    },
+    [requestClose],
+  );
+  const requestPointerDismiss = useCallback(
+    (event: BaseUIPreventableEvent) => {
+      const nativeEvent = (event.nativeEvent ?? event) as Event;
+
+      suppressNextRootDismissRef.current = true;
+
+      const hasLayers = stacking?.layers?.length > 0;
+
+      if (hasLayers && id !== stacking.layers[stacking.layers.length - 1]) {
+        stacking.layers
+          .filter(
+            (layerId) =>
+              layerId !== stacking.layers[stacking.layers.length - 1],
+          )
+          .forEach((layerId) => {
+            stacking.suppressNextDismissForLayer(layerId);
+          });
+        stacking.ignorePointerDismissEvent(nativeEvent);
+        stacking.dismissTopLayerWithPointer(nativeEvent);
+        event.preventDefault();
+        event.stopPropagation?.();
+        event.preventBaseUIHandler?.();
+        return;
+      }
+
+      closeFromPointerDismiss(event);
+    },
+    [closeFromPointerDismiss, id, stacking],
+  );
+
+  const handleOpenChange = useCallback<
+    NonNullable<BaseDialogRootProps["onOpenChange"]>
+  >(
+    (value, eventDetails) => {
+      if (!value && suppressNextRootDismissRef.current) {
+        suppressNextRootDismissRef.current = false;
+        eventDetails.cancel();
+        return;
+      }
+
+      if (
+        !value &&
+        eventDetails.reason === BASE_UI_DISMISS_REASONS.outsidePress &&
+        stacking.consumeSuppressedDismiss(id)
+      ) {
+        eventDetails.cancel();
+        return;
+      }
+
+      if (
+        !value &&
+        eventDetails.reason === BASE_UI_DISMISS_REASONS.outsidePress &&
+        stacking.shouldIgnorePointerDismissEvent(eventDetails.event)
+      ) {
+        eventDetails.cancel();
+        return;
+      }
+
+      if (
+        !value &&
+        callLegacyDismissHandlers(eventDetails, contentCallbacksRef.current)
+      ) {
+        eventDetails.cancel();
+        return;
+      }
+
+      const hasLayers = stacking?.layers?.length > 0;
+
+      if (hasLayers) {
+        if (
+          value === false &&
+          id === stacking.layers[stacking.layers.length - 1]
+        ) {
+          stacking.removeLayer(id);
+          onOpenChange(false);
+          return;
+        }
+
+        if (value === false) {
+          eventDetails.cancel();
+        }
+
+        return;
+      }
+
+      onOpenChange(value);
+    },
+    [id, onOpenChange, stacking],
+  );
+
+  useEffect(() => {
+    return stacking.registerPointerDismissHandler(id, closeFromPointerDismiss);
+  }, [closeFromPointerDismiss, id, stacking]);
 
   return (
     <LazyMotion features={domAnimation}>
-      <DismissableLayer
-        onEscapeKeyDown={(event) => {
-          if (!isTopLayer) return;
-          event.preventDefault();
-          stacking.removeTopLayer();
-          onOpenChange(false);
-        }}
-        onPointerDownOutside={(event) => {
-          if (!isTopLayer) return;
-          event.preventDefault();
-          stacking.removeTopLayer();
-          onOpenChange(false);
+      <ModalCompatibilityContext.Provider
+        value={{
+          contentCallbacksRef,
+          requestClose,
+          requestPointerDismiss,
+          rootFocusCallbacksRef,
         }}
       >
-        <Dialog.Root
+        <BaseDialog.Root
           open={open}
-          onOpenChange={(value) => {
-            const hasLayers = stacking?.layers?.length > 0;
-
-            if (hasLayers) {
-              if (
-                value === false &&
-                id === stacking.layers[stacking.layers.length - 1]
-              ) {
-                stacking.removeLayer(id);
-                return onOpenChange(false);
-              }
-              // If the modal is not the top layer, do not call onOpenChange
-              // when we are stacking the modals
-              return;
-            }
-
-            onOpenChange(value);
-          }}
+          onOpenChange={handleOpenChange}
+          modal={trappedFocus}
+          disablePointerDismissal={!isTopLayer}
           key={id}
         >
-          <VisuallyHidden.Root>
-            <Dialog.Title>{a11yTitle}</Dialog.Title>
+          <VisuallyHidden>
+            <BaseDialog.Title>{a11yTitle}</BaseDialog.Title>
             {a11yDescription && (
-              <Dialog.Description>{a11yDescription}</Dialog.Description>
+              <BaseDialog.Description>{a11yDescription}</BaseDialog.Description>
             )}
-          </VisuallyHidden.Root>
+          </VisuallyHidden>
           {open && (
             // We add the className "tgph" here so that styles within
             // the portal get scoped properly to telegraph
-            <Portal.Root className="tgph">
+            <BaseDialog.Portal className="tgph">
               <Overlay layer={layer}>
-                <FocusScope
-                  trapped={typeof trapped === "boolean" ? trapped : isTopLayer}
-                  onMountAutoFocus={onMountAutoFocus}
-                  onUnmountAutoFocus={onUnmountAutoFocus}
-                  asChild
-                >
-                  <RefToTgphRef>
+                <RefToTgphRef>
+                  <Stack
+                    as={motion.div}
+                    initial={{
+                      top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
+                    }}
+                    animate={{
+                      top: isStacked
+                        ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
+                        : "var(--tgph-spacing-16)",
+                    }}
+                    exit={{ top: 0 }}
+                    transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                    w="full"
+                    justify="center"
+                    style={{
+                      position: "fixed",
+                      left: 0,
+                      maxHeight: "calc(100vh - var(--tgph-spacing-32))",
+                      maxWidth: "calc(100vw - var(--tgph-spacing-8))",
+                      zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
+                    }}
+                    key={`container-${id}`}
+                  >
                     <Stack
                       as={motion.div}
-                      initial={{
-                        top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
-                      }}
+                      direction="column"
                       animate={{
-                        top: isStacked
-                          ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
-                          : "var(--tgph-spacing-16)",
+                        scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
+                        transformOrigin: "50% 50%",
                       }}
-                      exit={{ top: 0 }}
-                      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-                      w="full"
-                      justify="center"
-                      style={{
-                        position: "fixed",
-                        left: 0,
-                        maxHeight: "calc(100vh - var(--tgph-spacing-32))",
-                        maxWidth: "calc(100vw - var(--tgph-spacing-8))",
-                        zIndex: `calc(var(--tgph-zIndex-modal) + ${layer})`,
+                      transition={{
+                        duration: 0.2,
+                        bounce: 0,
+                        type: "spring",
                       }}
-                      key={`container-${id}`}
+                      maxW={props.maxW ?? "160"}
+                      w={props.w ?? "full"}
+                      bg="surface-1"
+                      rounded="4"
+                      shadow="3"
+                      key={`content-${id}`}
+                      {...props}
                     >
-                      <Stack
-                        direction="column"
-                        as={motion.div}
-                        animate={{
-                          scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
-                          transformOrigin: "center center",
-                        }}
-                        transition={{
-                          duration: 0.2,
-                          bounce: 0,
-                          type: "spring",
-                        }}
-                        maxW={props.maxW ?? "160"}
-                        w={props.w ?? "full"}
-                        bg="surface-1"
-                        rounded="4"
-                        shadow="3"
-                        key={`content-${id}`}
-                        {...props}
-                      >
-                        {children}
-                      </Stack>
+                      {children}
                     </Stack>
-                  </RefToTgphRef>
-                </FocusScope>
+                  </Stack>
+                </RefToTgphRef>
               </Overlay>
-            </Portal.Root>
+            </BaseDialog.Portal>
           )}
-        </Dialog.Root>
-      </DismissableLayer>
+        </BaseDialog.Root>
+      </ModalCompatibilityContext.Provider>
     </LazyMotion>
   );
 };
@@ -210,46 +381,129 @@ export type OverlayProps = TgphComponentProps<typeof Box> & {
 };
 
 const Overlay = ({ layer, children }: OverlayProps) => {
+  const compatibilityContext = useContext(ModalCompatibilityContext);
+
   // If the layer is greater than 0, we don't want to show this
   // overlay as to not stack the overlays on top of each other.
   if (layer > 0) return children;
+
   return (
-    <Dialog.Overlay>
-      <Box
-        as={motion.div}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, bounce: 0, type: "spring" }}
-        bg="alpha-black-6"
-        w="full"
-        h="full"
-        zIndex="overlay"
-        style={{
-          position: "fixed",
-          cursor: "pointer",
-          inset: "0px",
-        }}
+    <>
+      <BaseDialog.Backdrop
+        render={createTgphBaseUIRender(
+          <Box
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, bounce: 0, type: "spring" }}
+            bg="alpha-black-6"
+            w="full"
+            h="full"
+            zIndex="overlay"
+            data-tgph-modal-overlay
+            onPointerDownCapture={(event) => {
+              compatibilityContext?.requestPointerDismiss(event);
+            }}
+            style={{
+              position: "fixed",
+              cursor: "pointer",
+              inset: "0px",
+            }}
+          />,
+        )}
       />
       {children}
-    </Dialog.Overlay>
+    </>
   );
 };
 
-export type ContentProps = React.ComponentPropsWithoutRef<
-  typeof Dialog.Content
+export type ContentProps = Omit<
+  BaseDialogPopupProps,
+  "children" | "className" | "finalFocus" | "initialFocus" | "render" | "style"
 > &
+  LegacyContentCallbacks &
   TgphComponentProps<typeof Stack>;
-type ContentRef = React.ElementRef<typeof Dialog.Content>;
+type ContentRef = HTMLDivElement;
 
-const Content = React.forwardRef<ContentRef, ContentProps>(
-  ({ children, ...props }, forwardedRef) => {
+const Content = forwardRef<ContentRef, ContentProps>(
+  (
+    {
+      children,
+      onCloseAutoFocus,
+      onEscapeKeyDown,
+      onFocusOutside,
+      onInteractOutside,
+      onOpenAutoFocus,
+      onPointerDownOutside,
+      ...props
+    },
+    forwardedRef,
+  ) => {
+    const compatibilityContext = useContext(ModalCompatibilityContext);
+    const resolvedInitialFocus = useCallback(() => {
+      const rootFocusPrevented = callAutoFocusHandler(
+        compatibilityContext?.rootFocusCallbacksRef.current.onMountAutoFocus,
+        "mountAutoFocus",
+      );
+      const contentFocusPrevented = callAutoFocusHandler(
+        onOpenAutoFocus,
+        "openAutoFocus",
+      );
+
+      return rootFocusPrevented || contentFocusPrevented ? false : true;
+    }, [compatibilityContext, onOpenAutoFocus]);
+    const resolvedFinalFocus = useCallback(() => {
+      const rootFocusPrevented = callAutoFocusHandler(
+        compatibilityContext?.rootFocusCallbacksRef.current.onUnmountAutoFocus,
+        "unmountAutoFocus",
+      );
+      const contentFocusPrevented = callAutoFocusHandler(
+        onCloseAutoFocus,
+        "closeAutoFocus",
+      );
+
+      return rootFocusPrevented || contentFocusPrevented ? false : true;
+    }, [compatibilityContext, onCloseAutoFocus]);
+
+    useEffect(() => {
+      if (!compatibilityContext) {
+        return;
+      }
+
+      compatibilityContext.contentCallbacksRef.current = {
+        onCloseAutoFocus,
+        onEscapeKeyDown,
+        onFocusOutside,
+        onInteractOutside,
+        onOpenAutoFocus,
+        onPointerDownOutside,
+      };
+
+      return () => {
+        compatibilityContext.contentCallbacksRef.current = {};
+      };
+    }, [
+      compatibilityContext,
+      onCloseAutoFocus,
+      onEscapeKeyDown,
+      onFocusOutside,
+      onInteractOutside,
+      onOpenAutoFocus,
+      onPointerDownOutside,
+    ]);
+
     return (
-      <Dialog.Content ref={forwardedRef} asChild {...props}>
-        <Stack direction="column" h="full" {...props}>
-          {children}
-        </Stack>
-      </Dialog.Content>
+      <BaseDialog.Popup
+        ref={forwardedRef}
+        initialFocus={resolvedInitialFocus}
+        finalFocus={resolvedFinalFocus}
+        render={createTgphBaseUIRender(
+          <Stack direction="column" h="full" {...props}>
+            {children}
+          </Stack>,
+        )}
+      />
     );
   },
 );
@@ -257,21 +511,44 @@ const Content = React.forwardRef<ContentRef, ContentProps>(
 export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof Button<T>
 > &
-  Omit<React.ComponentPropsWithoutRef<typeof Dialog.Close>, "color">;
+  Omit<BaseDialogCloseProps, "children" | "color" | "render">;
 const Close = <T extends TgphElement = "button">({
+  disabled,
+  onClick,
   size = "1",
   variant = "ghost",
   ...props
 }: CloseProps<T>) => {
+  const compatibilityContext = useContext(ModalCompatibilityContext);
+  const handleClick = useCallback(
+    (event: BaseUIPreventableEvent) => {
+      onClick?.(event);
+
+      if (event.defaultPrevented) {
+        event.preventBaseUIHandler?.();
+        return;
+      }
+
+      event.preventBaseUIHandler?.();
+      compatibilityContext?.requestClose();
+    },
+    [compatibilityContext, onClick],
+  );
+
   return (
-    <Dialog.Close asChild>
-      <Button
-        icon={{ icon: X, alt: "Close Modal" }}
-        variant={variant}
-        size={size}
-        {...props}
-      />
-    </Dialog.Close>
+    <BaseDialog.Close
+      disabled={disabled}
+      render={createTgphBaseUIRender(
+        <Button
+          disabled={disabled}
+          icon={{ icon: X, alt: "Close Modal" }}
+          onClick={handleClick}
+          variant={variant}
+          size={size}
+          {...props}
+        />,
+      )}
+    />
   );
 };
 
@@ -357,14 +634,14 @@ const Heading = <T extends TgphElement = "h2">({
   weight = "medium",
   ...props
 }: HeadingProps<T>) => {
-  return (
-    <TelegraphHeading
-      as={(as || "h2") as T}
-      size={size}
-      weight={weight}
-      {...props}
-    />
-  );
+  const headingProps = {
+    as: (as || "h2") as T,
+    size,
+    weight,
+    ...props,
+  } as TgphComponentProps<typeof TelegraphHeading<T>>;
+
+  return <TelegraphHeading {...headingProps} />;
 };
 
 const Modal = {} as {
