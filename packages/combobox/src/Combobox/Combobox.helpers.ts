@@ -1,4 +1,9 @@
-import React from "react";
+import {
+  Children,
+  type ReactElement,
+  type ReactNode,
+  isValidElement,
+} from "react";
 
 import type { DefinedOption, Option } from "./Combobox.types";
 
@@ -18,15 +23,15 @@ export const isSingleSelect = (
   );
 };
 
-export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
+export const getOptions = (children: ReactNode): Array<DefinedOption> => {
   const recursivelyFindOptionElements = (
-    children: React.ReactNode,
-    options: Array<React.ReactNode> = [],
+    children: ReactNode,
+    options: Array<ReactNode> = [],
   ) => {
-    const childrenArray = React.Children.toArray(children);
+    const childrenArray = Children.toArray(children);
 
     childrenArray.forEach((child) => {
-      if (React.isValidElement(child)) {
+      if (isValidElement(child)) {
         const childProps = child.props as Record<string, unknown>;
         if (childProps.value) {
           // If it has a value prop, it's an option
@@ -34,7 +39,7 @@ export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
         } else if (childProps.children) {
           // If it has children, recursively search them
           recursivelyFindOptionElements(
-            childProps.children as React.ReactNode,
+            childProps.children as ReactNode,
             options,
           );
         }
@@ -47,10 +52,10 @@ export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
   const optionElements = recursivelyFindOptionElements(children);
 
   const options = optionElements.map((_element) => {
-    const element = _element as React.ReactElement<{
+    const element = _element as ReactElement<{
       value: string;
-      label?: string | React.ReactNode;
-      children?: React.ReactNode;
+      label?: string | ReactNode;
+      children?: ReactNode;
     }>;
     return {
       value: element.props.value,
@@ -92,8 +97,24 @@ export const getCurrentOption = (
   return foundOption;
 };
 
+export const getOptionAccessibleLabel = (option?: DefinedOption) => {
+  if (!option) {
+    return undefined;
+  }
+
+  if (
+    typeof option.label === "string" ||
+    typeof option.label === "number" ||
+    typeof option.label === "bigint"
+  ) {
+    return String(option.label);
+  }
+
+  return option.value;
+};
+
 type DoesOptionMatchSearchQueryProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   value?: string;
   searchQuery: string;
 };
@@ -114,8 +135,8 @@ export const doesOptionMatchSearchQuery = ({
 };
 
 // Exported for testing
-export const findStringNodes = (children: React.ReactNode): string[] => {
-  const childrenArray = React.Children.toArray(children);
+export const findStringNodes = (children: ReactNode): string[] => {
+  const childrenArray = Children.toArray(children);
   const strNodes: string[] = [];
 
   childrenArray.forEach((child) => {
@@ -123,12 +144,10 @@ export const findStringNodes = (children: React.ReactNode): string[] => {
       strNodes.push(child);
     }
 
-    if (React.isValidElement(child)) {
+    if (isValidElement(child)) {
       const childProps = child.props as Record<string, unknown>;
       if (childProps.children) {
-        strNodes.push(
-          ...findStringNodes(childProps.children as React.ReactNode),
-        );
+        strNodes.push(...findStringNodes(childProps.children as ReactNode));
       }
     }
   });

@@ -1,11 +1,11 @@
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+import { useState } from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Combobox } from "./Combobox";
-import { findStringNodes } from "./Combobox.helpers";
+import { findStringNodes, getOptionAccessibleLabel } from "./Combobox.helpers";
 import type { ComboboxContentProps, ComboboxOptionsProps } from "./index";
 
 type Option = { value: string; label?: string };
@@ -29,7 +29,7 @@ const queryPortalElements = (selector: string) =>
   document.querySelectorAll(selector);
 
 const ComboboxSingleSelect = ({ ...props }) => {
-  const [value, setValue] = React.useState<string>(values[0]!);
+  const [value, setValue] = useState<string>(values[0]!);
   return (
     <Combobox.Root value={value} onValueChange={setValue} {...props}>
       <Combobox.Trigger />
@@ -48,10 +48,7 @@ const ComboboxSingleSelect = ({ ...props }) => {
 };
 
 const ComboboxMultiSelect = () => {
-  const [value, setValue] = React.useState<Array<string>>([
-    values[0]!,
-    values[1]!,
-  ]);
+  const [value, setValue] = useState<Array<string>>([values[0]!, values[1]!]);
   return (
     <Combobox.Root value={value} onValueChange={setValue}>
       <Combobox.Trigger />
@@ -71,7 +68,7 @@ const ComboboxMultiSelect = () => {
 };
 
 const CustomTriggerCombobox = () => {
-  const [value, setValue] = React.useState<Option>(valuesLegacy[0]!);
+  const [value, setValue] = useState<Option>(valuesLegacy[0]!);
   return (
     <Combobox.Root value={value} onValueChange={setValue} legacyBehavior={true}>
       <Combobox.Trigger>
@@ -90,6 +87,40 @@ const CustomTriggerCombobox = () => {
     </Combobox.Root>
   );
 };
+
+const ControlledOpenCombobox = ({
+  onOpenChange,
+}: {
+  onOpenChange?: (open: boolean) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  };
+
+  return (
+    <div>
+      <button data-testid="open-combobox" onClick={() => setOpen(true)}>
+        Open combobox
+      </button>
+      <Combobox.Root open={open} onOpenChange={handleOpenChange}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {values.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {labels[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>
+    </div>
+  );
+};
+
 describe("Combobox", () => {
   describe("Single Select", () => {
     it("combobox is accessible", async () => {
@@ -334,6 +365,53 @@ describe("Combobox", () => {
       expect(options.length).toBe(1);
     });
 
+    it("keeps focus on the selected option when closeOnSelect is false", async () => {
+      const user = userEvent.setup();
+
+      const StayOpenMultiSelect = () => {
+        const [value, setValue] = useState<Array<string>>([values[0]!]);
+
+        return (
+          <Combobox.Root
+            closeOnSelect={false}
+            value={value}
+            onValueChange={setValue}
+          >
+            <Combobox.Trigger />
+            <Combobox.Content>
+              <Combobox.Search />
+              <Combobox.Options>
+                {values.map((option, index) => (
+                  <Combobox.Option key={option} value={option}>
+                    {labels[index]}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Options>
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container } = render(<StayOpenMultiSelect />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+
+      const getSmsOption = () =>
+        Array.from(queryPortalElements("[data-tgph-combobox-option]")).find(
+          (option) => option.textContent === "SMS",
+        ) as HTMLElement | undefined;
+
+      await user.click(getSmsOption()!);
+
+      await waitFor(() => expect(trigger?.textContent).toBe("EmailSMS"));
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+      expect(getSmsOption()).toHaveFocus();
+    });
+
     it("empty state should show when there are no results", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxMultiSelect />);
@@ -439,6 +517,95 @@ describe("Combobox", () => {
       expect(isOpen).toBe(wasOpen);
     });
   });
+
+  describe("open state", () => {
+    it("supports controlled open state", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      const { container, getByTestId } = render(
+        <ControlledOpenCombobox onOpenChange={onOpenChange} />,
+      );
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      expect(trigger?.getAttribute("aria-expanded")).toBe("false");
+
+      await user.click(getByTestId("open-combobox"));
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
+      );
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+    });
+
+    it("keeps the combobox open when escape dismissal is prevented", async () => {
+      const user = userEvent.setup();
+      const onEscapeKeyDown = vi.fn((event: KeyboardEvent) => {
+        event.preventDefault();
+      });
+      const { container } = render(
+        <Combobox.Root>
+          <Combobox.Trigger />
+          <Combobox.Content onEscapeKeyDown={onEscapeKeyDown}>
+            <Combobox.Options>
+              {values.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {labels[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>,
+      );
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+
+      await user.keyboard("[Escape]");
+
+      expect(onEscapeKeyDown).toHaveBeenCalledTimes(1);
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("keeps the combobox open when search escape dismissal is prevented", async () => {
+      const user = userEvent.setup();
+      const onEscapeKeyDown = vi.fn((event: KeyboardEvent) => {
+        event.preventDefault();
+      });
+      const { container } = render(
+        <Combobox.Root>
+          <Combobox.Trigger />
+          <Combobox.Content onEscapeKeyDown={onEscapeKeyDown}>
+            <Combobox.Search />
+            <Combobox.Options>
+              {values.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {labels[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>,
+      );
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+
+      await user.keyboard("[Escape]");
+
+      expect(onEscapeKeyDown).toHaveBeenCalledTimes(1);
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true");
+    });
+  });
 });
 
 const valuesLegacy: Array<Option> = [
@@ -450,7 +617,7 @@ const valuesLegacy: Array<Option> = [
 ];
 
 const ComboboxSingleSelectLegacy = ({ ...props }) => {
-  const [value, setValue] = React.useState<Option>(valuesLegacy[0]!);
+  const [value, setValue] = useState<Option>(valuesLegacy[0]!);
   return (
     <Combobox.Root
       value={value}
@@ -471,7 +638,7 @@ const ComboboxSingleSelectLegacy = ({ ...props }) => {
   );
 };
 const ComboboxMultiSelectLegacy = () => {
-  const [value, setValue] = React.useState<Array<Option>>([
+  const [value, setValue] = useState<Array<Option>>([
     valuesLegacy[0]!,
     valuesLegacy[1]!,
   ]);
@@ -713,6 +880,28 @@ describe("findStringNodes", () => {
       </p>
     );
     expect(findStringNodes(node)).toStrictEqual(["Lorem", "ipsum", "dolor"]);
+  });
+});
+
+describe("getOptionAccessibleLabel", () => {
+  it("returns undefined when no option is provided", () => {
+    expect(getOptionAccessibleLabel()).toBeUndefined();
+  });
+
+  it("uses text-like labels as the accessible label", () => {
+    expect(getOptionAccessibleLabel({ value: "email", label: "Email" })).toBe(
+      "Email",
+    );
+    expect(getOptionAccessibleLabel({ value: "sms", label: 123 })).toBe("123");
+  });
+
+  it("falls back to the option value for non-text labels", () => {
+    expect(
+      getOptionAccessibleLabel({
+        value: "push",
+        label: <span>Push</span>,
+      }),
+    ).toBe("push");
   });
 });
 
@@ -999,7 +1188,7 @@ const ComboboxWithDefaultScrollToValue = ({
   defaultScrollToValue: string;
 }) => {
   const years = Array.from({ length: 101 }, (_, i) => String(1960 + i));
-  const [value, setValue] = React.useState<string | undefined>(undefined);
+  const [value, setValue] = useState<string | undefined>(undefined);
 
   return (
     <Combobox.Root
@@ -1106,7 +1295,7 @@ const ControlledComboboxWrapper = ({
   initialValue: string;
   onValueChange?: (value: string) => void;
 }) => {
-  const [value, setValue] = React.useState(initialValue);
+  const [value, setValue] = useState(initialValue);
 
   const handleValueChange = (newValue: string) => {
     setValue(newValue);

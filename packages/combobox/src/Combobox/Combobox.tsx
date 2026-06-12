@@ -1,12 +1,11 @@
-import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
+  VisuallyHidden,
+  useControllableState,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
@@ -36,6 +35,7 @@ import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
   doesOptionMatchSearchQuery,
   getCurrentOption,
+  getOptionAccessibleLabel,
   getOptions,
   getValueFromOption,
   isMultiSelect,
@@ -52,22 +52,6 @@ import type {
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 const SELECT_KEYS = ["Enter", " "];
-
-const getOptionAccessibleLabel = (option?: DefinedOption) => {
-  if (!option) {
-    return undefined;
-  }
-
-  if (
-    typeof option.label === "string" ||
-    typeof option.label === "number" ||
-    typeof option.label === "bigint"
-  ) {
-    return String(option.label);
-  }
-
-  return option.value;
-};
 
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
@@ -167,14 +151,14 @@ const Root = <
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpenProp ?? false,
     onChange: onOpenChangeProp,
+    defaultProp: defaultOpenProp ?? false,
   });
 
-  const [value, setValue] = useControllableState({
+  const [value, setValue] = useControllableState<O | undefined>({
     prop: valueProp,
-    defaultProp: defaultValueProp as O,
-    onChange: onValueChangeProp as (value: O) => void,
+    onChange: onValueChangeProp as (value: O | undefined) => void,
+    defaultProp: defaultValueProp as O | undefined,
   });
 
   const onOpenToggle = useCallback(() => {
@@ -380,6 +364,7 @@ const Content = <T extends TgphElement = "div">({
   style,
   children,
   tgphRef,
+  onEscapeKeyDown,
   ...props
 }: ContentProps<T>) => {
   const context = useContext(ComboboxContext);
@@ -409,12 +394,12 @@ const Content = <T extends TgphElement = "div">({
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
+      entries.forEach((entry) => {
         const element = entry.target;
         setHeightFromContent(element);
-      }
+      });
     });
-    // Attatch the observer once the initial animation completes
+    // Attach the observer once the initial animation completes
     // and the content ref is available
     if (internalContentRef.current && initialAnimationComplete) {
       observer.observe(internalContentRef.current);
@@ -434,19 +419,37 @@ const Content = <T extends TgphElement = "div">({
   // we add a timeout here to ensure that the DOM element has responded to
   // the state changes first
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (context.open) {
-      timeout = setTimeout(() => {
-        setHeightFromContent(internalContentRef.current as unknown as Element);
-      }, 10);
+    if (!context.open) {
+      return undefined;
     }
 
-    return () => timeout && clearTimeout(timeout);
+    const timeout = window.setTimeout(() => {
+      setHeightFromContent(internalContentRef.current as unknown as Element);
+    }, 10);
+
+    return () => window.clearTimeout(timeout);
   }, [context.open, setHeightFromContent]);
 
   return (
-    <DismissableLayer
-      onEscapeKeyDown={(event) => {
+    <TelegraphMenu.Content
+      className="tgph"
+      mt="1"
+      onCloseAutoFocus={(event: Event) => {
+        if (!hasInteractedOutside.current) {
+          context.triggerRef?.current?.focus();
+        }
+
+        hasInteractedOutside.current = false;
+
+        event.preventDefault();
+      }}
+      onEscapeKeyDown={(event: KeyboardEvent) => {
+        onEscapeKeyDown?.(event);
+
+        if (event.defaultPrevented) {
+          return;
+        }
+
         if (context.open) {
           // Don't allow the event to bubble up outside of the menu
           event.stopPropagation();
@@ -454,67 +457,52 @@ const Content = <T extends TgphElement = "div">({
           context.setOpen(false);
         }
       }}
+      bg="surface-1"
+      style={{
+        width: "var(--tgph-combobox-trigger-width)",
+        transition: "min-height 200ms ease-in-out",
+        minHeight: height ? `${height}px` : "0",
+        ...style,
+        ...{
+          "--tgph-combobox-content-transform-origin":
+            "var(--radix-popper-transform-origin)",
+          "--tgph-combobox-content-available-width":
+            "var(--radix-popper-available-width)",
+          "--tgph-combobox-content-available-height":
+            "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
+          "--tgph-combobox-trigger-width": "var(--radix-popper-anchor-width)",
+          "--tgph-combobox-trigger-height": "var(--radix-popper-anchor-height)",
+        },
+      }}
+      {...props}
+      tgphRef={composedRef}
+      data-tgph-combobox-content
+      data-tgph-combobox-content-open={context.open}
+      // Cancel out accessibility attributes related to aria menu
+      role={undefined}
+      aria-orientation={undefined}
+      onKeyDown={(event: ReactKeyboardEvent) => {
+        // Don't allow the event to bubble up outside of the menu
+        event.stopPropagation();
+
+        // If the first option is focused and the user presses the up
+        // arrow key, focus the search input
+        const options = context.contentRef?.current?.querySelectorAll(
+          "[data-tgph-combobox-option]",
+        );
+
+        if (
+          document.activeElement === options?.[0] &&
+          LAST_KEYS.includes(event.key)
+        ) {
+          context.searchRef?.current?.focus();
+        }
+      }}
     >
-      <TelegraphMenu.Content
-        className="tgph"
-        mt="1"
-        onCloseAutoFocus={(event: Event) => {
-          if (!hasInteractedOutside.current) {
-            context.triggerRef?.current?.focus();
-          }
-
-          hasInteractedOutside.current = false;
-
-          event.preventDefault();
-        }}
-        bg="surface-1"
-        style={{
-          width: "var(--tgph-combobox-trigger-width)",
-          transition: "min-height 200ms ease-in-out",
-          minHeight: height ? `${height}px` : "0",
-          ...style,
-          ...{
-            "--tgph-combobox-content-transform-origin":
-              "var(--radix-popper-transform-origin)",
-            "--tgph-combobox-content-available-width":
-              "var(--radix-popper-available-width)",
-            "--tgph-combobox-content-available-height":
-              "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-            "--tgph-combobox-trigger-width": "var(--radix-popper-anchor-width)",
-            "--tgph-combobox-trigger-height":
-              "var(--radix-popper-anchor-height)",
-          },
-        }}
-        {...props}
-        tgphRef={composedRef}
-        data-tgph-combobox-content
-        data-tgph-combobox-content-open={context.open}
-        // Cancel out accessibility attirbutes related to aria menu
-        role={undefined}
-        aria-orientation={undefined}
-        onKeyDown={(event: ReactKeyboardEvent) => {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-
-          // If the first option is focused and the user presses the up
-          // arrow key, focus the search input
-          const options = context.contentRef?.current?.querySelectorAll(
-            "[data-tgph-combobox-option]",
-          );
-
-          if (
-            document.activeElement === options?.[0] &&
-            LAST_KEYS.includes(event.key)
-          ) {
-            context.searchRef?.current?.focus();
-          }
-        }}
-      >
-        <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-          {children}
-        </Stack>
-      </TelegraphMenu.Content>
-    </DismissableLayer>
+      <Stack direction="column" gap="1" tgphRef={internalContentRef}>
+        {children}
+      </Stack>
+    </TelegraphMenu.Content>
   );
 };
 
@@ -641,7 +629,9 @@ const Option = <T extends TgphElement>({
     // Don't bubble up the event
     event.preventDefault();
 
-    if (context.closeOnSelect === true) {
+    const shouldRestoreFocusToTrigger = context.closeOnSelect === true;
+
+    if (shouldRestoreFocusToTrigger) {
       context.setOpen(false);
     }
 
@@ -681,7 +671,9 @@ const Option = <T extends TgphElement>({
       onValueChange?.(newValue);
     }
 
-    context.triggerRef?.current?.focus();
+    if (shouldRestoreFocusToTrigger) {
+      context.triggerRef?.current?.focus();
+    }
   };
 
   if (isVisible) {
@@ -737,7 +729,7 @@ const Search = ({
       }
 
       if (event.key === "Escape") {
-        context.setOpen(false);
+        return;
       }
 
       event.stopPropagation();
@@ -755,11 +747,11 @@ const Search = ({
 
   return (
     <Box borderBottom="px" px="1" pb="1">
-      <VisuallyHidden.Root>
+      <VisuallyHidden>
         <Text as="label" htmlFor={id}>
           {label}
         </Text>
-      </VisuallyHidden.Root>
+      </VisuallyHidden>
       <TelegraphInput
         id={id}
         variant="ghost"

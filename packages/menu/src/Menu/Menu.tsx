@@ -460,6 +460,7 @@ const Content = <T extends TgphElement = "div">({
               py={py}
               shadow={shadow}
               style={{
+                outline: "none",
                 overflowY: "auto",
                 transformOrigin: "var(--transform-origin)",
                 ...RADIX_POPPER_COMPATIBILITY_VARS,
@@ -527,6 +528,9 @@ const Button = <T extends TgphElement = "button">({
   const nativeKeyboardSelectionPendingRef = useRef(false);
   const preventNextKeyboardCloseRef = useRef(false);
   const reactKeyboardSelectionHandledRef = useRef(false);
+  const fallbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
   const composedTgphRef = composeRefs(
     tgphRef as Ref<HTMLElement> | undefined,
     itemRef,
@@ -539,16 +543,17 @@ const Button = <T extends TgphElement = "button">({
       return;
     }
 
-    let fallbackTimeout: ReturnType<typeof setTimeout> | undefined;
     const resetNativeKeyboardState = () => {
       nativeKeyboardClickHandledRef.current = false;
       nativeKeyboardSelectionPendingRef.current = false;
       reactKeyboardSelectionHandledRef.current = false;
     };
     const clearFallbackTimeout = () => {
-      if (fallbackTimeout !== undefined) {
-        item.ownerDocument.defaultView?.clearTimeout(fallbackTimeout);
-        fallbackTimeout = undefined;
+      if (fallbackTimeoutRef.current !== undefined) {
+        item.ownerDocument.defaultView?.clearTimeout(
+          fallbackTimeoutRef.current,
+        );
+        fallbackTimeoutRef.current = undefined;
       }
     };
     const handleNativeKeyDown = (event: KeyboardEvent) => {
@@ -567,24 +572,27 @@ const Button = <T extends TgphElement = "button">({
       }
 
       clearFallbackTimeout();
-      fallbackTimeout = item.ownerDocument.defaultView?.setTimeout(() => {
-        if (
-          reactKeyboardSelectionHandledRef.current ||
-          nativeKeyboardClickHandledRef.current
-        ) {
+      fallbackTimeoutRef.current = item.ownerDocument.defaultView?.setTimeout(
+        () => {
+          if (
+            reactKeyboardSelectionHandledRef.current ||
+            nativeKeyboardClickHandledRef.current
+          ) {
+            resetNativeKeyboardState();
+            return;
+          }
+
+          if (onSelect) {
+            onSelect(event);
+            ignoreNextKeyboardClickRef.current = true;
+            preventNextKeyboardCloseRef.current = event.defaultPrevented;
+          }
+
+          item.click();
           resetNativeKeyboardState();
-          return;
-        }
-
-        if (onSelect) {
-          onSelect(event);
-          ignoreNextKeyboardClickRef.current = true;
-          preventNextKeyboardCloseRef.current = event.defaultPrevented;
-        }
-
-        item.click();
-        resetNativeKeyboardState();
-      }, 0);
+        },
+        0,
+      );
     };
 
     item.addEventListener("keydown", handleNativeKeyDown);
@@ -664,6 +672,7 @@ const Button = <T extends TgphElement = "button">({
           disabled={disabled}
           mx={mx}
           style={{
+            outline: "none",
             flexShrink: 0,
             ...menuItemProps.style,
           }}
@@ -756,6 +765,7 @@ const SubTrigger = <T extends TgphElement = "button">({
           disabled={disabled}
           mx={mx}
           style={{
+            outline: "none",
             flexShrink: 0,
             ...menuItemProps.style,
           }}

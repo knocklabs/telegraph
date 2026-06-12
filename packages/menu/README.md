@@ -107,7 +107,9 @@ All Stack props are also supported for additional styling.
 and CSS variables remain available outside the local subtree. The package also
 continues to expose Radix-compatible Popper CSS custom properties, such as
 `--radix-popper-anchor-width` and `--radix-popper-available-height`, mapped to
-Base UI's positioning variables for downstream style compatibility.
+Base UI's positioning variables for downstream style compatibility. The portal
+positioner owns the popover z-index layer so menu-backed popups keep rendering
+above modal overlays and other lower layering surfaces.
 
 ### `<Menu.Button>`
 

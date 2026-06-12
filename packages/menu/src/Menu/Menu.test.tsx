@@ -377,10 +377,21 @@ describe("Menu", () => {
     expect(content).toHaveAttribute("data-state", "open");
     expect(content).toHaveAttribute("role", "menu");
     expect(content).toHaveStyle({
+      outline: "none",
+    });
+    expect(content).toHaveStyle({
       transformOrigin: "var(--transform-origin)",
     });
     expect(content).toHaveStyle({
       "--radix-popper-transform-origin": "var(--transform-origin)",
+    });
+    expect(content.parentElement).toHaveStyle({
+      zIndex: "var(--tgph-zIndex-popover)",
+    });
+    expect(
+      screen.getByRole("menuitem", { name: "Manage workflow" }),
+    ).toHaveStyle({
+      outline: "none",
     });
     expect(container).not.toContainElement(content);
   });
