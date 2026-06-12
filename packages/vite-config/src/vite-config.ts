@@ -32,6 +32,18 @@ const nodeBuiltins = [
   ...builtinModules.map((name) => `node:${name}`),
 ];
 
+const isPackageImport = (id: string, packageName: string) => {
+  return id === packageName || id.startsWith(`${packageName}/`);
+};
+
+const isExternalDependency = (id: string) => {
+  return allDependencies.some((dependency) => isPackageImport(id, dependency));
+};
+
+const isNodeBuiltin = (id: string) => {
+  return nodeBuiltins.some((builtin) => isPackageImport(id, builtin));
+};
+
 const buildTimeInfo = {
   format: "es",
 };
@@ -59,7 +71,9 @@ export default {
       },
     },
     rolldownOptions: {
-      external: [...allDependencies, ...nodeBuiltins],
+      external: (id: string) => {
+        return isExternalDependency(id) || isNodeBuiltin(id);
+      },
       output: {
         assetFileNames: (assetInfo: Rollup.PreRenderedAsset) => {
           if (assetInfo?.name?.endsWith(".css")) {

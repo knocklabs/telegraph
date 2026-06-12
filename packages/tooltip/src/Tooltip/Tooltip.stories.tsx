@@ -39,6 +39,16 @@ const meta: Meta = {
         type: "boolean",
       },
     },
+    open: {
+      control: {
+        type: "boolean",
+      },
+    },
+    defaultOpen: {
+      control: {
+        type: "boolean",
+      },
+    },
     skipAnimation: {
       control: {
         type: "boolean",
@@ -59,6 +69,23 @@ export default meta;
 type Story = StoryObj<TgphComponentProps<typeof TelegraphTooltip>>;
 
 export const Default: Story = {
+  render: ({ ...args }) => {
+    return (
+      <Stack w="full" my="10" align="center" justify="center">
+        <TelegraphTooltip {...args}>
+          <Button color="blue">Hover me</Button>
+        </TelegraphTooltip>
+      </Stack>
+    );
+  },
+};
+
+export const Open: Story = {
+  args: {
+    defaultOpen: true,
+    delayDuration: 0,
+    skipAnimation: true,
+  },
   render: ({ ...args }) => {
     return (
       <Stack w="full" my="10" align="center" justify="center">

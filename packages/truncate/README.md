@@ -62,11 +62,11 @@ const CustomTruncatedComponent = () => {
 
 A text component that automatically truncates content with an ellipsis and shows a tooltip when truncated.
 
-| Prop           | Type                               | Default     | Description                                                     |
-| -------------- | ---------------------------------- | ----------- | --------------------------------------------------------------- |
-| `maxWidth`     | `string`                           | `undefined` | Maximum width of the text container                             |
-| `tooltipProps` | `Partial<TgphComponentProps<typeof TooltipIfTruncated>>` | `undefined` | Props to pass to the underlying TooltipIfTruncated component |
-| `...TextProps` | `TgphComponentProps<typeof Text>`  | -           | All props from [@telegraph/typography](../typography/README.md) |
+| Prop           | Type                                                     | Default     | Description                                                     |
+| -------------- | -------------------------------------------------------- | ----------- | --------------------------------------------------------------- |
+| `maxWidth`     | `string`                                                 | `undefined` | Maximum width of the text container                             |
+| `tooltipProps` | `Partial<TgphComponentProps<typeof TooltipIfTruncated>>` | `undefined` | Props to pass to the underlying TooltipIfTruncated component    |
+| `...TextProps` | `TgphComponentProps<typeof Text>`                        | -           | All props from [@telegraph/typography](../typography/README.md) |
 
 ### `<TooltipIfTruncated>`
 
@@ -78,16 +78,18 @@ A component that conditionally shows a tooltip only when its content is truncate
 | `children`        | `ReactNode`                          | -           | **Required.** Content to monitor for truncation                               |
 | `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -           | All props from [@telegraph/tooltip](../tooltip/README.md)                     |
 
+`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It continues to pass tooltip props through unchanged and only enables the tooltip when `useTruncate` detects overflow.
+
 ### `useTruncate`
 
 A hook that detects whether an element's content is truncated.
 
 #### Parameters
 
-| Name     | Type                                        | Description                                                           |
-| -------- | ------------------------------------------- | --------------------------------------------------------------------- |
+| Name     | Type                                                | Description                                                           |
+| -------- | --------------------------------------------------- | --------------------------------------------------------------------- |
 | `params` | `{ tgphRef: React.RefObject<HTMLElement \| null> }` | A ref to the element to check for truncation                          |
-| `deps`   | `React.DependencyList`                      | Optional dependencies to re-run the truncation check when they change |
+| `deps`   | `React.DependencyList`                              | Optional dependencies to re-run the truncation check when they change |
 
 #### Returns
 

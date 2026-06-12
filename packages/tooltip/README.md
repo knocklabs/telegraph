@@ -71,6 +71,9 @@ The main tooltip component that wraps content and provides contextual informatio
 | Prop                      | Type                                     | Default     | Description                                                  |
 | ------------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
 | `label`                   | `string \| ReactNode`                    | -           | **Required.** Content to display in the tooltip              |
+| `labelProps`              | `TgphComponentProps<typeof Stack>`       | `undefined` | Props to pass to the rendered tooltip content                |
+| `appearance`              | `"light" \| "dark"`                      | `"dark"`    | Appearance scope for the portaled tooltip content            |
+| `enabled`                 | `boolean`                                | `true`      | Whether the tooltip can open                                 |
 | `side`                    | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"`  | Preferred placement side                                     |
 | `align`                   | `"start" \| "center" \| "end"`           | `"center"`  | Alignment relative to the trigger                            |
 | `sideOffset`              | `number`                                 | `4`         | Distance from the trigger element                            |
@@ -79,6 +82,8 @@ The main tooltip component that wraps content and provides contextual informatio
 | `skipDelayDuration`       | `number`                                 | -           | Skip delay if another tooltip was recently shown             |
 | `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content |
 | `disableFocusOpen`        | `boolean`                                | `false`     | Prevent focus events from instantly opening the tooltip      |
+| `skipAnimation`           | `boolean`                                | `false`     | Disable the tooltip entry animation                          |
+| `triggerRef`              | `RefObject<HTMLButtonElement>`           | `undefined` | Ref forwarded to the rendered trigger element                |
 | `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges           |
 | `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                               |
 | `hideWhenDetached`        | `boolean`                                | `false`     | Hide tooltip when trigger is not visible                     |
@@ -185,11 +190,7 @@ When wrapping elements inside a `Select` or `Combobox` (where DOM focus moves to
 import { Tooltip } from "@telegraph/tooltip";
 
 export const ListItemTooltip = ({ item }) => (
-  <Tooltip
-    label={item.description}
-    disableFocusOpen
-    delayDuration={500}
-  >
+  <Tooltip label={item.description} disableFocusOpen delayDuration={500}>
     <li>{item.name}</li>
   </Tooltip>
 );
@@ -469,6 +470,12 @@ export const NestedTooltips = () => (
 );
 ```
 
+## Implementation Notes
+
+`Tooltip` is implemented with [Base UI Tooltip](https://base-ui.com/react/components/tooltip) primitives and a Telegraph-rendered content surface. The public API keeps the long-standing Telegraph/Radix-style prop names, including `delayDuration`, `skipDelayDuration`, `disableHoverableContent`, `forceMount`, `onEscapeKeyDown`, and `onPointerDownOutside`.
+
+The portaled tooltip content renders with `className="tgph"`, `role="tooltip"`, `data-state`, and `data-tgph-appearance`, and the trigger is linked with `aria-describedby` while the tooltip is open. Telegraph trigger refs continue to work through `triggerRef` and `tgphRef`-compatible children.
+
 ## Accessibility
 
 - ✅ **Keyboard Navigation**: Full keyboard support with proper focus management
@@ -518,8 +525,8 @@ export const BasicExample = () => (
 ### Advanced Example
 
 ```tsx
-import { Tag } from "@telegraph/tag";
 import { Button } from "@telegraph/button";
+import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import { Calendar, Mail, MapPin, User } from "lucide-react";
 
@@ -576,8 +583,8 @@ export const UserProfileTooltip = ({ user }) => (
 ### Real-world Example
 
 ```tsx
-import { Tag } from "@telegraph/tag";
 import { Button } from "@telegraph/button";
+import { Tag } from "@telegraph/tag";
 import { Tooltip } from "@telegraph/tooltip";
 import {
   Bell,
@@ -729,7 +736,7 @@ export const ApplicationHeader = ({ user, notifications }) => (
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/tooltip)
-- [Radix UI Tooltip](https://www.radix-ui.com/primitives/docs/components/tooltip) - Base primitive
+- [Base UI Tooltip](https://base-ui.com/react/components/tooltip) - Base primitive
 - [Popover Component](../popover/README.md) - Related overlay component
 
 ## Contributing
