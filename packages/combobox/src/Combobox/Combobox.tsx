@@ -14,7 +14,23 @@ import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
-import React from "react";
+import {
+  type CSSProperties,
+  type ChangeEvent,
+  type MouseEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type KeyboardEventHandler as ReactKeyboardEventHandler,
+  type ReactNode,
+  type RefObject,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
@@ -36,6 +52,22 @@ import type {
 const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 const SELECT_KEYS = ["Enter", " "];
+
+export const getOptionAccessibleLabel = (option?: DefinedOption) => {
+  if (!option) {
+    return undefined;
+  }
+
+  if (typeof option.label === "string" && option.label !== "") {
+    return option.label;
+  }
+
+  if (typeof option.label === "number" || typeof option.label === "bigint") {
+    return String(option.label);
+  }
+
+  return option.value;
+};
 
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
@@ -64,10 +96,10 @@ export type RootProps<
    * Useful for long lists where you want to start at a specific position.
    */
   defaultScrollToValue?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-export const ComboboxContext = React.createContext<
+export const ComboboxContext = createContext<
   Omit<
     RootProps<(Option | Array<Option>) | (string | Array<string>), boolean>,
     "children"
@@ -79,9 +111,9 @@ export const ComboboxContext = React.createContext<
     onOpenToggle: () => void;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
-    triggerRef?: React.RefObject<HTMLDivElement>;
-    searchRef?: React.RefObject<HTMLInputElement>;
-    contentRef?: React.RefObject<HTMLDivElement>;
+    triggerRef?: RefObject<HTMLButtonElement>;
+    searchRef?: RefObject<HTMLInputElement>;
+    contentRef?: RefObject<HTMLDivElement>;
     options: Array<DefinedOption>;
     legacyBehavior: boolean;
     defaultScrollToValue?: string;
@@ -122,17 +154,17 @@ const Root = <
   children,
   ...props
 }: RootProps<O, LB>) => {
-  const contentId = React.useId();
-  const triggerId = React.useId();
-  const triggerRef = React.useRef<HTMLDivElement>(null);
-  const searchRef = React.useRef<HTMLInputElement>(null);
-  const contentRef = React.useRef<HTMLDivElement>(null);
+  const contentId = useId();
+  const triggerId = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const options = React.useMemo(() => {
+  const options = useMemo(() => {
     return getOptions(children);
   }, [children]);
 
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [open = false, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: defaultOpenProp ?? false,
@@ -145,13 +177,11 @@ const Root = <
     onChange: onValueChangeProp as (value: O) => void,
   });
 
-  const onOpenToggle = React.useCallback(() => {
+  const onOpenToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
   }, [setOpen]);
 
-  React.useEffect(() => {
-    // If the combobox is closed clear
-    // the search query
+  useEffect(() => {
     if (!open) {
       setSearchQuery("");
     }
@@ -176,9 +206,9 @@ const Root = <
         disabled,
         searchQuery,
         setSearchQuery,
-        triggerRef: triggerRef as React.RefObject<HTMLDivElement>,
-        searchRef: searchRef as React.RefObject<HTMLInputElement>,
-        contentRef: contentRef as React.RefObject<HTMLDivElement>,
+        triggerRef: triggerRef as RefObject<HTMLButtonElement>,
+        searchRef: searchRef as RefObject<HTMLInputElement>,
+        contentRef: contentRef as RefObject<HTMLDivElement>,
         errored,
         layout,
         options,
@@ -217,9 +247,7 @@ type TriggerBaseProps = RemappedOmit<
 
 export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
-  children?:
-    | React.ReactNode
-    | ((props: { value: ChildrenFnValue<V> }) => React.ReactNode);
+  children?: ReactNode | ((props: { value: ChildrenFnValue<V> }) => ReactNode);
 };
 
 const Trigger = <V extends ChildrenValue>({
@@ -227,10 +255,10 @@ const Trigger = <V extends ChildrenValue>({
   children,
   ...props
 }: TriggerProps<V>) => {
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
   const hasTags = isMultiSelect(context.value) && context.value.length > 0;
 
-  const currentValue = React.useMemo<
+  const currentValue = useMemo<
     DefinedOption | Array<DefinedOption | undefined> | undefined
   >(() => {
     if (!context.value) return undefined;
@@ -249,15 +277,17 @@ const Trigger = <V extends ChildrenValue>({
     return undefined;
   }, [context.value, context.options, context.legacyBehavior]);
 
-  const getAriaLabelString = React.useCallback(() => {
+  const getAriaLabelString = useCallback(() => {
     if (!currentValue) return context.placeholder;
     if (isSingleSelect(currentValue)) {
-      return currentValue?.label || currentValue?.value || context.placeholder;
+      return getOptionAccessibleLabel(currentValue) || context.placeholder;
     }
     if (isMultiSelect(currentValue)) {
       return (
-        currentValue.map((v) => v?.label || v?.value).join(", ") ||
-        context.placeholder
+        currentValue
+          .map((option) => getOptionAccessibleLabel(option))
+          .filter(Boolean)
+          .join(", ") || context.placeholder
       );
     }
 
@@ -267,12 +297,12 @@ const Trigger = <V extends ChildrenValue>({
     <TelegraphMenu.Trigger
       {...props}
       asChild
-      onClick={(event: React.MouseEvent) => {
+      onClick={(event: MouseEvent) => {
         event.preventDefault();
         context.onOpenToggle();
         context.triggerRef?.current?.focus();
       }}
-      onKeyDown={(event: React.KeyboardEvent) => {
+      onKeyDown={(event: ReactKeyboardEvent) => {
         // If the event target isn't exactly the trigger we don't want anything to
         // happen within this event handler. For example, if the `X` icon on a trigger
         // tag is focused and the user presses `Enter`, this keydown event will trigger.
@@ -352,17 +382,17 @@ const Content = <T extends TgphElement = "div">({
   tgphRef,
   ...props
 }: ContentProps<T>) => {
-  const context = React.useContext(ComboboxContext);
-  const hasInteractedOutside = React.useRef(false);
+  const context = useContext(ComboboxContext);
+  const hasInteractedOutside = useRef(false);
   const composedRef = useComposedRefs<unknown>(tgphRef, context.contentRef);
 
-  const internalContentRef = React.useRef(null);
+  const internalContentRef = useRef(null);
 
-  const [height, setHeight] = React.useState(0);
+  const [height, setHeight] = useState(0);
   const [initialAnimationComplete, setInitialAnimationComplete] =
-    React.useState(false);
+    useState(false);
 
-  const setHeightFromContent = React.useCallback(
+  const setHeightFromContent = useCallback(
     (element: Element) => {
       // Set the initial height of the content after the animation completes
       const rect = element?.getBoundingClientRect();
@@ -377,7 +407,7 @@ const Content = <T extends TgphElement = "div">({
     [initialAnimationComplete],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const element = entry.target;
@@ -394,7 +424,7 @@ const Content = <T extends TgphElement = "div">({
   }, [initialAnimationComplete, setHeightFromContent]);
 
   // Reset the animation complete state when the combobox is closed
-  React.useEffect(() => {
+  useEffect(() => {
     if (initialAnimationComplete === true && context.open === false) {
       setInitialAnimationComplete(false);
     }
@@ -403,7 +433,7 @@ const Content = <T extends TgphElement = "div">({
   // On open, set the height of the content after the animation completes
   // we add a timeout here to ensure that the DOM element has responded to
   // the state changes first
-  React.useEffect(() => {
+  useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (context.open) {
       timeout = setTimeout(() => {
@@ -462,7 +492,7 @@ const Content = <T extends TgphElement = "div">({
         // Cancel out accessibility attirbutes related to aria menu
         role={undefined}
         aria-orientation={undefined}
-        onKeyDown={(event: React.KeyboardEvent) => {
+        onKeyDown={(event: ReactKeyboardEvent) => {
           // Don't allow the event to bubble up outside of the menu
           event.stopPropagation();
 
@@ -496,12 +526,12 @@ const Options = <T extends TgphElement = "div">({
   tgphRef,
   ...props
 }: OptionsProps<T>) => {
-  const context = React.useContext(ComboboxContext);
-  const optionsRef = React.useRef<HTMLDivElement>(null);
+  const context = useContext(ComboboxContext);
+  const optionsRef = useRef<HTMLDivElement>(null);
   const composedRef = useComposedRefs<unknown>(tgphRef, optionsRef);
 
   // Scroll to the selected option (or defaultScrollToValue) when the combobox opens
-  React.useEffect(() => {
+  useEffect(() => {
     if (context.open && optionsRef.current) {
       // Small delay to ensure the DOM has rendered
       requestAnimationFrame(() => {
@@ -556,7 +586,7 @@ const Options = <T extends TgphElement = "div">({
           "--max-height": !props.maxHeight
             ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
             : undefined,
-        } as React.CSSProperties
+        } as CSSProperties
       }
       // Accessibility attributes
       role="listbox"
@@ -580,10 +610,11 @@ const Option = <T extends TgphElement>({
   selected,
   onSelect,
   children,
+  closeOnClick,
   ...props
 }: OptionProps<T>) => {
-  const context = React.useContext(ComboboxContext);
-  const [isFocused, setIsFocused] = React.useState(false);
+  const context = useContext(ComboboxContext);
+  const [isFocused, setIsFocused] = useState(false);
   const contextValue = context.value;
 
   const isVisible =
@@ -600,12 +631,12 @@ const Option = <T extends TgphElement>({
       )
     : getValueFromOption(contextValue, context.legacyBehavior) === value;
 
-  const handleSelection = (event: Event | React.KeyboardEvent) => {
+  const handleSelection = (event: Event | ReactKeyboardEvent) => {
     // Don't allow the event to bubble up outside of the menu
     event.stopPropagation();
 
     // Don't do anything if the key isn't a selection key
-    const keyboardEvent = event as React.KeyboardEvent;
+    const keyboardEvent = event as ReactKeyboardEvent;
     if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) return;
 
     // Don't bubble up the event
@@ -659,7 +690,8 @@ const Option = <T extends TgphElement>({
       <TelegraphMenu.Button
         type="button"
         onSelect={handleSelection as (event: Event) => void}
-        onKeyDown={handleSelection as React.KeyboardEventHandler}
+        onKeyDown={handleSelection as ReactKeyboardEventHandler}
+        closeOnClick={closeOnClick ?? context.closeOnSelect}
         // Force null if selected equals null so we
         // can override the icon of the button
         selected={selected === null ? null : (selected ?? isSelected)}
@@ -693,14 +725,14 @@ const Search = ({
   onValueChange: onValueChangeProp,
   ...props
 }: SearchProps) => {
-  const id = React.useId();
-  const context = React.useContext(ComboboxContext);
+  const id = useId();
+  const context = useContext(ComboboxContext);
   const composedRef = useComposedRefs(tgphRef, context.searchRef);
 
   const value = controlledValueProp ?? context.searchQuery;
   const onValueChange = onValueChangeProp ?? context.setSearchQuery;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleSearchKeyDown = (event: KeyboardEvent) => {
       if (FIRST_KEYS.includes(event.key)) {
         context.contentRef?.current?.focus({ preventScroll: true });
@@ -735,7 +767,7 @@ const Search = ({
         variant="ghost"
         placeholder={placeholder}
         value={value}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           onValueChange(event.target.value);
         }}
         LeadingComponent={<Icon icon={SearchIcon} alt="Search Icon" />}
@@ -772,10 +804,10 @@ const Empty = <T extends TgphElement>({
   children,
   ...props
 }: EmptyProps<T>) => {
-  const context = React.useContext(ComboboxContext);
-  const [isVisible, setIsVisible] = React.useState(false);
+  const context = useContext(ComboboxContext);
+  const [isVisible, setIsVisible] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const options = context.contentRef?.current?.querySelectorAll(
       "[data-tgph-combobox-option]",
     );
@@ -830,9 +862,9 @@ const Create = <T extends TgphElement, LB extends boolean>({
   legacyBehavior = false as LB,
   ...props
 }: CreateProps<T, LB>) => {
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
-  const variableAlreadyExists = React.useCallback(
+  const variableAlreadyExists = useCallback(
     (searchQuery: string | undefined) => {
       if (!values || values?.length === 0) return false;
       return values.some(

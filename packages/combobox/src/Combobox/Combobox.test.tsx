@@ -4,7 +4,7 @@ import React from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
-import { Combobox } from "./Combobox";
+import { Combobox, getOptionAccessibleLabel } from "./Combobox";
 import { findStringNodes } from "./Combobox.helpers";
 import type { ComboboxContentProps, ComboboxOptionsProps } from "./index";
 
@@ -713,6 +713,14 @@ describe("findStringNodes", () => {
       </p>
     );
     expect(findStringNodes(node)).toStrictEqual(["Lorem", "ipsum", "dolor"]);
+  });
+});
+
+describe("getOptionAccessibleLabel", () => {
+  it("falls back to the option value when the label is an empty string", () => {
+    expect(getOptionAccessibleLabel({ value: "email", label: "" })).toBe(
+      "email",
+    );
   });
 });
 
