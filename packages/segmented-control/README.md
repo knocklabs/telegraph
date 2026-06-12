@@ -67,16 +67,23 @@ The container component that manages the selection state and layout.
 | `rovingFocus`   | `boolean`                             | `true`         | Enable keyboard navigation              |
 | `loop`          | `boolean`                             | `true`         | Loop focus when reaching ends           |
 
+`SegmentedControl.Root` is implemented with Base UI ToggleGroup primitives. The
+Telegraph API keeps the previous value contract: `type="single"` uses a string
+value and `type="multiple"` uses a string array, even though Base UI normalizes
+toggle-group state internally as arrays. Root and option `tgphRef` props continue
+to resolve to the rendered DOM elements, and overflowing horizontal controls keep
+the same scroll-button behavior.
+
 ### `<SegmentedControl.Option>`
 
 Individual option button within the segmented control.
 
-| Prop       | Type                              | Default | Description                       |
-| ---------- | --------------------------------- | ------- | --------------------------------- |
-| `value`    | `string`                          | -       | Unique identifier for this option |
-| `disabled` | `boolean`                         | `false` | Disable this specific option      |
+| Prop       | Type                       | Default | Description                       |
+| ---------- | -------------------------- | ------- | --------------------------------- |
+| `value`    | `string`                   | -       | Unique identifier for this option |
+| `disabled` | `boolean`                  | `false` | Disable this specific option      |
 | `size`     | `"0" \| "1" \| "2" \| "3"` | `"1"`   | Button size                       |
-| `children` | `ReactNode`                       | -       | Content of the option             |
+| `children` | `ReactNode`                | -       | Content of the option             |
 
 ## Usage Patterns
 
@@ -318,8 +325,8 @@ export const ConditionalSegmentedControl = ({ userRole, permissions }) => {
 ### Loading State
 
 ```tsx
-import { SegmentedControl } from "@telegraph/segmented-control";
 import { Box } from "@telegraph/layout";
+import { SegmentedControl } from "@telegraph/segmented-control";
 
 export const SegmentedControlWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
