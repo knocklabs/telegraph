@@ -32,8 +32,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-toggle-group": "^1.1.11",
+    "@base-ui/react": "^1.5.0",
     "@telegraph/button": "workspace:^",
+    "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/truncate": "workspace:^",
