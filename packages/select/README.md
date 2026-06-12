@@ -69,22 +69,35 @@ export const CountrySelector = () => {
 - Advanced filtering
 - Multi-select with complex UI
 
+## Implementation Notes
+
+Select is a lightweight wrapper around `@telegraph/combobox`. It inherits the
+migrated Combobox popup, portal, focus, and dismissal behavior, which is backed
+by Base UI through Telegraph primitives.
+
+The public Select API remains unchanged. Single-select usage closes after
+selection, while multi-select usage stays open; this behavior is inferred from
+whether `value` or `defaultValue` is an array. `triggerProps`, `contentProps`,
+and `optionsProps` continue to pass through to the underlying Combobox parts.
+
+Select does not depend on Radix directly.
+
 ## API Reference
 
 ### `<Select.Root>`
 
 The main select container component.
 
-| Prop            | Type                                  | Default       | Description                             |
-| --------------- | ------------------------------------- | ------------- | --------------------------------------- |
-| `value`         | `string \| string[]`                  | `undefined`   | Selected value(s)                       |
-| `onValueChange` | `(value: string \| string[]) => void` | `undefined`   | Called when selection changes           |
-| `size`          | `"0" \| "1" \| "2" \| "3"`           | `"1"`         | Size of the trigger button              |
-| `placeholder`   | `string`                              | `undefined`   | Placeholder text when no value selected |
-| `disabled`      | `boolean`                             | `false`       | Whether the select is disabled          |
-| `triggerProps`  | `ComboboxTriggerProps`                | `undefined`   | Props passed to the trigger button      |
-| `contentProps`  | `ComboboxContentProps`                | `undefined`   | Props passed to the dropdown content    |
-| `optionsProps`  | `ComboboxOptionsProps`                | `undefined`   | Props passed to the options container   |
+| Prop            | Type                                  | Default     | Description                             |
+| --------------- | ------------------------------------- | ----------- | --------------------------------------- |
+| `value`         | `string \| string[]`                  | `undefined` | Selected value(s)                       |
+| `onValueChange` | `(value: string \| string[]) => void` | `undefined` | Called when selection changes           |
+| `size`          | `"0" \| "1" \| "2" \| "3"`            | `"1"`       | Size of the trigger button              |
+| `placeholder`   | `string`                              | `undefined` | Placeholder text when no value selected |
+| `disabled`      | `boolean`                             | `false`     | Whether the select is disabled          |
+| `triggerProps`  | `ComboboxTriggerProps`                | `undefined` | Props passed to the trigger button      |
+| `contentProps`  | `ComboboxContentProps`                | `undefined` | Props passed to the dropdown content    |
+| `optionsProps`  | `ComboboxOptionsProps`                | `undefined` | Props passed to the options container   |
 
 ### `<Select.Option>`
 
@@ -383,8 +396,8 @@ export const ConditionalSelect = ({ userRole, permissions }) => {
 ### Loading State
 
 ```tsx
-import { Select } from "@telegraph/select";
 import { Box } from "@telegraph/layout";
+import { Select } from "@telegraph/select";
 
 export const SelectWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
@@ -677,6 +690,7 @@ export const CountryRegionSelector = () => {
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/select)
 - [Combobox Component](../combobox/README.md) - Full-featured dropdown with search
+- [Base UI Menu](https://base-ui.com/react/components/menu/)
 
 ## Contributing
 
