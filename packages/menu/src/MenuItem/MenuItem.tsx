@@ -1,16 +1,24 @@
 import { Button } from "@telegraph/button";
-import { TgphComponentProps, TgphElement } from "@telegraph/helpers";
+import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
 import * as motion from "motion/react-m";
+import type { ReactNode } from "react";
+
+type MenuItemIconProps = {
+  icon?: TgphComponentProps<typeof Button.Icon>;
+  leadingIcon?: TgphComponentProps<typeof Button.Icon>;
+  trailingIcon?: TgphComponentProps<typeof Button.Icon>;
+};
 
 export type MenuItemProps<T extends TgphElement = "button"> =
-  TgphComponentProps<typeof Button<T>> & {
-    selected?: boolean | null;
-    leadingComponent?: React.ReactNode;
-    trailingComponent?: React.ReactNode;
-    textProps?: TgphComponentProps<typeof Button.Text>;
-  };
+  TgphComponentProps<typeof Button.Root<T>> &
+    MenuItemIconProps & {
+      selected?: boolean | null;
+      leadingComponent?: ReactNode;
+      trailingComponent?: ReactNode;
+      textProps?: TgphComponentProps<typeof Button.Text>;
+    };
 
 const MenuItem = <T extends TgphElement = "button">({
   variant = "ghost",
@@ -28,6 +36,8 @@ const MenuItem = <T extends TgphElement = "button">({
   textProps,
   ...props
 }: MenuItemProps<T>) => {
+  const rootProps = props as TgphComponentProps<typeof Button.Root>;
+
   return (
     <Button.Root
       size={size}
@@ -36,7 +46,7 @@ const MenuItem = <T extends TgphElement = "button">({
       px={px}
       justify={justify}
       w={w}
-      {...props}
+      {...rootProps}
     >
       <Stack gap={gap} align="center" w="full">
         <MenuItemLeading
@@ -46,13 +56,13 @@ const MenuItem = <T extends TgphElement = "button">({
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight={props?.fontWeight || "medium"}
+          weight={rootProps.fontWeight || "medium"}
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"
           {...textProps}
         >
-          {props.children}
+          {rootProps.children}
         </Button.Text>
       </Stack>
       <MenuItemTrailing

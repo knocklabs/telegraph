@@ -4478,10 +4478,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@telegraph/menu@workspace:packages/menu"
   dependencies:
+    "@base-ui/react": "npm:^1.5.0"
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-menu": "npm:^2.1.16"
-    "@radix-ui/react-use-controllable-state": "npm:^1.2.2"
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
