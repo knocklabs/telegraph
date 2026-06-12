@@ -32,8 +32,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-use-controllable-state": "^1.2.2",
-    "@radix-ui/react-visually-hidden": "^1.2.4",
     "@telegraph/button": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",

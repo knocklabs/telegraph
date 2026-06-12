@@ -1,17 +1,23 @@
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@telegraph/button";
-import type {
-  PolymorphicPropsWithTgphRef,
-  TgphComponentProps,
-  TgphElement,
+import {
+  type PolymorphicPropsWithTgphRef,
+  type TgphComponentProps,
+  type TgphElement,
+  VisuallyHidden,
+  useControllableState,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
 import { Stack } from "@telegraph/layout";
 import { Tag } from "@telegraph/tag";
 import { Text } from "@telegraph/typography";
 import { CheckCircle2, Circle } from "lucide-react";
-import React, { Fragment } from "react";
+import {
+  type ReactNode,
+  createContext,
+  useContext,
+  useId,
+  useRef,
+} from "react";
 
 import {
   INDICATOR_SIZE_MAP,
@@ -33,7 +39,7 @@ type InternalContextType = {
   "aria-label"?: string;
 };
 
-const ToggleContext = React.createContext<InternalContextType>({
+const ToggleContext = createContext<InternalContextType>({
   size: "2",
   value: false,
   disabled: false,
@@ -83,7 +89,7 @@ const Root = <T extends TgphElement = "div">({
     onChange: onValueChangeProp,
   });
 
-  const generatedId = React.useId();
+  const generatedId = useId();
   const id = idProp || generatedId;
   const labelId = `${id}-label`;
 
@@ -125,14 +131,13 @@ const Root = <T extends TgphElement = "div">({
 export type SwitchProps = TgphComponentProps<typeof Button.Root>;
 
 const Switch = ({ as, className, style, ...props }: SwitchProps) => {
-  const context = React.useContext(ToggleContext);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const context = useContext(ToggleContext);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { iconSize, ...sizeConfig } = TOGGLE_SIZE_MAP[context.size];
 
   return (
     <Stack position="relative" align="center">
-      {/* Hidden native checkbox for accessibility */}
-      <VisuallyHidden.Root>
+      <VisuallyHidden>
         <input
           type="checkbox"
           id={context.id}
@@ -146,8 +151,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
           aria-label={context["aria-label"]}
           data-tgph-toggle-input
         />
-      </VisuallyHidden.Root>
-      {/* Visual toggle */}
+      </VisuallyHidden>
       <Button.Root
         as="label"
         className={className}
@@ -203,33 +207,50 @@ const Label = <T extends TgphElement = "label">({
   style,
   ...props
 }: LabelProps<T>) => {
-  const context = React.useContext(ToggleContext);
-  const Wrapper = hidden ? VisuallyHidden.Root : Fragment;
+  const context = useContext(ToggleContext);
+
+  if (hidden) {
+    return (
+      <VisuallyHidden asChild>
+        <Text
+          as={(as || "label") as T}
+          htmlFor={context.id}
+          id={context.labelId}
+          size={LABEL_SIZE_MAP[context.size]}
+          data-tgph-toggle-label
+          data-tgph-toggle-disabled={context.disabled}
+          style={{
+            cursor: context.disabled ? "not-allowed" : "pointer",
+            ...style,
+          }}
+          {...props}
+        />
+      </VisuallyHidden>
+    );
+  }
 
   return (
-    <Wrapper asChild>
-      <Text
-        as={(as || "label") as T}
-        htmlFor={context.id}
-        id={context.labelId}
-        size={LABEL_SIZE_MAP[context.size]}
-        data-tgph-toggle-label
-        data-tgph-toggle-disabled={context.disabled}
-        style={{
-          cursor: context.disabled ? "not-allowed" : "pointer",
-          ...style,
-        }}
-        {...props}
-      />
-    </Wrapper>
+    <Text
+      as={(as || "label") as T}
+      htmlFor={context.id}
+      id={context.labelId}
+      size={LABEL_SIZE_MAP[context.size]}
+      data-tgph-toggle-label
+      data-tgph-toggle-disabled={context.disabled}
+      style={{
+        cursor: context.disabled ? "not-allowed" : "pointer",
+        ...style,
+      }}
+      {...props}
+    />
   );
 };
 
 export type IndicatorProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof Tag<T>
 > & {
-  enabledContent?: React.ReactNode;
-  disabledContent?: React.ReactNode;
+  enabledContent?: ReactNode;
+  disabledContent?: ReactNode;
 };
 
 const Indicator = <T extends TgphElement = "span">({
@@ -240,9 +261,8 @@ const Indicator = <T extends TgphElement = "span">({
   children,
   ...props
 }: IndicatorProps<T>) => {
-  const context = React.useContext(ToggleContext);
+  const context = useContext(ToggleContext);
 
-  // Determine what content to show
   const content =
     children || (context.value ? enabledContent : disabledContent);
   const size = INDICATOR_SIZE_MAP[context.size];
@@ -266,7 +286,7 @@ const Indicator = <T extends TgphElement = "span">({
 };
 
 export type DefaultProps<T extends TgphElement = "div"> = RootProps<T> & {
-  label?: React.ReactNode;
+  label?: ReactNode;
   labelProps?: Omit<LabelProps<"label">, "as">;
   indicator?: boolean;
   indicatorProps?: Omit<IndicatorProps<"span">, "as">;

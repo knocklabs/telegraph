@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { FormEvent } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
@@ -209,7 +210,11 @@ describe("Toggle", () => {
     );
     const label = screen.getByText("Enable notifications");
     expect(label).toBeInTheDocument();
-    // Label exists for screen readers but is visually hidden
+    expect(label).toHaveStyle({
+      position: "absolute",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+    });
   });
 
   it("supports custom aria-label", () => {
@@ -230,6 +235,28 @@ describe("Toggle", () => {
     );
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).toHaveAttribute("name", "notifications");
+  });
+
+  it("submits the native checkbox value with forms", async () => {
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn((event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.currentTarget);
+      expect(formData.get("notifications")).toBe("on");
+    });
+
+    render(
+      <form onSubmit={handleSubmit}>
+        <Toggle.Default label="Enable notifications" name="notifications" />
+        <button type="submit">Submit</button>
+      </form>,
+    );
+
+    await user.click(screen.getByText("Enable notifications"));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 
   it("applies checked state to visual toggle", () => {

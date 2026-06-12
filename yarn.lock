@@ -4771,8 +4771,6 @@ __metadata:
   dependencies:
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
-    "@radix-ui/react-use-controllable-state": "npm:^1.2.2"
-    "@radix-ui/react-visually-hidden": "npm:^1.2.4"
     "@telegraph/button": "workspace:^"
     "@telegraph/helpers": "workspace:^"
     "@telegraph/icon": "workspace:^"
