@@ -78,7 +78,7 @@ A component that conditionally shows a tooltip only when its content is truncate
 | `children`        | `ReactNode`                          | -           | **Required.** Content to monitor for truncation                               |
 | `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -           | All props from [@telegraph/tooltip](../tooltip/README.md)                     |
 
-`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It continues to pass tooltip props through unchanged and only enables the tooltip when `useTruncate` detects overflow.
+`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It measures the wrapped child with `useTruncate`, passes that same element ref to Tooltip as the trigger, and only enables the tooltip when overflow is detected. Tooltip props continue to pass through unchanged, including focus and hover behavior such as `disableFocusOpen`.
 
 ### `useTruncate`
 

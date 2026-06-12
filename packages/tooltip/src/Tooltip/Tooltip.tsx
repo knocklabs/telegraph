@@ -11,6 +11,7 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import {
   Children,
+  type ComponentPropsWithRef,
   type ComponentPropsWithoutRef,
   type ReactNode,
   type RefObject,
@@ -35,6 +36,9 @@ type BaseTooltipProviderProps = ComponentPropsWithoutRef<
   typeof BaseTooltip.Provider
 >;
 type BaseTooltipTriggerProps = ComponentPropsWithoutRef<
+  typeof BaseTooltip.Trigger
+>;
+type BaseTooltipTriggerPropsWithRef = ComponentPropsWithRef<
   typeof BaseTooltip.Trigger
 >;
 type BaseTooltipPortalProps = ComponentPropsWithoutRef<
@@ -110,7 +114,7 @@ export type TooltipBaseProps<T extends TgphElement = "div"> = {
    */
   disableFocusOpen?: boolean;
   skipAnimation?: boolean;
-  triggerRef?: RefObject<HTMLButtonElement>;
+  triggerRef?: RefObject<HTMLElement | null>;
 };
 
 export type TooltipProps<T extends TgphElement = "div"> =
@@ -202,6 +206,8 @@ const Tooltip = <T extends TgphElement = "div">({
     [existingAriaDescribedBy, resolvedOpen ? tooltipId : undefined]
       .filter(Boolean)
       .join(" ") || undefined;
+  const resolvedTriggerRef =
+    triggerRef as BaseTooltipTriggerPropsWithRef["ref"];
 
   const handleOpenChange = useCallback<
     NonNullable<BaseTooltipRootProps["onOpenChange"]>
@@ -262,7 +268,7 @@ const Tooltip = <T extends TgphElement = "div">({
               data-state={triggerDataState}
               delay={derivedDelayDuration}
               onFocus={handleFocus}
-              ref={triggerRef}
+              ref={resolvedTriggerRef}
               render={createTgphBaseUIRender(
                 cloneElement(children, {
                   "aria-describedby": triggerAriaDescribedBy,
@@ -276,7 +282,7 @@ const Tooltip = <T extends TgphElement = "div">({
               data-state={triggerDataState}
               delay={derivedDelayDuration}
               onFocus={handleFocus}
-              ref={triggerRef}
+              ref={resolvedTriggerRef}
             >
               {children}
             </BaseTooltip.Trigger>

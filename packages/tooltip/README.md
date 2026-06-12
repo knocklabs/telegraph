@@ -83,7 +83,7 @@ The main tooltip component that wraps content and provides contextual informatio
 | `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content |
 | `disableFocusOpen`        | `boolean`                                | `false`     | Prevent focus events from instantly opening the tooltip      |
 | `skipAnimation`           | `boolean`                                | `false`     | Disable the tooltip entry animation                          |
-| `triggerRef`              | `RefObject<HTMLButtonElement>`           | `undefined` | Ref forwarded to the rendered trigger element                |
+| `triggerRef`              | `RefObject<HTMLElement \| null>`         | `undefined` | Ref forwarded to the rendered trigger element                |
 | `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges           |
 | `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                               |
 | `hideWhenDetached`        | `boolean`                                | `false`     | Hide tooltip when trigger is not visible                     |

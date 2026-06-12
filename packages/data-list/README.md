@@ -41,11 +41,11 @@ export const UserProfile = () => (
 
 Container component that wraps data list items.
 
-| Prop          | Type                   | Default    | Description                           |
-| ------------- | ---------------------- | ---------- | ------------------------------------- |
-| `direction`   | `"column" \| "row"`    | `"column"` | Layout direction of list items        |
-| `gap`         | `keyof tokens.spacing` | `"4"`      | Gap between list items                |
-| All Stack props | -                    | -          | Inherits all Stack component properties |
+| Prop            | Type                   | Default    | Description                             |
+| --------------- | ---------------------- | ---------- | --------------------------------------- |
+| `direction`     | `"column" \| "row"`    | `"column"` | Layout direction of list items          |
+| `gap`           | `keyof tokens.spacing` | `"4"`      | Gap between list items                  |
+| All Stack props | -                      | -          | Inherits all Stack component properties |
 
 ### `<DataList.Item>`
 
@@ -72,13 +72,17 @@ Row container for composing custom label-value layouts.
 
 Label component for displaying field names.
 
-| Prop        | Type                   | Default  | Description                     |
-| ----------- | ---------------------- | -------- | ------------------------------- |
-| `maxW`      | `keyof tokens.spacing` | `"36"`   | Maximum width of label          |
-| `maxH`      | `keyof tokens.spacing` | `"6"`    | Maximum height of label         |
-| `w`         | `keyof tokens.spacing` | `"full"` | Width of label                  |
-| `icon`      | `IconProps`            | -        | Optional icon to display        |
-| `textProps` | `TextProps`            | -        | Props to pass to Text component |
+| Prop           | Type                                          | Default     | Description                                          |
+| -------------- | --------------------------------------------- | ----------- | ---------------------------------------------------- |
+| `maxW`         | `keyof tokens.spacing`                        | `"36"`      | Maximum width of label                               |
+| `maxH`         | `keyof tokens.spacing`                        | `"6"`       | Maximum height of label                              |
+| `w`            | `keyof tokens.spacing`                        | `"full"`    | Width of label                                       |
+| `icon`         | `IconProps`                                   | -           | Optional icon to display                             |
+| `description`  | `React.ReactNode`                             | `undefined` | Tooltip content shown for label descriptions         |
+| `tooltipProps` | `Partial<TgphComponentProps<typeof Tooltip>>` | `undefined` | Props passed to the Base UI-backed Telegraph Tooltip |
+| `textProps`    | `TextProps`                                   | -           | Props to pass to Text component                      |
+
+`DataList.Label` uses the Base UI-backed `@telegraph/tooltip` package when `description` is provided. `tooltipProps` pass through to Tooltip, except `enabled` and `label`, which are controlled by DataList so labels without descriptions do not render tooltips.
 
 ### `<DataList.Value>`
 
