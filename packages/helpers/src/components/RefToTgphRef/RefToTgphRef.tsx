@@ -3,33 +3,34 @@
  *
  * PURPOSE:
  * ========
- * This component bridges the gap between third-party libraries (like Radix UI) and
- * Telegraph components. Third-party libraries expect components to accept a standard
+ * This component bridges the gap between third-party libraries and Telegraph
+ * components. Third-party libraries expect components to accept a standard
  * React `ref` prop, but Telegraph components use a custom `tgphRef` prop instead.
  *
- * Without this adapter, using Telegraph components with libraries like Radix would fail
- * because Radix would try to pass a `ref` that Telegraph components wouldn't receive.
+ * Without this adapter, using Telegraph components with libraries that clone a
+ * child and pass a standard `ref` would fail because Telegraph components
+ * wouldn't receive that ref.
  *
  * EXAMPLE USAGE:
  * ==============
  * ```tsx
- * <RadixTooltip.Trigger asChild>
+ * <HeadlessTrigger>
  *   <RefToTgphRef>
  *     <Button>Hover me</Button>  // Button uses tgphRef internally
  *   </RefToTgphRef>
- * </RadixTooltip.Trigger>
+ * </HeadlessTrigger>
  * ```
  *
  * WHAT IT DOES:
  * =============
- * 1. Receives a `ref` from the parent (e.g., Radix)
+ * 1. Receives a `ref` from the parent primitive
  * 2. Forwards it as both `ref` AND `tgphRef` to Telegraph children
  * 3. Merges any additional props from the parent with child props
  * 4. Handles both forwardRef components and regular components appropriately
  *
  * THE INFINITE LOOP PROBLEM:
  * ==========================
- * Radix and other libraries often pass ref callbacks that are recreated on every render
+ * External libraries often pass ref callbacks that are recreated on every render
  * (new function references). When we pass these unstable refs to children via
  * React.cloneElement, it causes the child to re-render with "new" props even though
  * the ref functionality hasn't actually changed. This can trigger infinite render loops.
@@ -62,7 +63,7 @@ type Child = React.ReactElement & {
  * mergeProps
  *
  * Merges props from the slot (parent/wrapper) with props from the child component.
- * This follows the same approach as Radix's Slot component to ensure compatibility.
+ * This follows the original Slot-style prop merge behavior to ensure compatibility.
  *
  * MERGE STRATEGY:
  * - Event handlers (onX): Compose them so both parent and child handlers run
@@ -197,7 +198,7 @@ const RefToTgphRef = React.forwardRef<any, any>(
      * REF STABILIZATION ARCHITECTURE
      *
      * PROBLEM:
-     * Libraries like Radix create new ref callback functions on every render.
+     * External libraries can create new ref callback functions on every render.
      * If we pass these unstable refs directly to children via React.cloneElement,
      * React sees the props object as changed (new function reference), causing
      * unnecessary re-renders and potential infinite loops.
@@ -210,7 +211,7 @@ const RefToTgphRef = React.forwardRef<any, any>(
      *
      */
 
-    // Storage for the latest ref callback/object from parent (e.g., Radix)
+    // Storage for the latest ref callback/object from the parent primitive.
     // This gets updated on every render but doesn't cause re-renders since it's
     // a mutable ref, not state.
     const refStorage = React.useRef(ref);
