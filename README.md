@@ -80,6 +80,12 @@ yarn format
 yarn lint
 ```
 
+For Base UI migration checkpoint work, also run:
+
+```bash
+yarn check:base-ui-migration
+```
+
 ### Releasing
 
 We use [changesets](https://github.com/changesets/changesets) to manage releases. Each time a PR is opened, make sure to include a changeset. A changeset bot will add a comment to your PR prompting you to do so with a template, click that and commit it to your PR.

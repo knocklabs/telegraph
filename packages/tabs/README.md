@@ -779,7 +779,7 @@ export const MediaLibrary = () => {
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/tabs)
-- [Radix UI Tabs](https://www.radix-ui.com/primitives/docs/components/tabs) - Base primitive
+- [Base UI Tabs](https://base-ui.com/react/components/tabs) - Base primitive
 
 ## Contributing
 

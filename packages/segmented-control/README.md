@@ -601,7 +601,7 @@ export const ProjectSettingsForm = () => {
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/segmented-control)
-- [Radix UI Toggle Group](https://www.radix-ui.com/primitives/docs/components/toggle-group)
+- [Base UI Toggle Group](https://base-ui.com/react/components/toggle-group)
 
 ## Contributing
 

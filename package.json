@@ -22,6 +22,8 @@
     "lint": "turbo lint --filter=\"./packages/**\" --filter=\"!@telegraph/prettier-config\"",
     "format": "turbo format",
     "format:check": "turbo format:check",
+    "check:base-ui-migration": "node ./scripts/check-base-ui-migration.mjs",
+    "check:react18": "node ./scripts/check-base-ui-migration.mjs",
     "dev:storybook": "storybook dev --port 3005 --no-open --exact-port",
     "build:storybook": "storybook build",
     "release": "yarn release:publish && yarn changeset tag",

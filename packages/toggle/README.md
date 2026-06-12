@@ -66,9 +66,10 @@ The default Toggle component provides a simple API for common use cases.
 Additionally, all native HTML input attributes are supported (`aria-label`, `aria-describedby`, etc.)
 
 `Toggle` owns its controlled/uncontrolled state and visually hidden input
-styling locally. It still renders a native checkbox for form submission,
-validation, keyboard interaction, and screen reader semantics while the visible
-switch, label, and indicator remain Telegraph components.
+styling locally and no longer depends on Radix. It still renders a native
+checkbox for form submission, validation, keyboard interaction, and screen
+reader semantics while the visible switch, label, and indicator remain Telegraph
+components.
 
 ### Composition API
 
