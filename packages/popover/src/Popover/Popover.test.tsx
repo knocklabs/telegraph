@@ -490,6 +490,11 @@ describe("Popover", () => {
     expect(content).toHaveStyle({
       transformOrigin: "var(--transform-origin)",
     });
+    // The z-index must sit on the Base UI positioner (the popup's parent and
+    // stacking-context root) so popovers layer above positioned app content.
+    expect(content.parentElement).toHaveStyle({
+      zIndex: "var(--tgph-zIndex-popover)",
+    });
     expect(container).not.toContainElement(content);
   });
 
