@@ -1,5 +1,17 @@
 # @telegraph/popover
 
+## 0.4.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Popover internals from Radix UI to Base UI while preserving Telegraph styling, `tgphRef`, dismissal callbacks, focus callbacks, `avoidCollisions`, and `hideWhenDetached` compatibility. Also add shared Base UI compatibility helpers for migrated floating components.
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/layout@0.5.2
+
 ## 0.3.2
 
 ### Patch Changes

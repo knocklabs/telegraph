@@ -1,5 +1,27 @@
 # @telegraph/combobox
 
+## 0.4.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Combobox off direct Radix runtime dependencies while preserving Telegraph menu layering, focus restoration, CSS compatibility variables, legacy option objects, and controlled/uncontrolled value behavior. Adds Base UI-backed dismissal handling, including `onEscapeKeyDown`, and documents that stay-open multi-select keeps focus on the selected option.
+
+### Patch Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Menu internals to Base UI while preserving Telegraph dismissal callbacks, focus callbacks, `avoidCollisions`, `hideWhenDetached`, trigger refs, submenu state attributes, and portal styling. Combobox trigger aria labels now fall back to option values when labels are rendered as React nodes so assistive text remains string-safe.
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/tooltip@0.5.0
+  - @telegraph/truncate@0.1.6
+  - @telegraph/button@0.7.3
+  - @telegraph/layout@0.5.2
+  - @telegraph/tag@0.2.7
+  - @telegraph/input@0.4.2
+  - @telegraph/menu@0.5.0
+  - @telegraph/icon@0.5.3
+  - @telegraph/typography@0.4.2
+
 ## 0.3.6
 
 ### Patch Changes

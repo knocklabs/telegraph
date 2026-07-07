@@ -1,5 +1,19 @@
 # @telegraph/segmented-control
 
+## 0.3.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate SegmentedControl to Base UI ToggleGroup primitives while preserving Telegraph value shapes, empty-string values, scroll controls, `tgphRef`, and disabled option styling. Group-level `disabled` now propagates to every rendered option button so visual disabled state matches blocked interaction.
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/truncate@0.1.6
+  - @telegraph/button@0.7.3
+  - @telegraph/layout@0.5.2
+
 ## 0.2.7
 
 ### Patch Changes

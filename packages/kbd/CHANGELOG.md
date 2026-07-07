@@ -1,5 +1,16 @@
 # @telegraph/kbd
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/layout@0.5.2
+  - @telegraph/appearance@0.0.14
+  - @telegraph/icon@0.5.3
+  - @telegraph/typography@0.4.2
+
 ## 0.1.6
 
 ### Patch Changes

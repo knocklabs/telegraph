@@ -1,5 +1,21 @@
 # @telegraph/modal
 
+## 0.4.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Modal to Base UI Dialog primitives while preserving Telegraph stacking, dismissal callbacks, autofocus callbacks, `tgphRef`, and portal styling. `trapped={false}` continues to disable focus trapping without opting out of Telegraph's modal overlay or document scroll lock behavior.
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`2785c9b`](https://github.com/knocklabs/telegraph/commit/2785c9bace7d5669808ee8820c265756228e6c3f), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/style-engine@0.3.6
+  - @telegraph/button@0.7.3
+  - @telegraph/layout@0.5.2
+  - @telegraph/icon@0.5.3
+  - @telegraph/typography@0.4.2
+
 ## 0.3.5
 
 ### Patch Changes

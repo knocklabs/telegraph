@@ -1,5 +1,21 @@
 # @telegraph/tabs
 
+## 0.2.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Tabs from Radix primitives to Base UI while preserving Telegraph styling hooks and `tgphRef` support. `onValueChange` now honestly types the Base UI cleared-selection case as `string | null`, and list activation behavior is configured through `Tabs.List` props.
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/button@0.7.3
+  - @telegraph/layout@0.5.2
+  - @telegraph/menu@0.5.0
+  - @telegraph/icon@0.5.3
+  - @telegraph/typography@0.4.2
+
 ## 0.1.7
 
 ### Patch Changes

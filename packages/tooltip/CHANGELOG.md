@@ -1,5 +1,21 @@
 # @telegraph/tooltip
 
+## 0.5.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Tooltip internals from Radix UI to Base UI while preserving Telegraph trigger state attributes, dismissal callbacks, collision props, hidden-when-detached behavior, and `tgphRef` support. The portaled tooltip surface keeps a dark Telegraph appearance attribute without reintroducing the removed public `appearance` prop. Keep dependency subpath imports external in shared Vite library builds so Base UI-backed packages publish browser-safe ESM output.
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Verify published Tooltip consumers against the Base UI-backed implementation and preserve their trigger refs, optional tooltip labels, and Radix-compatible trigger state attributes. TooltipIfTruncated now documents and tests that an explicit `label` takes precedence over child text when both are provided.
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/layout@0.5.2
+  - @telegraph/appearance@0.0.14
+  - @telegraph/typography@0.4.2
+
 ## 0.4.1
 
 ### Patch Changes
