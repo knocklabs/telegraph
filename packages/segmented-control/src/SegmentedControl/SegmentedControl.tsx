@@ -73,12 +73,14 @@ const SegmentedControlContextState = createContext<{
   showScrollButtons?: boolean;
   activeOptionRef?: HTMLButtonElement | null;
   setActiveOptionRef?: Dispatch<SetStateAction<HTMLButtonElement | null>>;
+  isMultiple?: boolean;
 }>({
   disabled: false,
   size: "1",
   showScrollButtons: false,
   activeOptionRef: null,
   setActiveOptionRef: () => {},
+  isMultiple: false,
 });
 
 export type RootProps<
@@ -336,6 +338,7 @@ const Root = <
           showScrollButtons,
           activeOptionRef,
           setActiveOptionRef,
+          isMultiple,
         }}
       >
         <SegmentedControlDirectionProvider dir={dir}>
@@ -360,6 +363,10 @@ const Root = <
                 overflow={showScrollButtons ? "hidden" : "visible"}
                 position="relative"
                 dir={dir}
+                // Base UI's Toggle Group renders `role="group"`, which is right for
+                // multi-select. Single-select is a radio group, so override the
+                // container's role so assistive tech announces single selection.
+                {...(isMultiple ? undefined : { role: "radiogroup" })}
                 tgphRef={composedContainerRef}
                 onKeyDown={handleKeyDown}
                 {...props}
@@ -467,7 +474,7 @@ const OptionButton = ({
   tgphRef,
   ...props
 }: OptionButtonProps) => {
-  const { setActiveOptionRef, ...context } = useContext(
+  const { setActiveOptionRef, isMultiple, ...context } = useContext(
     SegmentedControlContextState,
   );
   const derivedSize = context.size ?? size;
@@ -496,6 +503,20 @@ const OptionButton = ({
       data-tgph-segmented-control-option-status={status}
       tgphRef={composedButtonRef}
       {...props}
+      // Base UI's Toggle marks each option with `aria-pressed`, which reads as an
+      // independent toggle. For single-select, present each option as a radio
+      // (`role="radio"` + `aria-checked`) so assistive tech announces single
+      // selection; multi-select keeps Base UI's toggle semantics as-is.
+      {...(isMultiple
+        ? undefined
+        : {
+            role: "radio" as const,
+            "aria-checked": status === "active",
+            "aria-pressed": undefined,
+          })}
+      // Base UI emits `aria-disabled="false"` on enabled composite items; drop the
+      // redundant value so only genuinely disabled options expose the state.
+      aria-disabled={derivedDisabled || undefined}
     />
   );
 };

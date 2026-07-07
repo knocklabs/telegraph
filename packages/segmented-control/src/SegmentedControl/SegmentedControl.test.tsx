@@ -39,14 +39,45 @@ describe("SegmentedControl", () => {
   it("renders the default option with Telegraph state attributes", () => {
     render(<SegmentedControlFixture />);
 
-    const activeOption = screen.getByRole("button", { name: "Left" });
+    const activeOption = screen.getByRole("radio", { name: "Left" });
 
     expect(activeOption).toHaveAttribute("data-tgph-segmented-control-option");
     expect(activeOption).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
-    expect(activeOption).toHaveAttribute("aria-pressed", "true");
+    expect(activeOption).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("exposes radio-group semantics for single select", () => {
+    render(<SegmentedControlFixture />);
+
+    // Single-select is a radio group, not a set of independent toggles, so the
+    // container and options should read as radiogroup/radio to assistive tech.
+    const group = screen.getByRole("radiogroup");
+    const activeOption = screen.getByRole("radio", { name: "Left" });
+    const inactiveOption = screen.getByRole("radio", { name: "Center" });
+
+    expect(group).toContainElement(activeOption);
+    expect(activeOption).toHaveAttribute("aria-checked", "true");
+    expect(inactiveOption).toHaveAttribute("aria-checked", "false");
+    // Base UI's `aria-pressed` toggle semantics must not leak into single select.
+    expect(activeOption).not.toHaveAttribute("aria-pressed");
+    expect(inactiveOption).not.toHaveAttribute("aria-pressed");
+  });
+
+  it("does not emit aria-disabled on enabled options", () => {
+    render(<SegmentedControlFixture />);
+
+    // Base UI marks enabled composite items with aria-disabled="false"; the
+    // wrapper drops that redundant value so only disabled options expose it.
+    expect(screen.getByRole("radio", { name: "Left" })).not.toHaveAttribute(
+      "aria-disabled",
+    );
+    expect(screen.getByRole("radio", { name: "Right" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
   });
 
   it("supports controlled single values and legacy string callbacks", async () => {
@@ -74,14 +105,14 @@ describe("SegmentedControl", () => {
 
     render(<ControlledSegmentedControl />);
 
-    await user.click(screen.getByRole("button", { name: "Center" }));
+    await user.click(screen.getByRole("radio", { name: "Center" }));
 
     expect(onValueChange).toHaveBeenCalledWith("center");
-    expect(screen.getByRole("button", { name: "Center" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Center" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
-    expect(screen.getByRole("button", { name: "Left" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Left" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "inactive",
     );
@@ -98,10 +129,10 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    await user.click(screen.getByRole("button", { name: "Left" }));
+    await user.click(screen.getByRole("radio", { name: "Left" }));
 
     expect(onValueChange).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Left" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Left" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
@@ -118,10 +149,10 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    await user.click(screen.getByRole("button", { name: "Left" }));
+    await user.click(screen.getByRole("radio", { name: "Left" }));
 
     expect(onValueChange).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Left" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Left" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
@@ -150,14 +181,14 @@ describe("SegmentedControl", () => {
 
     render(<ControlledSegmentedControl />);
 
-    await user.click(screen.getByRole("button", { name: "None" }));
+    await user.click(screen.getByRole("radio", { name: "None" }));
 
     expect(onValueChange).toHaveBeenCalledWith("");
-    expect(screen.getByRole("button", { name: "None" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "None" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
-    expect(screen.getByRole("button", { name: "Left" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Left" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "inactive",
     );
@@ -189,20 +220,20 @@ describe("SegmentedControl", () => {
 
     render(<ControlledSegmentedControl />);
 
-    await user.click(screen.getByRole("button", { name: "Sentinel" }));
+    await user.click(screen.getByRole("radio", { name: "Sentinel" }));
 
     expect(onValueChange).toHaveBeenCalledWith(emptyStringSentinel);
-    expect(screen.getByRole("button", { name: "None" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "None" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "inactive",
     );
-    expect(screen.getByRole("button", { name: "Sentinel" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Sentinel" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
   });
 
-  it("supports controlled multiple values and legacy array callbacks", async () => {
+  it("exposes toggle-button semantics for multiple select", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
 
@@ -227,6 +258,16 @@ describe("SegmentedControl", () => {
     };
 
     render(<ControlledSegmentedControl />);
+
+    // Multi-select stays as independent toggle buttons: role="group" with
+    // aria-pressed, and no radio semantics.
+    expect(screen.queryByRole("radiogroup")).not.toBeInTheDocument();
+    expect(screen.queryByRole("radio")).not.toBeInTheDocument();
+    expect(screen.getByRole("group")).toBeInTheDocument();
+
+    const leftOption = screen.getByRole("button", { name: "Left" });
+    expect(leftOption).toHaveAttribute("aria-pressed", "true");
+    expect(leftOption).not.toHaveAttribute("aria-checked");
 
     await user.click(screen.getByRole("button", { name: "Center" }));
 
@@ -254,10 +295,10 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    await user.click(screen.getByRole("button", { name: "Right" }));
+    await user.click(screen.getByRole("radio", { name: "Right" }));
 
     expect(onValueChange).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Left" })).toHaveAttribute(
+    expect(screen.getByRole("radio", { name: "Left" })).toHaveAttribute(
       "data-tgph-segmented-control-option-status",
       "active",
     );
@@ -278,8 +319,8 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    const leftOption = screen.getByRole("button", { name: "Left" });
-    const centerOption = screen.getByRole("button", { name: "Center" });
+    const leftOption = screen.getByRole("radio", { name: "Left" });
+    const centerOption = screen.getByRole("radio", { name: "Center" });
 
     expect(leftOption).toBeDisabled();
     expect(leftOption).toHaveAttribute("data-tgph-button-state", "disabled");
@@ -296,8 +337,8 @@ describe("SegmentedControl", () => {
 
     render(<SegmentedControlFixture />);
 
-    const leftOption = screen.getByRole("button", { name: "Left" });
-    const centerOption = screen.getByRole("button", { name: "Center" });
+    const leftOption = screen.getByRole("radio", { name: "Left" });
+    const centerOption = screen.getByRole("radio", { name: "Center" });
 
     leftOption.focus();
     await user.keyboard("{ArrowRight}");
@@ -316,8 +357,8 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    const leftOption = screen.getByRole("button", { name: "Left" });
-    const rightOption = screen.getByRole("button", { name: "Right" });
+    const leftOption = screen.getByRole("radio", { name: "Left" });
+    const rightOption = screen.getByRole("radio", { name: "Right" });
 
     rightOption.focus();
     await user.keyboard("{ArrowRight}");
@@ -335,7 +376,7 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    const leftOption = screen.getByRole("button", { name: "Left" });
+    const leftOption = screen.getByRole("radio", { name: "Left" });
 
     leftOption.focus();
     await user.keyboard("{ArrowLeft}");
@@ -353,7 +394,7 @@ describe("SegmentedControl", () => {
       </SegmentedControl.Root>,
     );
 
-    const leftOption = screen.getByRole("button", { name: "Left" });
+    const leftOption = screen.getByRole("radio", { name: "Left" });
 
     leftOption.focus();
     await user.keyboard("{ArrowRight}");
@@ -378,8 +419,6 @@ describe("SegmentedControl", () => {
     );
 
     expect(rootRef.current).toBe(screen.getByTestId("segmented-control-root"));
-    expect(optionRef.current).toBe(
-      screen.getByRole("button", { name: "Left" }),
-    );
+    expect(optionRef.current).toBe(screen.getByRole("radio", { name: "Left" }));
   });
 });
