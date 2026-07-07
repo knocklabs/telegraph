@@ -1,5 +1,11 @@
 # @telegraph/tokens
 
+## 0.2.2
+
+### Patch Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Publish JavaScript wrappers for token CSS variable map exports so ESM consumers can import them without JSON import attributes.
+
 ## 0.2.1
 
 ### Patch Changes

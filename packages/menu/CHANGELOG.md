@@ -1,5 +1,19 @@
 # @telegraph/menu
 
+## 0.5.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Menu internals to Base UI while preserving Telegraph dismissal callbacks, focus callbacks, `avoidCollisions`, `hideWhenDetached`, trigger refs, submenu state attributes, and portal styling. Combobox trigger aria labels now fall back to option values when labels are rendered as React nodes so assistive text remains string-safe.
+
+### Patch Changes
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/button@0.7.3
+  - @telegraph/layout@0.5.2
+  - @telegraph/icon@0.5.3
+
 ## 0.4.1
 
 ### Patch Changes

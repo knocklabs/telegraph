@@ -1,5 +1,16 @@
 # @telegraph/input
 
+## 0.4.2
+
+### Patch Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Replace Radix Slot usage in Appearance and Input with Telegraph helpers, and add shared `TgphSlot`, `VisuallyHidden`, and `useControllableState` exports for migrated components. Explicit appearance overrides now remain pinned instead of being overwritten by document-level appearance observer updates.
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde), [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/helpers@0.1.0
+  - @telegraph/layout@0.5.2
+  - @telegraph/typography@0.4.2
+
 ## 0.4.1
 
 ### Patch Changes

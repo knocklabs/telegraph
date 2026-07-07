@@ -1,5 +1,14 @@
 # @telegraph/postcss-config
 
+## 0.1.5
+
+### Patch Changes
+
+- [#856](https://github.com/knocklabs/telegraph/pull/856) [`2785c9b`](https://github.com/knocklabs/telegraph/commit/2785c9bace7d5669808ee8820c265756228e6c3f) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.15 to 8.5.16
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/tokens@0.2.2
+
 ## 0.1.4
 
 ### Patch Changes

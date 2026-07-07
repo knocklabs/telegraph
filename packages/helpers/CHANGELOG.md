@@ -1,5 +1,19 @@
 # @telegraph/helpers
 
+## 0.1.0
+
+### Minor Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Add the Base UI render bridge used by the migration while preserving Telegraph `tgphRef` behavior and React 18 compatibility. This also adds `@base-ui/react` as a runtime dependency for shared helper primitives.
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Replace Radix Slot usage in Appearance and Input with Telegraph helpers, and add shared `TgphSlot`, `VisuallyHidden`, and `useControllableState` exports for migrated components. Explicit appearance overrides now remain pinned instead of being overwritten by document-level appearance observer updates.
+
+### Patch Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Popover internals from Radix UI to Base UI while preserving Telegraph styling, `tgphRef`, dismissal callbacks, focus callbacks, `avoidCollisions`, and `hideWhenDetached` compatibility. Also add shared Base UI compatibility helpers for migrated floating components.
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Tabs from Radix primitives to Base UI while preserving Telegraph styling hooks and `tgphRef` support. `onValueChange` now honestly types the Base UI cleared-selection case as `string | null`, and list activation behavior is configured through `Tabs.List` props.
+
 ## 0.0.16
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @telegraph/style-engine
 
+## 0.3.6
+
+### Patch Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Publish JavaScript wrappers for token CSS variable map exports so ESM consumers can import them without JSON import attributes.
+
+- [#856](https://github.com/knocklabs/telegraph/pull/856) [`2785c9b`](https://github.com/knocklabs/telegraph/commit/2785c9bace7d5669808ee8820c265756228e6c3f) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.15 to 8.5.16
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Preserve compatibility for consumer apps that pass inferred click handlers, textarea `as="textarea"`, Box `direction`, and raw size values.
+
+- Updated dependencies [[`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde)]:
+  - @telegraph/tokens@0.2.2
+
 ## 0.3.5
 
 ### Patch Changes

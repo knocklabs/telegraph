@@ -1,5 +1,13 @@
 # @telegraph/vite-config
 
+## 0.0.18
+
+### Patch Changes
+
+- [#837](https://github.com/knocklabs/telegraph/pull/837) [`b78f9b6`](https://github.com/knocklabs/telegraph/commit/b78f9b6b4e209597a56094ac565978b49b777dde) Thanks [@kylemcd](https://github.com/kylemcd)! - Migrate Tooltip internals from Radix UI to Base UI while preserving Telegraph trigger state attributes, dismissal callbacks, collision props, hidden-when-detached behavior, and `tgphRef` support. The portaled tooltip surface keeps a dark Telegraph appearance attribute without reintroducing the removed public `appearance` prop. Keep dependency subpath imports external in shared Vite library builds so Base UI-backed packages publish browser-safe ESM output.
+
+- [#853](https://github.com/knocklabs/telegraph/pull/853) [`bea6c72`](https://github.com/knocklabs/telegraph/commit/bea6c72150110924d1a9f74cb8603b79a9611aee) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump vite from 8.0.14 to 8.0.16
+
 ## 0.0.17
 
 ### Patch Changes
