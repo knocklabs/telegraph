@@ -1,5 +1,11 @@
 # @telegraph/segmented-control
 
+## 0.3.1
+
+### Patch Changes
+
+- [#862](https://github.com/knocklabs/telegraph/pull/862) [`c8d0331`](https://github.com/knocklabs/telegraph/commit/c8d03316510ca06044a51844d7c814c0947ac5f9) Thanks [@kylemcd](https://github.com/kylemcd)! - Restore radio-group accessibility semantics for single-select `SegmentedControl`. After the Base UI migration it rendered every option as a toggle button (`role="group"` + `aria-pressed`), which misrepresents a single-select control as independent multi-select toggles. Single-select now exposes `role="radiogroup"` + `role="radio"` + `aria-checked`, while `type="multiple"` keeps the correct toggle-button semantics. Also stops emitting the redundant `aria-disabled="false"` on enabled options.
+
 ## 0.3.0
 
 ### Minor Changes
