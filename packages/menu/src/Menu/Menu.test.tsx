@@ -80,6 +80,13 @@ describe("Menu", () => {
       void validProps;
     });
 
+    it("accepts skipAnimation for Popover API parity", () => {
+      const validProps: MenuContentProps = {
+        skipAnimation: true,
+      };
+      void validProps;
+    });
+
     it("rejects unknown props on type level", () => {
       // @ts-expect-error unknown prop rejected on MenuContentProps
       const invalidProp: MenuContentProps = { invalidProp: "invalid" };
@@ -501,6 +508,25 @@ describe("Menu", () => {
       outline: "none",
     });
     expect(container).not.toContainElement(content);
+  });
+
+  it("consumes skipAnimation instead of leaking it to the DOM", async () => {
+    render(
+      <Menu.Root defaultOpen>
+        <Menu.Trigger>
+          <TestButton>Workflow actions</TestButton>
+        </Menu.Trigger>
+        <Menu.Content data-testid="menu-content" skipAnimation>
+          <Menu.Button>Manage workflow</Menu.Button>
+        </Menu.Content>
+      </Menu.Root>,
+    );
+
+    const content = await screen.findByTestId("menu-content");
+
+    // Menu accepts skipAnimation for Popover parity but must not forward it to
+    // the DOM node, which would trigger React's unknown-prop warning.
+    expect(content).not.toHaveAttribute("skipanimation");
   });
 
   it("forwards trigger and content refs through tgphRef", async () => {

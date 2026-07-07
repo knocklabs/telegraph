@@ -387,6 +387,7 @@ export type ContentProps<T extends TgphElement = "div"> = Partial<
     onInteractOutside?: LegacyDismissEventHandler;
     onOpenAutoFocus?: LegacyDismissEventHandler;
     onPointerDownOutside?: LegacyDismissHandlers["onPointerDownOutside"];
+    skipAnimation?: boolean;
   };
 
 const Content = <T extends TgphElement = "div">({
@@ -422,6 +423,11 @@ const Content = <T extends TgphElement = "div">({
   shadow = "2",
   side = "bottom",
   sideOffset = 4,
+  // Accepted for API parity with Popover.Content. Menu's popup is not
+  // motion-animated, so there is no open/close animation to skip; consume the
+  // prop here so it does not leak onto the DOM node and trigger React's
+  // "unknown prop" warning.
+  skipAnimation: _skipAnimation,
   sticky,
   style,
   tgphRef,
