@@ -1,6 +1,6 @@
 # 📋 Menu
 
-> Accessible dropdown menu component built on Radix UI with Telegraph design system styling.
+> Accessible dropdown menu component built on Base UI with Telegraph design system styling.
 
 ![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/9b5022e3-b02c-4582-ba57-3d6171e45e44)
 
@@ -88,19 +88,28 @@ The trigger element that opens/closes the menu. Must wrap a single focusable ele
 
 The dropdown content container that holds menu items.
 
-| Prop          | Type                                     | Default    | Description                   |
-| ------------- | ---------------------------------------- | ---------- | ----------------------------- |
-| `side`        | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Side to display menu          |
-| `align`       | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to trigger |
-| `sideOffset`  | `number`                                 | `4`        | Distance from trigger         |
-| `gap`         | `SpacingToken`                           | `"1"`      | Gap between menu items        |
-| `py`          | `SpacingToken`                           | `"1"`      | Vertical padding              |
-| `rounded`     | `RoundedToken`                           | `"4"`      | Border radius                 |
-| `shadow`      | `ShadowToken`                            | `"2"`      | Drop shadow                   |
-| `border`      | `SpacingToken`                           | `"px"`     | Border width                  |
-| `borderColor` | `ColorToken`                             | `"gray-8"` | Border color                  |
+| Prop          | Type                                     | Default    | Description                      |
+| ------------- | ---------------------------------------- | ---------- | -------------------------------- |
+| `side`        | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Side to display menu             |
+| `align`       | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to trigger    |
+| `sideOffset`  | `number`                                 | `4`        | Distance from trigger            |
+| `gap`         | `SpacingToken`                           | `"1"`      | Gap between menu items           |
+| `py`          | `SpacingToken`                           | `"1"`      | Vertical padding                 |
+| `rounded`     | `RoundedToken`                           | `"4"`      | Border radius                    |
+| `shadow`      | `ShadowToken`                            | `"2"`      | Drop shadow                      |
+| `border`      | `SpacingToken`                           | `"px"`     | Border width                     |
+| `borderColor` | `ColorToken`                             | `"gray-8"` | Border color                     |
+| `forceMount`  | `boolean`                                | `false`    | Keep content mounted when closed |
 
 All Stack props are also supported for additional styling.
+
+`Menu.Content` renders in a portal with `className="tgph"` so Telegraph styles
+and CSS variables remain available outside the local subtree. The package also
+continues to expose Radix-compatible Popper CSS custom properties, such as
+`--radix-popper-anchor-width` and `--radix-popper-available-height`, mapped to
+Base UI's positioning variables for downstream style compatibility. The portal
+positioner owns the popover z-index layer so menu-backed popups keep rendering
+above modal overlays and other lower layering surfaces.
 
 ### `<Menu.Button>`
 
@@ -125,23 +134,23 @@ Inherits all Button props for additional styling.
 Groups a `Menu.SubTrigger` with its `Menu.SubContent` to create a nested submenu
 that opens on hover/focus. Render it inside a `Menu.Content`.
 
-| Prop           | Type                      | Default     | Description                      |
-| -------------- | ------------------------- | ----------- | -------------------------------- |
-| `open`         | `boolean`                 | `undefined` | Controlled open state            |
-| `defaultOpen`  | `boolean`                 | `false`     | Initial open state (uncontrolled)|
-| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes |
+| Prop           | Type                      | Default     | Description                       |
+| -------------- | ------------------------- | ----------- | --------------------------------- |
+| `open`         | `boolean`                 | `undefined` | Controlled open state             |
+| `defaultOpen`  | `boolean`                 | `false`     | Initial open state (uncontrolled) |
+| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback when open state changes  |
 
 ### `<Menu.SubTrigger>`
 
 The item inside a `Menu.Sub` that opens the submenu on hover (or `→` / `Enter`).
 Accepts the same props as `Menu.Button` and defaults to a trailing chevron icon.
 
-| Prop           | Type              | Default        | Description                                   |
-| -------------- | ----------------- | -------------- | --------------------------------------------- |
-| `children`     | `React.ReactNode` | required       | Trigger label                                 |
-| `trailingIcon` | `IconProps`       | `ChevronRight` | Trailing icon; pass your own to override      |
-| `leadingIcon`  | `IconProps`       | `undefined`    | Icon before text                              |
-| `disabled`     | `boolean`         | `false`        | Whether the submenu trigger is disabled       |
+| Prop           | Type              | Default        | Description                              |
+| -------------- | ----------------- | -------------- | ---------------------------------------- |
+| `children`     | `React.ReactNode` | required       | Trigger label                            |
+| `trailingIcon` | `IconProps`       | `ChevronRight` | Trailing icon; pass your own to override |
+| `leadingIcon`  | `IconProps`       | `undefined`    | Icon before text                         |
+| `disabled`     | `boolean`         | `false`        | Whether the submenu trigger is disabled  |
 
 Inherits all `Menu.Button` props.
 
@@ -151,14 +160,14 @@ The container for a submenu's items. Always opens to the side of its trigger
 (`right`, flipping to `left` on collision); `side` and `align` are managed
 automatically and are not accepted.
 
-| Prop          | Type           | Default | Description                           |
-| ------------- | -------------- | ------- | ------------------------------------- |
-| `sideOffset`  | `number`       | `0`     | Distance from the trigger             |
-| `alignOffset` | `number`       | `0`     | Offset along the trigger's edge       |
-| `gap`         | `SpacingToken` | `"1"`   | Gap between menu items                |
-| `py`          | `SpacingToken` | `"1"`   | Vertical padding                      |
-| `rounded`     | `RoundedToken` | `"4"`   | Border radius                         |
-| `shadow`      | `ShadowToken`  | `"2"`   | Drop shadow                           |
+| Prop          | Type           | Default | Description                     |
+| ------------- | -------------- | ------- | ------------------------------- |
+| `sideOffset`  | `number`       | `0`     | Distance from the trigger       |
+| `alignOffset` | `number`       | `0`     | Offset along the trigger's edge |
+| `gap`         | `SpacingToken` | `"1"`   | Gap between menu items          |
+| `py`          | `SpacingToken` | `"1"`   | Vertical padding                |
+| `rounded`     | `RoundedToken` | `"4"`   | Border radius                   |
+| `shadow`      | `ShadowToken`  | `"2"`   | Drop shadow                     |
 
 All Stack props are also supported for additional styling.
 
@@ -338,9 +347,9 @@ const ControlledMenu = () => {
 ### Menu with Custom Components
 
 ```tsx
-import { Tag } from "@telegraph/tag";
 import { Box } from "@telegraph/layout";
 import { Menu } from "@telegraph/menu";
+import { Tag } from "@telegraph/tag";
 
 <Menu.Root>
   <Menu.Trigger>
@@ -486,8 +495,8 @@ import { Copy, Cut, Paste, Redo, Undo } from "lucide-react";
 ### Menu with Loading States
 
 ```tsx
-import { Menu } from "@telegraph/menu";
 import { Spinner } from "@telegraph/icon";
+import { Menu } from "@telegraph/menu";
 import { useState } from "react";
 
 const MenuWithLoading = () => {
@@ -643,9 +652,9 @@ Typeahead is also supported: type the first characters of an item to focus it.
 ### User Profile Menu
 
 ```tsx
-import { Tag } from "@telegraph/tag";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu } from "@telegraph/menu";
+import { Tag } from "@telegraph/tag";
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
 
 export const UserProfileMenu = ({ user }) => (
@@ -667,7 +676,13 @@ export const UserProfileMenu = ({ user }) => (
         leadingComponent={
           <Box as="img" src={user.avatar} alt="" w="5" h="5" rounded="full" />
         }
-        trailingComponent={user.isPro && <Tag size="0" color="accent">Pro</Tag>}
+        trailingComponent={
+          user.isPro && (
+            <Tag size="0" color="accent">
+              Pro
+            </Tag>
+          )
+        }
       >
         {user.name}
       </Menu.Button>
@@ -828,7 +843,7 @@ export const FilterMenu = ({ onFilterChange }) => {
 
 ## References
 
-- [Radix UI Menu](https://www.radix-ui.com/docs/primitives/components/dropdown-menu)
+- [Base UI Menu](https://base-ui.com/react/components/menu)
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/menu)
 
 ## Contributing

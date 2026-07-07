@@ -21,6 +21,7 @@
   --bottom: auto;
   --overflow: visible visible;
   --align-self: auto;
+  --flex-direction: row;
 
   background-color: var(--background-color);
   border-width: var(--border-width);
@@ -44,6 +45,7 @@
   bottom: var(--bottom);
   overflow: var(--overflow);
   align-self: var(--align-self);
+  flex-direction: var(--flex-direction);
 }
 
 /* Auto-generates interactive pseudo-class rules (hover, focus, active,

@@ -77,7 +77,7 @@ export const Default: Story = {
       : undefined;
 
     const selected = type === "selectable" ? selectedProp : undefined;
-    console.log(selected, type, args);
+
     return (
       <>
         <TelegraphMenuItem

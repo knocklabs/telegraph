@@ -289,14 +289,21 @@ describe("Button", () => {
         void event;
       };
       const noArgHandler = () => {};
+      const inferredTupleCallback = (): boolean | (() => void) => {
+        return noArgHandler;
+      };
 
       const withKeyboard = <Button onClick={keyboardHandler}>Click</Button>;
       const withNoArg = <Button onClick={noArgHandler}>Click</Button>;
+      const withInferredTupleCallback = (
+        <Button onClick={inferredTupleCallback()}>Click</Button>
+      );
       const withInline = (
         <Button onClick={() => console.log("clicked")}>Click</Button>
       );
       void withKeyboard;
       void withNoArg;
+      void withInferredTupleCallback;
       void withInline;
     });
 

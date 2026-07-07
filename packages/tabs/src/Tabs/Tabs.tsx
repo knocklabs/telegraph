@@ -1,35 +1,62 @@
-import * as RadixTabs from "@radix-ui/react-tabs";
-import { RefToTgphRef, TgphComponentProps } from "@telegraph/helpers";
+import { Tabs as BaseTabs } from "@base-ui/react/tabs";
+import {
+  type TgphComponentProps,
+  createTgphBaseUIRender,
+} from "@telegraph/helpers";
 import { Box } from "@telegraph/layout";
-import React from "react";
+import { type ComponentProps } from "react";
 
-export type TabsProps = TgphComponentProps<typeof Box> &
-  React.ComponentProps<typeof RadixTabs.Root>;
+type BaseTabsRootProps = ComponentProps<typeof BaseTabs.Root>;
+type TabsValue = string;
+type TabsValueChangeHandler<Value extends TabsValue> = {
+  bivarianceHack(value: Value): void;
+}["bivarianceHack"];
 
-/**
- * Root component for Tabs
- * Provides context for tab state management and renders child components
- */
-const Tabs = ({
+export type TabsProps<Value extends TabsValue = string> = TgphComponentProps<
+  typeof Box
+> & {
+  defaultValue?: Value;
+  orientation?: BaseTabsRootProps["orientation"];
+  value?: Value;
+  onValueChange?: TabsValueChangeHandler<Value>;
+};
+
+const Tabs = <Value extends TabsValue = string>({
   children,
   defaultValue,
   value,
   onValueChange,
+  orientation,
   ...props
-}: TabsProps) => {
+}: TabsProps<Value>) => {
+  // Base UI uses `null` for "no tab selected"; keep defaultValue undefined
+  // when controlled so React does not see both controlled and default values.
+  const baseDefaultValue =
+    defaultValue ?? (value === undefined ? null : undefined);
+  const handleValueChange: BaseTabsRootProps["onValueChange"] | undefined =
+    onValueChange
+      ? (nextValue) => {
+          // Base UI can report `null` when it cannot resolve an active tab.
+          // Radix-backed Telegraph tabs only notified consumers with string
+          // tab values, so keep that Base UI state internal for compatibility.
+          if (typeof nextValue === "string") {
+            onValueChange(nextValue as Value);
+          }
+        }
+      : undefined;
+
   return (
-    <RadixTabs.Root
-      defaultValue={defaultValue}
+    <BaseTabs.Root
+      defaultValue={baseDefaultValue}
       value={value}
-      onValueChange={onValueChange}
-      asChild
-    >
-      <RefToTgphRef>
+      onValueChange={handleValueChange}
+      orientation={orientation}
+      render={createTgphBaseUIRender(
         <Box data-tgph-tabs="" {...props}>
           {children}
-        </Box>
-      </RefToTgphRef>
-    </RadixTabs.Root>
+        </Box>,
+      )}
+    />
   );
 };
 

@@ -32,7 +32,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.2.4"
+    "@telegraph/helpers": "workspace:^"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.5",

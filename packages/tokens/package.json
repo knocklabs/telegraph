@@ -22,12 +22,16 @@
       "default": "./dist/css/dark.css"
     },
     "./css-variables-map": {
-      "import": "./dist/json/tokens.json",
-      "default": "./dist/json/tokens.json"
+      "types": "./dist/types/css-variables-map.d.ts",
+      "import": "./dist/esm/css-variables-map.mjs",
+      "require": "./dist/cjs/css-variables-map.js",
+      "default": "./dist/cjs/css-variables-map.js"
     },
     "./flattened-css-variables-map": {
-      "import": "./dist/json/flattened-tokens.json",
-      "default": "./dist/json/flattened-tokens.json"
+      "types": "./dist/types/flattened-css-variables-map.d.ts",
+      "import": "./dist/esm/flattened-css-variables-map.mjs",
+      "require": "./dist/cjs/flattened-css-variables-map.js",
+      "default": "./dist/cjs/flattened-css-variables-map.js"
     },
     "./breakpoints": {
       "default": "./dist/css/breakpoints.css"

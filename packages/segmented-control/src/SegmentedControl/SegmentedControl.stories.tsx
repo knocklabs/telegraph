@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box, Stack } from "@telegraph/layout";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
-import React from "react";
+import { type ComponentProps, useState } from "react";
 
 import { SegmentedControl as TelegraphSegmentedControl } from "./SegmentedControl";
 
@@ -21,45 +21,54 @@ const meta: Meta<typeof TelegraphSegmentedControl.Root> = {
 };
 
 type Story = StoryObj<typeof TelegraphSegmentedControl.Root>;
+type SegmentedControlRootProps = ComponentProps<
+  typeof TelegraphSegmentedControl.Root
+>;
 
 export default meta;
 
-export const Default: Story = {
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value, setValue] = React.useState("left");
-    return (
-      <Box maxW="140">
-        <TelegraphSegmentedControl.Root
-          value={value}
-          onValueChange={setValue}
-          {...args}
+const DefaultStory = (args: SegmentedControlRootProps) => {
+  const [value, setValue] = useState("left");
+
+  return (
+    <Box maxW="140">
+      <TelegraphSegmentedControl.Root
+        value={value}
+        onValueChange={(nextValue) => {
+          if (typeof nextValue === "string") {
+            setValue(nextValue);
+          }
+        }}
+        {...args}
+      >
+        <TelegraphSegmentedControl.Option
+          value="left"
+          icon={{ icon: AlignLeft, "aria-hidden": true }}
         >
-          <TelegraphSegmentedControl.Option
-            value="left"
-            icon={{ icon: AlignLeft, "aria-hidden": true }}
-          >
-            Left
-          </TelegraphSegmentedControl.Option>
-          <TelegraphSegmentedControl.Option
-            value="center"
-            icon={{ icon: AlignCenter, "aria-hidden": true }}
-          >
-            Center
-          </TelegraphSegmentedControl.Option>
-          <TelegraphSegmentedControl.Option
-            value="right"
-            icon={{ icon: AlignRight, "aria-hidden": true }}
-          >
-            Right
-          </TelegraphSegmentedControl.Option>
-        </TelegraphSegmentedControl.Root>
-      </Box>
-    );
-  },
+          Left
+        </TelegraphSegmentedControl.Option>
+        <TelegraphSegmentedControl.Option
+          value="center"
+          icon={{ icon: AlignCenter, "aria-hidden": true }}
+        >
+          Center
+        </TelegraphSegmentedControl.Option>
+        <TelegraphSegmentedControl.Option
+          value="right"
+          icon={{ icon: AlignRight, "aria-hidden": true }}
+        >
+          Right
+        </TelegraphSegmentedControl.Option>
+      </TelegraphSegmentedControl.Root>
+    </Box>
+  );
 };
 
-const optionsList = [
+export const Default: Story = {
+  render: (args) => <DefaultStory {...args} />,
+};
+
+const OPTIONS_LIST = [
   { value: "Workflow", label: "Workflow" },
   { value: "Recipient", label: "Recipient" },
   { value: "Actor", label: "Actor" },
@@ -85,53 +94,62 @@ const optionsList = [
   { value: "Call", label: "Call" },
 ];
 
-export const Scrollable: Story = {
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value1, setValue1] = React.useState("Workflow");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value2, setValue2] = React.useState("Task");
-    return (
-      <Stack
-        maxW="80"
-        h="80"
-        border="px"
-        rounded="3"
-        p="4"
-        direction="column"
-        gap="4"
+const ScrollableStory = (args: SegmentedControlRootProps) => {
+  const [value1, setValue1] = useState("Workflow");
+  const [value2, setValue2] = useState("Task");
+
+  return (
+    <Stack
+      maxW="80"
+      h="80"
+      border="px"
+      rounded="3"
+      p="4"
+      direction="column"
+      gap="4"
+    >
+      <TelegraphSegmentedControl.Root
+        size="1"
+        value={value1}
+        onValueChange={(nextValue) => {
+          if (typeof nextValue === "string") {
+            setValue1(nextValue);
+          }
+        }}
+        {...args}
       >
-        <TelegraphSegmentedControl.Root
-          size="1"
-          value={value1}
-          onValueChange={setValue1}
-          {...args}
-        >
-          {optionsList.map((option) => (
-            <TelegraphSegmentedControl.Option
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </TelegraphSegmentedControl.Option>
-          ))}
-        </TelegraphSegmentedControl.Root>
-        <TelegraphSegmentedControl.Root
-          size="1"
-          value={value2}
-          onValueChange={setValue2}
-          {...args}
-        >
-          {optionsList.map((option) => (
-            <TelegraphSegmentedControl.Option
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </TelegraphSegmentedControl.Option>
-          ))}
-        </TelegraphSegmentedControl.Root>
-      </Stack>
-    );
-  },
+        {OPTIONS_LIST.map((option) => (
+          <TelegraphSegmentedControl.Option
+            key={option.value}
+            value={option.value}
+          >
+            {option.label}
+          </TelegraphSegmentedControl.Option>
+        ))}
+      </TelegraphSegmentedControl.Root>
+      <TelegraphSegmentedControl.Root
+        size="1"
+        value={value2}
+        onValueChange={(nextValue) => {
+          if (typeof nextValue === "string") {
+            setValue2(nextValue);
+          }
+        }}
+        {...args}
+      >
+        {OPTIONS_LIST.map((option) => (
+          <TelegraphSegmentedControl.Option
+            key={option.value}
+            value={option.value}
+          >
+            {option.label}
+          </TelegraphSegmentedControl.Option>
+        ))}
+      </TelegraphSegmentedControl.Root>
+    </Stack>
+  );
+};
+
+export const Scrollable: Story = {
+  render: (args) => <ScrollableStory {...args} />,
 };

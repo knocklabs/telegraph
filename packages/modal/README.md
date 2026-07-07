@@ -1,6 +1,6 @@
 # 🪟 Modal
 
-> Accessible modal dialog component with stacking support, animations, and focus management built on Radix UI.
+> Accessible modal dialog component with stacking support, animations, and focus management built on Base UI Dialog.
 
 ![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/9b5022e3-b02c-4582-ba57-3d6171e45e44)
 
@@ -31,6 +31,11 @@ import "@telegraph/modal/default.css";
 ```
 
 > Then, include `className="tgph"` on the farthest parent element wrapping the telegraph components
+
+`Modal` is implemented with Base UI Dialog primitives and Telegraph-rendered
+layout surfaces. It keeps the long-standing Telegraph API while preserving
+accessible titles/descriptions, portal style scoping, focus management, outside
+click dismissal, Escape dismissal, and stacked modal behavior.
 
 ## Quick Start
 
@@ -76,17 +81,17 @@ export const BasicModal = () => {
 
 The root modal container that manages state and provides context.
 
-| Prop                 | Type                      | Default     | Description                                |
-| -------------------- | ------------------------- | ----------- | ------------------------------------------ |
-| `open`               | `boolean`                 | `undefined` | Controlled open state                      |
-| `defaultOpen`        | `boolean`                 | `false`     | Default open state                         |
-| `onOpenChange`       | `(open: boolean) => void` | `undefined` | Callback when open state changes           |
-| `a11yTitle`          | `string`                  | required    | Accessible title for screen readers        |
-| `a11yDescription`    | `string`                  | `undefined` | Accessible description for screen readers  |
-| `trapped`            | `boolean`                 | `true`      | Whether focus should be trapped            |
-| `onMountAutoFocus`   | `(event: Event) => void`  | `undefined` | Called when modal opens and focuses        |
-| `onUnmountAutoFocus` | `(event: Event) => void`  | `undefined` | Called when modal closes and focus returns |
-| `layer`              | `number`                  | `undefined` | Layer index for stacked modals             |
+| Prop                 | Type                      | Default     | Description                                                                                      |
+| -------------------- | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
+| `open`               | `boolean`                 | `undefined` | Controlled open state                                                                            |
+| `defaultOpen`        | `boolean`                 | `false`     | Default open state                                                                               |
+| `onOpenChange`       | `(open: boolean) => void` | `undefined` | Callback when open state changes                                                                 |
+| `a11yTitle`          | `string`                  | required    | Accessible title for screen readers                                                              |
+| `a11yDescription`    | `string`                  | `undefined` | Accessible description for screen readers                                                        |
+| `trapped`            | `boolean`                 | top layer   | Whether focus should be trapped. `false` keeps the modal overlay and document scroll lock active |
+| `onMountAutoFocus`   | `(event: Event) => void`  | `undefined` | Called when modal opens and focuses                                                              |
+| `onUnmountAutoFocus` | `(event: Event) => void`  | `undefined` | Called when modal closes and focus returns                                                       |
+| `layer`              | `number`                  | `undefined` | Layer index for stacked modals                                                                   |
 
 Inherits all Stack props for additional styling.
 
@@ -134,11 +139,11 @@ Inherits all Stack props for layout and styling.
 
 Standardized heading component for modal titles with consistent styling.
 
-| Prop     | Type                                              | Default    | Description        |
-| -------- | ------------------------------------------------- | ---------- | ------------------ |
-| `as`     | `TgphElement`                                     | `"h2"`     | HTML element type  |
-| `size`   | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| ... ` | `"3"`      | Heading size       |
-| `weight` | `"regular" \| "medium" \| "semi-bold" \| "bold"` | `"medium"` | Font weight        |
+| Prop     | Type                                             | Default    | Description       |
+| -------- | ------------------------------------------------ | ---------- | ----------------- |
+| `as`     | `TgphElement`                                    | `"h2"`     | HTML element type |
+| `size`   | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| ... ` | `"3"`      | Heading size      |
+| `weight` | `"regular" \| "medium" \| "semi-bold" \| "bold"` | `"medium"` | Font weight       |
 
 Inherits all Heading props from `@telegraph/typography` for additional styling.
 
@@ -694,6 +699,10 @@ The modal component uses Telegraph design tokens for consistent styling:
 - ✅ **Backdrop Interaction**: Click outside to close
 - ✅ **Focus Restoration**: Returns focus to trigger element
 
+When modals are stacked with `ModalStackingProvider`, only the top layer handles
+Escape and backdrop dismissal. Lower layers stay mounted visually but do not
+own the active focus trap unless `trapped` is explicitly set.
+
 ### Keyboard Shortcuts
 
 | Key               | Action                                 |
@@ -885,7 +894,12 @@ export const ImageGalleryModal = ({
     <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Image Gallery">
       <Modal.Content w="screen" maxW="screen" h="screen" rounded="0" p="0">
         <Modal.Header px="6" py="4">
-          <Stack direction="row" align="center" justify="space-between" w="full">
+          <Stack
+            direction="row"
+            align="center"
+            justify="space-between"
+            w="full"
+          >
             <Modal.Heading>
               {currentImage?.title || `Image ${currentIndex + 1}`}
             </Modal.Heading>
@@ -1040,7 +1054,9 @@ export const ExportModal = ({ open, onClose, onExport }) => {
                   <input
                     type="checkbox"
                     checked={includeHeaders}
-                    onChange={(event) => setIncludeHeaders(event.target.checked)}
+                    onChange={(event) =>
+                      setIncludeHeaders(event.target.checked)
+                    }
                   />
                   Include column headers
                 </label>
@@ -1048,7 +1064,9 @@ export const ExportModal = ({ open, onClose, onExport }) => {
                   <input
                     type="checkbox"
                     checked={includeMetadata}
-                    onChange={(event) => setIncludeMetadata(event.target.checked)}
+                    onChange={(event) =>
+                      setIncludeMetadata(event.target.checked)
+                    }
                   />
                   Include metadata
                 </label>
@@ -1071,7 +1089,7 @@ export const ExportModal = ({ open, onClose, onExport }) => {
 
 ## References
 
-- [Radix UI Dialog](https://www.radix-ui.com/docs/primitives/components/dialog)
+- [Base UI Dialog](https://base-ui.com/react/components/dialog)
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/modal)
 
 ## Contributing

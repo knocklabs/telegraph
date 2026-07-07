@@ -75,6 +75,8 @@ export const ActionSelector = () => {
 ### `<RadioCards>`
 
 The main component that renders a radio group with card-style options.
+RadioCards is backed by Base UI Radio primitives and keeps the Telegraph public
+API, styling hooks, and `tgphRef` behavior stable.
 
 | Prop            | Type                                                     | Default     | Description                          |
 | --------------- | -------------------------------------------------------- | ----------- | ------------------------------------ |
@@ -88,8 +90,8 @@ The main component that renders a radio group with card-style options.
 ```tsx
 type RadioOption = {
   value: string;
-  title?: string;
-  description?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   icon?: { icon: LucideIcon; alt: string };
   // Additional RadioCards.Item props
 };
@@ -100,7 +102,7 @@ type RadioOption = {
 For custom layouts, use the individual components:
 
 - **`<RadioCards.Root>`** - Radio group container
-- **`<RadioCards.Item>`** - Individual radio button item
+- **`<RadioCards.Item>`** - Individual radio button item rendered as a Telegraph button
 - **`<RadioCards.ItemTitle>`** - Title text component
 - **`<RadioCards.ItemDescription>`** - Description text component
 - **`<RadioCards.ItemIcon>`** - Icon component
@@ -322,8 +324,8 @@ export const ConditionalRadio = ({ userPlan, options }) => {
 ### Loading States
 
 ```tsx
-import { RadioCards } from "@telegraph/radio";
 import { Box, Stack } from "@telegraph/layout";
+import { RadioCards } from "@telegraph/radio";
 
 export const RadioCardsWithLoading = ({ loading, options, ...props }) => {
   if (loading) {
@@ -446,32 +448,32 @@ Individual radio button item.
 
 Title text component for radio items.
 
-| Prop       | Type                                  | Default     | Description        |
-| ---------- | ------------------------------------- | ----------- | ------------------ |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Text size |
-| `weight`   | `"regular" \| "medium" \| "semi-bold" \| "bold"` | `"medium"` | Font weight        |
-| `children` | `ReactNode`                           | -           | Title text content |
+| Prop       | Type                                                                 | Default    | Description        |
+| ---------- | -------------------------------------------------------------------- | ---------- | ------------------ |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"`      | Text size          |
+| `weight`   | `"regular" \| "medium" \| "semi-bold" \| "bold"`                     | `"medium"` | Font weight        |
+| `children` | `ReactNode`                                                          | -          | Title text content |
 
 ### `<RadioCards.ItemDescription>`
 
 Description text component for radio items.
 
-| Prop       | Type                              | Default  | Description              |
-| ---------- | --------------------------------- | -------- | ------------------------ |
-| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"0"` | Text size |
-| `color`    | `"default" \| "gray" \| "red" \| "beige" \| "blue" \| "green" \| "yellow" \| "purple" \| "accent" \| "white" \| "black" \| "disabled"` | `"gray"` | Text color |
-| `children` | `ReactNode`                       | -        | Description text content |
+| Prop       | Type                                                                                                                                   | Default  | Description              |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------ |
+| `size`     | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"`                                                                   | `"0"`    | Text size                |
+| `color`    | `"default" \| "gray" \| "red" \| "beige" \| "blue" \| "green" \| "yellow" \| "purple" \| "accent" \| "white" \| "black" \| "disabled"` | `"gray"` | Text color               |
+| `children` | `ReactNode`                                                                                                                            | -        | Description text content |
 
 ### `<RadioCards.ItemIcon>`
 
 Icon component for radio items.
 
-| Prop    | Type                                     | Default  | Description                   |
-| ------- | ---------------------------------------- | -------- | ----------------------------- |
-| `icon`  | `LucideIcon`                             | -        | Lucide icon component         |
-| `alt`   | `string`                                 | -        | Alternative text for the icon |
-| `size`  | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"` | `"2"` | Icon size |
-| `color` | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"gray"` | Icon color |
+| Prop    | Type                                                                                                                                   | Default  | Description                   |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------- |
+| `icon`  | `LucideIcon`                                                                                                                           | -        | Lucide icon component         |
+| `alt`   | `string`                                                                                                                               | -        | Alternative text for the icon |
+| `size`  | `"0" \| "1" \| "2" \| "3" \| "4" \| "5" \| "6" \| "7" \| "8" \| "9"`                                                                   | `"2"`    | Icon size                     |
+| `color` | `"default" \| "gray" \| "accent" \| "red" \| "blue" \| "green" \| "yellow" \| "purple" \| "beige" \| "white" \| "black" \| "disabled"` | `"gray"` | Icon color                    |
 
 ## Examples
 
@@ -541,7 +543,11 @@ export const PricingPlanSelector = () => {
                 <RadioCards.ItemTitle size="3" weight="semi-bold">
                   {plan.title}
                 </RadioCards.ItemTitle>
-                {plan.popular && <Tag size="0" color="accent">Popular</Tag>}
+                {plan.popular && (
+                  <Tag size="0" color="accent">
+                    Popular
+                  </Tag>
+                )}
               </Stack>
 
               <Text as="span" size="5" weight="bold">
@@ -630,7 +636,7 @@ export const DeliveryOptionsForm = () => {
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/radio)
-- [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group)
+- [Base UI Radio](https://base-ui.com/react/components/radio)
 
 ## Contributing
 

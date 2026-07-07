@@ -1,5 +1,4 @@
 import {
-  type PolymorphicProps,
   type PolymorphicPropsWithTgphRef,
   RemappedOmit,
   type Required,
@@ -42,13 +41,19 @@ type InternalProps = {
   state: Required<RootBaseProps>["state"] | "disabled" | "active";
 };
 
+type ButtonClickHandler = {
+  bivarianceHack(event: React.SyntheticEvent | Event): void;
+}["bivarianceHack"];
+
+type ButtonOnClick = ButtonClickHandler | boolean;
+
 export type RootProps<T extends TgphElement = "button"> = Omit<
   TgphComponentProps<typeof Stack>,
   "tgphRef" | "as" | "onClick"
 > &
   Omit<PolymorphicPropsWithTgphRef<T, HTMLButtonElement>, "onClick"> &
   RootBaseProps & {
-    onClick?(event: React.SyntheticEvent | Event): void;
+    onClick?: ButtonClickHandler;
   };
 
 const ButtonContext = React.createContext<
@@ -85,6 +90,7 @@ const Root = <T extends TgphElement = "button">({
   active = false,
   type = "button",
   disabled,
+  onClick,
   className,
   children,
   style,
@@ -150,6 +156,7 @@ const Root = <T extends TgphElement = "button">({
         {...(derivedAs === "button" && { type })} // Only pass in type if we are a button
         {...otherProps}
         {...props}
+        {...(typeof onClick === "function" && { onClick })}
       >
         {state === "loading" && (
           <Spinner
@@ -270,24 +277,26 @@ type BaseDefaultProps =
       trailingIcon?: never;
     };
 export type DefaultProps<T extends TgphElement = "button"> = Omit<
-  PolymorphicProps<T>,
+  RootProps<T>,
   "onClick"
 > &
-  TgphComponentProps<typeof Root> &
   BaseDefaultProps & {
-    onClick?(event: React.SyntheticEvent | Event): void;
+    onClick?: ButtonOnClick;
   };
 
 const Default = <T extends TgphElement = "button">({
   leadingIcon,
   trailingIcon,
   icon,
+  onClick,
   children,
   ...props
 }: DefaultProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
+  const rootProps = props as RootProps<T>;
+
   return (
-    <Root {...props}>
+    <Root<T> {...rootProps} {...(typeof onClick === "function" && { onClick })}>
       {combinedLeadingIcon && (
         <Icon {...combinedLeadingIcon} internal_iconType="leading" />
       )}

@@ -1,19 +1,28 @@
-import * as RadixTabs from "@radix-ui/react-tabs";
-import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
+import { Tabs as BaseTabs } from "@base-ui/react/tabs";
+import {
+  type TgphComponentProps,
+  createTgphBaseUIRender,
+} from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import React from "react";
+import { type ComponentProps } from "react";
 
-export type TabListProps = TgphComponentProps<typeof Stack> &
-  React.ComponentProps<typeof RadixTabs.List>;
+type BaseTabsListProps = ComponentProps<typeof BaseTabs.List>;
+export type TabListProps = TgphComponentProps<typeof Stack> & {
+  activateOnFocus?: BaseTabsListProps["activateOnFocus"];
+  loop?: BaseTabsListProps["loopFocus"];
+};
 
-/**
- * Container component for Tab components
- * Renders a Radix TabsList
- */
-const TabList = ({ children, loop = true, ...props }: TabListProps) => {
+const TabList = ({
+  children,
+  loop = true,
+  activateOnFocus = true,
+  ...props
+}: TabListProps) => {
   return (
-    <RadixTabs.List asChild loop={loop}>
-      <RefToTgphRef>
+    <BaseTabs.List
+      activateOnFocus={activateOnFocus}
+      loopFocus={loop}
+      render={createTgphBaseUIRender(
         <Stack
           flexDirection={"row"}
           spacing="2"
@@ -26,9 +35,9 @@ const TabList = ({ children, loop = true, ...props }: TabListProps) => {
           {...props}
         >
           {children}
-        </Stack>
-      </RefToTgphRef>
-    </RadixTabs.List>
+        </Stack>,
+      )}
+    />
   );
 };
 

@@ -16,7 +16,14 @@ import { clsx } from "clsx";
 import { Check, Copy, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
-import React from "react";
+import {
+  type ComponentProps,
+  type MouseEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { COLOR, SIZE, SPACING, VARIANT, cssVars } from "./Tag.constants";
 
@@ -31,7 +38,7 @@ export type RootProps<T extends TgphElement = "span"> =
     Omit<TgphComponentProps<typeof Stack>, "as" | "tgphRef"> &
     RootBaseProps;
 
-const TagContext = React.createContext<Required<RootBaseProps>>({
+const TagContext = createContext<Required<RootBaseProps>>({
   size: "1",
   color: "default",
   variant: "soft",
@@ -90,7 +97,7 @@ const Text = <T extends TgphElement = "span">({
   style,
   ...props
 }: TextProps<T>) => {
-  const context = React.useContext(TagContext);
+  const context = useContext(TagContext);
   return (
     <TelegraphText
       as={as}
@@ -121,11 +128,11 @@ export type CopyButtonProps = TgphComponentProps<
 };
 
 const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
-  const context = React.useContext(TagContext);
+  const context = useContext(TagContext);
 
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (copied) {
       const timeout = setTimeout(() => setCopied(false), 2000);
       return () => clearTimeout(timeout);
@@ -136,8 +143,8 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
     <LazyMotion features={domAnimation}>
       <Tooltip label="Copy text">
         <TelegraphButton.Root
-          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-            // Still run onClick incase the consumer wants to do something else
+          onClick={(event: MouseEvent<HTMLButtonElement>) => {
+            // Still run onClick in case the consumer wants to do something else
             onClick?.(event);
             setCopied(true);
             if (textToCopy) {
@@ -162,8 +169,9 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
             animate={{ y: copied ? 0 : "150%", opacity: copied ? 1 : 1 }}
             transition={{ duration: 0.15, type: "spring", bounce: 0 }}
             icon={Check}
-            alt="Copied text"
-            aria-hidden={!copied}
+            {...(copied
+              ? { alt: "Copied text" }
+              : { "aria-hidden": true as const })}
           />
           <TelegraphButton.Icon
             as={motion.span}
@@ -172,8 +180,9 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
             transition={{ duration: 0.15, type: "spring", bounce: 0 }}
             icon={Copy}
             position="absolute"
-            alt="Copy text"
-            aria-hidden={copied}
+            {...(copied
+              ? { "aria-hidden": true as const }
+              : { alt: "Copy text" })}
           />
         </TelegraphButton.Root>
       </Tooltip>
@@ -182,7 +191,7 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
 };
 
 const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
-  const context = React.useContext(TagContext);
+  const context = useContext(TagContext);
   return (
     <TelegraphButton
       size={context.size}
@@ -207,7 +216,7 @@ const Icon = <T extends TgphElement = "span">({
   "aria-hidden": ariaHidden,
   ...props
 }: IconProps<T>) => {
-  const context = React.useContext(TagContext);
+  const context = useContext(TagContext);
   const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
   return (
     <TelegraphIcon
@@ -223,12 +232,12 @@ const Icon = <T extends TgphElement = "span">({
 
 export type DefaultProps<T extends TgphElement = "span"> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root<T>> & {
-    icon?: React.ComponentProps<typeof TelegraphIcon>;
-    textProps?: React.ComponentProps<typeof Text>;
+    icon?: ComponentProps<typeof TelegraphIcon>;
+    textProps?: ComponentProps<typeof Text>;
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
-        onCopy: (event: React.MouseEvent<HTMLButtonElement>) => void;
+        onCopy: (event: MouseEvent<HTMLButtonElement>) => void;
         textToCopy?: string;
       }
     | {

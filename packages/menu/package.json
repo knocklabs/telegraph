@@ -32,9 +32,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@radix-ui/react-menu": "^2.1.16",
-    "@radix-ui/react-use-controllable-state": "^1.2.2",
+    "@base-ui/react": "^1.5.0",
     "@telegraph/button": "workspace:^",
+    "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/layout": "workspace:^",

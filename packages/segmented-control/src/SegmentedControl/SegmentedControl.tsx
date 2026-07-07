@@ -1,46 +1,139 @@
-import * as ToggleGroup from "@radix-ui/react-toggle-group";
+import {
+  DirectionProvider,
+  type TextDirection,
+} from "@base-ui/react/direction-provider";
+import { Toggle as BaseToggle } from "@base-ui/react/toggle";
+import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Button } from "@telegraph/button";
-import { RefToTgphRef, type TgphComponentProps } from "@telegraph/helpers";
+import { useComposedRefs } from "@telegraph/compose-refs";
+import {
+  type TgphComponentProps,
+  createTgphBaseUIRender,
+  useControllableState,
+} from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { useTruncate } from "@telegraph/truncate";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import { div as MotionDiv } from "motion/react-m";
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type Dispatch,
+  type KeyboardEvent,
+  type ReactNode,
+  type Ref,
+  type RefObject,
+  type SetStateAction,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+
+import {
+  type AnySegmentedControlValue,
+  ROVING_FOCUS_KEYS,
+  type SegmentedControlType,
+  type SegmentedControlValue,
+  getBaseToggleGroupValue,
+  getBaseToggleValue,
+  getLegacyToggleGroupValue,
+} from "./SegmentedControl.helpers";
 
 // Use a tolerance of 1px to account for subpixel rendering and floating-point precision
 const SCROLL_TOLERANCE = 1;
 const SCROLL_OFFSET = 24;
 
-const SegmentedControlContextState = React.createContext<{
-  value?: React.ComponentProps<typeof ToggleGroup.Root>["value"];
-  size?: React.ComponentProps<typeof Button.Root>["size"];
+type BaseToggleGroupProps = ComponentPropsWithoutRef<typeof BaseToggleGroup>;
+type SegmentedControlOptionStatus = "active" | "inactive";
+type SegmentedControlRootKeyDownEvent = KeyboardEvent<HTMLDivElement> & {
+  preventBaseUIHandler?: () => void;
+};
+type SegmentedControlChangeValue<
+  T extends SegmentedControlType,
+  Value extends AnySegmentedControlValue,
+> = T extends "multiple"
+  ? string[]
+  : Extract<Value, string> extends never
+    ? string
+    : Extract<Value, string>;
+type SegmentedControlValueChangeHandler<
+  T extends SegmentedControlType,
+  Value extends AnySegmentedControlValue,
+> = {
+  bivarianceHack(value: SegmentedControlChangeValue<T, Value>): void;
+}["bivarianceHack"];
+
+const SegmentedControlContextState = createContext<{
+  disabled?: boolean;
+  size?: ComponentPropsWithoutRef<typeof Button.Root>["size"];
   showScrollButtons?: boolean;
   activeOptionRef?: HTMLButtonElement | null;
-  setActiveOptionRef?: React.Dispatch<
-    React.SetStateAction<HTMLButtonElement | null>
-  >;
+  setActiveOptionRef?: Dispatch<SetStateAction<HTMLButtonElement | null>>;
 }>({
-  value: "",
+  disabled: false,
   size: "1",
   showScrollButtons: false,
   activeOptionRef: null,
   setActiveOptionRef: () => {},
 });
 
-export type RootProps = Omit<
-  React.ComponentProps<typeof ToggleGroup.Root>,
-  "type"
+export type RootProps<
+  T extends SegmentedControlType = "single",
+  Value extends AnySegmentedControlValue = SegmentedControlValue<T>,
+> = Omit<
+  BaseToggleGroupProps,
+  | "children"
+  | "className"
+  | "defaultValue"
+  | "disabled"
+  | "loopFocus"
+  | "multiple"
+  | "onKeyDown"
+  | "onValueChange"
+  | "orientation"
+  | "render"
+  | "style"
+  | "value"
 > &
-  TgphComponentProps<typeof Stack> & {
-    type?: React.ComponentProps<typeof ToggleGroup.Root>["type"];
-    size?: React.ComponentProps<typeof Button.Root>["size"];
+  Omit<TgphComponentProps<typeof Stack>, "defaultValue" | "dir"> & {
+    defaultValue?: Value;
+    dir?: TextDirection;
+    disabled?: boolean;
+    loop?: boolean;
+    onValueChange?: SegmentedControlValueChangeHandler<T, Value>;
+    orientation?: BaseToggleGroupProps["orientation"];
+    rovingFocus?: boolean;
     scrollControls?: "arrows" | "none";
+    size?: ComponentPropsWithoutRef<typeof Button.Root>["size"];
+    type?: T;
+    value?: Value;
   };
 
-const Root = ({
-  // ToggleGroup.Root Props
-  type = "single",
+type SegmentedControlDirectionProviderProps = {
+  children: ReactNode;
+  dir?: TextDirection;
+};
+
+const SegmentedControlDirectionProvider = ({
+  children,
+  dir,
+}: SegmentedControlDirectionProviderProps) => {
+  if (!dir) {
+    return <>{children}</>;
+  }
+
+  return <DirectionProvider direction={dir}>{children}</DirectionProvider>;
+};
+
+const Root = <
+  T extends SegmentedControlType = "single",
+  Value extends AnySegmentedControlValue = SegmentedControlValue<T>,
+>({
+  type: typeProp,
   size = "1",
   scrollControls = "arrows",
   value,
@@ -50,28 +143,88 @@ const Root = ({
   rovingFocus,
   orientation,
   dir,
-  loop,
+  loop = true,
   children,
+  onKeyDown,
+  tgphRef,
   ...props
-}: RootProps) => {
-  const containerId = React.useId();
+}: RootProps<T, Value>) => {
+  const containerId = useId();
 
   // Automatically show the scroll buttons when the content of the
   // segmented control is too wide to fit within the container.
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const composedContainerRef = useComposedRefs(
+    tgphRef as Ref<HTMLDivElement> | undefined,
+    containerRef,
+  );
   const { truncated } = useTruncate({ tgphRef: containerRef });
-  const scrollButtonRef = React.useRef<HTMLButtonElement>(null);
+  const scrollButtonRef = useRef<HTMLButtonElement>(null);
   const showScrollButtons = scrollControls === "arrows" && truncated;
+  // Only load the motion/measurement work once overflow is detected.
+  const shouldRenderScrollButtons = showScrollButtons;
+  const type = typeProp ?? "single";
+  const isMultiple = type === "multiple";
+  // Encode Telegraph values before they reach Base UI so empty strings and
+  // private-looking values can round-trip safely through ToggleGroup.
+  const [currentValue, setCurrentValue] = useControllableState<
+    AnySegmentedControlValue | undefined
+  >({
+    prop: value,
+    defaultProp: defaultValue,
+    onChange: onValueChange as
+      | ((nextValue: AnySegmentedControlValue | undefined) => void)
+      | undefined,
+  });
+  const baseValue = getBaseToggleGroupValue(currentValue) ?? [];
+  const handleValueChange = useCallback<
+    NonNullable<BaseToggleGroupProps["onValueChange"]>
+  >(
+    (nextValue) => {
+      if (!isMultiple && nextValue.length === 0) {
+        // Radix single ToggleGroup did not let the active option clear itself.
+        return;
+      }
+
+      // Base UI always emits arrays; convert back to Telegraph's single or
+      // multiple public value shape before notifying consumers.
+      setCurrentValue(
+        getLegacyToggleGroupValue(type, nextValue) as AnySegmentedControlValue,
+      );
+    },
+    [isMultiple, setCurrentValue, type],
+  );
+  const handleKeyDown = useCallback(
+    (event: SegmentedControlRootKeyDownEvent) => {
+      onKeyDown?.(event);
+
+      if (event.defaultPrevented) {
+        event.preventBaseUIHandler?.();
+        return;
+      }
+
+      if (rovingFocus !== false) {
+        return;
+      }
+
+      if (ROVING_FOCUS_KEYS.includes(event.key)) {
+        // `rovingFocus={false}` used to leave arrow keys to the page/caller, so
+        // block Base UI's default roving handler after user code has run.
+        event.preventBaseUIHandler?.();
+      }
+    },
+    [onKeyDown, rovingFocus],
+  );
 
   // We store the active option ref as a state value so that we can respond to it
   // changing via an effect vs doing complicated ref status chasing.
   const [activeOptionRef, setActiveOptionRef] =
-    React.useState<HTMLButtonElement | null>(null);
-  const [scrollStatus, setScrollStatus] = React.useState<
+    useState<HTMLButtonElement | null>(null);
+  const [scrollStatus, setScrollStatus] = useState<
     "flushLeft" | "flushRight" | "middle" | null
   >(null);
 
-  const onScrollClick = React.useCallback((direction: "left" | "right") => {
+  const onScrollClick = useCallback((direction: "left" | "right") => {
     if (!containerRef.current) return;
 
     // We get the currentWidth so that we can scroll a meaningful amount.
@@ -90,7 +243,7 @@ const Root = ({
   }, []);
 
   // Derive what the `scrollStatus` should be based on the current scroll position.
-  const deriveScrollStatus = React.useCallback(
+  const deriveScrollStatus = useCallback(
     (
       currentScrollPosition: number,
     ): "flushLeft" | "flushRight" | "middle" | null => {
@@ -118,14 +271,14 @@ const Root = ({
   );
 
   // Update the `scrollStatus` on mount and each time the container is scrolled.
-  const handleScroll = React.useCallback(() => {
+  const handleScroll = useCallback(() => {
     if (!containerRef.current) return;
     const newScrollPosition = containerRef.current.scrollLeft;
     const newScrollStatus = deriveScrollStatus(newScrollPosition);
     setScrollStatus(newScrollStatus);
   }, [deriveScrollStatus]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
 
@@ -138,8 +291,8 @@ const Root = ({
   }, [handleScroll]);
 
   // When the active option is changed, ensure that it is in view.
-  const [hasRan, setHasRan] = React.useState(false);
-  React.useEffect(() => {
+  const [hasRan, setHasRan] = useState(false);
+  useEffect(() => {
     if (showScrollButtons && activeOptionRef) {
       const optionOffsetLeft = activeOptionRef.offsetLeft;
       // Determine what the scroll status would be if the active option was scrolled into view.
@@ -160,7 +313,7 @@ const Root = ({
       containerRef.current?.scrollTo({
         left: newScrollPosition,
         // If this is the first time we've run this effect, we choose to scroll to the active
-        // option instantly. This avoid animating to that value on mount.
+        // option instantly. This avoids animating to that value on mount.
         behavior: hasRan ? "smooth" : "instant",
       });
 
@@ -178,49 +331,46 @@ const Root = ({
     >
       <SegmentedControlContextState.Provider
         value={{
-          value,
           size,
+          disabled,
           showScrollButtons,
           activeOptionRef,
           setActiveOptionRef,
         }}
       >
-        {/* @ts-expect-error: radix's type props doesn't seem to be typed correctly, could be a bug? */}
-        <ToggleGroup.Root
-          asChild={true}
-          type={type}
-          value={value}
-          defaultValue={defaultValue}
-          onValueChange={onValueChange}
-          disabled={disabled}
-          rovingFocus={rovingFocus}
-          orientation={orientation}
-          dir={dir}
-          loop={loop}
-        >
-          <RefToTgphRef>
-            <Stack
-              id={containerId}
-              bg="gray-3"
-              rounded="2"
-              align="center"
-              justify="space-between"
-              // We use overflow hidden here to totally hide any overflow while also
-              // hiding any scroll bars. The buttons that appear when the container is truncated
-              // control the scroll. This means we don't need to worry about the browser's default
-              // scroll bar overlapping the segmented control.
-              overflow={showScrollButtons ? "hidden" : "visible"}
-              position="relative"
-              tgphRef={containerRef}
-              {...props}
-            >
-              {children}
-            </Stack>
-          </RefToTgphRef>
-        </ToggleGroup.Root>
+        <SegmentedControlDirectionProvider dir={dir}>
+          <BaseToggleGroup
+            value={baseValue}
+            onValueChange={handleValueChange}
+            disabled={disabled}
+            multiple={isMultiple}
+            orientation={orientation}
+            loopFocus={loop}
+            render={createTgphBaseUIRender(
+              <Stack
+                id={containerId}
+                bg="gray-3"
+                rounded="2"
+                align="center"
+                justify="space-between"
+                // We use overflow hidden here to totally hide any overflow while also
+                // hiding any scroll bars. The buttons that appear when the container is truncated
+                // control the scroll. This means we don't need to worry about the browser's default
+                // scroll bar overlapping the segmented control.
+                overflow={showScrollButtons ? "hidden" : "visible"}
+                position="relative"
+                dir={dir}
+                tgphRef={composedContainerRef}
+                onKeyDown={handleKeyDown}
+                {...props}
+              >
+                {children}
+              </Stack>,
+            )}
+          />
+        </SegmentedControlDirectionProvider>
       </SegmentedControlContextState.Provider>
-      {/* We only load any of the truncation logic when the container is truncated. */}
-      {showScrollButtons && (
+      {shouldRenderScrollButtons && (
         <LazyMotion features={domAnimation}>
           <Box
             key="left-scroll-button"
@@ -286,7 +436,7 @@ const Root = ({
 };
 
 const ButtonStyleProps: Record<
-  string,
+  SegmentedControlOptionStatus,
   TgphComponentProps<typeof Button.Root>
 > = {
   active: {
@@ -299,49 +449,73 @@ const ButtonStyleProps: Record<
   },
 };
 
-export type OptionProps = React.ComponentProps<typeof ToggleGroup.Item> &
-  TgphComponentProps<typeof Button>;
+export type OptionProps = Omit<TgphComponentProps<typeof Button>, "value"> & {
+  value: string;
+};
 
-const Option = ({
-  // ToggleGroup.Item Props
-  value,
+type OptionButtonProps = Omit<OptionProps, "value"> & {
+  buttonRef: RefObject<HTMLButtonElement | null>;
+  status: SegmentedControlOptionStatus;
+};
+
+const OptionButton = ({
+  buttonRef,
   disabled,
-  // Button Props
   size = "1",
+  status,
   style,
+  tgphRef,
   ...props
-}: OptionProps) => {
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const { setActiveOptionRef, ...context } = React.useContext(
+}: OptionButtonProps) => {
+  const { setActiveOptionRef, ...context } = useContext(
     SegmentedControlContextState,
   );
-  const status = context.value === value ? "active" : "inactive";
   const derivedSize = context.size ?? size;
+  const derivedDisabled = Boolean(context.disabled || disabled);
+  const composedButtonRef = useComposedRefs(
+    tgphRef as Ref<HTMLButtonElement> | undefined,
+    buttonRef,
+  );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === "active") {
       setActiveOptionRef?.(buttonRef.current);
     }
-  }, [status, setActiveOptionRef]);
+  }, [buttonRef, status, setActiveOptionRef]);
 
   return (
-    <ToggleGroup.Item asChild={true} value={value} disabled={disabled}>
-      <RefToTgphRef>
-        <Button
-          size={derivedSize}
-          {...ButtonStyleProps[status]}
-          style={{
-            // Make the button take up all availabel space
-            flexGrow: 1,
-            ...style,
-          }}
-          data-tgph-segmented-control-option
-          data-tgph-segmented-control-option-status={status}
-          tgphRef={buttonRef}
+    <Button
+      size={derivedSize}
+      disabled={derivedDisabled}
+      {...ButtonStyleProps[status]}
+      style={{
+        flexGrow: 1,
+        ...style,
+      }}
+      data-tgph-segmented-control-option
+      data-tgph-segmented-control-option-status={status}
+      tgphRef={composedButtonRef}
+      {...props}
+    />
+  );
+};
+
+const Option = ({ value, disabled, ...props }: OptionProps) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <BaseToggle
+      value={getBaseToggleValue(value)}
+      disabled={disabled}
+      render={createTgphBaseUIRender((state) => (
+        <OptionButton
+          buttonRef={buttonRef}
+          disabled={state.disabled || disabled}
+          status={state.pressed ? "active" : "inactive"}
           {...props}
         />
-      </RefToTgphRef>
-    </ToggleGroup.Item>
+      ))}
+    />
   );
 };
 

@@ -8,6 +8,7 @@ import type { CSSProperties } from "react";
 
 // Type that allows both positive and negative spacing values
 type SpacingValue = WithNegativeSpacing<keyof typeof tokens.spacing>;
+type SizeValue = keyof typeof tokens.spacing | (string & {});
 
 export type BaseStyleProps = {
   display: "block" | "inline-block" | "inline" | "flex" | "inline-flex";
@@ -47,12 +48,12 @@ export type BaseStyleProps = {
   borderLeftRadius: keyof typeof tokens.rounded;
   borderRightRadius: keyof typeof tokens.rounded;
   boxShadow: keyof typeof tokens.shadow;
-  width: keyof typeof tokens.spacing;
-  height: keyof typeof tokens.spacing;
-  minWidth: keyof typeof tokens.spacing;
-  minHeight: keyof typeof tokens.spacing;
-  maxWidth: keyof typeof tokens.spacing;
-  maxHeight: keyof typeof tokens.spacing;
+  width: SizeValue;
+  height: SizeValue;
+  minWidth: SizeValue;
+  minHeight: SizeValue;
+  maxWidth: SizeValue;
+  maxHeight: SizeValue;
   zIndex: keyof (typeof tokens)["zIndex"];
   position: "relative" | "absolute" | "fixed" | "sticky";
   top: SpacingValue;
@@ -63,6 +64,7 @@ export type BaseStyleProps = {
   overflowX: "hidden" | "visible" | "scroll" | "auto";
   overflowY: "hidden" | "visible" | "scroll" | "auto";
   alignSelf: CSSProperties["alignSelf"];
+  flexDirection: CSSProperties["flexDirection"];
 };
 
 type ShorthandStyleProps = {
@@ -85,12 +87,12 @@ type ShorthandStyleProps = {
   ml: SpacingValue;
   mr: SpacingValue;
   shadow: keyof typeof tokens.shadow;
-  w: keyof typeof tokens.spacing;
-  h: keyof typeof tokens.spacing;
-  minW: keyof typeof tokens.spacing;
-  minH: keyof typeof tokens.spacing;
-  maxW: keyof typeof tokens.spacing;
-  maxH: keyof typeof tokens.spacing;
+  w: SizeValue;
+  h: SizeValue;
+  minW: SizeValue;
+  minH: SizeValue;
+  maxW: SizeValue;
+  maxH: SizeValue;
   rounded: keyof typeof tokens.rounded;
   roundedTopLeft: keyof typeof tokens.rounded;
   roundedTopRight: keyof typeof tokens.rounded;
@@ -104,6 +106,7 @@ type ShorthandStyleProps = {
   borderBottom: keyof typeof tokens.spacing;
   borderLeft: keyof typeof tokens.spacing;
   borderRight: keyof typeof tokens.spacing;
+  direction: BaseStyleProps["flexDirection"];
 };
 
 const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
@@ -288,26 +291,32 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
   width: {
     cssVar: "--width",
     value: "var(--tgph-spacing-VARIABLE)",
+    allowRawValue: true,
   },
   height: {
     cssVar: "--height",
     value: "var(--tgph-spacing-VARIABLE)",
+    allowRawValue: true,
   },
   minWidth: {
     cssVar: "--min-width",
     value: "var(--tgph-spacing-VARIABLE)",
+    allowRawValue: true,
   },
   minHeight: {
     cssVar: "--min-height",
     value: "var(--tgph-spacing-VARIABLE)",
+    allowRawValue: true,
   },
   maxWidth: {
     cssVar: "--max-width",
     value: "var(--tgph-spacing-VARIABLE)",
+    allowRawValue: true,
   },
   maxHeight: {
     cssVar: "--max-height",
     value: "var(--tgph-spacing-VARIABLE)",
+    allowRawValue: true,
   },
   zIndex: {
     cssVar: "--z-index",
@@ -352,6 +361,10 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     cssVar: "--align-self",
     value: "VARIABLE",
   },
+  flexDirection: {
+    cssVar: "--flex-direction",
+    value: "VARIABLE",
+  },
 } as const;
 
 const shorthandCssVars: Record<keyof ShorthandStyleProps, CssVarProp> = {
@@ -393,6 +406,7 @@ const shorthandCssVars: Record<keyof ShorthandStyleProps, CssVarProp> = {
   borderBottom: baseCssVars.borderBottomWidth,
   borderLeft: baseCssVars.borderLeftWidth,
   borderRight: baseCssVars.borderRightWidth,
+  direction: baseCssVars.flexDirection,
 } as const;
 
 export const cssVars = {

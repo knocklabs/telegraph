@@ -1,10 +1,11 @@
 /* Active tab style - orange underline */
-[data-tgph-tab][data-state="active"]::after {
+[data-tgph-tab][data-state="active"]::after,
+[data-tgph-tab][data-active]::after {
   animation: tabActivate 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--tgph-accent-9, #ff4f00);
   bottom: calc(var(--tgph-spacing-1) * -1);
   border-radius: 1px;
-  content: '';
+  content: "";
   height: 1px;
   left: 0;
   position: absolute;
@@ -25,34 +26,30 @@
 }
 
 /* Active tab text and icon color */
-[data-tgph-tab][data-state="active"] [data-tgph-tab-text] {
-  color: var(--tgph-accent-11, #D13415);
+[data-tgph-tab][data-state="active"] [data-tgph-tab-text],
+[data-tgph-tab][data-active] [data-tgph-tab-text] {
+  color: var(--tgph-accent-11, #d13415);
 }
 
 /* Active tab icon color */
-[data-tgph-tab][data-state="active"] [data-tgph-tab-icon] {
-  color: var(--tgph-accent-10, #DD4425);
+[data-tgph-tab][data-state="active"] [data-tgph-tab-icon],
+[data-tgph-tab][data-active] [data-tgph-tab-icon] {
+  color: var(--tgph-accent-10, #dd4425);
 }
 
 /* Disabled tab icon color */
 [data-tgph-tab][data-disabled] [data-tgph-tab-icon] {
-  color: var(--tgph-gray-7, #CDCED6);
+  color: var(--tgph-gray-7, #cdced6);
 }
 
 /* Disabled tab text color */
 [data-tgph-tab][data-disabled] [data-tgph-tab-text] {
-  color: var(--tgph-gray-9, #8B8D98);
+  color: var(--tgph-gray-9, #8b8d98);
 }
 
-/* Background rendering styles for TabPanel */
+/* Background rendering styles for force-mounted TabPanel */
 [data-tgph-tab-panel][data-state="inactive"] {
-  --radix-tabs-content-visibility: hidden;
-  --radix-tabs-content-overflow: hidden;
-  --radix-tabs-content-height: 0;
-}
-
-[data-tgph-tab-panel][data-state="active"] {
-  --radix-tabs-content-visibility: visible;
-  --radix-tabs-content-overflow: visible;
-  --radix-tabs-content-height: auto;
+  visibility: hidden;
+  overflow: hidden;
+  height: 0;
 }

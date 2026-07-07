@@ -95,22 +95,56 @@ const flattenTokens = (obj) => {
   return result;
 };
 
-/**
- * Saves the generated mapping to a JSON file.
- * @param {String} name - The name of the file (without extension).
- * @param {Object} tokens - The object containing the mappings to save.
- */
-const saveMapping = async (name, tokens) => {
+const toReadonlyTypeLiteral = (value, indentLevel = 0) => {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return "string";
+  }
+
+  const currentIndent = "  ".repeat(indentLevel);
+  const childIndent = "  ".repeat(indentLevel + 1);
+  const properties = Object.entries(value).map(
+    ([key, childValue]) =>
+      `${childIndent}readonly ${JSON.stringify(key)}: ${toReadonlyTypeLiteral(childValue, indentLevel + 1)};`,
+  );
+
+  return `{\n${properties.join("\n")}\n${currentIndent}}`;
+};
+
+const createModuleDeclaration = (exportName, tokens) =>
+  `declare const ${exportName}: ${toReadonlyTypeLiteral(tokens)};\nexport default ${exportName};\n`;
+
+// Saves the generated mapping to JSON, JS module, and type declaration files.
+const saveMapping = async ({ jsonName, moduleName, tokens, exportName }) => {
   try {
-    // Define the directory path where the mappings will be saved
-    const distDirPath = path.join(__dirname, "../dist/json");
-    // Ensure the directory exists (create it if not)
-    await mkdir(distDirPath, { recursive: true });
-    // Write the mappings to a JSON file
-    await writeFile(
-      path.join(distDirPath, `./${name}.json`),
-      JSON.stringify(tokens),
-    );
+    const serializedTokens = JSON.stringify(tokens);
+    const moduleDeclaration = createModuleDeclaration(exportName, tokens);
+    const distDirPath = path.join(__dirname, "../dist");
+
+    await Promise.all([
+      mkdir(path.join(distDirPath, "json"), { recursive: true }),
+      mkdir(path.join(distDirPath, "esm"), { recursive: true }),
+      mkdir(path.join(distDirPath, "cjs"), { recursive: true }),
+      mkdir(path.join(distDirPath, "types"), { recursive: true }),
+    ]);
+
+    await Promise.all([
+      writeFile(
+        path.join(distDirPath, "json", `${jsonName}.json`),
+        serializedTokens,
+      ),
+      writeFile(
+        path.join(distDirPath, "esm", `${moduleName}.mjs`),
+        `const tokens = ${serializedTokens};\n\nexport default tokens;\n`,
+      ),
+      writeFile(
+        path.join(distDirPath, "cjs", `${moduleName}.js`),
+        `module.exports = ${serializedTokens};\n`,
+      ),
+      writeFile(
+        path.join(distDirPath, "types", `${moduleName}.d.ts`),
+        moduleDeclaration,
+      ),
+    ]);
   } catch (e) {
     console.error("There was an error while saving a file.\n", e);
   }
@@ -142,9 +176,20 @@ const main = async (funcArgs) => {
 
     const flattenedTokens = flattenTokens(tgph.tokens);
 
-    // Save the generated mappings
-    saveMapping("tokens", tokens);
-    saveMapping("flattened-tokens", flattenedTokens);
+    await Promise.all([
+      saveMapping({
+        jsonName: "tokens",
+        moduleName: "css-variables-map",
+        tokens,
+        exportName: "cssVariablesMap",
+      }),
+      saveMapping({
+        jsonName: "flattened-tokens",
+        moduleName: "flattened-css-variables-map",
+        tokens: flattenedTokens,
+        exportName: "flattenedCssVariablesMap",
+      }),
+    ]);
   } catch (e) {
     console.error(
       "Provide a correct argument - a relative path to design tokens.\n",

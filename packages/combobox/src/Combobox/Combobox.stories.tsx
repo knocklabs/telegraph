@@ -20,15 +20,15 @@ export default meta;
 
 type Story = StoryObj<TgphComponentProps<typeof TelegraphCombobox>>;
 
-const labels = ["Email", "SMS", "Push", "In-App", "Webhook"];
+const LABELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
 
-const values = ["email", "sms", "push", "inapp", "webhook"];
-const firstValue = values[0] as string;
+const VALUES = ["email", "sms", "push", "inapp", "webhook"];
+const FIRST_VALUE = VALUES[0] as string;
 
 export const SingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstValue);
+    const [value, setValue] = React.useState(FIRST_VALUE);
 
     return (
       <Box w="80">
@@ -42,9 +42,9 @@ export const SingleSelect: Story = {
           <TelegraphCombobox.Trigger size="1" />
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>
@@ -58,7 +58,7 @@ export const SingleSelect: Story = {
 export const SingleSelectWithSearch: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstValue);
+    const [value, setValue] = React.useState(FIRST_VALUE);
 
     return (
       <Box w="80">
@@ -72,9 +72,9 @@ export const SingleSelectWithSearch: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>
@@ -89,7 +89,7 @@ export const SingleSelectWithSearch: Story = {
 export const SingleSelectWithLongLabel: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstValue);
+    const [value, setValue] = React.useState(FIRST_VALUE);
     return (
       <Box w="80">
         <TelegraphCombobox.Root
@@ -104,9 +104,9 @@ export const SingleSelectWithLongLabel: Story = {
           <TelegraphCombobox.Trigger size="1" />
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]} with more content to make the label longer
+                  {LABELS[index]} with more content to make the label longer
                   than the trigger width
                 </TelegraphCombobox.Option>
               ))}
@@ -122,7 +122,7 @@ export const SingleSelectWithLongLabel: Story = {
 export const MultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([firstValue]);
+    const [value, setValue] = React.useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -141,9 +141,9 @@ export const MultiSelect: Story = {
           >
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>
@@ -158,7 +158,7 @@ export const MultiSelect: Story = {
 export const MultiSelectWithWrapLayout: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([firstValue]);
+    const [value, setValue] = React.useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -174,9 +174,9 @@ export const MultiSelectWithWrapLayout: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>
@@ -206,15 +206,15 @@ export const SingleSelectWithCreate: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
               <TelegraphCombobox.Create<"div", false>
-                values={values}
+                values={VALUES}
                 onCreate={(createdValue) => {
-                  values.push(createdValue);
+                  VALUES.push(createdValue);
                   setValue(createdValue);
                 }}
               />
@@ -229,7 +229,7 @@ export const SingleSelectWithCreate: Story = {
 export const MultiSelectWithCreate: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Array<string>>([firstValue]);
+    const [value, setValue] = React.useState<Array<string>>([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -245,15 +245,15 @@ export const MultiSelectWithCreate: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
               <TelegraphCombobox.Create
-                values={values}
+                values={VALUES}
                 onCreate={(createdValue) => {
-                  values.push(createdValue);
+                  VALUES.push(createdValue);
                   setValue((prevValue) => [createdValue, ...prevValue]);
                 }}
               />
@@ -268,7 +268,7 @@ export const MultiSelectWithCreate: Story = {
 export const MultiSelectWithClear: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([firstValue]);
+    const [value, setValue] = React.useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -285,13 +285,13 @@ export const MultiSelectWithClear: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
               <TelegraphCombobox.Create
-                values={values}
+                values={VALUES}
                 onCreate={(createdValue) => {
                   setValue((prevValue) => [createdValue, ...prevValue]);
                 }}
@@ -309,7 +309,7 @@ export const ComboboxInModal: Story = {
     // eslint-disable-next-line
     const [open, setOpen] = React.useState(false);
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([firstValue]);
+    const [value, setValue] = React.useState([FIRST_VALUE]);
     return (
       <>
         <Button size="1" variant="outline" onClick={() => setOpen(true)}>
@@ -339,15 +339,15 @@ export const ComboboxInModal: Story = {
                 <TelegraphCombobox.Content>
                   <TelegraphCombobox.Search />
                   <TelegraphCombobox.Options>
-                    {values.map((v, index) => (
+                    {VALUES.map((v, index) => (
                       <TelegraphCombobox.Option value={v}>
-                        {labels[index]}
+                        {LABELS[index]}
                       </TelegraphCombobox.Option>
                     ))}
                     <TelegraphCombobox.Create
-                      values={values}
+                      values={VALUES}
                       onCreate={(createdValue) => {
-                        values.push(createdValue);
+                        VALUES.push(createdValue);
                         setValue((prevValue) => [createdValue, ...prevValue]);
                       }}
                     />
@@ -363,7 +363,7 @@ export const ComboboxInModal: Story = {
 };
 
 type Option = { value: string; label?: string };
-const legacyValues = [
+const LEGACY_VALUES = [
   { value: "email", label: "Email" },
   { value: "sms", label: "SMS" },
   { value: "push", label: "Push" },
@@ -371,12 +371,12 @@ const legacyValues = [
   { value: "webhook", label: "Webhook" },
 ] as Array<Option>;
 
-const firstLegacyValue = legacyValues[0] as Option;
+const FIRST_LEGACY_VALUE = LEGACY_VALUES[0] as Option;
 
 export const LegacyComboboxSingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstLegacyValue);
+    const [value, setValue] = React.useState(FIRST_LEGACY_VALUE);
 
     return (
       <Box w="80">
@@ -391,7 +391,7 @@ export const LegacyComboboxSingleSelect: Story = {
           <TelegraphCombobox.Trigger size="1" />
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
-              {legacyValues.map((v) => (
+              {LEGACY_VALUES.map((v) => (
                 <TelegraphCombobox.Option value={v.value} label={v.label} />
               ))}
             </TelegraphCombobox.Options>
@@ -406,7 +406,7 @@ export const LegacyComboboxSingleSelect: Story = {
 export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstLegacyValue);
+    const [value, setValue] = React.useState(FIRST_LEGACY_VALUE);
 
     return (
       <Box w="80">
@@ -425,7 +425,7 @@ export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
           <TelegraphCombobox.Trigger size="1" />
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
-              {legacyValues.map((v) => (
+              {LEGACY_VALUES.map((v) => (
                 <TelegraphCombobox.Option value={v.value} label={v.label} />
               ))}
             </TelegraphCombobox.Options>
@@ -440,7 +440,7 @@ export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
 export const LegacyComboboxMultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([firstLegacyValue]);
+    const [value, setValue] = React.useState([FIRST_LEGACY_VALUE]);
 
     return (
       <Box w="80">
@@ -458,14 +458,14 @@ export const LegacyComboboxMultiSelect: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
-              {legacyValues.map((v) => (
+              {LEGACY_VALUES.map((v) => (
                 <TelegraphCombobox.Option value={v.value} label={v.label} />
               ))}
               <TelegraphCombobox.Create
                 legacyBehavior={true}
-                values={legacyValues}
+                values={LEGACY_VALUES}
                 onCreate={(createdValue) => {
-                  legacyValues.push(createdValue);
+                  LEGACY_VALUES.push(createdValue);
                   setValue((prevValue) => [createdValue, ...prevValue]);
                 }}
               />
@@ -480,7 +480,7 @@ export const LegacyComboboxMultiSelect: Story = {
 export const SingleSelectWithCustomTrigger: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(firstValue);
+    const [value, setValue] = React.useState(FIRST_VALUE);
 
     return (
       <Box w="80">
@@ -500,9 +500,9 @@ export const SingleSelectWithCustomTrigger: Story = {
           </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>
@@ -517,7 +517,7 @@ export const SingleSelectWithCustomTrigger: Story = {
 export const MultiSelectWithCustomTrigger: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([firstValue]);
+    const [value, setValue] = React.useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -537,9 +537,9 @@ export const MultiSelectWithCustomTrigger: Story = {
           </TelegraphCombobox.Trigger>
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
-              {values.map((v, index) => (
+              {VALUES.map((v, index) => (
                 <TelegraphCombobox.Option value={v}>
-                  {labels[index]}
+                  {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>
@@ -552,7 +552,7 @@ export const MultiSelectWithCustomTrigger: Story = {
 };
 
 // Generate years from 1960 to 2060
-const years = Array.from({ length: 101 }, (_, i) => String(1960 + i));
+const YEARS = Array.from({ length: 101 }, (_, i) => String(1960 + i));
 
 export const YearPicker: Story = {
   render: ({ ...args }) => {
@@ -567,7 +567,7 @@ export const YearPicker: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options maxHeight="64">
-              {years.map((year) => (
+              {YEARS.map((year) => (
                 <TelegraphCombobox.Option key={year} value={year}>
                   {year}
                 </TelegraphCombobox.Option>
@@ -599,7 +599,7 @@ export const YearPickerWithScrollToValue: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options maxHeight="64">
-              {years.map((year) => (
+              {YEARS.map((year) => (
                 <TelegraphCombobox.Option key={year} value={year}>
                   {year}
                 </TelegraphCombobox.Option>
