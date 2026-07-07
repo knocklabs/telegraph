@@ -336,6 +336,11 @@ const Content = <T extends TgphElement = "div">({
           getBaseUIPositionerVisibilityStyle({
             anchorHidden: state.anchorHidden,
             hideWhenDetached,
+            // Base UI's transformed positioner is the stacking-context root, so
+            // the z-index must live here; a z-index on the popup child alone is
+            // trapped at the positioner's `auto` level and paints under app
+            // content that has its own positive z-index.
+            zIndex: "var(--tgph-zIndex-popover)",
           })
         }
       >
