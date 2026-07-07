@@ -1,5 +1,11 @@
 # @telegraph/menu
 
+## 0.5.1
+
+### Patch Changes
+
+- [#861](https://github.com/knocklabs/telegraph/pull/861) [`e78f94d`](https://github.com/knocklabs/telegraph/commit/e78f94dd105671294c2bec3b633c341e29192765) Thanks [@kylemcd](https://github.com/kylemcd)! - `Menu.Content` now accepts a `skipAnimation` prop for API parity with `Popover.Content`. Menu's popup is not motion-animated, so the prop is a no-op, but accepting it stops the prop from leaking onto the DOM node (and triggering React's "unknown prop" warning) when consumers pass it for symmetry with Popover.
+
 ## 0.5.0
 
 ### Minor Changes
