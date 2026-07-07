@@ -437,9 +437,12 @@ export const SegmentedControlWithTooltips = () => {
 
 ### ARIA Attributes
 
-- `role="group"` - Applied to the root container
-- `role="button"` - Applied to each option
-- `aria-pressed` - Indicates the selected state
+Single-select (the default) is a radio group; multi-select (`type="multiple"`) is
+a set of independent toggle buttons.
+
+- `role="radiogroup"` (single) / `role="group"` (multiple) - Applied to the root container
+- `role="radio"` (single) / `role="button"` (multiple) - Applied to each option
+- `aria-checked` (single) / `aria-pressed` (multiple) - Indicates the selected state
 - `aria-label` - Provides accessible names for options
 
 ### Best Practices
