@@ -2170,8 +2170,8 @@ __metadata:
     postcss-import-ext-glob: "npm:^2.1.1"
     prettier: "npm:^3.8.3"
     prop-types: "npm:^15.8.1"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     storybook: "npm:^10.4.6"
     storybook-addon-render-modes: "npm:^0.0.11"
     turbo: "npm:^2.9.0"
@@ -3415,10 +3415,10 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3441,12 +3441,12 @@ __metadata:
     "@telegraph/style-engine": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3475,12 +3475,12 @@ __metadata:
     "@telegraph/truncate": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3497,10 +3497,10 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3523,10 +3523,10 @@ __metadata:
     "@telegraph/tooltip": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3549,11 +3549,11 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3571,10 +3571,10 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3594,12 +3594,12 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3621,11 +3621,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3648,11 +3648,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3674,11 +3674,11 @@ __metadata:
     "@telegraph/style-engine": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3700,11 +3700,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3728,12 +3728,12 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3759,12 +3759,12 @@ __metadata:
     "@telegraph/style-engine": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3800,11 +3800,11 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3857,10 +3857,10 @@ __metadata:
     "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3884,12 +3884,12 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/truncate": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3909,10 +3909,10 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3933,11 +3933,11 @@ __metadata:
     "@telegraph/tokens": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@types/node": "npm:^25.7.0"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     "@types/react-dom": "npm:^19"
     next: "npm:16.2.6"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
   languageName: unknown
   linkType: soft
@@ -3953,13 +3953,13 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/node": "npm:^25.7.0"
     "@types/postcss-import": "npm:^14.0.3"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     globby: "npm:^16.2.0"
     lightningcss: "npm:^1.32.0"
     postcss: "npm:^8.5.16"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -3984,10 +3984,10 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4012,13 +4012,13 @@ __metadata:
     "@telegraph/tooltip": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4038,10 +4038,10 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4065,11 +4065,11 @@ __metadata:
     "@telegraph/tag": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     lucide-react: "npm:^1.14.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4088,7 +4088,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^10.4.0"
     lightningcss: "npm:^1.32.0"
-    react: "npm:^19.2.6"
+    react: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4110,11 +4110,11 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
     motion: "npm:^12.38.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4135,10 +4135,10 @@ __metadata:
     "@telegraph/tooltip": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4160,11 +4160,11 @@ __metadata:
     "@telegraph/style-engine": "workspace:^"
     "@telegraph/tokens": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
-    "@types/react": "npm:^19.2.14"
+    "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
-    react: "npm:^19.2.6"
-    react-dom: "npm:^19.2.6"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
     vite: "npm:^8.0.16"
   peerDependencies:
@@ -4514,12 +4514,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.14":
-  version: 19.2.14
-  resolution: "@types/react@npm:19.2.14"
+"@types/react@npm:^19.2.17":
+  version: 19.2.17
+  resolution: "@types/react@npm:19.2.17"
   dependencies:
     csstype: "npm:^3.2.2"
-  checksum: 10c0/7d25bf41b57719452d86d2ac0570b659210402707313a36ee612666bf11275a1c69824f8c3ee1fdca077ccfe15452f6da8f1224529b917050eb2d861e52b59b7
+  checksum: 10c0/bc2c4af96b3e480604424de70d5ebda90c5f4b485df471858c0bc2d7d70364b606ec3c4d8579f94f01aa0c6c0591f56bcf14cba5689f5eea4b74250ccdc3a232
   languageName: node
   linkType: hard
 
@@ -11423,14 +11423,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.2.6":
-  version: 19.2.6
-  resolution: "react-dom@npm:19.2.6"
+"react-dom@npm:^19.2.7":
+  version: 19.2.7
+  resolution: "react-dom@npm:19.2.7"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.6
-  checksum: 10c0/dbf2aef67857c03a612bc9316a4562e5066f43fa04bf28f7f0734963fc1350da2c9f8eb973930655453281079f30cc8222bab383dbec4b5097084e2c081e3334
+    react: ^19.2.7
+  checksum: 10c0/970ff600f6e80d47d39e2f226f12f226173b3cba3382efc97c5f0cd663de9af38c7a4c11c213fb936094faeac83060d660247accaa96b752180d5b951b9cfecb
   languageName: node
   linkType: hard
 
@@ -11448,10 +11448,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.6":
-  version: 19.2.6
-  resolution: "react@npm:19.2.6"
-  checksum: 10c0/66afde33b9a9ee87b1e1cae39d8e7e040d1262e719524fd70660c4d4ce79929c532ac19fc3df5a911edaf02768fdf2c49de4ede1ba99bc6aad72796e0e26e798
+"react@npm:^19.2.7":
+  version: 19.2.7
+  resolution: "react@npm:19.2.7"
+  checksum: 10c0/0bd0e2f1bbd4ba97561c6597bf8a5fec05e6476fe61e165c1065598d16668efc6715205599c94d3ddd49d36cb0f21cbf1b9bcc18ee840b805ce222c3e8d558ac
   languageName: node
   linkType: hard
 
