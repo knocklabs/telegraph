@@ -51,3 +51,7 @@ debug-storybook.log
 # moon
 .moon/cache
 .moon/docker
+
+# Vitest browser mode artifacts
+.vitest-attachments
+**/__screenshots__

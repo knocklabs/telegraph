@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { Menu as TelegraphMenu } from "./Menu";
+import { TypeableTriggerExample } from "./Menu.fixtures";
 
 const meta: Meta = {
   tags: ["autodocs"],
@@ -143,4 +144,11 @@ export const WithSubmenu: Story = {
       </Stack>
     );
   },
+};
+
+// A typeable input composed inside the trigger (PropertySelectorField, block
+// editor suggestion menus). Click or type to open; keystrokes keep landing in
+// the input — not the menu's typeahead — and ArrowDown moves into the list.
+export const TypeableTrigger: Story = {
+  render: (args) => <TypeableTriggerExample {...args} />,
 };
