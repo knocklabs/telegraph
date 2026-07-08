@@ -3,7 +3,7 @@ import {
   type TgphComponentProps,
   createTgphBaseUIRender,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Stack } from "@telegraph/layout";
 import { type ComponentProps } from "react";
 
 type BaseTabsRootProps = ComponentProps<typeof BaseTabs.Root>;
@@ -13,7 +13,7 @@ type TabsValueChangeHandler<Value extends TabsValue> = {
 }["bivarianceHack"];
 
 export type TabsProps<Value extends TabsValue = string> = TgphComponentProps<
-  typeof Box
+  typeof Stack
 > & {
   defaultValue?: Value;
   orientation?: BaseTabsRootProps["orientation"];
@@ -52,9 +52,11 @@ const Tabs = <Value extends TabsValue = string>({
       onValueChange={handleValueChange}
       orientation={orientation}
       render={createTgphBaseUIRender(
-        <Box data-tgph-tabs="" {...props}>
+        // Stack the tab list above the panel by default; `direction` is
+        // overridable for side-by-side tab layouts.
+        <Stack direction="column" data-tgph-tabs="" {...props}>
           {children}
-        </Box>,
+        </Stack>,
       )}
     />
   );

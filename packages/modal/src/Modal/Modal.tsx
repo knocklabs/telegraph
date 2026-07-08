@@ -36,11 +36,19 @@ import {
 import {
   type BaseUIPreventableEvent,
   callAutoFocusHandler,
+  getStackedModalScale,
 } from "./Modal.helpers";
 import { useModalStacking } from "./ModalStacking";
 
 const BASE_UI_OUTSIDE_PRESS_DISMISS_REASON = "outside-press";
 const ROOT_OUTSIDE_DISMISS_SUPPRESSION_DELAY_MS = 100;
+// The modal slides in from this many pixels above its resting position. Driven
+// via translateY — a GPU-composited transform — rather than the `top` layout
+// property, so the enter animation stays smooth even when the main thread is
+// busy (e.g. a large list rendering as the modal opens). `top` would force a
+// layout + paint every frame and snap under load. Matches the previous slide
+// distance of one spacing-4 step (1rem).
+const MODAL_ENTER_TRANSLATE_Y = -16;
 
 type BaseDialogRootProps = ComponentProps<typeof BaseDialog.Root>;
 type BaseDialogPopupProps = ComponentPropsWithoutRef<typeof BaseDialog.Popup>;
@@ -211,7 +219,6 @@ const RootComponent = ({
   const layerIndex = stacking.layers.indexOf(layerId);
   const layer = layerIndex === -1 ? 0 : layerIndex;
   const layersLength = stacking.layers?.length || 0;
-  const isStacked = layer !== 0;
   const isTopLayer =
     layersLength === 0 ||
     layerId === stacking.layers[stacking.layers.length - 1];
@@ -443,20 +450,18 @@ const RootComponent = ({
                 <RefToTgphRef>
                   <Stack
                     as={motion.div}
-                    initial={{
-                      top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layersLength - 1})`,
-                    }}
-                    animate={{
-                      top: isStacked
-                        ? `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer} )`
-                        : "var(--tgph-spacing-16)",
-                    }}
-                    exit={{ top: 0 }}
+                    initial={{ y: MODAL_ENTER_TRANSLATE_Y }}
+                    animate={{ y: 0 }}
+                    exit={{ y: MODAL_ENTER_TRANSLATE_Y }}
                     transition={{ type: "spring", duration: 0.3, bounce: 0 }}
                     w="full"
                     justify="center"
                     style={{
                       position: "fixed",
+                      // Resting position is static: each stacked layer sits one
+                      // spacing-4 step lower. The slide-in is handled by the
+                      // translateY animation above, so `top` never animates.
+                      top: `calc(var(--tgph-spacing-16) + var(--tgph-spacing-4) * ${layer})`,
                       left: 0,
                       maxHeight: "calc(100vh - var(--tgph-spacing-32))",
                       maxWidth: "calc(100vw - var(--tgph-spacing-8))",
@@ -468,7 +473,7 @@ const RootComponent = ({
                       as={motion.div}
                       direction="column"
                       animate={{
-                        scale: 1.02 - Math.abs(layersLength - layer) * 0.02,
+                        scale: getStackedModalScale(layersLength, layer),
                       }}
                       transition={{
                         duration: 0.2,

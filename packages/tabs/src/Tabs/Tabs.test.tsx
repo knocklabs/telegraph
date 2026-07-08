@@ -35,6 +35,42 @@ describe("Tabs", () => {
     expect(screen.getByRole("tabpanel")).toHaveTextContent("First panel");
   });
 
+  it("stacks the tab list above the panel by rendering a vertical Stack", () => {
+    render(
+      <Tabs defaultValue="tab1" data-testid="tabs-root">
+        <Tabs.List>
+          <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="tab1">First panel</Tabs.Panel>
+      </Tabs>,
+    );
+
+    // The root must lay its children out as a column. Previously it rendered a
+    // bare Box, so consumers had to pass `as={Stack} direction="column"` — which
+    // silently fell back to `row` because Box emits `--flex-direction` while the
+    // Stack CSS reads `--direction`.
+    const root = screen.getByTestId("tabs-root");
+    expect(root).toHaveClass("tgph-stack");
+    expect(root).toHaveStyle({ "--direction": "column" });
+  });
+
+  it("lets consumers override the stacking direction", () => {
+    render(
+      <Tabs defaultValue="tab1" direction="row" data-testid="tabs-root">
+        <Tabs.List>
+          <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="tab1">First panel</Tabs.Panel>
+      </Tabs>,
+    );
+
+    expect(screen.getByTestId("tabs-root")).toHaveStyle({
+      "--direction": "row",
+    });
+  });
+
   it("supports controlled values and change callbacks", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
