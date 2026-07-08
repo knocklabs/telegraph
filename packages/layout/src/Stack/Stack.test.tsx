@@ -1,9 +1,38 @@
-import { describe, expectTypeOf, it } from "vitest";
+import { render } from "@testing-library/react";
+import { describe, expect, expectTypeOf, it } from "vitest";
+
+import { cssVars as boxCssVars } from "../Box/Box.constants";
 
 import { Stack } from "./Stack";
 import type { StackProps } from "./Stack";
+import { cssVars as stackCssVars } from "./Stack.constants";
 
 describe("Stack", () => {
+  describe("direction css variable", () => {
+    it("maps direction to --direction", () => {
+      const { container } = render(<Stack direction="column" />);
+      const stack = container.querySelector(".tgph-stack");
+
+      expect(stack).toHaveStyle({ "--direction": "column" });
+    });
+
+    it("maps the flexDirection alias to --direction", () => {
+      const { container } = render(<Stack flexDirection="column" />);
+      const stack = container.querySelector(".tgph-stack");
+
+      expect(stack).toHaveStyle({ "--direction": "column" });
+    });
+
+    it("agrees with Box on the direction custom property", () => {
+      // Box and Stack must write the same custom property, or `as={Stack}`
+      // composition silently drops the direction prop again (KNO-14080).
+      expect(boxCssVars.direction.cssVar).toBe(stackCssVars.direction.cssVar);
+      expect(boxCssVars.flexDirection.cssVar).toBe(
+        stackCssVars.flexDirection.cssVar,
+      );
+    });
+  });
+
   describe("type inheritance", () => {
     it("accepts valid polymorphic props", () => {
       expectTypeOf<StackProps<"a">["href"]>().toEqualTypeOf<

@@ -2,6 +2,8 @@ import { render } from "@testing-library/react";
 import React from "react";
 import { describe, expect, expectTypeOf, it } from "vitest";
 
+import { Stack } from "../Stack";
+
 import { Box } from "./Box";
 import type { BoxProps } from "./Box";
 
@@ -240,12 +242,21 @@ describe("Box", () => {
   });
 
   describe("flex and size compatibility props", () => {
-    it("applies direction to the flex-direction css variable", () => {
+    it("applies direction to the --direction css variable shared with Stack", () => {
       const { container } = render(<Box direction="column" />);
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--flex-direction": "column",
+        "--direction": "column",
+      });
+    });
+
+    it("applies flexDirection to the --direction css variable shared with Stack", () => {
+      const { container } = render(<Box flexDirection="column" />);
+      const box = container.querySelector(".tgph-box");
+
+      expect(box).toHaveStyle({
+        "--direction": "column",
       });
     });
 
@@ -256,6 +267,18 @@ describe("Box", () => {
       expect(box).toHaveStyle({
         "--max-height": "400px",
       });
+    });
+  });
+
+  describe("composition with Stack via as prop", () => {
+    it("preserves direction when rendered as={Stack}", () => {
+      const { container } = render(<Box as={Stack} direction="column" />);
+      const element = container.querySelector(".tgph-stack");
+
+      // Box consumes `direction` before Stack ever sees the prop, so it must
+      // write the same --direction custom property the .tgph-stack CSS reads.
+      expect(element).toHaveClass("tgph-box");
+      expect(element).toHaveStyle({ "--direction": "column" });
     });
   });
 });
