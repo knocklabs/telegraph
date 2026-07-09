@@ -350,6 +350,7 @@ const TriggerTagButton = <T extends TgphElement>({
     <Tag.Button
       icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
       height="full"
+      borderRightRadius="1"
       onClick={(event: React.MouseEvent) => {
         if (!context.onValueChange) return;
         const onValueChange =
