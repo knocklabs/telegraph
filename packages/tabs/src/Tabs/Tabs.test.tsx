@@ -1,3 +1,4 @@
+import { Stack } from "@telegraph/layout";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
@@ -69,6 +70,26 @@ describe("Tabs", () => {
     expect(screen.getByTestId("tabs-root")).toHaveStyle({
       "--direction": "row",
     });
+  });
+
+  it("preserves panel direction when composed with as={Stack}", () => {
+    render(
+      <Tabs defaultValue="tab1">
+        <Tabs.List>
+          <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="tab1" as={Stack} direction="column">
+          First panel
+        </Tabs.Panel>
+      </Tabs>,
+    );
+
+    // Regression (KNO-14080): the Box-based panel consumed `direction` into a
+    // custom property the Stack CSS never read, so panels rendered as rows.
+    const panel = screen.getByRole("tabpanel");
+    expect(panel).toHaveClass("tgph-stack");
+    expect(panel).toHaveStyle({ "--direction": "column" });
   });
 
   it("supports controlled values and change callbacks", async () => {

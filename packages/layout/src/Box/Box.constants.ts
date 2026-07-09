@@ -362,7 +362,9 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     value: "VARIABLE",
   },
   flexDirection: {
-    cssVar: "--flex-direction",
+    // Shares --direction with Stack so `Box as={Stack} direction=...` (and any
+    // Box-based component composed with Stack) resolves to one custom property.
+    cssVar: "--direction",
     value: "VARIABLE",
   },
 } as const;
