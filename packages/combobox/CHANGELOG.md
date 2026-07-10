@@ -1,5 +1,15 @@
 # @telegraph/combobox
 
+## 0.4.1
+
+### Patch Changes
+
+- [#873](https://github.com/knocklabs/telegraph/pull/873) [`13c3aa2`](https://github.com/knocklabs/telegraph/commit/13c3aa24c301d33a00701376ed54eca70205da0d) Thanks [@BenaventeX24](https://github.com/BenaventeX24)! - Overrides incorrectly rounded border on remove option button in Combobox option tag
+
+- Updated dependencies [[`3fb9a31`](https://github.com/knocklabs/telegraph/commit/3fb9a315e9ca1af41a478218889d6e9cd69a89c7), [`957d6c6`](https://github.com/knocklabs/telegraph/commit/957d6c6cd62b7e30719e2ed9182aff96868543e0)]:
+  - @telegraph/layout@0.5.3
+  - @telegraph/menu@0.5.2
+
 ## 0.4.0
 
 ### Minor Changes
