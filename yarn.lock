@@ -3455,7 +3455,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3483,7 +3483,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3517,7 +3517,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3537,7 +3537,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3563,7 +3563,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3590,7 +3590,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3611,7 +3611,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3636,7 +3636,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3662,7 +3662,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3689,7 +3689,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3715,7 +3715,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3741,7 +3741,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3773,7 +3773,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
     vitest-browser-react: "npm:^2.2.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3805,7 +3805,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3822,7 +3822,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^10.4.0"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   languageName: unknown
   linkType: soft
 
@@ -3845,7 +3845,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3901,7 +3901,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3930,7 +3930,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -3953,7 +3953,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4000,7 +4000,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4028,7 +4028,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4059,7 +4059,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4082,7 +4082,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4110,7 +4110,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4129,7 +4129,7 @@ __metadata:
     lightningcss: "npm:^1.32.0"
     react: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
   languageName: unknown
@@ -4155,7 +4155,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4179,7 +4179,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4205,7 +4205,7 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -4222,7 +4222,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^6.0.0"
     eslint: "npm:^10.4.0"
     typescript: "npm:^6.0.2"
-    vite: "npm:^8.1.1"
+    vite: "npm:^8.1.2"
     vite-plugin-dts: "npm:^5.0.1"
   languageName: unknown
   linkType: soft
@@ -13834,9 +13834,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^8.1.1":
-  version: 8.1.1
-  resolution: "vite@npm:8.1.1"
+"vite@npm:^8.1.2":
+  version: 8.1.2
+  resolution: "vite@npm:8.1.2"
   dependencies:
     fsevents: "npm:~2.3.3"
     lightningcss: "npm:^1.32.0"
@@ -13887,7 +13887,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/ad93a802d001b23f11ad9426f05fa5afa4f06c87eee713bbf20b13f5971178a20af7e738ddc2e2b0137b9819ae256ef80a4856299b2969f4173f8bda186d1456
+  checksum: 10c0/b39731dc31250b267ae5ddae81d737deafe2163bd0e1aa04849fb5f7c66b7ff7bcffa50883480b5f9fb47b1596b772021a8f9f671986e57b88d98300710ded77
   languageName: node
   linkType: hard
 
