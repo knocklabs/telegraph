@@ -1,5 +1,12 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChevronRight } from "lucide-react";
 import {
@@ -9,7 +16,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
 
@@ -946,5 +953,145 @@ describe("Menu", () => {
     expect(submenu).toHaveAttribute("role", "menu");
     expect(submenu).toHaveAttribute("data-side", "right");
     expect(submenu).toHaveAttribute("data-align", "start");
+  });
+
+  describe("typeable trigger open autofocus", () => {
+    // Long enough to clear a couple of jsdom animation frames (~16ms each).
+    const PENDING_FRAME_DRAIN_MS = 32;
+
+    beforeEach(async () => {
+      // Base UI queues its initial focus on an animation frame. These tests
+      // share one jsdom document, so drain any frame a previous test left
+      // pending before this one sets up focus, or it steals focus mid-setup.
+      await act(async () => {
+        await new Promise((resolve) =>
+          setTimeout(resolve, PENDING_FRAME_DRAIN_MS),
+        );
+      });
+    });
+
+    // Reproduces the surfaces (PropertySelectorField, block editor suggestion
+    // menus) that compose a typeable input inside Menu.Trigger and prevent the
+    // legacy openAutoFocus so keystrokes keep feeding the input, not the menu.
+    const TypeableTriggerMenu = ({
+      onOpenAutoFocus,
+      preventOpenAutoFocus = true,
+    }: {
+      onOpenAutoFocus?: (event: Event) => void;
+      preventOpenAutoFocus?: boolean;
+    }) => {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <Menu.Root open={open} onOpenChange={setOpen}>
+          <Menu.Trigger nativeButton={false}>
+            <div data-testid="trigger">
+              <input
+                data-testid="trigger-input"
+                onChange={() => setOpen(true)}
+              />
+            </div>
+          </Menu.Trigger>
+          <Menu.Content
+            data-testid="menu-content"
+            onOpenAutoFocus={(event) => {
+              if (preventOpenAutoFocus) {
+                event.preventDefault();
+              }
+              onOpenAutoFocus?.(event);
+            }}
+          >
+            <Menu.Button>Item one</Menu.Button>
+            <Menu.Button>Item two</Menu.Button>
+          </Menu.Content>
+        </Menu.Root>
+      );
+    };
+
+    // Focus the input and open on a keystroke, matching the real controlled
+    // flow. Base UI queues its initial focus for a later frame, so it stays
+    // pending here and the explicitly simulated steal in each test is the first
+    // focusin — which is exactly the move the bounce must intercept.
+    const openMenuFromInput = async () => {
+      const input = screen.getByTestId("trigger-input");
+      act(() => input.focus());
+      fireEvent.change(input, { target: { value: "a" } });
+      await screen.findByTestId("menu-content");
+      return input;
+    };
+
+    // The bounce re-focuses the restore target synchronously from inside the
+    // `focusin` fired during Base UI's `.focus()` call. jsdom re-asserts
+    // `activeElement` to the just-focused element *after* that call returns,
+    // clobbering the re-focus (the technique works in a real browser — see
+    // KNO-14086), so these assert the bounce *logic* by spying on the restore
+    // target's `focus()`. The old setTimeout(0) restore never re-focuses in
+    // response to a later focusin, so it fails every one of these.
+
+    it("restores focus to the trigger input when the popup grabs initial focus", async () => {
+      render(<TypeableTriggerMenu />);
+      const input = await openMenuFromInput();
+      const firstItem = screen.getByRole("menuitem", { name: "Item one" });
+
+      const restoreFocus = vi.spyOn(input, "focus");
+      // Simulate Base UI's queued initial focus landing inside the popup.
+      act(() => firstItem.focus());
+
+      expect(restoreFocus).toHaveBeenCalledTimes(1);
+    });
+
+    it("bounces focus only once so later navigation into the menu is allowed", async () => {
+      render(<TypeableTriggerMenu />);
+      const input = await openMenuFromInput();
+      const firstItem = screen.getByRole("menuitem", { name: "Item one" });
+      const secondItem = screen.getByRole("menuitem", { name: "Item two" });
+
+      const restoreFocus = vi.spyOn(input, "focus");
+      act(() => firstItem.focus());
+      // One-shot: a deliberate later move into the menu (ArrowDown navigation,
+      // clicking another item) is left alone.
+      act(() => secondItem.focus());
+
+      expect(restoreFocus).toHaveBeenCalledTimes(1);
+    });
+
+    it("stops bouncing after a pointer interaction inside the menu", async () => {
+      render(<TypeableTriggerMenu />);
+      const input = await openMenuFromInput();
+      const firstItem = screen.getByRole("menuitem", { name: "Item one" });
+
+      const restoreFocus = vi.spyOn(input, "focus");
+      // A pointerdown inside the popup is a deliberate move into the menu
+      // (clicking an item), so the focus it produces must not be bounced.
+      fireEvent.pointerDown(firstItem);
+      act(() => firstItem.focus());
+
+      expect(restoreFocus).not.toHaveBeenCalled();
+    });
+
+    it("stops bouncing after a key interaction inside the menu", async () => {
+      render(<TypeableTriggerMenu />);
+      const input = await openMenuFromInput();
+      const firstItem = screen.getByRole("menuitem", { name: "Item one" });
+
+      const restoreFocus = vi.spyOn(input, "focus");
+      // ArrowDown navigation inside the popup is a deliberate move into the menu.
+      fireEvent.keyDown(firstItem, { key: "ArrowDown" });
+      act(() => firstItem.focus());
+
+      expect(restoreFocus).not.toHaveBeenCalled();
+    });
+
+    it("does not bounce focus when open autofocus is not prevented", async () => {
+      render(<TypeableTriggerMenu preventOpenAutoFocus={false} />);
+      const input = await openMenuFromInput();
+      const firstItem = screen.getByRole("menuitem", { name: "Item one" });
+
+      // With the default autofocus intact, the menu is meant to take focus.
+      const restoreFocus = vi.spyOn(input, "focus");
+      act(() => firstItem.focus());
+
+      expect(restoreFocus).not.toHaveBeenCalled();
+    });
   });
 });

@@ -302,9 +302,7 @@ const MenuPopupContent = ({
 }: MenuPopupContentProps) => {
   const localContentRef = useRef<HTMLElement>(null);
   const openAutoFocusHandledRef = useRef(false);
-  const openAutoFocusTimeoutRef = useRef<
-    ReturnType<typeof setTimeout> | undefined
-  >(undefined);
+  const openAutoFocusAbortRef = useRef<AbortController | undefined>(undefined);
   const composedContentRef = useComposedRefs<HTMLElement>(
     tgphRef,
     contentRef,
@@ -313,15 +311,18 @@ const MenuPopupContent = ({
 
   useLayoutEffect(() => {
     const content = localContentRef.current;
-    const ownerWindow = content?.ownerDocument.defaultView;
 
     if (!popupState.open) {
+      // Close is the teardown point for the bounce: abort here rather than from
+      // an effect cleanup. A cleanup that aborted on every re-run would fight
+      // the `openAutoFocusHandledRef` guard (which intentionally dispatches the
+      // synthetic event only once per open, including under StrictMode's
+      // setup→teardown→setup), leaving the bounce disarmed. On unmount the popup
+      // node detaches and is collected with its listeners, so there is nothing
+      // to leak.
       openAutoFocusHandledRef.current = false;
-
-      if (openAutoFocusTimeoutRef.current !== undefined) {
-        clearTimeout(openAutoFocusTimeoutRef.current);
-        openAutoFocusTimeoutRef.current = undefined;
-      }
+      openAutoFocusAbortRef.current?.abort();
+      openAutoFocusAbortRef.current = undefined;
 
       return;
     }
@@ -346,15 +347,55 @@ const MenuPopupContent = ({
       previouslyFocusedElement,
     });
 
-    openAutoFocusTimeoutRef.current = ownerWindow?.setTimeout(() => {
-      openAutoFocusTimeoutRef.current = undefined;
+    if (!restoreTarget) {
+      return;
+    }
 
-      if (restoreTarget && ownerDocument.contains(restoreTarget)) {
-        // Base UI has already run its focus pass; now restore the Radix-style
-        // prevented autofocus target without racing its internal handler.
-        restoreTarget.focus();
-      }
-    }, 0);
+    // Base UI's MenuPopup hardcodes initial focus into the popup and exposes no
+    // way to opt out (only Popover/Dialog surface `initialFocus`). Its focus
+    // manager queues that move to the next animation frame, so the previous
+    // setTimeout(0) restore fired first and then lost the race, letting the
+    // popup steal focus from a typeable trigger input. Instead, bounce focus
+    // back the instant Base UI's initial focus lands: focusing an element inside
+    // the popup dispatches `focusin` here synchronously during Base UI's own
+    // `.focus()` call, so re-asserting the intended target from that event wins
+    // with no dependence on timer ordering.
+    const abortController = new AbortController();
+    openAutoFocusAbortRef.current = abortController;
+    const { signal } = abortController;
+
+    content.addEventListener(
+      "focusin",
+      () => {
+        // Disarm before restoring: the focus manager attempts initial focus only
+        // once, and any later move into the menu (navigation, selection) must be
+        // allowed through. Restoring focus into the trigger's input does not trip
+        // the focus manager's focus-out close logic because the trigger is a
+        // related node.
+        abortController.abort();
+
+        if (ownerDocument.contains(restoreTarget)) {
+          restoreTarget.focus();
+        }
+      },
+      { signal },
+    );
+
+    const disarmOnIntentionalFocus = () => {
+      // A pointer or key interaction inside the popup is a deliberate move into
+      // the menu (clicking an item, ArrowDown navigation); stop guarding so the
+      // focus it produces is allowed to stay.
+      abortController.abort();
+    };
+
+    content.addEventListener("keydown", disarmOnIntentionalFocus, {
+      capture: true,
+      signal,
+    });
+    content.addEventListener("pointerdown", disarmOnIntentionalFocus, {
+      capture: true,
+      signal,
+    });
   }, [onOpenAutoFocus, popupState.open]);
 
   return (
