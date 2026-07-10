@@ -1,5 +1,13 @@
 # @telegraph/layout
 
+## 0.5.3
+
+### Patch Changes
+
+- [#868](https://github.com/knocklabs/telegraph/pull/868) [`3fb9a31`](https://github.com/knocklabs/telegraph/commit/3fb9a315e9ca1af41a478218889d6e9cd69a89c7) Thanks [@kylemcd](https://github.com/kylemcd)! - Fix `Box` and `Stack` using different CSS custom properties for `flex-direction`, which silently dropped the `direction`/`flexDirection` prop when composing Box-based components with `as={Stack}`.
+
+  `Box` mapped `direction`/`flexDirection` to `--flex-direction` while the `.tgph-stack` CSS reads `--direction`. On an element with both classes (e.g. `<Box as={Stack} direction="column">` or `<Tabs.Panel as={Stack} direction="column">`), the `.tgph-stack` rule won the cascade and resolved `flex-direction` from the never-set `--direction`, so the layout fell back to `row`. `Box` now writes `--direction` — the same custom property `Stack` uses — and the `.tgph-box` rule defaults and reads it, so both class rules resolve `flex-direction` identically and the interactive pseudo-state fallbacks regenerate as `--hover--direction` etc. The old `--flex-direction` custom property was already dead on any element with the stack class and is no longer emitted.
+
 ## 0.5.2
 
 ### Patch Changes
