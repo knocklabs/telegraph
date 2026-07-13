@@ -27,3 +27,7 @@ jobs:
     name: Unit Test Packages
     needs: [setup-files]
     uses: ./.github/workflows/unit-test-packages.yml
+  browser-test-packages:
+    name: Browser Test Packages
+    needs: [setup-files]
+    uses: ./.github/workflows/browser-test-packages.yml

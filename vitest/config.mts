@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const sharedConfig = defineConfig({
@@ -14,6 +14,9 @@ const sharedConfig = defineConfig({
     globals: true,
     setupFiles: ["../../vitest/setup"],
     environment: "jsdom",
+    // Real-browser tests (*.browser.test.tsx) run via the separate
+    // vitest.browser.config.mts (real Chromium); never in jsdom.
+    exclude: [...configDefaults.exclude, "**/*.browser.test.{ts,tsx}"],
   },
 });
 

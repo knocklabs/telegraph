@@ -1,0 +1,45 @@
+name: Browser Test Packages
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-test-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: "package.json"
+          cache: 'yarn'
+      - name: Cache Build
+        id: build-packages-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            **/dist
+          key: build:packages-${{ hashFiles('packages') }}
+      - name: Install Dependencies
+        run: yarn --immutable
+      - name: Build Packages
+        if: steps.build-packages-cache.outputs.cache-hit != 'true'
+        run: yarn build:packages
+      - name: Install Playwright Chromium
+        run: yarn playwright install --with-deps chromium
+      # Browser mode runs HEADED (the config default) under xvfb on purpose: the
+      # KNO-14086 focus race (and this class of Base UI rAF-scheduled focus /
+      # animation timing) only reproduces with a real display's vsync. Headless
+      # Chromium fires those eagerly and hides the very behavior these tests
+      # exist to catch — the same reason it runs headed locally. Kept off the
+      # fast jsdom `yarn test` path so the common case stays quick.
+      - name: Run Browser Tests
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" yarn test:browser
