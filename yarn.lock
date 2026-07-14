@@ -2195,6 +2195,13 @@ __metadata:
     vite-tsconfig-paths: "npm:^6.1.1"
     vitest: "npm:4.1.5"
     vitest-axe: "npm:0.1.0"
+  dependenciesMeta:
+    esbuild:
+      built: true
+    sharp:
+      built: true
+    unrs-resolver:
+      built: true
   languageName: unknown
   linkType: soft
 

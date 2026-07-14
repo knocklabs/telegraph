@@ -45,6 +45,17 @@
   "resolutions": {
     "parse5": "^7.2.1"
   },
+  "dependenciesMeta": {
+    "esbuild": {
+      "built": true
+    },
+    "sharp": {
+      "built": true
+    },
+    "unrs-resolver": {
+      "built": true
+    }
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix --report-unused-disable-directives --max-warnings 0",
