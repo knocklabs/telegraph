@@ -145,8 +145,10 @@ export const doesOptionMatchSearchQuery = ({
 
   // searchValue is authoritative: it's the escape hatch for options whose text
   // is produced inside a child component, where the walk below can't reach it.
-  if (searchValue !== undefined) {
-    return normalize(searchValue).includes(query);
+  // It's typically derived from user data (names, emails), so a null from an
+  // untyped caller falls through to the derived text instead of throwing.
+  if (searchValue != null) {
+    return normalize(String(searchValue)).includes(query);
   }
 
   // Search both the option value and any rendered text because labels can be

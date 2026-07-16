@@ -959,14 +959,24 @@ const Search = ({
 /**
  * Identifies which elements in the tree are options. Combobox.Option is matched
  * by identity; consumer components that forward a `value` prop down to one keep
- * being matched by that prop. Combobox.Search also takes a `value` when it's
- * controlled, so it has to be excluded explicitly — otherwise the current search
- * text is collected as a phantom option that shadows the real one.
+ * being matched by that prop. Controlled inputs also carry a `value`, though —
+ * a `<Combobox.Search value>` (matched by identity), a consumer's wrapper
+ * around it (matched by its change handler, which no Option wrapper passes),
+ * or any raw controlled input. Without the exclusions the current search text
+ * is collected as a phantom option that shadows the real one.
  */
 function isOptionElement(element: ReactElement) {
   if (element.type === Option) return true;
   if (element.type === Search) return false;
-  return Boolean((element.props as { value?: unknown })?.value);
+
+  const props = element.props as {
+    value?: unknown;
+    onChange?: unknown;
+    onValueChange?: unknown;
+  };
+
+  if (props?.onChange || props?.onValueChange) return false;
+  return Boolean(props?.value);
 }
 
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<

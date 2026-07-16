@@ -244,5 +244,58 @@ describe("Combobox search matching", () => {
         document.querySelector('[data-testid="resolved"]')?.textContent,
       ).toBe(JSON.stringify({ value: "email", label: "Email" }));
     });
+
+    it("also excludes a search input wrapped in a consumer component", async () => {
+      // The wrapper's element type isn't Search, so the exclusion can't rely
+      // on identity alone — the controlled-input signature (value paired with
+      // a change handler) is what marks it as a non-option.
+      const MySearch = (props: {
+        value: string;
+        onValueChange: (v: string) => void;
+      }) => <Combobox.Search {...props} />;
+
+      const Cmp = () => {
+        const [query, setQuery] = useState<string>("");
+        return (
+          <Combobox.Root value="email">
+            <Combobox.Trigger>
+              {({ value: resolved }) => (
+                <span data-testid="resolved">{JSON.stringify(resolved)}</span>
+              )}
+            </Combobox.Trigger>
+            <Combobox.Content>
+              <MySearch value={query} onValueChange={setQuery} />
+              <Combobox.Options>
+                <Combobox.Option value="email" label="Email" />
+              </Combobox.Options>
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+      const { container } = render(<Cmp />);
+      const user = await open(container);
+
+      await user.keyboard("email");
+      expect(
+        document.querySelector('[data-testid="resolved"]')?.textContent,
+      ).toBe(JSON.stringify({ value: "email", label: "Email" }));
+    });
+  });
+
+  describe("searchValue hardening", () => {
+    it("a null searchValue falls back to derived text instead of crashing", async () => {
+      // The documented pattern derives searchValue from user data, where null
+      // emails are realistic for JS consumers outside the string type.
+      const { container } = render(
+        <Harness>
+          <Combobox.Option value="u_1" searchValue={null as unknown as string}>
+            <Text as="span">Alpha</Text>
+          </Combobox.Option>
+        </Harness>,
+      );
+      const user = await open(container);
+      await user.keyboard("alp");
+      expect(queryOptions().length).toBe(1);
+    });
   });
 });
