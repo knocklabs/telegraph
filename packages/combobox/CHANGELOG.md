@@ -1,5 +1,24 @@
 # @telegraph/combobox
 
+## 0.4.2
+
+### Patch Changes
+
+- [#883](https://github.com/knocklabs/telegraph/pull/883) [`7849e7d`](https://github.com/knocklabs/telegraph/commit/7849e7d12af4b61b430984dd5b0b6d24411cb7d3) Thanks [@kylemcd](https://github.com/kylemcd)! - Fix client-side search matching in `Combobox`
+  - Match options by their rendered DOM text, so text produced inside a child component (a custom option row, for example) is searchable. Previously the filter only read text off the React element tree, where a child component's render output doesn't exist.
+  - Match queries that span sibling text nodes — searching `"Jane Doe"` now matches `<Text>Jane</Text><Text>Doe</Text>`.
+  - Match numeric children, which were previously skipped entirely.
+  - Trim the search query, so a pasted value with surrounding whitespace still matches.
+  - Stop treating a controlled `<Combobox.Search value={...} />` — or any controlled input inside `Combobox.Content`, including a search wrapped in a consumer component — as an option. Its `value` prop was collected as a phantom option that could shadow the real one and mislabel the trigger.
+
+- [#880](https://github.com/knocklabs/telegraph/pull/880) [`c5145da`](https://github.com/knocklabs/telegraph/commit/c5145daf880a13a59205992f3edf765402e8cdfa) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump lucide-react from 1.16.0 to 1.23.0
+
+- Updated dependencies [[`c5145da`](https://github.com/knocklabs/telegraph/commit/c5145daf880a13a59205992f3edf765402e8cdfa)]:
+  - @telegraph/button@0.7.4
+  - @telegraph/icon@0.5.4
+  - @telegraph/menu@0.5.3
+  - @telegraph/tag@0.2.8
+
 ## 0.4.1
 
 ### Patch Changes
