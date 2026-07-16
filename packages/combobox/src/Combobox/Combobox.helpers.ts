@@ -136,10 +136,8 @@ type DoesOptionMatchSearchQueryProps = {
   searchQuery: string;
 };
 
-// Compares text the way it reads on screen: case-insensitive, with runs of
-// whitespace collapsed. Collapsing matters because text assembled from sibling
-// nodes ("Kyle " + "McDonald") would otherwise carry a doubled gap that no
-// realistic query contains, and because pasted queries carry stray whitespace.
+// Lowercase and collapse whitespace so joined sibling text and pasted
+// queries compare like on-screen text.
 const normalize = (text: string) =>
   text.replace(/\s+/g, " ").trim().toLowerCase();
 
@@ -153,14 +151,11 @@ export const doesOptionMatchSearchQuery = ({
 
   if (!query) return true;
 
-  // Search the option value and any rendered text because labels can be
-  // supplied through nested React children. Joining the strings lets a query
-  // spanning sibling nodes ("Kyle McDonald") match.
+  // Join child strings so a query can span sibling nodes
   const childText = normalize(findStringNodes(children).join(" "));
 
-  // renderedText holds the option's captured DOM text variants. They're what
-  // make text produced inside child components searchable — that text exists
-  // only in render output, which the element walk above can't reach.
+  // renderedText covers text rendered inside child components, which the
+  // element walk can't reach
   return (
     normalize(value ?? "").includes(query) ||
     childText.includes(query) ||
@@ -168,13 +163,9 @@ export const doesOptionMatchSearchQuery = ({
   );
 };
 
-// Extracts an option's on-screen text for search matching. Returns both
-// joining variants because DOM text nodes alone can't settle word boundaries:
-// raw concatenation keeps words split by inline markup intact ("<b>K</b>yle"
-// stays "Kyle"), while space-joining keeps words in separate elements apart
-// ("<span>Kyle</span><span>Smith</span>" reads "Kyle Smith", not "KyleSmith").
-// The variants stay separate strings so a query can only match text that
-// actually appears in one of them, never across an artificial seam.
+// Returns the element's text two ways: concatenated (keeps words split by
+// inline markup whole) and space-joined (keeps words in separate elements
+// apart). Kept as separate strings so a query can't match across the seam.
 export const getRenderedSearchText = (element: Element | null): string[] => {
   if (!element) return [];
 
@@ -200,15 +191,14 @@ export const findStringNodes = (children: ReactNode): string[] => {
       strNodes.push(child);
     }
 
-    // React renders numbers as text, so they're searchable like strings.
+    // Numbers render as text, so they're searchable
     if (typeof child === "number") {
       strNodes.push(String(child));
     }
 
     if (isValidElement(child)) {
       const childProps = child.props as Record<string, unknown>;
-      // Recurse unconditionally. A falsy but renderable child like 0 still
-      // contributes text, and an absent one just yields an empty array.
+      // Recurse even when children is falsy, since 0 still renders
       strNodes.push(...findStringNodes(childProps.children as ReactNode));
     }
   });

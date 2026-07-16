@@ -51,12 +51,12 @@ describe("Combobox search matching", () => {
     const { container } = render(
       <Harness>
         <Combobox.Option value="u_1">
-          <Text as="span">kyle@knock.app</Text>
+          <Text as="span">jane@example.com</Text>
         </Combobox.Option>
       </Harness>,
     );
     const user = await open(container);
-    await user.keyboard("kyle@knock.app");
+    await user.keyboard("jane@example.com");
     expect(queryOptions().length).toBe(1);
   });
 
@@ -65,14 +65,14 @@ describe("Combobox search matching", () => {
       <Harness>
         <Combobox.Option value="u_1">
           <Stack direction="column">
-            <Text as="span">Kyle</Text>
-            <Text as="span">McDonald</Text>
+            <Text as="span">Jane</Text>
+            <Text as="span">Doe</Text>
           </Stack>
         </Combobox.Option>
       </Harness>,
     );
     const user = await open(container);
-    await user.keyboard("Kyle McDonald");
+    await user.keyboard("Jane Doe");
     expect(queryOptions().length).toBe(1);
   });
 
@@ -80,12 +80,12 @@ describe("Combobox search matching", () => {
     const { container } = render(
       <Harness>
         <Combobox.Option value="u_1">
-          Kyle <Text as="span">McDonald</Text>
+          Jane <Text as="span">Doe</Text>
         </Combobox.Option>
       </Harness>,
     );
     const user = await open(container);
-    await user.keyboard("Kyle McDonald");
+    await user.keyboard("Jane Doe");
     expect(queryOptions().length).toBe(1);
   });
 
@@ -93,12 +93,12 @@ describe("Combobox search matching", () => {
     const { container } = render(
       <Harness>
         <Combobox.Option value="u_1">
-          <Text as="span">Kyle McDonald</Text>
+          <Text as="span">Jane Doe</Text>
         </Combobox.Option>
       </Harness>,
     );
     const user = await open(container);
-    await user.keyboard("Kyle  McDonald");
+    await user.keyboard("Jane  Doe");
     expect(queryOptions().length).toBe(1);
   });
 
@@ -106,12 +106,12 @@ describe("Combobox search matching", () => {
     const { container } = render(
       <Harness>
         <Combobox.Option value="u_1">
-          <Text as="span">kyle@knock.app</Text>
+          <Text as="span">jane@example.com</Text>
         </Combobox.Option>
       </Harness>,
     );
     const user = await open(container);
-    await user.keyboard("  kyle@knock.app  ");
+    await user.keyboard("  jane@example.com  ");
     expect(queryOptions().length).toBe(1);
   });
 
@@ -140,9 +140,8 @@ describe("Combobox search matching", () => {
   });
 
   describe("text rendered by child components", () => {
-    // The email exists only in UserRow's render output — unreachable from the
-    // element tree. Matching works because each option captures its rendered
-    // DOM text while visible and the query is matched against the capture.
+    // The email only exists in UserRow's render output, so matching relies
+    // on the captured rendered text
     const UserRow = ({ name, email }: { name: string; email: string }) => (
       <Stack direction="column">
         <Text as="span">{name}</Text>
@@ -154,24 +153,24 @@ describe("Combobox search matching", () => {
       const { container } = render(
         <Harness>
           <Combobox.Option value="u_1">
-            <UserRow name="Kyle McDonald" email="kyle@knock.app" />
+            <UserRow name="Jane Doe" email="jane@example.com" />
           </Combobox.Option>
           <Combobox.Option value="u_2">
-            <UserRow name="Sam Seely" email="sam@knock.app" />
+            <UserRow name="John Smith" email="john@example.com" />
           </Combobox.Option>
         </Harness>,
       );
       const user = await open(container);
-      await user.keyboard("kyle@knock.app");
+      await user.keyboard("jane@example.com");
       expect(queryOptions().length).toBe(1);
     });
 
     it("re-matches after being filtered out and back", async () => {
-      // The capture must survive the option unmounting while filtered out.
+      // The capture must survive being filtered out
       const { container } = render(
         <Harness>
           <Combobox.Option value="u_1">
-            <UserRow name="Kyle McDonald" email="kyle@knock.app" />
+            <UserRow name="Jane Doe" email="jane@example.com" />
           </Combobox.Option>
         </Harness>,
       );
@@ -180,7 +179,7 @@ describe("Combobox search matching", () => {
       await user.keyboard("sam");
       expect(queryOptions().length).toBe(0);
 
-      await user.keyboard("{Backspace}{Backspace}{Backspace}kyle");
+      await user.keyboard("{Backspace}{Backspace}{Backspace}jane");
       expect(queryOptions().length).toBe(1);
     });
 
@@ -188,20 +187,19 @@ describe("Combobox search matching", () => {
       const { container } = render(
         <Harness>
           <Combobox.Option value="u_1">
-            <UserRow name="Kyle McDonald" email="kyle@knock.app" />
+            <UserRow name="Jane Doe" email="jane@example.com" />
           </Combobox.Option>
         </Harness>,
       );
       const user = await open(container);
-      // "McDonald" and the email are separate DOM nodes inside the wrapper.
-      await user.keyboard("McDonald kyle@knock.app");
+      // The name and email are separate DOM nodes inside the wrapper
+      await user.keyboard("Doe jane@example.com");
       expect(queryOptions().length).toBe(1);
     });
 
     it("does not match across the captured variants' seam", async () => {
-      // Captured text has two joining variants ("abcd" and "ab cd"). A query
-      // assembled from the end of one and the start of the other ("cd ab")
-      // appears in neither and never on screen, so it must not match.
+      // "cd ab" spans the seam between the captured variants ("abcd" and
+      // "ab cd") and never appears on screen, so it must not match
       const Row = () => (
         <Stack direction="column">
           <Text as="span">ab</Text>
@@ -231,7 +229,7 @@ describe("Combobox search matching", () => {
               <Combobox.Search />
               <Combobox.Options>
                 <Combobox.Option value="u_1">
-                  <UserRow name="Kyle McDonald" email={email} />
+                  <UserRow name="Jane Doe" email={email} />
                 </Combobox.Option>
               </Combobox.Options>
             </Combobox.Content>
@@ -239,15 +237,15 @@ describe("Combobox search matching", () => {
         );
       };
 
-      const { container, rerender } = render(<Cmp email="kyle@knock.app" />);
+      const { container, rerender } = render(<Cmp email="jane@acme.com" />);
       const user = await open(container);
 
-      await user.keyboard("knock.app");
+      await user.keyboard("acme.com");
       expect(queryOptions().length).toBe(1);
 
-      // The on-screen text stops matching the query; the option must hide
-      // without needing another keystroke.
-      rerender(<Cmp email="kyle@example.com" />);
+      // Content stopped matching, so the option must hide without another
+      // keystroke
+      rerender(<Cmp email="jane@example.com" />);
       expect(queryOptions().length).toBe(0);
     });
 
@@ -261,7 +259,7 @@ describe("Combobox search matching", () => {
               <Combobox.Search />
               <Combobox.Options>
                 <Combobox.Option value="u_1">
-                  <UserRow name="Kyle McDonald" email={email} />
+                  <UserRow name="Jane Doe" email={email} />
                 </Combobox.Option>
               </Combobox.Options>
               <Combobox.Empty />
@@ -270,16 +268,16 @@ describe("Combobox search matching", () => {
         );
       };
 
-      const { container, rerender } = render(<Cmp email="kyle@knock.app" />);
+      const { container, rerender } = render(<Cmp email="jane@acme.com" />);
       const user = await open(container);
 
-      await user.keyboard("knock.app");
+      await user.keyboard("acme.com");
       expect(queryOptions().length).toBe(1);
       expect(document.querySelector("[data-tgph-combobox-empty]")).toBeNull();
 
-      // The last match hides from a content update, not a keystroke — the
-      // empty message must still appear.
-      rerender(<Cmp email="kyle@example.com" />);
+      // The last match hid from a content update, not a keystroke; the
+      // empty message must still appear
+      rerender(<Cmp email="jane@example.com" />);
       await waitFor(() =>
         expect(
           document.querySelector("[data-tgph-combobox-empty]"),
@@ -335,7 +333,7 @@ describe("Combobox search matching", () => {
       const { container } = render(<Cmp />);
       const user = await open(container);
 
-      // Typing the selected value must not shadow the real option.
+      // Typing the selected value must not shadow the real option
       await user.keyboard("email");
       expect(
         document.querySelector('[data-testid="resolved"]')?.textContent,
@@ -343,9 +341,8 @@ describe("Combobox search matching", () => {
     });
 
     it("also excludes a search input wrapped in a consumer component", async () => {
-      // The wrapper's element type isn't Search, so the exclusion can't rely
-      // on identity alone — the controlled-input signature (value paired with
-      // a change handler) is what marks it as a non-option.
+      // A wrapped search isn't Search by type; its value + change handler
+      // signature is what excludes it
       const MySearch = (props: {
         value: string;
         onValueChange: (v: string) => void;
@@ -379,10 +376,8 @@ describe("Combobox search matching", () => {
     });
 
     it("does not exclude an Option wrapper that exposes a change callback", async () => {
-      // The controlled-input exclusion must not swallow option wrappers: this
-      // one carries value + onValueChange like a controlled input would, but
-      // its label prop marks it as option-shaped, so getOptions keeps it and
-      // the trigger can resolve the selected value's label.
+      // value + onValueChange looks like a controlled input, but the label
+      // prop marks it option-shaped, so getOptions keeps it
       const MyOption = ({
         value,
         label,

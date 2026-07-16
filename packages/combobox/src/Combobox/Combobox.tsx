@@ -713,20 +713,13 @@ const Option = <T extends TgphElement>({
     optionRef,
   );
 
-  // Text produced inside child components (a custom option row, say) exists
-  // only in render output — the element-tree walk in the matcher can't reach
-  // it. Capture the rendered text whenever this option is in the DOM, so the
-  // query can be matched against what's actually on screen. The popup always
-  // opens with an empty query, so every option renders and captures before
-  // filtering starts; the state persists while the option is filtered out.
-  // State (not a ref) so that content changing under an active query
-  // recomputes visibility immediately instead of waiting for a keystroke.
+  // Capture the option's rendered text so search can match text produced
+  // inside child components, which isn't readable from the element tree.
+  // The popup opens unfiltered, so every option captures before filtering
+  // starts; the state persists while the option is filtered out.
   const [renderedText, setRenderedText] = useState<string[]>([]);
-  // Runs after every render on purpose: content can change without any value
-  // this effect could list as a dependency. The updater returns the current
-  // state when the capture is unchanged, so React bails out and the update
-  // chain terminates; the option's DOM being gone (filtered out) keeps the
-  // last capture.
+  // No deps on purpose: content can change without anything to depend on.
+  // The updater bails out when the capture is unchanged.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (!optionRef.current) return;
@@ -976,18 +969,11 @@ const Search = ({
   );
 };
 
-/**
- * Identifies which elements in the tree are options. Combobox.Option is matched
- * by identity; consumer components that forward a `value` prop down to one keep
- * being matched by that prop. Controlled inputs also carry a `value`, though —
- * a `<Combobox.Search value>` (matched by identity), a consumer's wrapper
- * around it, or any raw controlled input. Without the exclusions the current
- * search text is collected as a phantom option that shadows the real one.
- *
- * A change handler alone can't settle it: option wrappers may expose one too.
- * Option-shaped props (label, selected, onSelect, children) break the tie —
- * search inputs carry none of them.
- */
+// Combobox.Option matches by type; a truthy `value` prop keeps consumer
+// wrappers around Option matching. Controlled inputs also carry `value` and
+// would become phantom options, so a change handler excludes an element
+// unless option-shaped props (label/selected/onSelect/children) mark it as
+// a wrapped option.
 const isOptionElement = (element: ReactElement) => {
   if (element.type === Option) return true;
   if (element.type === Search) return false;
@@ -1040,9 +1026,8 @@ const Empty = <T extends TgphElement>({
 
     recount();
 
-    // Options can appear and disappear without anything this effect could
-    // depend on changing — a content update can hide the last match without a
-    // keystroke. Watching the DOM directly covers every source of change.
+    // Options can come and go without anything to depend on (a content
+    // update can hide the last match), so watch the DOM directly
     const observer = new MutationObserver(recount);
     observer.observe(content, { childList: true, subtree: true });
 

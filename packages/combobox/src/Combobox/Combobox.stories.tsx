@@ -615,9 +615,9 @@ export const YearPickerWithScrollToValue: Story = {
 };
 
 const USERS = [
-  { id: "usr_1", name: "Kyle McDonald", email: "kyle@knock.app" },
-  { id: "usr_2", name: "Sam Seely", email: "sam@knock.app" },
-  { id: "usr_3", name: "Chris Bell", email: "chris@example.com" },
+  { id: "usr_1", name: "Jane Doe", email: "jane@example.com" },
+  { id: "usr_2", name: "John Smith", email: "john@example.com" },
+  { id: "usr_3", name: "Sam Lee", email: "sam@example.com" },
 ];
 
 // This option's text is rendered inside a component. It stays searchable
