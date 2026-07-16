@@ -126,30 +126,35 @@ type DoesOptionMatchSearchQueryProps = {
   searchQuery: string;
 };
 
+// Compares text the way it reads on screen: case-insensitive, with runs of
+// whitespace collapsed. Collapsing matters because text assembled from sibling
+// nodes ("Kyle " + "McDonald") would otherwise carry a doubled gap that no
+// realistic query contains, and because pasted queries carry stray whitespace.
+const normalize = (text: string) =>
+  text.replace(/\s+/g, " ").trim().toLowerCase();
+
 export const doesOptionMatchSearchQuery = ({
   children,
   value,
   searchValue,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
-  // Pasted queries routinely carry surrounding whitespace, which shouldn't
-  // drop an otherwise exact match.
-  const query = searchQuery.trim().toLowerCase();
+  const query = normalize(searchQuery);
 
   if (!query) return true;
 
   // searchValue is authoritative: it's the escape hatch for options whose text
   // is produced inside a child component, where the walk below can't reach it.
   if (searchValue !== undefined) {
-    return searchValue.toLowerCase().includes(query);
+    return normalize(searchValue).includes(query);
   }
 
   // Search both the option value and any rendered text because labels can be
   // supplied through nested React children. Joining the strings lets a query
   // spanning sibling nodes ("Kyle McDonald") match.
-  const childText = findStringNodes(children).join(" ").toLowerCase();
+  const childText = normalize(findStringNodes(children).join(" "));
 
-  return value?.toLowerCase().includes(query) || childText.includes(query);
+  return normalize(value ?? "").includes(query) || childText.includes(query);
 };
 
 // Exported for testing
@@ -169,11 +174,9 @@ export const findStringNodes = (children: React.ReactNode): string[] => {
 
     if (React.isValidElement(child)) {
       const childProps = child.props as Record<string, unknown>;
-      if (childProps.children) {
-        strNodes.push(
-          ...findStringNodes(childProps.children as React.ReactNode),
-        );
-      }
+      // Recurse unconditionally. A falsy but renderable child like 0 still
+      // contributes text, and an absent one just yields an empty array.
+      strNodes.push(...findStringNodes(childProps.children as React.ReactNode));
     }
   });
 

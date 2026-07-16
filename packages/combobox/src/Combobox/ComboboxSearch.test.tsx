@@ -76,6 +76,32 @@ describe("Combobox search matching", () => {
     expect(queryOptions().length).toBe(1);
   });
 
+  it("matches when inline markup already carries a trailing space", async () => {
+    const { container } = render(
+      <Harness>
+        <Combobox.Option value="u_1">
+          Kyle <Text as="span">McDonald</Text>
+        </Combobox.Option>
+      </Harness>,
+    );
+    const user = await open(container);
+    await user.keyboard("Kyle McDonald");
+    expect(queryOptions().length).toBe(1);
+  });
+
+  it("ignores repeated whitespace inside the query", async () => {
+    const { container } = render(
+      <Harness>
+        <Combobox.Option value="u_1">
+          <Text as="span">Kyle McDonald</Text>
+        </Combobox.Option>
+      </Harness>,
+    );
+    const user = await open(container);
+    await user.keyboard("Kyle  McDonald");
+    expect(queryOptions().length).toBe(1);
+  });
+
   it("ignores surrounding whitespace in the query", async () => {
     const { container } = render(
       <Harness>
@@ -173,6 +199,17 @@ describe("Combobox search matching", () => {
           children: <span>{2024}</span>,
           value: "y",
           searchQuery: "2024",
+        }),
+      ).toBe(true);
+    });
+
+    it("collects a nested zero, which is falsy but still renders", () => {
+      expect(findStringNodes(<span>{0}</span>)).toEqual(["0"]);
+      expect(
+        doesOptionMatchSearchQuery({
+          children: <span>{0}</span>,
+          value: "y",
+          searchQuery: "0",
         }),
       ).toBe(true);
     });
