@@ -250,6 +250,42 @@ describe("Combobox search matching", () => {
       rerender(<Cmp email="kyle@example.com" />);
       expect(queryOptions().length).toBe(0);
     });
+
+    it("shows the empty state when a content change hides the last match", async () => {
+      const Cmp = ({ email }: { email: string }) => {
+        const [value, setValue] = useState<string>("");
+        return (
+          <Combobox.Root value={value} onValueChange={setValue}>
+            <Combobox.Trigger />
+            <Combobox.Content>
+              <Combobox.Search />
+              <Combobox.Options>
+                <Combobox.Option value="u_1">
+                  <UserRow name="Kyle McDonald" email={email} />
+                </Combobox.Option>
+              </Combobox.Options>
+              <Combobox.Empty />
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container, rerender } = render(<Cmp email="kyle@knock.app" />);
+      const user = await open(container);
+
+      await user.keyboard("knock.app");
+      expect(queryOptions().length).toBe(1);
+      expect(document.querySelector("[data-tgph-combobox-empty]")).toBeNull();
+
+      // The last match hides from a content update, not a keystroke — the
+      // empty message must still appear.
+      rerender(<Cmp email="kyle@example.com" />);
+      await waitFor(() =>
+        expect(
+          document.querySelector("[data-tgph-combobox-empty]"),
+        ).not.toBeNull(),
+      );
+    });
   });
 
   describe("findStringNodes", () => {

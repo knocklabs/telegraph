@@ -1029,16 +1029,24 @@ const Empty = <T extends TgphElement>({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const options = context.contentRef?.current?.querySelectorAll(
-      "[data-tgph-combobox-option]",
-    );
+    const content = context.contentRef?.current;
+    if (!content) return undefined;
 
-    if (options?.length === 0) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  }, [context.searchQuery, context.contentRef, children]);
+    const recount = () => {
+      const options = content.querySelectorAll("[data-tgph-combobox-option]");
+      setIsVisible(options.length === 0);
+    };
+
+    recount();
+
+    // Options can appear and disappear without anything this effect could
+    // depend on changing — a content update can hide the last match without a
+    // keystroke. Watching the DOM directly covers every source of change.
+    const observer = new MutationObserver(recount);
+    observer.observe(content, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [context.contentRef]);
 
   if (isVisible) {
     return (
