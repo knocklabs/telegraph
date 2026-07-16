@@ -147,7 +147,7 @@ const Root = <
   const contentRef = useRef<HTMLDivElement>(null);
 
   const options = useMemo(() => {
-    return getOptions(children, isOptionElement);
+    return getOptions({ children, isOptionElement });
   }, [children]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -723,19 +723,20 @@ const Option = <T extends TgphElement>({
   // recomputes visibility immediately instead of waiting for a keystroke.
   const [renderedText, setRenderedText] = useState<string[]>([]);
   // Runs after every render on purpose: content can change without any value
-  // this effect could list as a dependency. The equality guard terminates the
-  // update chain, and the option's DOM being gone (filtered out) keeps the
+  // this effect could list as a dependency. The updater returns the current
+  // state when the capture is unchanged, so React bails out and the update
+  // chain terminates; the option's DOM being gone (filtered out) keeps the
   // last capture.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (!optionRef.current) return;
     const captured = getRenderedSearchText(optionRef.current);
-    const changed =
-      captured.length !== renderedText.length ||
-      captured.some((variant, index) => variant !== renderedText[index]);
-    if (changed) {
-      setRenderedText(captured);
-    }
+    setRenderedText((current) => {
+      const changed =
+        captured.length !== current.length ||
+        captured.some((variant, index) => variant !== current[index]);
+      return changed ? captured : current;
+    });
   });
 
   const isVisible =
@@ -987,7 +988,7 @@ const Search = ({
  * Option-shaped props (label, selected, onSelect, children) break the tie —
  * search inputs carry none of them.
  */
-function isOptionElement(element: ReactElement) {
+const isOptionElement = (element: ReactElement) => {
   if (element.type === Option) return true;
   if (element.type === Search) return false;
 
@@ -1010,7 +1011,7 @@ function isOptionElement(element: ReactElement) {
 
   if (hasChangeHandler && !isOptionShaped) return false;
   return Boolean(props?.value);
-}
+};
 
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof Stack<T>

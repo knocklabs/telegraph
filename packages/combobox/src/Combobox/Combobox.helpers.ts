@@ -1,4 +1,9 @@
-import React from "react";
+import {
+  Children,
+  type ReactElement,
+  type ReactNode,
+  isValidElement,
+} from "react";
 
 import type { DefinedOption, Option } from "./Combobox.types";
 
@@ -22,27 +27,32 @@ export const isSingleSelect = (
   );
 };
 
-export const getOptions = (
-  children: React.ReactNode,
-  isOptionElement: (element: React.ReactElement) => boolean,
-): Array<DefinedOption> => {
+type GetOptionsProps = {
+  children: ReactNode;
+  isOptionElement: (element: ReactElement) => boolean;
+};
+
+export const getOptions = ({
+  children,
+  isOptionElement,
+}: GetOptionsProps): Array<DefinedOption> => {
   const recursivelyFindOptionElements = (
-    children: React.ReactNode,
-    options: Array<React.ReactNode> = [],
+    children: ReactNode,
+    options: Array<ReactNode> = [],
   ) => {
     // Options can be wrapped in grouping/layout components, so walk the child
     // tree instead of assuming direct Combobox.Option children.
-    const childrenArray = React.Children.toArray(children);
+    const childrenArray = Children.toArray(children);
 
     childrenArray.forEach((child) => {
-      if (React.isValidElement(child)) {
+      if (isValidElement(child)) {
         const childProps = child.props as Record<string, unknown>;
         if (isOptionElement(child)) {
           options.push(child);
         } else if (childProps.children) {
           // Non-option wrappers may still contain options further down.
           recursivelyFindOptionElements(
-            childProps.children as React.ReactNode,
+            childProps.children as ReactNode,
             options,
           );
         }
@@ -55,10 +65,10 @@ export const getOptions = (
   const optionElements = recursivelyFindOptionElements(children);
 
   const options = optionElements.map((_element) => {
-    const element = _element as React.ReactElement<{
+    const element = _element as ReactElement<{
       value: string;
-      label?: string | React.ReactNode;
-      children?: React.ReactNode;
+      label?: string | ReactNode;
+      children?: ReactNode;
     }>;
     return {
       value: element.props.value,
@@ -120,7 +130,7 @@ export const getCurrentOption = (
 };
 
 type DoesOptionMatchSearchQueryProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   value?: string;
   renderedText?: string[];
   searchQuery: string;
@@ -181,8 +191,8 @@ export const getRenderedSearchText = (element: Element | null): string[] => {
 };
 
 // Exported for testing
-export const findStringNodes = (children: React.ReactNode): string[] => {
-  const childrenArray = React.Children.toArray(children);
+export const findStringNodes = (children: ReactNode): string[] => {
+  const childrenArray = Children.toArray(children);
   const strNodes: string[] = [];
 
   childrenArray.forEach((child) => {
@@ -195,11 +205,11 @@ export const findStringNodes = (children: React.ReactNode): string[] => {
       strNodes.push(String(child));
     }
 
-    if (React.isValidElement(child)) {
+    if (isValidElement(child)) {
       const childProps = child.props as Record<string, unknown>;
       // Recurse unconditionally. A falsy but renderable child like 0 still
       // contributes text, and an absent one just yields an empty array.
-      strNodes.push(...findStringNodes(childProps.children as React.ReactNode));
+      strNodes.push(...findStringNodes(childProps.children as ReactNode));
     }
   });
 
