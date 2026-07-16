@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
 import { Modal } from "@telegraph/modal";
+import { Text } from "@telegraph/typography";
 import React from "react";
 
 import { Combobox as TelegraphCombobox } from "../Combobox";
@@ -602,6 +603,61 @@ export const YearPickerWithScrollToValue: Story = {
               {YEARS.map((year) => (
                 <TelegraphCombobox.Option key={year} value={year}>
                   {year}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+const USERS = [
+  { id: "usr_1", name: "Kyle McDonald", email: "kyle@knock.app" },
+  { id: "usr_2", name: "Sam Seely", email: "sam@knock.app" },
+  { id: "usr_3", name: "Chris Bell", email: "chris@example.com" },
+];
+
+// This option's text is rendered inside a component, so it can't be read off
+// the element tree — searchValue is what keeps it findable.
+const UserRow = ({ user }: { user: (typeof USERS)[number] }) => (
+  <Stack direction="column" align="flex-start">
+    <Text as="span" size="1">
+      {user.name}
+    </Text>
+    <Text as="span" size="0" color="gray">
+      {user.email}
+    </Text>
+  </Stack>
+);
+
+export const OptionsWithSearchValue: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = React.useState<string | undefined>(undefined);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a user"}
+        >
+          <TelegraphCombobox.Trigger size="1" />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.Options>
+              {USERS.map((user) => (
+                <TelegraphCombobox.Option
+                  key={user.id}
+                  value={user.id}
+                  h="9"
+                  searchValue={`${user.name} ${user.email}`}
+                >
+                  <UserRow user={user} />
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>

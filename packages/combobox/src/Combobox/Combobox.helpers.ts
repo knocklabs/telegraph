@@ -22,7 +22,10 @@ export const isSingleSelect = (
   );
 };
 
-export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
+export const getOptions = (
+  children: React.ReactNode,
+  isOptionElement: (element: React.ReactElement) => boolean,
+): Array<DefinedOption> => {
   const recursivelyFindOptionElements = (
     children: React.ReactNode,
     options: Array<React.ReactNode> = [],
@@ -34,8 +37,7 @@ export const getOptions = (children: React.ReactNode): Array<DefinedOption> => {
     childrenArray.forEach((child) => {
       if (React.isValidElement(child)) {
         const childProps = child.props as Record<string, unknown>;
-        if (childProps.value) {
-          // Combobox.Option is identified by its public value prop.
+        if (isOptionElement(child)) {
           options.push(child);
         } else if (childProps.children) {
           // Non-option wrappers may still contain options further down.
@@ -120,24 +122,34 @@ export const getCurrentOption = (
 type DoesOptionMatchSearchQueryProps = {
   children?: React.ReactNode;
   value?: string;
+  searchValue?: string;
   searchQuery: string;
 };
 
 export const doesOptionMatchSearchQuery = ({
   children,
   value,
+  searchValue,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
-  // Search both the option value and any rendered text because labels can be
-  // supplied through nested React children.
-  const childStrings = findStringNodes(children);
+  // Pasted queries routinely carry surrounding whitespace, which shouldn't
+  // drop an otherwise exact match.
+  const query = searchQuery.trim().toLowerCase();
 
-  return (
-    value?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    childStrings.some((str) =>
-      str.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-  );
+  if (!query) return true;
+
+  // searchValue is authoritative: it's the escape hatch for options whose text
+  // is produced inside a child component, where the walk below can't reach it.
+  if (searchValue !== undefined) {
+    return searchValue.toLowerCase().includes(query);
+  }
+
+  // Search both the option value and any rendered text because labels can be
+  // supplied through nested React children. Joining the strings lets a query
+  // spanning sibling nodes ("Kyle McDonald") match.
+  const childText = findStringNodes(children).join(" ").toLowerCase();
+
+  return value?.toLowerCase().includes(query) || childText.includes(query);
 };
 
 // Exported for testing
@@ -148,6 +160,11 @@ export const findStringNodes = (children: React.ReactNode): string[] => {
   childrenArray.forEach((child) => {
     if (typeof child === "string") {
       strNodes.push(child);
+    }
+
+    // React renders numbers as text, so they're searchable like strings.
+    if (typeof child === "number") {
+      strNodes.push(String(child));
     }
 
     if (React.isValidElement(child)) {

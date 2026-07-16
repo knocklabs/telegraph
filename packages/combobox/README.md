@@ -340,11 +340,33 @@ export const CustomTrigger = () => (
 
 Individual selectable option item.
 
-| Prop       | Type                  | Default     | Description          |
-| ---------- | --------------------- | ----------- | -------------------- |
-| `value`    | `string`              | required    | Option value         |
-| `label`    | `string \| ReactNode` | `undefined` | Display label        |
-| `selected` | `boolean \| null`     | `undefined` | Force selected state |
+| Prop          | Type                  | Default     | Description                            |
+| ------------- | --------------------- | ----------- | -------------------------------------- |
+| `value`       | `string`              | required    | Option value                           |
+| `label`       | `string \| ReactNode` | `undefined` | Display label                          |
+| `selected`    | `boolean \| null`     | `undefined` | Force selected state                   |
+| `searchValue` | `string`              | `undefined` | Text to match the search query against |
+
+`<Combobox.Search>` filters options by the text it can read from `label`,
+`children` and `value`. It reads that text off the React element tree, so text
+produced _inside_ a child component is invisible to it — the option below
+renders an email that searching for it will never match:
+
+```tsx
+<Combobox.Option value={user.id}>
+  <UserRow user={user} />
+</Combobox.Option>
+```
+
+Pass `searchValue` for those options. It replaces the derived text entirely, so
+include everything that should match (and nothing that shouldn't — the option's
+`value` is no longer matched either):
+
+```tsx
+<Combobox.Option value={user.id} searchValue={`${user.name} ${user.email}`}>
+  <UserRow user={user} />
+</Combobox.Option>
+```
 
 ### `<Combobox.Search>`
 

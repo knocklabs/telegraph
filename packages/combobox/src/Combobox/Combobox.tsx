@@ -17,6 +17,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   type MouseEvent,
+  type ReactElement,
   type KeyboardEvent as ReactKeyboardEvent,
   type KeyboardEventHandler as ReactKeyboardEventHandler,
   type ReactNode,
@@ -144,7 +145,7 @@ const Root = <
   const contentRef = useRef<HTMLDivElement>(null);
 
   const options = useMemo(() => {
-    return getOptions(children);
+    return getOptions(children, isOptionElement);
   }, [children]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -688,12 +689,20 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
   value: DefinedOption["value"];
   label?: DefinedOption["label"];
   selected?: boolean | null;
+  /**
+   * Text the search query is matched against, replacing the text derived from
+   * `label`/`children`/`value`. Needed when an option's visible text is
+   * rendered by a child component, since that text isn't readable from the
+   * element tree.
+   */
+  searchValue?: string;
 };
 
 const Option = <T extends TgphElement>({
   value,
   label,
   selected,
+  searchValue,
   onSelect,
   children,
   closeOnClick,
@@ -715,6 +724,7 @@ const Option = <T extends TgphElement>({
     doesOptionMatchSearchQuery({
       children: label || children,
       value,
+      searchValue,
       searchQuery: context.searchQuery,
     });
 
@@ -945,6 +955,19 @@ const Search = ({
     </Box>
   );
 };
+
+/**
+ * Identifies which elements in the tree are options. Combobox.Option is matched
+ * by identity; consumer components that forward a `value` prop down to one keep
+ * being matched by that prop. Combobox.Search also takes a `value` when it's
+ * controlled, so it has to be excluded explicitly — otherwise the current search
+ * text is collected as a phantom option that shadows the real one.
+ */
+function isOptionElement(element: ReactElement) {
+  if (element.type === Option) return true;
+  if (element.type === Search) return false;
+  return Boolean((element.props as { value?: unknown })?.value);
+}
 
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof Stack<T>
