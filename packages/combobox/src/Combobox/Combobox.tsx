@@ -961,9 +961,12 @@ const Search = ({
  * by identity; consumer components that forward a `value` prop down to one keep
  * being matched by that prop. Controlled inputs also carry a `value`, though —
  * a `<Combobox.Search value>` (matched by identity), a consumer's wrapper
- * around it (matched by its change handler, which no Option wrapper passes),
- * or any raw controlled input. Without the exclusions the current search text
- * is collected as a phantom option that shadows the real one.
+ * around it, or any raw controlled input. Without the exclusions the current
+ * search text is collected as a phantom option that shadows the real one.
+ *
+ * A change handler alone can't settle it: option wrappers may expose one too.
+ * Option-shaped props (label, selected, onSelect, children) break the tie —
+ * search inputs carry none of them.
  */
 function isOptionElement(element: ReactElement) {
   if (element.type === Option) return true;
@@ -971,11 +974,22 @@ function isOptionElement(element: ReactElement) {
 
   const props = element.props as {
     value?: unknown;
+    label?: unknown;
+    selected?: unknown;
+    onSelect?: unknown;
+    children?: unknown;
     onChange?: unknown;
     onValueChange?: unknown;
   };
 
-  if (props?.onChange || props?.onValueChange) return false;
+  const hasChangeHandler = Boolean(props?.onChange || props?.onValueChange);
+  const isOptionShaped =
+    props?.label !== undefined ||
+    props?.selected !== undefined ||
+    props?.onSelect !== undefined ||
+    props?.children !== undefined;
+
+  if (hasChangeHandler && !isOptionShaped) return false;
   return Boolean(props?.value);
 }
 

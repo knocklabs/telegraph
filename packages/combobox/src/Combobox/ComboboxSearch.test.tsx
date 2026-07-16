@@ -280,6 +280,48 @@ describe("Combobox search matching", () => {
         document.querySelector('[data-testid="resolved"]')?.textContent,
       ).toBe(JSON.stringify({ value: "email", label: "Email" }));
     });
+
+    it("does not exclude an Option wrapper that exposes a change callback", async () => {
+      // The controlled-input exclusion must not swallow option wrappers: this
+      // one carries value + onValueChange like a controlled input would, but
+      // its label prop marks it as option-shaped, so getOptions keeps it and
+      // the trigger can resolve the selected value's label.
+      const MyOption = ({
+        value,
+        label,
+        onValueChange,
+      }: {
+        value: string;
+        label: string;
+        onValueChange: (v: string) => void;
+      }) => (
+        <Combobox.Option
+          value={value}
+          label={label}
+          onSelect={() => onValueChange(value)}
+        />
+      );
+
+      const Cmp = () => (
+        <Combobox.Root value="email">
+          <Combobox.Trigger>
+            {({ value: resolved }) => (
+              <span data-testid="resolved">{JSON.stringify(resolved)}</span>
+            )}
+          </Combobox.Trigger>
+          <Combobox.Content>
+            <Combobox.Options>
+              <MyOption value="email" label="Email" onValueChange={() => {}} />
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+      render(<Cmp />);
+
+      expect(
+        document.querySelector('[data-testid="resolved"]')?.textContent,
+      ).toBe(JSON.stringify({ value: "email", label: "Email" }));
+    });
   });
 
   describe("searchValue hardening", () => {
