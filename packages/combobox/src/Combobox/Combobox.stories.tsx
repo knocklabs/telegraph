@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Box, Stack } from "@telegraph/layout";
 import { Modal } from "@telegraph/modal";
-import React from "react";
+import { Text } from "@telegraph/typography";
+import { useState } from "react";
 
 import { Combobox as TelegraphCombobox } from "../Combobox";
 
@@ -28,7 +29,7 @@ const FIRST_VALUE = VALUES[0] as string;
 export const SingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(FIRST_VALUE);
+    const [value, setValue] = useState(FIRST_VALUE);
 
     return (
       <Box w="80">
@@ -58,7 +59,7 @@ export const SingleSelect: Story = {
 export const SingleSelectWithSearch: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(FIRST_VALUE);
+    const [value, setValue] = useState(FIRST_VALUE);
 
     return (
       <Box w="80">
@@ -89,7 +90,7 @@ export const SingleSelectWithSearch: Story = {
 export const SingleSelectWithLongLabel: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(FIRST_VALUE);
+    const [value, setValue] = useState(FIRST_VALUE);
     return (
       <Box w="80">
         <TelegraphCombobox.Root
@@ -122,7 +123,7 @@ export const SingleSelectWithLongLabel: Story = {
 export const MultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([FIRST_VALUE]);
+    const [value, setValue] = useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -158,7 +159,7 @@ export const MultiSelect: Story = {
 export const MultiSelectWithWrapLayout: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([FIRST_VALUE]);
+    const [value, setValue] = useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -191,7 +192,7 @@ export const MultiSelectWithWrapLayout: Story = {
 export const SingleSelectWithCreate: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<string | undefined>(undefined);
+    const [value, setValue] = useState<string | undefined>(undefined);
 
     return (
       <Box w="80">
@@ -229,7 +230,7 @@ export const SingleSelectWithCreate: Story = {
 export const MultiSelectWithCreate: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<Array<string>>([FIRST_VALUE]);
+    const [value, setValue] = useState<Array<string>>([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -268,7 +269,7 @@ export const MultiSelectWithCreate: Story = {
 export const MultiSelectWithClear: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([FIRST_VALUE]);
+    const [value, setValue] = useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -307,9 +308,9 @@ export const MultiSelectWithClear: Story = {
 export const ComboboxInModal: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([FIRST_VALUE]);
+    const [value, setValue] = useState([FIRST_VALUE]);
     return (
       <>
         <Button size="1" variant="outline" onClick={() => setOpen(true)}>
@@ -376,7 +377,7 @@ const FIRST_LEGACY_VALUE = LEGACY_VALUES[0] as Option;
 export const LegacyComboboxSingleSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(FIRST_LEGACY_VALUE);
+    const [value, setValue] = useState(FIRST_LEGACY_VALUE);
 
     return (
       <Box w="80">
@@ -406,7 +407,7 @@ export const LegacyComboboxSingleSelect: Story = {
 export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(FIRST_LEGACY_VALUE);
+    const [value, setValue] = useState(FIRST_LEGACY_VALUE);
 
     return (
       <Box w="80">
@@ -440,7 +441,7 @@ export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
 export const LegacyComboboxMultiSelect: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([FIRST_LEGACY_VALUE]);
+    const [value, setValue] = useState([FIRST_LEGACY_VALUE]);
 
     return (
       <Box w="80">
@@ -480,7 +481,7 @@ export const LegacyComboboxMultiSelect: Story = {
 export const SingleSelectWithCustomTrigger: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState(FIRST_VALUE);
+    const [value, setValue] = useState(FIRST_VALUE);
 
     return (
       <Box w="80">
@@ -517,7 +518,7 @@ export const SingleSelectWithCustomTrigger: Story = {
 export const MultiSelectWithCustomTrigger: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState([FIRST_VALUE]);
+    const [value, setValue] = useState([FIRST_VALUE]);
 
     return (
       <Box w="80">
@@ -584,7 +585,7 @@ export const YearPicker: Story = {
 export const YearPickerWithScrollToValue: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
-    const [value, setValue] = React.useState<string | undefined>(undefined);
+    const [value, setValue] = useState<string | undefined>(undefined);
 
     return (
       <Box w="80">
@@ -602,6 +603,56 @@ export const YearPickerWithScrollToValue: Story = {
               {YEARS.map((year) => (
                 <TelegraphCombobox.Option key={year} value={year}>
                   {year}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+const USERS = [
+  { id: "usr_1", name: "Jane Doe", email: "jane@example.com" },
+  { id: "usr_2", name: "John Smith", email: "john@example.com" },
+  { id: "usr_3", name: "Sam Lee", email: "sam@example.com" },
+];
+
+// This option's text is rendered inside a component. It stays searchable
+// because each option captures its rendered DOM text for matching.
+const UserRow = ({ user }: { user: (typeof USERS)[number] }) => (
+  <Stack direction="column" align="flex-start">
+    <Text as="span" size="1">
+      {user.name}
+    </Text>
+    <Text as="span" size="0" color="gray">
+      {user.email}
+    </Text>
+  </Stack>
+);
+
+export const OptionsWithComponentContent: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = useState<string | undefined>(undefined);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Select a user"}
+        >
+          <TelegraphCombobox.Trigger size="1" />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.Options>
+              {USERS.map((user) => (
+                <TelegraphCombobox.Option key={user.id} value={user.id} h="9">
+                  <UserRow user={user} />
                 </TelegraphCombobox.Option>
               ))}
             </TelegraphCombobox.Options>

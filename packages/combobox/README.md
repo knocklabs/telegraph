@@ -346,6 +346,23 @@ Individual selectable option item.
 | `label`    | `string \| ReactNode` | `undefined` | Display label        |
 | `selected` | `boolean \| null`     | `undefined` | Force selected state |
 
+`<Combobox.Search>` matches the query against the option's `value`, its
+`label`/`children` text, and its rendered DOM text. The last one is what makes
+text produced _inside_ a child component searchable — an option like the one
+below matches a search for the user's email even though the email only exists
+in `UserRow`'s render output:
+
+```tsx
+<Combobox.Option value={user.id}>
+  <UserRow user={user} />
+</Combobox.Option>
+```
+
+Rendered text is captured while an option is on screen. The popup always opens
+unfiltered, so every option is captured before the first keystroke; an option
+inserted while a query is active is matchable by its element-tree text only
+until it first renders.
+
 ### `<Combobox.Search>`
 
 Search input field for filtering options.

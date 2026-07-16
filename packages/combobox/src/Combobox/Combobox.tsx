@@ -17,6 +17,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   type MouseEvent,
+  type ReactElement,
   type KeyboardEvent as ReactKeyboardEvent,
   type KeyboardEventHandler as ReactKeyboardEventHandler,
   type ReactNode,
@@ -27,6 +28,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -41,6 +43,7 @@ import {
   getCurrentOption,
   getOptionAccessibleLabel,
   getOptions,
+  getRenderedSearchText,
   getValueFromOption,
   isMultiSelect,
   isSingleSelect,
@@ -144,7 +147,7 @@ const Root = <
   const contentRef = useRef<HTMLDivElement>(null);
 
   const options = useMemo(() => {
-    return getOptions(children);
+    return getOptions({ children, isOptionElement });
   }, [children]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -710,11 +713,31 @@ const Option = <T extends TgphElement>({
     optionRef,
   );
 
+  // Capture the option's rendered text so search can match text produced
+  // inside child components, which isn't readable from the element tree.
+  // The popup opens unfiltered, so every option captures before filtering
+  // starts; the state persists while the option is filtered out.
+  const [renderedText, setRenderedText] = useState<string[]>([]);
+  // No deps on purpose: content can change without anything to depend on.
+  // The updater bails out when the capture is unchanged.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    if (!optionRef.current) return;
+    const captured = getRenderedSearchText(optionRef.current);
+    setRenderedText((current) => {
+      const changed =
+        captured.length !== current.length ||
+        captured.some((variant, index) => variant !== current[index]);
+      return changed ? captured : current;
+    });
+  });
+
   const isVisible =
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
       children: label || children,
       value,
+      renderedText,
       searchQuery: context.searchQuery,
     });
 
@@ -946,6 +969,36 @@ const Search = ({
   );
 };
 
+// Combobox.Option matches by type; a truthy `value` prop keeps consumer
+// wrappers around Option matching. Controlled inputs also carry `value` and
+// would become phantom options, so a change handler excludes an element
+// unless option-shaped props (label/selected/onSelect/children) mark it as
+// a wrapped option.
+const isOptionElement = (element: ReactElement) => {
+  if (element.type === Option) return true;
+  if (element.type === Search) return false;
+
+  const props = element.props as {
+    value?: unknown;
+    label?: unknown;
+    selected?: unknown;
+    onSelect?: unknown;
+    children?: unknown;
+    onChange?: unknown;
+    onValueChange?: unknown;
+  };
+
+  const hasChangeHandler = Boolean(props?.onChange || props?.onValueChange);
+  const isOptionShaped =
+    props?.label !== undefined ||
+    props?.selected !== undefined ||
+    props?.onSelect !== undefined ||
+    props?.children !== undefined;
+
+  if (hasChangeHandler && !isOptionShaped) return false;
+  return Boolean(props?.value);
+};
+
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof Stack<T>
 > & {
@@ -963,16 +1016,23 @@ const Empty = <T extends TgphElement>({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const options = context.contentRef?.current?.querySelectorAll(
-      "[data-tgph-combobox-option]",
-    );
+    const content = context.contentRef?.current;
+    if (!content) return undefined;
 
-    if (options?.length === 0) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  }, [context.searchQuery, context.contentRef, children]);
+    const recount = () => {
+      const options = content.querySelectorAll("[data-tgph-combobox-option]");
+      setIsVisible(options.length === 0);
+    };
+
+    recount();
+
+    // Options can come and go without anything to depend on (a content
+    // update can hide the last match), so watch the DOM directly
+    const observer = new MutationObserver(recount);
+    observer.observe(content, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [context.contentRef]);
 
   if (isVisible) {
     return (
