@@ -1,10 +1,10 @@
 ---
-"@telegraph/combobox": minor
+"@telegraph/combobox": patch
 ---
 
 Fix client-side search matching in `Combobox`
 
-- Add a `searchValue` prop to `Combobox.Option`, for options whose visible text is rendered by a child component and so can't be read off the element tree. When set, it replaces the text derived from `label`/`children`/`value`.
+- Match options by their rendered DOM text, so text produced inside a child component (a custom option row, for example) is searchable. Previously the filter only read text off the React element tree, where a child component's render output doesn't exist.
 - Match queries that span sibling text nodes — searching `"Kyle McDonald"` now matches `<Text>Kyle</Text><Text>McDonald</Text>`.
 - Match numeric children, which were previously skipped entirely.
 - Trim the search query, so a pasted value with surrounding whitespace still matches.

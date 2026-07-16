@@ -139,55 +139,63 @@ describe("Combobox search matching", () => {
     expect(queryOptions().length).toBe(1);
   });
 
-  describe("searchValue", () => {
-    it("matches text rendered by a child component", async () => {
-      // The email is produced inside UserRow's render output, so it can't be
-      // read off the element tree — searchValue is how it stays findable.
-      const UserRow = ({ email }: { email: string }) => (
+  describe("text rendered by child components", () => {
+    // The email exists only in UserRow's render output — unreachable from the
+    // element tree. Matching works because each option captures its rendered
+    // DOM text while visible and the query is matched against the capture.
+    const UserRow = ({ name, email }: { name: string; email: string }) => (
+      <Stack direction="column">
+        <Text as="span">{name}</Text>
         <Text as="span">{email}</Text>
-      );
+      </Stack>
+    );
 
+    it("matches automatically, with no extra props", async () => {
       const { container } = render(
         <Harness>
-          <Combobox.Option
-            value="u_1"
-            searchValue="Kyle McDonald kyle@knock.app"
-          >
-            <UserRow email="kyle@knock.app" />
+          <Combobox.Option value="u_1">
+            <UserRow name="Kyle McDonald" email="kyle@knock.app" />
+          </Combobox.Option>
+          <Combobox.Option value="u_2">
+            <UserRow name="Sam Seely" email="sam@knock.app" />
           </Combobox.Option>
         </Harness>,
       );
       const user = await open(container);
-      await user.keyboard("knock.app");
+      await user.keyboard("kyle@knock.app");
       expect(queryOptions().length).toBe(1);
     });
 
-    it("replaces the derived text rather than adding to it", async () => {
+    it("re-matches after being filtered out and back", async () => {
+      // The capture must survive the option unmounting while filtered out.
       const { container } = render(
         <Harness>
-          <Combobox.Option value="usr_internal_id" searchValue="Alpha">
-            <Text as="span">Alpha</Text>
+          <Combobox.Option value="u_1">
+            <UserRow name="Kyle McDonald" email="kyle@knock.app" />
           </Combobox.Option>
         </Harness>,
       );
       const user = await open(container);
-      // The option value would otherwise match; searchValue excludes it.
-      await user.keyboard("internal");
+
+      await user.keyboard("sam");
       expect(queryOptions().length).toBe(0);
+
+      await user.keyboard("{Backspace}{Backspace}{Backspace}kyle");
+      expect(queryOptions().length).toBe(1);
     });
 
-    it("is not forwarded to the DOM", async () => {
+    it("matches a query spanning the wrapper's sibling text nodes", async () => {
       const { container } = render(
         <Harness>
-          <Combobox.Option value="u_1" searchValue="findme">
-            <Text as="span">Alpha</Text>
+          <Combobox.Option value="u_1">
+            <UserRow name="Kyle McDonald" email="kyle@knock.app" />
           </Combobox.Option>
         </Harness>,
       );
-      await open(container);
-      expect(
-        document.querySelector("[data-tgph-combobox-option]"),
-      ).not.toHaveAttribute("searchValue");
+      const user = await open(container);
+      // "McDonald" and the email are separate DOM nodes inside the wrapper.
+      await user.keyboard("McDonald kyle@knock.app");
+      expect(queryOptions().length).toBe(1);
     });
   });
 
@@ -321,23 +329,6 @@ describe("Combobox search matching", () => {
       expect(
         document.querySelector('[data-testid="resolved"]')?.textContent,
       ).toBe(JSON.stringify({ value: "email", label: "Email" }));
-    });
-  });
-
-  describe("searchValue hardening", () => {
-    it("a null searchValue falls back to derived text instead of crashing", async () => {
-      // The documented pattern derives searchValue from user data, where null
-      // emails are realistic for JS consumers outside the string type.
-      const { container } = render(
-        <Harness>
-          <Combobox.Option value="u_1" searchValue={null as unknown as string}>
-            <Text as="span">Alpha</Text>
-          </Combobox.Option>
-        </Harness>,
-      );
-      const user = await open(container);
-      await user.keyboard("alp");
-      expect(queryOptions().length).toBe(1);
     });
   });
 });

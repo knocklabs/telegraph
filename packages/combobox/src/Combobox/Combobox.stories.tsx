@@ -620,8 +620,8 @@ const USERS = [
   { id: "usr_3", name: "Chris Bell", email: "chris@example.com" },
 ];
 
-// This option's text is rendered inside a component, so it can't be read off
-// the element tree — searchValue is what keeps it findable.
+// This option's text is rendered inside a component. It stays searchable
+// because each option captures its rendered DOM text for matching.
 const UserRow = ({ user }: { user: (typeof USERS)[number] }) => (
   <Stack direction="column" align="flex-start">
     <Text as="span" size="1">
@@ -633,7 +633,7 @@ const UserRow = ({ user }: { user: (typeof USERS)[number] }) => (
   </Stack>
 );
 
-export const OptionsWithSearchValue: Story = {
+export const OptionsWithComponentContent: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line
     const [value, setValue] = React.useState<string | undefined>(undefined);
@@ -651,12 +651,7 @@ export const OptionsWithSearchValue: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {USERS.map((user) => (
-                <TelegraphCombobox.Option
-                  key={user.id}
-                  value={user.id}
-                  h="9"
-                  searchValue={`${user.name} ${user.email}`}
-                >
+                <TelegraphCombobox.Option key={user.id} value={user.id} h="9">
                   <UserRow user={user} />
                 </TelegraphCombobox.Option>
               ))}

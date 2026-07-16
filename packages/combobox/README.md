@@ -340,17 +340,17 @@ export const CustomTrigger = () => (
 
 Individual selectable option item.
 
-| Prop          | Type                  | Default     | Description                            |
-| ------------- | --------------------- | ----------- | -------------------------------------- |
-| `value`       | `string`              | required    | Option value                           |
-| `label`       | `string \| ReactNode` | `undefined` | Display label                          |
-| `selected`    | `boolean \| null`     | `undefined` | Force selected state                   |
-| `searchValue` | `string`              | `undefined` | Text to match the search query against |
+| Prop       | Type                  | Default     | Description          |
+| ---------- | --------------------- | ----------- | -------------------- |
+| `value`    | `string`              | required    | Option value         |
+| `label`    | `string \| ReactNode` | `undefined` | Display label        |
+| `selected` | `boolean \| null`     | `undefined` | Force selected state |
 
-`<Combobox.Search>` filters options by the text it can read from `label`,
-`children` and `value`. It reads that text off the React element tree, so text
-produced _inside_ a child component is invisible to it — the option below
-renders an email that searching for it will never match:
+`<Combobox.Search>` matches the query against the option's `value`, its
+`label`/`children` text, and its rendered DOM text. The last one is what makes
+text produced _inside_ a child component searchable — an option like the one
+below matches a search for the user's email even though the email only exists
+in `UserRow`'s render output:
 
 ```tsx
 <Combobox.Option value={user.id}>
@@ -358,15 +358,10 @@ renders an email that searching for it will never match:
 </Combobox.Option>
 ```
 
-Pass `searchValue` for those options. It replaces the derived text entirely, so
-include everything that should match (and nothing that shouldn't — the option's
-`value` is no longer matched either):
-
-```tsx
-<Combobox.Option value={user.id} searchValue={`${user.name} ${user.email}`}>
-  <UserRow user={user} />
-</Combobox.Option>
-```
+Rendered text is captured while an option is on screen. The popup always opens
+unfiltered, so every option is captured before the first keystroke; an option
+inserted while a query is active is matchable by its element-tree text only
+until it first renders.
 
 ### `<Combobox.Search>`
 

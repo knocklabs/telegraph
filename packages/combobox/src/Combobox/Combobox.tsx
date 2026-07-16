@@ -28,6 +28,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -42,6 +43,7 @@ import {
   getCurrentOption,
   getOptionAccessibleLabel,
   getOptions,
+  getRenderedSearchText,
   getValueFromOption,
   isMultiSelect,
   isSingleSelect,
@@ -689,20 +691,12 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
   value: DefinedOption["value"];
   label?: DefinedOption["label"];
   selected?: boolean | null;
-  /**
-   * Text the search query is matched against, replacing the text derived from
-   * `label`/`children`/`value`. Needed when an option's visible text is
-   * rendered by a child component, since that text isn't readable from the
-   * element tree.
-   */
-  searchValue?: string;
 };
 
 const Option = <T extends TgphElement>({
   value,
   label,
   selected,
-  searchValue,
   onSelect,
   children,
   closeOnClick,
@@ -719,12 +713,27 @@ const Option = <T extends TgphElement>({
     optionRef,
   );
 
+  // Text produced inside child components (a custom option row, say) exists
+  // only in render output — the element-tree walk in the matcher can't reach
+  // it. Capture the rendered text whenever this option is in the DOM, so the
+  // query can be matched against what's actually on screen. The popup always
+  // opens with an empty query, so every option renders and captures before
+  // filtering starts; the ref persists while the option is filtered out. A ref
+  // (not state) is enough because matching only runs during renders, and every
+  // query change re-renders each option through context.
+  const renderedTextRef = useRef("");
+  useLayoutEffect(() => {
+    if (optionRef.current) {
+      renderedTextRef.current = getRenderedSearchText(optionRef.current);
+    }
+  });
+
   const isVisible =
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
       children: label || children,
       value,
-      searchValue,
+      renderedText: renderedTextRef.current,
       searchQuery: context.searchQuery,
     });
 

@@ -122,7 +122,7 @@ export const getCurrentOption = (
 type DoesOptionMatchSearchQueryProps = {
   children?: React.ReactNode;
   value?: string;
-  searchValue?: string;
+  renderedText?: string;
   searchQuery: string;
 };
 
@@ -136,27 +136,47 @@ const normalize = (text: string) =>
 export const doesOptionMatchSearchQuery = ({
   children,
   value,
-  searchValue,
+  renderedText,
   searchQuery,
 }: DoesOptionMatchSearchQueryProps) => {
   const query = normalize(searchQuery);
 
   if (!query) return true;
 
-  // searchValue is authoritative: it's the escape hatch for options whose text
-  // is produced inside a child component, where the walk below can't reach it.
-  // It's typically derived from user data (names, emails), so a null from an
-  // untyped caller falls through to the derived text instead of throwing.
-  if (searchValue != null) {
-    return normalize(String(searchValue)).includes(query);
-  }
-
-  // Search both the option value and any rendered text because labels can be
+  // Search the option value and any rendered text because labels can be
   // supplied through nested React children. Joining the strings lets a query
   // spanning sibling nodes ("Kyle McDonald") match.
   const childText = normalize(findStringNodes(children).join(" "));
 
-  return normalize(value ?? "").includes(query) || childText.includes(query);
+  // renderedText is the option's DOM textContent, captured after render. It's
+  // what makes text produced inside child components searchable — that text
+  // exists only in render output, which the element walk above can't reach.
+  return (
+    normalize(value ?? "").includes(query) ||
+    childText.includes(query) ||
+    normalize(renderedText ?? "").includes(query)
+  );
+};
+
+// Extracts an option's on-screen text for search matching. Returns both
+// joining variants because DOM text nodes alone can't settle word boundaries:
+// raw concatenation keeps words split by inline markup intact ("<b>K</b>yle"
+// stays "Kyle"), while space-joining keeps words in separate elements apart
+// ("<span>Kyle</span><span>Smith</span>" reads "Kyle Smith", not "KyleSmith").
+// A query matches if it appears in either variant.
+export const getRenderedSearchText = (element: Element | null): string => {
+  if (!element) return "";
+
+  const parts: string[] = [];
+  const collect = (node: Node) => {
+    if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
+      parts.push(node.nodeValue);
+    }
+    node.childNodes.forEach(collect);
+  };
+  collect(element);
+
+  return `${parts.join("")} ${parts.join(" ")}`;
 };
 
 // Exported for testing
