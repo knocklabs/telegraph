@@ -3483,7 +3483,7 @@ __metadata:
     "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -3516,7 +3516,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
@@ -3590,7 +3590,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -3636,7 +3636,7 @@ __metadata:
     "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -3689,7 +3689,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -3741,7 +3741,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -3769,7 +3769,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
@@ -3800,7 +3800,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
@@ -3925,7 +3925,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
@@ -4054,7 +4054,7 @@ __metadata:
     "@types/react": "npm:^19.2.17"
     clsx: "npm:^2.1.1"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
@@ -4106,7 +4106,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    lucide-react: "npm:^1.14.0"
+    lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -10029,12 +10029,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^1.14.0":
-  version: 1.16.0
-  resolution: "lucide-react@npm:1.16.0"
+"lucide-react@npm:^1.23.0":
+  version: 1.23.0
+  resolution: "lucide-react@npm:1.23.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/d1c4b7f1abdc8b5c729a5bd74d875f0b0db732b2e8d0cc8c76f9e167818b81a6b246a64986ab2fc1ae74cf9f8d16ce2cefe98fe5a6420b31f4fd6742b3181d5a
+  checksum: 10c0/1cb2108d81c9713e20dd1beb7b6ac5bfc17307d5f38388f84921cf6a124efb4b933c73929bede42f00bd08aa2df340b0904acdf4fb90206ccd52971e943e775b
   languageName: node
   linkType: hard
 
