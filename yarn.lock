@@ -3863,7 +3863,7 @@ __metadata:
     "@telegraph/tokens": "workspace:^"
     autoprefixer: "npm:^10.5.2"
     eslint: "npm:^10.4.0"
-    postcss: "npm:^8.5.16"
+    postcss: "npm:^8.5.17"
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.6"
     postcss-discard-empty: "npm:^8.0.0"
@@ -3996,7 +3996,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     globby: "npm:^16.2.0"
     lightningcss: "npm:^1.32.0"
-    postcss: "npm:^8.5.16"
+    postcss: "npm:^8.5.17"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     typescript: "npm:^6.0.2"
@@ -11343,6 +11343,17 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10c0/625de7a02f662f3a340964d14b487bd5097adf16f5f171e257d19005ba37aea8768ee446557500e88e91ca46b4d14d6cb4a0bf033c6ec0c8c0b660d85719f1ef
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.5.17":
+  version: 8.5.17
+  resolution: "postcss@npm:8.5.17"
+  dependencies:
+    nanoid: "npm:^3.3.12"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/5ff97c377a34becb6dc51262eb3f892c474459c682506eff04bac3b65bc6af4451802b40341af4e69956c05665a4a298dec975ba12d75e1310dfa3d89b9f587d
   languageName: node
   linkType: hard
 
