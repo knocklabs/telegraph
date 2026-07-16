@@ -718,13 +718,23 @@ const Option = <T extends TgphElement>({
   // it. Capture the rendered text whenever this option is in the DOM, so the
   // query can be matched against what's actually on screen. The popup always
   // opens with an empty query, so every option renders and captures before
-  // filtering starts; the ref persists while the option is filtered out. A ref
-  // (not state) is enough because matching only runs during renders, and every
-  // query change re-renders each option through context.
-  const renderedTextRef = useRef("");
+  // filtering starts; the state persists while the option is filtered out.
+  // State (not a ref) so that content changing under an active query
+  // recomputes visibility immediately instead of waiting for a keystroke.
+  const [renderedText, setRenderedText] = useState<string[]>([]);
+  // Runs after every render on purpose: content can change without any value
+  // this effect could list as a dependency. The equality guard terminates the
+  // update chain, and the option's DOM being gone (filtered out) keeps the
+  // last capture.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    if (optionRef.current) {
-      renderedTextRef.current = getRenderedSearchText(optionRef.current);
+    if (!optionRef.current) return;
+    const captured = getRenderedSearchText(optionRef.current);
+    const changed =
+      captured.length !== renderedText.length ||
+      captured.some((variant, index) => variant !== renderedText[index]);
+    if (changed) {
+      setRenderedText(captured);
     }
   });
 
@@ -733,7 +743,7 @@ const Option = <T extends TgphElement>({
     doesOptionMatchSearchQuery({
       children: label || children,
       value,
-      renderedText: renderedTextRef.current,
+      renderedText,
       searchQuery: context.searchQuery,
     });
 

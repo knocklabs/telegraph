@@ -122,7 +122,7 @@ export const getCurrentOption = (
 type DoesOptionMatchSearchQueryProps = {
   children?: React.ReactNode;
   value?: string;
-  renderedText?: string;
+  renderedText?: string[];
   searchQuery: string;
 };
 
@@ -148,13 +148,13 @@ export const doesOptionMatchSearchQuery = ({
   // spanning sibling nodes ("Kyle McDonald") match.
   const childText = normalize(findStringNodes(children).join(" "));
 
-  // renderedText is the option's DOM textContent, captured after render. It's
-  // what makes text produced inside child components searchable — that text
-  // exists only in render output, which the element walk above can't reach.
+  // renderedText holds the option's captured DOM text variants. They're what
+  // make text produced inside child components searchable — that text exists
+  // only in render output, which the element walk above can't reach.
   return (
     normalize(value ?? "").includes(query) ||
     childText.includes(query) ||
-    normalize(renderedText ?? "").includes(query)
+    (renderedText ?? []).some((variant) => normalize(variant).includes(query))
   );
 };
 
@@ -163,9 +163,10 @@ export const doesOptionMatchSearchQuery = ({
 // raw concatenation keeps words split by inline markup intact ("<b>K</b>yle"
 // stays "Kyle"), while space-joining keeps words in separate elements apart
 // ("<span>Kyle</span><span>Smith</span>" reads "Kyle Smith", not "KyleSmith").
-// A query matches if it appears in either variant.
-export const getRenderedSearchText = (element: Element | null): string => {
-  if (!element) return "";
+// The variants stay separate strings so a query can only match text that
+// actually appears in one of them, never across an artificial seam.
+export const getRenderedSearchText = (element: Element | null): string[] => {
+  if (!element) return [];
 
   const parts: string[] = [];
   const collect = (node: Node) => {
@@ -176,7 +177,7 @@ export const getRenderedSearchText = (element: Element | null): string => {
   };
   collect(element);
 
-  return `${parts.join("")} ${parts.join(" ")}`;
+  return [parts.join(""), parts.join(" ")];
 };
 
 // Exported for testing

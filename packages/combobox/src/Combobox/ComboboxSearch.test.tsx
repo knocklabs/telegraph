@@ -197,6 +197,59 @@ describe("Combobox search matching", () => {
       await user.keyboard("McDonald kyle@knock.app");
       expect(queryOptions().length).toBe(1);
     });
+
+    it("does not match across the captured variants' seam", async () => {
+      // Captured text has two joining variants ("abcd" and "ab cd"). A query
+      // assembled from the end of one and the start of the other ("cd ab")
+      // appears in neither and never on screen, so it must not match.
+      const Row = () => (
+        <Stack direction="column">
+          <Text as="span">ab</Text>
+          <Text as="span">cd</Text>
+        </Stack>
+      );
+
+      const { container } = render(
+        <Harness>
+          <Combobox.Option value="u_1">
+            <Row />
+          </Combobox.Option>
+        </Harness>,
+      );
+      const user = await open(container);
+      await user.keyboard("cd ab");
+      expect(queryOptions().length).toBe(0);
+    });
+
+    it("re-filters when an option's content changes under an active query", async () => {
+      const Cmp = ({ email }: { email: string }) => {
+        const [value, setValue] = useState<string>("");
+        return (
+          <Combobox.Root value={value} onValueChange={setValue}>
+            <Combobox.Trigger />
+            <Combobox.Content>
+              <Combobox.Search />
+              <Combobox.Options>
+                <Combobox.Option value="u_1">
+                  <UserRow name="Kyle McDonald" email={email} />
+                </Combobox.Option>
+              </Combobox.Options>
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container, rerender } = render(<Cmp email="kyle@knock.app" />);
+      const user = await open(container);
+
+      await user.keyboard("knock.app");
+      expect(queryOptions().length).toBe(1);
+
+      // The on-screen text stops matching the query; the option must hide
+      // without needing another keystroke.
+      rerender(<Cmp email="kyle@example.com" />);
+      expect(queryOptions().length).toBe(0);
+    });
   });
 
   describe("findStringNodes", () => {
