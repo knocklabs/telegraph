@@ -11,12 +11,28 @@ const useTruncate = (
   const [truncated, setTruncated] = React.useState(false);
 
   React.useEffect(() => {
-    if (!tgphRef.current) return setTruncated(false);
-
     const tgphRefElement = tgphRef.current;
 
+    // Only write when the value actually changes. React usually absorbs a
+    // same-value `setState` via its bailout, but in a continuously
+    // re-rendering tree (e.g. ReactFlow) the fiber's update lanes stay dirty
+    // and that bailout can be defeated — an unconditional `setState` here then
+    // feeds a runaway synchronous update loop ("Maximum update depth
+    // exceeded", React #185). Returning the previous value keeps a redundant
+    // update a genuine no-op even when lanes are dirty.
+    const setTruncatedIfChanged = (next: boolean) => {
+      setTruncated((prev) => (prev === next ? prev : next));
+    };
+
+    if (!tgphRefElement) {
+      setTruncatedIfChanged(false);
+      return;
+    }
+
     const checkTruncation = () => {
-      setTruncated(tgphRefElement.scrollWidth > tgphRefElement.clientWidth);
+      setTruncatedIfChanged(
+        tgphRefElement.scrollWidth > tgphRefElement.clientWidth,
+      );
     };
 
     // Initial check

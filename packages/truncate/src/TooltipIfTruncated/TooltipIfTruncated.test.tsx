@@ -163,4 +163,43 @@ describe("TooltipIfTruncated", () => {
       expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     });
   });
+
+  // Regression test for KNO-14285: the truncation effect must not re-mount on
+  // every render. `children` is a freshly-created element each render, so
+  // keying the effect on its identity re-ran the effect (and its `setState`)
+  // continuously inside re-render-heavy environments like the ReactFlow-based
+  // Workflow Graph Editor, tipping React into a "Maximum update depth exceeded"
+  // loop. A stable dependency (the rendered text) constructs one ResizeObserver
+  // for the lifetime of the content, not one per render.
+  it("does not re-run the truncation effect on re-renders with identical content", () => {
+    let observerCount = 0;
+    class CountingResizeObserver {
+      constructor() {
+        observerCount += 1;
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+    vi.stubGlobal("ResizeObserver", CountingResizeObserver);
+
+    // A brand-new child element on every render, with unchanged content —
+    // exactly what ReactFlow does to the step-card nodes.
+    const renderTree = () => (
+      <TooltipIfTruncated delayDuration={0} skipAnimation>
+        <TestTrigger data-scroll-width="200" data-client-width="100">
+          Long value
+        </TestTrigger>
+      </TooltipIfTruncated>
+    );
+
+    const { rerender } = render(renderTree());
+    for (let i = 0; i < 10; i += 1) {
+      rerender(renderTree());
+    }
+
+    // Before the fix this was 11 (one observer per render). The stable text
+    // dependency means the effect runs exactly once.
+    expect(observerCount).toBe(1);
+  });
 });
