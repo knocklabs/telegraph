@@ -163,4 +163,29 @@ describe("TooltipIfTruncated", () => {
       expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     });
   });
+
+  it("still gates on truncation when the caller passes onOpenChange, and forwards it", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <TooltipIfTruncated
+        delayDuration={0}
+        skipAnimation
+        onOpenChange={onOpenChange}
+      >
+        <TestTrigger data-scroll-width="200" data-client-width="100">
+          Long value
+        </TestTrigger>
+      </TooltipIfTruncated>,
+    );
+
+    await user.hover(screen.getByRole("button", { name: "Long value" }));
+
+    // A pass-through `onOpenChange` must not replace the internal open control —
+    // the truncation gate still opens the tooltip …
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Long value");
+    // … and the caller's handler is still notified.
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+  });
 });

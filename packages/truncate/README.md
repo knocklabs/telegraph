@@ -14,7 +14,16 @@
 npm install @telegraph/truncate
 ```
 
-> **Note**: This package has no stylesheets required.
+> **Note**: all truncation `mode`s (`truncate`, `fruncate`, `middle`),
+> `TooltipIfTruncated`, and `useTruncate` need no stylesheet. Only the **`fade`
+> variant** (and a custom `marker`, unless it is a plain string in `middle`) uses
+> the CSS engine —
+> import the package stylesheet and require a modern browser (see
+> [Browser support](#browser-support)).
+>
+> ```tsx
+> import "@telegraph/truncate/default.css";
+> ```
 
 ## Quick Start
 
@@ -62,23 +71,29 @@ const CustomTruncatedComponent = () => {
 
 A text component that automatically truncates content with an ellipsis and shows a tooltip when truncated.
 
-| Prop           | Type                                                     | Default     | Description                                                     |
-| -------------- | -------------------------------------------------------- | ----------- | --------------------------------------------------------------- |
-| `maxWidth`     | `string`                                                 | `undefined` | Maximum width of the text container                             |
-| `tooltipProps` | `Partial<TgphComponentProps<typeof TooltipIfTruncated>>` | `undefined` | Props to pass to the underlying TooltipIfTruncated component    |
-| `...TextProps` | `TgphComponentProps<typeof Text>`                        | -           | All props from [@telegraph/typography](../typography/README.md) |
+| Prop           | Type                                                                                                  | Default      | Description                                                                                                                                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maxWidth`     | `string`                                                                                              | `undefined`  | Max width of the container (works for end/front/middle truncation; the `fade` engine takes width via `style` instead)                                                                                            |
+| `mode`         | `"truncate" \| "fruncate" \| "middle"`                                                                | `"truncate"` | `truncate` (end) and `fruncate` (start) are native `text-overflow: ellipsis`; `middle` (string content) measures the text and renders the `head…tail` characters that fit — crisp "…", no gap, never a cut glyph |
+| `variant`      | `"default" \| "fade"`                                                                                 | `"default"`  | Ellipsis (default) or a soft fade into the background (`fade` uses the engine + stylesheet)                                                                                                                      |
+| `marker`       | `ReactNode`                                                                                           | `"…"`        | A custom overflow indicator (default: the native ellipsis). Uses the engine on end/front (and for a ReactNode in `middle`); a string marker in `middle` is spliced into the measured slice                       |
+| `split`        | `"center" \| "extension" \| "leaf-path" \| number \| ["last"\|"first", n] \| (s) => [string, string]` | `"center"`   | `middle` mode: where to split the string (`center` balances both ends; the others anchor one end)                                                                                                                |
+| `priority`     | `"start" \| "end"`                                                                                    | `"end"`      | `middle` mode: the favored end — anchored splits (`leaf-path`/`extension`) keep it whole; `center` gives it the odd char. `end` favors the tail (e.g. a file name)                                               |
+| `tooltipProps` | `Partial<TgphComponentProps<typeof TooltipIfTruncated>>`                                              | `undefined`  | Props for the underlying TooltipIfTruncated                                                                                                                                                                      |
+| `...TextProps` | `TgphComponentProps<typeof Text>`                                                                     | -            | All props from [@telegraph/typography](../typography/README.md)                                                                                                                                                  |
 
 ### `<TooltipIfTruncated>`
 
 A component that conditionally shows a tooltip only when its content is truncated.
 
-| Prop              | Type                                 | Default     | Description                                                                                |
-| ----------------- | ------------------------------------ | ----------- | ------------------------------------------------------------------------------------------ |
-| `label`           | `string \| ReactNode`                | `undefined` | The text to show in the tooltip. When provided, it takes precedence over the child content |
-| `children`        | `ReactNode`                          | -           | **Required.** Content to monitor for truncation                                            |
-| `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -           | All props from [@telegraph/tooltip](../tooltip/README.md)                                  |
+| Prop              | Type                                 | Default                     | Description                                                                                               |
+| ----------------- | ------------------------------------ | --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `label`           | `string \| ReactNode`                | `undefined`                 | The text to show in the tooltip. When provided, it takes precedence over the child content                |
+| `children`        | `ReactNode`                          | -                           | **Required.** Content to monitor for truncation                                                           |
+| `isTruncated`     | `(trigger: HTMLElement) => boolean`  | `scrollWidth > clientWidth` | Custom truncation test — for content whose container never overflows (e.g. `TruncatedText mode="middle"`) |
+| `...TooltipProps` | `TgphComponentProps<typeof Tooltip>` | -                           | All props from [@telegraph/tooltip](../tooltip/README.md)                                                 |
 
-`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It measures the wrapped child with `useTruncate`, passes that same element ref to Tooltip as the trigger, and only enables the tooltip when overflow is detected. Tooltip props continue to pass through unchanged, including focus and hover behavior such as `disableFocusOpen`.
+`TooltipIfTruncated` delegates overlay behavior to the Base UI-backed `@telegraph/tooltip` package. It measures the wrapped child **lazily — at the moment the tooltip tries to open (hover/focus)** rather than in a render effect, and only opens when overflow is detected (`scrollWidth > clientWidth` by default, or a custom `isTruncated` test). Measuring on the open transition instead of continuously avoids the every-render `setState` that could otherwise cascade into a "Maximum update depth exceeded" loop (React #185) in re-render-heavy trees. Tooltip props continue to pass through unchanged, including focus and hover behavior such as `disableFocusOpen`.
 
 ### `useTruncate`
 
@@ -96,6 +111,89 @@ A hook that detects whether an element's content is truncated.
 | Name        | Type      | Description                                |
 | ----------- | --------- | ------------------------------------------ |
 | `truncated` | `boolean` | Whether the element's content is truncated |
+
+### Truncation modes
+
+`truncate` (default, end) and `fruncate` (start, via `direction: rtl`) use native
+`text-overflow: ellipsis` — they clip on glyph boundaries (**never mid-character**),
+run no JavaScript, and need no stylesheet.
+
+```tsx
+import { TruncatedText } from "@telegraph/truncate";
+
+// End truncation (default) — native ellipsis, no stylesheet.
+<TruncatedText as="span" maxWidth="40">
+  apps/web/src/components/BaseStepCard.tsx
+</TruncatedText>;
+
+// Front truncation — keeps the end visible.
+<TruncatedText as="span" mode="fruncate" maxWidth="40">
+  apps/web/src/components/BaseStepCard.tsx
+</TruncatedText>;
+```
+
+`mode="middle"` measures the rendered text and slices it to exactly the
+`head…tail` characters that fit — a crisp "…", **no gap**, and **never a cut
+glyph**, at every width (pure CSS can't do all three at once). The measurement is
+scoped to `middle`, runs only on real size changes via a guarded `ResizeObserver`,
+needs no stylesheet, and honors `maxWidth`. `split="center"` (the default) balances
+both ends — a prefix and a suffix with the "…" in the visual middle — while the
+anchored splits (`leaf-path`, `extension`) keep one whole end, chosen by `priority`.
+
+```tsx
+// Middle truncation (string content) — one end stays whole (`priority`), the
+// other is trimmed. `leaf-path` keeps the file name whole.
+<TruncatedText as="span" mode="middle" split="leaf-path" maxWidth="60">
+  apps/web/src/components/BaseStepCard.tsx
+</TruncatedText>
+```
+
+`variant="fade"` dissolves the truncated edge into the background instead of an
+ellipsis, and a custom `marker` on end/front truncation swaps the glyph. Both use
+an internal CSS-only engine (a container size-query — no JS measurement, no
+`ResizeObserver`, no state — ported from Pierre), so they need the package
+stylesheet and a modern browser (see [Browser support](#browser-support)); the
+engine's clip box is its root, so constrain its width via `style`, not `maxWidth`.
+
+```tsx
+import "@telegraph/truncate/default.css";
+
+// required for the fade variant
+
+// Fade instead of an ellipsis (end / front truncation).
+<TruncatedText as="span" variant="fade" style={{ maxWidth: 200 }}>
+  apps/web/src/components/BaseStepCard.tsx
+</TruncatedText>;
+```
+
+### `TruncatedText` vs `useTruncate`
+
+Two tools for two needs:
+
+- **`TruncatedText`** (any mode) — when you just need to _render_ truncated text.
+  End and front run no JS; `middle` uses a tiny guarded measurement (scoped to
+  that mode); the `fade` engine keeps its overflow detection in CSS.
+- **`useTruncate`** — when you need the truncation state _as a value in render_
+  (to gate your own tooltip, toggle "show more", swap an icon). It measures
+  `scrollWidth > clientWidth` with a guarded `ResizeObserver`, so it works on any
+  clipped element you point it at.
+
+## Browser support
+
+`TruncatedText`'s **`fade` variant** (and a custom `marker` on end/front
+truncation) uses a CSS engine that requires evergreen browsers from ~2023 onward:
+
+| Feature                                       | Chrome | Safari | Firefox |
+| --------------------------------------------- | ------ | ------ | ------- |
+| CSS container **size** queries (`@container`) | 105+   | 16+    | 110+    |
+| The `1lh` unit                                | 109+   | 16.4+  | 120+    |
+| `color-mix()` (text-matched ellipsis)         | 111+   | 16.2+  | 113+    |
+
+There is **no graceful fallback** on older browsers, so use the `fade` engine only
+where a modern browser is guaranteed. Everything else — `mode="truncate"`,
+`mode="fruncate"`, `mode="middle"`, `TooltipIfTruncated`, and `useTruncate` —
+relies on native `text-overflow: ellipsis` or a `ResizeObserver` measurement and
+has no such requirement.
 
 ## Usage Patterns
 
