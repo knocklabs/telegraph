@@ -1,0 +1,217 @@
+/*
+ * TruncatedText engine modes — CSS-only truncation, ported from Pierre's
+ * `truncate`. Backs `TruncatedText`'s `fruncate` / `middle` / `variant="fade"`
+ * modes (and `truncate` with a custom marker). The default `mode="truncate"`
+ * uses native `text-overflow: ellipsis` and needs none of this.
+ *
+ * There is NO JavaScript measurement here: no ResizeObserver, no state, no
+ * `scrollWidth`/`clientWidth` reads. Overflow is detected entirely by a CSS
+ * container size-query.
+ *
+ * Mechanism: the content is rendered twice inside a size-query container — a
+ * visible `white-space: nowrap` copy (what the user sees, hard-clipped to one
+ * line) and an invisible `word-break: break-all` copy that is allowed to wrap.
+ * When the text is clipped, the wrapping copy is taller than one line, so the
+ * container's `height > 1lh` query is true and the marker (…) fades in. Native
+ * container queries re-evaluate on resize automatically — nothing to loop.
+ */
+
+[data-tgph-truncate] {
+  --tgph-truncate-line-height: 1lh;
+  /* Solid backdrop the marker paints over the clipped edge. Override per-context. */
+  --tgph-truncate-marker-bg: var(--tgph-surface-1, #fff);
+  /* Pierre's defaults: a 2px feather softens the seam where the clipped text
+     meets the opaque marker backdrop; the backdrop itself hides the glyph.
+     `gap` is a solid (un-faded) lead before the fade begins. */
+  --tgph-truncate-marker-fade-width: 2px;
+  --tgph-truncate-marker-gap: 0px;
+  /* The ellipsis is a muted tint of the *text* color so it matches colored
+     labels. `color-mix` fades only the glyph — the opaque backdrop stays put
+     (element `opacity` would fade the backdrop too and leak the clipped text).
+     `--tgph-truncate-marker-opacity` is inheritable so the middle group can
+     bump it; override `--tgph-truncate-marker-color` for a fixed color. */
+  --tgph-truncate-marker-color: color-mix(
+    in srgb,
+    currentColor var(--tgph-truncate-marker-opacity, 50%),
+    transparent
+  );
+
+  height: var(--tgph-truncate-line-height);
+  min-width: 0;
+  overflow: hidden;
+}
+
+[data-tgph-truncate-grid] {
+  display: grid;
+  position: relative;
+}
+
+[data-tgph-truncate-content="visible"] {
+  white-space: nowrap;
+}
+
+/* The invisible "ruler": forced to wrap and overlaid on the visible line. */
+[data-tgph-truncate-content="overflow"] {
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  word-break: break-all;
+  margin-top: calc(-1 * var(--tgph-truncate-line-height));
+}
+
+[data-tgph-truncate-marker-cell] {
+  container: tgph-measure / size;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+}
+
+[data-tgph-truncate-marker] {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  height: var(--tgph-truncate-line-height);
+  background-color: var(--tgph-truncate-marker-bg);
+  color: var(--tgph-truncate-marker-color);
+  opacity: 0; /* hidden until overflow */
+  transition: opacity 0.12s ease-in-out;
+}
+
+/* THE TRICK: wrapping ruler taller than one line ⇒ clipped ⇒ reveal the marker. */
+@container tgph-measure (height > 1lh) {
+  [data-tgph-truncate-marker] {
+    opacity: 1;
+  }
+}
+
+/* ── end truncate: content | zero-width marker cell (marker pinned right) ── */
+[data-tgph-truncate="truncate"] [data-tgph-truncate-grid] {
+  grid-template-columns: minmax(0, max-content) 0;
+}
+[data-tgph-truncate="truncate"] [data-tgph-truncate-marker] {
+  right: 0;
+}
+
+/* ── front truncate ("fruncate"): RTL content clips at the start, marker left ── */
+[data-tgph-truncate="fruncate"] [data-tgph-truncate-grid] {
+  grid-template-columns: 0 minmax(0, max-content) auto;
+}
+[data-tgph-truncate="fruncate"] [data-tgph-truncate-content] {
+  direction: rtl;
+}
+[data-tgph-truncate="fruncate"] [data-tgph-truncate-content] > span {
+  unicode-bidi: plaintext;
+}
+[data-tgph-truncate="fruncate"] [data-tgph-truncate-marker] {
+  left: 0;
+}
+
+/* Default marker fade — Pierre's masked solid-fill feather (opaque through
+   `gap`, then fading to transparent across `fade-width`). Pierre paints it on
+   both sides of the marker; we paint only the side that sits *over the text*
+   (via the mode-specific pseudo below). The off-container side would extend
+   past the clipped edge and inflate the root's `scrollWidth` — harmless to
+   Pierre (pure CSS) but our tooltip / `useTruncate` read `scrollWidth`, so it
+   would report every element as truncated. */
+[data-tgph-truncate="truncate"][data-tgph-truncate-variant="default"]
+  [data-tgph-truncate-marker]::before,
+[data-tgph-truncate="fruncate"][data-tgph-truncate-variant="default"]
+  [data-tgph-truncate-marker]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: var(--tgph-truncate-line-height);
+  width: calc(
+    var(--tgph-truncate-marker-fade-width) + var(--tgph-truncate-marker-gap)
+  );
+  background-color: var(--tgph-truncate-marker-bg);
+  -webkit-mask-image: linear-gradient(
+    var(--tgph-truncate-fade-dir),
+    #000 0%,
+    #000 var(--tgph-truncate-marker-gap),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    var(--tgph-truncate-fade-dir),
+    #000 0%,
+    #000 var(--tgph-truncate-marker-gap),
+    transparent 100%
+  );
+}
+/* end-truncation: the text is to the left of the marker, so feather leftward. */
+[data-tgph-truncate="truncate"][data-tgph-truncate-variant="default"]
+  [data-tgph-truncate-marker]::before {
+  --tgph-truncate-fade-dir: to left;
+  right: 100%;
+}
+/* front-truncation: the text is to the right of the marker, so feather rightward. */
+[data-tgph-truncate="fruncate"][data-tgph-truncate-variant="default"]
+  [data-tgph-truncate-marker]::after {
+  --tgph-truncate-fade-dir: to right;
+  left: 100%;
+}
+
+/* ── middle truncate: head truncates from the end, tail from the front ── */
+[data-tgph-truncate-group="middle"] {
+  display: flex;
+  min-width: 0;
+  /* Pierre bumps middle-truncate markers to 80% (more visible at the seam). */
+  --tgph-truncate-marker-opacity: var(
+    --tgph-truncate-middle-marker-opacity,
+    80%
+  );
+}
+[data-tgph-truncate-group="middle"] > [data-tgph-truncate-segment] {
+  min-width: 0;
+}
+/* `priority` keeps one end whole and lets the other yield (and fade). `end`
+   (default) keeps the tail — e.g. a filename with `split="leaf-path"` — while the
+   head fades into it; `start` mirrors it. The kept end is capped at the row width
+   so an over-long "whole" side still clips and fades rather than overflowing.
+   `overflow: hidden` fills the box exactly, so the fading half abuts the whole
+   half with no gap. */
+[data-tgph-truncate-priority="end"] > [data-tgph-truncate-segment="head"] {
+  flex: 0 1 auto;
+}
+[data-tgph-truncate-priority="end"] > [data-tgph-truncate-segment="tail"] {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+[data-tgph-truncate-priority="start"] > [data-tgph-truncate-segment="head"] {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+[data-tgph-truncate-priority="start"] > [data-tgph-truncate-segment="tail"] {
+  flex: 0 1 auto;
+}
+
+/* ── fade variant: the marker becomes a gradient that fades text into the bg ── */
+[data-tgph-truncate-variant="fade"] [data-tgph-truncate-marker] {
+  width: 2.5rem;
+  background-color: transparent;
+  color: transparent;
+  padding: 0;
+}
+[data-tgph-truncate-variant="fade"] [data-tgph-truncate-marker]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+[data-tgph-truncate="truncate"][data-tgph-truncate-variant="fade"]
+  [data-tgph-truncate-marker]::before {
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--tgph-truncate-marker-bg) 90%
+  );
+}
+[data-tgph-truncate="fruncate"][data-tgph-truncate-variant="fade"]
+  [data-tgph-truncate-marker]::before {
+  background: linear-gradient(
+    to left,
+    transparent,
+    var(--tgph-truncate-marker-bg) 90%
+  );
+}
