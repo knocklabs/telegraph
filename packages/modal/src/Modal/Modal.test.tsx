@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, expectTypeOf, it, vi } from "vitest";
 
 import { Modal } from "./Modal";
 import { ModalStackingProvider } from "./ModalStacking";
@@ -445,6 +445,48 @@ describe("Modal", () => {
       // @ts-expect-error unknown prop rejected on ModalFooterProps
       const invalidFooterProp: ModalFooterProps = { invalidProp: "invalid" };
       void invalidFooterProp;
+    });
+
+    // Compile-time check for KNO-14309, asserted by `tsc`/the IDE — `vitest`
+    // does not typecheck, so these do not fail the jsdom run; the durable guard
+    // is the shipped `ContentProps` types. Content is a plain `tgphRef` function
+    // component (not `forwardRef`) precisely so these dismiss-handler params
+    // keep a concrete contextual type at the JSX call site instead of widening
+    // to implicit `any` and letting a stale Radix `event.detail.originalEvent`
+    // handler compile and crash at runtime. Renders nothing; the handlers exist
+    // so `tsc` checks the inferred `event` type.
+    it("infers concrete Event types for inline dismiss handlers", () => {
+      const tree = (
+        <Modal.Content
+          onInteractOutside={(event) => {
+            expectTypeOf(event).toEqualTypeOf<Event>();
+          }}
+          onPointerDownOutside={(event) => {
+            expectTypeOf(event).toEqualTypeOf<
+              MouseEvent | PointerEvent | TouchEvent
+            >();
+          }}
+          onFocusOutside={(event) => {
+            expectTypeOf(event).toEqualTypeOf<FocusEvent | KeyboardEvent>();
+          }}
+          onEscapeKeyDown={(event) => {
+            expectTypeOf(event).toEqualTypeOf<KeyboardEvent>();
+          }}
+        />
+      );
+      void tree;
+    });
+
+    it("rejects stale Radix event.detail access in inline dismiss handlers", () => {
+      const tree = (
+        <Modal.Content
+          onInteractOutside={(event) => {
+            // @ts-expect-error KNO-14309: native Event has no `detail` object
+            void event.detail.originalEvent.target;
+          }}
+        />
+      );
+      void tree;
     });
 
     it("rejects unknown props in JSX", () => {

@@ -3,14 +3,14 @@ import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
-  type TgphComponentProps,
+  type PolymorphicProps,
   type TgphElement,
   callLegacyDismissHandlers,
   createTgphBaseUIRender,
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
 } from "@telegraph/helpers";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import {
@@ -166,7 +166,18 @@ export type ContentProps<T extends TgphElement = "div"> = Omit<
   "children" | "className" | "render"
 > &
   Omit<BasePopoverPopupProps, "children" | "className" | "render" | "style"> &
-  Omit<TgphComponentProps<typeof Stack<T>>, "align"> & {
+  // Source the polymorphic element props from `PolymorphicProps<T>` and the
+  // Stack style props from the *non-generic* Stack. Wrapping the generic
+  // `typeof Stack<T>` in `Omit<…, "align">` produces a deferred mapped type,
+  // and TypeScript then fails to compute a contextual type for the sibling
+  // dismiss-handler callbacks below — their `event` param silently widens to
+  // `any` at the JSX call site. That is exactly what let a stale Radix-shaped
+  // handler reading `event.detail.originalEvent` compile and crash at runtime
+  // (KNO-14309). Keeping the `Omit` off the generic makes each handler's
+  // `event` resolve to its concrete `Event` type, so `.detail`/`.originalEvent`
+  // access fails to compile.
+  PolymorphicProps<T> &
+  Omit<StackProps, "align" | "as"> & {
     avoidCollisions?: boolean;
     contentStackRef?: Ref<HTMLDivElement>;
     forceMount?: boolean;

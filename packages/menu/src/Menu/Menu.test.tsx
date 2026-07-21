@@ -16,7 +16,15 @@ import {
   useEffect,
   useState,
 } from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from "vitest";
 
 import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
 
@@ -98,6 +106,50 @@ describe("Menu", () => {
       // @ts-expect-error unknown prop rejected on MenuContentProps
       const invalidProp: MenuContentProps = { invalidProp: "invalid" };
       void invalidProp;
+    });
+
+    // Compile-time check for KNO-14309, asserted by `tsc`/the IDE — `vitest`
+    // does not typecheck, so these do not fail the jsdom run; the durable guard
+    // is the shipped `ContentProps` types, which error in any consumer's
+    // typecheck. Base UI hands dismiss handlers the native DOM event, but the
+    // shim kept Radix's prop names. When ContentProps wrapped the generic
+    // `Stack<T>` in an `Omit`, TypeScript stopped computing a contextual type
+    // for these callbacks and their `event` widened to implicit `any` at the
+    // JSX call site — letting a stale Radix handler read
+    // `event.detail.originalEvent` and crash at runtime. These render nothing;
+    // the handlers exist so `tsc` checks the inferred `event` type.
+    it("infers concrete Event types for inline dismiss handlers", () => {
+      const tree = (
+        <Menu.Content
+          onInteractOutside={(event) => {
+            expectTypeOf(event).toEqualTypeOf<Event>();
+          }}
+          onPointerDownOutside={(event) => {
+            expectTypeOf(event).toEqualTypeOf<
+              MouseEvent | PointerEvent | TouchEvent
+            >();
+          }}
+          onFocusOutside={(event) => {
+            expectTypeOf(event).toEqualTypeOf<FocusEvent | KeyboardEvent>();
+          }}
+          onEscapeKeyDown={(event) => {
+            expectTypeOf(event).toEqualTypeOf<KeyboardEvent>();
+          }}
+        />
+      );
+      void tree;
+    });
+
+    it("rejects stale Radix event.detail access in inline dismiss handlers", () => {
+      const tree = (
+        <Menu.Content
+          onInteractOutside={(event) => {
+            // @ts-expect-error KNO-14309: native Event has no `detail` object
+            void event.detail.originalEvent.target;
+          }}
+        />
+      );
+      void tree;
     });
   });
 
