@@ -89,7 +89,7 @@
     "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.58.2",
     "@vitest/browser": "4.1.10",
-    "@vitest/browser-playwright": "4.1.8",
+    "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
     "eslint": "^10.4.0",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -109,7 +109,7 @@
     "turbo": "^2.9.0",
     "typescript": "^6.0.2",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "4.1.8",
+    "vitest": "4.1.10",
     "vitest-axe": "0.1.0",
     "vitest-browser-react": "^2.2.0"
   }
