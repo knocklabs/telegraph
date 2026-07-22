@@ -1,6 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Button } from "@telegraph/button";
-import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
@@ -557,106 +556,110 @@ export type ContentProps = Partial<
   LegacyDismissHandlers & {
     onCloseAutoFocus?: LegacyDismissEventHandler;
     onOpenAutoFocus?: LegacyDismissEventHandler;
+    // `Content` is a plain function component (not `forwardRef`) so that the
+    // dismiss-handler callbacks above keep a concrete contextual type at the
+    // JSX call site. `forwardRef` wraps the props in React's
+    // `PropsWithoutRef<…>` mapped type, which — like an `Omit` over the generic
+    // Stack props — collapses those `event` params to implicit `any` and let a
+    // stale Radix `event.detail.originalEvent` handler compile and crash at
+    // runtime (KNO-14309). Expose the ref through `tgphRef`, matching
+    // Popover/Menu Content.
+    tgphRef?: Ref<ContentRef>;
   } & TgphComponentProps<typeof Stack>;
 type ContentRef = HTMLDivElement;
 
-type ModalContentStackProps = TgphComponentProps<typeof Stack> & {
-  tgphRef?: Ref<ContentRef>;
-};
+type ModalContentStackProps = TgphComponentProps<typeof Stack>;
 
+// Bridges the ref Base UI's `render` prop hands us onto Stack's `tgphRef`.
+// Content forwards the consumer's `tgphRef` to `BaseDialog.Popup` directly, so
+// this only needs to carry Base UI's own ref.
 const ModalContentStack = forwardRef<ContentRef, ModalContentStackProps>(
-  ({ tgphRef, ...props }, forwardedRef) => {
-    const composedRef = useComposedRefs(forwardedRef, tgphRef);
-
-    return <Stack tgphRef={composedRef} {...props} />;
+  (props, forwardedRef) => {
+    return <Stack tgphRef={forwardedRef} {...props} />;
   },
 );
 
 ModalContentStack.displayName = "ModalContentStack";
 
-const Content = forwardRef<ContentRef, ContentProps>(
-  (
-    {
-      children,
-      onCloseAutoFocus,
-      onEscapeKeyDown,
-      onFocusOutside,
-      onInteractOutside,
-      onOpenAutoFocus,
-      onPointerDownOutside,
-      ...props
-    },
-    forwardedRef,
-  ) => {
-    const compatibilityContext = useContext(ModalCompatibilityContext);
-    const resolvedInitialFocus = useCallback(() => {
-      // Combine Root and Content autofocus callbacks before converting their
-      // Radix-style preventDefault result into Base UI's boolean focus API.
-      const rootFocusPrevented = callAutoFocusHandler(
-        compatibilityContext?.rootFocusCallbacksRef.current.onMountAutoFocus,
-        "mountAutoFocus",
-      );
-      const contentFocusPrevented = callAutoFocusHandler(
-        onOpenAutoFocus,
-        "openAutoFocus",
-      );
-
-      return rootFocusPrevented || contentFocusPrevented ? false : true;
-    }, [compatibilityContext, onOpenAutoFocus]);
-    const resolvedFinalFocus = useCallback(() => {
-      // Close autofocus follows the same Radix preventDefault contract as open
-      // autofocus, but maps to Base UI's finalFocus callback.
-      const rootFocusPrevented = callAutoFocusHandler(
-        compatibilityContext?.rootFocusCallbacksRef.current.onUnmountAutoFocus,
-        "unmountAutoFocus",
-      );
-      const contentFocusPrevented = callAutoFocusHandler(
-        onCloseAutoFocus,
-        "closeAutoFocus",
-      );
-
-      return rootFocusPrevented || contentFocusPrevented ? false : true;
-    }, [compatibilityContext, onCloseAutoFocus]);
-
-    useEffect(() => {
-      if (!compatibilityContext) {
-        return;
-      }
-
-      // Store the latest content dismiss callbacks where Root can consult them
-      // from Base UI's single onOpenChange details callback.
-      compatibilityContext.contentCallbacksRef.current = {
-        onEscapeKeyDown,
-        onFocusOutside,
-        onInteractOutside,
-        onPointerDownOutside,
-      };
-
-      return () => {
-        compatibilityContext.contentCallbacksRef.current = {};
-      };
-    }, [
-      compatibilityContext,
-      onEscapeKeyDown,
-      onFocusOutside,
-      onInteractOutside,
-      onPointerDownOutside,
-    ]);
-
-    return (
-      <BaseDialog.Popup
-        ref={forwardedRef}
-        initialFocus={resolvedInitialFocus}
-        finalFocus={resolvedFinalFocus}
-        render={createTgphBaseUIRender(
-          <ModalContentStack direction="column" h="full" {...props}>
-            {children}
-          </ModalContentStack>,
-        )}
-      />
+const Content = ({
+  children,
+  onCloseAutoFocus,
+  onEscapeKeyDown,
+  onFocusOutside,
+  onInteractOutside,
+  onOpenAutoFocus,
+  onPointerDownOutside,
+  tgphRef,
+  ...props
+}: ContentProps) => {
+  const compatibilityContext = useContext(ModalCompatibilityContext);
+  const resolvedInitialFocus = useCallback(() => {
+    // Combine Root and Content autofocus callbacks before converting their
+    // Radix-style preventDefault result into Base UI's boolean focus API.
+    const rootFocusPrevented = callAutoFocusHandler(
+      compatibilityContext?.rootFocusCallbacksRef.current.onMountAutoFocus,
+      "mountAutoFocus",
     );
-  },
-);
+    const contentFocusPrevented = callAutoFocusHandler(
+      onOpenAutoFocus,
+      "openAutoFocus",
+    );
+
+    return rootFocusPrevented || contentFocusPrevented ? false : true;
+  }, [compatibilityContext, onOpenAutoFocus]);
+  const resolvedFinalFocus = useCallback(() => {
+    // Close autofocus follows the same Radix preventDefault contract as open
+    // autofocus, but maps to Base UI's finalFocus callback.
+    const rootFocusPrevented = callAutoFocusHandler(
+      compatibilityContext?.rootFocusCallbacksRef.current.onUnmountAutoFocus,
+      "unmountAutoFocus",
+    );
+    const contentFocusPrevented = callAutoFocusHandler(
+      onCloseAutoFocus,
+      "closeAutoFocus",
+    );
+
+    return rootFocusPrevented || contentFocusPrevented ? false : true;
+  }, [compatibilityContext, onCloseAutoFocus]);
+
+  useEffect(() => {
+    if (!compatibilityContext) {
+      return;
+    }
+
+    // Store the latest content dismiss callbacks where Root can consult them
+    // from Base UI's single onOpenChange details callback.
+    compatibilityContext.contentCallbacksRef.current = {
+      onEscapeKeyDown,
+      onFocusOutside,
+      onInteractOutside,
+      onPointerDownOutside,
+    };
+
+    return () => {
+      compatibilityContext.contentCallbacksRef.current = {};
+    };
+  }, [
+    compatibilityContext,
+    onEscapeKeyDown,
+    onFocusOutside,
+    onInteractOutside,
+    onPointerDownOutside,
+  ]);
+
+  return (
+    <BaseDialog.Popup
+      ref={tgphRef}
+      initialFocus={resolvedInitialFocus}
+      finalFocus={resolvedFinalFocus}
+      render={createTgphBaseUIRender(
+        <ModalContentStack direction="column" h="full" {...props}>
+          {children}
+        </ModalContentStack>,
+      )}
+    />
+  );
+};
 
 export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof Button<T>
