@@ -1,5 +1,20 @@
 # @telegraph/modal
 
+## 0.5.0
+
+### Minor Changes
+
+- [#895](https://github.com/knocklabs/telegraph/pull/895) [`d6ee028`](https://github.com/knocklabs/telegraph/commit/d6ee028d4cd649a287076ab5f1b9a94e0a2b5eef) Thanks [@kylemcd](https://github.com/kylemcd)! - Tighten base-ui dismiss-handler types so stale Radix `event.detail` usage fails to compile.
+
+  `Popover.Content`, `Menu.Content`, and `Modal.Content` hand their dismiss callbacks (`onInteractOutside`, `onPointerDownOutside`, `onFocusOutside`, `onEscapeKeyDown`) the native DOM event, but the compat shim kept Radix's prop names. The callback's `event` param was resolving to `any` at the JSX call site instead of its concrete DOM `Event`, so in a consumer whose tsconfig doesn't flag implicit `any` a stale Radix-shaped handler reading `event.detail.originalEvent` compiled and then crashed at runtime (`Cannot read properties of undefined`). Each param now resolves to its concrete `Event` type, so `.detail`/`.originalEvent` access is a compile error.
+
+  **Breaking (`@telegraph/modal`):** `Modal.Content` is now a plain function component instead of `forwardRef` (whose `PropsWithoutRef` wrapper caused the same widening), matching `Popover`/`Menu`. A `ref` on `Modal.Content` no longer forwards — pass `tgphRef` instead. (On React 19 a stray `ref` still reaches the node as a prop; on React 18 it does not.)
+
+### Patch Changes
+
+- Updated dependencies [[`5b2379f`](https://github.com/knocklabs/telegraph/commit/5b2379f14795408f346f87be1b7592243d6e5251), [`680b1fb`](https://github.com/knocklabs/telegraph/commit/680b1fb8cc9dc56330eb49d79805d24af59b3ac5)]:
+  - @telegraph/style-engine@0.3.8
+
 ## 0.4.2
 
 ### Patch Changes
