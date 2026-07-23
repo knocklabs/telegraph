@@ -3498,6 +3498,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@telegraph/combobox@workspace:packages/combobox"
   dependencies:
+    "@base-ui/react": "npm:^1.6.0"
     "@knocklabs/eslint-config": "npm:^0.0.5"
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/button": "workspace:^"
@@ -3506,7 +3507,6 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/input": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/menu": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tag": "workspace:^"
