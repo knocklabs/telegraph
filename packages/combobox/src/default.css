@@ -1,0 +1,6 @@
+/* Base UI drives virtual focus, so the active option is marked with
+   `data-highlighted` rather than receiving DOM focus. Reuse the button's own
+   hover background so the highlight matches the prior focused-option styling. */
+[data-tgph-combobox-option][data-highlighted] {
+  background-color: var(--hover--background-color, var(--background-color));
+}
