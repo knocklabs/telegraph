@@ -14,7 +14,6 @@ import {
 import { Icon } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
-import { MenuItem } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
 import {
@@ -48,6 +47,7 @@ import {
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
+import { OptionItem } from "./Combobox.optionItem";
 import { Primitives } from "./Combobox.primitives";
 import type {
   DefinedOption,
@@ -827,7 +827,7 @@ const Options = <T extends TgphElement = "div">({
 };
 
 export type OptionProps<T extends TgphElement = "div"> = Omit<
-  TgphComponentProps<typeof MenuItem<T>>,
+  TgphComponentProps<typeof OptionItem<T>>,
   "label"
 > & {
   value: DefinedOption["value"];
@@ -918,7 +918,7 @@ const Option = <T extends TgphElement>({
       value={onSelect ? undefined : value}
       onClick={handleClick}
       render={createTgphBaseUIRender(
-        <MenuItem
+        <OptionItem
           as="div"
           mx="1"
           // Force null if selected equals null so we can override the icon of
@@ -932,12 +932,12 @@ const Option = <T extends TgphElement>({
           data-tgph-combobox-option-value={value}
           data-tgph-combobox-option-label={label}
           tgphRef={
-            composedRef as TgphComponentProps<typeof MenuItem<T>>["tgphRef"]
+            composedRef as TgphComponentProps<typeof OptionItem<T>>["tgphRef"]
           }
-          {...(props as TgphComponentProps<typeof MenuItem<T>>)}
+          {...(props as TgphComponentProps<typeof OptionItem<T>>)}
         >
           {label || children || value}
-        </MenuItem>,
+        </OptionItem>,
       )}
     />
   );
@@ -1124,7 +1124,7 @@ const Empty = <T extends TgphElement>({
 export type CreateProps<
   T extends TgphElement = "div",
   LB extends boolean = false,
-> = TgphComponentProps<typeof MenuItem<T>> & {
+> = TgphComponentProps<typeof OptionItem<T>> & {
   leadingText?: string;
 } & (LB extends true
     ? {

@@ -3507,7 +3507,6 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/input": "workspace:^"
     "@telegraph/layout": "workspace:^"
-    "@telegraph/menu": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tag": "workspace:^"
