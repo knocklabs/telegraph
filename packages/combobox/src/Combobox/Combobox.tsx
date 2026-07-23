@@ -26,6 +26,7 @@ import {
   type Ref,
   type RefObject,
   createContext,
+  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -133,6 +134,23 @@ export const ComboboxContext = createContext<
   legacyBehavior: false,
 });
 
+// Action items (`onSelect`/`Create`) must be navigable and highlightable but
+// must never commit a selection. Base UI keys selection, highlight, and
+// "selected on open" tracking off each item's `value`, and it treats a
+// `null`/`undefined` value as equal to the "no selection" state — so a mounted
+// action item would masquerade as the selected item whenever nothing is
+// selected, dragging the highlight onto itself. Giving action items this stable
+// non-null sentinel instead keeps them distinct from every real value and from
+// "no selection", while Base UI's own commit is still cancelled for them at the
+// value bridge below. It is only ever a Base UI item value; it never reaches the
+// public value shape.
+const ON_SELECT_ITEM_VALUE = Object.freeze({}) as unknown as string;
+
+// Whether a value Base UI is trying to commit is the action-item sentinel, in
+// which case Base UI's selection must be cancelled.
+const isOnSelectItemValue = (value: unknown): boolean =>
+  value === ON_SELECT_ITEM_VALUE;
+
 // Resolve a Base UI string value back into the legacy `{ value, label }` option
 // object the public API emits when `legacyBehavior` is enabled.
 const toLegacyOption = (
@@ -177,6 +195,10 @@ const Root = <
     return getOptions({ children, isOptionElement });
   }, [children]);
 
+  // Whether a `Combobox.Create` is rendered. It mounts a matching row that isn't
+  // part of `options`, so `filteredItems` must reserve a slot for it (below).
+  const hasCreate = useMemo(() => childrenContainCreate(children), [children]);
+
   // The combobox is single- or multi-select for its lifetime; derive that from
   // whichever value shape the consumer provided.
   const multiple = useMemo(
@@ -185,6 +207,48 @@ const Root = <
   );
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Base UI seeds the type-to-filter highlight from its filtered-items list and
+  // only re-runs that seeding when the list's identity changes. In children mode
+  // we render the options ourselves (no `items` prop), so Base UI's list is
+  // always empty and the seeding never re-fires while typing — leaving the
+  // highlight stuck on the option that was selected on open. Handing Base UI the
+  // currently visible option values (in rendered order) as `filteredItems`
+  // re-triggers that seeding per keystroke and sizes Base UI's highlight bounds
+  // to the mounted rows.
+  //
+  // The rendered DOM, selection, and highlight all remain driven by the mounted
+  // `Combobox.Option` children; Base UI only uses this list for bookkeeping. So
+  // an over-inclusive list is harmless, while an under-inclusive one would let
+  // Base UI's bounds check drop a valid highlight — hence the conservative
+  // inclusion rules below.
+  const filteredItems = useMemo<Array<string>>(() => {
+    const query = searchQuery ?? "";
+    const values = options
+      .filter(
+        (option) =>
+          !query ||
+          doesOptionMatchSearchQuery({
+            children: option.label,
+            value: option.value,
+            searchQuery: query,
+          }) ||
+          // Text rendered inside child components isn't observable from the
+          // Root (it's captured per-option after mount), so keep options that
+          // render such content to avoid under-counting the mounted rows.
+          optionRendersUnsearchableText(option.label),
+      )
+      .map((option) => option.value);
+
+    // Reserve the `Combobox.Create` row's slot so Base UI's bounds check keeps
+    // it navigable. Over-reserving when Create is hidden (its value already
+    // exists) is harmless.
+    if (query && hasCreate) {
+      values.push(query);
+    }
+
+    return values;
+  }, [options, searchQuery, hasCreate]);
   // Keep open state controllable like the old menu-backed implementation while
   // still allowing uncontrolled usage through defaultOpen.
   const [open = false, setOpen] = useControllableState({
@@ -235,10 +299,12 @@ const Root = <
     ) => {
       if (multiple) {
         const array = Array.isArray(next) ? next : [];
-        // A null/undefined entry means an `onSelect`/Create item (which Base UI
-        // is not given a committable value) was pressed; let its own handler run
-        // instead of committing a selection.
-        if (array.some((entry) => entry == null)) {
+        // The sentinel (or a null/undefined) entry means an `onSelect`/Create
+        // item was pressed; let its own handler run instead of committing a
+        // selection.
+        if (
+          array.some((entry) => entry == null || isOnSelectItemValue(entry))
+        ) {
           eventDetails.cancel();
           return;
         }
@@ -250,9 +316,10 @@ const Root = <
           nextValue as Array<Option>,
         );
       } else {
-        // Real options always carry a string value, so a null commit is an
-        // `onSelect`/Create item; skip it and let `onClick` handle the action.
-        if (next == null || Array.isArray(next)) {
+        // Real options always carry a string value, so a sentinel (or null)
+        // commit is an `onSelect`/Create item; skip it and let `onClick` handle
+        // the action.
+        if (next == null || Array.isArray(next) || isOnSelectItemValue(next)) {
           eventDetails.cancel();
           return;
         }
@@ -349,6 +416,11 @@ const Root = <
         // Seed the highlight on the first match after the query changes so
         // pressing Enter selects it, mirroring the old typeahead behavior.
         autoHighlight
+        // The rendered options stay the `Combobox.Option` children; this list
+        // only exists so Base UI re-seeds the type-to-filter highlight per
+        // keystroke and bounds it to the mounted rows. See the `filteredItems`
+        // memo above for why it is computed conservatively.
+        filteredItems={filteredItems}
         modal={modal}
         disabled={disabled}
       >
@@ -914,8 +986,10 @@ const Option = <T extends TgphElement>({
   return (
     <BaseCombobox.Item
       // Items carrying an `onSelect` (including Create) must not commit a Base
-      // UI selection; withholding the value routes them through `onClick`.
-      value={onSelect ? undefined : value}
+      // UI selection; the sentinel value keeps them navigable/highlightable
+      // without matching a real value or the "no selection" state, and their
+      // commit is cancelled at the value bridge (see `isOnSelectItemValue`).
+      value={onSelect ? ON_SELECT_ITEM_VALUE : value}
       onClick={handleClick}
       render={createTgphBaseUIRender(
         <OptionItem
@@ -1068,6 +1142,28 @@ const childrenContainSearch = (children: ReactNode): boolean => {
   return found;
 };
 
+// Whether an option's label/children can render text that the Root can't read
+// statically — i.e. it contains a component element that may produce searchable
+// text from its own props/state (captured per-option after mount as
+// `renderedText`). Host elements (string `type`) expose their text through
+// their own children, so only component types are treated as opaque. Used to
+// keep such options in `filteredItems` so a valid highlight isn't dropped.
+const optionRendersUnsearchableText = (label: ReactNode): boolean => {
+  let found = false;
+  Children.forEach(label, (child) => {
+    if (found || !isValidElement(child)) return;
+    if (typeof child.type !== "string") {
+      found = true;
+      return;
+    }
+    const grandchildren = (child.props as { children?: ReactNode })?.children;
+    if (grandchildren != null) {
+      found = optionRendersUnsearchableText(grandchildren);
+    }
+  });
+  return found;
+};
+
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof Stack<T>
 > & {
@@ -1188,6 +1284,24 @@ const Create = <T extends TgphElement, LB extends boolean>({
       />
     );
   }
+};
+
+// Walk the children for a `Combobox.Create` so the Root's `filteredItems` list
+// can reserve a slot for the row Create mounts (it isn't one of `options`).
+const childrenContainCreate = (children: ReactNode): boolean => {
+  let found = false;
+  Children.forEach(children, (child) => {
+    if (found || !(typeof child === "object" && child !== null)) return;
+    const element = child as ReactElement<{ children?: ReactNode }>;
+    if (element.type === Create) {
+      found = true;
+      return;
+    }
+    if (element.props?.children) {
+      found = childrenContainCreate(element.props.children);
+    }
+  });
+  return found;
 };
 
 const Combobox = {} as {
