@@ -1,5 +1,3 @@
-import tokenSource from "@telegraph/tokens";
-
 type Direction =
   | "x"
   | "y"
@@ -18,7 +16,6 @@ type Axis = "x" | "y" | "both";
 export type CssVarProp = {
   cssVar: string;
   value: string;
-  allowRawValue?: boolean;
   direction?: Direction;
   axis?: Axis;
 };
@@ -262,17 +259,6 @@ type GetStylePropParams<CssVars, Props> = {
   cssVars: CssVars;
 };
 
-const isSpacingTokenValue = (propValue: string): boolean => {
-  const normalizedValue = propValue.startsWith("-")
-    ? propValue.slice(1)
-    : propValue;
-
-  return Object.prototype.hasOwnProperty.call(
-    tokenSource.tokens.spacing,
-    normalizedValue,
-  );
-};
-
 // Resolves a single prop value against its matching CssVarProp definition.
 // Returns the mapped CSS variable value string, handling negative spacing.
 const resolveValue = (
@@ -280,10 +266,6 @@ const resolveValue = (
   propValue: string,
 ): string => {
   const isNegative = typeof propValue === "string" && propValue.startsWith("-");
-
-  if (matchingCssVar.allowRawValue && !isSpacingTokenValue(propValue)) {
-    return propValue;
-  }
 
   if (isNegative) {
     const positiveValue = propValue.slice(1);
