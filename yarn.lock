@@ -3993,7 +3993,7 @@ __metadata:
     "@types/postcss-import": "npm:^14.0.3"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
-    globby: "npm:^16.2.0"
+    globby: "npm:^16.2.2"
     lightningcss: "npm:^1.32.0"
     postcss: "npm:^8.5.20"
     react: "npm:^19.2.7"
@@ -8561,9 +8561,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^16.2.0":
-  version: 16.2.0
-  resolution: "globby@npm:16.2.0"
+"globby@npm:^16.2.2":
+  version: 16.2.2
+  resolution: "globby@npm:16.2.2"
   dependencies:
     "@sindresorhus/merge-streams": "npm:^4.0.0"
     fast-glob: "npm:^3.3.3"
@@ -8571,7 +8571,7 @@ __metadata:
     is-path-inside: "npm:^4.0.0"
     slash: "npm:^5.1.0"
     unicorn-magic: "npm:^0.4.0"
-  checksum: 10c0/fc0675e01dc1da5095f30dccc46a3047fc38d45ca08c21c1aa871bd79d38682f507d84a159be168019db5fffaa09c5663c3679c29190a2d4f999dc91d7ff6406
+  checksum: 10c0/77bbd36a8862b2952ccbb7e411064387c5b274cb0a1466fd335b0bf336f2b7d92e05167799ddcaf8beac571229d9a7d8a4d5ea7446d4a90714cdc32cef2443ed
   languageName: node
   linkType: hard
 

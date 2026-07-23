@@ -49,7 +49,7 @@
     "@types/postcss-import": "^14.0.3",
     "@types/react": "^19.2.17",
     "eslint": "^10.4.0",
-    "globby": "^16.2.0",
+    "globby": "^16.2.2",
     "lightningcss": "^1.32.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
