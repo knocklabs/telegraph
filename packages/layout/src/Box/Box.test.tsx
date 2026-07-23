@@ -162,7 +162,7 @@ describe("Box", () => {
         margin: "1",
         display: "flex",
         direction: "column",
-        maxH: "400px",
+        maxH: "10",
       };
       void validProps;
     });
@@ -194,7 +194,7 @@ describe("Box", () => {
           rounded: "2",
           w: "10",
           h: "8",
-          maxH: "400px",
+          maxH: "10",
         },
       };
       void shorthands;
@@ -239,6 +239,22 @@ describe("Box", () => {
       };
       void invalid;
     });
+
+    it("rejects raw css values on size props", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error raw css size values are not spacing tokens
+        maxHeight: "400px",
+      };
+      void invalid;
+    });
+
+    it("rejects raw css values on shorthand size props", () => {
+      const invalid: BoxProps = {
+        // @ts-expect-error raw css size values are not spacing tokens
+        w: "100%",
+      };
+      void invalid;
+    });
   });
 
   describe("flex and size compatibility props", () => {
@@ -257,15 +273,6 @@ describe("Box", () => {
 
       expect(box).toHaveStyle({
         "--direction": "column",
-      });
-    });
-
-    it("passes raw maxH css values through unchanged", () => {
-      const { container } = render(<Box maxH="400px" />);
-      const box = container.querySelector(".tgph-box");
-
-      expect(box).toHaveStyle({
-        "--max-height": "400px",
       });
     });
   });
