@@ -337,6 +337,10 @@ const Root = <V extends ComboboxValue = string>({
     ? resolvedInputValue
     : (searchControl?.value ?? inputValueProp ?? uncontrolledSearchQuery);
 
+  // The query that drives children-mode filtering is derived during render so
+  // external Search or Root input-value changes filter without a stale frame.
+  const activeSearchQuery = searchQuery;
+
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
   // we render the options ourselves (no `items` prop), so Base UI's list is
@@ -354,7 +358,7 @@ const Root = <V extends ComboboxValue = string>({
   const { filteredItems, createIndex } = useMemo(() => {
     // With manual filtering the consumer decides which options render, so keep
     // every option in the bounds list and never filter it here.
-    const query = manualFiltering ? "" : (searchQuery ?? "");
+    const query = manualFiltering ? "" : activeSearchQuery;
     const values = options
       .filter(
         (option) =>
@@ -375,7 +379,7 @@ const Root = <V extends ComboboxValue = string>({
     // it navigable. Use the typed query rather than the filter `query` (which is
     // forced empty under manualFiltering) so Create stays navigable there too.
     // Over-reserving when Create is hidden (its value already exists) is harmless.
-    const createQuery = searchQuery ?? "";
+    const createQuery = activeSearchQuery;
     let nextCreateIndex: number | undefined;
     if (createQuery && hasCreate) {
       nextCreateIndex = values.length;
@@ -383,7 +387,7 @@ const Root = <V extends ComboboxValue = string>({
     }
 
     return { filteredItems: values, createIndex: nextCreateIndex };
-  }, [options, searchQuery, hasCreate, manualFiltering]);
+  }, [options, activeSearchQuery, hasCreate, manualFiltering]);
   // Open state, kept controllable like the old menu-backed implementation. This
   // mirrors `useControllableState` (same no-op-on-equal and updater semantics)
   // but threads Base UI's change `details` to the consumer's `onOpenChange` as an
@@ -443,16 +447,8 @@ const Root = <V extends ComboboxValue = string>({
     }
   }, [open, isNoneMode]);
 
-  // In free-text mode the input text drives children-mode filtering, so keep the
-  // search query synced to it (covers the initial/default value and consumer-
-  // driven controlled `inputValue` changes).
-  useEffect(() => {
-    if (isNoneMode) {
-      setSearchQuery(resolvedInputValue ?? "");
-    }
-  }, [isNoneMode, resolvedInputValue]);
-
-  // `null` keeps Base UI controlled while representing "no selection".
+  // Map the public value shape into the flat string(s) Base UI drives selection
+  // with. `null` keeps Base UI controlled while representing "no selection".
   const baseValue = useMemo<string | Array<string> | null>(() => {
     if (multiple) {
       return isMultiSelect(value) ? value : [];
@@ -547,15 +543,19 @@ const Root = <V extends ComboboxValue = string>({
       // replaces the user's free text. Real options still fill as usual.
       if (
         isNoneMode &&
-        eventDetails?.reason === ITEM_PRESS_REASON &&
+        eventDetails.reason === ITEM_PRESS_REASON &&
         nextValue === ON_SELECT_ITEM_FILL
       ) {
         eventDetails.cancel();
         return;
       }
 
-      // Mirror the query so children-mode filtering runs (both arrangements).
-      setSearchQuery(nextValue);
+      // Mirror the query into the popup search-query state so children-mode
+      // filtering runs. Free-text mode derives its query from the input text
+      // instead (see `activeSearchQuery`), so only the other arrangements need it.
+      if (!isNoneMode) {
+        setSearchQuery(nextValue);
+      }
 
       // In free text, Telegraph owns the (always-controlled) input value unless
       // the consumer controls it via `inputValue`.
@@ -623,7 +623,7 @@ const Root = <V extends ComboboxValue = string>({
         closeOnSelect,
         clearable,
         disabled,
-        searchQuery,
+        searchQuery: activeSearchQuery,
         setSearchQuery,
         hasSearch: searchControl !== undefined,
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
