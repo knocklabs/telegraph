@@ -90,7 +90,7 @@ const Root = <T extends TgphElement = "input">(rootProps: RootProps<T>) => {
         data-tgph-input-container-size={size}
         {...stackProps}
       >
-        {/* 
+        {/*
           We choose to use the `<Text/>` component as a base here so that we can 
           configure the text inside of the input to match the design system font sizes
         */}

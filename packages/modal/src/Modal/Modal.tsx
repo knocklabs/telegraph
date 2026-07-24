@@ -651,6 +651,8 @@ const Content = ({
     };
 
     return () => {
+      // Base UI compat: intentional latest-ref read at teardown.
+      // oxlint-disable-next-line react-hooks/exhaustive-deps
       compatibilityContext.contentCallbacksRef.current = {};
     };
   }, [
