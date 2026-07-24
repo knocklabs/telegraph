@@ -8,4 +8,4 @@ Options now use virtual focus: DOM focus stays on the popup's input and the acti
 
 `@telegraph/combobox` no longer depends on `@telegraph/menu`: the styled option row is now an in-package presentational component, so consumers no longer pull in the menu package (and its Base UI menu / motion deps) transitively.
 
-Two small API changes: `Combobox.Content` no longer forwards the `onInteractOutside` / `onPointerDownOutside` / `onFocusOutside` / `onOpenAutoFocus` dismissal callbacks (`onEscapeKeyDown` / `onCloseAutoFocus` remain), and `Combobox.Search` is now write-only — Base UI owns the input value, so a controlled search reads/updates the query through `onValueChange` rather than `value`.
+Two small API changes: `Combobox.Content` no longer forwards the `onInteractOutside` / `onPointerDownOutside` / `onFocusOutside` dismissal callbacks (`onEscapeKeyDown`, `onCloseAutoFocus`, and `onOpenAutoFocus` remain), and `Combobox.Search` is now write-only — Base UI owns the input value, so a controlled search reads/updates the query through `onValueChange` rather than `value`.

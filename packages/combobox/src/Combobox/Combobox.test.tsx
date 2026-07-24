@@ -617,6 +617,39 @@ describe("Combobox", () => {
       expect(onOpenChange).toHaveBeenLastCalledWith(false);
     });
 
+    it("calls onOpenAutoFocus when the popup opens (bridged to Base UI initialFocus)", async () => {
+      const user = userEvent.setup();
+      const onOpenAutoFocus = vi.fn((event: Event) => event.preventDefault());
+
+      const Harness = () => {
+        const [value, setValue] = useState<string>(VALUES[0]!);
+        return (
+          <Combobox.Root value={value} onValueChange={setValue}>
+            <Combobox.Trigger />
+            <Combobox.Content onOpenAutoFocus={onOpenAutoFocus}>
+              <Combobox.Search />
+              <Combobox.Options>
+                {VALUES.map((option, index) => (
+                  <Combobox.Option key={option} value={option}>
+                    {LABELS[index]}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Options>
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container } = render(<Harness />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+      await waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalled());
+    });
+
     it("keeps the combobox open when escape dismissal is prevented", async () => {
       const user = userEvent.setup();
       const onEscapeKeyDown = vi.fn((event: KeyboardEvent) => {

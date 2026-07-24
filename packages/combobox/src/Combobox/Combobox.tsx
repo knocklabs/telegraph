@@ -594,6 +594,9 @@ export type ContentProps<T extends TgphElement = "div"> = RemappedOmit<
     | RefObject<HTMLElement | null>
     | ((closeType: string) => void | boolean | HTMLElement | null);
   onCloseAutoFocus?: LegacyDismissEventHandler;
+  // Runs when focus is about to move into the popup on open. Prevent default to
+  // place focus yourself (bridged onto Base UI's `initialFocus`).
+  onOpenAutoFocus?: LegacyDismissEventHandler;
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
 };
 
@@ -602,6 +605,7 @@ const Content = <T extends TgphElement = "div">({
   children,
   onEscapeKeyDown,
   onCloseAutoFocus,
+  onOpenAutoFocus,
   finalFocus,
   forceMount,
   side = "bottom",
@@ -642,13 +646,14 @@ const Content = <T extends TgphElement = "div">({
   // itself, but only on a later animation frame, which would drop keystrokes
   // typed immediately after opening. Focusing here (a layout effect) lands
   // focus before that frame; Base UI's later focus targets the same input.
+  // Skipped when a consumer supplies `onOpenAutoFocus` — they own open-focus.
   useLayoutEffect(() => {
-    if (!context.open) return;
+    if (!context.open || onOpenAutoFocus) return;
     const input = context.contentRef?.current?.querySelector<HTMLInputElement>(
       "[data-tgph-combobox-search], [data-tgph-combobox-input-hidden]",
     );
     input?.focus();
-  }, [context.open, context.contentRef]);
+  }, [context.open, context.contentRef, onOpenAutoFocus]);
 
   const setHeightFromContent = useCallback(
     (element: Element) => {
@@ -729,6 +734,23 @@ const Content = <T extends TgphElement = "div">({
     };
   }, [finalFocus, onCloseAutoFocus, context.triggerRef]);
 
+  // Bridge the old `onOpenAutoFocus` onto Base UI's `initialFocus`. When a
+  // consumer supplies it they own open-focus (the layout effect above yields
+  // too), so return false to keep Base UI from moving focus and let their
+  // handler place it. Mirrors the `onCloseAutoFocus` → `finalFocus` bridge.
+  const resolvedInitialFocus = useMemo<
+    ((openType: string) => unknown) | undefined
+  >(() => {
+    if (!onOpenAutoFocus) {
+      return undefined;
+    }
+    return () => {
+      const event = new Event("openAutoFocus", { cancelable: true });
+      onOpenAutoFocus(event);
+      return false;
+    };
+  }, [onOpenAutoFocus]);
+
   const stackProps = props as TgphComponentProps<typeof Stack>;
 
   return (
@@ -749,6 +771,11 @@ const Content = <T extends TgphElement = "div">({
         }
       >
         <BaseCombobox.Popup
+          initialFocus={
+            resolvedInitialFocus as TgphComponentProps<
+              typeof BaseCombobox.Popup
+            >["initialFocus"]
+          }
           finalFocus={
             resolvedFinalFocus as TgphComponentProps<
               typeof BaseCombobox.Popup
