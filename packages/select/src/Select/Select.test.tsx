@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
@@ -345,5 +345,30 @@ describe("Select", () => {
 
     expect(trigger).toHaveTextContent("Email");
     expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it("shows an empty state when typing filters out every option", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Select.Root defaultValue="email">{renderSelectOptions()}</Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // Typing in a no-Search Select filters the options in place via the hidden
+    // input; a non-matching query must surface the default empty message rather
+    // than an empty popup.
+    const hiddenInput = queryPortalElement(
+      "[data-tgph-combobox-input-hidden]",
+    ) as HTMLInputElement;
+    await user.type(hiddenInput, "zzz");
+
+    await waitFor(() =>
+      expect(queryPortalElement("[data-tgph-combobox-empty]")).not.toBeNull(),
+    );
   });
 });

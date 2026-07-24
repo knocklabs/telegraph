@@ -1407,6 +1407,92 @@ describe("controlled value changes", () => {
   });
 });
 
+describe("manualFiltering", () => {
+  const renderWithSearch = (props?: { manualFiltering?: boolean }) =>
+    render(
+      <Combobox.Root defaultValue="email" {...props}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Search />
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+          <Combobox.Empty />
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+  const openAndType = async (
+    user: ReturnType<typeof userEvent.setup>,
+    container: HTMLElement,
+    text: string,
+  ) => {
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(search, text);
+  };
+
+  it("keeps every rendered option visible for a non-matching query", async () => {
+    const user = userEvent.setup();
+    const { container } = renderWithSearch({ manualFiltering: true });
+
+    await openAndType(user, container, "zzz");
+
+    // The consumer owns filtering, so the internal filter never hides a row.
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(
+        VALUES.length,
+      ),
+    );
+  });
+
+  it("filters internally when the flag is absent (control)", async () => {
+    const user = userEvent.setup();
+    const { container } = renderWithSearch();
+
+    await openAndType(user, container, "zzz");
+
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(0),
+    );
+  });
+});
+
+describe("Trigger ref", () => {
+  it("composes a consumer tgphRef with the internal trigger ref", () => {
+    const ref = { current: null as HTMLButtonElement | null };
+    const { container } = render(
+      <Combobox.Root defaultValue="email">
+        <Combobox.Trigger tgphRef={ref} />
+        <Combobox.Content>
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    // The consumer ref resolves to the trigger element; the internal ref (which
+    // drives keyboard-close refocus) is composed in rather than clobbered.
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    expect(ref.current).toBe(trigger);
+  });
+});
+
 describe("Combobox type inheritance", () => {
   it("accepts valid content props", () => {
     const validProps: ComboboxContentProps = {};

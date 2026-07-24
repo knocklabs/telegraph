@@ -3,6 +3,7 @@ import { Button as TelegraphButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
+  type PolymorphicProps,
   type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
@@ -13,8 +14,7 @@ import {
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
-import { Box, Stack } from "@telegraph/layout";
-import type { StackProps } from "@telegraph/layout";
+import { Box, Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -88,6 +88,14 @@ export type RootProps<V extends ComboboxValue = string> = {
   closeOnSelect?: boolean;
   clearable?: boolean;
   disabled?: boolean;
+  // Disable the built-in text filtering of `Combobox.Option`s. Use this when the
+  // consumer already narrows the option list itself (e.g. an async/server search
+  // driven by `Combobox.Search`'s `onValueChange`): the options you render are
+  // shown as-is, and the typed query is still exposed to `Combobox.Create` and
+  // the Search clear button. Without it, the internal filter stacks on top of
+  // the consumer's, hiding server results whose text is produced by child
+  // components.
+  manualFiltering?: boolean;
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
@@ -113,6 +121,7 @@ export const ComboboxContext = createContext<
       ((event: KeyboardEvent) => void) | undefined
     >;
     options: Array<DefinedOption>;
+    manualFiltering: boolean;
     defaultScrollToValue?: string;
   }
 >({
@@ -126,6 +135,7 @@ export const ComboboxContext = createContext<
   clearable: false,
   disabled: false,
   options: [],
+  manualFiltering: false,
 });
 
 // Action items (`onSelect`/`Create`) must be navigable and highlightable but
@@ -159,6 +169,7 @@ const Root = <V extends ComboboxValue = string>({
   errored,
   placeholder,
   layout,
+  manualFiltering = false,
   defaultScrollToValue,
   children,
 }: RootProps<V>) => {
@@ -204,7 +215,9 @@ const Root = <V extends ComboboxValue = string>({
   // Base UI's bounds check drop a valid highlight — hence the conservative
   // inclusion rules below.
   const filteredItems = useMemo<Array<string>>(() => {
-    const query = searchQuery ?? "";
+    // With manual filtering the consumer decides which options render, so keep
+    // every option in the bounds list and never filter it here.
+    const query = manualFiltering ? "" : (searchQuery ?? "");
     const values = options
       .filter(
         (option) =>
@@ -229,7 +242,7 @@ const Root = <V extends ComboboxValue = string>({
     }
 
     return values;
-  }, [options, searchQuery, hasCreate]);
+  }, [options, searchQuery, hasCreate, manualFiltering]);
   // Keep open state controllable like the old menu-backed implementation while
   // still allowing uncontrolled usage through defaultOpen.
   const [open = false, setOpen] = useControllableState({
@@ -365,6 +378,7 @@ const Root = <V extends ComboboxValue = string>({
         errored,
         layout,
         options,
+        manualFiltering,
         defaultScrollToValue,
       }}
     >
@@ -422,9 +436,16 @@ export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
 const Trigger = <V extends ChildrenValue>({
   size = "1",
   children,
+  tgphRef,
   ...props
 }: TriggerProps<V>) => {
   const context = useContext(ComboboxContext);
+  // Compose a consumer ref with the internal trigger ref instead of letting the
+  // spread below clobber it — the internal ref drives keyboard-close refocus.
+  const composedTriggerRef = useComposedRefs(
+    tgphRef as Ref<HTMLButtonElement>,
+    context.triggerRef,
+  );
   const hasTags = isMultiSelect(context.value) && context.value.length > 0;
 
   const currentValue = useMemo<
@@ -512,8 +533,8 @@ const Trigger = <V extends ChildrenValue>({
           data-tgph-combobox-trigger
           data-tgph-combobox-trigger-open={context.open}
           disabled={context.disabled}
-          tgphRef={context.triggerRef}
           {...props}
+          tgphRef={composedTriggerRef}
         >
           {children ? (
             typeof children === "function" ? (
@@ -539,29 +560,37 @@ const Trigger = <V extends ChildrenValue>({
 // The public Content surface mirrors the props consumers relied on from the
 // menu-backed implementation. Positioning props flow to the Base UI positioner;
 // the remainder are Stack style props for the popup surface.
-export type ContentProps<T extends TgphElement = "div"> = RemappedOmit<
-  TgphComponentProps<typeof Stack<T>>,
-  "children"
-> & {
-  children?: ReactNode;
-  side?: "top" | "right" | "bottom" | "left";
-  align?: "start" | "center" | "end";
-  sideOffset?: number;
-  alignOffset?: number;
-  collisionPadding?: number;
-  sticky?: boolean;
-  hideWhenDetached?: boolean;
-  forceMount?: boolean;
-  finalFocus?:
-    | boolean
-    | RefObject<HTMLElement | null>
-    | ((closeType: string) => void | boolean | HTMLElement | null);
-  onCloseAutoFocus?: LegacyDismissEventHandler;
-  // Runs when focus is about to move into the popup on open. Prevent default to
-  // place focus yourself (bridged onto Base UI's `initialFocus`).
-  onOpenAutoFocus?: LegacyDismissEventHandler;
-  onEscapeKeyDown?: (event: KeyboardEvent) => void;
-};
+//
+// Source the polymorphic element props from `PolymorphicProps<T>` and the Stack
+// style props from the *non-generic* Stack. Wrapping the generic `typeof
+// Stack<T>` in `Omit<…>` produces a deferred mapped type, and TypeScript then
+// fails to compute a contextual type for the sibling dismiss-handler callbacks
+// below — their `event` param silently widens to `any` at the JSX call site.
+// That is exactly what let a stale Radix-shaped handler reading
+// `event.detail.originalEvent` compile and crash at runtime (KNO-14309). Keeping
+// the `Omit` off the generic makes each handler's `event` resolve to its
+// concrete `Event` type. Mirrors `Menu.Content`.
+export type ContentProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<StackProps, "align" | "as"> & {
+    children?: ReactNode;
+    side?: "top" | "right" | "bottom" | "left";
+    align?: "start" | "center" | "end";
+    sideOffset?: number;
+    alignOffset?: number;
+    collisionPadding?: number;
+    sticky?: boolean;
+    hideWhenDetached?: boolean;
+    forceMount?: boolean;
+    finalFocus?:
+      | boolean
+      | RefObject<HTMLElement | null>
+      | ((closeType: string) => void | boolean | HTMLElement | null);
+    onCloseAutoFocus?: LegacyDismissEventHandler;
+    // Runs when focus is about to move into the popup on open. Prevent default to
+    // place focus yourself (bridged onto Base UI's `initialFocus`).
+    onOpenAutoFocus?: LegacyDismissEventHandler;
+    onEscapeKeyDown?: (event: KeyboardEvent) => void;
+  };
 
 const Content = <T extends TgphElement = "div">({
   style,
@@ -904,7 +933,6 @@ export type OptionProps<T extends TgphElement = "div"> = RemappedOmit<
   label?: DefinedOption["label"];
   selected?: boolean | null;
   onSelect?: (event: Event) => void;
-  closeOnClick?: boolean;
 };
 
 const Option = <T extends TgphElement>({
@@ -913,7 +941,6 @@ const Option = <T extends TgphElement>({
   selected,
   onSelect,
   children,
-  closeOnClick,
   tgphRef,
   ...props
 }: OptionProps<T>) => {
@@ -945,13 +972,21 @@ const Option = <T extends TgphElement>({
   });
 
   const isVisible =
+    // The consumer owns which options render (see `manualFiltering`).
+    context.manualFiltering ||
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
       children: label || children,
       value,
       renderedText,
       searchQuery: context.searchQuery,
-    });
+    }) ||
+    // An option whose visible text is produced by a child component can't be
+    // matched until it has mounted and captured that text. If it first mounts
+    // while a query is already active (the async/server-search case), show it
+    // rather than hide it forever; once captured it filters normally.
+    (renderedText.length === 0 &&
+      optionRendersUnsearchableText(label ?? children));
 
   const isSelected = isMultiSelect(contextValue)
     ? contextValue.includes(value)
