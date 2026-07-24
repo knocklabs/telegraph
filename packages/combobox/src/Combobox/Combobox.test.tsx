@@ -906,6 +906,284 @@ describe("Combobox", () => {
   });
 });
 
+describe("Input as trigger", () => {
+  it("renders the styled input as the combobox anchor with no button trigger", async () => {
+    const { container } = render(<ComboboxInputTrigger />);
+
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement | null;
+    expect(input).toBeTruthy();
+    expect(input?.tagName).toBe("INPUT");
+    // Base UI makes the anchor input the combobox; Telegraph points aria-controls
+    // at the listbox id (matching Trigger/Search).
+    expect(input?.getAttribute("role")).toBe("combobox");
+    expect(input?.getAttribute("aria-expanded")).toBe("false");
+    expect(input?.getAttribute("aria-controls")).toBeTruthy();
+    // The button trigger is not part of this arrangement.
+    expect(container.querySelector("[data-tgph-combobox-trigger]")).toBeNull();
+  });
+
+  it("does not mount a hidden popup input; the anchor input owns virtual focus", async () => {
+    render(<ComboboxInputTrigger defaultOpen />);
+
+    await waitFor(() =>
+      expect(
+        queryPortalElements("[data-tgph-combobox-option]").length,
+      ).toBeGreaterThan(0),
+    );
+
+    // A second in-popup input would fight the anchor for role="combobox" and,
+    // being inside the popup, would flip Base UI's anchor onto a (nonexistent)
+    // button trigger. So it must be absent.
+    expect(queryPortalElement("[data-tgph-combobox-input-hidden]")).toBeNull();
+    expect(document.querySelectorAll("[data-tgph-combobox-input]").length).toBe(
+      1,
+    );
+  });
+
+  it("filters the options as you type in the anchor input", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<ComboboxInputTrigger />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await user.click(input);
+    await user.type(input, "sms");
+
+    await waitFor(() => {
+      const options = queryPortalElements("[data-tgph-combobox-option]");
+      expect(options.length).toBe(1);
+    });
+    expect(
+      queryPortalElement("[data-tgph-combobox-option]")?.getAttribute(
+        "data-tgph-combobox-option-value",
+      ),
+    ).toBe("sms");
+  });
+
+  it("selecting an option commits its value and closes", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<ComboboxInputTrigger />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await user.click(input);
+    await user.type(input, "push");
+    let option: Element | undefined;
+    await waitFor(() => {
+      option = Array.from(
+        queryPortalElements("[data-tgph-combobox-option]"),
+      ).find(
+        (el) => el.getAttribute("data-tgph-combobox-option-value") === "push",
+      );
+      expect(option).toBeTruthy();
+    });
+
+    await user.click(option!);
+
+    await waitFor(() =>
+      expect(input.getAttribute("aria-expanded")).toBe("false"),
+    );
+  });
+
+  it("does not open when the anchor input is disabled", async () => {
+    const { container } = render(<ComboboxInputTrigger disabled />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    // Disabled reaches both the DOM and Base UI's store (passed to BaseUI Input).
+    expect(input.disabled).toBe(true);
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("clearing the anchor input clears the selection", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const Harness = () => {
+      const [value, setValue] = useState<string | undefined>(undefined);
+      return (
+        <Combobox.Root
+          value={value}
+          onValueChange={(next) => {
+            setValue(next);
+            onValueChange(next);
+          }}
+        >
+          <Combobox.Input />
+          <Combobox.Content>
+            <Combobox.Options>
+              {VALUES.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {LABELS[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+    const { container } = render(<Harness />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    // Select a value so the input holds committed text.
+    await user.click(input);
+    await user.type(input, "push");
+    const push = queryPortalElement('[data-tgph-combobox-option-value="push"]');
+    await user.click(push!);
+    await waitFor(() => expect(input.value).toBe("push"));
+    onValueChange.mockClear();
+
+    // Emptying the input is a clear: Base UI commits null, which must reach the
+    // consumer as a cleared value rather than being swallowed as a sentinel.
+    await user.clear(input);
+    await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(undefined));
+  });
+
+  it("reopening after a selection shows the full option list", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<ComboboxInputTrigger />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await user.click(input);
+    await user.type(input, "push");
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(1),
+    );
+    const push = queryPortalElement('[data-tgph-combobox-option-value="push"]');
+    await user.click(push!);
+    await waitFor(() =>
+      expect(input.getAttribute("aria-expanded")).toBe("false"),
+    );
+
+    // Reopen: a programmatic label resync must not leave the list pre-filtered
+    // to the selected option.
+    await user.click(input);
+    await waitFor(() =>
+      expect(input.getAttribute("aria-expanded")).toBe("true"),
+    );
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(
+        VALUES.length,
+      ),
+    );
+  });
+
+  it("combobox is accessible", async () => {
+    const { container } = render(<ComboboxInputTrigger defaultOpen />);
+    const results = await axe(container);
+    expectToHaveNoViolations(results);
+  });
+});
+
+describe("Free-text autocomplete (selectionMode none)", () => {
+  it("keeps arbitrary typed text and selects nothing", async () => {
+    const user = userEvent.setup();
+    const onInputValueChange = vi.fn();
+    const { container } = render(
+      <FreeTextCombobox onInputValueChange={onInputValueChange} />,
+    );
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await user.type(input, "custom value");
+
+    await waitFor(() => expect(input.value).toBe("custom value"));
+    expect(onInputValueChange).toHaveBeenLastCalledWith("custom value");
+    // No selection exists in free-text mode.
+    expect(
+      queryPortalElements('[data-tgph-combobox-option][aria-selected="true"]')
+        .length,
+    ).toBe(0);
+  });
+
+  it("fills the input from a pressed suggestion and closes", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<FreeTextCombobox />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await user.type(input, "sm");
+    let sms: Element | undefined;
+    await waitFor(() => {
+      sms = Array.from(queryPortalElements("[data-tgph-combobox-option]")).find(
+        (el) => el.getAttribute("data-tgph-combobox-option-value") === "SMS",
+      );
+      expect(sms).toBeTruthy();
+    });
+
+    await user.click(sms!);
+
+    // The suggestion fills the input, and — because free text has no value
+    // bridge — the item-press close is honored here (regression guard).
+    await waitFor(() => {
+      expect(input.value).toBe("SMS");
+      expect(input.getAttribute("aria-expanded")).toBe("false");
+    });
+  });
+
+  it("pressing an action item runs its handler without overwriting the input", async () => {
+    const user = userEvent.setup();
+    const onCreate = vi.fn();
+    const Harness = () => {
+      const [inputValue, setInputValue] = useState("");
+      return (
+        <Combobox.Root
+          selectionMode="none"
+          inputValue={inputValue}
+          onInputValueChange={(next) => setInputValue(next)}
+        >
+          <Combobox.Input />
+          <Combobox.Content>
+            <Combobox.Options>
+              {FREE_TEXT_CHANNELS.map((channel) => (
+                <Combobox.Option key={channel} value={channel}>
+                  {channel}
+                </Combobox.Option>
+              ))}
+              <Combobox.Create
+                values={FREE_TEXT_CHANNELS}
+                onCreate={onCreate}
+              />
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+    const { container } = render(<Harness />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await user.type(input, "brandnew");
+
+    let createRow: Element | undefined;
+    await waitFor(() => {
+      createRow = Array.from(
+        queryPortalElements("[data-tgph-combobox-option]"),
+      ).find((el) => el.textContent?.includes("Create"));
+      expect(createRow).toBeTruthy();
+    });
+
+    await user.click(createRow!);
+
+    // The action item commits nothing to the input: the sentinel fill is
+    // cancelled, so the user's free text survives (guards the sentinel
+    // serialization from colliding with a real value).
+    expect(onCreate).toHaveBeenCalledWith("brandnew");
+    expect(input.value).toBe("brandnew");
+  });
+});
+
 describe("findStringNodes", () => {
   it("returns empty array for null node", () => {
     expect(findStringNodes(null)).toStrictEqual([]);

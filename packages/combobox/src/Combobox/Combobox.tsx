@@ -220,7 +220,12 @@ const CreateIndexContext = createContext<number | undefined>(undefined);
 // "no selection", while Base UI's own commit is still cancelled for them at the
 // value bridge below. It is only ever a Base UI item value; it never reaches the
 // public value shape.
-const ON_SELECT_ITEM_VALUE = Object.freeze({}) as unknown as string;
+// The marker key is deliberately unusual — and not `label`/`value`, which Base
+// UI would surface as the fill text — so the value serializes (via
+// `ON_SELECT_ITEM_FILL`) to a string no real option value could collide with.
+const ON_SELECT_ITEM_VALUE = Object.freeze({
+  __tgphActionItem: true,
+}) as unknown as string;
 
 // Whether a value Base UI is trying to commit is the action-item sentinel, in
 // which case Base UI's selection must be cancelled.
@@ -236,6 +241,17 @@ const ON_SELECT_ITEM_FILL = JSON.stringify(ON_SELECT_ITEM_VALUE);
 
 // Base UI's change `reason` for an item press (pointer or Enter on an option).
 const ITEM_PRESS_REASON = "item-press";
+
+// Base UI change reasons where the USER edited the input text. Only these
+// should update the children-mode search query; Base UI also fires
+// `onInputValueChange` for programmatic label resyncs (reason `"none"`) and
+// item-press fills, and mirroring those would leave a reopened list wrongly
+// pre-filtered to the selected option's label.
+const USER_INPUT_REASONS = new Set<string>([
+  "input-change",
+  "input-clear",
+  "input-paste",
+]);
 const Root = <V extends ComboboxValue = string>({
   modal = true,
   closeOnSelect = true,
@@ -439,12 +455,16 @@ const Root = <V extends ComboboxValue = string>({
     setOpen((prevOpen) => !prevOpen);
   }, [setOpen]);
 
+  const wasOpenRef = useRef(open);
   useEffect(() => {
-    // Free text persists across open/close (the anchor input is the state), so
-    // only the in-popup search query is reset on close.
-    if (!open && !isNoneMode) {
+    // Reset the in-popup search query when the popup closes — but only on the
+    // open→close transition, not on mount, which would otherwise wipe an initial
+    // `inputValue`/`defaultInputValue`. Free text persists across open/close (the
+    // anchor input is the state), so it is never reset here.
+    if (wasOpenRef.current && !open && !isNoneMode) {
       setSearchQuery("");
     }
+    wasOpenRef.current = open;
   }, [open, isNoneMode]);
 
   // Map the public value shape into the flat string(s) Base UI drives selection
@@ -469,7 +489,7 @@ const Root = <V extends ComboboxValue = string>({
       const array = multiple && Array.isArray(next) ? next : [];
       const isActionItem = multiple
         ? array.some((entry) => entry == null || isOnSelectItemValue(entry))
-        : next == null || Array.isArray(next) || isOnSelectItemValue(next);
+        : Array.isArray(next) || isOnSelectItemValue(next);
 
       if (isActionItem) {
         eventDetails.cancel();
@@ -478,16 +498,15 @@ const Root = <V extends ComboboxValue = string>({
 
       // Preserve the menu-backed callback order. Controlled callers observe the
       // popup close before they receive the selected value.
-      if (closeOnSelect === true) {
+      if (closeOnSelect === true && next != null) {
         setOpen(false, eventDetails);
       }
 
       if (multiple) {
         (setValue as MultiSelect["onValueChange"])?.(array);
       } else {
-        // The action-item and array cases returned above, so single-select has
-        // a real string value here.
-        (setValue as SingleSelect["onValueChange"])?.(next as string);
+        const nextValue = next == null ? undefined : next;
+        (setValue as SingleSelect["onValueChange"])?.(nextValue);
       }
 
       // The former Menu.Button-backed option allowed one row to close a Root
@@ -551,9 +570,12 @@ const Root = <V extends ComboboxValue = string>({
       }
 
       // Mirror the query into the popup search-query state so children-mode
-      // filtering runs. Free-text mode derives its query from the input text
-      // instead (see `activeSearchQuery`), so only the other arrangements need it.
-      if (!isNoneMode) {
+      // filtering runs — but only when the user edited the input, never for Base
+      // UI's programmatic label resyncs (reason `"none"`) or item-press fills,
+      // which would otherwise leave a reopened list pre-filtered to the selected
+      // label. Free-text mode derives its query from the input text instead (see
+      // `activeSearchQuery`), so only the other arrangements need it.
+      if (!isNoneMode && USER_INPUT_REASONS.has(eventDetails.reason)) {
         setSearchQuery(nextValue);
       }
 
@@ -579,6 +601,8 @@ const Root = <V extends ComboboxValue = string>({
       highlightedValue: string | undefined,
       details: ComboboxHighlightDetails,
     ) => {
+      // Action items (`onSelect`/Create) carry the internal sentinel value;
+      // report them as "nothing highlighted" so it never leaks to consumers.
       const publicValue = isOnSelectItemValue(highlightedValue)
         ? undefined
         : highlightedValue;
