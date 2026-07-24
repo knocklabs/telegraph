@@ -1,5 +1,14 @@
 # @telegraph/layout
 
+## 0.5.4
+
+### Patch Changes
+
+- [#909](https://github.com/knocklabs/telegraph/pull/909) [`da4ffba`](https://github.com/knocklabs/telegraph/commit/da4ffba271445e5f09ef8cbe6fd286f8e07e369b) Thanks [@kylemcd](https://github.com/kylemcd)! - Remove raw size value passthrough from Box sizing props. `width`, `height`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight` and their shorthands (`w`, `h`, `minW`, `minH`, `maxW`, `maxH`) accept `@telegraph/tokens` spacing values only again — raw CSS values such as `maxH="400px"` or `w="100%"` are no longer accepted or passed through. This reverses the compatibility behavior added in [#837](https://github.com/knocklabs/telegraph/issues/837); pass a spacing token, or use `style`/`className` for genuine raw CSS.
+
+- Updated dependencies [[`4a13017`](https://github.com/knocklabs/telegraph/commit/4a13017eba10d8837cb032dbf79739b72f0b5b20), [`9a9ef1e`](https://github.com/knocklabs/telegraph/commit/9a9ef1e22523d676ca00885f2a4e5f27d0a1149d), [`da4ffba`](https://github.com/knocklabs/telegraph/commit/da4ffba271445e5f09ef8cbe6fd286f8e07e369b)]:
+  - @telegraph/style-engine@0.3.9
+
 ## 0.5.3
 
 ### Patch Changes
