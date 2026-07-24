@@ -17,6 +17,7 @@ import { Box, Stack } from "@telegraph/layout";
 import type { StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
+import { LazyMotion, domAnimation } from "motion/react";
 import {
   type CSSProperties,
   type ChangeEvent,
@@ -178,8 +179,9 @@ const Root = <V extends ComboboxValue = string>({
   // part of `options`, so `filteredItems` must reserve a slot for it (below).
   const hasCreate = useMemo(() => childrenContainCreate(children), [children]);
 
-  // The combobox is single- or multi-select for its lifetime; derive that from
-  // whichever value shape the consumer provided.
+  // Single- vs multi-select is derived from the value shape. Consumers are
+  // expected to keep that shape stable (multi-select initializes with an array);
+  // Base UI does not support the `multiple` flag flipping after mount.
   const multiple = useMemo(
     () => isMultiSelect(valueProp) || isMultiSelect(defaultValueProp),
     [valueProp, defaultValueProp],
@@ -767,9 +769,16 @@ const Content = <T extends TgphElement = "div">({
                   />
                 </VisuallyHidden>
               ) : null}
-              <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-                {children}
-              </Stack>
+              {/* Options animate their selection checkmark with `motion/react-m`,
+                  which needs a `LazyMotion` feature provider. The popup renders in
+                  a portal (outside the trigger's own provider), so wrap it here —
+                  mirrors `Menu.Content`, whose provider the menu-backed combobox
+                  used to rely on. */}
+              <LazyMotion features={domAnimation}>
+                <Stack direction="column" gap="1" tgphRef={internalContentRef}>
+                  {children}
+                </Stack>
+              </LazyMotion>
             </Stack>,
           )}
         />
@@ -921,6 +930,9 @@ const Option = <T extends TgphElement>({
     ? contextValue.includes(value)
     : contextValue === value;
 
+  // Depend on the specific stable context values rather than the whole (per-
+  // render) context object, so this callback isn't rebuilt every Root render.
+  const { closeOnSelect, setOpen } = context;
   const handleClick = useCallback(
     (event: ReactMouseEvent<HTMLElement>) => {
       if (!onSelect) {
@@ -930,13 +942,13 @@ const Option = <T extends TgphElement>({
       // Base UI has no per-item select callback, and its own commit for this
       // item is canceled at the Root value bridge (the item is given no
       // committable value), so run the override here.
-      if (context.closeOnSelect === true) {
-        context.setOpen(false);
+      if (closeOnSelect === true) {
+        setOpen(false);
       }
 
       onSelect(event.nativeEvent);
     },
-    [onSelect, context],
+    [onSelect, closeOnSelect, setOpen],
   );
 
   if (!isVisible) {
@@ -977,7 +989,13 @@ const Option = <T extends TgphElement>({
   );
 };
 
-export type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
+// `value`/`defaultValue` are omitted: Base UI owns the input's value (a
+// DOM-controlled value races its store and drops keystrokes), so a controlled
+// Search observes/updates the query through `onValueChange`, not `value`.
+export type SearchProps = RemappedOmit<
+  TgphComponentProps<typeof TelegraphInput>,
+  "value" | "defaultValue"
+> & {
   label?: string;
 };
 
@@ -998,17 +1016,12 @@ const Search = ({
   label = "Search",
   placeholder = "Search",
   tgphRef,
-  value: controlledValueProp,
   onValueChange: onValueChangeProp,
   ...props
 }: SearchProps) => {
   const id = useId();
   const context = useContext(ComboboxContext);
   const composedRef = useComposedRefs(tgphRef, context.searchRef);
-
-  // Destructured only to keep `value` off the (uncontrolled) Base UI input; a
-  // consumer-controlled Search observes/updates the query through onValueChange.
-  void controlledValueProp;
 
   return (
     <Box borderBottom="px" px="1" pb="1">
