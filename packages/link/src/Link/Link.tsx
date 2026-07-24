@@ -116,6 +116,7 @@ const Icon = <T extends TgphElement = "span">(linkIconProps: IconProps<T>) => {
       size={size ?? LINK_ICON_SIZE_MAP[context.size]}
       color={color ?? context.color}
       data-link-icon
+      aria-hidden={true}
       {...props}
     />
   );
