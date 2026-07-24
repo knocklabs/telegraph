@@ -1,3 +1,4 @@
+import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import {
   type ButtonRootProps,
@@ -36,6 +37,7 @@ import {
   type ReactNode,
   type Ref,
   type RefObject,
+  type SetStateAction,
   createContext,
   isValidElement,
   useCallback,
@@ -61,22 +63,15 @@ import {
 import { OptionItem, type OptionItemProps } from "./Combobox.optionItem";
 import { Primitives } from "./Combobox.primitives";
 import type {
+  ComboboxActions,
+  ComboboxChangeDetails,
   ComboboxHighlightDetails,
+  ComboboxSelectionMode,
   ComboboxValue,
   DefinedOption,
   MultiSelect,
   SingleSelect,
 } from "./Combobox.types";
-
-// Base UI's change callbacks pass a cancelable details object as the second
-// argument. We only need `cancel`, `reason`, and the underlying DOM `event`, so
-// describe just that surface instead of importing Base UI's internal type.
-type BaseUIChangeEventDetails = {
-  cancel: () => void;
-  isCanceled: boolean;
-  reason: string;
-  event: Event;
-};
 
 type BaseUIFocusEvent = ReactFocusEvent<HTMLElement> & {
   preventBaseUIHandler?: () => void;
@@ -103,7 +98,9 @@ export type RootProps<V extends ComboboxValue = string> = {
   defaultOpen?: boolean;
   errored?: boolean;
   placeholder?: string;
-  onOpenChange?: (open: boolean) => void;
+  // The optional second `details` argument is additive: existing single-argument
+  // handlers stay assignable. It carries Base UI's change `reason` and `cancel()`.
+  onOpenChange?: (open: boolean, details?: ComboboxChangeDetails) => void;
   modal?: boolean;
   closeOnSelect?: boolean;
   clearable?: boolean;
@@ -125,6 +122,33 @@ export type RootProps<V extends ComboboxValue = string> = {
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
+  // --- Additive (T5): input-as-trigger + free-text arrangement -------------
+  // Selection semantics. `undefined` keeps the historical inference from the
+  // `value` shape (single vs. multiple). `"none"` renders the free-text
+  // Autocomplete root, where there is no selected value and the input text is
+  // the state.
+  selectionMode?: ComboboxSelectionMode;
+  // Controlled input text, distinct from the selected `value`. Only meaningful
+  // with a `Combobox.Input` anchor (and the sole state in `selectionMode="none"`).
+  inputValue?: string;
+  defaultInputValue?: string;
+  onInputValueChange?: (value: string, details: ComboboxChangeDetails) => void;
+  // Filtering/inline-autocomplete behavior for `selectionMode="none"`.
+  autocompleteMode?: "list" | "inline" | "both" | "none";
+  // Highlight the first match while typing. Defaults to the historical on for
+  // single/multiple (keeps the typeahead + `filteredItems` mechanism) and off
+  // for free text.
+  autoHighlight?: boolean;
+  // Whether clicking the anchor input opens the popup. Defaults to false for
+  // free text and true otherwise (Base UI's per-root defaults).
+  openOnInputClick?: boolean;
+  // Whether arrow-key focus loops between the input and the list ends.
+  loopFocus?: boolean;
+  onItemHighlighted?: (
+    value: string | undefined,
+    details: ComboboxHighlightDetails,
+  ) => void;
+  actionsRef?: RefObject<ComboboxActions | null>;
   children?: ReactNode;
 };
 
@@ -133,7 +157,10 @@ export const ComboboxContext = createContext<
     contentId: string;
     triggerId: string;
     open: boolean;
-    setOpen: (open: boolean) => void;
+    setOpen: (
+      open: SetStateAction<boolean>,
+      details?: ComboboxChangeDetails,
+    ) => void;
     onOpenToggle: () => void;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
@@ -141,6 +168,9 @@ export const ComboboxContext = createContext<
     triggerRef?: RefObject<HTMLButtonElement>;
     searchRef?: RefObject<HTMLInputElement>;
     contentRef?: RefObject<HTMLDivElement>;
+    // The anchor `Combobox.Input`, when used instead of a button `Trigger`.
+    // Focus lives here across open/type/navigate/select (virtual focus).
+    anchorInputRef?: RefObject<HTMLInputElement>;
     onEscapeKeyDown?: (event: KeyboardEvent) => void;
     // Content registers its escape handler here so the Root-level Base UI
     // `onOpenChange` bridge can honor a consumer preventing dismissal.
@@ -155,6 +185,11 @@ export const ComboboxContext = createContext<
     // An option can opt into closing when Root keeps the popup open globally.
     // The click handler sets this before Base UI commits the selection.
     optionCloseOnClickRef?: RefObject<boolean>;
+    // Resolved selection mode (never `undefined`), so parts can branch behavior
+    // (e.g. Content skips the hidden popup input when the anchor input owns it).
+    resolvedSelectionMode: ComboboxSelectionMode;
+    // Whether a `Combobox.Input` anchor is rendered as a direct child of Root.
+    hasAnchorInput: boolean;
   }
 >({
   value: undefined,
@@ -169,6 +204,8 @@ export const ComboboxContext = createContext<
   options: [],
   hasSearch: false,
   manualFiltering: false,
+  resolvedSelectionMode: "single",
+  hasAnchorInput: false,
 });
 
 const CreateIndexContext = createContext<number | undefined>(undefined);
@@ -190,6 +227,15 @@ const ON_SELECT_ITEM_VALUE = Object.freeze({}) as unknown as string;
 const isOnSelectItemValue = (value: unknown): boolean =>
   value === ON_SELECT_ITEM_VALUE;
 
+// In `selectionMode="none"` Base UI fills the input from a pressed item's value
+// (`fillInputOnItemPress`, baked into Autocomplete.Root). For an action item the
+// value is the sentinel object, which Base UI serializes with `JSON.stringify`
+// to this string. Recognizing it lets the Root cancel that one fill so pressing
+// a Create/inert row never corrupts the free-text input.
+const ON_SELECT_ITEM_FILL = JSON.stringify(ON_SELECT_ITEM_VALUE);
+
+// Base UI's change `reason` for an item press (pointer or Enter on an option).
+const ITEM_PRESS_REASON = "item-press";
 const Root = <V extends ComboboxValue = string>({
   modal = true,
   closeOnSelect = true,
@@ -207,6 +253,16 @@ const Root = <V extends ComboboxValue = string>({
   manualFiltering: manualFilteringProp,
   onItemHighlighted: onItemHighlightedProp,
   defaultScrollToValue,
+  selectionMode: selectionModeProp,
+  inputValue: inputValueProp,
+  defaultInputValue: defaultInputValueProp,
+  onInputValueChange: onInputValueChangeProp,
+  autocompleteMode = "list",
+  autoHighlight: autoHighlightProp,
+  openOnInputClick: openOnInputClickProp,
+  loopFocus: loopFocusProp,
+  onItemHighlighted: onItemHighlightedProp,
+  actionsRef,
   children,
 }: RootProps<V>) => {
   const contentId = useId();
@@ -214,6 +270,7 @@ const Root = <V extends ComboboxValue = string>({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const anchorInputRef = useRef<HTMLInputElement>(null);
   const onEscapeKeyDownRef = useRef<
     ((event: KeyboardEvent) => void) | undefined
   >(undefined);
@@ -235,18 +292,50 @@ const Root = <V extends ComboboxValue = string>({
   // part of `options`, so `filteredItems` must reserve a slot for it (below).
   const hasCreate = useMemo(() => childrenContainCreate(children), [children]);
 
-  // Single- vs multi-select is derived from the value shape. Consumers are
-  // expected to keep that shape stable (multi-select initializes with an array);
-  // Base UI does not support the `multiple` flag flipping after mount.
-  const multiple = useMemo(
+  // Whether a `Combobox.Input` anchor is rendered (input-as-trigger arrangement)
+  // instead of the button `Combobox.Trigger`.
+  const hasAnchorInput = useMemo(
+    () => childrenContainInput(children),
+    [children],
+  );
+
+  // Single- vs multi-select is derived from the value shape; an explicit
+  // `selectionMode` overrides it. Consumers should keep that shape stable
+  // (multi-select initializes with an array); Base UI does not support the
+  // `multiple` flag flipping after mount.
+  const inferredMultiple = useMemo(
     () => isMultiSelect(valueProp) || isMultiSelect(defaultValueProp),
     [valueProp, defaultValueProp],
   );
+  const resolvedSelectionMode: ComboboxSelectionMode =
+    selectionModeProp ?? (inferredMultiple ? "multiple" : "single");
+  const isNoneMode = resolvedSelectionMode === "none";
+  const multiple = resolvedSelectionMode === "multiple";
+
+  // Free-text (`selectionMode="none"`) input text. Telegraph always controls the
+  // Autocomplete root's value (from this state or the consumer's `inputValue`) so
+  // that (a) a genuinely controlled `inputValue` is lossless — driven through the
+  // engine's own value/onValueChange rather than a separate DOM-controlled input,
+  // which is what dropped keystrokes in T4 — and (b) an item-press fill of the
+  // action-item sentinel can be cancelled before it reaches state.
+  const isInputControlled = inputValueProp !== undefined;
+  const [uncontrolledInputValue, setUncontrolledInputValue] = useState<string>(
+    () => defaultInputValueProp ?? "",
+  );
+  const resolvedInputValue = isInputControlled
+    ? (inputValueProp as string)
+    : uncontrolledInputValue;
 
   const [uncontrolledSearchQuery, setSearchQuery] = useState<string>(
-    () => searchControl?.defaultValue ?? "",
+    () =>
+      searchControl?.defaultValue ??
+      inputValueProp ??
+      defaultInputValueProp ??
+      "",
   );
-  const searchQuery = searchControl?.value ?? uncontrolledSearchQuery;
+  const searchQuery = isNoneMode
+    ? resolvedInputValue
+    : (searchControl?.value ?? inputValueProp ?? uncontrolledSearchQuery);
 
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
@@ -295,13 +384,46 @@ const Root = <V extends ComboboxValue = string>({
 
     return { filteredItems: values, createIndex: nextCreateIndex };
   }, [options, searchQuery, hasCreate, manualFiltering]);
-  // Keep open state controllable like the old menu-backed implementation while
-  // still allowing uncontrolled usage through defaultOpen.
-  const [open = false, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpenProp ?? false,
-    onChange: onOpenChangeProp,
-  });
+  // Open state, kept controllable like the old menu-backed implementation. This
+  // mirrors `useControllableState` (same no-op-on-equal and updater semantics)
+  // but threads Base UI's change `details` to the consumer's `onOpenChange` as an
+  // additive optional second argument. Existing single-argument handlers ignore it.
+  const isOpenControlled = openProp !== undefined;
+  const [uncontrolledOpen, setUncontrolledOpen] = useState<boolean>(
+    defaultOpenProp ?? false,
+  );
+  const uncontrolledOpenRef = useRef(uncontrolledOpen);
+  useEffect(() => {
+    uncontrolledOpenRef.current = uncontrolledOpen;
+  }, [uncontrolledOpen]);
+  const open = isOpenControlled ? (openProp as boolean) : uncontrolledOpen;
+
+  const setOpen = useCallback(
+    (
+      nextOrUpdater: SetStateAction<boolean>,
+      details?: ComboboxChangeDetails,
+    ) => {
+      const current = isOpenControlled
+        ? (openProp as boolean)
+        : uncontrolledOpenRef.current;
+      const nextOpen =
+        typeof nextOrUpdater === "function"
+          ? nextOrUpdater(current)
+          : nextOrUpdater;
+
+      if (Object.is(current, nextOpen)) {
+        return;
+      }
+
+      if (!isOpenControlled) {
+        uncontrolledOpenRef.current = nextOpen;
+        setUncontrolledOpen(nextOpen);
+      }
+
+      onOpenChangeProp?.(nextOpen, details);
+    },
+    [isOpenControlled, openProp, onOpenChangeProp],
+  );
 
   const [value, setValue] = useControllableState({
     prop: valueProp,
@@ -314,10 +436,21 @@ const Root = <V extends ComboboxValue = string>({
   }, [setOpen]);
 
   useEffect(() => {
-    if (!open) {
+    // Free text persists across open/close (the anchor input is the state), so
+    // only the in-popup search query is reset on close.
+    if (!open && !isNoneMode) {
       setSearchQuery("");
     }
-  }, [open]);
+  }, [open, isNoneMode]);
+
+  // In free-text mode the input text drives children-mode filtering, so keep the
+  // search query synced to it (covers the initial/default value and consumer-
+  // driven controlled `inputValue` changes).
+  useEffect(() => {
+    if (isNoneMode) {
+      setSearchQuery(resolvedInputValue ?? "");
+    }
+  }, [isNoneMode, resolvedInputValue]);
 
   // `null` keeps Base UI controlled while representing "no selection".
   const baseValue = useMemo<string | Array<string> | null>(() => {
@@ -335,7 +468,7 @@ const Root = <V extends ComboboxValue = string>({
   const handleBaseValueChange = useCallback(
     (
       next: string | Array<string> | null,
-      eventDetails: BaseUIChangeEventDetails,
+      eventDetails: ComboboxChangeDetails,
     ) => {
       const array = multiple && Array.isArray(next) ? next : [];
       const isActionItem = multiple
@@ -350,7 +483,7 @@ const Root = <V extends ComboboxValue = string>({
       // Preserve the menu-backed callback order. Controlled callers observe the
       // popup close before they receive the selected value.
       if (closeOnSelect === true) {
-        setOpen(false);
+        setOpen(false, eventDetails);
       }
 
       if (multiple) {
@@ -372,7 +505,7 @@ const Root = <V extends ComboboxValue = string>({
   );
 
   const handleBaseOpenChange = useCallback(
-    (nextOpen: boolean, eventDetails: BaseUIChangeEventDetails) => {
+    (nextOpen: boolean, eventDetails: ComboboxChangeDetails) => {
       const reason = eventDetails.reason;
 
       if (!nextOpen) {
@@ -383,7 +516,9 @@ const Root = <V extends ComboboxValue = string>({
           if (!closeOnSelect && !optionCloseOnClickRef.current) {
             eventDetails.cancel();
           }
-          return;
+          if (!isNoneMode || !closeOnSelect) {
+            return;
+          }
         }
 
         if (reason === "escape-key") {
@@ -399,14 +534,39 @@ const Root = <V extends ComboboxValue = string>({
         }
       }
 
-      setOpen(nextOpen);
+      setOpen(nextOpen, eventDetails);
     },
-    [closeOnSelect, setOpen],
+    [setOpen, isNoneMode, closeOnSelect],
   );
 
-  const handleInputValueChange = useCallback((nextValue: string) => {
-    setSearchQuery(nextValue);
-  }, []);
+  const handleInputValueChange = useCallback(
+    (nextValue: string, eventDetails: ComboboxChangeDetails) => {
+      // Free-text mode: Base UI fills the input from a pressed item's value.
+      // For an action item (Create/inert row) that value is the sentinel, which
+      // serializes to `ON_SELECT_ITEM_FILL`; cancel that single fill so it never
+      // replaces the user's free text. Real options still fill as usual.
+      if (
+        isNoneMode &&
+        eventDetails?.reason === ITEM_PRESS_REASON &&
+        nextValue === ON_SELECT_ITEM_FILL
+      ) {
+        eventDetails.cancel();
+        return;
+      }
+
+      // Mirror the query so children-mode filtering runs (both arrangements).
+      setSearchQuery(nextValue);
+
+      // In free text, Telegraph owns the (always-controlled) input value unless
+      // the consumer controls it via `inputValue`.
+      if (isNoneMode && !isInputControlled) {
+        setUncontrolledInputValue(nextValue);
+      }
+
+      onInputValueChangeProp?.(nextValue, eventDetails);
+    },
+    [isNoneMode, isInputControlled, onInputValueChangeProp],
+  );
 
   // TRANSITIONAL compatibility bridge: the menu-backed combobox moved DOM
   // focus through its options. Base UI uses virtual focus instead, but legacy
@@ -469,6 +629,7 @@ const Root = <V extends ComboboxValue = string>({
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
         searchRef: searchRef as RefObject<HTMLInputElement>,
         contentRef: contentRef as RefObject<HTMLDivElement>,
+        anchorInputRef: anchorInputRef as RefObject<HTMLInputElement>,
         onEscapeKeyDownRef,
         errored,
         layout,
@@ -477,36 +638,88 @@ const Root = <V extends ComboboxValue = string>({
         defaultScrollToValue,
         createIndex,
         optionCloseOnClickRef,
+        resolvedSelectionMode,
+        hasAnchorInput,
       }}
     >
-      <BaseCombobox.Root
-        // Children mode: no `items`, so Base UI performs no filtering and drives
-        // selection/highlight/virtual-focus off the mounted `Combobox.Item`s.
-        multiple={multiple}
-        value={baseValue}
-        onValueChange={
-          handleBaseValueChange as (value: unknown, details: unknown) => void
-        }
-        open={open}
-        onOpenChange={
-          handleBaseOpenChange as (open: boolean, details: unknown) => void
-        }
-        onInputValueChange={handleInputValueChange}
-        onItemHighlighted={handleBaseItemHighlighted}
-        inputValue={searchQuery}
-        // Seed the highlight on the first match after the query changes so
-        // pressing Enter selects it, mirroring the old typeahead behavior.
-        autoHighlight
-        // The rendered options stay the `Combobox.Option` children; this list
-        // only exists so Base UI re-seeds the type-to-filter highlight per
-        // keystroke and bounds it to the mounted rows. See the `filteredItems`
-        // memo above for why it is computed conservatively.
-        filteredItems={filteredItems}
-        modal={modal}
-        disabled={disabled}
-      >
-        {children}
-      </BaseCombobox.Root>
+      {isNoneMode ? (
+        <BaseAutocomplete.Root
+          // Same AriaCombobox engine with selectionMode="none" baked in; its
+          // value/onValueChange ARE the input text (no selected value). Telegraph
+          // always controls that value so a controlled `inputValue` is lossless
+          // and action-item fills can be cancelled at `handleInputValueChange`.
+          value={resolvedInputValue}
+          onValueChange={
+            handleInputValueChange as (value: string, details: unknown) => void
+          }
+          // Filtering/inline-autocomplete behavior (default "list").
+          mode={autocompleteMode}
+          open={open}
+          onOpenChange={
+            handleBaseOpenChange as (open: boolean, details: unknown) => void
+          }
+          // Children mode: options are mounted `Combobox.Item`s; this list only
+          // re-seeds the type-to-filter highlight and bounds it to the rows.
+          filteredItems={filteredItems}
+          autoHighlight={autoHighlightProp ?? false}
+          openOnInputClick={openOnInputClickProp}
+          loopFocus={loopFocusProp}
+          onItemHighlighted={
+            handleBaseItemHighlighted as (
+              value: unknown,
+              details: unknown,
+            ) => void
+          }
+          actionsRef={actionsRef}
+          modal={modal}
+          disabled={disabled}
+        >
+          {children}
+        </BaseAutocomplete.Root>
+      ) : (
+        <BaseCombobox.Root
+          // Children mode: no `items`, so Base UI performs no filtering and drives
+          // selection/highlight/virtual-focus off the mounted `Combobox.Item`s.
+          multiple={multiple}
+          value={baseValue}
+          onValueChange={
+            handleBaseValueChange as (value: unknown, details: unknown) => void
+          }
+          open={open}
+          onOpenChange={
+            handleBaseOpenChange as (open: boolean, details: unknown) => void
+          }
+          onInputValueChange={
+            handleInputValueChange as (value: string, details: unknown) => void
+          }
+          // Preserve the historical typeahead: seed the highlight on the first
+          // match after the query changes so pressing Enter selects it.
+          autoHighlight={autoHighlightProp ?? true}
+          // Telegraph controls the engine input from either Root input props,
+          // controlled Search props, or its mirrored internal query. Keeping a
+          // single source of truth makes consumer rewrites and clear actions
+          // render without racing Base UI's internal input state.
+          inputValue={searchQuery}
+          openOnInputClick={openOnInputClickProp}
+          loopFocus={loopFocusProp}
+          onItemHighlighted={
+            handleBaseItemHighlighted as (
+              value: unknown,
+              details: unknown,
+            ) => void
+          }
+          actionsRef={actionsRef}
+          // The rendered options stay the `Combobox.Option` children; this list
+          // only exists so Base UI re-seeds the type-to-filter highlight per
+          // keystroke and bounds it to the mounted rows. See the `filteredItems`
+          // memo above for why it is computed conservatively.
+          filteredItems={filteredItems}
+          modal={modal}
+          disabled={disabled}
+        >
+          {children}
+        </BaseCombobox.Root>
+      )}
     </ComboboxContext.Provider>
   );
 };
@@ -664,6 +877,73 @@ const Trigger = <V extends ChildrenValue>({
   );
 };
 
+// A `@telegraph/input`-styled anchor/trigger. Rendered as a direct child of
+// `Combobox.Root` (outside the positioner) so Base UI's `Combobox.Input` becomes
+// the anchor: it owns `role="combobox"`, aria-expanded/controls/activedescendant,
+// and virtual focus, and the popup opens beneath it (bound to its width via
+// `--anchor-width`). The real `<input>`, its value, onChange, role and aria all
+// come from Base UI's Input; Telegraph only supplies the styled shell/slots.
+//
+// `value`/`onChange` are intentionally omitted from the public props: the engine
+// owns the input text (drive it with `Combobox.Root`'s `inputValue` /
+// `onInputValueChange`, or its `value` in `selectionMode="none"`). An input
+// rendered inside `Combobox.Content` is a `Combobox.Search`, not this part.
+export type InputProps = RemappedOmit<
+  TelegraphInputProps<"input">,
+  "value" | "onChange" | "defaultValue"
+>;
+
+const Input = ({
+  size = "2",
+  variant = "outline",
+  placeholder,
+  errored,
+  disabled,
+  LeadingComponent,
+  TrailingComponent,
+  tgphRef,
+  ...props
+}: InputProps) => {
+  const context = useContext(ComboboxContext);
+  const composedRef = useComposedRefs(tgphRef, context.anchorInputRef);
+  // Resolve disabled/errored from the local prop, falling back to Root-level.
+  const isDisabled = disabled ?? context.disabled;
+  const isErrored = errored ?? context.errored;
+
+  return (
+    <BaseCombobox.Input
+      // Feed disabled to Base UI's Input (not only the styled child) so the
+      // engine's own store/behavior — keyboard, open-on-click, ARIA — matches
+      // the visual state even when disabled is set locally rather than on Root.
+      // (Base UI computes disabled as fieldDisabled || store.disabled || this.)
+      disabled={isDisabled}
+      // Do NOT pass a controlled `value` to Base UI's input: the anchor input's
+      // value is owned by the engine (fed from the Root's controlled input text),
+      // which is what keeps fast typing lossless. A DOM-controlled value here is
+      // exactly the path that raced Base UI and dropped keystrokes in T4.
+      render={createTgphBaseUIRender(
+        <TelegraphInput
+          size={size}
+          variant={variant}
+          // Fall back to the Root-level placeholder/errored/disabled when unset.
+          placeholder={placeholder ?? context.placeholder}
+          errored={isErrored}
+          disabled={isDisabled}
+          LeadingComponent={LeadingComponent}
+          TrailingComponent={TrailingComponent}
+          // Point at the listbox (the Telegraph List forces id={contentId}); the
+          // child's explicit value wins the render merge over Base UI's internal
+          // list id, matching how Trigger and Search wire aria-controls.
+          aria-controls={context.contentId}
+          data-tgph-combobox-input
+          {...props}
+          tgphRef={composedRef}
+        />,
+      )}
+    />
+  );
+};
+
 // The public Content surface mirrors the props consumers relied on from the
 // menu-backed implementation. Positioning props flow to the Base UI positioner;
 // the remainder are Stack style props for the popup surface.
@@ -728,10 +1008,10 @@ const Content = <T extends TgphElement = "div">({
   const [initialAnimationComplete, setInitialAnimationComplete] =
     useState(false);
 
-  // Root can identify a direct Combobox.Search before the popup mounts. Wrapper
-  // components cannot be inspected before React renders them, so they keep the
-  // hidden virtual-focus input as a fallback.
-  const needsHiddenInput = !context.hasSearch;
+  // Root can identify direct Combobox.Search and Combobox.Input elements before
+  // the popup mounts. Wrapper components cannot be inspected before React
+  // renders them, so they keep the hidden virtual-focus input as a fallback.
+  const needsHiddenInput = !context.hasSearch && !context.hasAnchorInput;
 
   // Register the escape handler so the Root-level open-change bridge can call it
   // and honor a consumer preventing dismissal.
@@ -749,9 +1029,10 @@ const Content = <T extends TgphElement = "div">({
   // itself, but only on a later animation frame, which would drop keystrokes
   // typed immediately after opening. Focusing here (a layout effect) lands
   // focus before that frame; Base UI's later focus targets the same input.
-  // Skipped when a consumer supplies `onOpenAutoFocus` — they own open-focus.
+  // Skipped in the input-as-trigger arrangement (focus stays on the anchor
+  // input) and when a consumer supplies `onOpenAutoFocus` (they own open-focus).
   useLayoutEffect(() => {
-    if (!context.open || onOpenAutoFocus) return;
+    if (!context.open || context.hasAnchorInput || onOpenAutoFocus) return;
     const content = context.contentRef?.current;
     const input =
       content?.querySelector<HTMLInputElement>("[data-tgph-combobox-search]") ??
@@ -759,7 +1040,13 @@ const Content = <T extends TgphElement = "div">({
         "[data-tgph-combobox-input-hidden]",
       );
     input?.focus();
-  }, [context.open, context.contentRef, needsHiddenInput, onOpenAutoFocus]);
+  }, [
+    context.open,
+    context.contentRef,
+    context.hasAnchorInput,
+    needsHiddenInput,
+    onOpenAutoFocus,
+  ]);
 
   const setHeightFromContent = useCallback(
     (element: Element) => {
@@ -829,6 +1116,11 @@ const Content = <T extends TgphElement = "div">({
     }
 
     if (!onCloseAutoFocus) {
+      // Input-as-trigger: focus lives on the anchor input throughout, so let Base
+      // UI keep it there (there is no button trigger to return focus to).
+      if (context.hasAnchorInput) {
+        return true;
+      }
       return (closeType: string) =>
         closeType === "keyboard" ? context.triggerRef?.current : true;
     }
@@ -838,7 +1130,12 @@ const Content = <T extends TgphElement = "div">({
       onCloseAutoFocus(event);
       return event.defaultPrevented ? false : true;
     };
-  }, [finalFocus, onCloseAutoFocus, context.triggerRef]);
+  }, [
+    finalFocus,
+    onCloseAutoFocus,
+    context.triggerRef,
+    context.hasAnchorInput,
+  ]);
 
   // Bridge the old `onOpenAutoFocus` onto Base UI's `initialFocus`. Preventing
   // the legacy event cancels Base UI's move; otherwise return the popup input so
@@ -858,6 +1155,7 @@ const Content = <T extends TgphElement = "div">({
         return false;
       }
       return (
+        context.anchorInputRef?.current ??
         context.searchRef?.current ??
         context.contentRef?.current?.querySelector<HTMLInputElement>(
           "[data-tgph-combobox-search], [data-tgph-combobox-input-hidden]",
@@ -865,7 +1163,12 @@ const Content = <T extends TgphElement = "div">({
         null
       );
     };
-  }, [onOpenAutoFocus, context.searchRef, context.contentRef]);
+  }, [
+    onOpenAutoFocus,
+    context.anchorInputRef,
+    context.searchRef,
+    context.contentRef,
+  ]);
 
   const stackProps = props as StackProps;
 
@@ -978,7 +1281,8 @@ const Content = <T extends TgphElement = "div">({
               }}
             >
               {/* Virtual focus needs an input in the popup even without a
-                  visible Search; mount a hidden one in that case. */}
+                  visible Search; mount a hidden one in that case (but not when an
+                  anchor `Combobox.Input` already owns the combobox input). */}
               {needsHiddenInput ? (
                 <VisuallyHidden>
                   <BaseCombobox.Input
@@ -1410,6 +1714,8 @@ const findSearchControl = (children: ReactNode): SearchControl | undefined => {
 const isOptionElement = (element: ReactElement) => {
   if (element.type === Option) return true;
   if (element.type === Search) return false;
+  // The anchor input is not an option (and carries no committable value).
+  if (element.type === Input) return false;
 
   const props = element.props as {
     value?: unknown;
@@ -1434,6 +1740,28 @@ const isOptionElement = (element: ReactElement) => {
 
 const isOptionsElement = (element: ReactElement) => element.type === Options;
 
+// Walk the Root children for a `Combobox.Input` anchor so Root can flag the
+// input-as-trigger arrangement (Content then skips its hidden popup input, and
+// focus/finalFocus stay on the anchor input).
+const childrenContainInput = (children: ReactNode): boolean => {
+  let found = false;
+  Children.forEach(children, (child) => {
+    if (found || !(typeof child === "object" && child !== null)) return;
+    const element = child as ReactElement<{ children?: ReactNode }>;
+    if (element.type === Input) {
+      found = true;
+      return;
+    }
+    // Stop at Content: an input inside the popup is a Search, not the anchor.
+    if (element.type === Content) {
+      return;
+    }
+    if (element.props?.children) {
+      found = childrenContainInput(element.props.children);
+    }
+  });
+  return found;
+};
 // Whether an option's label/children can render text that the Root can't read
 // statically — i.e. it contains a component element that may produce searchable
 // text from its own props/state (captured per-option after mount as
@@ -1582,6 +1910,7 @@ const childrenContainCreate = (children: ReactNode): boolean => {
 const Combobox = {} as {
   Root: typeof Root;
   Trigger: typeof Trigger;
+  Input: typeof Input;
   Content: typeof Content;
   Options: typeof Options;
   Option: typeof Option;
@@ -1594,6 +1923,7 @@ const Combobox = {} as {
 Object.assign(Combobox, {
   Root,
   Trigger,
+  Input,
   Content,
   Options,
   Option,

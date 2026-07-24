@@ -30,6 +30,23 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxCreateProps>().not.toHaveProperty("notARealProp");
   });
 
+  it("keeps autocomplete behavior separate from consumer mode props", () => {
+    type ConsumerProps = ComboboxRootProps<string> & {
+      mode: "compose" | "preview";
+    };
+
+    expectTypeOf<ComboboxRootProps<string>>().not.toHaveProperty("mode");
+    expectTypeOf<ComboboxRootProps<string>>().not.toHaveProperty(
+      "autoComplete",
+    );
+    expectTypeOf<
+      ComboboxRootProps<string>["autocompleteMode"]
+    >().toEqualTypeOf<"list" | "inline" | "both" | "none" | undefined>();
+    expectTypeOf<ConsumerProps["mode"]>().toEqualTypeOf<
+      "compose" | "preview"
+    >();
+  });
+
   it("keeps declared props narrow", () => {
     expectTypeOf<ComboboxRootProps<string>["value"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().not.toBeAny();

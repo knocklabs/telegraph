@@ -127,6 +127,70 @@ const ControlledOpenCombobox = ({
   );
 };
 
+// --- T5: input-as-trigger + free-text (none) arrangements ------------------
+
+// The `@telegraph/input`-styled anchor replaces the button trigger. There is no
+// `Combobox.Search`; the anchor input owns role="combobox" and virtual focus.
+const ComboboxInputTrigger = ({ ...props }) => {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      placeholder="Search a channel"
+      {...props}
+    >
+      <Combobox.Input />
+      <Combobox.Content>
+        <Combobox.Options>
+          {VALUES.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {LABELS[index]}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+// Free text: value === label so a pressed suggestion fills readable text.
+const FREE_TEXT_CHANNELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
+const FreeTextCombobox = ({
+  onInputValueChange,
+  ...props
+}: {
+  onInputValueChange?: (value: string) => void;
+  [key: string]: unknown;
+}) => {
+  const [inputValue, setInputValue] = useState("");
+  return (
+    <Combobox.Root
+      selectionMode="none"
+      inputValue={inputValue}
+      onInputValueChange={(next) => {
+        setInputValue(next);
+        onInputValueChange?.(next);
+      }}
+      placeholder="Type or pick a channel"
+      {...props}
+    >
+      <Combobox.Input />
+      <Combobox.Content>
+        <Combobox.Options>
+          {FREE_TEXT_CHANNELS.map((channel) => (
+            <Combobox.Option key={channel} value={channel}>
+              {channel}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
 describe("Combobox", () => {
   it("keeps the animated trigger tag when a spread supplies `as`", () => {
     const smuggled = { as: "b" } as Record<string, unknown>;
