@@ -1,5 +1,15 @@
 # @telegraph/postcss-config
 
+## 0.1.8
+
+### Patch Changes
+
+- [#896](https://github.com/knocklabs/telegraph/pull/896) [`4a13017`](https://github.com/knocklabs/telegraph/commit/4a13017eba10d8837cb032dbf79739b72f0b5b20) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.19 to 8.5.20
+
+- [#900](https://github.com/knocklabs/telegraph/pull/900) [`c8e655e`](https://github.com/knocklabs/telegraph/commit/c8e655e6ec97e929a71a078b26c1f19097db20c4) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss-discard-empty from 8.0.0 to 8.0.1
+
+- [#904](https://github.com/knocklabs/telegraph/pull/904) [`9a9ef1e`](https://github.com/knocklabs/telegraph/commit/9a9ef1e22523d676ca00885f2a4e5f27d0a1149d) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.20 to 8.5.21
+
 ## 0.1.7
 
 ### Patch Changes
