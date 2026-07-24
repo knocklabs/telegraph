@@ -114,8 +114,10 @@ export type RootProps<
   inputValue?: string;
   defaultInputValue?: string;
   onInputValueChange?: (value: string, details: ComboboxChangeDetails) => void;
-  // Filtering/inline-autocomplete mode for `selectionMode="none"`.
-  autoComplete?: "list" | "inline" | "both" | "none";
+  // Filtering/inline-autocomplete mode for `selectionMode="none"` (Base UI's
+  // `Autocomplete` `mode`). Named `mode` rather than `autoComplete` to match Base
+  // UI and avoid colliding with the native input autofill hint.
+  mode?: "list" | "inline" | "both" | "none";
   // Highlight the first match while typing. Defaults to the historical on for
   // single/multiple (keeps the typeahead + `filteredItems` mechanism) and off
   // for free text.
@@ -197,7 +199,12 @@ export const ComboboxContext = createContext<
 // "no selection", while Base UI's own commit is still cancelled for them at the
 // value bridge below. It is only ever a Base UI item value; it never reaches the
 // public value shape.
-const ON_SELECT_ITEM_VALUE = Object.freeze({}) as unknown as string;
+// The marker key is deliberately unusual — and not `label`/`value`, which Base
+// UI would surface as the fill text — so the value serializes (via
+// `ON_SELECT_ITEM_FILL`) to a string no real option value could collide with.
+const ON_SELECT_ITEM_VALUE = Object.freeze({
+  __tgphActionItem: true,
+}) as unknown as string;
 
 // Whether a value Base UI is trying to commit is the action-item sentinel, in
 // which case Base UI's selection must be cancelled.
@@ -213,6 +220,17 @@ const ON_SELECT_ITEM_FILL = JSON.stringify(ON_SELECT_ITEM_VALUE);
 
 // Base UI's change `reason` for an item press (pointer or Enter on an option).
 const ITEM_PRESS_REASON = "item-press";
+
+// Base UI change reasons where the USER edited the input text. Only these
+// should update the children-mode search query; Base UI also fires
+// `onInputValueChange` for programmatic label resyncs (reason `"none"`) and
+// item-press fills, and mirroring those would leave a reopened list wrongly
+// pre-filtered to the selected option's label.
+const USER_INPUT_REASONS = new Set<string>([
+  "input-change",
+  "input-clear",
+  "input-paste",
+]);
 
 // Resolve a Base UI string value back into the legacy `{ value, label }` option
 // object the public API emits when `legacyBehavior` is enabled.
@@ -248,7 +266,7 @@ const Root = <
   inputValue: inputValueProp,
   defaultInputValue: defaultInputValueProp,
   onInputValueChange: onInputValueChangeProp,
-  autoComplete = "list",
+  mode = "list",
   autoHighlight: autoHighlightProp,
   openOnInputClick: openOnInputClickProp,
   loopFocus: loopFocusProp,
@@ -415,12 +433,16 @@ const Root = <
     setOpen((prevOpen) => !prevOpen);
   }, [setOpen]);
 
+  const wasOpenRef = useRef(open);
   useEffect(() => {
-    // Free text persists across open/close (the anchor input is the state), so
-    // only the in-popup search query is reset on close.
-    if (!open && !isNoneMode) {
+    // Reset the in-popup search query when the popup closes — but only on the
+    // open→close transition, not on mount, which would otherwise wipe an initial
+    // `inputValue`/`defaultInputValue`. Free text persists across open/close (the
+    // anchor input is the state), so it is never reset here.
+    if (wasOpenRef.current && !open && !isNoneMode) {
       setSearchQuery("");
     }
+    wasOpenRef.current = open;
   }, [open, isNoneMode]);
 
   // Map the public value shape into the flat string(s) Base UI drives selection
@@ -468,15 +490,22 @@ const Root = <
           nextValue as Array<Option>,
         );
       } else {
-        // Real options always carry a string value, so a sentinel (or null)
-        // commit is an `onSelect`/Create item; skip it and let `onClick` handle
-        // the action.
-        if (next == null || Array.isArray(next) || isOnSelectItemValue(next)) {
+        // A sentinel commit is an `onSelect`/Create item press — skip it and let
+        // `onClick` run the action. Base UI commits `null` to CLEAR the selection
+        // (emptying the anchor input, or Escape on a closed popup), so honor that
+        // as a clear rather than cancelling it — otherwise the displayed text and
+        // the submitted form value drift apart.
+        if (isOnSelectItemValue(next) || Array.isArray(next)) {
           eventDetails.cancel();
           return;
         }
 
-        const nextValue = legacyBehavior ? toLegacyOption(next, options) : next;
+        const nextValue =
+          next == null
+            ? undefined
+            : legacyBehavior
+              ? toLegacyOption(next, options)
+              : next;
         (setValue as SingleSelect["onValueChange"])?.(nextValue as Option);
       }
 
@@ -540,9 +569,12 @@ const Root = <
       }
 
       // Mirror the query into the popup search-query state so children-mode
-      // filtering runs. Free-text mode derives its query from the input text
-      // instead (see `activeSearchQuery`), so only the other arrangements need it.
-      if (!isNoneMode) {
+      // filtering runs — but only when the user edited the input, never for Base
+      // UI's programmatic label resyncs (reason `"none"`) or item-press fills,
+      // which would otherwise leave a reopened list pre-filtered to the selected
+      // label. Free-text mode derives its query from the input text instead (see
+      // `activeSearchQuery`), so only the other arrangements need it.
+      if (!isNoneMode && USER_INPUT_REASONS.has(eventDetails.reason)) {
         setSearchQuery(nextValue);
       }
 
@@ -555,6 +587,18 @@ const Root = <
       onInputValueChangeProp?.(nextValue, eventDetails);
     },
     [isNoneMode, isInputControlled, onInputValueChangeProp],
+  );
+
+  const handleItemHighlighted = useCallback(
+    (value: string | undefined, details: ComboboxHighlightDetails) => {
+      // Action items (`onSelect`/Create) carry the internal sentinel value;
+      // report them as "nothing highlighted" so it never leaks to consumers.
+      onItemHighlightedProp?.(
+        isOnSelectItemValue(value) ? undefined : value,
+        details,
+      );
+    },
+    [onItemHighlightedProp],
   );
 
   return (
@@ -601,7 +645,7 @@ const Root = <
             handleInputValueChange as (value: string, details: unknown) => void
           }
           // Filtering/inline-autocomplete mode (default "list").
-          mode={autoComplete}
+          mode={mode}
           open={open}
           onOpenChange={
             handleBaseOpenChange as (open: boolean, details: unknown) => void
@@ -613,7 +657,7 @@ const Root = <
           openOnInputClick={openOnInputClickProp}
           loopFocus={loopFocusProp}
           onItemHighlighted={
-            onItemHighlightedProp as (value: unknown, details: unknown) => void
+            handleItemHighlighted as (value: unknown, details: unknown) => void
           }
           actionsRef={actionsRef}
           modal={modal}
@@ -647,7 +691,7 @@ const Root = <
           openOnInputClick={openOnInputClickProp}
           loopFocus={loopFocusProp}
           onItemHighlighted={
-            onItemHighlightedProp as (value: unknown, details: unknown) => void
+            handleItemHighlighted as (value: unknown, details: unknown) => void
           }
           actionsRef={actionsRef}
           // The rendered options stay the `Combobox.Option` children; this list
@@ -970,7 +1014,12 @@ const Content = <T extends TgphElement = "div">({
       "[data-tgph-combobox-search], [data-tgph-combobox-input-hidden]",
     );
     input?.focus();
-  }, [context.open, context.contentRef, context.hasAnchorInput, onOpenAutoFocus]);
+  }, [
+    context.open,
+    context.contentRef,
+    context.hasAnchorInput,
+    onOpenAutoFocus,
+  ]);
 
   const setHeightFromContent = useCallback(
     (element: Element) => {
