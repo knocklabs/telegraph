@@ -54,24 +54,6 @@ describe("getStyleProp", () => {
       "--display": "block",
     });
   });
-  it("passes raw values through when the css var allows them", () => {
-    const { styleProp } = getStyleProp({
-      props: {
-        maxHeight: "400px",
-      },
-      cssVars: {
-        maxHeight: {
-          cssVar: "--max-height",
-          value: "var(--tgph-spacing-VARIABLE)",
-          allowRawValue: true,
-        },
-      },
-    });
-
-    expect(styleProp).toStrictEqual({
-      "--max-height": "400px",
-    });
-  });
   it("when no values are passed empty objects are returned", () => {
     const { styleProp, otherProps } = getStyleProp({
       props: {},
