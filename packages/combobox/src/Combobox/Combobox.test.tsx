@@ -880,7 +880,7 @@ describe("findStringNodes", () => {
   });
 
   it("handles array of elements", () => {
-    const children = [<span>Hello</span>, <span>World</span>];
+    const children = [<span key="a">Hello</span>, <span key="b">World</span>];
     expect(findStringNodes(children)).toStrictEqual(["Hello", "World"]);
   });
 

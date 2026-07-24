@@ -1,4 +1,3 @@
-import { Filter } from ".";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import { TgphComponentProps } from "@telegraph/helpers";
@@ -11,6 +10,8 @@ import {
   Mountain,
 } from "lucide-react";
 import React from "react";
+
+import { Filter } from ".";
 
 const meta = {
   title: "Components/Filter",

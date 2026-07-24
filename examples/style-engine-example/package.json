@@ -5,8 +5,7 @@
   "scripts": {
     "dev:examples": "next dev --turbopack",
     "build:examples": "next build",
-    "start:examples": "next start",
-    "lint:examples": "next lint"
+    "start:examples": "next start"
   },
   "dependencies": {
     "@telegraph/button": "workspace:^",
@@ -18,7 +17,6 @@
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
-    "@knocklabs/eslint-config": "^0.0.5",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/style-engine": "workspace:^",
     "@types/node": "^25.7.0",
