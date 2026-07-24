@@ -68,16 +68,6 @@ import type {
   SingleSelect,
 } from "./Combobox.types";
 
-// Base UI's change callbacks pass a cancelable details object as the second
-// argument. We only need `cancel`, `reason`, and the underlying DOM `event`, so
-// describe just that surface instead of importing Base UI's internal type.
-type BaseUIChangeEventDetails = {
-  cancel: () => void;
-  isCanceled: boolean;
-  reason: string;
-  event: Event;
-};
-
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
   : "truncate" | "wrap";
@@ -322,6 +312,11 @@ const Root = <
     ? (inputValueProp as string)
     : uncontrolledInputValue;
 
+  // The query that drives children-mode filtering. In free-text (`none`) mode it
+  // is the input text — derived here so an external `inputValue` change filters in
+  // the same render — otherwise it is the in-popup search-query state.
+  const activeSearchQuery = isNoneMode ? resolvedInputValue : searchQuery;
+
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
   // we render the options ourselves (no `items` prop), so Base UI's list is
@@ -339,7 +334,7 @@ const Root = <
   const filteredItems = useMemo<Array<string>>(() => {
     // With manual filtering the consumer decides which options render, so keep
     // every option in the bounds list and never filter it here.
-    const query = manualFiltering ? "" : (searchQuery ?? "");
+    const query = manualFiltering ? "" : activeSearchQuery;
     const values = options
       .filter(
         (option) =>
@@ -366,7 +361,7 @@ const Root = <
     }
 
     return values;
-  }, [options, searchQuery, hasCreate, manualFiltering]);
+  }, [options, activeSearchQuery, hasCreate, manualFiltering]);
   // Open state, kept controllable like the old menu-backed implementation. This
   // mirrors `useControllableState` (same no-op-on-equal and updater semantics)
   // but threads Base UI's change `details` to the consumer's `onOpenChange` as an
@@ -428,15 +423,6 @@ const Root = <
     }
   }, [open, isNoneMode]);
 
-  // In free-text mode the input text drives children-mode filtering, so keep the
-  // search query synced to it (covers the initial/default value and consumer-
-  // driven controlled `inputValue` changes).
-  useEffect(() => {
-    if (isNoneMode) {
-      setSearchQuery(resolvedInputValue ?? "");
-    }
-  }, [isNoneMode, resolvedInputValue]);
-
   // Map the public value shape into the flat string(s) Base UI drives selection
   // with. `null` keeps Base UI controlled while representing "no selection".
   const baseValue = useMemo<string | Array<string> | null>(() => {
@@ -461,7 +447,7 @@ const Root = <
   const handleBaseValueChange = useCallback(
     (
       next: string | Array<string> | null,
-      eventDetails: BaseUIChangeEventDetails,
+      eventDetails: ComboboxChangeDetails,
     ) => {
       if (multiple) {
         const array = Array.isArray(next) ? next : [];
@@ -504,7 +490,7 @@ const Root = <
   );
 
   const handleBaseOpenChange = useCallback(
-    (nextOpen: boolean, eventDetails: BaseUIChangeEventDetails) => {
+    (nextOpen: boolean, eventDetails: ComboboxChangeDetails) => {
       const reason = eventDetails.reason;
 
       if (!nextOpen) {
@@ -539,22 +525,26 @@ const Root = <
   );
 
   const handleInputValueChange = useCallback(
-    (nextValue: string, eventDetails: BaseUIChangeEventDetails) => {
+    (nextValue: string, eventDetails: ComboboxChangeDetails) => {
       // Free-text mode: Base UI fills the input from a pressed item's value.
       // For an action item (Create/inert row) that value is the sentinel, which
       // serializes to `ON_SELECT_ITEM_FILL`; cancel that single fill so it never
       // replaces the user's free text. Real options still fill as usual.
       if (
         isNoneMode &&
-        eventDetails?.reason === ITEM_PRESS_REASON &&
+        eventDetails.reason === ITEM_PRESS_REASON &&
         nextValue === ON_SELECT_ITEM_FILL
       ) {
         eventDetails.cancel();
         return;
       }
 
-      // Mirror the query so children-mode filtering runs (both arrangements).
-      setSearchQuery(nextValue);
+      // Mirror the query into the popup search-query state so children-mode
+      // filtering runs. Free-text mode derives its query from the input text
+      // instead (see `activeSearchQuery`), so only the other arrangements need it.
+      if (!isNoneMode) {
+        setSearchQuery(nextValue);
+      }
 
       // In free text, Telegraph owns the (always-controlled) input value unless
       // the consumer controls it via `inputValue`.
@@ -583,7 +573,7 @@ const Root = <
         closeOnSelect,
         clearable,
         disabled,
-        searchQuery,
+        searchQuery: activeSearchQuery,
         setSearchQuery,
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
         searchRef: searchRef as RefObject<HTMLInputElement>,
