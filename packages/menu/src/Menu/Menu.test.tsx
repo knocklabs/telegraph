@@ -1111,7 +1111,7 @@ describe("Menu", () => {
     expect(submenu).toHaveAttribute("data-align", "start");
   });
 
-  describe("typeable trigger open autofocus", () => {
+  describe("focus-bounce on prevented onOpenAutoFocus (Radix-compat)", () => {
     // Long enough to clear a couple of jsdom animation frames (~16ms each).
     const PENDING_FRAME_DRAIN_MS = 32;
 
@@ -1126,9 +1126,12 @@ describe("Menu", () => {
       });
     });
 
-    // Reproduces the surfaces (PropertySelectorField, block editor suggestion
-    // menus) that compose a typeable input inside Menu.Trigger and prevent the
-    // legacy openAutoFocus so keystrokes keep feeding the input, not the menu.
+    // Behavior contract under test: when a consumer prevents the legacy
+    // `openAutoFocus`, focus bounces back once (staying where it was) and later
+    // intentional navigation into the menu is still allowed. Exercised through
+    // the legacy typeable-trigger composition (a deprecated recipe — new UI
+    // should use the `@telegraph/combobox` input-as-trigger arrangement) purely
+    // because it is the composition that first surfaced the race (KNO-14086).
     const TypeableTriggerMenu = ({
       onOpenAutoFocus,
       preventOpenAutoFocus = true,
