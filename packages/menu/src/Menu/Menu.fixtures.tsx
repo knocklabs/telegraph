@@ -13,15 +13,24 @@ const PROPERTIES = [
 ];
 
 /**
- * A typeable input composed inside `Menu.Trigger`, as PropertySelectorField and
- * the block editor suggestion menus do. Shared between the Storybook story and
- * the headed browser test so both exercise the exact same composition.
+ * @deprecated Legacy typeable-trigger composition, kept only as regression
+ * coverage for the focus-bounce — not a supported pattern for new UI. Composing
+ * a typeable input inside `Menu.Trigger` does not follow the WAI-ARIA
+ * menu-button pattern; new UI that needs a typeable trigger should use
+ * `@telegraph/combobox`'s input-as-trigger arrangement (Storybook:
+ * `components-combobox--input-as-trigger`). This fixture exists purely to
+ * exercise the prevented-`openAutoFocus` focus-bounce regression path, and is
+ * shared between the Storybook story and the headed browser test so both drive
+ * the exact same composition.
  *
  * The input stays a real text field: `nativeButton={false}` + a wrapping `div`
  * put Base UI's button semantics on the div, not the input, and passing
  * `onClick` to the trigger suppresses Base UI's own open-on-press so it doesn't
  * fight the input's focus/typing. Opening is driven by focus/typing; the popup
- * prevents the legacy `openAutoFocus` so keystrokes keep feeding the input.
+ * prevents the legacy `openAutoFocus` so keystrokes keep feeding the input. On
+ * `@base-ui/react` >= 1.6.0 the open menu's trigger typeahead consumes printable
+ * keys, so the `onKeyDown` below must stop propagation for everything except
+ * navigation/selection keys.
  */
 export const TypeableTriggerExample = (
   args: Partial<TgphComponentProps<typeof Menu.Root>> = {},
