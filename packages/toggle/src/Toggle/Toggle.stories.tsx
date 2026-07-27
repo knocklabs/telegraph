@@ -79,3 +79,29 @@ export const ToggleWithLabelAndIndicator: Story = {
     w: "80",
   },
 };
+
+// A locked toggle still has to say which way it is locked, so these two must
+// not render the same track.
+export const DisabledOn: Story = {
+  args: {
+    label: "Enable notifications",
+    indicator: true,
+    color: "blue",
+    defaultValue: true,
+    size: "1",
+    disabled: true,
+    w: "80",
+  },
+};
+
+export const DisabledOff: Story = {
+  args: {
+    label: "Enable notifications",
+    indicator: true,
+    color: "blue",
+    defaultValue: false,
+    size: "1",
+    disabled: true,
+    w: "80",
+  },
+};

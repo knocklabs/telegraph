@@ -4101,6 +4101,7 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/prettier-config": "workspace:^"
     "@telegraph/tag": "workspace:^"
+    "@telegraph/tokens": "workspace:^"
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
