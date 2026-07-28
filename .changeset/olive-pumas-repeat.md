@@ -1,28 +1,28 @@
 ---
-"@telegraph/helpers": patch
-"@telegraph/style-engine": patch
-"@telegraph/layout": patch
-"@telegraph/typography": patch
-"@telegraph/icon": patch
-"@telegraph/button": patch
-"@telegraph/input": patch
-"@telegraph/textarea": patch
-"@telegraph/select": patch
-"@telegraph/combobox": patch
-"@telegraph/menu": patch
-"@telegraph/toggle": patch
-"@telegraph/modal": patch
-"@telegraph/popover": patch
-"@telegraph/tooltip": patch
-"@telegraph/truncate": patch
-"@telegraph/tag": patch
-"@telegraph/link": patch
-"@telegraph/kbd": patch
-"@telegraph/tabs": patch
-"@telegraph/data-list": patch
-"@telegraph/radio": patch
-"@telegraph/segmented-control": patch
-"@telegraph/filter": patch
+"@telegraph/helpers": minor
+"@telegraph/style-engine": minor
+"@telegraph/layout": minor
+"@telegraph/typography": minor
+"@telegraph/icon": minor
+"@telegraph/button": minor
+"@telegraph/input": minor
+"@telegraph/textarea": minor
+"@telegraph/select": minor
+"@telegraph/combobox": minor
+"@telegraph/menu": minor
+"@telegraph/toggle": minor
+"@telegraph/modal": minor
+"@telegraph/popover": minor
+"@telegraph/tooltip": minor
+"@telegraph/truncate": minor
+"@telegraph/tag": minor
+"@telegraph/link": minor
+"@telegraph/kbd": minor
+"@telegraph/tabs": minor
+"@telegraph/data-list": minor
+"@telegraph/radio": minor
+"@telegraph/segmented-control": minor
+"@telegraph/filter": minor
 ---
 
 Restore prop validation across all components. Extracting props from a generic component (`TgphComponentProps<typeof Stack>`) instantiated the element type parameter at its constraint, making `React.ComponentProps<React.ElementType>` resolve to `any` and leaving a `{ [x: string]: any }` index signature on every inheriting component. That disabled excess-property checking _and_ widened declared props to `any`, so `<Button fontSize={16}>` and `<Button variant="nonsense">` both compiled.

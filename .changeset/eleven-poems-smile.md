@@ -1,5 +1,5 @@
 ---
-"@telegraph/select": patch
+"@telegraph/select": minor
 ---
 
 `Select.Root` is now generic over its value, so `onValueChange` reports the value type the caller selected over instead of the whole union `Combobox` accepts. Reading the props off `typeof Combobox.Root` instantiated Combobox's value parameter at its constraint, so a single-string select handed its consumer back `string | { value, label } | Array<...>` and every call site had to narrow the value it had just supplied.
