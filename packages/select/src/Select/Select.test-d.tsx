@@ -1,6 +1,16 @@
 import { Select } from ".";
 import type { Option, OptionProps, SelectProps } from ".";
+import type { Dispatch, SetStateAction } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+// Declared at module scope: an initialized `const` would be narrowed by
+// control flow to the value it holds, which is not what a consumer's state
+// variable looks like at the call site.
+declare const single: string;
+declare const multi: Array<string>;
+declare const optional: string | undefined;
+declare const setSingle: Dispatch<SetStateAction<string | undefined>>;
+declare const setMulti: Dispatch<SetStateAction<Array<string>>>;
 
 describe("Select types", () => {
   it("has no catch-all index signature", () => {
@@ -62,6 +72,62 @@ describe("Select types", () => {
       value="1"
       // @ts-expect-error label is omitted from Select.Option
       label="Option 1"
+    />;
+  });
+
+  it("narrows the reported value to the value it was given", () => {
+    expectTypeOf<SelectProps<string>["onValueChange"]>().toEqualTypeOf<
+      ((value: string) => void) | undefined
+    >();
+    expectTypeOf<SelectProps<Array<string>>["onValueChange"]>().toEqualTypeOf<
+      ((value: Array<string>) => void) | undefined
+    >();
+
+    <Select.Root
+      value={single}
+      onValueChange={(value) => expectTypeOf(value).toEqualTypeOf<string>()}
+    />;
+    <Select.Root
+      value={multi}
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<Array<string>>()
+      }
+    />;
+
+    // The value type is inferred from `defaultValue` too, so uncontrolled
+    // selects report the same narrowed shape.
+    <Select.Root
+      defaultValue={multi}
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<Array<string>>()
+      }
+    />;
+
+    // The `useState` setter consumers reach for first, both controlled and —
+    // falling back to the `string` default — uncontrolled.
+    <Select.Root value={optional} onValueChange={setSingle} />;
+    <Select.Root value={multi} onValueChange={setMulti} />;
+    <Select.Root onValueChange={setSingle} />;
+  });
+
+  it("rejects handlers and values that disagree with the value type", () => {
+    <Select.Root
+      value={single}
+      // @ts-expect-error a single-value select does not report an array
+      onValueChange={(_value: Array<string>) => {}}
+    />;
+    <Select.Root
+      value={multi}
+      // @ts-expect-error a multi-value select does not report a bare string
+      onValueChange={(_value: string) => {}}
+    />;
+    <Select.Root
+      // @ts-expect-error select values are strings, not option objects
+      value={{ value: "1", label: "Option 1" }}
+    />;
+    <Select.Root
+      // @ts-expect-error legacyBehavior emits option objects Select cannot produce
+      legacyBehavior
     />;
   });
 

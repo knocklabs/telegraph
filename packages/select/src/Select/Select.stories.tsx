@@ -3,9 +3,9 @@ import React from "react";
 
 import { Select } from "./Select";
 
-// Annotated rather than inferred through `satisfies`: the inferred type reaches
-// Combobox's `Option`/`DefinedOption`, which the combobox package does not
-// re-export, so declaration emit has no way to name them (TS2883).
+// Annotated rather than inferred: the inferred type reaches Combobox's
+// unexported `Option`/`DefinedOption`, which declaration emit cannot name
+// (TS2883).
 const meta: Meta<typeof Select.Root> = {
   title: "Components/Select",
   component: Select.Root,
@@ -33,13 +33,6 @@ type Story = StoryObj<typeof meta>;
 
 export default meta;
 
-// `Select.Root` is not generic over its value: `onValueChange` reports the
-// whole union Combobox accepts (a string, an option object, or arrays of
-// either). Every story below selects over string options, so each narrows the
-// reported value back to the type its own state holds.
-const isStringArray = (value: unknown): value is Array<string> =>
-  Array.isArray(value) && value.every((item) => typeof item === "string");
-
 export const SingleSelect: Story = {
   render: (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -48,9 +41,7 @@ export const SingleSelect: Story = {
       <Select.Root
         placeholder="Select an option"
         value={value}
-        onValueChange={(newValue) => {
-          if (typeof newValue === "string") setValue(newValue);
-        }}
+        onValueChange={setValue}
         size={args.size}
         disabled={args.disabled}
       >
@@ -69,9 +60,7 @@ export const MultiSelect: Story = {
       <Select.Root
         placeholder="Select an option"
         value={value}
-        onValueChange={(newValue) => {
-          if (isStringArray(newValue)) setValue(newValue);
-        }}
+        onValueChange={setValue}
         size={args.size}
         disabled={args.disabled}
       >
@@ -115,9 +104,7 @@ export const YearPickerWithScrollToValue: Story = {
       <Select.Root
         placeholder="Select a year"
         value={value}
-        onValueChange={(newValue) => {
-          if (typeof newValue === "string") setValue(newValue);
-        }}
+        onValueChange={setValue}
         defaultScrollToValue="2025"
         size={args.size}
         disabled={args.disabled}
