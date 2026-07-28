@@ -48,11 +48,6 @@ type PolymorphicBaseProps<E extends React.ElementType> = {
   children?: React.ReactNode;
   className?: string;
   style?: CSSPropertiesWithVars;
-  // TSX exempts hyphenated *attributes* from excess-property checks, so
-  // `<Text data-testid="x" />` is fine either way. Object literals get no such
-  // exemption, which would leave `data-*` unusable in the nested prop bags this
-  // library passes around (`textProps`, `iconProps`, `triggerProps`, …).
-  [key: `data-${string}`]: unknown;
 };
 
 // The props of the underlying element, dropped when `E` is unresolved: an

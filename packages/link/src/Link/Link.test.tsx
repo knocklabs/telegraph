@@ -62,13 +62,17 @@ describe("Link", () => {
     const { container } = render(
       <Link
         href="/docs"
-        textProps={{ as: "strong", "data-testid": "text-node" }}
+        // `id` rather than `data-testid`: object literals get no exemption from
+        // excess-property checks, so `data-*` in a nested prop bag is an error.
+        // See the changeset — a `data-${string}` index signature fixes it but
+        // costs TS2590 "union too complex" at ordinary call sites.
+        textProps={{ as: "strong", id: "text-node" }}
         icon={{ icon: ArrowUpRight, alt: "Docs link icon", size: "3" }}
       >
         Docs
       </Link>,
     );
-    expect(container.querySelector("strong")).toBeInTheDocument();
+    expect(container.querySelector("strong#text-node")).toBeInTheDocument();
     expect(screen.getByLabelText("Docs link icon")).toBeInTheDocument();
   });
 

@@ -29,9 +29,9 @@ Restore prop validation across all components. Extracting props from a generic c
 
 `PolymorphicProps` now drops the element passthrough when the element type is unresolved, and every inherited prop type threads the element parameter through (`StackProps<T>` rather than the bare form). **Breaking for type consumers** that were passing props which never belonged to a component — those are now errors. Props that genuinely exist are unaffected.
 
-`data-*` keys stay available in the nested prop bags this library passes around (`textProps`, `iconProps`, `triggerProps`, …). TSX exempts hyphenated attributes from excess-property checks but object literals get no such exemption, so `PolymorphicProps` declares them explicitly — constrained to the `data-` prefix, not a catch-all.
+Three consequences worth knowing about:
 
-Two further consequences worth knowing about:
+- **`data-*` in a nested prop bag is now an error.** TSX exempts hyphenated _attributes_ from excess-property checks, so `<Text data-testid="x" />` is unaffected — but an object literal gets no such exemption, so `textProps={{ "data-testid": "x" }}` no longer compiles. Spread it instead (`textProps={{ ...{ "data-testid": "x" } }}`), or set it on the component directly. A `data-${string}` index signature on `PolymorphicProps` does fix this, but it was measured to cost several `TS2590` "union type is too complex to represent" errors at ordinary call sites like `leadingIcon={{ icon, "aria-hidden": true, ...rest }}` — a worse failure than the one it prevents.
 
 - `tgphRef` is no longer `any`. A ref whose element type does not match the component's is now an error — e.g. a `RefObject<HTMLDivElement>` on `Combobox.Trigger`, which renders a `button`.
 - `Input`'s `stackProps` and `Modal.Content`'s inherited `StackProps` are the non-generic form, which is `div`-shaped. Both wrappers do render a `div`, so element-specific props pushed through them are now correctly rejected.
