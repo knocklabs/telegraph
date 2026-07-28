@@ -3,16 +3,22 @@ import * as Icons from "lucide-react";
 
 import { COLOR_MAP, SIZE_MAP } from "../Icon/Icon.constants";
 
-import { Spinner as TelegraphSpinner } from "./Spinner";
+import { type SpinnerProps, Spinner as TelegraphSpinner } from "./Spinner";
 
-type StorybookTelegraphSpinnerType = React.ComponentProps<
-  typeof TelegraphSpinner
->;
+// `SpinnerProps<"span">` rather than `ComponentProps<typeof TelegraphSpinner>`:
+// extracting props from a generic component instantiates its parameter at the
+// constraint, and `Partial<IconBaseProps<T>>` over an unresolved `T` collapses
+// to `{}`, taking every prop with it. The story renders the spinner as its
+// default element, so pinning `"span"` is enough. `icon` is remapped to a
+// string so the control can offer Lucide icon names.
+type StorybookSpinnerType = Omit<SpinnerProps<"span">, "icon"> & {
+  icon: string;
+};
 
 const StorybookTelegraphSpinner = ({
   icon,
   ...props
-}: StorybookTelegraphSpinnerType) => {
+}: StorybookSpinnerType) => {
   return (
     <TelegraphSpinner
       // @ts-expect-error: for illustrative purposes only
@@ -22,7 +28,7 @@ const StorybookTelegraphSpinner = ({
   );
 };
 
-const meta: Meta<typeof TelegraphSpinner> = {
+const meta: Meta<StorybookSpinnerType> = {
   tags: ["autodocs"],
   title: "Components/Icon/Spinner",
   component: StorybookTelegraphSpinner,
@@ -71,13 +77,6 @@ export const Default: Story = {
     variant: "primary",
     animation: "spin",
   },
-};
-
-type StorybookSpinnerType = Omit<
-  React.ComponentProps<typeof TelegraphSpinner>,
-  "icon"
-> & {
-  icon: string;
 };
 
 type Story = StoryObj<StorybookSpinnerType>;

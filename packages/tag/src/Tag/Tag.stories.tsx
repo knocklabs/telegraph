@@ -1,8 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as Icons from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import { Tag as TelegraphTag } from "./Tag";
 import { COLOR, SIZE } from "./Tag.constants";
+
+// `lucide-react`'s namespace also exports helpers that are not icon components
+// (`createLucideIcon`, the generic `Icon`, the provider, …), so the control's
+// options are narrowed to the exports that really are `LucideIcon`s. That keeps
+// the `Icons[name]` lookup in `render` assignable to `Tag`'s `icon` prop.
+type LucideIconName = {
+  [K in keyof typeof Icons]: (typeof Icons)[K] extends LucideIcon ? K : never;
+}[keyof typeof Icons];
+
+const ICON_NAMES = Object.keys(Icons) as Array<LucideIconName>;
 
 const meta: Meta<typeof TelegraphTag> = {
   tags: ["autodocs"],
@@ -38,7 +49,7 @@ const meta: Meta<typeof TelegraphTag> = {
       },
     },
     icon: {
-      options: Object.keys(Icons),
+      options: ICON_NAMES,
       control: {
         type: "select",
       },
@@ -59,25 +70,38 @@ const meta: Meta<typeof TelegraphTag> = {
 
 export default meta;
 
+// The `icon` control picks a lucide icon by name and the `onCopy`/`onRemove`
+// controls are boolean toggles, so those three args are remapped here and
+// translated back into real component props by `render`.
 type StorybookTagType = Omit<
   React.ComponentProps<typeof TelegraphTag>,
-  "icon"
+  "icon" | "onCopy" | "onRemove"
 > & {
-  icon?: string;
+  icon?: LucideIconName;
+  onCopy?: boolean;
+  onRemove?: boolean;
 };
 
 type Story = StoryObj<StorybookTagType>;
 
 export const Tag: Story = {
-  render: ({ icon, onCopy, ...props }) => {
-    const mergedProps = icon
-      ? {
-          icon: { icon: Icons[icon as keyof typeof Icons], alt: "description" },
-          ...props,
-        }
-      : props;
-    return (
-      <TelegraphTag {...mergedProps} onCopy={onCopy ? () => {} : undefined} />
+  render: ({ icon, onCopy, onRemove, textToCopy, ...props }) => {
+    const sharedProps = {
+      ...props,
+      ...(icon ? { icon: { icon: Icons[icon], alt: "description" } } : {}),
+      ...(onRemove ? { onRemove: () => {} } : {}),
+    };
+
+    // `textToCopy` is only allowed alongside `onCopy`, so the two branches are
+    // rendered separately rather than spread in conditionally.
+    return onCopy ? (
+      <TelegraphTag
+        {...sharedProps}
+        onCopy={() => {}}
+        textToCopy={textToCopy}
+      />
+    ) : (
+      <TelegraphTag {...sharedProps} />
     );
   },
   args: {

@@ -100,10 +100,10 @@ describe("Icon", () => {
     });
 
     it("rejects unknown props on type level", () => {
-      // @ts-expect-error unknown prop rejected on IconProps
       const invalidProp: IconProps = {
         icon: Bell,
         alt: "test",
+        // @ts-expect-error unknown prop rejected on IconProps
         invalidProp: "invalid",
       };
       void invalidProp;

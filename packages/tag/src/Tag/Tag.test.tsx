@@ -12,13 +12,19 @@ import type {
 
 describe("Tag", () => {
   it("should render without a11y violations", async () => {
-    const { container } = render(<Tag text="Tag" size="2" color="default" />);
+    const { container } = render(
+      <Tag size="2" color="default">
+        Tag
+      </Tag>,
+    );
     const results = await axe(container);
     expectToHaveNoViolations(results);
   });
   it("tag with button should render without a11y violations", async () => {
     const { container } = render(
-      <Tag text="Tag" size="2" color="default" onCopy={() => {}} />,
+      <Tag size="2" color="default" onCopy={() => {}}>
+        Tag
+      </Tag>,
     );
     const results = await axe(container);
     expectToHaveNoViolations(results);

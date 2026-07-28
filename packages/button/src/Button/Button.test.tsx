@@ -1,3 +1,4 @@
+import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
 import {
@@ -12,7 +13,6 @@ import {
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Button } from "./Button";
-import type { ButtonProps, ButtonRootProps, ButtonTextProps } from "./Button";
 
 // Suppress error from showing in console as we are testing for it
 const consoleError = console.error;
@@ -243,14 +243,14 @@ describe("Button", () => {
       const invalidButton = <Button invalidProp="invalid">Invalid</Button>;
       void invalidButton;
 
-      // @ts-expect-error unknown prop rejected on Button.Root JSX
       const invalidRoot = (
+        // @ts-expect-error unknown prop rejected on Button.Root JSX
         <Button.Root invalidProp="invalid">Invalid</Button.Root>
       );
       void invalidRoot;
 
-      // @ts-expect-error unknown prop rejected on Button.Text JSX
       const invalidText = (
+        // @ts-expect-error unknown prop rejected on Button.Text JSX
         <Button.Text invalidProp="invalid">Invalid</Button.Text>
       );
       void invalidText;

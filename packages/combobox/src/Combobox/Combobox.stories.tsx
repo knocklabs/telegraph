@@ -19,7 +19,18 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof TelegraphCombobox>>;
+// Typed against `Combobox.Root` rather than the `Combobox` namespace object,
+// which is not a component type. The value-carrying props are dropped: `Root`
+// is generic over its value, and every story owns that state locally (single
+// vs. multi select, string vs. object options), so leaving them in the shared
+// args would pin the generic to its constraint and reject each story's own
+// `value`/`onValueChange` pair.
+type Story = StoryObj<
+  Omit<
+    TgphComponentProps<typeof TelegraphCombobox.Root>,
+    "value" | "defaultValue" | "onValueChange" | "layout"
+  >
+>;
 
 const LABELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
 

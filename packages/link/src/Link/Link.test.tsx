@@ -1,15 +1,12 @@
+// The `Link*`-prefixed names only exist on the package index, which re-exports
+// `Link.tsx`'s `RootProps`/`TextProps`/`IconProps`/`DefaultProps` under them.
+import type { LinkIconProps, LinkProps, LinkRootProps, LinkTextProps } from ".";
 import { render, screen } from "@testing-library/react";
 import { ArrowUpRight } from "lucide-react";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
 import { Link } from "./Link";
-import type {
-  LinkIconProps,
-  LinkProps,
-  LinkRootProps,
-  LinkTextProps,
-} from "./Link";
 
 describe("Link", () => {
   it("default link is accessible", async () => {
@@ -65,13 +62,13 @@ describe("Link", () => {
     const { container } = render(
       <Link
         href="/docs"
-        textProps={{ as: "strong", "data-testid": "text-node" }}
+        textProps={{ as: "strong", id: "text-node" }}
         icon={{ icon: ArrowUpRight, alt: "Docs link icon", size: "3" }}
       >
         Docs
       </Link>,
     );
-    expect(container.querySelector("strong")).toBeInTheDocument();
+    expect(container.querySelector("strong#text-node")).toBeInTheDocument();
     expect(screen.getByLabelText("Docs link icon")).toBeInTheDocument();
   });
 

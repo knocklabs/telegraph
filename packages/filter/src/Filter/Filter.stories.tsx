@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
 import { TgphComponentProps } from "@telegraph/helpers";
 import {
+  Amphora,
   Apple,
   Fish,
   ListFilter,
