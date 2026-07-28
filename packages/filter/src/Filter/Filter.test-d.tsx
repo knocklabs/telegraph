@@ -3,9 +3,8 @@ import { Apple, Mountain } from "lucide-react";
 import type { ComponentProps } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
-// The filter package's public surface exports only the `Filter` compound
-// component — no prop types — so the contract under test is read back off the
-// exported parts themselves.
+// The package exports only the `Filter` compound component, no prop types, so
+// the contract is read back off the exported parts.
 type FilterRootProps = ComponentProps<typeof Filter.Root>;
 type FilterTriggerProps = ComponentProps<typeof Filter.Trigger>;
 type FilterContentProps = ComponentProps<typeof Filter.Content>;

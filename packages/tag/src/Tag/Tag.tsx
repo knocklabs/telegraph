@@ -35,9 +35,6 @@ type RootBaseProps = {
   variant?: keyof typeof COLOR.Root;
 };
 
-// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type RootProps<T extends TgphElement = "span"> =
   PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
     Omit<StackProps<T>, "as" | "tgphRef"> &
@@ -50,9 +47,6 @@ const TagContext = createContext<Required<RootBaseProps>>({
 });
 
 const Root = <T extends TgphElement = "span">(rootProps: RootProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     as = "span",
     size = "1",
@@ -131,10 +125,6 @@ export type ButtonProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof TelegraphButton<T>
 >;
 
-// `ButtonRootProps` (default element) rather than `TgphComponentProps<typeof
-// Button.Root>`: extracting props from a generic component instantiates its
-// parameter at the constraint, which erases the passthrough — and here the
-// whole Button.Root surface with it.
 export type CopyButtonProps = ButtonRootProps & {
   textToCopy?: string;
 };
@@ -230,9 +220,8 @@ const Icon = <T extends TgphElement = "span">(tagIconProps: IconProps<T>) => {
     ...props
   } = tagIconProps as IconProps<"span">;
   const context = useContext(TagContext);
-  // Icon's props require exactly one of `alt` / `aria-hidden`. `ariaHidden` is
-  // forwarded verbatim — including when it is undefined — so Icon still logs
-  // its "alt prop is required" warning; only the type is narrowed here.
+  // `ariaHidden` is forwarded verbatim, including when undefined, so Icon still
+  // logs its "alt prop is required" warning. Only the type is narrowed.
   const a11yProps = (!alt ? { "aria-hidden": ariaHidden } : { alt }) as
     | { alt: string; "aria-hidden"?: never }
     | { alt?: never; "aria-hidden": true };
@@ -250,9 +239,6 @@ const Icon = <T extends TgphElement = "span">(tagIconProps: IconProps<T>) => {
 
 export type DefaultProps<T extends TgphElement = "span"> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root<T>> & {
-    // The nested `Tag.Icon` / `Tag.Text` props, at their own default element:
-    // `ComponentProps<typeof Icon>` on a generic component instantiates its
-    // parameter at the constraint, which erases the passthrough.
     icon?: IconProps;
     textProps?: TextProps;
     onRemove?: () => void;

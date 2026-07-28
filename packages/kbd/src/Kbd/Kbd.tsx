@@ -8,9 +8,6 @@ import { colorMap, sizeMap } from "./Kbd.constants";
 import { getIconOrKey } from "./Kbd.helpers";
 import { usePressed } from "./Kbd.hooks";
 
-// `StackProps<T>` rather than `React.ComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type KbdProps<T extends TgphElement = "div"> = {
   size?: keyof typeof sizeMap;
   contrast?: boolean;
@@ -19,9 +16,6 @@ export type KbdProps<T extends TgphElement = "div"> = {
 } & StackProps<T>;
 
 const Kbd = <T extends TgphElement = "div">(kbdProps: KbdProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     size = "1",
     contrast: contrastProp = false,

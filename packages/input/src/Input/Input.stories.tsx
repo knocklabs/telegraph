@@ -9,11 +9,6 @@ import {
 } from "./Input";
 import { COLOR, SIZE } from "./Input.constants";
 
-// `InputProps<"input">` rather than `typeof TelegraphInput`: Storybook extracts
-// props from the component type, which instantiates the element parameter at
-// its constraint and erases the native passthrough — taking `disabled` and the
-// rest of the `<input>` attributes with it. These stories render the input as
-// its default element, so pinning `"input"` is enough.
 type StorybookInputType = InputProps<"input">;
 
 const meta: Meta<StorybookInputType> = {

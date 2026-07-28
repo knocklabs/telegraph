@@ -6,9 +6,6 @@ import { Box, type BoxProps } from "../Box";
 
 import { StyleProps, cssVars } from "./Stack.constants";
 
-// `BoxProps<T>` rather than `TgphComponentProps<typeof Box>`: extracting props
-// from a generic component instantiates its parameter at the constraint, which
-// erases the passthrough. Threading `T` keeps Box's props intact.
 export type StackProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
   Omit<BoxProps<T>, "as"> &
   StyleProps;

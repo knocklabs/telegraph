@@ -2,8 +2,8 @@ import { Appearance, InvertedAppearance, OverrideAppearance } from ".";
 import type { ComponentProps } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
-// The appearance components share one props type that is not re-exported from
-// the package surface, so pin it off the components themselves.
+// The shared props type is not on the package surface, so it is pinned off the
+// components themselves.
 type AppearanceProps = ComponentProps<typeof Appearance>;
 type InvertedAppearanceProps = ComponentProps<typeof InvertedAppearance>;
 type OverrideAppearanceProps = ComponentProps<typeof OverrideAppearance>;

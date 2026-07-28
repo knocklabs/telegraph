@@ -194,10 +194,6 @@ export type ContentProps<T extends TgphElement = "div"> = Omit<
 const Content = <T extends TgphElement = "div">(
   contentProps: ContentProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type — which also
-  // costs the motion callbacks below their contextual parameter types.
   const {
     align = "center",
     alignOffset,
@@ -403,10 +399,9 @@ const Content = <T extends TgphElement = "div">(
               tgphRef={contentRef}
               zIndex="popover"
               key="tgph-popover-content"
-              // Cast with `as` omitted so the rest props do not add a second
-              // candidate to Stack's element inference: `as` would widen `T` to
-              // `"div" | typeof motion.div`, and `Omit` over that union keeps
-              // only the shared keys, hiding the motion props used here.
+              // `as` is omitted from the cast so the rest props do not add a
+              // second candidate to Stack's element inference, which would
+              // widen `T` to a union and hide the motion props used here.
               {...(stackProps as Omit<
                 StackProps<typeof motion.div>,
                 "as" | "children" | "onAnimationComplete"

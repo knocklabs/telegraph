@@ -10,9 +10,6 @@ type BasePanelState = {
   hidden: boolean;
 };
 
-// `BoxProps<T>` rather than `TgphComponentProps<typeof Box>`: extracting props
-// from a generic component instantiates its parameter at the constraint, which
-// erases the passthrough. Threading `T` keeps Box's props intact.
 export type TabPanelProps<T extends TgphElement = "div"> = BoxProps<T> & {
   value: string;
   forceMount?: boolean;
@@ -22,9 +19,6 @@ export type TabPanelProps<T extends TgphElement = "div"> = BoxProps<T> & {
 const TabPanel = <T extends TgphElement = "div">(
   tabPanelProps: TabPanelProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     value,
     children,

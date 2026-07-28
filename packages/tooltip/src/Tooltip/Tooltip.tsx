@@ -199,9 +199,6 @@ const Tooltip = <T extends TgphElement = "div">({
   const resolvedCollisionAvoidance =
     collisionAvoidance ??
     (avoidCollisions === false ? NO_COLLISION_AVOIDANCE : undefined);
-  // `StackProps` (default element) rather than `TgphComponentProps<typeof
-  // Stack>`: extracting props from a generic component instantiates its
-  // parameter at the constraint, which erases the passthrough.
   const popupLabelProps = labelProps as StackProps | undefined;
   const { style: labelStyle, ...popupLabelRestProps } = popupLabelProps ?? {};
   const popupStyle = {
@@ -370,11 +367,10 @@ const Tooltip = <T extends TgphElement = "div">({
                       align="center"
                       justify="center"
                       style={popupStyle}
-                      // Narrow the spread to the element actually rendered: an
-                      // optional `as` in a later spread widens the element type
-                      // to a union and stops `T` resolving to `motion.div`, and
-                      // the public `labelProps` type describes a `div` whose
-                      // drag handlers clash with motion's. Runtime is unchanged.
+                      // Narrowed to the element actually rendered: an optional
+                      // `as` in a later spread widens the element type and
+                      // stops `T` resolving to `motion.div`. Runtime is
+                      // unchanged.
                       {...(popupLabelRestProps as Omit<
                         StackProps<typeof motion.div>,
                         "as"

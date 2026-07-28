@@ -4,9 +4,6 @@ import { Stack, type StackProps } from "@telegraph/layout";
 import { type ComponentProps } from "react";
 
 type BaseTabsListProps = ComponentProps<typeof BaseTabs.List>;
-// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type TabListProps<T extends TgphElement = "div"> = StackProps<T> & {
   activateOnFocus?: BaseTabsListProps["activateOnFocus"];
   loop?: BaseTabsListProps["loopFocus"];
@@ -15,9 +12,6 @@ export type TabListProps<T extends TgphElement = "div"> = StackProps<T> & {
 const TabList = <T extends TgphElement = "div">(
   tabListProps: TabListProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     children,
     loop = true,

@@ -37,15 +37,12 @@ export type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
   P;
 
 // `React.CSSProperties` rejects custom properties, and the style engine passes
-// its resolved values as `--*` entries on `style`, so allow them explicitly.
-// The key is constrained to the `--` prefix — this is not a catch-all.
+// its resolved values as `--*` entries on `style`.
 export type CSSPropertiesWithVars = React.CSSProperties & {
   [key: `--${string}`]: string | number | undefined;
 };
 
-// Props every polymorphic component supports regardless of which element it
-// renders as. Declared explicitly so they survive when the element passthrough
-// below resolves to nothing.
+// Declared explicitly so they survive when the passthrough below is dropped.
 type PolymorphicBaseProps<E extends React.ElementType> = {
   as?: E;
   children?: React.ReactNode;
@@ -53,14 +50,10 @@ type PolymorphicBaseProps<E extends React.ElementType> = {
   style?: CSSPropertiesWithVars;
 };
 
-// The props of the underlying element `E`, or nothing when `E` is unresolved.
-// Extracting props from a *generic* component (`TgphComponentProps<typeof
-// Stack>`) instantiates its type parameter at the constraint, so `E` arrives
-// here as the whole `React.ElementType` union. `ComponentProps<ElementType>`
-// is `any`, and `Omit<any, "as">` is `{ [x: string]: any }` — an index
-// signature that disables excess-property checking and widens every declared
-// prop to `any` on anything that inherits it. Dropping the passthrough in that
-// case keeps inherited prop sets closed.
+// The props of the underlying element, dropped when `E` is unresolved: an
+// unresolved `E` is the whole `React.ElementType` union, and
+// `Omit<ComponentProps<ElementType>, "as">` is `{ [x: string]: any }` — an
+// index signature that would disable prop checking on everything downstream.
 type PolymorphicPassthroughProps<E extends React.ElementType> =
   React.ElementType extends E ? unknown : Omit<React.ComponentProps<E>, "as">;
 

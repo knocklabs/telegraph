@@ -24,10 +24,6 @@ export type TabProps<T extends TgphElement = "button"> = {
 type TabIconProps = NonNullable<MenuItemProps<"button">["leadingIcon"]>;
 
 const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so native attributes like `disabled`
-  // are not visible and every prop would be an unresolved indexed access
-  // intersected with its declared type.
   const {
     disabled = false,
     value,
@@ -39,11 +35,8 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     ...props
   } = tabProps as TabProps<"button">;
 
-  // Asserted rather than annotated: these are partial defaults merged under the
-  // caller's icon props, and `@telegraph/menu` still derives its icon props from
-  // a bare `TgphComponentProps<typeof Button.Icon>`, so the element passthrough
-  // — and with it `data-*` attributes — is not visible there. The value is
-  // unchanged; only the type is narrowed.
+  // Asserted because `@telegraph/menu` derives its icon props from a bare
+  // `TgphComponentProps<typeof Button.Icon>`, which hides `data-*` attributes.
   const defaultIconProps = {
     size: "6",
     color: "gray",

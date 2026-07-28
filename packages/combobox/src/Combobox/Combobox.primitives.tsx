@@ -35,9 +35,6 @@ type TriggerIndicatorProps<T extends TgphElement> = Partial<
 const TriggerIndicator = <T extends TgphElement>(
   triggerIndicatorProps: TriggerIndicatorProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     icon = ChevronsUpDown,
     "aria-hidden": ariaHidden = true,
@@ -59,9 +56,6 @@ const TriggerIndicator = <T extends TgphElement>(
   );
 };
 
-// `TooltipProps` rather than `TgphComponentProps<typeof Tooltip>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough.
 type TriggerClearProps<T extends TgphElement> = TgphComponentProps<
   typeof Button<T>
 > & {
@@ -71,9 +65,6 @@ type TriggerClearProps<T extends TgphElement> = TgphComponentProps<
 const TriggerClear = <T extends TgphElement>(
   triggerClearProps: TriggerClearProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { tooltipProps, ...props } =
     triggerClearProps as TriggerClearProps<"button">;
   const context = React.useContext(ComboboxContext);
@@ -154,9 +145,6 @@ type TriggerTextProps<T extends TgphElement> = TgphComponentProps<
 const TriggerText = <T extends TgphElement>(
   triggerTextProps: TriggerTextProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { children, ...props } = triggerTextProps as TriggerTextProps<"span">;
   const context = React.useContext(ComboboxContext);
 
@@ -210,9 +198,6 @@ type TriggerPlaceholderProps<T extends TgphElement> = TgphComponentProps<
 const TriggerPlaceholder = <T extends TgphElement>(
   triggerPlaceholderProps: TriggerPlaceholderProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { children, ...props } =
     triggerPlaceholderProps as TriggerPlaceholderProps<"span">;
   const context = React.useContext(ComboboxContext);
@@ -233,10 +218,6 @@ const TriggerPlaceholder = <T extends TgphElement>(
   );
 };
 
-// `StackProps` rather than `TgphComponentProps<typeof Stack>`: extracting props
-// from a generic component instantiates its parameter at the constraint, which
-// erases the passthrough. This container always renders a `div`, so the props
-// type's own default is enough.
 type TriggerTagsContainerProps = StackProps;
 
 const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
@@ -316,9 +297,6 @@ type TriggerTagRootProps<T extends TgphElement> = {
 const TriggerTagRoot = <T extends TgphElement>(
   triggerTagRootProps: TriggerTagRootProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { value, children, ...props } =
     triggerTagRootProps as TriggerTagRootProps<"span">;
   return (
@@ -351,9 +329,6 @@ type TriggerTagTextProps<T extends TgphElement> = TgphComponentProps<
 const TriggerTagText = <T extends TgphElement>(
   triggerTagTextProps: TriggerTagTextProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { children, ...props } =
     triggerTagTextProps as TriggerTagTextProps<"span">;
   const context = React.useContext(ComboboxContext);
@@ -407,9 +382,6 @@ type TriggerTagButtonProps<T extends TgphElement> = TgphComponentProps<
 const TriggerTagButton = <T extends TgphElement>(
   triggerTagButtonProps: TriggerTagButtonProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { children, ...props } =
     triggerTagButtonProps as TriggerTagButtonProps<"button">;
   const context = React.useContext(ComboboxContext);
@@ -461,9 +433,6 @@ type TriggerTagDefaultProps<T extends TgphElement> = TgphComponentProps<
 const TriggerTagDefault = <T extends TgphElement>(
   triggerTagDefaultProps: TriggerTagDefaultProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { value, children, ...props } =
     triggerTagDefaultProps as TriggerTagDefaultProps<"span">;
   return (

@@ -5,15 +5,9 @@ import { Tooltip, type TooltipProps } from "@telegraph/tooltip";
 import { Text, type TextProps } from "@telegraph/typography";
 import React from "react";
 
-// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type ListProps<T extends TgphElement = "div"> = StackProps<T>;
 
 const List = <T extends TgphElement = "div">(listProps: ListProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     direction = "column",
     gap = "4",
@@ -33,7 +27,6 @@ export type ListItemProps<T extends TgphElement = "div"> = StackProps<T>;
 const ListItem = <T extends TgphElement = "div">(
   listItemProps: ListItemProps<T>,
 ) => {
-  // Read through the default element: see the note on `List`.
   const {
     direction = "row",
     gap = "1",
@@ -51,11 +44,6 @@ const ListItem = <T extends TgphElement = "div">(
 };
 
 export type LabelProps<T extends TgphElement = "div"> = {
-  // `TextProps` / `IconProps` / `TooltipProps` rather than
-  // `TgphComponentProps<typeof X>`: the bare form instantiates each generic at
-  // its constraint and erases the passthrough. These nested prop bags are
-  // rendered with the component's default element, so the defaulted props type
-  // is the accurate one.
   textProps?: TextProps;
   icon?: IconProps;
   description?: React.ReactNode;
@@ -63,7 +51,6 @@ export type LabelProps<T extends TgphElement = "div"> = {
 } & StackProps<T>;
 
 const Label = <T extends TgphElement = "div">(labelProps: LabelProps<T>) => {
-  // Read through the default element: see the note on `List`.
   const {
     maxW = "36",
     w = "full",
@@ -108,9 +95,8 @@ const Label = <T extends TgphElement = "div">(labelProps: LabelProps<T>) => {
           <Icon
             size="0"
             color="gray"
-            // `RemappedOmit` rather than `Omit`: Icon's props are a union over
-            // the `alt` / `aria-hidden` XOR, and `Omit` collapses that union
-            // into one object where both sides look present.
+            // `RemappedOmit` distributes over Icon's `alt`/`aria-hidden` union;
+            // `Omit` would collapse it into one object where both look present.
             {...(icon as RemappedOmit<IconProps, "size" | "color">)}
           />
         </Stack>
@@ -143,7 +129,6 @@ const Label = <T extends TgphElement = "div">(labelProps: LabelProps<T>) => {
 export type ValueProps<T extends TgphElement = "div"> = StackProps<T>;
 
 const Value = <T extends TgphElement = "div">(valueProps: ValueProps<T>) => {
-  // Read through the default element: see the note on `List`.
   const { w = "full", minW = "0", ...props } = valueProps as ValueProps<"div">;
   return (
     <Stack
@@ -163,7 +148,6 @@ export type ItemProps<T extends TgphElement = "div"> = ListItemProps<T> & {
 };
 
 const Item = <T extends TgphElement = "div">(itemProps: ItemProps<T>) => {
-  // Read through the default element: see the note on `List`.
   const {
     label,
     direction,

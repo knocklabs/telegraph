@@ -105,10 +105,6 @@ export type RootProps<
   | "style"
   | "value"
 > &
-  // `StackProps` / `ButtonRootProps` rather than `TgphComponentProps<typeof
-  // Stack>` / `ComponentPropsWithoutRef<typeof Button.Root>`: extracting props
-  // from a generic component instantiates its parameter at the constraint,
-  // which erases the passthrough and degrades lookups like `["size"]` to `any`.
   Omit<StackProps, "defaultValue" | "dir"> & {
     defaultValue?: Value;
     dir?: TextDirection;
@@ -462,9 +458,6 @@ const ButtonStyleProps: Record<SegmentedControlOptionStatus, ButtonRootProps> =
     },
   };
 
-// `ButtonProps` rather than `TgphComponentProps<typeof Button>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough (and with it native props like `disabled`).
 export type OptionProps = Omit<ButtonProps, "value"> & {
   value: string;
 };
@@ -511,10 +504,8 @@ const OptionButton = ({
       data-tgph-segmented-control-option
       data-tgph-segmented-control-option-status={status}
       tgphRef={composedButtonRef}
-      // `RemappedOmit` rather than `Omit`: Button's props are a union over the
-      // `icon` / `leadingIcon` + `trailingIcon` XOR, and `Omit` collapses that
-      // union into one object where both sides look present. The already
-      // destructured keys are removed so they are not "specified more than once".
+      // `RemappedOmit` distributes over Button's `icon`/`leadingIcon` union;
+      // `Omit` would collapse it into one object where both sides look present.
       {...(props as RemappedOmit<
         ButtonProps,
         "size" | "disabled" | "style" | "tgphRef"

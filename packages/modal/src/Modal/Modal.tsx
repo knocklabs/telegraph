@@ -128,9 +128,6 @@ const useBodyScrollLock = (layerId: string, enabled: boolean) => {
   }, [enabled, layerId]);
 };
 
-// `StackProps` rather than `TgphComponentProps<typeof Stack>`: extracting props
-// from a generic component instantiates its parameter at the constraint, which
-// erases the passthrough. The exported props type keeps Stack's props intact.
 export type RootProps = RootDialogProps &
   LegacyFocusScopeProps &
   StackProps & {
@@ -488,11 +485,10 @@ const RootComponent = ({
                       rounded="4"
                       shadow="3"
                       key={`content-${layerId}`}
-                      // Cast with `as` omitted so the rest props do not add a
-                      // second candidate to Stack's element inference: `as`
-                      // would widen `T` to `"div" | typeof motion.div`, and
-                      // `Omit` over that union keeps only the shared keys,
-                      // hiding the motion props used above.
+                      // `as` is omitted from the cast so the rest props do not
+                      // add a second candidate to Stack's element inference,
+                      // which would widen `T` to a union and hide the motion
+                      // props used above.
                       {...(props as Omit<
                         StackProps<typeof motion.div>,
                         "as" | "children"
@@ -677,9 +673,6 @@ export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
 > &
   Omit<BaseDialogCloseProps, "children" | "color" | "render">;
 const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     disabled,
     onClick,
@@ -689,9 +682,9 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
   } = closeProps as CloseProps<"button">;
   const handleClick = useCallback(
     (event: BaseUIPreventableEvent) => {
-      // `onClick` is the intersection of Button's handler and Base UI's, so
-      // its parameter narrows to Base UI's React mouse event. Base UI hands us
-      // exactly that event; only the declared parameter type is widened here.
+      // `onClick` is the intersection of Button's handler and Base UI's, so its
+      // parameter narrows to Base UI's mouse event — which is what Base UI
+      // hands us. Only the declared type is widened.
       (onClick as ((event: BaseUIPreventableEvent) => void) | undefined)?.(
         event,
       );

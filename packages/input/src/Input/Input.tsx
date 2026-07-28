@@ -25,13 +25,8 @@ export type BaseRootProps = {
   errored?: boolean;
 };
 
-// `TextProps<T>`/`StackProps` rather than `ComponentProps<typeof Text>` or
-// `ComponentProps<typeof Stack>`: extracting props from a generic component
-// instantiates its parameter at the constraint, which erases the passthrough.
-// Threading `T` — or using the props type with its own default, as `stackProps`
-// does for the always-`div` container — keeps the inherited props intact.
-// `as` is declared here because the `Omit` below strips Text's own `as`.
 export type RootProps<T extends TgphElement = "input"> = BaseRootProps & {
+  // Declared because the `Omit` below strips Text's own `as`.
   as?: T;
   textProps?: Omit<TextProps<T>, "as">;
   stackProps?: Omit<StackProps, "as">;
@@ -48,10 +43,6 @@ const InputContext = createContext<Required<InternalProps>>({
 });
 
 const Root = <T extends TgphElement = "input">(rootProps: RootProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so native attributes like `disabled`
-  // are not visible and every prop would otherwise be an unresolved indexed
-  // access intersected with its declared type.
   const {
     as = "input",
     size = "2",
@@ -151,9 +142,6 @@ const Slot = forwardRef<SlotRef, SlotProps>(
   },
 );
 
-// `RootProps<T>` rather than `TgphComponentProps<typeof Root>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough.
 export type DefaultProps<T extends TgphElement = "input"> = Omit<
   PolymorphicProps<T>,
   keyof BaseRootProps

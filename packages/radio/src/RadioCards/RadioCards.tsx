@@ -52,9 +52,6 @@ export type RootProps = Omit<
   | "style"
   | "value"
 > &
-  // `StackProps` rather than `TgphComponentProps<typeof Stack>`: extracting
-  // props from a generic component instantiates its parameter at the
-  // constraint, which erases the passthrough.
   StackProps &
   LegacyRadioGroupProps & {
     defaultValue?: string;
@@ -210,9 +207,6 @@ export type ItemTitleProps<T extends TgphElement = "span"> = TgphComponentProps<
 const ItemTitle = <T extends TgphElement = "span">(
   itemTitleProps: ItemTitleProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { size = "2", ...props } = itemTitleProps as ItemTitleProps<"span">;
   return (
     <Button.Text
@@ -228,9 +222,6 @@ export type ItemDescriptionProps<T extends TgphElement = "span"> =
 const ItemDescription = <T extends TgphElement = "span">(
   itemDescriptionProps: ItemDescriptionProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const { size = "0", ...props } =
     itemDescriptionProps as ItemDescriptionProps<"span">;
   return (
@@ -252,9 +243,6 @@ const ItemIcon = <T extends TgphElement = "span">(props: ItemIconProps<T>) => {
   return <Button.Icon color="gray" data-tgph-radio-card-icon {...props} />;
 };
 
-// `IconProps` rather than `ComponentProps<typeof Icon>`: extracting props from
-// a generic component instantiates its parameter at the constraint, which
-// erases the passthrough.
 type DefaultIconProps = IconProps;
 
 export type DefaultProps = ComponentPropsWithoutRef<typeof Root> & {

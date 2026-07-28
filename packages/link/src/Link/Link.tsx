@@ -31,9 +31,6 @@ type InternalProps = {
   weight: Required<RootBaseProps>["weight"];
 };
 
-// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type RootProps<T extends TgphElement = "a"> = Omit<
   StackProps<T>,
   "as" | "tgphRef" | "color"
@@ -48,9 +45,6 @@ const LinkContext = React.createContext<InternalProps>({
 });
 
 const Root = <T extends TgphElement = "a">(rootProps: RootProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     as,
     size = "2",
@@ -68,9 +62,8 @@ const Root = <T extends TgphElement = "a">(rootProps: RootProps<T>) => {
         display="inline-flex"
         align="center"
         gap="1"
-        // `getLinkBorderColor` builds its non-special values as a
-        // `${color}-11` template, which widens to `string`. Narrow the type at
-        // the boundary; the value is unchanged.
+        // `getLinkBorderColor` builds its non-special values as a `${color}-11`
+        // template, which widens to `string`.
         borderColor={borderColor as StackProps["borderColor"]}
         data-tgph-link
         data-tgph-link-size={size}
@@ -128,11 +121,6 @@ const Icon = <T extends TgphElement = "span">(linkIconProps: IconProps<T>) => {
   );
 };
 
-// The nested `Link.Icon` / `Link.Text` props, at their own default element:
-// `React.ComponentProps<typeof Icon>` on a generic component instantiates its
-// parameter at the constraint, which erases the passthrough. `as` stays open
-// (`Link.Text` renders whatever element it is handed, and that is covered by a
-// test) — only the passthrough is pinned to the default element.
 type DefaultIconProps = RemappedOmit<IconProps, "as"> & { as?: TgphElement };
 type DefaultTextProps = RemappedOmit<TextProps, "as"> & { as?: TgphElement };
 export type DefaultProps<T extends TgphElement = "a"> = PolymorphicProps<T> &

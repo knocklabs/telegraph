@@ -248,9 +248,9 @@ type OtherProps<CssVars extends CssVarsPropObject<CssVars>, Props> =
     >
   | object;
 
-// `CSSProperties` has no room for custom properties, and everything this
-// module emits is a `--*` entry. Mirrors `CSSPropertiesWithVars` in
-// @telegraph/helpers, redeclared here so style-engine stays dependency-free.
+// `CSSProperties` has no room for custom properties. Mirrors
+// `CSSPropertiesWithVars` in @telegraph/helpers, redeclared so style-engine
+// stays dependency-free.
 export type CSSPropertiesWithVars = CSSProperties & {
   [key: `--${string}`]: string | number | undefined;
 };

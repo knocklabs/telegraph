@@ -4,21 +4,17 @@ import * as Lucide from "lucide-react";
 
 import { type MenuItemProps, MenuItem as TelegraphMenuItem } from "./MenuItem";
 
-// `lucide-react` also exports helpers (`createLucideIcon`, `icons`, `Icon`,
-// `useLucideContext`) that are not usable as an `icon` value, so the icon
-// controls are keyed on just the exports that are icon components.
+// `lucide-react` also exports non-icon helpers, so the icon controls are keyed
+// on just the exports that are icon components.
 type LucideIconName = {
   [K in keyof typeof Lucide]: (typeof Lucide)[K] extends Lucide.LucideIcon
     ? K
     : never;
 }[keyof typeof Lucide];
 
-// Storybook-only args: the icon controls select a Lucide icon by name and
-// `type` toggles the story between the navigation and selectable presentations
-// (the component itself infers that from `selected`). Both are mapped onto the
-// component's real props in `render`. Built from `MenuItemProps` rather than
-// `ComponentProps<typeof MenuItem>`, which collapses to `{}` on a generic
-// polymorphic component.
+// Storybook-only args, mapped onto the real props in `render`: the icons are
+// picked by name, and `type` toggles the presentation the component itself
+// infers from `selected`.
 type StorybookMenuItemType = Omit<
   MenuItemProps,
   "leadingIcon" | "trailingIcon" | "type"

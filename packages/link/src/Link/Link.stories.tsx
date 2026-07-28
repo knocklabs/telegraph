@@ -22,10 +22,8 @@ const LINK_COLOR_OPTIONS: Array<NonNullable<LinkProps<"a">["color"]>> = [
   "disabled",
 ];
 
-// `lucide-react`'s namespace also exports helpers that are not icon components
-// (`createLucideIcon`, the generic `Icon`, the provider, …), so the control's
-// options are narrowed to the exports that really are `LucideIcon`s. That keeps
-// the `Icons[name]` lookup in the renderers assignable to `Link`'s `icon` prop.
+// `lucide-react` also exports non-icon helpers, so the control's options are
+// narrowed to the exports that really are `LucideIcon`s.
 type LucideIconName = {
   [K in keyof typeof Icons]: (typeof Icons)[K] extends LucideIcon ? K : never;
 }[keyof typeof Icons];
@@ -62,9 +60,6 @@ const meta: Meta<typeof TelegraphLink> = {
       },
     },
   },
-  // `href` is an anchor attribute, so it lives on the stories rather than here:
-  // `Meta<typeof TelegraphLink>` reads the component's props with `T` at its
-  // constraint, which erases the element passthrough.
   args: {
     children: "Link",
     size: "2",
@@ -75,11 +70,8 @@ const meta: Meta<typeof TelegraphLink> = {
 
 export default meta;
 
-// The `icon` control picks a lucide icon by name (or `""` for none), so that
-// one arg is remapped here and translated back into real `Link.Icon` props by
-// the renderers below. The rest of the props are pinned to the default `a`
-// element — reading them off the generic component instantiates `T` at its
-// constraint, which erases the anchor passthrough (`href` included).
+// The `icon` control picks a lucide icon by name (or `""` for none); `render`
+// translates it back into real `Link.Icon` props.
 type StorybookLinkType = Omit<LinkProps<"a">, "icon"> & {
   icon?: LucideIconName | "";
 };

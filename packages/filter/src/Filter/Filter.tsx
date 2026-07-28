@@ -100,9 +100,9 @@ export const Trigger = ({ children }: TriggerProps) => {
   const { triggerRef } = useFilter();
   return (
     <Menu.Trigger
-      // `Menu.Trigger` declares `tgphRef` as `Ref<HTMLButtonElement>`. With
-      // `asChild` the ref lands on whatever element the consumer renders, so
-      // narrow the type to Menu's contract; the ref object itself is unchanged.
+      // With `asChild` the ref lands on whatever element the consumer renders,
+      // so it is narrowed to `Menu.Trigger`'s `Ref<HTMLButtonElement>`
+      // contract.
       tgphRef={triggerRef as React.RefObject<HTMLButtonElement>}
       asChild={true}
     >

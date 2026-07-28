@@ -28,9 +28,9 @@ type StorybookRadioCardsType = StoryObj<typeof TelegraphRadioCards>;
 
 type RadioCardOption = RadioCardsProps["options"][number];
 
-// Annotated as a tuple rather than an array so `DEFAULT_OPTIONS[0]` is not
-// `| undefined` under `noUncheckedIndexedAccess`, while staying mutable so it
-// can still be passed straight through as `options`.
+// A tuple so `DEFAULT_OPTIONS[0]` is not `| undefined` under
+// `noUncheckedIndexedAccess`, but mutable so it can still be passed straight
+// through as `options`.
 const DEFAULT_OPTIONS: [RadioCardOption, RadioCardOption] = [
   {
     icon: { icon: Bell, alt: "Bell" },

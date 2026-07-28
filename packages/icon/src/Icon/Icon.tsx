@@ -18,14 +18,13 @@ type BaseIconProps = {
 };
 
 // An icon is either labelled or explicitly hidden. Both keys appear on both
-// arms (one as `never`) so the component can destructure them while the union
-// still requires exactly one.
+// arms (one as `never`) so the component can still destructure them.
 type IconA11yProps =
   | { alt: string; ["aria-hidden"]?: never }
   | { alt?: never; ["aria-hidden"]: true };
 
-// Kept separate from the a11y union so consumers that always supply their own
-// label (Spinner) can build on it without inheriting the XOR.
+// Separate from the a11y union so Spinner, which supplies its own label, can
+// build on it without inheriting the XOR.
 export type IconBaseProps<T extends TgphElement = "span"> =
   PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
     Omit<BoxProps<T>, "as" | "tgphRef"> &
@@ -35,9 +34,6 @@ export type IconProps<T extends TgphElement = "span"> = IconBaseProps<T> &
   IconA11yProps;
 
 const Icon = <T extends TgphElement = "span">(iconProps: IconProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     as,
     size = "2",

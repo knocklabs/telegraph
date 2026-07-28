@@ -179,9 +179,6 @@ export type TruncatedTextProps<T extends TgphElement = "span"> = {
 const TruncatedText = <T extends TgphElement = "span">(
   truncatedTextProps: TruncatedTextProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     mode = "truncate",
     variant,
@@ -194,13 +191,12 @@ const TruncatedText = <T extends TgphElement = "span">(
     as,
     ...props
   } = truncatedTextProps as TruncatedTextProps<"span">;
-  // `Text` types `as` as required (it throws at runtime when it is missing) and
-  // resolves its own `T` from it, so it has to be a single concrete element for
-  // `props` above to keep type-checking. The value is forwarded unchanged —
-  // including `undefined` — so `Text`'s "as prop is required" throw still fires.
+  // `Text` types `as` as required and resolves its own `T` from it, so it has
+  // to be one concrete element. The value is forwarded unchanged, including
+  // `undefined`, so `Text`'s "as prop is required" throw still fires.
   const textAs = as as "span";
-  // Middle truncation wraps its segments in a flex/block container, so it falls
-  // back to a `div` when no `as` is given. Same narrowing, same runtime value.
+  // Middle truncation wraps its segments in a container, so it falls back to a
+  // `div` when no `as` is given.
   const middleTextAs = (as ?? "div") as "span";
   // The tooltip must show the full, unclipped string. Letting TooltipIfTruncated
   // auto-extract it only unwraps one child level, so an engine/`middle` child

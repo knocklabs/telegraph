@@ -9,10 +9,6 @@ import { Check } from "lucide-react";
 import * as motion from "motion/react-m";
 import type { ReactNode } from "react";
 
-// `ButtonIconProps` rather than `TgphComponentProps<typeof Button.Icon>`:
-// extracting props from a generic component instantiates its parameter at the
-// constraint, so the bare form resolves to `{}` and every icon slot would
-// accept nothing at all.
 type MenuItemIconProps = {
   icon?: ButtonIconProps;
   leadingIcon?: ButtonIconProps;
@@ -26,20 +22,14 @@ export type MenuItemProps<T extends TgphElement = "button"> =
       leadingComponent?: ReactNode;
       trailingComponent?: ReactNode;
       textProps?: ButtonTextProps;
-      // Declared here rather than inherited: neither Button.Root nor the
-      // element passthrough has a `fontWeight` prop, so it only ever reached
-      // this component through the old catch-all index signature. It is read
-      // below to seed the label's weight and forwarded to Button.Root as
-      // before.
+      // Declared rather than inherited: no `fontWeight` exists on Button.Root
+      // or the element passthrough. It seeds the label's weight below.
       fontWeight?: ButtonTextProps["weight"];
     };
 
 const MenuItem = <T extends TgphElement = "button">(
   menuItemProps: MenuItemProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so Button.Root's inherited props are
-  // not visible.
   const {
     variant = "ghost",
     size = "2",

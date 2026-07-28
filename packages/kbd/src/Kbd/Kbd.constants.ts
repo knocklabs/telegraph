@@ -54,10 +54,6 @@ export const sizeMap = {
   },
 } as const;
 
-// `StackProps`/`TextProps`/`IconProps` rather than `TgphComponentProps<typeof
-// X>`: extracting props from a generic component instantiates its parameter at
-// the constraint, which erases the passthrough. The exported props types keep
-// each component's prop set intact.
 type StackColor = {
   borderColor: StackProps["borderColor"];
   bg: StackProps["bg"];

@@ -3,9 +3,9 @@ export const color = {
   white: "#FFFFFF",
   black: "#000000",
   surface: {
-    1: { light: "#FFFFFF", dark: "#18191B"},
-    2: { light: "#FDFDFC", dark: "#101112"},
-    3: { light: "#FFFFFF", dark: "#101112"},
+    1: { light: "#FFFFFF", dark: "#18191B" },
+    2: { light: "#FDFDFC", dark: "#101112" },
+    3: { light: "#FFFFFF", dark: "#101112" },
   },
   alpha: {
     white: {

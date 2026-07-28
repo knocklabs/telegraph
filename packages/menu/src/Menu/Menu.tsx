@@ -79,11 +79,6 @@ type MenuSubTriggerRenderState = {
   open: boolean;
 };
 
-// `StackProps` rather than `TgphComponentProps<typeof Stack>`: extracting props
-// from a generic component instantiates its parameter at the constraint, which
-// erases the element passthrough — including the `onKeyDown`/`onKeyDownCapture`
-// handlers this popup forwards. The popup always renders Stack as its default
-// `div`, so the non-generic form is the right source.
 type MenuPopupContentProps = Omit<StackProps, "children" | "tgphRef"> & {
   children?: ReactNode;
   contentRef: Ref<HTMLElement>;
@@ -1008,17 +1003,11 @@ const SubContent = <T extends TgphElement = "div">({
   );
 };
 
-// `BoxProps<T>` rather than `TgphComponentProps<typeof Box>`: extracting props
-// from a generic component instantiates its parameter at the constraint, which
-// erases the element passthrough. The divider forwards `as` to Box, so thread
-// the element type through instead of pinning it.
 export type DividerProps<T extends TgphElement = "hr"> = BoxProps<T>;
 
 const Divider = <T extends TgphElement = "hr">(
   dividerProps: DividerProps<T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so native attributes are not visible.
   const {
     w = "full",
     borderBottom = "px",

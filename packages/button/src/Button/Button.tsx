@@ -33,9 +33,8 @@ type RootBaseProps = {
   size?: ButtonSize;
   state?: "default" | "loading";
   active?: boolean;
-  // Declared rather than inherited from the native button passthrough: Button
-  // reads `disabled` to derive its state and forces the element back to
-  // `button`, so it stays meaningful under any `as` (e.g. `as="a"`).
+  // Declared rather than inherited: Button reads it to derive its state and
+  // forces the element back to `button`, so it survives any `as`.
   disabled?: boolean;
 };
 
@@ -51,9 +50,6 @@ type ButtonClickHandler = {
 
 type ButtonOnClick = ButtonClickHandler | boolean;
 
-// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type RootProps<T extends TgphElement = "button"> = Omit<
   StackProps<T>,
   "tgphRef" | "as" | "onClick"
@@ -91,10 +87,6 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
 };
 
 const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so native attributes like `type`
-  // and `disabled` are not visible and every prop would be an unresolved
-  // indexed access intersected with its declared type.
   const {
     as,
     variant = "solid",
@@ -218,9 +210,8 @@ const Icon = <T extends TgphElement = "span">(
     variant: variant ?? ICON_VARIANT_MAP[context.layout],
   };
 
-  // Icon's props require exactly one of `alt` / `aria-hidden`. `ariaHidden` is
-  // forwarded verbatim — including when it is undefined — so Icon still logs
-  // its "alt prop is required" warning; only the type is narrowed here.
+  // `ariaHidden` is forwarded verbatim, including when undefined, so Icon still
+  // logs its "alt prop is required" warning. Only the type is narrowed.
   const a11yProps = (alt ? { alt } : { "aria-hidden": ariaHidden }) as
     | { alt: string; "aria-hidden"?: never }
     | { alt?: never; "aria-hidden": true };

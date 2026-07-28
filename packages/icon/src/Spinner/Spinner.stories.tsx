@@ -5,12 +5,7 @@ import { COLOR_MAP, SIZE_MAP } from "../Icon/Icon.constants";
 
 import { type SpinnerProps, Spinner as TelegraphSpinner } from "./Spinner";
 
-// `SpinnerProps<"span">` rather than `ComponentProps<typeof TelegraphSpinner>`:
-// extracting props from a generic component instantiates its parameter at the
-// constraint, and `Partial<IconBaseProps<T>>` over an unresolved `T` collapses
-// to `{}`, taking every prop with it. The story renders the spinner as its
-// default element, so pinning `"span"` is enough. `icon` is remapped to a
-// string so the control can offer Lucide icon names.
+// `icon` is remapped to a string so the control can offer Lucide icon names.
 type StorybookSpinnerType = Omit<SpinnerProps<"span">, "icon"> & {
   icon: string;
 };

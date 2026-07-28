@@ -9,10 +9,6 @@ type TabsValueChangeHandler<Value extends TabsValue> = {
   bivarianceHack(value: Value): void;
 }["bivarianceHack"];
 
-// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
-// props from a generic component instantiates its parameter at the constraint,
-// which erases the passthrough. Threading `T` keeps Stack's props intact, so a
-// second (defaulted) parameter carries the element type alongside `Value`.
 export type TabsProps<
   Value extends TabsValue = string,
   T extends TgphElement = "div",
@@ -26,9 +22,6 @@ export type TabsProps<
 const Tabs = <Value extends TabsValue = string, T extends TgphElement = "div">(
   tabsProps: TabsProps<Value, T>,
 ) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     children,
     defaultValue,

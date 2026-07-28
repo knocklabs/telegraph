@@ -3,8 +3,7 @@ import { LoaderCircle } from "lucide-react";
 
 import { Icon, type IconBaseProps } from "../Icon";
 
-// Builds on IconBaseProps rather than IconProps: Spinner always supplies its
-// own `alt`, so it has no need for the alt/aria-hidden XOR.
+// `IconBaseProps`, not `IconProps`: Spinner supplies its own `alt`.
 type SpinnerProps<T extends TgphElement = "span"> = Partial<
   IconBaseProps<T>
 > & {
@@ -12,9 +11,6 @@ type SpinnerProps<T extends TgphElement = "span"> = Partial<
 };
 
 const Spinner = <T extends TgphElement = "span">(props: SpinnerProps<T>) => {
-  // Read through the default element: while `T` is unresolved the element
-  // passthrough is a deferred conditional, so every prop would otherwise be an
-  // unresolved indexed access intersected with its declared type.
   const {
     color = "gray",
     icon = LoaderCircle,

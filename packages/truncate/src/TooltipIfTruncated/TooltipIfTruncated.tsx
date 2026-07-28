@@ -3,9 +3,6 @@ import { Tooltip, type TooltipProps } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
 import { type ReactNode, isValidElement, useRef, useState } from "react";
 
-// `TooltipProps` (default element) rather than `TgphComponentProps<typeof
-// Tooltip>`: extracting props from a generic component instantiates its
-// parameter at the constraint, which erases the passthrough.
 export type TooltipIfTruncatedProps = Optional<TooltipProps, "label"> & {
   /**
    * How to decide whether the trigger is truncated. Defaults to
