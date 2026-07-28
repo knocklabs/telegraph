@@ -31,21 +31,39 @@ export type OptionalAsPropConfig<E extends React.ElementType> =
 // This allows you to create a component that can be used as a button, link,
 // or any other element, and pass all the props of the underlying element type.
 export type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
-  Omit<React.ComponentProps<C>, keyof AsProp<C>> &
+  (React.ElementType extends C
+    ? unknown
+    : Omit<React.ComponentProps<C>, keyof AsProp<C>>) &
   P;
+
+// Props every polymorphic component supports regardless of which element it
+// renders as. Declared explicitly so they survive when the element passthrough
+// below resolves to nothing.
+type PolymorphicBaseProps<E extends React.ElementType> = {
+  as?: E;
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+};
+
+// The props of the underlying element `E`, or nothing when `E` is unresolved.
+// Extracting props from a *generic* component (`TgphComponentProps<typeof
+// Stack>`) instantiates its type parameter at the constraint, so `E` arrives
+// here as the whole `React.ElementType` union. `ComponentProps<ElementType>`
+// is `any`, and `Omit<any, "as">` is `{ [x: string]: any }` — an index
+// signature that disables excess-property checking and widens every declared
+// prop to `any` on anything that inherits it. Dropping the passthrough in that
+// case keeps inherited prop sets closed.
+type PolymorphicPassthroughProps<E extends React.ElementType> =
+  React.ElementType extends E ? unknown : Omit<React.ComponentProps<E>, "as">;
 
 // The `PolymorphicProps` type is a utility type that allows you to create a
 // component that can be used as a button, link, or any other element via
 // the `as` prop. It takes a generic type `E` that extends `React.ElementType`.
 // It returns a type that includes the `as` prop and all the props of the
 // underlying element type `E`.
-export type PolymorphicProps<E extends React.ElementType> = Omit<
-  React.ComponentProps<E>,
-  "as"
-> & {
-  as?: E;
-  children?: React.ReactNode;
-};
+export type PolymorphicProps<E extends React.ElementType> =
+  PolymorphicPassthroughProps<E> & PolymorphicBaseProps<E>;
 
 // The `PolymorphicPropsWithTgphRef` type is a utility type that allows you to create a
 // component that can be used as a button, link, or any other element via
