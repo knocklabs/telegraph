@@ -60,7 +60,12 @@ export type CheckboxGroupBaseProps = {
  * where it collapses against Stack's catch-all prop signature.
  */
 export type CheckboxGroupProps = RemappedOmit<
-  TgphComponentProps<typeof Stack>,
+  // Instantiated form (`typeof Stack<"div">`), not the bare
+  // `TgphComponentProps<typeof Stack>`. The bare form instantiates Stack's
+  // generic at its constraint, which resolves to `any` and leaves a
+  // `{ [x: string]: any }` index signature on everything inheriting it — see
+  // KNO-14474 / PR #922.
+  TgphComponentProps<typeof Stack<"div">>,
   "tgphRef" | "value" | "defaultValue" | "onChange" | "color"
 > &
   RemappedOmit<

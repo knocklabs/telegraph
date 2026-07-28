@@ -170,7 +170,7 @@ const Root = <T extends TgphElement = "div">({
           cursor: disabled ? "not-allowed" : "pointer",
           ...style,
         }}
-        {...(props as TgphComponentProps<typeof Stack>)}
+        {...(props as TgphComponentProps<typeof Stack<"div">>)}
       >
         {children}
       </Stack>
@@ -306,7 +306,7 @@ const Label = <T extends TgphElement = "label">({
         cursor: context.disabled ? "not-allowed" : "pointer",
         ...(style as CSSProperties),
       }}
-      {...(props as TgphComponentProps<typeof Text>)}
+      {...(props as TgphComponentProps<typeof Text<"label">>)}
     />
   );
 };
