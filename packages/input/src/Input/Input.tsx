@@ -2,15 +2,13 @@ import { useComposedRefs } from "@telegraph/compose-refs";
 import type {
   PolymorphicProps,
   Required,
-  TgphComponentProps,
   TgphElement,
   TgphSlotProps,
 } from "@telegraph/helpers";
 import { TgphSlot } from "@telegraph/helpers";
-import { Stack } from "@telegraph/layout";
-import { Text } from "@telegraph/typography";
+import { Stack, type StackProps } from "@telegraph/layout";
+import { Text, type TextProps } from "@telegraph/typography";
 import {
-  type ComponentProps,
   type MouseEvent,
   type ReactNode,
   createContext,
@@ -27,10 +25,17 @@ export type BaseRootProps = {
   errored?: boolean;
 };
 
+// `TextProps<T>`/`StackProps` rather than `ComponentProps<typeof Text>` or
+// `ComponentProps<typeof Stack>`: extracting props from a generic component
+// instantiates its parameter at the constraint, which erases the passthrough.
+// Threading `T` — or using the props type with its own default, as `stackProps`
+// does for the always-`div` container — keeps the inherited props intact.
+// `as` is declared here because the `Omit` below strips Text's own `as`.
 export type RootProps<T extends TgphElement = "input"> = BaseRootProps & {
-  textProps?: Omit<ComponentProps<typeof Text<T>>, "as">;
-  stackProps?: Omit<ComponentProps<typeof Stack>, "as">;
-} & Omit<ComponentProps<typeof Text<T>>, "as" | keyof BaseRootProps>;
+  as?: T;
+  textProps?: Omit<TextProps<T>, "as">;
+  stackProps?: Omit<StackProps, "as">;
+} & Omit<TextProps<T>, "as" | keyof BaseRootProps>;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
@@ -42,18 +47,23 @@ const InputContext = createContext<Required<InternalProps>>({
   variant: "outline",
 });
 
-const Root = <T extends TgphElement = "input">({
-  as = "input" as T,
-  size = "2",
-  variant = "outline",
-  textProps,
-  stackProps,
-  disabled,
-  errored,
-  children,
-  tgphRef,
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "input">(rootProps: RootProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so native attributes like `disabled`
+  // are not visible and every prop would otherwise be an unresolved indexed
+  // access intersected with its declared type.
+  const {
+    as = "input",
+    size = "2",
+    variant = "outline",
+    textProps,
+    stackProps,
+    disabled,
+    errored,
+    children,
+    tgphRef,
+    ...props
+  } = rootProps as RootProps<"input">;
   const Component = as;
   const inputRef = useRef<HTMLInputElement>(null);
   const composedRefs = useComposedRefs(tgphRef, inputRef);
@@ -141,11 +151,14 @@ const Slot = forwardRef<SlotRef, SlotProps>(
   },
 );
 
+// `RootProps<T>` rather than `TgphComponentProps<typeof Root>`: extracting
+// props from a generic component instantiates its parameter at the constraint,
+// which erases the passthrough.
 export type DefaultProps<T extends TgphElement = "input"> = Omit<
   PolymorphicProps<T>,
   keyof BaseRootProps
 > &
-  TgphComponentProps<typeof Root> & {
+  RootProps<T> & {
     LeadingComponent?: ReactNode;
     TrailingComponent?: ReactNode;
   };
@@ -155,8 +168,10 @@ const Default = <T extends TgphElement = "input">({
   TrailingComponent,
   ...props
 }: DefaultProps<T>) => {
+  const rootProps = props as RootProps<T>;
+
   return (
-    <Root {...props}>
+    <Root<T> {...rootProps}>
       {LeadingComponent && <Slot position="leading">{LeadingComponent}</Slot>}
       {TrailingComponent && (
         <Slot position="trailing">{TrailingComponent}</Slot>

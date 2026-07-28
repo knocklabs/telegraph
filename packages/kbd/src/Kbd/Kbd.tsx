@@ -1,27 +1,35 @@
 import { useAppearance } from "@telegraph/appearance";
+import type { TgphElement } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 
 import { colorMap, sizeMap } from "./Kbd.constants";
 import { getIconOrKey } from "./Kbd.helpers";
 import { usePressed } from "./Kbd.hooks";
 
-export type KbdProps = {
+// `StackProps<T>` rather than `React.ComponentProps<typeof Stack>`: extracting
+// props from a generic component instantiates its parameter at the constraint,
+// which erases the passthrough. Threading `T` keeps Stack's props intact.
+export type KbdProps<T extends TgphElement = "div"> = {
   size?: keyof typeof sizeMap;
   contrast?: boolean;
   label: string;
   eventKey?: KeyboardEvent["key"];
-} & React.ComponentProps<typeof Stack>;
+} & StackProps<T>;
 
-const Kbd = ({
-  size = "1",
-  contrast: contrastProp = false,
-  label,
-  style,
-  eventKey,
-  ...props
-}: KbdProps) => {
+const Kbd = <T extends TgphElement = "div">(kbdProps: KbdProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so every prop would otherwise be an
+  // unresolved indexed access intersected with its declared type.
+  const {
+    size = "1",
+    contrast: contrastProp = false,
+    label,
+    style,
+    eventKey,
+    ...props
+  } = kbdProps as KbdProps<"div">;
   const { appearance: appearanceProp } = useAppearance();
   const { pressed } = usePressed({ key: eventKey || label });
   const { icon, text } = getIconOrKey(label);

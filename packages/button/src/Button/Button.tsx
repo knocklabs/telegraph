@@ -33,6 +33,10 @@ type RootBaseProps = {
   size?: ButtonSize;
   state?: "default" | "loading";
   active?: boolean;
+  // Declared rather than inherited from the native button passthrough: Button
+  // reads `disabled` to derive its state and forces the element back to
+  // `button`, so it stays meaningful under any `as` (e.g. `as="a"`).
+  disabled?: boolean;
 };
 
 type InternalProps = {
@@ -60,7 +64,9 @@ export type RootProps<T extends TgphElement = "button"> = Omit<
   };
 
 const ButtonContext = React.createContext<
-  Required<Omit<RootBaseProps, "color" | "as" | "state"> & InternalProps>
+  Required<
+    Omit<RootBaseProps, "color" | "as" | "state" | "disabled"> & InternalProps
+  >
 >({
   variant: "solid",
   size: "2",

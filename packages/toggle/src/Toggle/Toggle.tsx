@@ -1,4 +1,4 @@
-import { Button } from "@telegraph/button";
+import { Button, type ButtonRootProps } from "@telegraph/button";
 import {
   type PolymorphicPropsWithTgphRef,
   type TgphComponentProps,
@@ -7,7 +7,7 @@ import {
   useControllableState,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { Tag } from "@telegraph/tag";
 import { Text } from "@telegraph/typography";
 import { CheckCircle2, Circle } from "lucide-react";
@@ -35,7 +35,11 @@ type InternalContextType = {
   onValueChange: (value: boolean) => void;
   required?: boolean;
   name?: string;
-  color: TgphComponentProps<typeof Button.Root>["color"];
+  // `ButtonRootProps["color"]` rather than
+  // `TgphComponentProps<typeof Button.Root>["color"]`: extracting props from a
+  // generic component instantiates its parameter at the constraint, so the
+  // bare form resolves to `{}` and the indexed access degrades to `any`.
+  color: ButtonRootProps["color"];
   "aria-label"?: string;
 };
 
@@ -56,33 +60,51 @@ export type RootBaseProps = {
   value?: boolean;
   defaultValue?: boolean;
   onValueChange?: (value: boolean) => void;
-  color?: TgphComponentProps<typeof Button.Root>["color"];
+  color?: ButtonRootProps["color"];
+  // Declared here rather than inherited: the root renders a `div`, so these
+  // never came from the element passthrough. They are read off the root and
+  // forwarded to the visually hidden checkbox that `Toggle.Switch` renders.
+  disabled?: boolean;
+  required?: boolean;
+  name?: string;
 };
 
+// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
+// props from a generic component instantiates its parameter at the constraint,
+// which erases the passthrough. Threading `T` keeps Stack's props intact.
+// `value`/`defaultValue` are dropped from the passthrough because every element
+// declares `defaultValue?: string | number | readonly string[]`; intersecting
+// that with the toggle's own boolean state makes both unusable.
 export type RootProps<T extends TgphElement = "div"> = Omit<
-  TgphComponentProps<typeof Stack<T>>,
-  "tgphRef" | "as"
+  StackProps<T>,
+  "tgphRef" | "as" | "value" | "defaultValue"
 > &
-  PolymorphicPropsWithTgphRef<T, HTMLInputElement> &
-  RootBaseProps;
+  Omit<
+    PolymorphicPropsWithTgphRef<T, HTMLInputElement>,
+    "as" | "value" | "defaultValue"
+  > & { as?: T } & RootBaseProps;
 
-const Root = <T extends TgphElement = "div">({
-  size = "2",
-  color = "blue",
-  value: valueProp,
-  defaultValue = false,
-  onValueChange: onValueChangeProp,
-  disabled = false,
-  required = false,
-  id: idProp,
-  name,
-  className,
-  children,
-  as,
-  style,
-  "aria-label": ariaLabel,
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so native attributes like `id` and
+  // `aria-label` are not visible.
+  const {
+    size = "2",
+    color = "blue",
+    value: valueProp,
+    defaultValue = false,
+    onValueChange: onValueChangeProp,
+    disabled = false,
+    required = false,
+    id: idProp,
+    name,
+    className,
+    children,
+    as,
+    style,
+    "aria-label": ariaLabel,
+    ...props
+  } = rootProps as RootProps<"div">;
   const [value, onValueChange] = useControllableState({
     prop: valueProp,
     defaultProp: defaultValue,
@@ -128,12 +150,25 @@ const Root = <T extends TgphElement = "div">({
   );
 };
 
-export type SwitchProps = TgphComponentProps<typeof Button.Root>;
+// `ButtonRootProps<"label">` rather than
+// `TgphComponentProps<typeof Button.Root>`: extracting props from a generic
+// component instantiates its parameter at the constraint, so the bare form
+// resolves to `{}` and the switch would accept nothing at all. The switch always
+// renders Button.Root as a `label`, so pin the element type to match.
+export type SwitchProps = ButtonRootProps<"label">;
 
 const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   const context = useContext(ToggleContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const { iconSize, ...sizeConfig } = TOGGLE_SIZE_MAP[context.size];
+  // Button.Root derives its disabled state from a `disabled` prop it only
+  // receives through the element passthrough, and a `label` — which the switch
+  // renders as — has no native `disabled` attribute. Spread it in at the same
+  // position so the value still reaches Button.Root unchanged, typed against the
+  // button element so the prop name stays anchored to Button.Root's surface.
+  const disabledProp: Pick<ButtonRootProps<"button">, "disabled"> = {
+    disabled: context.disabled,
+  };
 
   return (
     <Stack position="relative" align="center">
@@ -161,7 +196,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
         rounded="full"
         align="center"
         justify="flex-start"
-        disabled={context.disabled}
+        {...disabledProp}
         data-tgph-toggle-switch
         data-tgph-toggle-size={context.size}
         data-tgph-toggle-checked={context.value}
@@ -201,19 +236,27 @@ export type LabelProps<T extends TgphElement = "label"> = TgphComponentProps<
   hidden?: boolean;
 };
 
-const Label = <T extends TgphElement = "label">({
-  hidden = false,
-  as,
-  style,
-  ...props
-}: LabelProps<T>) => {
+const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so native attributes like `htmlFor`
+  // are not visible.
+  const {
+    hidden = false,
+    as,
+    style,
+    ...props
+  } = labelProps as LabelProps<"label">;
   const context = useContext(ToggleContext);
+  const textProps = props as Omit<
+    TgphComponentProps<typeof Text<"label">>,
+    "as" | "htmlFor" | "id" | "size" | "style"
+  >;
 
   if (hidden) {
     return (
       <VisuallyHidden asChild>
         <Text
-          as={(as || "label") as T}
+          as={as || "label"}
           htmlFor={context.id}
           id={context.labelId}
           size={LABEL_SIZE_MAP[context.size]}
@@ -223,7 +266,7 @@ const Label = <T extends TgphElement = "label">({
             cursor: context.disabled ? "not-allowed" : "pointer",
             ...style,
           }}
-          {...props}
+          {...textProps}
         />
       </VisuallyHidden>
     );
@@ -231,7 +274,7 @@ const Label = <T extends TgphElement = "label">({
 
   return (
     <Text
-      as={(as || "label") as T}
+      as={as || "label"}
       htmlFor={context.id}
       id={context.labelId}
       size={LABEL_SIZE_MAP[context.size]}
@@ -241,7 +284,7 @@ const Label = <T extends TgphElement = "label">({
         cursor: context.disabled ? "not-allowed" : "pointer",
         ...style,
       }}
-      {...props}
+      {...textProps}
     />
   );
 };
@@ -253,19 +296,30 @@ export type IndicatorProps<T extends TgphElement = "span"> = TgphComponentProps<
   disabledContent?: ReactNode;
 };
 
-const Indicator = <T extends TgphElement = "span">({
-  as,
-  enabledContent = "Enabled",
-  disabledContent = "Disabled",
-  style,
-  children,
-  ...props
-}: IndicatorProps<T>) => {
+const Indicator = <T extends TgphElement = "span">(
+  indicatorProps: IndicatorProps<T>,
+) => {
+  // Read through the element this actually renders as: while `T` is unresolved
+  // the element passthrough is a deferred conditional, so Tag's inherited props
+  // are not visible.
+  const {
+    as,
+    enabledContent = "Enabled",
+    disabledContent = "Disabled",
+    style,
+    children,
+    ...props
+  } = indicatorProps as IndicatorProps<"label">;
   const context = useContext(ToggleContext);
 
   const content =
     children || (context.value ? enabledContent : disabledContent);
   const size = INDICATOR_SIZE_MAP[context.size];
+  // Cast without `Omit`: Tag's props are a discriminated `onRemove`/`onCopy`
+  // union that `Omit` would flatten into a shape no branch accepts. Every
+  // attribute written below is optional on Tag, so nothing is "specified more
+  // than once".
+  const tagProps = props as TgphComponentProps<typeof Tag<"label">>;
 
   return (
     <Tag
@@ -278,7 +332,7 @@ const Indicator = <T extends TgphElement = "span">({
         cursor: context.disabled ? "not-allowed" : "pointer",
         ...style,
       }}
-      {...props}
+      {...tagProps}
     >
       {content}
     </Tag>
@@ -299,15 +353,21 @@ const Default = <T extends TgphElement = "div">({
   indicatorProps,
   ...props
 }: DefaultProps<T>) => {
+  const rootProps = props as RootProps<T>;
+
   return (
-    <Root {...props}>
+    <Root<T> {...rootProps}>
       {label && (
         <Label as="label" {...labelProps}>
           {label}
         </Label>
       )}
       <Stack direction="row" gap="1" align="center">
-        {indicator && <Indicator {...indicatorProps} />}
+        {indicator && (
+          // `Omit` flattens Tag's discriminated `onRemove`/`onCopy` union, so
+          // restore the original shape for the child.
+          <Indicator {...(indicatorProps as IndicatorProps<"span">)} />
+        )}
         <Switch />
       </Stack>
     </Root>

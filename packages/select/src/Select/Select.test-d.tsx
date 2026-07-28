@@ -10,10 +10,7 @@ describe("Select types", () => {
   });
 
   it("keeps declared props narrow", () => {
-    // TODO(KNO-14474): Select.Root's `size` is still `any`. It is declared as
-    // `TgphComponentProps<typeof Combobox.Trigger>["size"]`, but the computed
-    // Combobox.Trigger props have no `size` key, so the indexed access widens.
-    // expectTypeOf<SelectProps["size"]>().not.toBeAny();
+    expectTypeOf<SelectProps["size"]>().not.toBeAny();
     expectTypeOf<SelectProps["value"]>().not.toBeAny();
     expectTypeOf<SelectProps["placeholder"]>().not.toBeAny();
     expectTypeOf<SelectProps["disabled"]>().not.toBeAny();
@@ -45,12 +42,10 @@ describe("Select types", () => {
   });
 
   it("rejects invalid values for declared props", () => {
-    // TODO(KNO-14474): Select.Root still accepts any value for `size` because
-    // the prop resolves to `any` (see "keeps declared props narrow" above).
-    // <Select.Root
-    //   // @ts-expect-error not a trigger size
-    //   size="99"
-    // />;
+    <Select.Root
+      // @ts-expect-error not a trigger size
+      size="99"
+    />;
     <Select.Root
       // @ts-expect-error placeholder is a string
       placeholder={12}
@@ -91,10 +86,7 @@ describe("Select types", () => {
       closeOnSelect
       defaultOpen={false}
       onOpenChange={() => {}}
-      // NOTE(KNO-14474): `triggerProps={{ size: "1" }}` no longer type-checks —
-      // ComboboxTriggerProps lost `size` when Button.Root's props collapsed to
-      // `unknown`, even though Select passes `size` to Combobox.Trigger.
-      triggerProps={{ placeholder: "Select an option" }}
+      triggerProps={{ size: "1", placeholder: "Select an option" }}
       contentProps={{ maxHeight: "40" }}
       optionsProps={{ p: "1" }}
     />;

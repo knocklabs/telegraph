@@ -126,12 +126,7 @@ describe("Tag types", () => {
     <Tag.Text as="p" data-testid="text" />;
     <Tag.Button as="a" href="/docs" />;
     <Tag.CopyButton textToCopy="copy me" />;
-    // TODO(KNO-14474): Tag.CopyButton is over-tightened — its props are typed as
-    // `TgphComponentProps<typeof Button.Root>`, which now resolves to `{}`, so the
-    // whole Button.Root surface (onClick, className, style, size, color, ...) is
-    // gone. Tag.tsx itself destructures `onClick` off these props, which no longer
-    // type-checks. Re-enable once CopyButtonProps resolves to Button.Root's props.
-    // <Tag.CopyButton textToCopy="copy me" onClick={() => {}} className="c" />;
+    <Tag.CopyButton textToCopy="copy me" onClick={() => {}} className="c" />;
     <Tag.Icon icon={Bell} aria-hidden mr="1" />;
   });
 });

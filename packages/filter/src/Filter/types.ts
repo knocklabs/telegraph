@@ -18,7 +18,9 @@ export type FilterContextValue = {
   searchValue: string;
   setSearchValue: (searchValue: string) => void;
   stateControl: InternalFilterState;
-  triggerRef: React.RefObject<HTMLDivElement | null>;
+  // `Filter.Trigger` forwards this to `Menu.Trigger` with `asChild`, so the ref
+  // lands on whatever element the consumer renders — not necessarily a div.
+  triggerRef: React.RefObject<HTMLElement | null>;
 };
 
 export type FilterProps = {

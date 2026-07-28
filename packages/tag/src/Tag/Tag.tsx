@@ -1,4 +1,7 @@
-import { Button as TelegraphButton } from "@telegraph/button";
+import {
+  type ButtonRootProps,
+  Button as TelegraphButton,
+} from "@telegraph/button";
 import type {
   PolymorphicProps,
   PolymorphicPropsWithTgphRef,
@@ -8,7 +11,7 @@ import type {
   TgphElement,
 } from "@telegraph/helpers";
 import { Icon as TelegraphIcon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import { Tooltip } from "@telegraph/tooltip";
 import { Text as TelegraphText } from "@telegraph/typography";
@@ -17,7 +20,6 @@ import { Check, Copy, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import {
-  type ComponentProps,
   type MouseEvent,
   createContext,
   useContext,
@@ -33,9 +35,12 @@ type RootBaseProps = {
   variant?: keyof typeof COLOR.Root;
 };
 
+// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
+// props from a generic component instantiates its parameter at the constraint,
+// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type RootProps<T extends TgphElement = "span"> =
   PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
-    Omit<TgphComponentProps<typeof Stack>, "as" | "tgphRef"> &
+    Omit<StackProps<T>, "as" | "tgphRef"> &
     RootBaseProps;
 
 const TagContext = createContext<Required<RootBaseProps>>({
@@ -44,15 +49,19 @@ const TagContext = createContext<Required<RootBaseProps>>({
   variant: "soft",
 });
 
-const Root = <T extends TgphElement = "span">({
-  as = "span" as T,
-  size = "1",
-  color = "default",
-  variant = "soft",
-  className,
-  style,
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "span">(rootProps: RootProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so every prop would otherwise be an
+  // unresolved indexed access intersected with its declared type.
+  const {
+    as = "span",
+    size = "1",
+    color = "default",
+    variant = "soft",
+    className,
+    style,
+    ...props
+  } = rootProps as RootProps<"span">;
   const { styleProp, otherProps } = useStyleEngine({
     props: {
       ...(variant === "soft"
@@ -90,13 +99,14 @@ export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
   as?: T;
 };
 
-const Text = <T extends TgphElement = "span">({
-  as = "span" as T,
-  maxW = "40",
-  overflow = "hidden",
-  style,
-  ...props
-}: TextProps<T>) => {
+const Text = <T extends TgphElement = "span">(tagTextProps: TextProps<T>) => {
+  const {
+    as = "span",
+    maxW = "40",
+    overflow = "hidden",
+    style,
+    ...props
+  } = tagTextProps as TextProps<"span">;
   const context = useContext(TagContext);
   return (
     <TelegraphText
@@ -121,9 +131,11 @@ export type ButtonProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof TelegraphButton<T>
 >;
 
-export type CopyButtonProps = TgphComponentProps<
-  typeof TelegraphButton.Root
-> & {
+// `ButtonRootProps` (default element) rather than `TgphComponentProps<typeof
+// Button.Root>`: extracting props from a generic component instantiates its
+// parameter at the constraint, which erases the passthrough — and here the
+// whole Button.Root surface with it.
+export type CopyButtonProps = ButtonRootProps & {
   textToCopy?: string;
 };
 
@@ -210,14 +222,20 @@ export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof TelegraphIcon<T>
 >;
 
-const Icon = <T extends TgphElement = "span">({
-  icon,
-  alt,
-  "aria-hidden": ariaHidden,
-  ...props
-}: IconProps<T>) => {
+const Icon = <T extends TgphElement = "span">(tagIconProps: IconProps<T>) => {
+  const {
+    icon,
+    alt,
+    "aria-hidden": ariaHidden,
+    ...props
+  } = tagIconProps as IconProps<"span">;
   const context = useContext(TagContext);
-  const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
+  // Icon's props require exactly one of `alt` / `aria-hidden`. `ariaHidden` is
+  // forwarded verbatim — including when it is undefined — so Icon still logs
+  // its "alt prop is required" warning; only the type is narrowed here.
+  const a11yProps = (!alt ? { "aria-hidden": ariaHidden } : { alt }) as
+    | { alt: string; "aria-hidden"?: never }
+    | { alt?: never; "aria-hidden": true };
   return (
     <TelegraphIcon
       icon={icon}
@@ -232,8 +250,11 @@ const Icon = <T extends TgphElement = "span">({
 
 export type DefaultProps<T extends TgphElement = "span"> = PolymorphicProps<T> &
   TgphComponentProps<typeof Root<T>> & {
-    icon?: ComponentProps<typeof TelegraphIcon>;
-    textProps?: ComponentProps<typeof Text>;
+    // The nested `Tag.Icon` / `Tag.Text` props, at their own default element:
+    // `ComponentProps<typeof Icon>` on a generic component instantiates its
+    // parameter at the constraint, which erases the passthrough.
+    icon?: IconProps;
+    textProps?: TextProps;
     onRemove?: () => void;
   } & ( // Optionally allow textToCopy only when onCopy is defined
     | {
@@ -261,7 +282,9 @@ const Default = <T extends TgphElement = "span">({
   const hasButtons = !!(onRemove || onCopy);
   const finalTextProps = {
     ...textProps,
-    ...(hasButtons ? { mr: "0" } : {}),
+    // `as const` so `mr` stays the "0" spacing token rather than widening to
+    // `string` through the conditional spread.
+    ...(hasButtons ? ({ mr: "0" } as const) : {}),
   };
 
   return (

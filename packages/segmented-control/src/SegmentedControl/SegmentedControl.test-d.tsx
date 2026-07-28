@@ -21,13 +21,7 @@ describe("SegmentedControl types", () => {
     expectTypeOf<SegmentedControlRootProps["value"]>().not.toBeAny();
     expectTypeOf<SegmentedControlRootProps["defaultValue"]>().not.toBeAny();
     expectTypeOf<SegmentedControlRootProps["onValueChange"]>().not.toBeAny();
-    // TODO(KNO-14474): SegmentedControl.Root's `size` is still `any`. It is
-    // declared as `ComponentPropsWithoutRef<typeof Button.Root>["size"]`, and
-    // `ComponentProps<typeof Button.Root>` collapses to `{}` (Button.Root's
-    // props are built from a *bare* generic `TgphComponentProps<typeof Stack>`,
-    // unlike Button.Text/Button.Icon which instantiate theirs), so the lookup
-    // is an error type that degrades to `any`.
-    // expectTypeOf<SegmentedControlRootProps["size"]>().not.toBeAny();
+    expectTypeOf<SegmentedControlRootProps["size"]>().not.toBeAny();
     expectTypeOf<SegmentedControlRootProps["scrollControls"]>().not.toBeAny();
     expectTypeOf<SegmentedControlRootProps["orientation"]>().not.toBeAny();
     expectTypeOf<SegmentedControlRootProps["rovingFocus"]>().not.toBeAny();
@@ -72,13 +66,10 @@ describe("SegmentedControl types", () => {
       // @ts-expect-error not a segmented control type
       type="triple"
     />;
-    // TODO(KNO-14474): SegmentedControl.Root still accepts any `size` value —
-    // the prop resolves to `any` (see the note in "keeps declared props
-    // narrow"), so no invalid size is rejected.
-    // <SegmentedControl.Root
-    //   // @ts-expect-error not a button size
-    //   size="99"
-    // />;
+    <SegmentedControl.Root
+      // @ts-expect-error not a button size
+      size="99"
+    />;
     <SegmentedControl.Root
       // @ts-expect-error not a scroll control mode
       scrollControls="scrollbar"

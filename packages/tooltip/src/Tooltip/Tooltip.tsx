@@ -7,7 +7,7 @@ import {
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
 } from "@telegraph/helpers";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
@@ -199,9 +199,10 @@ const Tooltip = <T extends TgphElement = "div">({
   const resolvedCollisionAvoidance =
     collisionAvoidance ??
     (avoidCollisions === false ? NO_COLLISION_AVOIDANCE : undefined);
-  const popupLabelProps = labelProps as
-    | TgphComponentProps<typeof Stack>
-    | undefined;
+  // `StackProps` (default element) rather than `TgphComponentProps<typeof
+  // Stack>`: extracting props from a generic component instantiates its
+  // parameter at the constraint, which erases the passthrough.
+  const popupLabelProps = labelProps as StackProps | undefined;
   const { style: labelStyle, ...popupLabelRestProps } = popupLabelProps ?? {};
   const popupStyle = {
     transformOrigin: "var(--transform-origin)",
@@ -369,7 +370,15 @@ const Tooltip = <T extends TgphElement = "div">({
                       align="center"
                       justify="center"
                       style={popupStyle}
-                      {...popupLabelRestProps}
+                      // Narrow the spread to the element actually rendered: an
+                      // optional `as` in a later spread widens the element type
+                      // to a union and stops `T` resolving to `motion.div`, and
+                      // the public `labelProps` type describes a `div` whose
+                      // drag handlers clash with motion's. Runtime is unchanged.
+                      {...(popupLabelRestProps as Omit<
+                        StackProps<typeof motion.div>,
+                        "as"
+                      >)}
                       id={tooltipId}
                       role="tooltip"
                     >

@@ -1,7 +1,6 @@
-import type { TgphComponentProps } from "@telegraph/helpers";
-import { Icon } from "@telegraph/icon";
-import type { Stack } from "@telegraph/layout";
-import type { Text } from "@telegraph/typography";
+import type { IconProps } from "@telegraph/icon";
+import type { StackProps } from "@telegraph/layout";
+import type { TextProps } from "@telegraph/typography";
 
 export const sizeMap = {
   "0": {
@@ -55,18 +54,22 @@ export const sizeMap = {
   },
 } as const;
 
+// `StackProps`/`TextProps`/`IconProps` rather than `TgphComponentProps<typeof
+// X>`: extracting props from a generic component instantiates its parameter at
+// the constraint, which erases the passthrough. The exported props types keep
+// each component's prop set intact.
 type StackColor = {
-  borderColor: TgphComponentProps<typeof Stack>["borderColor"];
-  bg: TgphComponentProps<typeof Stack>["bg"];
-  bgPressed: TgphComponentProps<typeof Stack>["bg"];
+  borderColor: StackProps["borderColor"];
+  bg: StackProps["bg"];
+  bgPressed: StackProps["bg"];
 };
 
 type TextColor = {
-  color: TgphComponentProps<typeof Text>["color"];
+  color: TextProps["color"];
 };
 
 type IconColor = {
-  color: TgphComponentProps<typeof Icon>["color"];
+  color: IconProps["color"];
 };
 
 export type Appearance = "light" | "dark";

@@ -1,14 +1,22 @@
-import { Button } from "@telegraph/button";
+import {
+  Button,
+  type ButtonIconProps,
+  type ButtonTextProps,
+} from "@telegraph/button";
 import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
 import * as motion from "motion/react-m";
 import type { ReactNode } from "react";
 
+// `ButtonIconProps` rather than `TgphComponentProps<typeof Button.Icon>`:
+// extracting props from a generic component instantiates its parameter at the
+// constraint, so the bare form resolves to `{}` and every icon slot would
+// accept nothing at all.
 type MenuItemIconProps = {
-  icon?: TgphComponentProps<typeof Button.Icon>;
-  leadingIcon?: TgphComponentProps<typeof Button.Icon>;
-  trailingIcon?: TgphComponentProps<typeof Button.Icon>;
+  icon?: ButtonIconProps;
+  leadingIcon?: ButtonIconProps;
+  trailingIcon?: ButtonIconProps;
 };
 
 export type MenuItemProps<T extends TgphElement = "button"> =
@@ -17,26 +25,38 @@ export type MenuItemProps<T extends TgphElement = "button"> =
       selected?: boolean | null;
       leadingComponent?: ReactNode;
       trailingComponent?: ReactNode;
-      textProps?: TgphComponentProps<typeof Button.Text>;
+      textProps?: ButtonTextProps;
+      // Declared here rather than inherited: neither Button.Root nor the
+      // element passthrough has a `fontWeight` prop, so it only ever reached
+      // this component through the old catch-all index signature. It is read
+      // below to seed the label's weight and forwarded to Button.Root as
+      // before.
+      fontWeight?: ButtonTextProps["weight"];
     };
 
-const MenuItem = <T extends TgphElement = "button">({
-  variant = "ghost",
-  size = "2",
-  px = "2",
-  gap = "1_5",
-  justify = "space-between",
-  w = "auto",
-  selected,
-  icon,
-  leadingIcon,
-  leadingComponent,
-  trailingIcon,
-  trailingComponent,
-  textProps,
-  ...props
-}: MenuItemProps<T>) => {
-  const rootProps = props as TgphComponentProps<typeof Button.Root>;
+const MenuItem = <T extends TgphElement = "button">(
+  menuItemProps: MenuItemProps<T>,
+) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so Button.Root's inherited props are
+  // not visible.
+  const {
+    variant = "ghost",
+    size = "2",
+    px = "2",
+    gap = "1_5",
+    justify = "space-between",
+    w = "auto",
+    selected,
+    icon,
+    leadingIcon,
+    leadingComponent,
+    trailingIcon,
+    trailingComponent,
+    textProps,
+    ...props
+  } = menuItemProps as MenuItemProps<"button">;
+  const rootProps = props;
 
   return (
     <Button.Root
@@ -74,7 +94,7 @@ const MenuItem = <T extends TgphElement = "button">({
 };
 
 type MenuItemLeadingProps = Pick<
-  TgphComponentProps<typeof MenuItem>,
+  MenuItemProps,
   "leadingIcon" | "icon" | "selected" | "leadingComponent"
 >;
 
@@ -128,7 +148,7 @@ const MenuItemLeading = ({
 };
 
 type MenuItemTrailingProps = Pick<
-  TgphComponentProps<typeof MenuItem>,
+  MenuItemProps,
   "trailingIcon" | "trailingComponent"
 >;
 

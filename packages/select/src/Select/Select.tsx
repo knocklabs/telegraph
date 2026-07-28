@@ -1,13 +1,29 @@
-import { Combobox } from "@telegraph/combobox";
+import {
+  Combobox,
+  type ComboboxContentProps,
+  type ComboboxOptionProps,
+  type ComboboxOptionsProps,
+  type ComboboxTriggerProps,
+} from "@telegraph/combobox";
 import { TgphComponentProps } from "@telegraph/helpers";
 
-type Option = TgphComponentProps<typeof Combobox.Option>;
+// The exported props types rather than `TgphComponentProps<typeof
+// Combobox.X>`: extracting props from a generic component instantiates its
+// parameter at the constraint, which erases the element passthrough. Select
+// renders each part as its default element, so each props type's own default
+// is enough. `Combobox.Trigger`'s `V` has no default — it types the value
+// handed to a render-prop child — so it is pinned to the same union Select
+// accepts, matching how `<Combobox.Trigger />` instantiates below.
+// `Combobox.Root` is not element-polymorphic, so it is read as-is.
+type SelectTriggerProps = ComboboxTriggerProps<string | Array<string>>;
+
+type Option = ComboboxOptionProps;
 
 type RootProps = TgphComponentProps<typeof Combobox.Root> & {
-  size?: TgphComponentProps<typeof Combobox.Trigger>["size"];
-  triggerProps?: TgphComponentProps<typeof Combobox.Trigger>;
-  contentProps?: TgphComponentProps<typeof Combobox.Content>;
-  optionsProps?: TgphComponentProps<typeof Combobox.Options>;
+  size?: SelectTriggerProps["size"];
+  triggerProps?: SelectTriggerProps;
+  contentProps?: ComboboxContentProps;
+  optionsProps?: ComboboxOptionsProps;
 };
 const Root = ({
   size = "1",
@@ -36,7 +52,7 @@ const Root = ({
   );
 };
 
-type OptionProps = Omit<TgphComponentProps<typeof Combobox.Option>, "label">;
+type OptionProps = Omit<ComboboxOptionProps, "label">;
 
 const Option = ({ value, children, ...props }: OptionProps) => {
   return <Combobox.Option value={value} label={children} {...props} />;

@@ -176,18 +176,32 @@ export type TruncatedTextProps<T extends TgphElement = "span"> = {
   priority?: TruncatePriority;
 } & TgphComponentProps<typeof Text<T>>;
 
-const TruncatedText = <T extends TgphElement = "span">({
-  mode = "truncate",
-  variant,
-  marker: markerProp,
-  split,
-  priority,
-  tooltipProps,
-  style,
-  children,
-  as,
-  ...props
-}: TruncatedTextProps<T>) => {
+const TruncatedText = <T extends TgphElement = "span">(
+  truncatedTextProps: TruncatedTextProps<T>,
+) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so every prop would otherwise be an
+  // unresolved indexed access intersected with its declared type.
+  const {
+    mode = "truncate",
+    variant,
+    marker: markerProp,
+    split,
+    priority,
+    tooltipProps,
+    style,
+    children,
+    as,
+    ...props
+  } = truncatedTextProps as TruncatedTextProps<"span">;
+  // `Text` types `as` as required (it throws at runtime when it is missing) and
+  // resolves its own `T` from it, so it has to be a single concrete element for
+  // `props` above to keep type-checking. The value is forwarded unchanged —
+  // including `undefined` — so `Text`'s "as prop is required" throw still fires.
+  const textAs = as as "span";
+  // Middle truncation wraps its segments in a flex/block container, so it falls
+  // back to a `div` when no `as` is given. Same narrowing, same runtime value.
+  const middleTextAs = (as ?? "div") as "span";
   // The tooltip must show the full, unclipped string. Letting TooltipIfTruncated
   // auto-extract it only unwraps one child level, so an engine/`middle` child
   // would surface the elided, marker-laden markup instead. Pass the string
@@ -227,7 +241,7 @@ const TruncatedText = <T extends TgphElement = "span">({
           isTruncated={middleIsTruncated}
         >
           <Text
-            as={(as ?? "div") as T}
+            as={middleTextAs}
             {...props}
             style={{ display: "flex", minWidth: 0, ...style }}
           >
@@ -250,7 +264,7 @@ const TruncatedText = <T extends TgphElement = "span">({
         isTruncated={middleSliceIsTruncated}
       >
         <Text
-          as={(as ?? "div") as T}
+          as={middleTextAs}
           {...props}
           // `display: block` so an inline `as` (e.g. "span") still honors
           // `maxWidth` — the slice measures this element's width.
@@ -278,7 +292,7 @@ const TruncatedText = <T extends TgphElement = "span">({
           marker={marker}
           style={style}
         >
-          <Text as={as} {...props}>
+          <Text as={textAs} {...props}>
             {children}
           </Text>
         </TruncateClip>
@@ -294,7 +308,7 @@ const TruncatedText = <T extends TgphElement = "span">({
     return (
       <TooltipIfTruncated label={label} {...tooltipProps}>
         <Text
-          as={as}
+          as={textAs}
           style={{
             display: "block",
             overflow: "hidden",
@@ -316,7 +330,7 @@ const TruncatedText = <T extends TgphElement = "span">({
   return (
     <TooltipIfTruncated label={label} {...tooltipProps}>
       <Text
-        as={as}
+        as={textAs}
         style={{
           display: "block",
           overflow: "hidden",

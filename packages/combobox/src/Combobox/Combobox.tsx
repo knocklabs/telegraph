@@ -1,4 +1,7 @@
-import { Button as TelegraphButton } from "@telegraph/button";
+import {
+  type ButtonRootProps,
+  Button as TelegraphButton,
+} from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type RemappedOmit,
@@ -7,8 +10,8 @@ import {
   VisuallyHidden,
   useControllableState,
 } from "@telegraph/helpers";
-import { Icon } from "@telegraph/icon";
-import { Input as TelegraphInput } from "@telegraph/input";
+import { Icon, type IconProps } from "@telegraph/icon";
+import { type InputProps, Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
@@ -228,9 +231,13 @@ type ChildrenFnValue<V extends ChildrenValue> = V extends never
     ? DefinedOption | undefined
     : Array<DefinedOption>;
 
+// `ButtonRootProps` rather than `TgphComponentProps<typeof
+// TelegraphButton.Root>`: extracting props from a generic component
+// instantiates its parameter at the constraint, which erases the passthrough.
+// The trigger always renders a `button`, so the props type's own default is
+// enough. `TelegraphMenu.Trigger` is not generic, so it is read as-is.
 type TriggerBaseProps = RemappedOmit<
-  TgphComponentProps<typeof TelegraphButton.Root> &
-    TgphComponentProps<typeof TelegraphMenu.Trigger>,
+  ButtonRootProps & TgphComponentProps<typeof TelegraphMenu.Trigger>,
   "children"
 >;
 
@@ -693,16 +700,20 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
   selected?: boolean | null;
 };
 
-const Option = <T extends TgphElement>({
-  value,
-  label,
-  selected,
-  onSelect,
-  children,
-  closeOnClick,
-  tgphRef,
-  ...props
-}: OptionProps<T>) => {
+const Option = <T extends TgphElement>(optionProps: OptionProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so every prop would otherwise be an
+  // unresolved indexed access intersected with its declared type.
+  const {
+    value,
+    label,
+    selected,
+    onSelect,
+    children,
+    closeOnClick,
+    tgphRef,
+    ...props
+  } = optionProps as OptionProps<"button">;
   const context = useContext(ComboboxContext);
   const { onEscapeKeyDown, setOpen, triggerRef } = context;
   const [isFocused, setIsFocused] = useState(false);
@@ -860,7 +871,11 @@ const Option = <T extends TgphElement>({
     return (
       <TelegraphMenu.Button
         type="button"
-        onSelect={handleSelection as (event: Event) => void}
+        onSelect={
+          handleSelection as TgphComponentProps<
+            typeof TelegraphMenu.Button<"button">
+          >["onSelect"]
+        }
         onKeyDown={handleSelection as ReactKeyboardEventHandler}
         closeOnClick={closeOnClick ?? context.closeOnSelect}
         // Force null if selected equals null so we
@@ -889,8 +904,16 @@ const Option = <T extends TgphElement>({
   }
 };
 
-export type SearchProps = TgphComponentProps<typeof TelegraphInput> & {
+// `InputProps` rather than `TgphComponentProps<typeof TelegraphInput>`:
+// extracting props from a generic component instantiates its parameter at the
+// constraint, which erases the passthrough. The search field always renders an
+// `input`, so the props type's own default is enough.
+// `onValueChange` is declared explicitly: it is a Combobox-level prop that
+// `Input` does not have, and it was previously only reachable through the
+// catch-all index signature.
+export type SearchProps = InputProps & {
   label?: string;
+  onValueChange?: (value: string) => void;
 };
 
 const Search = ({
@@ -906,7 +929,12 @@ const Search = ({
   const composedRef = useComposedRefs(tgphRef, context.searchRef);
 
   const value = controlledValueProp ?? context.searchQuery;
-  const onValueChange = onValueChangeProp ?? context.setSearchQuery;
+  // `Combobox.Root` always provides `setSearchQuery`, so the call below is
+  // reached with a function; the cast only drops the optional context member
+  // from the type — the value is untouched.
+  const onValueChange = (onValueChangeProp ?? context.setSearchQuery) as (
+    value: string,
+  ) => void;
 
   useEffect(() => {
     const handleSearchKeyDown = (event: KeyboardEvent) => {
@@ -1002,7 +1030,7 @@ const isOptionElement = (element: ReactElement) => {
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof Stack<T>
 > & {
-  icon?: TgphComponentProps<typeof Icon> | null;
+  icon?: IconProps | null;
   message?: string | null;
 };
 
@@ -1106,10 +1134,15 @@ const Create = <T extends TgphElement, LB extends boolean>({
                 ? { value: context.searchQuery }
                 : context.searchQuery;
 
-            const create = onCreate as CreateProps<T, LB>["onCreate"];
+            // The conditional prop type keeps public APIs precise, but while
+            // `LB` is unresolved `CreateProps<T, LB>["onCreate"]` stays a
+            // deferred conditional — an optional intersection of both arms.
+            // Runtime creation narrows through the legacyBehavior branch above,
+            // so read it as the union of the two callable shapes.
+            const create = onCreate as (
+              value: { value: string; label?: string } | string,
+            ) => void;
 
-            // The conditional prop type keeps public APIs precise, but runtime
-            // creation narrows through the legacyBehavior branch above.
             create(value);
 
             context.setSearchQuery?.("");

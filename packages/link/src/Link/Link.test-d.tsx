@@ -88,6 +88,8 @@ describe("Link types", () => {
     <Link href="/docs" size="2" color="blue" weight="medium" p="2" mt="4" />;
     <Link as="button" onClick={() => {}} />;
     <Link icon={{ icon: Bell, alt: "bell" }} textProps={{ maxW: "40" }} />;
+    // `textProps.as` swaps the rendered text element (covered in Link.test.tsx).
+    <Link textProps={{ as: "strong", maxW: "40" }} />;
     <Link aria-label="docs" data-testid="docs" className="c" />;
     <Link style={{ opacity: 0.5 }}>Docs</Link>;
     <Link.Root href="/docs" size="3" color="accent" weight="regular" gap="1">

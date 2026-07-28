@@ -299,14 +299,17 @@ describe("Combobox types", () => {
     >
       <Combobox.Trigger placeholder="Pick one" disabled id="trigger" />
       <Combobox.Content p="2" className="c" style={{ opacity: 1 }}>
-        {/*
-         * TODO(KNO-14474): `Combobox.Search` currently exposes only `label`.
-         * `TgphComponentProps<typeof Input>` collapses to `unknown`, so real
-         * props used in the suite and stories -- `placeholder`, `variant`,
-         * `size`, `value`, `onValueChange`, `className`, `style`, `id` -- are
-         * rejected. Restore them here once the Input prop passthrough is fixed.
-         */}
-        <Combobox.Search label="Search" />
+        <Combobox.Search
+          label="Search"
+          placeholder="Search"
+          variant="ghost"
+          size="2"
+          value=""
+          onValueChange={() => {}}
+          className="c"
+          style={{ opacity: 1 }}
+          id="search"
+        />
         <Combobox.Options direction="column" gap="1" p="2" maxHeight="64">
           <Combobox.Option value="a" label="A" selected p="2" />
           <Combobox.Option value="b" selected={null} onSelect={() => {}} />
@@ -323,11 +326,7 @@ describe("Combobox types", () => {
 
     <Combobox.Root value={["a"]} layout="wrap" />;
 
-    // TODO(KNO-14474): `Combobox.Trigger` drops every
-    // `TgphComponentProps<typeof Button.Root>` prop -- `size`, `variant`,
-    // `state`, `active` and the Box/Stack style props such as `p` -- even
-    // though the stories render `<Combobox.Trigger size="1" />`. Re-add
-    // `<Combobox.Trigger size="1" variant="outline" p="2" />` once fixed.
+    <Combobox.Trigger size="1" variant="outline" p="2" />;
     <Combobox.Trigger className="c" style={{ opacity: 1 }} color="gray" />;
     <Combobox.Trigger aria-label="trigger" data-testid="trigger" />;
     <Combobox.Trigger>
