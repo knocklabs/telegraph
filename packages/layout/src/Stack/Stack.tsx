@@ -1,17 +1,16 @@
-import type {
-  PolymorphicProps,
-  TgphComponentProps,
-  TgphElement,
-} from "@telegraph/helpers";
+import type { PolymorphicProps, TgphElement } from "@telegraph/helpers";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
-import { Box } from "../Box";
+import { Box, type BoxProps } from "../Box";
 
 import { StyleProps, cssVars } from "./Stack.constants";
 
+// `BoxProps<T>` rather than `TgphComponentProps<typeof Box>`: extracting props
+// from a generic component instantiates its parameter at the constraint, which
+// erases the passthrough. Threading `T` keeps Box's props intact.
 export type StackProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<TgphComponentProps<typeof Box>, "as"> &
+  Omit<BoxProps<T>, "as"> &
   StyleProps;
 
 const Stack = <T extends TgphElement = "div">({

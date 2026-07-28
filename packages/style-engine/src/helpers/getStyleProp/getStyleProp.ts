@@ -248,16 +248,22 @@ type OtherProps<CssVars extends CssVarsPropObject<CssVars>, Props> =
     >
   | object;
 
+// `CSSProperties` has no room for custom properties, and everything this
+// module emits is a `--*` entry. Mirrors `CSSPropertiesWithVars` in
+// @telegraph/helpers, redeclared here so style-engine stays dependency-free.
+export type CSSPropertiesWithVars = CSSProperties & {
+  [key: `--${string}`]: string | number | undefined;
+};
+
 // Allow for explicitly defined css vars return css variables object created
-// by this function and be end to end typesafe
+// by this function and be end to end typesafe. Intersecting (rather than
+// unioning) with the style type keeps the result assignable to a `style` prop.
 type StyleProp<CssVars extends CssVarsPropObject<CssVars>> =
-  | {
-      [key in CssVars[keyof CssVars]["cssVar"]]: string;
-    }
-  | object;
+  CSSPropertiesWithVars &
+    Partial<Record<CssVars[keyof CssVars]["cssVar"], string>>;
 
 type GetStylePropParams<CssVars, Props> = {
-  props: Props & { style?: Record<string, string> | CSSProperties };
+  props: Props & { style?: Record<string, string> | CSSPropertiesWithVars };
   cssVars: CssVars;
 };
 
@@ -290,7 +296,7 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
     matchingCssVar.cssVar) as keyof StyleProp<CssVars>;
 
   if (matchingCssVar.direction) {
-    const currentValueOfCssVar = styleProp?.[cssVarName];
+    const currentValueOfCssVar = styleProp?.[cssVarName] as string | undefined;
     const directionalValue = applyDirectionalValues({
       currentValueOfCssVar,
       value: mappedValue,
@@ -300,7 +306,7 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
   }
 
   if (matchingCssVar.axis) {
-    const currentValueOfCssVar = styleProp?.[cssVarName];
+    const currentValueOfCssVar = styleProp?.[cssVarName] as string | undefined;
     const axisValue = applyAxisValues({
       currentValueOfCssVar,
       value: mappedValue,
@@ -343,7 +349,7 @@ export const getStyleProp = <
   // to the component as a prop.
   const { style = {}, ...props } = params.props;
 
-  let styleProp: StyleProp<CssVars> = style;
+  let styleProp: StyleProp<CssVars> = style as StyleProp<CssVars>;
   const otherProps: OtherProps<CssVars, Props> = {};
   let interactive = false;
 

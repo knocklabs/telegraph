@@ -36,6 +36,13 @@ export type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
     : Omit<React.ComponentProps<C>, keyof AsProp<C>>) &
   P;
 
+// `React.CSSProperties` rejects custom properties, and the style engine passes
+// its resolved values as `--*` entries on `style`, so allow them explicitly.
+// The key is constrained to the `--` prefix — this is not a catch-all.
+export type CSSPropertiesWithVars = React.CSSProperties & {
+  [key: `--${string}`]: string | number | undefined;
+};
+
 // Props every polymorphic component supports regardless of which element it
 // renders as. Declared explicitly so they survive when the element passthrough
 // below resolves to nothing.
@@ -43,7 +50,7 @@ type PolymorphicBaseProps<E extends React.ElementType> = {
   as?: E;
   children?: React.ReactNode;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSPropertiesWithVars;
 };
 
 // The props of the underlying element `E`, or nothing when `E` is unresolved.

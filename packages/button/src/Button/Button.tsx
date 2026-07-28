@@ -7,7 +7,7 @@ import {
   useDeterminateState,
 } from "@telegraph/helpers";
 import { Spinner, Icon as TelegraphIcon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import { Text as TelegraphText } from "@telegraph/typography";
 import clsx from "clsx";
@@ -47,8 +47,11 @@ type ButtonClickHandler = {
 
 type ButtonOnClick = ButtonClickHandler | boolean;
 
+// `StackProps<T>` rather than `TgphComponentProps<typeof Stack>`: extracting
+// props from a generic component instantiates its parameter at the constraint,
+// which erases the passthrough. Threading `T` keeps Stack's props intact.
 export type RootProps<T extends TgphElement = "button"> = Omit<
-  TgphComponentProps<typeof Stack>,
+  StackProps<T>,
   "tgphRef" | "as" | "onClick"
 > &
   Omit<PolymorphicPropsWithTgphRef<T, HTMLButtonElement>, "onClick"> &
@@ -81,23 +84,29 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
   return params.state;
 };
 
-const Root = <T extends TgphElement = "button">({
-  as,
-  variant = "solid",
-  size = "2",
-  color = "default",
-  state: stateProp = "default",
-  active = false,
-  type = "button",
-  disabled,
-  onClick,
-  className,
-  children,
-  style,
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
+  // Read through the default element: while `T` is unresolved the element
+  // passthrough is a deferred conditional, so native attributes like `type`
+  // and `disabled` are not visible and every prop would be an unresolved
+  // indexed access intersected with its declared type.
+  const {
+    as,
+    variant = "solid",
+    size = "2",
+    color = "default",
+    state: stateProp = "default",
+    active = false,
+    type = "button",
+    disabled,
+    onClick,
+    className,
+    children,
+    style,
+    ...props
+  } = rootProps as RootProps<"button">;
+
   const derivedState = deriveState({ state: stateProp, disabled, active });
-  const state = useDeterminateState<DefaultProps<T>["state"]>({
+  const state = useDeterminateState<InternalProps["state"]>({
     value: derivedState,
     determinateValue: "loading",
     minDurationMs: 1200,
@@ -178,16 +187,19 @@ export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
   internal_iconType?: "leading" | "trailing";
 };
 
-const Icon = <T extends TgphElement = "span">({
-  size,
-  color,
-  variant,
-  icon,
-  alt,
-  "aria-hidden": ariaHidden,
-  internal_iconType,
-  ...props
-}: IconProps<T>) => {
+const Icon = <T extends TgphElement = "span">(
+  buttonIconProps: IconProps<T>,
+) => {
+  const {
+    size,
+    color,
+    variant,
+    icon,
+    alt,
+    "aria-hidden": ariaHidden,
+    internal_iconType,
+    ...props
+  } = buttonIconProps as IconProps<"span">;
   const context = React.useContext(ButtonContext);
 
   const iconProps = {
@@ -200,7 +212,12 @@ const Icon = <T extends TgphElement = "span">({
     variant: variant ?? ICON_VARIANT_MAP[context.layout],
   };
 
-  const a11yProps = !alt ? { "aria-hidden": ariaHidden } : { alt };
+  // Icon's props require exactly one of `alt` / `aria-hidden`. `ariaHidden` is
+  // forwarded verbatim — including when it is undefined — so Icon still logs
+  // its "alt prop is required" warning; only the type is narrowed here.
+  const a11yProps = (alt ? { alt } : { "aria-hidden": ariaHidden }) as
+    | { alt: string; "aria-hidden"?: never }
+    | { alt?: never; "aria-hidden": true };
 
   // If the button is set to loading and this icon is identified as leading,
   // we don't want to render this icon and instead the loading icon which
@@ -218,7 +235,10 @@ const Icon = <T extends TgphElement = "span">({
       data-button-icon-color={iconProps.color}
       {...a11yProps}
       {...iconProps}
-      {...props}
+      {...(props as Omit<
+        TgphComponentProps<typeof TelegraphIcon<"span">>,
+        "icon" | "size" | "color" | "variant" | "alt" | "aria-hidden"
+      >)}
     />
   );
 };
@@ -230,14 +250,17 @@ export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
   as?: T;
 };
 
-const Text = <T extends TgphElement = "span">({
-  as,
-  color,
-  size,
-  weight = "medium",
-  style,
-  ...props
-}: TextProps<T>) => {
+const Text = <T extends TgphElement = "span">(
+  buttonTextProps: TextProps<T>,
+) => {
+  const {
+    as,
+    color,
+    size,
+    weight = "medium",
+    style,
+    ...props
+  } = buttonTextProps as TextProps<"span">;
   const context = React.useContext(ButtonContext);
   const derivedColor =
     color ??
@@ -246,7 +269,7 @@ const Text = <T extends TgphElement = "span">({
     ];
   return (
     <TelegraphText
-      as={(as || "span") as T}
+      as={as || "span"}
       color={derivedColor}
       size={size ?? TEXT_SIZE_MAP[context.size]}
       weight={weight}
@@ -258,12 +281,15 @@ const Text = <T extends TgphElement = "span">({
         whiteSpace: "nowrap",
         ...style,
       }}
-      {...props}
+      {...(props as Omit<
+        TgphComponentProps<typeof TelegraphText<"span">>,
+        "as" | "color" | "size" | "weight" | "style"
+      >)}
     />
   );
 };
 
-type DefaultIconProps = React.ComponentProps<typeof Icon>;
+type DefaultIconProps = IconProps;
 
 type BaseDefaultProps =
   | {
