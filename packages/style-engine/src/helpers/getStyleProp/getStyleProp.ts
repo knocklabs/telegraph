@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 type Direction =
   | "x"
   | "y"
@@ -255,7 +257,7 @@ type StyleProp<CssVars extends CssVarsPropObject<CssVars>> =
   | object;
 
 type GetStylePropParams<CssVars, Props> = {
-  props: Props & { style?: Record<string, string> };
+  props: Props & { style?: Record<string, string> | CSSProperties };
   cssVars: CssVars;
 };
 
