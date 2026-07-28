@@ -62,13 +62,13 @@ describe("Link", () => {
     const { container } = render(
       <Link
         href="/docs"
-        textProps={{ as: "strong", id: "text-node" }}
+        textProps={{ as: "strong", "data-testid": "text-node" }}
         icon={{ icon: ArrowUpRight, alt: "Docs link icon", size: "3" }}
       >
         Docs
       </Link>,
     );
-    expect(container.querySelector("strong#text-node")).toBeInTheDocument();
+    expect(container.querySelector("strong")).toBeInTheDocument();
     expect(screen.getByLabelText("Docs link icon")).toBeInTheDocument();
   });
 

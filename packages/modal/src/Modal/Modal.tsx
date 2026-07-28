@@ -710,6 +710,10 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
           size={size}
           {...(props as Omit<
             TgphComponentProps<typeof Button<"button">>,
+            // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
+            // caller can still replace the close glyph. They are omitted here
+            // because Button's icon union rejects the explicit `icon` below
+            // alongside a spread that might carry the other arm. See KNO-14484.
             | "disabled"
             | "icon"
             | "leadingIcon"

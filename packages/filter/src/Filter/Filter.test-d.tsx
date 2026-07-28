@@ -11,12 +11,13 @@ type FilterContentProps = ComponentProps<typeof Filter.Content>;
 type FilterParameterProps = ComponentProps<typeof Filter.Parameter>;
 type FilterMenuProps = ComponentProps<typeof Filter.Menu>;
 type FilterOptionProps = ComponentProps<typeof Filter.Option>;
-type FilterDividerProps = ComponentProps<typeof Filter.Divider>;
 type FilterChipProps = ComponentProps<typeof Filter.Chip>;
 type FilterChipLayoutProps = ComponentProps<typeof Filter.ChipLayout>;
-type FilterChipDisplayProps = ComponentProps<typeof Filter.ChipDisplay>;
 
 describe("Filter types", () => {
+  // `Filter.Divider` and `Filter.ChipDisplay` take no parameter at all, so
+  // `ComponentProps` infers `unknown` and a catch-all assertion on them would
+  // pass no matter what. They are asserted through JSX below instead.
   it("has no catch-all index signature", () => {
     expectTypeOf<FilterRootProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<FilterTriggerProps>().not.toHaveProperty("notARealProp");
@@ -24,10 +25,8 @@ describe("Filter types", () => {
     expectTypeOf<FilterParameterProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<FilterMenuProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<FilterOptionProps>().not.toHaveProperty("notARealProp");
-    expectTypeOf<FilterDividerProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<FilterChipProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<FilterChipLayoutProps>().not.toHaveProperty("notARealProp");
-    expectTypeOf<FilterChipDisplayProps>().not.toHaveProperty("notARealProp");
   });
 
   it("keeps declared props narrow", () => {
@@ -47,6 +46,14 @@ describe("Filter types", () => {
   });
 
   it("rejects unknown props", () => {
+    <Filter.Divider
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
+    <Filter.ChipDisplay
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
     <Filter.Root
       // @ts-expect-error unknown prop
       notARealProp="x"

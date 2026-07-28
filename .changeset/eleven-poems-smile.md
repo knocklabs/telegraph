@@ -14,4 +14,10 @@ const [values, setValues] = useState<Array<string>>([]);
 <Select.Root value={values} onValueChange={setValues} />; // (value: Array<string>) => void
 ```
 
-**Breaking for type consumers** in two ways. `value` is now a string or an array of strings — matching `Select.Option`, whose `value` has always been a string — so passing `null`, an option object, or a non-string union is an error. And `legacyBehavior` is no longer accepted: it makes Combobox emit `{ value, label }` option objects, which `Select.Option` cannot produce. Use `Combobox` directly for that. Runtime behavior is unchanged.
+**Breaking in three ways.** `value` is now a string or an array of strings — matching `Select.Option`, whose `value` has always been a string — so passing `null`, an option object, or a non-string union is an error.
+
+`legacyBehavior` is no longer accepted, and is now discarded rather than forwarded: it makes Combobox emit `{ value, label }` option objects, which `Select.Option` cannot produce and `onValueChange` no longer describes. Use `Combobox` directly for that.
+
+`layout` now applies only to selects over an array of values. It was always declared as `never` for a single value (`layout` positions multiple selected tags); reading the props with the value parameter at its constraint is what previously made it look available on every Select.
+
+Runtime behavior is otherwise unchanged.

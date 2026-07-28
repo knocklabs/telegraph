@@ -261,6 +261,31 @@ describe("Select", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("sms");
   });
 
+  it("discards legacyBehavior instead of forwarding it to Combobox", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    // Spread rather than written as an attribute: a JSX spread of a non-literal
+    // skips excess-property checking, which is the only way it can still reach
+    // the component now that the prop is gone from the props type.
+    const smuggled = { legacyBehavior: true } as Record<string, unknown>;
+    const { container } = render(
+      <Select.Root
+        defaultValue="email"
+        onValueChange={onValueChange}
+        {...smuggled}
+      >
+        {renderSelectOptions()}
+      </Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await user.click(getOptionByText("SMS")!);
+
+    // Legacy mode would emit `{ value: "sms", label: "SMS" }`.
+    await waitFor(() => expect(onValueChange).toHaveBeenLastCalledWith("sms"));
+  });
+
   it("does not select disabled options", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();

@@ -129,6 +129,11 @@ describe("Select types", () => {
       // @ts-expect-error legacyBehavior emits option objects Select cannot produce
       legacyBehavior
     />;
+    <Select.Root
+      value={single}
+      // @ts-expect-error layout only applies to selects over an array of values
+      layout="truncate"
+    />;
   });
 
   it("accepts valid props", () => {
@@ -146,6 +151,7 @@ describe("Select types", () => {
         Option 2
       </Select.Option>
     </Select.Root>;
+    <Select.Root value={multi} layout="truncate" />;
     <Select.Root
       defaultValue={["1", "2"]}
       modal={false}

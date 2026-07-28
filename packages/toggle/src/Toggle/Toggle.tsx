@@ -227,7 +227,7 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
   const context = useContext(ToggleContext);
   const textProps = props as Omit<
     TgphComponentProps<typeof Text<"label">>,
-    "as" | "htmlFor" | "id" | "size" | "style"
+    "as" | "style"
   >;
 
   if (hidden) {

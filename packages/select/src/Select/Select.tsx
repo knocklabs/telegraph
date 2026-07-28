@@ -29,17 +29,24 @@ export type RootProps<V extends SelectValue = string> = Omit<
   optionsProps?: ComboboxOptionsProps;
 };
 
-const Root = <V extends SelectValue = string>({
-  size = "1",
-  value,
-  onValueChange,
-  defaultValue,
-  triggerProps,
-  contentProps,
-  optionsProps,
-  children,
-  ...props
-}: RootProps<V>) => {
+const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
+  const {
+    size = "1",
+    value,
+    onValueChange,
+    defaultValue,
+    triggerProps,
+    contentProps,
+    optionsProps,
+    children,
+    // Discarded, not just omitted from the props type: a JSX spread of a
+    // non-literal skips excess-property checking, so `<Select.Root {...p} />`
+    // could still land it on `Combobox.Root<V, false>` and make that `false`
+    // a lie about the values `onValueChange` reports.
+    legacyBehavior: _legacyBehavior,
+    ...props
+  } = rootProps as RootProps<V> & { legacyBehavior?: boolean };
+
   return (
     <Combobox.Root<V, false>
       value={value}
