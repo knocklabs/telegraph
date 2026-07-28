@@ -28,8 +28,10 @@ import type {
   SingleSelect,
 } from "./Combobox.types";
 
-type TriggerIndicatorProps<T extends TgphElement> = Partial<
-  TgphComponentProps<typeof Button.Icon<T>>
+// Drop `as`: this always renders `motion.span` (KNO-14501).
+type TriggerIndicatorProps<T extends TgphElement> = Omit<
+  Partial<TgphComponentProps<typeof Button.Icon<T>>>,
+  "as"
 >;
 
 const TriggerIndicator = <T extends TgphElement>(
@@ -38,8 +40,15 @@ const TriggerIndicator = <T extends TgphElement>(
   const {
     icon = ChevronsUpDown,
     "aria-hidden": ariaHidden = true,
+    // Destructure `alt` for the same reason the cast omits it: Button.Icon
+    // rejects `alt` and `aria-hidden` arriving together.
+    as: _as,
+    alt: _alt,
     ...props
-  } = triggerIndicatorProps as TriggerIndicatorProps<"span">;
+  } = triggerIndicatorProps as TriggerIndicatorProps<"span"> & {
+    as?: TgphElement;
+    alt?: string;
+  };
   const context = React.useContext(ComboboxContext);
   return (
     <Button.Icon

@@ -105,7 +105,8 @@ type LegacyTooltipPopupProps = Partial<
 export type TooltipBaseProps<T extends TgphElement = "div"> = {
   children?: ReactNode;
   label?: ReactNode;
-  labelProps?: TgphComponentProps<typeof Stack<T>>;
+  // Drop `as`: the popup label always renders `motion.div` (KNO-14501).
+  labelProps?: Omit<TgphComponentProps<typeof Stack<T>>, "as">;
   enabled?: boolean;
   asChild?: boolean;
   // When true, prevents focus events from instantly opening the tooltip. This
@@ -199,8 +200,15 @@ const Tooltip = <T extends TgphElement = "div">({
   const resolvedCollisionAvoidance =
     collisionAvoidance ??
     (avoidCollisions === false ? NO_COLLISION_AVOIDANCE : undefined);
-  const popupLabelProps = labelProps as StackProps | undefined;
-  const { style: labelStyle, ...popupLabelRestProps } = popupLabelProps ?? {};
+  const popupLabelProps = labelProps as
+    | (StackProps & { as?: TgphElement })
+    | undefined;
+  // `as` is discarded so a spread cannot replace the animated element.
+  const {
+    style: labelStyle,
+    as: _labelAs,
+    ...popupLabelRestProps
+  } = popupLabelProps ?? {};
   const popupStyle = {
     transformOrigin: "var(--transform-origin)",
     ...style,

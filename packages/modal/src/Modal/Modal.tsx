@@ -128,9 +128,10 @@ const useBodyScrollLock = (layerId: string, enabled: boolean) => {
   }, [enabled, layerId]);
 };
 
+// Drop `as`: the content always renders `motion.div` (KNO-14501).
 export type RootProps = RootDialogProps &
   LegacyFocusScopeProps &
-  StackProps & {
+  Omit<StackProps, "as"> & {
     a11yTitle: string;
     a11yDescription?: string;
     layer?: number;
@@ -140,8 +141,11 @@ const Root = ({
   defaultOpen: defaultOpenProp,
   open: openProp,
   onOpenChange: onOpenChangeProp,
+  // Discarded as well as dropped from the type, because a spread can still
+  // carry it.
+  as: _as,
   ...props
-}: RootProps) => {
+}: RootProps & { as?: TgphElement }) => {
   const [open, onOpenChange] = useControllableState({
     prop: openProp,
     onChange: onOpenChangeProp,

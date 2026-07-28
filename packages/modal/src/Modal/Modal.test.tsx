@@ -51,6 +51,21 @@ const TestModal = ({
 };
 
 describe("Modal", () => {
+  it("keeps the animated element when a spread supplies `as`", async () => {
+    // A spread is the only route left: `as` is gone from the props type.
+    const smuggled = { as: "section" } as Record<string, unknown>;
+    render(
+      <Modal.Root open a11yTitle="Settings" {...smuggled}>
+        <Modal.Content>
+          <Modal.Body>Modal body</Modal.Body>
+        </Modal.Content>
+      </Modal.Root>,
+    );
+
+    await waitFor(() => expect(screen.getByText("Modal body")).toBeTruthy());
+    expect(document.querySelector("section")).toBeNull();
+  });
+
   it("renders an accessible dialog with hidden title and description", async () => {
     render(<TestModal />);
 
