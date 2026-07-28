@@ -1,5 +1,4 @@
 import {
-  type PolymorphicPropsWithTgphRef,
   RemappedOmit,
   type Required,
   type TgphComponentProps,
@@ -53,9 +52,12 @@ type ButtonOnClick = ButtonClickHandler | boolean;
 export type RootProps<T extends TgphElement = "button"> = Omit<
   StackProps<T>,
   "tgphRef" | "as" | "onClick"
-> &
-  Omit<PolymorphicPropsWithTgphRef<T, HTMLButtonElement>, "onClick"> &
-  RootBaseProps & {
+> & {
+  // `StackProps<T>` above already carries the element passthrough. Take only
+  // `as` and the button-shaped `tgphRef` from the polymorphic helper.
+  as?: T;
+  tgphRef?: React.Ref<HTMLButtonElement>;
+} & RootBaseProps & {
     onClick?: ButtonClickHandler;
   };
 
