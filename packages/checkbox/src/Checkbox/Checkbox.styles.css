@@ -1,0 +1,36 @@
+[data-tgph-checkbox-control] {
+  flex-shrink: 0;
+  transition:
+    background-color 120ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base UI puts `role="checkbox"` and `tabindex="0"` on the element it renders
+   (this one) and keeps the real input as an aria-hidden, tabindex="-1"
+   sibling. So focus lands here, not on the input — don't reach for
+   `:has(input:focus-visible)` like Toggle does; the input is not a descendant
+   and never receives focus. Ring matches the Toggle/Link convention. */
+[data-tgph-checkbox-control]:focus-visible {
+  outline: 2px solid var(--tgph-blue-8);
+  outline-offset: 2px;
+}
+
+[data-tgph-checkbox-control][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-tgph-checkbox-indicator] {
+  display: flex;
+  line-height: 0;
+}
+
+[data-tgph-checkbox-label] {
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-tgph-checkbox-label][data-tgph-checkbox-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--tgph-gray-9);
+}
