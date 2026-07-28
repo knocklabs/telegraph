@@ -30,7 +30,10 @@ const Spinner = <T extends TgphElement = "span">(props: SpinnerProps<T>) => {
       alt={alt}
       role="status"
       aria-live="polite"
-      {...(rest as Omit<IconBaseProps<"span">, "color" | "icon" | "animation">)}
+      {...(rest as Omit<
+        IconBaseProps<"span">,
+        "color" | "icon" | "animation" | "aria-hidden"
+      >)}
     />
   );
 };
