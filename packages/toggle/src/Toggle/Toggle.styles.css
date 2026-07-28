@@ -34,8 +34,19 @@
 }
 
 /* Override the background color of the gray button to match the design spec. */
-[data-tgph-toggle-switch][data-tgph-toggle-checked="false"]:not(
-    [data-tgph-button-state="disabled"]
-  ) {
+[data-tgph-toggle-switch][data-tgph-toggle-checked="false"] {
   background-color: var(--tgph-gray-7) !important;
+}
+
+/* Button flattens every disabled track to `--tgph-gray-3`, which renders a
+   locked toggle identically whether it is on or off — thumb position and a gray
+   icon become the only cue. Keep the track's own color token (Button still sets
+   `--background-color` to it when disabled) and dim the switch instead, so a
+   locked toggle still reads as "on, but locked". */
+[data-tgph-toggle-switch][data-tgph-toggle-checked="true"][data-tgph-button-state="disabled"] {
+  background-color: var(--background-color) !important;
+}
+
+[data-tgph-toggle-switch][data-tgph-button-state="disabled"] {
+  opacity: 0.5;
 }

@@ -1,0 +1,19 @@
+/* Stylesheets for Toggle.browser.test.tsx, in a CSS file because the load order
+   below is itself part of the assertion and prettier sorts side-effect imports
+   in .tsx alphabetically.
+
+   Toggle's sheet is loaded FIRST so it loses every source-order tie. Its
+   disabled-track rule and Button's blanket `--tgph-gray-3` rule have identical
+   specificity (0,3,0), so from here only `!important` can win — which is what
+   production needs, where each package ships its own stylesheet and the
+   consuming app picks the order.
+
+   Toggle's rules come from src (the file under test); its dependencies come from
+   their built CSS, which is both what a consumer actually loads and the only
+   form in which the `@telegraph interactive(...)` at-rule has been expanded into
+   the real `.tgph-box--interactive:disabled` rule. That means these tests need
+   `yarn build:packages` first — CI builds before the browser job. */
+@import "./Toggle.styles.css";
+@import "@telegraph/layout/default.css";
+@import "@telegraph/button/default.css";
+@import "@telegraph/tokens/default";
