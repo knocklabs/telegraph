@@ -695,9 +695,8 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
   selected?: boolean | null;
 };
 
-// `= "button"` matters: without a default, an absent `as` gives `T` no
-// inference candidate, so it falls back to the constraint. The element
-// passthrough then drops native attributes such as `type`.
+// Do not drop `= "button"`. Without it an absent `as` silently loses the
+// element's own attributes, so `type` stops type checking.
 const Option = <T extends TgphElement = "button">(
   optionProps: OptionProps<T>,
 ) => {

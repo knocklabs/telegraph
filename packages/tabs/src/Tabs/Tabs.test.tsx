@@ -190,6 +190,40 @@ describe("Tabs", () => {
     expect(screen.getByRole("tabpanel")).toHaveTextContent("First panel");
   });
 
+  it("renders a disabled anchor tab without a Base UI nativeButton error", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      // `disabled` makes `Button` render a native button whatever `as` says, so
+      // `nativeButton` has to account for it or Base UI reports the mismatch.
+      const { container } = render(
+        <Tabs defaultValue="docs">
+          <Tabs.List>
+            <Tabs.Tab value="docs" as="a" href="/docs" disabled>
+              Docs
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs>,
+      );
+
+      const tab = container.querySelector("[data-tgph-tab]");
+
+      expect(tab?.tagName).toBe("BUTTON");
+      // A tab stays focusable while disabled so arrow keys can still reach it,
+      // so Base UI marks it with `aria-disabled` rather than the native
+      // attribute. The mismatch only shows up in the console.
+      expect(tab).toHaveAttribute("aria-disabled", "true");
+      expect(
+        errors.filter((e) => String(e).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
   it("activates tabs with arrow-key focus by default", async () => {
     const user = userEvent.setup();
 

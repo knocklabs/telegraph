@@ -86,6 +86,13 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
   return params.state;
 };
 
+// Whether `Button.Root` renders a real `<button>` for this `as`/`disabled`
+// pair. Base UI components that render a Button need it: they log an error
+// when their `nativeButton` prop disagrees with the tag that renders, and
+// they swap native `disabled` for `aria-disabled` when it is false.
+const rendersNativeButton = (as?: TgphElement, disabled?: boolean) =>
+  !!disabled || !as || as === "button";
+
 const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   const {
     as,
@@ -123,7 +130,7 @@ const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   // disabled. We do this so we can use the native button element's disabled
   // state to prevent clicks.
   // We also want to trivially pass in "button" if no "as" prop is provided
-  const derivedAs = disabled || !as ? "button" : as;
+  const derivedAs = rendersNativeButton(as, disabled) ? "button" : as;
 
   const layout = React.useMemo<InternalProps["layout"]>(() => {
     const childrenArray = React.Children.toArray(children);
@@ -341,4 +348,4 @@ const Button = Default as typeof Default & {
   Text: typeof Text;
 };
 
-export { Button };
+export { Button, rendersNativeButton };

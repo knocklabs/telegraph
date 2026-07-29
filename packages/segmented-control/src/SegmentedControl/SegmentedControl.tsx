@@ -8,6 +8,7 @@ import {
   Button,
   type ButtonProps,
   type ButtonRootProps,
+  rendersNativeButton,
 } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
@@ -556,10 +557,7 @@ const Option = <T extends TgphElement = "button">(
     <BaseToggle
       value={getBaseToggleValue(value)}
       disabled={disabled}
-      // Base UI reports an error when this disagrees with the tag that renders.
-      // `Button` renders a native button unless `as` says otherwise, and forces
-      // one back when disabled.
-      nativeButton={isDisabled || !as || as === "button"}
+      nativeButton={rendersNativeButton(as, isDisabled)}
       render={createTgphBaseUIRender((state) => (
         <OptionButton
           as={as}

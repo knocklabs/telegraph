@@ -1,4 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
+import { rendersNativeButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
@@ -704,11 +705,8 @@ const Button = <T extends TgphElement = "button">({
   const combinedLeadingIcon = leadingIcon || icon;
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
-  // Base UI reports an error when `nativeButton` disagrees with the tag that
-  // renders, so follow `Button.Root`, which renders a native button unless `as`
-  // says otherwise and forces one back when disabled. A caller rendering a
-  // component that resolves to a button can still say so explicitly.
-  const isNativeButton = nativeButton ?? (!!disabled || !as || as === "button");
+  // A caller rendering a component that resolves to a button can say so.
+  const isNativeButton = nativeButton ?? rendersNativeButton(as, disabled);
   // Keyboard selection can arrive through React keydown, native keyup/click, or
   // Base UI internals; these refs dedupe those paths while preserving cancel.
   const ignoreNextKeyboardClickRef = useRef(false);
@@ -962,8 +960,7 @@ const SubTrigger = <T extends TgphElement = "button">({
 }: SubTriggerProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const menuItemProps = props as MenuItemProps<T>;
-  // Follows the rendered tag, the way `Menu.Button` does.
-  const isNativeButton = nativeButton ?? (!!disabled || !as || as === "button");
+  const isNativeButton = nativeButton ?? rendersNativeButton(as, disabled);
   const combinedTrailingIcon: typeof trailingIcon =
     trailingIcon === undefined && trailingComponent === undefined
       ? { icon: ChevronRight, "aria-hidden": true }
