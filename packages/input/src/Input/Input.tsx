@@ -3,12 +3,12 @@ import type {
   PolymorphicProps,
   Required,
   TgphElement,
-  TgphSlotProps,
 } from "@telegraph/helpers";
 import { TgphSlot } from "@telegraph/helpers";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { Text, type TextProps } from "@telegraph/typography";
 import {
+  type ComponentPropsWithRef,
   type MouseEvent,
   type ReactNode,
   createContext,
@@ -114,7 +114,12 @@ const Root = <T extends TgphElement = "input">(rootProps: RootProps<T>) => {
   );
 };
 
-export type SlotProps = Omit<TgphSlotProps, "size"> & {
+// Declared rather than inherited from `TgphSlotProps`. That type intersects
+// `Record<string, unknown>` so the slot primitive can merge arbitrary props
+// onto its child, and `Omit` over an index signature keeps the index
+// signature — which swallowed every key here, valid or not.
+export type SlotProps = Omit<ComponentPropsWithRef<"span">, "size"> & {
+  children?: ReactNode;
   size?: "1" | "2" | "3";
   position?: "leading" | "trailing";
 };

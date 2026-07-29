@@ -12,10 +12,7 @@ describe("Input types", () => {
     expectTypeOf<InputProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<InputRootProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<InputBaseRootProps>().not.toHaveProperty("notARealProp");
-    // TODO(KNO-14474): Input.Slot still accepts unknown props. InputSlotProps
-    // derives from TgphSlotProps, which intersects `Record<string, unknown>`,
-    // so the index signature swallows every key.
-    // expectTypeOf<InputSlotProps>().not.toHaveProperty("notARealProp");
+    expectTypeOf<InputSlotProps>().not.toHaveProperty("notARealProp");
   });
 
   it("keeps declared props narrow", () => {
@@ -44,12 +41,10 @@ describe("Input types", () => {
       // @ts-expect-error unknown prop
       notARealProp="x"
     />;
-    // TODO(KNO-14474): Input.Slot still accepts unknown props — its
-    // `Record<string, unknown>` index signature disables excess-property checks.
-    // <Input.Slot
-    //   // @ts-expect-error unknown prop
-    //   notARealProp="x"
-    // />;
+    <Input.Slot
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
   });
 
   it("rejects invalid values for declared props", () => {
@@ -77,13 +72,10 @@ describe("Input types", () => {
       // @ts-expect-error not an input size
       size="99"
     />;
-    // TODO(KNO-14474): Input.Slot still accepts invalid values for declared
-    // props — forwardRef's PropsWithoutRef collapses the intersection down to
-    // the inherited index signature, erasing `position`'s union.
-    // <Input.Slot
-    //   // @ts-expect-error not a slot position
-    //   position="middle"
-    // />;
+    <Input.Slot
+      // @ts-expect-error not a slot position
+      position="middle"
+    />;
   });
 
   it("accepts valid props", () => {
