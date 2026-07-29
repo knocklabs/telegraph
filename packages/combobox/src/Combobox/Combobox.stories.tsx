@@ -94,6 +94,229 @@ export const SingleSelectWithSearch: Story = {
   },
 };
 
+const CHANNEL_OPTIONS = [
+  { value: "general", label: "# general" },
+  { value: "random", label: "# random" },
+  { value: "engineering", label: "# engineering" },
+  { value: "design", label: "# design" },
+];
+
+const PEOPLE_OPTIONS = [
+  { value: "ada", label: "Ada Lovelace" },
+  { value: "alan", label: "Alan Turing" },
+  { value: "grace", label: "Grace Hopper" },
+  { value: "katherine", label: "Katherine Johnson" },
+];
+const APP_OPTIONS = [
+  { value: "slack", label: "Slack" },
+  { value: "github", label: "GitHub" },
+  { value: "linear", label: "Linear" },
+];
+const EMAIL_OPTIONS = [
+  { value: "welcome", label: "Welcome email" },
+  { value: "digest", label: "Weekly digest" },
+  { value: "receipt", label: "Receipt" },
+  { value: "reset", label: "Password reset" },
+  { value: "invite", label: "Team invite" },
+];
+const WEBHOOK_OPTIONS = [
+  { value: "deploy", label: "Deploy hook" },
+  { value: "alert", label: "Alert hook" },
+];
+const SMS_OPTIONS = [
+  { value: "otp", label: "One-time code" },
+  { value: "reminder", label: "Reminder" },
+  { value: "alert-sms", label: "Alert" },
+];
+const PUSH_OPTIONS = [
+  { value: "mention", label: "Mention" },
+  { value: "comment", label: "New comment" },
+  { value: "assign", label: "Assigned to you" },
+  { value: "due", label: "Due soon" },
+];
+const IN_APP_OPTIONS = [
+  { value: "banner", label: "Banner" },
+  { value: "toast", label: "Toast" },
+];
+
+// A `PageSelector` switches between pages of options. Left/Right arrows switch
+// pages (while the search is empty) and Up/Down navigate the active page's list.
+export const SegmentedPages: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = useState<string | undefined>(undefined);
+    // eslint-disable-next-line
+    const [page, setPage] = useState("channels");
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          page={page}
+          onPageChange={setPage}
+          placeholder={"Select a destination"}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.PageSelector aria-label="Destination type">
+              <TelegraphCombobox.PageButton value="channels">
+                Channels
+              </TelegraphCombobox.PageButton>
+              <TelegraphCombobox.PageButton value="people">
+                People
+              </TelegraphCombobox.PageButton>
+            </TelegraphCombobox.PageSelector>
+            <TelegraphCombobox.Options>
+              <TelegraphCombobox.Page value="channels">
+                {CHANNEL_OPTIONS.map((option) => (
+                  <TelegraphCombobox.Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </TelegraphCombobox.Option>
+                ))}
+              </TelegraphCombobox.Page>
+              <TelegraphCombobox.Page value="people">
+                {PEOPLE_OPTIONS.map((option) => (
+                  <TelegraphCombobox.Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </TelegraphCombobox.Option>
+                ))}
+              </TelegraphCombobox.Page>
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+// The same arrangement without a `Search`. Uncontrolled `defaultPage` needs no
+// page-state wiring, and Left/Right always switch pages.
+export const SegmentedPagesWithoutSearch: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = useState<string | undefined>(undefined);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          defaultPage="channels"
+          placeholder={"Select a destination"}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.PageSelector aria-label="Destination type">
+              <TelegraphCombobox.PageButton value="channels">
+                Channels
+              </TelegraphCombobox.PageButton>
+              <TelegraphCombobox.PageButton value="people">
+                People
+              </TelegraphCombobox.PageButton>
+            </TelegraphCombobox.PageSelector>
+            <TelegraphCombobox.Options>
+              <TelegraphCombobox.Page value="channels">
+                {CHANNEL_OPTIONS.map((option) => (
+                  <TelegraphCombobox.Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </TelegraphCombobox.Option>
+                ))}
+              </TelegraphCombobox.Page>
+              <TelegraphCombobox.Page value="people">
+                {PEOPLE_OPTIONS.map((option) => (
+                  <TelegraphCombobox.Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </TelegraphCombobox.Option>
+                ))}
+              </TelegraphCombobox.Page>
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+// Five pages: the segmented control fills its track and pages of different
+// lengths exercise the slide plus the popup's height animation.
+export const SegmentedPagesManyPages: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = useState<string | undefined>(undefined);
+    // eslint-disable-next-line
+    const [page, setPage] = useState("channels");
+
+    const pages = [
+      { value: "channels", label: "Channels", options: CHANNEL_OPTIONS },
+      { value: "people", label: "People", options: PEOPLE_OPTIONS },
+      { value: "apps", label: "Apps", options: APP_OPTIONS },
+      { value: "emails", label: "Emails", options: EMAIL_OPTIONS },
+      { value: "webhooks", label: "Webhooks", options: WEBHOOK_OPTIONS },
+      { value: "sms", label: "SMS", options: SMS_OPTIONS },
+      { value: "push", label: "Push", options: PUSH_OPTIONS },
+      { value: "in-app", label: "In-app", options: IN_APP_OPTIONS },
+    ];
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          page={page}
+          onPageChange={setPage}
+          placeholder={"Select a destination"}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search />
+            <TelegraphCombobox.PageSelector aria-label="Destination type">
+              {pages.map((p) => (
+                <TelegraphCombobox.PageButton key={p.value} value={p.value}>
+                  {p.label}
+                </TelegraphCombobox.PageButton>
+              ))}
+            </TelegraphCombobox.PageSelector>
+            <TelegraphCombobox.Options>
+              {pages.map((p) => (
+                <TelegraphCombobox.Page key={p.value} value={p.value}>
+                  {p.options.map((option) => (
+                    <TelegraphCombobox.Option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </TelegraphCombobox.Option>
+                  ))}
+                </TelegraphCombobox.Page>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
 export const SingleSelectWithLongLabel: Story = {
   render: ({ ...args }) => {
     // eslint-disable-next-line

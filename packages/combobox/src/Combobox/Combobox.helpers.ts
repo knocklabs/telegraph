@@ -26,11 +26,16 @@ export const isSingleSelect = (
 type GetOptionsProps = {
   children: ReactNode;
   isOptionElement: (element: ReactElement) => boolean;
+  // With `activePage`, the walk skips options inside inactive `Combobox.Page`s.
+  isPageElement?: (element: ReactElement) => boolean;
+  activePage?: string;
 };
 
 export const getOptions = ({
   children,
   isOptionElement,
+  isPageElement,
+  activePage,
 }: GetOptionsProps): Array<DefinedOption> => {
   const recursivelyFindOptionElements = (
     children: ReactNode,
@@ -41,17 +46,24 @@ export const getOptions = ({
     const childrenArray = Children.toArray(children);
 
     childrenArray.forEach((child) => {
-      if (isValidElement(child)) {
-        const childProps = child.props as Record<string, unknown>;
-        if (isOptionElement(child)) {
-          options.push(child);
-        } else if (childProps.children) {
-          // Non-option wrappers may still contain options further down.
-          recursivelyFindOptionElements(
-            childProps.children as ReactNode,
-            options,
-          );
-        }
+      if (!isValidElement(child)) return;
+      const childProps = child.props as Record<string, unknown>;
+      if (isOptionElement(child)) {
+        options.push(child);
+        return;
+      }
+      // Wrappers may hold options deeper down. Skip an inactive page, or Base UI
+      // bounds the highlight to options the DOM never mounts.
+      const isInactivePage =
+        isPageElement?.(child) === true &&
+        activePage !== undefined &&
+        childProps.value !== activePage;
+      if (isInactivePage) return;
+      if (childProps.children) {
+        recursivelyFindOptionElements(
+          childProps.children as ReactNode,
+          options,
+        );
       }
     });
 
