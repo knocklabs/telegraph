@@ -14,7 +14,9 @@
 
 Update the READMEs for the prop-validation change.
 
-The `Popover.Content` and `Modal.Content` custom-animation examples passed `as={motion.div}`. Both components always render the animated element now, so the examples animate a child instead. Copying either one used to give a type error.
+The `Modal.Content` custom-animation example passed `as={motion.div}`. `Modal.Content` always renders the animated element now, so the example animates a child instead. Copying it used to give a type error.
+
+`Popover.Content` drops its custom-animation example. The props table and the `skipAnimation` example already cover turning the built-in animation off.
 
 `Modal.Body` no longer documents `flex`, and the Tabs root no longer documents `disabled`. Neither prop existed. The catch-all index signature hid that.
 

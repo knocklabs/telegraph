@@ -520,33 +520,6 @@ const OptimizedPopover = ({ data }) => {
 };
 ```
 
-### Popover with Custom Animation
-
-```tsx
-import { Button } from "@telegraph/button";
-import { Popover } from "@telegraph/popover";
-import { motion } from "motion/react";
-
-<Popover.Root>
-  <Popover.Trigger>
-    <Button>Custom Animation</Button>
-  </Popover.Trigger>
-
-  {/* `Popover.Content` always renders the animated element, so turn off the
-      built-in animation and animate a child instead. */}
-  <Popover.Content skipAnimation>
-    <motion.div
-      initial={{ opacity: 0, rotateX: -90 }}
-      animate={{ opacity: 1, rotateX: 0 }}
-      exit={{ opacity: 0, rotateX: -90 }}
-      transition={{ duration: 0.3 }}
-    >
-      <p>Custom animated content</p>
-    </motion.div>
-  </Popover.Content>
-</Popover.Root>;
-```
-
 ## Design Tokens & Styling
 
 The popover component uses Telegraph design tokens for consistent styling:
