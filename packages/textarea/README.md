@@ -1,6 +1,6 @@
 # 📝 TextArea
 
-> Multi-line text input component with auto-resize, character counting, and form integration capabilities.
+> Multi-line text input component built on Telegraph's `Text` primitive.
 
 ![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/9b5022e3-b02c-4582-ba57-3d6171e45e44)
 
@@ -44,11 +44,10 @@ export const CommentBox = () => {
   return (
     <TextArea
       value={comment}
-      onChange={(e) => setComment(e.target.value)}
+      onChange={(event) => setComment(event.target.value)}
       placeholder="Share your thoughts..."
       maxLength={500}
-      showCharacterCount
-      autoResize
+      rows={4}
     />
   );
 };
@@ -58,414 +57,173 @@ export const CommentBox = () => {
 
 ### `<TextArea>`
 
-The main textarea component with enhanced features for multi-line text input.
+Renders a `textarea` through Telegraph's `Text` component, so it takes the
+typography and layout style props as well.
 
-| Prop                 | Type                                             | Default      | Description                                      |
-| -------------------- | ------------------------------------------------ | ------------ | ------------------------------------------------ |
-| `size`               | `"0" \| "1" \| "2" \| "3" \| "4"`                | `"1"`        | Size of the textarea                             |
-| `variant`            | `"ghost" \| "outline"`                           | `"outline"`  | Visual style variant                             |
-| `autoResize`         | `boolean`                                        | `false`      | Automatically adjust height based on content     |
-| `minRows`            | `number`                                         | `3`          | Minimum number of visible rows                   |
-| `maxRows`            | `number`                                         | `undefined`  | Maximum number of visible rows (for auto-resize) |
-| `showCharacterCount` | `boolean`                                        | `false`      | Display character count indicator                |
-| `maxLength`          | `number`                                         | `undefined`  | Maximum allowed characters                       |
-| `resize`             | `"none" \| "vertical" \| "horizontal" \| "both"` | `"vertical"` | CSS resize behavior                              |
-| `state`              | `"default" \| "error" \| "success"`              | `"default"`  | Validation state                                 |
-| `errorMessage`       | `string`                                         | `undefined`  | Error message to display                         |
-| `helperText`         | `string`                                         | `undefined`  | Helper text to display                           |
+| Prop        | Type                                             | Default     | Description                             |
+| ----------- | ------------------------------------------------ | ----------- | --------------------------------------- |
+| `size`      | `"1" \| "2" \| "3"`                              | `"2"`       | Padding, font size and corner radius    |
+| `variant`   | `"outline" \| "ghost"`                           | `"outline"` | Visual style                            |
+| `resize`    | `"both" \| "vertical" \| "horizontal" \| "none"` | `"both"`    | CSS resize behavior                     |
+| `errored`   | `boolean`                                        | `false`     | Applies the error styling               |
+| `disabled`  | `boolean`                                        | `false`     | Disables the textarea                   |
+| `textProps` | `TextProps<"textarea">`                          | `undefined` | Props merged onto the underlying `Text` |
+| `tgphRef`   | `Ref<HTMLTextAreaElement>`                       | `undefined` | Ref to the textarea element             |
 
-All standard HTML textarea attributes are also supported (value, onChange, placeholder, disabled, etc.).
+It also accepts every `textarea` attribute (`value`, `onChange`, `placeholder`,
+`rows`, `maxLength`, `name`, `required`, `readOnly`) and every `Text` style prop
+(`w`, `p`, `bg`, `rounded`, and the rest).
+
+`TextArea` does not resize itself, count characters, or render helper and error
+text. Compose those around it.
 
 ## Usage Patterns
 
-### Basic Textarea
+### Sizes
 
 ```tsx
 import { TextArea } from "@telegraph/textarea";
 
-export const BasicExample = () => (
-  <TextArea placeholder="Enter your message..." rows={4} />
+export const Sizes = () => (
+  <>
+    <TextArea size="1" placeholder="Size 1" />
+    <TextArea size="2" placeholder="Size 2" />
+    <TextArea size="3" placeholder="Size 3" />
+  </>
 );
 ```
 
-### Different Sizes
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-
-export const SizedTextAreas = () => (
-  <div>
-    <TextArea size="0" placeholder="Small textarea" />
-    <TextArea size="1" placeholder="Medium textarea" />
-    <TextArea size="2" placeholder="Large textarea" />
-  </div>
-);
-```
-
-### With Character Limit
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-import { useState } from "react";
-
-export const CharacterLimit = () => {
-  const [value, setValue] = useState("");
-
-  return (
-    <TextArea
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      placeholder="Write a tweet..."
-      maxLength={280}
-      showCharacterCount
-    />
-  );
-};
-```
-
-### Auto-resize
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-
-export const AutoResizeExample = () => (
-  <TextArea
-    autoResize
-    minRows={2}
-    maxRows={10}
-    placeholder="This textarea will grow as you type..."
-  />
-);
-```
-
-### Validation States
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-
-export const ValidationStates = () => (
-  <div>
-    <TextArea
-      state="error"
-      errorMessage="This field is required"
-      placeholder="Error state"
-    />
-
-    <TextArea
-      state="success"
-      helperText="Looks good!"
-      placeholder="Success state"
-    />
-  </div>
-);
-```
-
-### Different Variants
+### Variants
 
 ```tsx
 import { TextArea } from "@telegraph/textarea";
 
 export const Variants = () => (
-  <div>
+  <>
     <TextArea variant="outline" placeholder="Outline variant" />
     <TextArea variant="ghost" placeholder="Ghost variant" />
-  </div>
+  </>
 );
 ```
 
-## Advanced Usage
+### Disabled and errored
 
-### Form Integration
+```tsx
+import { TextArea } from "@telegraph/textarea";
+
+export const States = () => (
+  <>
+    <TextArea placeholder="Default state" />
+    <TextArea placeholder="Disabled state" disabled />
+    <TextArea placeholder="Error state" errored />
+  </>
+);
+```
+
+`errored` styles the control. It does not render a message. Render your own
+message next to the textarea and link it with `aria-describedby`.
+
+### Resize behavior
+
+```tsx
+import { TextArea } from "@telegraph/textarea";
+
+export const Resize = () => (
+  <>
+    <TextArea resize="vertical" placeholder="Vertical only" />
+    <TextArea resize="none" placeholder="Fixed size" rows={6} />
+  </>
+);
+```
+
+### Style props
+
+```tsx
+import { TextArea } from "@telegraph/textarea";
+
+export const Styled = () => (
+  <TextArea w="full" p="3" rounded="3" placeholder="Full width" />
+);
+```
+
+### `textProps`
+
+Use `textProps` to reach the underlying `Text` when a prop would otherwise
+collide with one of TextArea's own.
+
+```tsx
+import { TextArea } from "@telegraph/textarea";
+
+export const WithTextProps = () => (
+  <TextArea textProps={{ placeholder: "Set through the bag", color: "gray" }} />
+);
+```
+
+A `data-*` key inside `textProps` is an object literal, so it fails
+excess-property checking. Set it on the component instead.
+
+### Form integration
 
 ```tsx
 import { TextArea } from "@telegraph/textarea";
 import { Controller, useForm } from "react-hook-form";
 
-type FormData = {
-  description: string;
-  notes: string;
-};
+type FormData = { description: string };
 
 export const FormExample = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
+  const { control, handleSubmit } = useForm<FormData>();
 
   return (
     <form onSubmit={handleSubmit(console.log)}>
-      <div>
-        <label htmlFor="description">Description</label>
-        <Controller
-          name="description"
-          control={control}
-          rules={{
-            required: "Description is required",
-            minLength: { value: 10, message: "Minimum 10 characters" },
-          }}
-          render={({ field, fieldState }) => (
+      <label htmlFor="description">Description</label>
+      <Controller
+        name="description"
+        control={control}
+        rules={{ required: "Description is required" }}
+        render={({ field, fieldState }) => (
+          <>
             <TextArea
               {...field}
-              state={fieldState.error ? "error" : "default"}
-              errorMessage={fieldState.error?.message}
+              id="description"
+              errored={Boolean(fieldState.error)}
+              aria-describedby={
+                fieldState.error ? "description-error" : undefined
+              }
               placeholder="Describe your project..."
               maxLength={1000}
-              showCharacterCount
-              autoResize
             />
-          )}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="notes">Additional Notes</label>
-        <Controller
-          name="notes"
-          control={control}
-          render={({ field }) => (
-            <TextArea
-              {...field}
-              placeholder="Any additional notes (optional)"
-              variant="ghost"
-              maxLength={500}
-              showCharacterCount
-            />
-          )}
-        />
-      </div>
-
+            {fieldState.error && (
+              <span id="description-error">{fieldState.error.message}</span>
+            )}
+          </>
+        )}
+      />
       <button type="submit">Submit</button>
     </form>
   );
 };
 ```
 
+## Data attributes
+
+`TextArea` sets these for styling and for tests.
+
+| Attribute                    | Values                                         |
+| ---------------------------- | ---------------------------------------------- |
+| `data-tgph-textarea`         | present                                        |
+| `data-tgph-textarea-state`   | `default` \| `disabled` \| `error`             |
+| `data-tgph-textarea-variant` | `outline` \| `ghost`                           |
+| `data-tgph-textarea-size`    | `1` \| `2` \| `3`                              |
+| `data-tgph-textarea-resize`  | `both` \| `vertical` \| `horizontal` \| `none` |
+
 ## Accessibility
 
-- ✅ **Keyboard Navigation**: Full keyboard support for text input and navigation
-- ✅ **Screen Reader Support**: Proper labeling and error announcement
-- ✅ **Focus Management**: Clear focus indicators and logical tab order
-- ✅ **High Contrast**: Compatible with high contrast modes
-- ✅ **Error Handling**: Clear error states and validation messages
+`TextArea` renders a native `textarea`, so keyboard behavior, screen reader
+support and focus order come from the browser.
 
-### Keyboard Shortcuts
+Label it, because the component does not label itself. Use a `label` with
+`htmlFor`, or `aria-label`.
 
-| Key            | Action                          |
-| -------------- | ------------------------------- |
-| `Tab`          | Move focus to/from the textarea |
-| `Enter`        | Insert new line                 |
-| `Ctrl/Cmd + A` | Select all text                 |
-| `Ctrl/Cmd + Z` | Undo last action                |
-| `Ctrl/Cmd + Y` | Redo last action                |
-
-### ARIA Attributes
-
-- `aria-label` or `aria-labelledby` - Associates labels with textarea
-- `aria-describedby` - Links help text and error messages
-- `aria-invalid` - Indicates validation state
-- `role="textbox"` - Explicitly identifies as text input
-- `aria-multiline="true"` - Indicates multi-line input
-
-### Best Practices
-
-1. **Provide Clear Labels**: Always include accessible labels for textareas
-2. **Error Messaging**: Use clear, specific error messages
-3. **Helper Text**: Provide helpful guidance about expected input
-4. **Character Limits**: Clearly communicate length restrictions
-5. **Auto-resize Limits**: Set reasonable min/max bounds for auto-resize
-
-## Examples
-
-### Basic Example
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-
-export const FeedbackForm = () => (
-  <div>
-    <label htmlFor="feedback">Your Feedback</label>
-    <TextArea
-      id="feedback"
-      placeholder="Tell us what you think..."
-      rows={4}
-      maxLength={1000}
-      showCharacterCount
-    />
-  </div>
-);
-```
-
-### Advanced Example
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-import { useState } from "react";
-
-export const BlogPostEditor = () => {
-  const [content, setContent] = useState("");
-  const [isDraft, setIsDraft] = useState(true);
-
-  const handleSave = () => {
-    // Save logic here
-    console.log("Saving:", content);
-  };
-
-  const handlePublish = () => {
-    setIsDraft(false);
-    // Publish logic here
-    console.log("Publishing:", content);
-  };
-
-  return (
-    <div className="blog-editor">
-      <div className="editor-header">
-        <h2>Write your blog post</h2>
-        <div className="status">Status: {isDraft ? "Draft" : "Published"}</div>
-      </div>
-
-      <TextArea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="Start writing your blog post..."
-        autoResize
-        minRows={10}
-        maxRows={30}
-        showCharacterCount
-        helperText="Write in markdown format. Use **bold** and *italic* for formatting."
-      />
-
-      <div className="editor-actions">
-        <button onClick={handleSave} disabled={!content}>
-          Save Draft
-        </button>
-        <button
-          onClick={handlePublish}
-          disabled={!content || content.length < 100}
-          className="primary"
-        >
-          Publish Post
-        </button>
-      </div>
-    </div>
-  );
-};
-```
-
-### Real-world Example
-
-```tsx
-import { TextArea } from "@telegraph/textarea";
-import { useEffect, useState } from "react";
-
-export const CustomerSupportTicket = () => {
-  const [ticket, setTicket] = useState({
-    subject: "",
-    description: "",
-    priority: "medium",
-  });
-  const [attachments, setAttachments] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Submit ticket logic
-      await submitTicket({ ...ticket, attachments });
-      alert("Ticket submitted successfully!");
-    } catch (error) {
-      alert("Failed to submit ticket. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="support-ticket">
-      <h2>Submit a Support Ticket</h2>
-
-      <div className="form-group">
-        <label htmlFor="subject">Subject</label>
-        <input
-          id="subject"
-          type="text"
-          value={ticket.subject}
-          onChange={(e) => setTicket({ ...ticket, subject: e.target.value })}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="priority">Priority</label>
-        <select
-          id="priority"
-          value={ticket.priority}
-          onChange={(e) => setTicket({ ...ticket, priority: e.target.value })}
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-          <option value="urgent">Urgent</option>
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="description">Description</label>
-        <TextArea
-          id="description"
-          value={ticket.description}
-          onChange={(e) =>
-            setTicket({ ...ticket, description: e.target.value })
-          }
-          placeholder="Please describe your issue in detail. Include any error messages, steps to reproduce, and screenshots if applicable."
-          autoResize
-          minRows={6}
-          maxRows={15}
-          maxLength={5000}
-          showCharacterCount
-          state={ticket.description.length < 50 ? "default" : "success"}
-          helperText="Please provide at least 50 characters for a detailed description."
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Attachments</label>
-        <FileUpload
-          onFilesChange={setAttachments}
-          maxFiles={5}
-          acceptedTypes={[".png", ".jpg", ".pdf", ".txt"]}
-        />
-      </div>
-
-      <div className="form-actions">
-        <button
-          type="submit"
-          disabled={
-            isSubmitting || !ticket.subject || ticket.description.length < 50
-          }
-          className="primary"
-        >
-          {isSubmitting ? "Submitting..." : "Submit Ticket"}
-        </button>
-      </div>
-    </form>
-  );
-};
-```
-
-## References
-
-- [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/textarea)
-- [Input Component](../input/README.md) - Related single-line input component
-- [Typography Component](../typography/README.md) - For text styling
-
-## Contributing
-
-See our [Contributing Guide](../../CONTRIBUTING.md) for more details.
-
-## License
-
-MIT License - see [LICENSE](../../LICENSE) for details.
+`errored` sets `data-tgph-textarea-state="error"` and styles the control. It
+does not set `aria-invalid` or announce anything. Set `aria-invalid` yourself,
+and link your message with `aria-describedby`.
