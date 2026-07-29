@@ -21,14 +21,14 @@ npm install @telegraph/helpers
 ```tsx
 import { Button } from "@telegraph/button";
 import {
-  callLegacyDismissHandlers,
-  getBaseUIMotionOffset,
   PolymorphicProps,
   RefToTgphRef,
   TgphElement,
   TgphSlot,
   VisuallyHidden,
+  callLegacyDismissHandlers,
   createTgphBaseUIRender,
+  getBaseUIMotionOffset,
   useControllableState,
   useDeterminateState,
 } from "@telegraph/helpers";
@@ -161,7 +161,13 @@ type BaseProps = AsProp<React.ElementType> & {
 
 #### `PolymorphicProps<E>`
 
-Complete props type for polymorphic components.
+Props type for polymorphic components. It declares `as`, `children`,
+`className` and `style`, and adds the props of the element `E` renders.
+
+The element props are dropped when `E` is unresolved. An unresolved `E` is the
+whole `React.ElementType` union, and `Omit<ComponentProps<ElementType>, "as">`
+is `{ [x: string]: any }`. That index signature turns off prop checking on
+every component that inherits it. See the "Type checking" section below.
 
 ```tsx
 import { PolymorphicProps, TgphElement } from "@telegraph/helpers";
@@ -725,6 +731,40 @@ type ConditionalProps<T extends TgphElement> = PolymorphicProps<T> &
 4. **Implement `useDeterminateState` for loading states**: Improves UX with minimum durations
 5. **Type polymorphic components properly**: Use appropriate helper types
 6. **Test type constraints**: Verify TypeScript catches errors correctly
+
+## Type checking
+
+Telegraph components reject props they do not declare. Two cases surprise
+people, so they are written out here.
+
+### A `data-*` key alone in a nested prop bag
+
+JSX exempts hyphenated **attributes** from excess-property checks, so setting
+one on a component always works. An object literal gets no such exemption, and
+several Telegraph components take nested prop bags such as `textProps`.
+
+Two different checks apply. A fresh object literal gets excess-property
+checking. A variable does not, but it hits weak-type detection when it shares
+no property with an all-optional target.
+
+```tsx
+const dataAttrs = { "data-testid": "x" };
+const bag = { size: "2" as const, "data-testid": "x" };
+
+<Input data-testid="x" />                                // fine, an attribute
+<Input textProps={{ size: "2", "data-testid": "x" }} />  // fails, fresh literal
+<Input textProps={{ size: "2", ...dataAttrs }} />        // fine, spreads are exempt
+<Input textProps={bag} />                                // fine, not fresh
+<Input textProps={{ ...dataAttrs }} />                   // fails, nothing in common
+```
+
+Any bag that carries one real prop passes either check.
+
+### `tgphRef` must match the element
+
+`tgphRef` is no longer typed as `any`. A ref whose element type does not match
+what the component renders is an error. `Combobox.Trigger` renders a `button`,
+so a `RefObject<HTMLDivElement>` on it now fails.
 
 ## References
 

@@ -532,15 +532,17 @@ import { motion } from "motion/react";
     <Button>Custom Animation</Button>
   </Popover.Trigger>
 
-  <Popover.Content
-    as={motion.div}
-    skipAnimation={true} // Skip built-in animation
-    initial={{ opacity: 0, rotateX: -90 }}
-    animate={{ opacity: 1, rotateX: 0 }}
-    exit={{ opacity: 0, rotateX: -90 }}
-    transition={{ duration: 0.3 }}
-  >
-    <p>Custom animated content</p>
+  {/* `Popover.Content` always renders the animated element, so turn off the
+      built-in animation and animate a child instead. */}
+  <Popover.Content skipAnimation>
+    <motion.div
+      initial={{ opacity: 0, rotateX: -90 }}
+      animate={{ opacity: 1, rotateX: 0 }}
+      exit={{ opacity: 0, rotateX: -90 }}
+      transition={{ duration: 0.3 }}
+    >
+      <p>Custom animated content</p>
+    </motion.div>
   </Popover.Content>
 </Popover.Root>;
 ```

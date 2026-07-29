@@ -84,14 +84,13 @@ current/default value no longer matches a rendered tab.
 
 The root container component that provides tab state management and context.
 
-| Prop            | Type                              | Default        | Description                                   |
-| --------------- | --------------------------------- | -------------- | --------------------------------------------- |
-| `defaultValue`  | `string`                          | `undefined`    | ID of the initially active tab (uncontrolled) |
-| `value`         | `string`                          | `undefined`    | Currently active tab ID (controlled)          |
-| `onValueChange` | `(value: string) => void`         | `undefined`    | Called when the active tab changes            |
-| `disabled`      | `boolean`                         | `false`        | Disables all tabs when true                   |
-| `orientation`   | `"horizontal" \| "vertical"`      | `"horizontal"` | Layout orientation                            |
-| `dir`           | `"ltr" \| "rtl"`                  | `"ltr"`        | Text direction                                |
+| Prop            | Type                         | Default        | Description                                   |
+| --------------- | ---------------------------- | -------------- | --------------------------------------------- |
+| `defaultValue`  | `string`                     | `undefined`    | ID of the initially active tab (uncontrolled) |
+| `value`         | `string`                     | `undefined`    | Currently active tab ID (controlled)          |
+| `onValueChange` | `(value: string) => void`    | `undefined`    | Called when the active tab changes            |
+| `orientation`   | `"horizontal" \| "vertical"` | `"horizontal"` | Layout orientation                            |
+| `dir`           | `"ltr" \| "rtl"`             | `"ltr"`        | Text direction                                |
 
 ### `<Tabs.List>`
 

@@ -325,7 +325,7 @@ const FullScreenModal = ({ open, onClose, children }) => (
         <Modal.Close />
       </Modal.Header>
 
-      <Modal.Body flex="1">{children}</Modal.Body>
+      <Modal.Body>{children}</Modal.Body>
     </Modal.Content>
   </Modal.Root>
 );
@@ -516,22 +516,23 @@ const LoadingModal = ({ open, onClose }) => {
 import { Modal } from "@telegraph/modal";
 import { motion } from "motion/react";
 
+// `Modal.Content` always renders the animated element. Animate a child instead.
 const AnimatedModal = ({ open, onClose }) => (
   <Modal.Root open={open} onOpenChange={onClose} a11yTitle="Animated Modal">
-    <Modal.Content
-      as={motion.div}
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.8, opacity: 0 }}
-      transition={{ duration: 0.2 }}
-    >
+    <Modal.Content>
       <Modal.Header>
         <Modal.Heading>Animated Modal</Modal.Heading>
         <Modal.Close />
       </Modal.Header>
 
       <Modal.Body>
-        <p>This modal has custom animations.</p>
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <p>This modal has custom animations.</p>
+        </motion.div>
       </Modal.Body>
     </Modal.Content>
   </Modal.Root>

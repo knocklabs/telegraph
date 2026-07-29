@@ -64,17 +64,17 @@ type PolymorphicPassthroughProps<E extends React.ElementType> =
 // The `PolymorphicProps` type is a utility type that allows you to create a
 // component that can be used as a button, link, or any other element via
 // the `as` prop. It takes a generic type `E` that extends `React.ElementType`.
-// It returns a type that includes the `as` prop and all the props of the
-// underlying element type `E`.
+// It returns a type that includes the `as` prop and the props of the underlying
+// element type `E`, minus the passthrough when `E` is unresolved.
 export type PolymorphicProps<E extends React.ElementType> =
   PolymorphicPassthroughProps<E> & PolymorphicBaseProps<E>;
 
 // The `PolymorphicPropsWithTgphRef` type is a utility type that allows you to create a
 // component that can be used as a button, link, or any other element via
 // the `as` prop. It takes a generic type `E` that extends `React.ElementType`.
-// It returns a type that includes the `as` prop and all the props of the
-// underlying element type `E`. It also includes a `tgpRef` prop that allows you to
-// pass a ref to the component.
+// It returns `PolymorphicProps<E>` plus a `tgphRef` prop that allows you to
+// pass a ref to the component. `R` is the element the ref points at, so a
+// mismatched ref type is an error.
 export type PolymorphicPropsWithTgphRef<
   E extends React.ElementType,
   R extends HTMLElement | React.ElementType,
