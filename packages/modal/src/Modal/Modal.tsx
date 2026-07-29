@@ -137,15 +137,18 @@ export type RootProps = RootDialogProps &
     layer?: number;
   };
 
-const Root = ({
-  defaultOpen: defaultOpenProp,
-  open: openProp,
-  onOpenChange: onOpenChangeProp,
-  // Discarded as well as dropped from the type, because a spread can still
-  // carry it.
-  as: _as,
-  ...props
-}: RootProps & { as?: TgphElement }) => {
+const Root = (rootProps: RootProps) => {
+  const {
+    defaultOpen: defaultOpenProp,
+    open: openProp,
+    onOpenChange: onOpenChangeProp,
+    // Discarded as well as dropped from the type, because a spread can still
+    // carry it. The cast stays in the body: on the parameter it puts `as` back
+    // into the public type, so `<Modal.Root as="div">` compiled and did nothing.
+    as: _as,
+    ...props
+  } = rootProps as RootProps & { as?: TgphElement };
+
   const [open, onOpenChange] = useControllableState({
     prop: openProp,
     onChange: onOpenChangeProp,

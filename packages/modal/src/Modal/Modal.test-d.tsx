@@ -110,6 +110,17 @@ describe("Modal types", () => {
     />;
   });
 
+  it("rejects `as` on Root", () => {
+    // KNO-14501. `Root` renders the animated containers and discards `as`, so
+    // the type has to reject it. It accepted it while the cast sat on the
+    // parameter rather than in the body.
+    <Modal.Root
+      a11yTitle="Settings"
+      // @ts-expect-error as is not a Modal.Root prop
+      as="div"
+    />;
+  });
+
   it("accepts valid props", () => {
     <Modal.Root
       a11yTitle="Settings"

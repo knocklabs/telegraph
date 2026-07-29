@@ -28,10 +28,12 @@ import type {
   SingleSelect,
 } from "./Combobox.types";
 
-// Drop `as`: this always renders `motion.span` (KNO-14501).
+// Drop `as`: this always renders `motion.span` (KNO-14501). Drop `alt` too:
+// the body discards it, so leaving it in the type promised an accessible name
+// this never renders.
 type TriggerIndicatorProps<T extends TgphElement> = Omit<
   Partial<TgphComponentProps<typeof Button.Icon<T>>>,
-  "as"
+  "as" | "alt"
 >;
 
 const TriggerIndicator = <T extends TgphElement>(

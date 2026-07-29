@@ -192,6 +192,11 @@ describe("Combobox types", () => {
       // @ts-expect-error as is not a TriggerIndicator prop
       as="section"
     />;
+    // The body discards `alt`, so the type must not promise it.
+    <Combobox.Primitives.TriggerIndicator
+      // @ts-expect-error alt is not a TriggerIndicator prop
+      alt="Open"
+    />;
     <Combobox.Primitives.TriggerTag.Root
       value="a"
       // @ts-expect-error as is not a TriggerTag.Root prop
