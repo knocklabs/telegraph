@@ -68,11 +68,6 @@ describe("Select types", () => {
       // @ts-expect-error option value is a string
       value={12}
     />;
-    <Select.Option
-      value="1"
-      // @ts-expect-error label is omitted from Select.Option
-      label="Option 1"
-    />;
   });
 
   it("narrows the reported value to the value it was given", () => {
@@ -164,5 +159,10 @@ describe("Select types", () => {
     />;
     <Select.Option value="1" className="c" style={{ opacity: 0.5 }} />;
     <Select.Option value="1" aria-label="one" data-testid="one" />;
+    // `label` overrides the label derived from `children`, which is how a
+    // plain-text label reaches search and the trigger when `children` is rich.
+    <Select.Option value="1" label="Option 1">
+      <b>Option 1</b>
+    </Select.Option>;
   });
 });

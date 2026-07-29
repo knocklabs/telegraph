@@ -261,6 +261,53 @@ describe("Select", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("sms");
   });
 
+  it("uses an option's `label` over its children, in the trigger and the list", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Select.Root defaultValue="email">
+        <Select.Option value="email" label="Email address">
+          <b>Email</b>
+        </Select.Option>
+      </Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await waitFor(() => expect(trigger).toHaveTextContent("Email address"));
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // The option list and the trigger must agree. They read the label through
+    // different paths: the list renders it, the trigger reads the registry
+    // Combobox builds by introspecting the option elements.
+    expect(getOptionByText("Email address")).not.toBeNull();
+  });
+
+  it("falls back to children when `label` is explicitly undefined", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Select.Root defaultValue="email">
+        <Select.Option value="email" label={undefined}>
+          Email
+        </Select.Option>
+      </Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // The rendered option is the path that regressed: the trigger reads the
+    // registry, which resolves `label || children` off the element and never
+    // saw the explicit undefined. Passing it on would render the raw value.
+    const option = document.querySelector("[data-tgph-combobox-option]");
+    expect(option?.textContent).toBe("Email");
+  });
+
   it("discards legacyBehavior instead of forwarding it to Combobox", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();

@@ -63,10 +63,14 @@ const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
   );
 };
 
-type OptionProps = Omit<ComboboxOptionProps, "label">;
+type OptionProps = ComboboxOptionProps;
 
-const Option = ({ value, children, ...props }: OptionProps) => {
-  return <Combobox.Option value={value} label={children} {...props} />;
+// `label` defaults to `children` but stays overridable, which is what Combobox
+// already does at runtime: it renders `label || children` and searches on the
+// same. Taking it explicitly rather than through the rest spread also stops an
+// explicit `label={undefined}` erasing the fallback.
+const Option = ({ value, label, children, ...props }: OptionProps) => {
+  return <Combobox.Option value={value} label={label ?? children} {...props} />;
 };
 
 const Select = { Root, Option };

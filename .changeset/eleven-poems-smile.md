@@ -20,4 +20,14 @@ const [values, setValues] = useState<Array<string>>([]);
 
 `layout` now applies only to selects over an array of values. It was always declared as `never` for a single value (`layout` positions multiple selected tags); reading the props with the value parameter at its constraint is what previously made it look available on every Select.
 
+`Select.Option` now accepts `label`, which it previously omitted from its props type while honoring at runtime. It defaults to `children`, and overriding it is how a plain-text label reaches search and the trigger when `children` is rich:
+
+```tsx
+<Select.Option value="1" label="Option 1">
+  <b>Option 1</b>
+</Select.Option>
+```
+
+This also fixes an inconsistency for `label={undefined}`. `Select.Option` took `label` through its rest spread, which landed the explicit `undefined` after the fallback and erased it, so the option rendered its raw `value` while the trigger still rendered `children`. The two paths now agree.
+
 Runtime behavior is otherwise unchanged.
