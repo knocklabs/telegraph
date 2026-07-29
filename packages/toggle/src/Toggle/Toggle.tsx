@@ -331,7 +331,7 @@ const Default = <T extends TgphElement = "div">({
   const rootProps = props as RootProps<T>;
 
   return (
-    <Root<T> {...rootProps}>
+    <Root {...rootProps}>
       {label && (
         <Label as="label" {...labelProps}>
           {label}

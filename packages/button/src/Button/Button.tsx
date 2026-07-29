@@ -326,7 +326,7 @@ const Default = <T extends TgphElement = "button">({
   const rootProps = props as RootProps<T>;
 
   return (
-    <Root<T> {...rootProps} {...(typeof onClick === "function" && { onClick })}>
+    <Root {...rootProps} {...(typeof onClick === "function" && { onClick })}>
       {combinedLeadingIcon && (
         <Icon {...combinedLeadingIcon} internal_iconType="leading" />
       )}

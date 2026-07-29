@@ -164,7 +164,7 @@ const Default = <T extends TgphElement = "input">({
   const rootProps = props as RootProps<T>;
 
   return (
-    <Root<T> {...rootProps}>
+    <Root {...rootProps}>
       {LeadingComponent && <Slot position="leading">{LeadingComponent}</Slot>}
       {TrailingComponent && (
         <Slot position="trailing">{TrailingComponent}</Slot>

@@ -856,7 +856,7 @@ const Button = <T extends TgphElement = "button">({
       label={label}
       nativeButton={isNativeButton}
       render={createTgphBaseUIRender(
-        <MenuItem<T>
+        <MenuItem
           as={as}
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}
@@ -979,7 +979,7 @@ const SubTrigger = <T extends TgphElement = "button">({
       nativeButton={isNativeButton}
       openOnHover={openOnHover}
       render={createTgphBaseUIRender((state: MenuSubTriggerRenderState) => (
-        <MenuItem<T>
+        <MenuItem
           as={as}
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}

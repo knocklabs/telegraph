@@ -64,7 +64,7 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
       nativeButton={nativeButton}
       render={createTgphBaseUIRender<BaseTabRenderProps, BaseTabState>(
         (state) => (
-          <MenuItem<T>
+          <MenuItem
             leadingIcon={combinedLeadingIcon}
             trailingIcon={combinedTrailingIcon}
             disabled={disabled}
