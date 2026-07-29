@@ -1,7 +1,15 @@
 import { Select } from ".";
 import type { Option, OptionProps, SelectProps } from ".";
 import type { Dispatch, SetStateAction } from "react";
+import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+// Stands in for `next/link`: takes `href` and renders an anchor.
+const RouterLink = forwardRef<
+  HTMLAnchorElement,
+  { href: string; children?: React.ReactNode }
+>(({ href, ...props }, ref) => <a href={href} ref={ref} {...props} />);
+RouterLink.displayName = "RouterLink";
 
 // Declared at module scope: an initialized `const` would be narrowed by
 // control flow to the value it holds, which is not what a consumer's state
@@ -164,5 +172,14 @@ describe("Select types", () => {
     <Select.Option value="1" label="Option 1">
       <b>Option 1</b>
     </Select.Option>;
+  });
+
+  it("renders an option as another element", () => {
+    // `OptionProps` was the bare `ComboboxOptionProps`, which pins `as` to
+    // `"button"`, on a component that took no element parameter at all.
+    <Select.Option value="1" as="a" href="/one" />;
+    <Select.Option value="1" as={RouterLink} href="/one" />;
+    // @ts-expect-error RouterLink requires href
+    <Select.Option value="1" as={RouterLink} />;
   });
 });

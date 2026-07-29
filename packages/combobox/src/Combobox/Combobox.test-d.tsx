@@ -379,4 +379,12 @@ describe("Combobox types", () => {
     <Combobox.Primitives.TriggerTag.Button />;
     <Combobox.Primitives.TriggerTag.Default value="a" />;
   });
+
+  it("resolves Create at its default element", () => {
+    // The component took no default for its element parameter, so with no `as`
+    // it fell back to the constraint and the passthrough dropped native
+    // attributes. It renders a button.
+    <Combobox.Create type="submit" />;
+    <Combobox.Create as="a" href="/new" />;
+  });
 });

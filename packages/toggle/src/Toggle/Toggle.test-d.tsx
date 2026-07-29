@@ -144,4 +144,10 @@ describe("Toggle types", () => {
     <Toggle.Default disabled required name="toggle" />;
     <Toggle.Switch className="c" style={{ opacity: 0.5 }} />;
   });
+
+  it("types the indicator at the element it renders", () => {
+    // It renders `Tag as={as || "label"}`, so the default element has to be
+    // `"label"` or props the rendered element accepts are rejected.
+    <Toggle.Indicator htmlFor="switch-id" />;
+  });
 });

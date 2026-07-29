@@ -923,7 +923,12 @@ const Sub = ({ children, onOpenChange, ...props }: SubProps) => {
   );
 };
 
-type MenuSubTriggerItemProps = Omit<MenuItemProps, "onClick" | "tgphRef">;
+// `MenuItemProps<T>` and omitting `as`, for the reason given on
+// `MenuButtonItemProps` above.
+type MenuSubTriggerItemProps<T extends TgphElement = "button"> = Omit<
+  MenuItemProps<T>,
+  "onClick" | "tgphRef" | "as"
+>;
 
 export type SubTriggerProps<T extends TgphElement = "button"> = Partial<
   Omit<
@@ -931,13 +936,14 @@ export type SubTriggerProps<T extends TgphElement = "button"> = Partial<
     "children" | "className" | "onClick" | "render" | "style"
   >
 > &
-  MenuSubTriggerItemProps & {
+  MenuSubTriggerItemProps<T> & {
     as?: T;
     onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
     tgphRef?: Ref<HTMLElement>;
   };
 
 const SubTrigger = <T extends TgphElement = "button">({
+  as,
   closeDelay,
   delay,
   disabled,
@@ -951,11 +957,13 @@ const SubTrigger = <T extends TgphElement = "button">({
   openOnHover,
   tgphRef,
   onClick,
-  nativeButton = true,
+  nativeButton,
   ...props
 }: SubTriggerProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const menuItemProps = props as MenuItemProps<T>;
+  // Follows the rendered tag, the way `Menu.Button` does.
+  const isNativeButton = nativeButton ?? (!!disabled || !as || as === "button");
   const combinedTrailingIcon: typeof trailingIcon =
     trailingIcon === undefined && trailingComponent === undefined
       ? { icon: ChevronRight, "aria-hidden": true }
@@ -971,10 +979,11 @@ const SubTrigger = <T extends TgphElement = "button">({
       delay={delay}
       disabled={disabled}
       label={label}
-      nativeButton={nativeButton}
+      nativeButton={isNativeButton}
       openOnHover={openOnHover}
       render={createTgphBaseUIRender((state: MenuSubTriggerRenderState) => (
         <MenuItem<T>
+          as={as}
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}
           leadingIcon={combinedLeadingIcon}

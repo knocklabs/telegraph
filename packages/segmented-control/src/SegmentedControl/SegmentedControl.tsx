@@ -547,6 +547,10 @@ const Option = <T extends TgphElement = "button">(
   const { as, value, disabled, ...props } =
     optionProps as OptionProps<"button">;
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const { disabled: groupDisabled } = useContext(SegmentedControlContextState);
+  // `Root`'s `disabled` reaches `Button` through context, so it decides the
+  // rendered tag just as the option's own does.
+  const isDisabled = Boolean(groupDisabled || disabled);
 
   return (
     <BaseToggle
@@ -555,7 +559,7 @@ const Option = <T extends TgphElement = "button">(
       // Base UI reports an error when this disagrees with the tag that renders.
       // `Button` renders a native button unless `as` says otherwise, and forces
       // one back when disabled.
-      nativeButton={!!disabled || !as || as === "button"}
+      nativeButton={isDisabled || !as || as === "button"}
       render={createTgphBaseUIRender((state) => (
         <OptionButton
           as={as}

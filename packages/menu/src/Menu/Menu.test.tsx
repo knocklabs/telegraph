@@ -113,6 +113,45 @@ describe("Menu", () => {
         spy.mockRestore();
       }
     });
+
+    it("renders a submenu trigger as an anchor without a Base UI nativeButton warning", async () => {
+      const errors: Array<unknown> = [];
+      const spy = vi
+        .spyOn(console, "error")
+        .mockImplementation((...args) => errors.push(args[0]));
+
+      try {
+        render(
+          <Menu.Root defaultOpen>
+            <Menu.Trigger>
+              <button>Open</button>
+            </Menu.Trigger>
+            <Menu.Content>
+              <Menu.Sub>
+                <Menu.SubTrigger as="a" href="/share">
+                  Share
+                </Menu.SubTrigger>
+                <Menu.SubContent>
+                  <Menu.Button label="Copy link" />
+                </Menu.SubContent>
+              </Menu.Sub>
+            </Menu.Content>
+          </Menu.Root>,
+        );
+
+        const menu = await screen.findByRole("menu");
+        const anchor = menu.querySelector('a[href="/share"]');
+
+        expect(anchor).not.toBeNull();
+        expect(anchor).toHaveTextContent("Share");
+        expect(menu.querySelector("button")).toBeNull();
+        expect(
+          errors.filter((e) => String(e).includes("nativeButton")),
+        ).toHaveLength(0);
+      } finally {
+        spy.mockRestore();
+      }
+    });
   });
 
   describe("type inheritance", () => {

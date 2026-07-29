@@ -1087,7 +1087,7 @@ export type CreateProps<
         legacyBehavior?: false;
       });
 
-const Create = <T extends TgphElement, LB extends boolean>({
+const Create = <T extends TgphElement = "button", LB extends boolean = false>({
   leadingText = "Create",
   values,
   onCreate,

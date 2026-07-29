@@ -1,7 +1,15 @@
 import { Spinner } from ".";
 import type { SpinnerProps } from ".";
 import { LoaderCircle } from "lucide-react";
+import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+// Stands in for `next/link`: takes `href` and renders an anchor.
+const RouterLink = forwardRef<
+  HTMLAnchorElement,
+  { href: string; children?: React.ReactNode }
+>(({ href, ...props }, ref) => <a href={href} ref={ref} {...props} />);
+RouterLink.displayName = "RouterLink";
 
 describe("Spinner types", () => {
   it("has no catch-all index signature", () => {
@@ -68,10 +76,17 @@ describe("Spinner types", () => {
     <Spinner />;
     <Spinner size="4" variant="secondary" color="accent" animation="spin" />;
     <Spinner icon={LoaderCircle} alt="Loading..." p="2" mt="4" bg="gray-2" />;
-    // `as` does not infer T (it sits behind `Partial<...>`), so it stays
-    // pinned to the "span" default rather than widening like Icon's does.
     <Spinner rounded="2" w="4" as="span" />;
     <Spinner className="c" style={{ opacity: 0.5 }} aria-label="loading" />;
     <Spinner data-testid="spinner" onClick={() => {}} />;
+  });
+
+  it("renders as another element", () => {
+    // `as` used to sit behind `Partial<...>`, a mapped type, so it could never
+    // infer `T` and stayed pinned to the "span" default.
+    <Spinner as="div" />;
+    <Spinner as={RouterLink} href="/loading" />;
+    // @ts-expect-error RouterLink requires href
+    <Spinner as={RouterLink} />;
   });
 });

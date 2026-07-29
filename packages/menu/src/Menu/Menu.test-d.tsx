@@ -163,15 +163,23 @@ describe("Menu types", () => {
   });
 
   it("renders a menu item as a link", () => {
-    // KNO-14480 Part 5. `MenuButtonItemProps` used bare `MenuItemProps`, whose
+    // KNO-14480. `MenuButtonItemProps` used bare `MenuItemProps`, whose
     // `as?: "button"` collapsed the element parameter to `"button"`.
     <Menu.Button as="a" href="/x" label="Docs" />;
     <Menu.Button as={RouterLink} href="/settings" label="Settings" />;
     <Menu.Button as="a" href="/x" target="_blank" rel="noreferrer" />;
   });
 
+  it("renders a submenu trigger as a link", () => {
+    // Same collapse as `Menu.Button` above, through `MenuSubTriggerItemProps`.
+    <Menu.SubTrigger as="a" href="/x" label="Docs" />;
+    <Menu.SubTrigger as={RouterLink} href="/settings" label="Settings" />;
+  });
+
   it("enforces the element's own required props", () => {
     // @ts-expect-error RouterLink requires href
     <Menu.Button as={RouterLink} label="Missing href" />;
+    // @ts-expect-error RouterLink requires href
+    <Menu.SubTrigger as={RouterLink} label="Missing href" />;
   });
 });
