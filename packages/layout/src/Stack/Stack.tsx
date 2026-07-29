@@ -1,4 +1,4 @@
-import type { TgphElement } from "@telegraph/helpers";
+import type { AsProp, TgphElement } from "@telegraph/helpers";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -11,7 +11,9 @@ import { StyleProps, cssVars } from "./Stack.constants";
 export type StackProps<T extends TgphElement = "div"> = Omit<
   BoxProps<T>,
   "as"
-> & { as?: T } & StyleProps;
+> &
+  AsProp<T> &
+  StyleProps;
 
 const Stack = <T extends TgphElement = "div">({
   className,
