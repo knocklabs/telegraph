@@ -77,6 +77,44 @@ afterEach(() => {
 });
 
 describe("Menu", () => {
+  describe("as a link", () => {
+    it("renders the item as an anchor without a Base UI nativeButton warning", async () => {
+      const errors: Array<unknown> = [];
+      const spy = vi
+        .spyOn(console, "error")
+        .mockImplementation((...args) => errors.push(args[0]));
+
+      try {
+        render(
+          <Menu.Root defaultOpen>
+            <Menu.Trigger>
+              <button>Open</button>
+            </Menu.Trigger>
+            <Menu.Content>
+              <Menu.Button as="a" href="/docs">
+                Docs
+              </Menu.Button>
+            </Menu.Content>
+          </Menu.Root>,
+        );
+
+        const menu = await screen.findByRole("menu");
+        const anchor = menu.querySelector('a[href="/docs"]');
+
+        expect(anchor).not.toBeNull();
+        expect(anchor).toHaveTextContent("Docs");
+        expect(menu.querySelector("button")).toBeNull();
+
+        // Base UI reports an error when `nativeButton` disagrees with the tag.
+        expect(
+          errors.filter((e) => String(e).includes("nativeButton")),
+        ).toHaveLength(0);
+      } finally {
+        spy.mockRestore();
+      }
+    });
+  });
+
   describe("type inheritance", () => {
     it("accepts valid content-specific props", () => {
       const validProps: MenuContentProps = {

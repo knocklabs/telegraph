@@ -654,9 +654,12 @@ const Content = <T extends TgphElement = "div">({
   );
 };
 
-type MenuButtonItemProps = Omit<
-  MenuItemProps,
-  "onClick" | "onKeyDown" | "tgphRef"
+// `MenuItemProps<T>`, not the bare form: bare `MenuItemProps` is
+// `MenuItemProps<"button">`, whose `as?: "button"` intersects the `as?: T`
+// below and collapses `T` to `"button"`, so `as={NextLink}` could never resolve.
+type MenuButtonItemProps<T extends TgphElement = "button"> = Omit<
+  MenuItemProps<T>,
+  "onClick" | "onKeyDown" | "tgphRef" | "as"
 >;
 
 export type ButtonProps<T extends TgphElement = "button"> = Partial<
@@ -671,7 +674,7 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
     | "style"
   >
 > &
-  MenuButtonItemProps & {
+  MenuButtonItemProps<T> & {
     as?: T;
     onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
     onKeyDown?: (event: MenuButtonKeyDownEvent) => void;
@@ -680,6 +683,7 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
   };
 
 const Button = <T extends TgphElement = "button">({
+  as,
   closeOnClick,
   disabled,
   mx = "1",
@@ -694,12 +698,17 @@ const Button = <T extends TgphElement = "button">({
   onClick,
   onKeyDown,
   onSelect,
-  nativeButton = true,
+  nativeButton,
   ...props
 }: ButtonProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
+  // Base UI reports an error when `nativeButton` disagrees with the tag that
+  // renders, so follow `Button.Root`, which renders a native button unless `as`
+  // says otherwise and forces one back when disabled. A caller rendering a
+  // component that resolves to a button can still say so explicitly.
+  const isNativeButton = nativeButton ?? (!!disabled || !as || as === "button");
   // Keyboard selection can arrive through React keydown, native keyup/click, or
   // Base UI internals; these refs dedupe those paths while preserving cancel.
   const ignoreNextKeyboardClickRef = useRef(false);
@@ -847,9 +856,10 @@ const Button = <T extends TgphElement = "button">({
       closeOnClick={closeOnClick}
       disabled={disabled}
       label={label}
-      nativeButton={nativeButton}
+      nativeButton={isNativeButton}
       render={createTgphBaseUIRender(
         <MenuItem<T>
+          as={as}
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}
           // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through

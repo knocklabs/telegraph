@@ -8,7 +8,16 @@ import type {
   MenuSubProps,
   MenuSubTriggerProps,
 } from ".";
+import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+// Stands in for `next/link`: a component that takes `href` and renders an
+// anchor, which is the shape callers reach for on a menu item that navigates.
+const RouterLink = forwardRef<
+  HTMLAnchorElement,
+  { href: string; children?: React.ReactNode }
+>(({ href, ...props }, ref) => <a href={href} ref={ref} {...props} />);
+RouterLink.displayName = "RouterLink";
 
 describe("Menu types", () => {
   it("has no catch-all index signature", () => {
@@ -151,5 +160,18 @@ describe("Menu types", () => {
     </Menu.Root>;
     <Menu.Content as="section" forceMount skipAnimation />;
     <Menu.Divider as="div" my="2" data-testid="divider" />;
+  });
+
+  it("renders a menu item as a link", () => {
+    // KNO-14480 Part 5. `MenuButtonItemProps` used bare `MenuItemProps`, whose
+    // `as?: "button"` collapsed the element parameter to `"button"`.
+    <Menu.Button as="a" href="/x" label="Docs" />;
+    <Menu.Button as={RouterLink} href="/settings" label="Settings" />;
+    <Menu.Button as="a" href="/x" target="_blank" rel="noreferrer" />;
+  });
+
+  it("enforces the element's own required props", () => {
+    // @ts-expect-error RouterLink requires href
+    <Menu.Button as={RouterLink} label="Missing href" />;
   });
 });
