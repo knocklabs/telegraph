@@ -299,15 +299,22 @@ const TriggerTagContext = React.createContext<{
   value: "",
 });
 
+// Drop `as`: this always renders `motion.span` (KNO-14501).
 type TriggerTagRootProps<T extends TgphElement> = {
   value: string;
-} & TgphComponentProps<typeof Tag.Root<T>>;
+} & Omit<TgphComponentProps<typeof Tag.Root<T>>, "as">;
 
 const TriggerTagRoot = <T extends TgphElement>(
   triggerTagRootProps: TriggerTagRootProps<T>,
 ) => {
-  const { value, children, ...props } =
-    triggerTagRootProps as TriggerTagRootProps<"span">;
+  const {
+    value,
+    children,
+    as: _as,
+    ...props
+  } = triggerTagRootProps as TriggerTagRootProps<"span"> & {
+    as?: TgphElement;
+  };
   return (
     <TriggerTagContext.Provider value={{ value }}>
       <Tag.Root

@@ -186,6 +186,19 @@ describe("Combobox types", () => {
     />;
   });
 
+  it("rejects `as` on animated trigger primitives", () => {
+    // KNO-14501.
+    <Combobox.Primitives.TriggerIndicator
+      // @ts-expect-error as is not a TriggerIndicator prop
+      as="section"
+    />;
+    <Combobox.Primitives.TriggerTag.Root
+      value="a"
+      // @ts-expect-error as is not a TriggerTag.Root prop
+      as="section"
+    />;
+  });
+
   it("rejects invalid values for declared props", () => {
     <Combobox.Root
       // @ts-expect-error modal is a boolean

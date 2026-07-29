@@ -126,6 +126,18 @@ const ControlledOpenCombobox = ({
 };
 
 describe("Combobox", () => {
+  it("keeps the animated trigger tag when a spread supplies `as`", () => {
+    const smuggled = { as: "b" } as Record<string, unknown>;
+    const { container } = render(
+      <Combobox.Root>
+        <Combobox.Primitives.TriggerTag.Root value="a" {...smuggled} />
+      </Combobox.Root>,
+    );
+
+    expect(container.querySelector("b")).toBeNull();
+    expect(container.querySelector("span")).not.toBeNull();
+  });
+
   it("keeps the animated trigger indicator when a spread supplies `as`", () => {
     // A spread is the only route left: `as` is gone from the props type.
     const smuggled = { as: "b" } as Record<string, unknown>;
