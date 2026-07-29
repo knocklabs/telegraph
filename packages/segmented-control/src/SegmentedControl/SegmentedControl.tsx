@@ -12,6 +12,7 @@ import {
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type RemappedOmit,
+  type TgphElement,
   createTgphBaseUIRender,
   useControllableState,
 } from "@telegraph/helpers";
@@ -458,16 +459,27 @@ const ButtonStyleProps: Record<SegmentedControlOptionStatus, ButtonRootProps> =
     },
   };
 
-export type OptionProps = Omit<ButtonProps, "value"> & {
+// `ButtonProps<T>`, not the bare form: bare `ButtonProps` is
+// `ButtonProps<"button">`, whose `as?: "button"` would pin the element and stop
+// `as={NextLink}` resolving.
+export type OptionProps<T extends TgphElement = "button"> = Omit<
+  ButtonProps<T>,
+  "value"
+> & {
   value: string;
 };
 
-type OptionButtonProps = Omit<OptionProps, "value"> & {
+// Pinned to the default element on purpose. Carrying an unresolved `T` through
+// the internals stacks mapped types over Button's icon union inside Base UI's
+// `render` callback, which takes package type-checking from seconds to minutes.
+// `Button.Root` reads its own props the same way.
+type OptionButtonProps = Omit<OptionProps<"button">, "value"> & {
   buttonRef: RefObject<HTMLButtonElement | null>;
   status: SegmentedControlOptionStatus;
 };
 
 const OptionButton = ({
+  as,
   buttonRef,
   disabled,
   size = "1",
@@ -494,6 +506,7 @@ const OptionButton = ({
 
   return (
     <Button
+      as={as}
       size={derivedSize}
       disabled={derivedDisabled}
       {...ButtonStyleProps[status]}
@@ -507,8 +520,8 @@ const OptionButton = ({
       // `RemappedOmit` distributes over Button's `icon`/`leadingIcon` union;
       // `Omit` would collapse it into one object where both sides look present.
       {...(props as RemappedOmit<
-        ButtonProps,
-        "size" | "disabled" | "style" | "tgphRef"
+        ButtonProps<"button">,
+        "as" | "size" | "disabled" | "style" | "tgphRef"
       >)}
       // Base UI's Toggle marks each option with `aria-pressed`, which reads as an
       // independent toggle. For single-select, present each option as a radio
@@ -528,15 +541,24 @@ const OptionButton = ({
   );
 };
 
-const Option = ({ value, disabled, ...props }: OptionProps) => {
+const Option = <T extends TgphElement = "button">(
+  optionProps: OptionProps<T>,
+) => {
+  const { as, value, disabled, ...props } =
+    optionProps as OptionProps<"button">;
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <BaseToggle
       value={getBaseToggleValue(value)}
       disabled={disabled}
+      // Base UI reports an error when this disagrees with the tag that renders.
+      // `Button` renders a native button unless `as` says otherwise, and forces
+      // one back when disabled.
+      nativeButton={!!disabled || !as || as === "button"}
       render={createTgphBaseUIRender((state) => (
         <OptionButton
+          as={as}
           buttonRef={buttonRef}
           disabled={state.disabled || disabled}
           status={state.pressed ? "active" : "inactive"}

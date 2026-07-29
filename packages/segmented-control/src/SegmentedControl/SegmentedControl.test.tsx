@@ -28,6 +28,36 @@ const SegmentedControlFixture = ({
 };
 
 describe("SegmentedControl", () => {
+  it("renders an option as an anchor without a Base UI nativeButton warning", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      const { container } = render(
+        <SegmentedControl.Root defaultValue="docs">
+          <SegmentedControl.Option value="docs" as="a" href="/docs">
+            Docs
+          </SegmentedControl.Option>
+        </SegmentedControl.Root>,
+      );
+
+      const anchor = container.querySelector('a[href="/docs"]');
+
+      expect(anchor).not.toBeNull();
+      expect(anchor).toHaveTextContent("Docs");
+      expect(container.querySelector("button")).toBeNull();
+
+      // Base UI reports an error when `nativeButton` disagrees with the tag.
+      expect(
+        errors.filter((e) => String(e).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
   beforeAll(() => {
     vi.stubGlobal("ResizeObserver", ResizeObserverMock);
   });
