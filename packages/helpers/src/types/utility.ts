@@ -87,7 +87,7 @@ export type PolymorphicPropsWithTgphRef<
 // it actually renders. Both stay at the top level of the intersection on
 // purpose: `as?: E` is the inference site for `E`, and a mapped type such as
 // `Omit` in front of it stops `<X as="a" />` resolving `E` to `"a"`.
-export type PolymorphicRootProps<
+export type AsAndTgphRefProps<
   E extends React.ElementType,
   R extends HTMLElement | React.ElementType,
 > = { as?: E; tgphRef?: React.Ref<R> };

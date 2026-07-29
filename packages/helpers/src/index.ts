@@ -9,7 +9,7 @@ export type {
   TgphComponentProps,
   OptionalAsPropConfig,
   RemappedOmit,
-  PolymorphicRootProps,
+  AsAndTgphRefProps,
   CSSPropertiesWithVars,
 } from "./types/utility";
 

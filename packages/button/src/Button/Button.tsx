@@ -1,5 +1,5 @@
 import {
-  type PolymorphicRootProps,
+  type AsAndTgphRefProps,
   RemappedOmit,
   type Required,
   type TgphComponentProps,
@@ -54,7 +54,7 @@ export type RootProps<T extends TgphElement = "button"> = Omit<
   StackProps<T>,
   "tgphRef" | "as" | "onClick"
 > &
-  PolymorphicRootProps<T, HTMLButtonElement> &
+  AsAndTgphRefProps<T, HTMLButtonElement> &
   RootBaseProps & {
     onClick?: ButtonClickHandler;
   };
