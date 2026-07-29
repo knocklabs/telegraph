@@ -248,9 +248,8 @@ type OtherProps<CssVars extends CssVarsPropObject<CssVars>, Props> =
     >
   | object;
 
-// `CSSProperties` has no room for custom properties. Mirrors
-// `CSSPropertiesWithVars` in @telegraph/helpers, redeclared so style-engine
-// stays dependency-free.
+// `CSSProperties` has no room for custom properties. This is the object this
+// function builds, so it stays an intersection.
 export type CSSPropertiesWithVars = CSSProperties & {
   [key: `--${string}`]: string | number | undefined;
 };
@@ -263,7 +262,12 @@ type StyleProp<CssVars extends CssVarsPropObject<CssVars>> =
     Partial<Record<CssVars[keyof CssVars]["cssVar"], string>>;
 
 type GetStylePropParams<CssVars, Props> = {
-  props: Props & { style?: Record<string, string> | CSSPropertiesWithVars };
+  // What a caller may hand in, mirroring `CSSPropertiesWithVars` in
+  // @telegraph/helpers: a union, so a value declared as plain `CSSProperties`
+  // still assigns. An intersection here would reject one.
+  props: Props & {
+    style?: Record<string, string> | CSSProperties | CSSPropertiesWithVars;
+  };
   cssVars: CssVars;
 };
 

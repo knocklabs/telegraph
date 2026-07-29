@@ -37,10 +37,14 @@ export type PropsWithAs<C extends React.ElementType, P> = AsProp<C> &
   P;
 
 // `React.CSSProperties` rejects custom properties, and the style engine passes
-// its resolved values as `--*` entries on `style`.
-export type CSSPropertiesWithVars = React.CSSProperties & {
-  [key: `--${string}`]: string | number | undefined;
-};
+// its resolved values as `--*` entries on `style`. A union, not an intersection:
+// `CSSProperties` is an interface, so it gains no implicit index signature and
+// no value declared as one would satisfy the `--*` half.
+export type CSSPropertiesWithVars =
+  | React.CSSProperties
+  | (React.CSSProperties & {
+      [key: `--${string}`]: string | number | undefined;
+    });
 
 // Declared explicitly so they survive when the passthrough below is dropped.
 type PolymorphicBaseProps<E extends React.ElementType> = {

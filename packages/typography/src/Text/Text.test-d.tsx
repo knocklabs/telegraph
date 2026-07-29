@@ -1,5 +1,6 @@
 import { Text } from ".";
 import type { TextProps } from ".";
+import type { CSSProperties } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
 describe("Text types", () => {
@@ -85,5 +86,22 @@ describe("Text types", () => {
     <Text as="span" data-testid="text" onClick={() => {}}>
       children
     </Text>;
+  });
+
+  it("accepts style from a CSSProperties value, not only a literal", () => {
+    const declared: CSSProperties = { color: "red" };
+    const Wrapper = ({ style }: { style?: CSSProperties }) => (
+      <Text as="p" style={style} />
+    );
+
+    <Text as="p" style={declared} />;
+    <Wrapper />;
+    // The custom-property half still has to work.
+    <Text as="p" style={{ "--tgph-x": "1px" }} />;
+    <Text
+      as="p"
+      // @ts-expect-error not a CSS property
+      style={{ colr: "red" }}
+    />;
   });
 });
