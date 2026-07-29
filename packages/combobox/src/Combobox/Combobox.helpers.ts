@@ -23,12 +23,17 @@ type GetOptionsProps = {
   children: ReactNode;
   isOptionElement: (element: ReactElement) => boolean;
   isOptionsElement: (element: ReactElement) => boolean;
+  // With `activePage`, the walk skips options inside inactive `Combobox.Page`s.
+  isPageElement?: (element: ReactElement) => boolean;
+  activePage?: string;
 };
 
 const getOptionElements = ({
   children,
   isOptionElement,
   isOptionsElement,
+  isPageElement,
+  activePage,
 }: GetOptionsProps): Array<ReactElement> => {
   const recursivelyFindOptionElements = (
     children: ReactNode,
@@ -41,19 +46,30 @@ const getOptionElements = ({
     const childrenArray = Children.toArray(children);
 
     childrenArray.forEach((child) => {
-      if (isValidElement(child)) {
-        const childProps = child.props as Record<string, unknown>;
-        const childIsOptions = isOptionsElement(child);
+      if (!isValidElement(child)) return;
+      const childProps = child.props as Record<string, unknown>;
+      const childIsOptions = isOptionsElement(child);
 
-        if (insideOptions && isOptionElement(child)) {
-          options.push(child);
-        } else if (childProps.children) {
-          recursivelyFindOptionElements(
-            childProps.children as ReactNode,
-            options,
-            insideOptions || childIsOptions,
-          );
-        }
+      if (insideOptions && isOptionElement(child)) {
+        options.push(child);
+        return;
+      }
+
+      // Skip an inactive page, or Base UI bounds the highlight to options the
+      // DOM never mounts.
+      const isInactivePage =
+        insideOptions &&
+        isPageElement?.(child) === true &&
+        activePage !== undefined &&
+        childProps.value !== activePage;
+      if (isInactivePage) return;
+
+      if (childProps.children) {
+        recursivelyFindOptionElements(
+          childProps.children as ReactNode,
+          options,
+          insideOptions || childIsOptions,
+        );
       }
     });
 
@@ -67,11 +83,15 @@ export const getOptions = ({
   children,
   isOptionElement,
   isOptionsElement,
+  isPageElement,
+  activePage,
 }: GetOptionsProps): Array<DefinedOption> => {
   const optionElements = getOptionElements({
     children,
     isOptionElement,
     isOptionsElement,
+    isPageElement,
+    activePage,
   });
 
   const options = optionElements.map((_element) => {

@@ -1,3 +1,8 @@
+/* Segmented-pages slide animation. Kept in its own file for isolation and
+   pulled in here so it ships with the package's public stylesheet. Scoped to the
+   page-panel wrapper, so it stays inert unless a multi-page combobox renders. */
+@import "./Combobox/Combobox.pageTransition.css";
+
 /* Base UI drives virtual focus, so the active option is marked with
    `data-highlighted` rather than receiving DOM focus. Reuse the button's own
    hover background so the highlight matches the prior focused-option styling. */

@@ -2776,3 +2776,250 @@ describe("Combobox type inheritance", () => {
     void invalidOptionsProp;
   });
 });
+
+const PAGE_CHANNELS = [
+  { value: "general", label: "general" },
+  { value: "random", label: "random" },
+];
+const PAGE_PEOPLE = [
+  { value: "ada", label: "Ada" },
+  { value: "grace", label: "Grace" },
+];
+
+const ComboboxWithPages = ({
+  withSearch = true,
+  page,
+  onPageChange,
+  loopPages,
+}: {
+  withSearch?: boolean;
+  page?: string;
+  onPageChange?: (page: string) => void;
+  loopPages?: boolean;
+}) => {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={(next) => setValue(next as string | undefined)}
+      defaultPage="channels"
+      page={page}
+      onPageChange={onPageChange}
+      loopPages={loopPages}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        {withSearch ? <Combobox.Search /> : null}
+        <Combobox.PageSelector aria-label="Destination type">
+          <Combobox.PageButton value="channels">Channels</Combobox.PageButton>
+          <Combobox.PageButton value="people">People</Combobox.PageButton>
+        </Combobox.PageSelector>
+        <Combobox.Options>
+          <Combobox.Page value="channels">
+            {PAGE_CHANNELS.map((o) => (
+              <Combobox.Option key={o.value} value={o.value}>
+                {o.label}
+              </Combobox.Option>
+            ))}
+          </Combobox.Page>
+          <Combobox.Page value="people">
+            {PAGE_PEOPLE.map((o) => (
+              <Combobox.Option key={o.value} value={o.value}>
+                {o.label}
+              </Combobox.Option>
+            ))}
+          </Combobox.Page>
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+const clickPageButton = async (
+  user: ReturnType<typeof userEvent.setup>,
+  label: string,
+) => {
+  const button = Array.from(document.querySelectorAll("button")).find(
+    (el) => el.textContent?.trim() === label,
+  );
+  if (!button) throw new Error(`page button "${label}" not found`);
+  await user.click(button);
+};
+
+describe("Segmented pages", () => {
+  it("renders only the active page's options and swaps them on a page button click", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    // defaultPage="channels" is active.
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy();
+    });
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+    ).toBeFalsy();
+
+    await clickPageButton(user, "People");
+
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+    });
+    // The previous page's options unmount, so the mounted set matches the page.
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='general']"),
+    ).toBeFalsy();
+  });
+
+  it("marks the active page panel with the slide direction", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    // Forward: People comes after the default Channels page.
+    await clickPageButton(user, "People");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-page-panel]")?.getAttribute(
+          "data-tgph-combobox-page-direction",
+        ),
+      ).toBe("forward");
+    });
+
+    // Back: Channels comes before People.
+    await clickPageButton(user, "Channels");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-page-panel]")?.getAttribute(
+          "data-tgph-combobox-page-direction",
+        ),
+      ).toBe("back");
+    });
+  });
+
+  it("switches pages with Left/Right while the search is empty", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    const search = (await waitFor(() => {
+      const el = queryPortalElement("[data-tgph-combobox-search]");
+      if (!el) throw new Error("search not mounted");
+      return el;
+    })) as HTMLInputElement;
+    search.focus();
+
+    await user.keyboard("{ArrowRight}");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+    });
+
+    await user.keyboard("{ArrowLeft}");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy();
+    });
+  });
+
+  it("clamps at the first/last page when loopPages is false", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages loopPages={false} />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    const search = (await waitFor(() => {
+      const el = queryPortalElement("[data-tgph-combobox-search]");
+      if (!el) throw new Error("search not mounted");
+      return el;
+    })) as HTMLInputElement;
+    search.focus();
+
+    // Left from the first page (channels) stays put — no wrap to the last.
+    await user.keyboard("{ArrowLeft}");
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='general']"),
+    ).toBeTruthy();
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+    ).toBeFalsy();
+
+    // Right advances to the last page (people)...
+    await user.keyboard("{ArrowRight}");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+    });
+
+    // ...and Right again stays there instead of wrapping to the first.
+    await user.keyboard("{ArrowRight}");
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+    ).toBeTruthy();
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='general']"),
+    ).toBeFalsy();
+  });
+
+  it("does not switch pages when the search has text (arrows move the caret)", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    const search = (await waitFor(() => {
+      const el = queryPortalElement("[data-tgph-combobox-search]");
+      if (!el) throw new Error("search not mounted");
+      return el;
+    })) as HTMLInputElement;
+    search.focus();
+    await user.keyboard("gen");
+
+    await user.keyboard("{ArrowRight}");
+    // Still on the channels page. The People page never mounts.
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+    ).toBeFalsy();
+  });
+
+  it("switches pages with Left/Right when there is no search input", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages withSearch={false} />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    const hidden = (await waitFor(() => {
+      const el = queryPortalElement("[data-tgph-combobox-input-hidden]");
+      if (!el) throw new Error("hidden input not mounted");
+      return el;
+    })) as HTMLInputElement;
+    hidden.focus();
+
+    await user.keyboard("{ArrowRight}");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+    });
+  });
+
+  it("honors a controlled page prop", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages page="people" onPageChange={() => {}} />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+    });
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='general']"),
+    ).toBeFalsy();
+  });
+});

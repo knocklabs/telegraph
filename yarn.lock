@@ -3272,6 +3272,7 @@ __metadata:
     "@telegraph/input": "workspace:^"
     "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/segmented-control": "workspace:^"
     "@telegraph/tag": "workspace:^"
     "@telegraph/tooltip": "workspace:^"
     "@telegraph/truncate": "workspace:^"
@@ -3626,7 +3627,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@telegraph/segmented-control@workspace:packages/segmented-control":
+"@telegraph/segmented-control@workspace:^, @telegraph/segmented-control@workspace:packages/segmented-control":
   version: 0.0.0-use.local
   resolution: "@telegraph/segmented-control@workspace:packages/segmented-control"
   dependencies:
