@@ -115,17 +115,19 @@ above modal overlays and other lower layering surfaces.
 
 Individual menu item that can be clicked or selected.
 
-| Prop                   | Type                          | Default     | Description                  |
-| ---------------------- | ----------------------------- | ----------- | ---------------------------- |
-| `children`             | `React.ReactNode`             | required    | Button label                 |
-| `leadingIcon` / `icon` | `IconProps`                   | `undefined` | Icon before text             |
-| `trailingIcon`         | `IconProps`                   | `undefined` | Icon after text              |
-| `leadingComponent`     | `React.ReactNode`             | `undefined` | Custom component before text |
-| `trailingComponent`    | `React.ReactNode`             | `undefined` | Custom component after text  |
-| `selected`             | `boolean`                     | `false`     | Whether item is selected     |
-| `disabled`             | `boolean`                     | `false`     | Whether item is disabled     |
-| `color`                | `"gray" \| "accent" \| "red"` | `"gray"`    | Button color theme           |
-| `onClick`              | `() => void`                  | `undefined` | Click handler                |
+| Prop                   | Type                          | Default      | Description                                   |
+| ---------------------- | ----------------------------- | ------------ | --------------------------------------------- |
+| `children`             | `React.ReactNode`             | required     | Button label                                  |
+| `leadingIcon` / `icon` | `IconProps`                   | `undefined`  | Icon before text                              |
+| `trailingIcon`         | `IconProps`                   | `undefined`  | Icon after text                               |
+| `leadingComponent`     | `React.ReactNode`             | `undefined`  | Custom component before text                  |
+| `trailingComponent`    | `React.ReactNode`             | `undefined`  | Custom component after text                   |
+| `selected`             | `boolean`                     | `false`      | Whether item is selected                      |
+| `disabled`             | `boolean`                     | `false`      | Whether item is disabled                      |
+| `color`                | `"gray" \| "accent" \| "red"` | `"gray"`     | Button color theme                            |
+| `onClick`              | `() => void`                  | `undefined`  | Click handler                                 |
+| `as`                   | `TgphElement`                 | `"button"`   | Element or component to render                |
+| `nativeButton`         | `boolean`                     | follows `as` | Tells Base UI whether a native button renders |
 
 Inherits all Button props for additional styling.
 

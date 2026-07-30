@@ -100,7 +100,7 @@ Core function that processes style props and returns CSS variables.
 
 ```tsx
 {
-  styleProp: Record<string, string>; // CSS custom properties (including pseudo-class vars)
+  styleProp: CSSPropertiesWithVars & Partial<Record<string, string>>; // CSS custom properties (including pseudo-class vars)
   otherProps: Record<string, unknown>; // Non-style props (including unmatched pseudo sub-props)
   interactive: boolean; // Whether pseudo-class props were resolved (for scoping CSS rules)
 }

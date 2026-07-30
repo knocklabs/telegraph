@@ -75,10 +75,15 @@ Select is a lightweight wrapper around `@telegraph/combobox`. It inherits the
 migrated Combobox popup, portal, focus, and dismissal behavior, which is backed
 by Base UI through Telegraph primitives.
 
-The public Select API remains unchanged. Single-select usage closes after
-selection, while multi-select usage stays open; this behavior is inferred from
-whether `value` or `defaultValue` is an array. `triggerProps`, `contentProps`,
-and `optionsProps` continue to pass through to the underlying Combobox parts.
+`Select.Root` is generic over its value. `value` and `defaultValue` accept a
+string or an array of strings, which matches what `Select.Option` produces, and
+`onValueChange` narrows to the same type. `legacyBehavior` is no longer
+accepted. Use `Combobox` directly for option objects.
+
+Single-select usage closes after selection, while multi-select usage stays open.
+Telegraph infers this from whether `value` or `defaultValue` is an array.
+`triggerProps`, `contentProps`, and `optionsProps` continue to pass through to
+the underlying Combobox parts.
 
 Select does not depend on Radix directly.
 
@@ -103,11 +108,13 @@ The main select container component.
 
 Individual option within the select dropdown.
 
-| Prop       | Type        | Default | Description                         |
-| ---------- | ----------- | ------- | ----------------------------------- |
-| `value`    | `string`    | -       | Unique value for this option        |
-| `disabled` | `boolean`   | `false` | Whether this option is disabled     |
-| `children` | `ReactNode` | -       | Display text/content for the option |
+| Prop       | Type          | Default    | Description                                      |
+| ---------- | ------------- | ---------- | ------------------------------------------------ |
+| `value`    | `string`      | -          | Unique value for this option                     |
+| `disabled` | `boolean`     | `false`    | Whether this option is disabled                  |
+| `children` | `ReactNode`   | -          | Display text/content for the option              |
+| `label`    | `string`      | `children` | Plain-text label used for search and the trigger |
+| `as`       | `TgphElement` | `"button"` | Element or component to render                   |
 
 ## Usage Patterns
 

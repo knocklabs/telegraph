@@ -86,7 +86,9 @@ Container component that wraps the input and slots.
 #### `<Input.Slot>`
 
 Wrapper for leading and trailing components. Props passed to `Input.Slot` are
-merged into its single child, and refs are forwarded to that child.
+merged into its single child, and refs are forwarded to that child. The slot
+accepts `span` attributes plus `position` and `size`. Set props that belong to
+the child on the child itself.
 
 | Prop       | Type                      | Default     | Description          |
 | ---------- | ------------------------- | ----------- | -------------------- |

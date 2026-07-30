@@ -68,24 +68,24 @@ export const TooltipExample = () => (
 
 The main tooltip component that wraps content and provides contextual information on hover or focus.
 
-| Prop                      | Type                                     | Default     | Description                                                  |
-| ------------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
-| `label`                   | `string \| ReactNode`                    | `undefined` | Content to display in the tooltip                            |
-| `labelProps`              | `TgphComponentProps<typeof Stack>`       | `undefined` | Props to pass to the rendered tooltip content                |
-| `enabled`                 | `boolean`                                | `true`      | Whether the tooltip can open                                 |
-| `side`                    | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"`  | Preferred placement side                                     |
-| `align`                   | `"start" \| "center" \| "end"`           | `"center"`  | Alignment relative to the trigger                            |
-| `sideOffset`              | `number`                                 | `4`         | Distance from the trigger element                            |
-| `alignOffset`             | `number`                                 | `0`         | Offset along the alignment axis                              |
-| `delayDuration`           | `number`                                 | `400`       | Delay before showing tooltip (ms)                            |
-| `skipDelayDuration`       | `number`                                 | -           | Skip delay if another tooltip was recently shown             |
-| `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content |
-| `disableFocusOpen`        | `boolean`                                | `false`     | Prevent focus events from instantly opening the tooltip      |
-| `skipAnimation`           | `boolean`                                | `false`     | Disable the tooltip entry animation                          |
-| `triggerRef`              | `RefObject<HTMLElement \| null>`         | `undefined` | Ref forwarded to the rendered trigger element                |
-| `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges           |
-| `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                               |
-| `hideWhenDetached`        | `boolean`                                | `false`     | Hide tooltip when trigger is not visible                     |
+| Prop                      | Type                                     | Default     | Description                                                                                                                |
+| ------------------------- | ---------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `label`                   | `string \| ReactNode`                    | `undefined` | Content to display in the tooltip                                                                                          |
+| `labelProps`              | `Omit<StackProps, "as">`                 | `undefined` | Props to pass to the rendered tooltip content. `as` is not accepted, because the label always renders the animated element |
+| `enabled`                 | `boolean`                                | `true`      | Whether the tooltip can open                                                                                               |
+| `side`                    | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"`  | Preferred placement side                                                                                                   |
+| `align`                   | `"start" \| "center" \| "end"`           | `"center"`  | Alignment relative to the trigger                                                                                          |
+| `sideOffset`              | `number`                                 | `4`         | Distance from the trigger element                                                                                          |
+| `alignOffset`             | `number`                                 | `0`         | Offset along the alignment axis                                                                                            |
+| `delayDuration`           | `number`                                 | `400`       | Delay before showing tooltip (ms)                                                                                          |
+| `skipDelayDuration`       | `number`                                 | -           | Skip delay if another tooltip was recently shown                                                                           |
+| `disableHoverableContent` | `boolean`                                | `false`     | Prevent tooltip from staying open when hovering over content                                                               |
+| `disableFocusOpen`        | `boolean`                                | `false`     | Prevent focus events from instantly opening the tooltip                                                                    |
+| `skipAnimation`           | `boolean`                                | `false`     | Disable the tooltip entry animation                                                                                        |
+| `triggerRef`              | `RefObject<HTMLElement \| null>`         | `undefined` | Ref forwarded to the rendered trigger element                                                                              |
+| `avoidCollisions`         | `boolean`                                | `true`      | Automatically flip tooltip to avoid viewport edges                                                                         |
+| `sticky`                  | `"partial" \| "always"`                  | `"partial"` | How tooltip follows the cursor                                                                                             |
+| `hideWhenDetached`        | `boolean`                                | `false`     | Hide tooltip when trigger is not visible                                                                                   |
 
 ## Usage Patterns
 

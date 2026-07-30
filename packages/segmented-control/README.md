@@ -78,12 +78,13 @@ the same scroll-button behavior.
 
 Individual option button within the segmented control.
 
-| Prop       | Type                       | Default | Description                       |
-| ---------- | -------------------------- | ------- | --------------------------------- |
-| `value`    | `string`                   | -       | Unique identifier for this option |
-| `disabled` | `boolean`                  | `false` | Disable this specific option      |
-| `size`     | `"0" \| "1" \| "2" \| "3"` | `"1"`   | Button size                       |
-| `children` | `ReactNode`                | -       | Content of the option             |
+| Prop       | Type                       | Default    | Description                       |
+| ---------- | -------------------------- | ---------- | --------------------------------- |
+| `value`    | `string`                   | -          | Unique identifier for this option |
+| `disabled` | `boolean`                  | `false`    | Disable this specific option      |
+| `size`     | `"0" \| "1" \| "2" \| "3"` | `"1"`      | Button size                       |
+| `children` | `ReactNode`                | -          | Content of the option             |
+| `as`       | `TgphElement`              | `"button"` | Element or component to render    |
 
 ## Usage Patterns
 
