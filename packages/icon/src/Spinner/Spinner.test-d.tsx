@@ -1,8 +1,9 @@
-import { Spinner } from ".";
-import type { SpinnerProps } from ".";
 import { LoaderCircle } from "lucide-react";
 import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Spinner } from ".";
+import type { SpinnerProps } from ".";
 
 // Stands in for `next/link`: takes `href` and renders an anchor.
 const RouterLink = forwardRef<

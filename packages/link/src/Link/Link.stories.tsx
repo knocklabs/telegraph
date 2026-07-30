@@ -1,9 +1,9 @@
-import type { LinkProps } from ".";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Text as TelegraphText } from "@telegraph/typography";
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import type { LinkProps } from ".";
 import { Link as TelegraphLink } from "./Link";
 import { LINK_SIZE_MAP, LINK_WEIGHT_MAP } from "./Link.constants";
 

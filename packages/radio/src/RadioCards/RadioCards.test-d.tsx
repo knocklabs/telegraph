@@ -1,3 +1,6 @@
+import { Bell } from "lucide-react";
+import { describe, expectTypeOf, it } from "vitest";
+
 import { RadioCards } from ".";
 import type {
   RadioCardsItemDescriptionProps,
@@ -7,8 +10,6 @@ import type {
   RadioCardsProps,
   RadioCardsRootProps,
 } from ".";
-import { Bell } from "lucide-react";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("RadioCards types", () => {
   it("has no catch-all index signature", () => {

@@ -1,8 +1,9 @@
-import { Select } from ".";
-import type { Option, OptionProps, SelectProps } from ".";
 import type { Dispatch, SetStateAction } from "react";
 import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Select } from ".";
+import type { Option, OptionProps, SelectProps } from ".";
 
 // Stands in for `next/link`: takes `href` and renders an anchor.
 const RouterLink = forwardRef<

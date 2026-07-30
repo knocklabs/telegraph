@@ -1,7 +1,8 @@
-import { Text } from ".";
-import type { TextProps } from ".";
 import type { CSSProperties } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Text } from ".";
+import type { TextProps } from ".";
 
 describe("Text types", () => {
   it("has no catch-all index signature", () => {

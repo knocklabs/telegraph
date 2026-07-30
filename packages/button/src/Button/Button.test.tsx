@@ -1,4 +1,3 @@
-import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
 import {
@@ -12,6 +11,7 @@ import {
 } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
+import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
 import { Button } from "./Button";
 
 // Suppress error from showing in console as we are testing for it

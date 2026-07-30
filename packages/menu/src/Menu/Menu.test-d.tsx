@@ -1,3 +1,6 @@
+import { forwardRef } from "react";
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Menu } from ".";
 import type {
   MenuButtonProps,
@@ -8,8 +11,6 @@ import type {
   MenuSubProps,
   MenuSubTriggerProps,
 } from ".";
-import { forwardRef } from "react";
-import { describe, expectTypeOf, it } from "vitest";
 
 // Stands in for `next/link`: a component that takes `href` and renders an
 // anchor, which is the shape callers reach for on a menu item that navigates.

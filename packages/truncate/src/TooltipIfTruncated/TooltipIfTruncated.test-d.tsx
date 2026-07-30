@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { TooltipIfTruncated } from ".";
 import type { TooltipIfTruncatedProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("TooltipIfTruncated types", () => {
   it("has no catch-all index signature", () => {

@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Stack } from ".";
 import type { StackProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Stack types", () => {
   it("has no catch-all index signature", () => {

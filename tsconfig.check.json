@@ -12,6 +12,8 @@
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx",
+    "**/*.test-d.ts",
+    "**/*.test-d.tsx",
     "**/*.stories.tsx",
     "**/dist",
     "**/node_modules"

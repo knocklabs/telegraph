@@ -1,10 +1,11 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Popover } from ".";
 import type {
   PopoverContentProps,
   PopoverRootProps,
   PopoverTriggerProps,
 } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Popover types", () => {
   it("has no catch-all index signature", () => {

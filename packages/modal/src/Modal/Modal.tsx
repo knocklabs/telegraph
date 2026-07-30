@@ -754,7 +754,9 @@ const Body = <T extends TgphElement = "div">({
         overflowY: "auto",
         ...style,
       }}
-      {...props}
+      // Cast the generic passthrough to Stack's props; the public BodyProps
+      // stays strict (KNO-14474).
+      {...(props as TgphComponentProps<typeof Stack<T>>)}
     >
       {children}
     </Stack>
@@ -776,7 +778,7 @@ const Header = <T extends TgphElement = "div">({
       px="6"
       py="4"
       borderBottom="px"
-      {...props}
+      {...(props as TgphComponentProps<typeof Stack<T>>)}
     >
       {children}
     </Stack>
@@ -799,7 +801,7 @@ const Footer = <T extends TgphElement = "div">({
       px="6"
       py="4"
       borderTop="px"
-      {...props}
+      {...(props as TgphComponentProps<typeof Stack<T>>)}
     >
       {children}
     </Stack>

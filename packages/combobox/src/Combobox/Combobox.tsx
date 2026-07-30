@@ -681,7 +681,7 @@ const Options = <T extends TgphElement = "div">({
       // Accessibility attributes
       role="listbox"
       tgphRef={composedRef}
-      {...props}
+      {...(props as TgphComponentProps<typeof Stack<T>>)}
     />
   );
 };
@@ -1060,7 +1060,7 @@ const Empty = <T extends TgphElement = "div">({
         w="full"
         my="8"
         data-tgph-combobox-empty
-        {...props}
+        {...(props as TgphComponentProps<typeof Stack<T>>)}
       >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
@@ -1135,7 +1135,10 @@ const Create = <T extends TgphElement = "button", LB extends boolean = false>({
             context.setSearchQuery?.("");
           }
         }}
-        {...props}
+        // Forward the remaining Create props to Option unchanged. A precise
+        // cast collides with the explicit `value` above and doesn't overlap
+        // CreateProps, so widen here only (public props stay strict; KNO-14474).
+        {...(props as Record<string, unknown>)}
       />
     );
   }
