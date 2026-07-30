@@ -47,7 +47,7 @@
     "motion": "^12.38.0"
   },
   "devDependencies": {
-    "@knocklabs/eslint-config": "^0.0.5",
+    "@knocklabs/eslint-config": "^0.0.6",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",

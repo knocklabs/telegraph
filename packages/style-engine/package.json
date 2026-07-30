@@ -41,7 +41,7 @@
     "postcss": "^8.5.23"
   },
   "devDependencies": {
-    "@knocklabs/eslint-config": "^0.0.5",
+    "@knocklabs/eslint-config": "^0.0.6",
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
