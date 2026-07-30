@@ -1,4 +1,8 @@
 [data-tgph-checkbox-control] {
+  /* Without this the 1px border sits outside the size token, so size "2"
+     renders 22px instead of 20px and falls off the spacing grid. Button,
+     Input and Link set this in their own stylesheets too. */
+  box-sizing: border-box;
   flex-shrink: 0;
   transition:
     background-color 120ms cubic-bezier(0.16, 1, 0.3, 1),
