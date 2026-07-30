@@ -8,6 +8,7 @@ import type {
   CheckboxRootProps,
   CheckboxSize,
 } from ".";
+import type { RefObject } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { CheckboxGroup } from "../CheckboxGroup";
@@ -20,6 +21,11 @@ describe("Checkbox types", () => {
   it("has no catch-all index signature", () => {
     expectTypeOf<CheckboxProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxRootProps>().not.toHaveProperty("notARealProp");
+    // Also closed when the element is pinned to something other than the default.
+    expectTypeOf<CheckboxRootProps<"section">>().not.toHaveProperty(
+      "notARealProp",
+    );
+    expectTypeOf<CheckboxProps<"a">>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxRootBaseProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxControlProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxLabelProps>().not.toHaveProperty("notARealProp");
@@ -88,6 +94,31 @@ describe("Checkbox types", () => {
       // @ts-expect-error unknown prop
       notARealProp="x"
     />;
+    <Checkbox.Root
+      as="section"
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
+  });
+
+  // Nested prop bags get excess-property checking as fresh object literals,
+  // unlike hyphenated JSX attributes. See the `@telegraph/helpers` README.
+  it("rejects unknown props inside nested prop bags", () => {
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error unknown prop in the label bag
+      labelProps={{ notARealProp: "x" }}
+    />;
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error unknown prop in the control bag
+      controlProps={{ notARealProp: "x" }}
+    />;
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error a data-* key alone gets no attribute exemption here
+      labelProps={{ "data-testid": "x" }}
+    />;
   });
 
   it("rejects invalid values for declared props", () => {
@@ -114,6 +145,31 @@ describe("Checkbox types", () => {
     <Checkbox.Default
       // @ts-expect-error onValueChange receives a boolean
       onValueChange={(value: string) => value}
+    />;
+    <Checkbox.Default
+      // @ts-expect-error indeterminate must be a boolean
+      indeterminate="yes"
+    />;
+    <Checkbox.Default
+      // @ts-expect-error parent must be a boolean
+      parent="yes"
+    />;
+    <Checkbox.Default
+      // @ts-expect-error name must be a string
+      name={42}
+    />;
+    <Checkbox.Default
+      // @ts-expect-error not a flex direction
+      direction="sideways"
+    />;
+    <Checkbox.Default
+      // @ts-expect-error not a spacing token
+      gap={12345}
+    />;
+    <Checkbox.Label
+      as="label"
+      // @ts-expect-error not a text size token
+      size="99"
     />;
   });
 
@@ -165,6 +221,19 @@ describe("Checkbox types", () => {
       as="span"
       // @ts-expect-error `form` is not a prop of span
       form="my-form"
+    />;
+  });
+
+  // `tgphRef` is no longer `any`, so a ref for the wrong element is an error.
+  it("rejects a tgphRef that does not match the element", () => {
+    const svgRef = {} as RefObject<SVGSVGElement>;
+    <Checkbox.Root
+      // @ts-expect-error the root renders an HTML element, not an SVG one
+      tgphRef={svgRef}
+    />;
+    <Checkbox.Control
+      // @ts-expect-error the control renders an HTML element, not an SVG one
+      tgphRef={svgRef}
     />;
   });
 
@@ -231,6 +300,26 @@ describe("CheckboxGroup types", () => {
     <CheckboxGroup
       // @ts-expect-error not a checkbox size
       size="3"
+    />;
+    <CheckboxGroup
+      // @ts-expect-error allValues is a list of keys
+      allValues="run-1"
+    />;
+    <CheckboxGroup
+      // @ts-expect-error the selection holds strings
+      value={[1, 2]}
+    />;
+    <CheckboxGroup
+      // @ts-expect-error not a flex direction
+      direction="sideways"
+    />;
+    <CheckboxGroup
+      // @ts-expect-error not a spacing token
+      gap={12345}
+    />;
+    <CheckboxGroup
+      // @ts-expect-error onValueChange receives a string array
+      onValueChange={(value: string) => value}
     />;
   });
 
