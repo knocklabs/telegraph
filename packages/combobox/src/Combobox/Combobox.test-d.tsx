@@ -381,10 +381,9 @@ describe("Combobox types", () => {
   });
 
   it("resolves Create at its default element", () => {
-    // The component took no default for its element parameter, so with no `as`
-    // it fell back to the constraint and the passthrough dropped native
-    // attributes. It renders a button.
-    <Combobox.Create type="submit" />;
+    // This combobox renders Create as an option row (a `div`), so with no `as`
+    // the default element is a `div` and `div` native attributes type-check.
+    <Combobox.Create id="create-row" />;
     <Combobox.Create as="a" href="/new" />;
   });
 });

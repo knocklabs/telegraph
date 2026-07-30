@@ -1,5 +1,8 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { Button as TelegraphButton } from "@telegraph/button";
+import {
+  type ButtonRootProps,
+  Button as TelegraphButton,
+} from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
@@ -12,7 +15,7 @@ import {
   getBaseUIPositionerVisibilityStyle,
   useControllableState,
 } from "@telegraph/helpers";
-import { Icon } from "@telegraph/icon";
+import { Icon, type IconProps } from "@telegraph/icon";
 import { Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
@@ -50,7 +53,7 @@ import {
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
-import { OptionItem } from "./Combobox.optionItem";
+import { OptionItem, type OptionItemProps } from "./Combobox.optionItem";
 import { Primitives } from "./Combobox.primitives";
 import type {
   DefinedOption,
@@ -458,10 +461,7 @@ type ChildrenFnValue<V extends ChildrenValue> = V extends never
     ? DefinedOption | undefined
     : Array<DefinedOption>;
 
-type TriggerBaseProps = RemappedOmit<
-  TgphComponentProps<typeof TelegraphButton.Root>,
-  "children"
->;
+type TriggerBaseProps = RemappedOmit<ButtonRootProps, "children">;
 
 export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
@@ -781,7 +781,7 @@ const Content = <T extends TgphElement = "div">({
     };
   }, [onOpenAutoFocus]);
 
-  const stackProps = props as TgphComponentProps<typeof Stack>;
+  const stackProps = props as StackProps;
 
   return (
     <BaseCombobox.Portal keepMounted={forceMount}>
@@ -826,9 +826,7 @@ const Content = <T extends TgphElement = "div">({
               aria-labelledby={context.triggerId}
               data-tgph-combobox-content
               data-tgph-combobox-content-open={context.open}
-              tgphRef={
-                composedRef as TgphComponentProps<typeof Stack>["tgphRef"]
-              }
+              tgphRef={composedRef as StackProps["tgphRef"]}
               style={{
                 outline: "none",
                 overflowY: "auto",
@@ -956,25 +954,28 @@ const Options = <T extends TgphElement = "div">({
           }
           // Accessibility attributes
           role="listbox"
-          tgphRef={composedRef as TgphComponentProps<typeof Stack>["tgphRef"]}
-          {...props}
+          tgphRef={composedRef as StackProps["tgphRef"]}
+          {...(props as StackProps)}
         />,
       )}
     />
   );
 };
 
-export type OptionProps<T extends TgphElement = "div"> = Omit<
-  TgphComponentProps<typeof OptionItem<T>>,
-  "label"
-> & {
-  value: DefinedOption["value"];
-  label?: DefinedOption["label"];
-  selected?: boolean | null;
-  onSelect?: (event: Event) => void;
-};
+// Keep the `Omit` off the generic `typeof OptionItem<T>`: wrapping it defers the
+// mapped type and widens the sibling `onSelect` event to `any` at the JSX call
+// site — the KNO-14309 failure documented on `ContentProps` above. Source the
+// element props from `PolymorphicProps<T>` and the row props from the
+// non-generic `OptionItemProps<"div">`.
+export type OptionProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<OptionItemProps<"div">, "as" | "label"> & {
+    value: DefinedOption["value"];
+    label?: DefinedOption["label"];
+    selected?: boolean | null;
+    onSelect?: (event: Event) => void;
+  };
 
-const Option = <T extends TgphElement>({
+const Option = <T extends TgphElement = "div">({
   value,
   label,
   selected,
@@ -1081,9 +1082,11 @@ const Option = <T extends TgphElement>({
           data-tgph-combobox-option-value={value}
           data-tgph-combobox-option-label={label}
           tgphRef={
-            composedRef as TgphComponentProps<typeof OptionItem<T>>["tgphRef"]
+            composedRef as TgphComponentProps<
+              typeof OptionItem<"div">
+            >["tgphRef"]
           }
-          {...(props as TgphComponentProps<typeof OptionItem<T>>)}
+          {...(props as TgphComponentProps<typeof OptionItem<"div">>)}
         >
           {label || children || value}
         </OptionItem>,
@@ -1092,14 +1095,16 @@ const Option = <T extends TgphElement>({
   );
 };
 
-// `value`/`defaultValue` are omitted: Base UI owns the input's value (a
-// DOM-controlled value races its store and drops keystrokes), so a controlled
-// Search observes/updates the query through `onValueChange`, not `value`.
+// `defaultValue` is dropped: Base UI seeds the input. `value` and
+// `onValueChange` keep the search query controllable, matching the historical
+// (menu-backed) Search API.
 export type SearchProps = RemappedOmit<
-  TgphComponentProps<typeof TelegraphInput>,
+  TgphComponentProps<typeof TelegraphInput<"input">>,
   "value" | "defaultValue"
 > & {
   label?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
 };
 
 // Reset a Base UI (uncontrolled) input to empty by writing through the native
@@ -1243,11 +1248,11 @@ const optionRendersUnsearchableText = (label: ReactNode): boolean => {
 export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   typeof Stack<T>
 > & {
-  icon?: TgphComponentProps<typeof Icon> | null;
+  icon?: IconProps | null;
   message?: string | null;
 };
 
-const Empty = <T extends TgphElement>({
+const Empty = <T extends TgphElement = "div">({
   icon = { icon: SearchIcon, alt: "Search Icon" },
   message = "No results found",
   children,
@@ -1284,7 +1289,7 @@ const Empty = <T extends TgphElement>({
         w="full"
         my="8"
         data-tgph-combobox-empty
-        {...props}
+        {...(props as StackProps)}
       >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
@@ -1310,7 +1315,7 @@ export type CreateProps<
         legacyBehavior?: false;
       });
 
-const Create = <T extends TgphElement, LB extends boolean>({
+const Create = <T extends TgphElement = "div", LB extends boolean = false>({
   leadingText = "Create",
   values,
   onCreate,
@@ -1347,16 +1352,19 @@ const Create = <T extends TgphElement, LB extends boolean>({
                 ? { value: context.searchQuery }
                 : context.searchQuery;
 
-            const create = onCreate as CreateProps<T, LB>["onCreate"];
+            // While `LB` is unresolved, `onCreate` stays a deferred
+            // conditional. Runtime creation narrows through the legacyBehavior
+            // branch above, so read it as the union of both callable shapes.
+            const create = onCreate as (
+              value: { value: string; label?: string } | string,
+            ) => void;
 
-            // The conditional prop type keeps public APIs precise, but runtime
-            // creation narrows through the legacyBehavior branch above.
             create(value);
 
             context.setSearchQuery?.("");
           }
         }}
-        {...props}
+        {...(props as Partial<OptionProps<"div">>)}
       />
     );
   }

@@ -469,7 +469,7 @@ export const LegacyComboboxMultiSelect: Story = {
               {LEGACY_VALUES.map((v) => (
                 <TelegraphCombobox.Option value={v.value} label={v.label} />
               ))}
-              <TelegraphCombobox.Create
+              <TelegraphCombobox.Create<"div", true>
                 legacyBehavior={true}
                 values={LEGACY_VALUES}
                 onCreate={(createdValue) => {

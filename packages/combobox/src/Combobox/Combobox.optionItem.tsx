@@ -1,4 +1,4 @@
-import { Button } from "@telegraph/button";
+import { Button, type ButtonIconProps } from "@telegraph/button";
 import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
@@ -12,9 +12,9 @@ import type { ReactNode } from "react";
 // changes.
 
 type OptionItemIconProps = {
-  icon?: TgphComponentProps<typeof Button.Icon>;
-  leadingIcon?: TgphComponentProps<typeof Button.Icon>;
-  trailingIcon?: TgphComponentProps<typeof Button.Icon>;
+  icon?: ButtonIconProps;
+  leadingIcon?: ButtonIconProps;
+  trailingIcon?: ButtonIconProps;
 };
 
 export type OptionItemProps<T extends TgphElement = "button"> =
@@ -23,7 +23,7 @@ export type OptionItemProps<T extends TgphElement = "button"> =
       selected?: boolean | null;
       leadingComponent?: ReactNode;
       trailingComponent?: ReactNode;
-      textProps?: TgphComponentProps<typeof Button.Text>;
+      textProps?: TgphComponentProps<typeof Button.Text<"span">>;
     };
 
 const OptionItem = <T extends TgphElement = "button">({
@@ -42,7 +42,7 @@ const OptionItem = <T extends TgphElement = "button">({
   textProps,
   ...props
 }: OptionItemProps<T>) => {
-  const rootProps = props as TgphComponentProps<typeof Button.Root>;
+  const rootProps = props as TgphComponentProps<typeof Button.Root<T>>;
 
   return (
     <Button.Root
@@ -62,7 +62,7 @@ const OptionItem = <T extends TgphElement = "button">({
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight={rootProps.fontWeight || "medium"}
+          weight="medium"
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"
