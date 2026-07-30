@@ -45,6 +45,15 @@ describe("Stack types", () => {
     />;
   });
 
+  it("inherits the `color` omission from BoxProps", () => {
+    expectTypeOf<StackProps>().not.toHaveProperty("color");
+    expectTypeOf<StackProps<"a">>().not.toHaveProperty("color");
+    <Stack
+      // @ts-expect-error `color` is not a Stack style prop
+      color="red"
+    />;
+  });
+
   it("rejects invalid values for declared props", () => {
     <Stack
       // @ts-expect-error not a flex direction

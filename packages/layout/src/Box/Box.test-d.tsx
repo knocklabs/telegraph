@@ -49,6 +49,20 @@ describe("Box types", () => {
     />;
   });
 
+  it("rejects `color`, which rendered an attribute and painted nothing", () => {
+    expectTypeOf<BoxProps>().not.toHaveProperty("color");
+    expectTypeOf<BoxProps<"a">>().not.toHaveProperty("color");
+    <Box
+      // @ts-expect-error `color` is not a Box style prop
+      color="red"
+    />;
+    <Box
+      as="a"
+      // @ts-expect-error a resolved element does not bring `color` back
+      color="red"
+    />;
+  });
+
   it("rejects invalid values for declared props", () => {
     <Box
       // @ts-expect-error not a spacing token
