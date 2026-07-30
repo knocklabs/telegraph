@@ -1,5 +1,5 @@
 ---
-"@telegraph/layout": minor
+"@telegraph/layout": patch
 ---
 
 `Box` and `Stack` reject `color`.
