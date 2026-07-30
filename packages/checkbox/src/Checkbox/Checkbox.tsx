@@ -2,13 +2,12 @@ import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import {
   type PolymorphicPropsWithTgphRef,
   type RemappedOmit,
-  type TgphComponentProps,
   type TgphElement,
   createTgphBaseUIRender,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
-import { Text } from "@telegraph/typography";
+import { Stack, type StackProps } from "@telegraph/layout";
+import { Text, type TextProps } from "@telegraph/typography";
 import { Check, Minus } from "lucide-react";
 import {
   type CSSProperties,
@@ -86,11 +85,11 @@ export type RootBaseProps = {
   id?: string;
 };
 
-// `value`, `defaultValue`, `disabled` and `id` are stripped from *both* halves.
-// React's `HTMLAttributes` carries `defaultValue?: string | number | readonly
-// string[]`, so leaving it in the polymorphic half would intersect with our
-// `defaultValue?: boolean` and produce `boolean & readonly string[]` — a type
-// nothing can satisfy.
+// Stripped from *both* halves. Every element declares `defaultValue?: string |
+// number | readonly string[]`, so leaving it in the passthrough intersects it
+// with our `defaultValue?: boolean` and yields a type nothing can satisfy.
+// `disabled` and `id` are declared on `RootBaseProps` instead, since the root
+// renders a `div` but forwards them to the input `Checkbox.Control` renders.
 type StripConflicting =
   | "value"
   | "defaultValue"
@@ -99,35 +98,36 @@ type StripConflicting =
   | "id";
 
 export type RootProps<T extends TgphElement = "div"> = RemappedOmit<
-  TgphComponentProps<typeof Stack<T>>,
+  StackProps<T>,
   "tgphRef" | "as" | StripConflicting
 > &
-  RemappedOmit<PolymorphicPropsWithTgphRef<T, HTMLElement>, StripConflicting> &
-  RootBaseProps;
+  RemappedOmit<
+    PolymorphicPropsWithTgphRef<T, HTMLElement>,
+    "as" | StripConflicting
+  > & { as?: T } & RootBaseProps;
 
-const Root = <T extends TgphElement = "div">({
-  size: sizeProp,
-  color: colorProp,
-  value,
-  defaultValue,
-  onValueChange,
-  indeterminate = false,
-  parent = false,
-  formValue,
-  name,
-  disabled: disabledProp,
-  required = false,
-  readOnly = false,
-  id: idProp,
-  children,
-  style,
-  "aria-label": ariaLabel,
-  // `as` and `className` are intentionally left in `props` so they reach Stack
-  // through the spread below. Destructuring them here and passing them back
-  // explicitly leaves the generic unresolvable against Stack's catch-all prop
-  // signature.
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
+  const {
+    size: sizeProp,
+    color: colorProp,
+    value,
+    defaultValue,
+    onValueChange,
+    indeterminate = false,
+    parent = false,
+    formValue,
+    name,
+    disabled: disabledProp,
+    required = false,
+    readOnly = false,
+    id: idProp,
+    className,
+    children,
+    as,
+    style,
+    "aria-label": ariaLabel,
+    ...props
+  } = rootProps as RootProps<"div">;
   const group = useCheckboxGroupContext();
 
   // Own prop wins, then the group's default, then the component default.
@@ -160,17 +160,19 @@ const Root = <T extends TgphElement = "div">({
       }}
     >
       <Stack
+        as={as}
         direction="row"
         align="center"
         gap="2"
         display="flex"
+        className={className}
         data-tgph-checkbox-root
         data-tgph-checkbox-disabled={disabled}
         style={{
           cursor: disabled ? "not-allowed" : "pointer",
           ...style,
         }}
-        {...(props as TgphComponentProps<typeof Stack<"div">>)}
+        {...props}
       >
         {children}
       </Stack>
@@ -281,22 +283,19 @@ const Control = ({ style, tgphRef, ...props }: ControlProps) => {
 // `as` is re-declared as optional so `<Checkbox.Label>` works without it;
 // Telegraph's `Text` otherwise requires `as` unless `internal_optionalAs` is set.
 export type LabelProps<T extends TgphElement = "label"> = RemappedOmit<
-  TgphComponentProps<typeof Text<T>>,
+  TextProps<T>,
   "as"
 > & {
   as?: T;
 };
 
-const Label = <T extends TgphElement = "label">({
-  as,
-  style,
-  ...props
-}: LabelProps<T>) => {
+const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
+  const { as, style, ...props } = labelProps as LabelProps<"label">;
   const context = useContext(CheckboxContext);
 
   return (
     <Text
-      as={(as || "label") as T}
+      as={as || "label"}
       htmlFor={context.id}
       id={context.labelId}
       size={LABEL_SIZE_MAP[context.size]}
@@ -304,9 +303,9 @@ const Label = <T extends TgphElement = "label">({
       data-tgph-checkbox-disabled={context.disabled}
       style={{
         cursor: context.disabled ? "not-allowed" : "pointer",
-        ...(style as CSSProperties),
+        ...style,
       }}
-      {...(props as TgphComponentProps<typeof Text<"label">>)}
+      {...props}
     />
   );
 };

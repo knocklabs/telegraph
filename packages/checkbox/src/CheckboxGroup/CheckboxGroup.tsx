@@ -1,10 +1,6 @@
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
-import {
-  type RemappedOmit,
-  type TgphComponentProps,
-  createTgphBaseUIRender,
-} from "@telegraph/helpers";
-import { Stack } from "@telegraph/layout";
+import { type RemappedOmit, createTgphBaseUIRender } from "@telegraph/helpers";
+import { Stack, type StackProps } from "@telegraph/layout";
 import {
   type CSSProperties,
   type ComponentPropsWithoutRef,
@@ -55,17 +51,12 @@ export type CheckboxGroupBaseProps = {
 };
 
 /**
- * Deliberately not polymorphic. A checkbox group is always a `Stack`, and the
- * generic `as` would have to resolve inside the Base UI `render` callback,
- * where it collapses against Stack's catch-all prop signature.
+ * Not polymorphic: the group renders a `Stack` and the element would have to
+ * resolve inside the Base UI `render` callback. `StackProps<"div">` pins the
+ * passthrough to the element actually rendered.
  */
 export type CheckboxGroupProps = RemappedOmit<
-  // Instantiated form (`typeof Stack<"div">`), not the bare
-  // `TgphComponentProps<typeof Stack>`. The bare form instantiates Stack's
-  // generic at its constraint, which resolves to `any` and leaves a
-  // `{ [x: string]: any }` index signature on everything inheriting it — see
-  // KNO-14474 / PR #922.
-  TgphComponentProps<typeof Stack<"div">>,
+  StackProps<"div">,
   "tgphRef" | "value" | "defaultValue" | "onChange" | "color"
 > &
   RemappedOmit<

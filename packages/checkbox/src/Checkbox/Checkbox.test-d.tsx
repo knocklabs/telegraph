@@ -18,12 +18,8 @@ import type {
 
 describe("Checkbox types", () => {
   it("has no catch-all index signature", () => {
-    // TODO(KNO-14474): CheckboxProps and CheckboxRootProps inherit Stack's
-    // props, which today carry a `{ [x: string]: any }` index signature. Enable
-    // once PR #922 lands the `PolymorphicProps` fix. The types below don't
-    // inherit from Stack, so they're already closed.
-    // expectTypeOf<CheckboxProps>().not.toHaveProperty("notARealProp");
-    // expectTypeOf<CheckboxRootProps>().not.toHaveProperty("notARealProp");
+    expectTypeOf<CheckboxProps>().not.toHaveProperty("notARealProp");
+    expectTypeOf<CheckboxRootProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxRootBaseProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxControlProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxLabelProps>().not.toHaveProperty("notARealProp");
@@ -71,20 +67,18 @@ describe("Checkbox types", () => {
   });
 
   it("rejects unknown props", () => {
-    // TODO(KNO-14474): Checkbox.Default and Checkbox.Root accept anything while
-    // Stack's catch-all index signature is in place. Enable with PR #922.
-    // <Checkbox.Default
-    //   // @ts-expect-error unknown prop
-    //   fontSize={16}
-    // />;
-    // <Checkbox.Default
-    //   // @ts-expect-error unknown prop
-    //   notARealProp="x"
-    // />;
-    // <Checkbox.Root
-    //   // @ts-expect-error unknown prop
-    //   notARealProp="x"
-    // />;
+    <Checkbox.Default
+      // @ts-expect-error unknown prop
+      fontSize={16}
+    />;
+    <Checkbox.Default
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
+    <Checkbox.Root
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
     <Checkbox.Control
       // @ts-expect-error unknown prop
       notARealProp="x"
@@ -97,13 +91,10 @@ describe("Checkbox types", () => {
   });
 
   it("rejects invalid values for declared props", () => {
-    // TODO(KNO-14474): `p` is inherited from Stack, so it degrades to `any`
-    // along with the rest of the catch-all. Enable with PR #922. The props
-    // declared on Checkbox itself still narrow correctly, below.
-    // <Checkbox.Default
-    //   // @ts-expect-error not a spacing token
-    //   p={12345}
-    // />;
+    <Checkbox.Default
+      // @ts-expect-error not a spacing token
+      p={12345}
+    />;
     <Checkbox.Default
       // @ts-expect-error not a checkbox size
       size="3"
@@ -138,30 +129,72 @@ describe("Checkbox types", () => {
       disabled
       p="2"
     />;
-    // TODO(KNO-14474): the props type says `(value: boolean) => void` — asserted
-    // above — but at the JSX call site the parameter still widens to `any`,
-    // because the catch-all index signature wins during inference. This is the
-    // KNO-14309 shape, and it is the assertion that actually guards it. Enable
-    // with PR #922.
-    // <Checkbox.Default
-    //   label="Cancel run"
-    //   value={true}
-    //   onValueChange={(value) => {
-    //     expectTypeOf(value).toEqualTypeOf<boolean>();
-    //   }}
-    // />;
-    <Checkbox.Default label="Cancel run" value={true} />;
+    // The assertion that actually guards KNO-14309: the parameter must stay
+    // `boolean` at the JSX call site, not just on the props type.
+    <Checkbox.Default
+      label="Cancel run"
+      value={true}
+      onValueChange={(value) => {
+        expectTypeOf(value).toEqualTypeOf<boolean>();
+      }}
+    />;
     <Checkbox.Root aria-label="Select row">
       <Checkbox.Control />
       <Checkbox.Label>Select row</Checkbox.Label>
     </Checkbox.Root>;
   });
+
+  it("renders as another element and types tgphRef to match", () => {
+    <Checkbox.Root as="span" />;
+    <Checkbox.Default as="section" label="Cancel run" />;
+    <Checkbox.Label as="span">Cancel run</Checkbox.Label>;
+
+    // `as` narrows the element, so element-specific props come with it.
+    <Checkbox.Root as="fieldset" form="my-form" />;
+
+    <Checkbox.Root
+      as="span"
+      tgphRef={(node) => {
+        expectTypeOf(node).toEqualTypeOf<HTMLElement | null>();
+      }}
+    />;
+  });
+
+  it("rejects props that don't belong to the element it renders as", () => {
+    <Checkbox.Root
+      as="span"
+      // @ts-expect-error `form` is not a prop of span
+      form="my-form"
+    />;
+  });
+
+  // Now that props are closed, a prop documented in the README but never
+  // implemented is a compile error rather than something the catch-all hides.
+  // This block is every row of the README's Checkbox table.
+  it("accepts every prop the README documents", () => {
+    <Checkbox.Default
+      label="Cancel this run"
+      size="2"
+      color="blue"
+      value={false}
+      onValueChange={() => {}}
+      indeterminate={false}
+      parent={false}
+      disabled={false}
+      readOnly={false}
+      required={false}
+      name="runs"
+      formValue="run_1"
+      labelProps={{ color: "gray" }}
+      controlProps={{ nativeButton: false }}
+    />;
+    <Checkbox.Default label="Cancel this run" defaultValue />;
+  });
 });
 
 describe("CheckboxGroup types", () => {
   it("has no catch-all index signature", () => {
-    // TODO(KNO-14474): same Stack inheritance as CheckboxProps. Enable with #922.
-    // expectTypeOf<CheckboxGroupProps>().not.toHaveProperty("notARealProp");
+    expectTypeOf<CheckboxGroupProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<CheckboxGroupBaseProps>().not.toHaveProperty("notARealProp");
   });
 
@@ -187,11 +220,10 @@ describe("CheckboxGroup types", () => {
   });
 
   it("rejects unknown props and invalid values", () => {
-    // TODO(KNO-14474): accepts anything via Stack's catch-all. Enable with #922.
-    // <CheckboxGroup
-    //   // @ts-expect-error unknown prop
-    //   notARealProp="x"
-    // />;
+    <CheckboxGroup
+      // @ts-expect-error unknown prop
+      notARealProp="x"
+    />;
     <CheckboxGroup
       // @ts-expect-error value is a list of keys, not a boolean
       value={true}
@@ -217,5 +249,20 @@ describe("CheckboxGroup types", () => {
       <Checkbox.Default parent label="Select all" />
       <Checkbox.Default name="run-1" label="run-1" />
     </CheckboxGroup>;
+  });
+
+  // Every row of the README's CheckboxGroup table.
+  it("accepts every prop the README documents", () => {
+    <CheckboxGroup
+      value={["run-1"]}
+      onValueChange={() => {}}
+      allValues={["run-1"]}
+      size="2"
+      color="blue"
+      disabled={false}
+      direction="column"
+      gap="2"
+    />;
+    <CheckboxGroup defaultValue={["run-1"]} direction="row" />;
   });
 });
