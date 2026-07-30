@@ -1,9 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Stack } from "@telegraph/layout";
-import { Text } from "@telegraph/typography";
-import { useState } from "react";
-
-import { CheckboxGroup } from "../CheckboxGroup";
 
 import { Checkbox } from "./Checkbox";
 import {
@@ -133,63 +129,4 @@ export const States: Story = {
       <Checkbox.Default label="Disabled checked" disabled defaultValue />
     </Stack>
   ),
-};
-
-const GroupExample = () => {
-  const [value, setValue] = useState<string[]>(["email"]);
-  return (
-    <Stack direction="column" gap="3">
-      <CheckboxGroup value={value} onValueChange={setValue} color="blue">
-        <Checkbox.Default name="email" label="Email" />
-        <Checkbox.Default name="sms" label="SMS" />
-        <Checkbox.Default name="push" label="Push" />
-      </CheckboxGroup>
-      <Text as="span" size="1" color="gray">
-        Selected: {value.join(", ") || "none"}
-      </Text>
-    </Stack>
-  );
-};
-
-export const Group: Story = {
-  render: () => <GroupExample />,
-};
-
-const RUNS = ["run-1", "run-2", "run-3", "run-4"];
-
-const SelectAllExample = () => {
-  const [value, setValue] = useState<string[]>([]);
-  return (
-    <Stack direction="column" gap="3">
-      <CheckboxGroup
-        value={value}
-        onValueChange={setValue}
-        allValues={RUNS}
-        color="blue"
-      >
-        <Checkbox.Default parent label="Select all" />
-        <Stack direction="column" gap="2" ml="5">
-          {RUNS.map((run) => (
-            <Checkbox.Default
-              key={run}
-              name={run}
-              label={run}
-              disabled={run === "run-4"}
-            />
-          ))}
-        </Stack>
-      </CheckboxGroup>
-      <Text as="span" size="1" color="gray">
-        Selected: {value.join(", ") || "none"} — run-4 is disabled
-      </Text>
-    </Stack>
-  );
-};
-
-/**
- * A `parent` checkbox plus `allValues` gives select-all with a derived
- * indeterminate state. Disabled children are skipped in both directions.
- */
-export const GroupWithSelectAll: Story = {
-  render: () => <SelectAllExample />,
 };
