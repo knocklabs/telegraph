@@ -1,6 +1,6 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import {
-  type PolymorphicPropsWithTgphRef,
+  type AsAndTgphRefProps,
   type RemappedOmit,
   type TgphElement,
   createTgphBaseUIRender,
@@ -101,10 +101,8 @@ export type RootProps<T extends TgphElement = "div"> = RemappedOmit<
   StackProps<T>,
   "tgphRef" | "as" | StripConflicting
 > &
-  RemappedOmit<
-    PolymorphicPropsWithTgphRef<T, HTMLElement>,
-    "as" | StripConflicting
-  > & { as?: T } & RootBaseProps;
+  AsAndTgphRefProps<T, HTMLElement> &
+  RootBaseProps;
 
 const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
   const {
