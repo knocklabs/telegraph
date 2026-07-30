@@ -6,6 +6,7 @@ import {
   type ComboboxRootProps,
   type ComboboxTriggerProps,
 } from "@telegraph/combobox";
+import type { TgphElement } from "@telegraph/helpers";
 
 // `Select.Option` takes a string `value`, so a Select selects over a single
 // string or an array of them.
@@ -63,13 +64,20 @@ const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
   );
 };
 
-type OptionProps = ComboboxOptionProps;
+// Generic, so `as={NextLink}` resolves. The bare form is
+// `ComboboxOptionProps<"button">`, which pins `as` to `"button"`.
+type OptionProps<T extends TgphElement = "button"> = ComboboxOptionProps<T>;
 
 // `label` defaults to `children` but stays overridable, which is what Combobox
 // already does at runtime: it renders `label || children` and searches on the
 // same. Taking it explicitly rather than through the rest spread also stops an
 // explicit `label={undefined}` erasing the fallback.
-const Option = ({ value, label, children, ...props }: OptionProps) => {
+const Option = <T extends TgphElement = "button">(
+  optionProps: OptionProps<T>,
+) => {
+  const { value, label, children, ...props } =
+    optionProps as OptionProps<"button">;
+
   return <Combobox.Option value={value} label={label ?? children} {...props} />;
 };
 

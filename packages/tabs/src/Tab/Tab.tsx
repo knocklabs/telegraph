@@ -1,4 +1,5 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
+import { rendersNativeButton } from "@telegraph/button";
 import {
   type TgphComponentProps,
   type TgphElement,
@@ -53,9 +54,7 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     ? ({ ...defaultIconProps, ...trailingIcon } as const)
     : undefined;
   const menuItemProps = props as TgphComponentProps<typeof MenuItem<T>>;
-  // Base UI renders a native button by default; only opt out when Telegraph's
-  // polymorphic `as` prop means MenuItem owns the element type.
-  const nativeButton = !props.as || props.as === "button";
+  const nativeButton = rendersNativeButton(props.as, disabled);
 
   return (
     <BaseTabs.Tab
@@ -65,7 +64,7 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
       nativeButton={nativeButton}
       render={createTgphBaseUIRender<BaseTabRenderProps, BaseTabState>(
         (state) => (
-          <MenuItem<T>
+          <MenuItem
             leadingIcon={combinedLeadingIcon}
             trailingIcon={combinedTrailingIcon}
             disabled={disabled}

@@ -1,7 +1,15 @@
 import { SegmentedControl } from ".";
 import type { SegmentedControlOptionProps, SegmentedControlRootProps } from ".";
 import { AlignLeft } from "lucide-react";
+import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+// Stands in for `next/link`: takes `href` and renders an anchor.
+const RouterLink = forwardRef<
+  HTMLAnchorElement,
+  { href: string; children?: React.ReactNode }
+>(({ href, ...props }, ref) => <a href={href} ref={ref} {...props} />);
+RouterLink.displayName = "RouterLink";
 
 describe("SegmentedControl types", () => {
   it("has no catch-all index signature", () => {
@@ -125,5 +133,23 @@ describe("SegmentedControl types", () => {
     >
       <SegmentedControl.Option value="left">Left</SegmentedControl.Option>
     </SegmentedControl.Root>;
+  });
+
+  it("renders an option as a link", () => {
+    // KNO-14527. `OptionProps` read bare `ButtonProps`, whose `as?: "button"`
+    // collapsed the element parameter.
+    <SegmentedControl.Root>
+      <SegmentedControl.Option value="a" as="a" href="/x">
+        Docs
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="b" as={RouterLink} href="/y">
+        Settings
+      </SegmentedControl.Option>
+    </SegmentedControl.Root>;
+  });
+
+  it("enforces the element's own required props", () => {
+    // @ts-expect-error RouterLink requires href
+    <SegmentedControl.Option value="a" as={RouterLink} />;
   });
 });

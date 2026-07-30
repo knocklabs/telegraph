@@ -695,7 +695,11 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
   selected?: boolean | null;
 };
 
-const Option = <T extends TgphElement>(optionProps: OptionProps<T>) => {
+// Do not drop `= "button"`. Without it an absent `as` silently loses the
+// element's own attributes, so `type` stops type checking.
+const Option = <T extends TgphElement = "button">(
+  optionProps: OptionProps<T>,
+) => {
   const {
     value,
     label,
@@ -1019,7 +1023,7 @@ export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
   message?: string | null;
 };
 
-const Empty = <T extends TgphElement>({
+const Empty = <T extends TgphElement = "div">({
   icon = { icon: SearchIcon, alt: "Search Icon" },
   message = "No results found",
   children,
@@ -1082,7 +1086,7 @@ export type CreateProps<
         legacyBehavior?: false;
       });
 
-const Create = <T extends TgphElement, LB extends boolean>({
+const Create = <T extends TgphElement = "button", LB extends boolean = false>({
   leadingText = "Create",
   values,
   onCreate,

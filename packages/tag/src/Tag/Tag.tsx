@@ -192,7 +192,9 @@ const CopyButton = ({ onClick, textToCopy, ...props }: CopyButtonProps) => {
   );
 };
 
-const Button = <T extends TgphElement>({ ...props }: ButtonProps<T>) => {
+const Button = <T extends TgphElement = "button">({
+  ...props
+}: ButtonProps<T>) => {
   const context = useContext(TagContext);
   return (
     <TelegraphButton

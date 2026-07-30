@@ -36,7 +36,7 @@ type TriggerIndicatorProps<T extends TgphElement> = Omit<
   "as" | "alt"
 >;
 
-const TriggerIndicator = <T extends TgphElement>(
+const TriggerIndicator = <T extends TgphElement = "span">(
   triggerIndicatorProps: TriggerIndicatorProps<T>,
 ) => {
   const {
@@ -73,7 +73,7 @@ type TriggerClearProps<T extends TgphElement> = TgphComponentProps<
   tooltipProps?: TooltipProps;
 };
 
-const TriggerClear = <T extends TgphElement>(
+const TriggerClear = <T extends TgphElement = "button">(
   triggerClearProps: TriggerClearProps<T>,
 ) => {
   const { tooltipProps, ...props } =
@@ -153,7 +153,7 @@ type TriggerTextProps<T extends TgphElement> = TgphComponentProps<
   typeof Button.Text<T>
 >;
 
-const TriggerText = <T extends TgphElement>(
+const TriggerText = <T extends TgphElement = "span">(
   triggerTextProps: TriggerTextProps<T>,
 ) => {
   const { children, ...props } = triggerTextProps as TriggerTextProps<"span">;
@@ -206,7 +206,7 @@ type TriggerPlaceholderProps<T extends TgphElement> = TgphComponentProps<
   typeof Button.Text<T>
 >;
 
-const TriggerPlaceholder = <T extends TgphElement>(
+const TriggerPlaceholder = <T extends TgphElement = "span">(
   triggerPlaceholderProps: TriggerPlaceholderProps<T>,
 ) => {
   const { children, ...props } =
@@ -306,7 +306,7 @@ type TriggerTagRootProps<T extends TgphElement> = {
   value: string;
 } & Omit<TgphComponentProps<typeof Tag.Root<T>>, "as">;
 
-const TriggerTagRoot = <T extends TgphElement>(
+const TriggerTagRoot = <T extends TgphElement = "span">(
   triggerTagRootProps: TriggerTagRootProps<T>,
 ) => {
   const {
@@ -344,7 +344,7 @@ type TriggerTagTextProps<T extends TgphElement> = TgphComponentProps<
   typeof Tag.Text<T>
 >;
 
-const TriggerTagText = <T extends TgphElement>(
+const TriggerTagText = <T extends TgphElement = "span">(
   triggerTagTextProps: TriggerTagTextProps<T>,
 ) => {
   const { children, ...props } =
@@ -397,7 +397,7 @@ type TriggerTagButtonProps<T extends TgphElement> = TgphComponentProps<
   typeof Tag.Button<T>
 >;
 
-const TriggerTagButton = <T extends TgphElement>(
+const TriggerTagButton = <T extends TgphElement = "button">(
   triggerTagButtonProps: TriggerTagButtonProps<T>,
 ) => {
   const { children, ...props } =
@@ -448,7 +448,7 @@ type TriggerTagDefaultProps<T extends TgphElement> = TgphComponentProps<
   typeof TriggerTagRoot<T>
 >;
 
-const TriggerTagDefault = <T extends TgphElement>(
+const TriggerTagDefault = <T extends TgphElement = "span">(
   triggerTagDefaultProps: TriggerTagDefaultProps<T>,
 ) => {
   const { value, children, ...props } =

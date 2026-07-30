@@ -32,6 +32,67 @@ describe("SegmentedControl", () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverMock);
   });
 
+  it("renders an option as an anchor without a Base UI nativeButton warning", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      const { container } = render(
+        <SegmentedControl.Root defaultValue="docs">
+          <SegmentedControl.Option value="docs" as="a" href="/docs">
+            Docs
+          </SegmentedControl.Option>
+        </SegmentedControl.Root>,
+      );
+
+      const anchor = container.querySelector('a[href="/docs"]');
+
+      expect(anchor).not.toBeNull();
+      expect(anchor).toHaveTextContent("Docs");
+      expect(container.querySelector("button")).toBeNull();
+
+      // Base UI reports an error when `nativeButton` disagrees with the tag.
+      expect(
+        errors.filter((e) => String(e).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("keeps a disabled option natively disabled when the root is disabled", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      // `Root`'s `disabled` makes `Button` render a native button whatever `as`
+      // says, so `nativeButton` has to account for it.
+      const { container } = render(
+        <SegmentedControl.Root defaultValue="docs" disabled>
+          <SegmentedControl.Option value="docs" as="a" href="/docs">
+            Docs
+          </SegmentedControl.Option>
+        </SegmentedControl.Root>,
+      );
+
+      const button = container.querySelector("button");
+
+      expect(button).not.toBeNull();
+      // Base UI drops the native attribute when it is told the tag is not a
+      // button, which leaves `aria-disabled` as the only signal.
+      expect(button).toHaveAttribute("disabled");
+      expect(
+        errors.filter((e) => String(e).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
   afterAll(() => {
     vi.unstubAllGlobals();
   });

@@ -268,14 +268,15 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
   );
 };
 
-export type IndicatorProps<T extends TgphElement = "span"> = TgphComponentProps<
-  typeof Tag<T>
-> & {
-  enabledContent?: ReactNode;
-  disabledContent?: ReactNode;
-};
+// `= "label"`, matching the element it renders below. `"span"` rejected
+// props the rendered element accepts, such as `htmlFor`.
+export type IndicatorProps<T extends TgphElement = "label"> =
+  TgphComponentProps<typeof Tag<T>> & {
+    enabledContent?: ReactNode;
+    disabledContent?: ReactNode;
+  };
 
-const Indicator = <T extends TgphElement = "span">(
+const Indicator = <T extends TgphElement = "label">(
   indicatorProps: IndicatorProps<T>,
 ) => {
   const {
@@ -317,7 +318,7 @@ export type DefaultProps<T extends TgphElement = "div"> = RootProps<T> & {
   label?: ReactNode;
   labelProps?: Omit<LabelProps<"label">, "as">;
   indicator?: boolean;
-  indicatorProps?: Omit<IndicatorProps<"span">, "as">;
+  indicatorProps?: Omit<IndicatorProps<"label">, "as">;
 };
 
 const Default = <T extends TgphElement = "div">({
@@ -330,7 +331,7 @@ const Default = <T extends TgphElement = "div">({
   const rootProps = props as RootProps<T>;
 
   return (
-    <Root<T> {...rootProps}>
+    <Root {...rootProps}>
       {label && (
         <Label as="label" {...labelProps}>
           {label}
@@ -340,7 +341,7 @@ const Default = <T extends TgphElement = "div">({
         {indicator && (
           // `Omit` flattens Tag's discriminated `onRemove`/`onCopy` union, so
           // restore the original shape for the child.
-          <Indicator {...(indicatorProps as IndicatorProps<"span">)} />
+          <Indicator {...(indicatorProps as IndicatorProps<"label">)} />
         )}
         <Switch />
       </Stack>

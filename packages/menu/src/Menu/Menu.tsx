@@ -1,4 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
+import { rendersNativeButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
@@ -654,9 +655,12 @@ const Content = <T extends TgphElement = "div">({
   );
 };
 
-type MenuButtonItemProps = Omit<
-  MenuItemProps,
-  "onClick" | "onKeyDown" | "tgphRef"
+// `MenuItemProps<T>`, not the bare form: bare `MenuItemProps` is
+// `MenuItemProps<"button">`, whose `as?: "button"` intersects the `as?: T`
+// below and collapses `T` to `"button"`, so `as={NextLink}` could never resolve.
+type MenuButtonItemProps<T extends TgphElement = "button"> = Omit<
+  MenuItemProps<T>,
+  "onClick" | "onKeyDown" | "tgphRef" | "as"
 >;
 
 export type ButtonProps<T extends TgphElement = "button"> = Partial<
@@ -671,7 +675,7 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
     | "style"
   >
 > &
-  MenuButtonItemProps & {
+  MenuButtonItemProps<T> & {
     as?: T;
     onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
     onKeyDown?: (event: MenuButtonKeyDownEvent) => void;
@@ -680,6 +684,7 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
   };
 
 const Button = <T extends TgphElement = "button">({
+  as,
   closeOnClick,
   disabled,
   mx = "1",
@@ -694,12 +699,14 @@ const Button = <T extends TgphElement = "button">({
   onClick,
   onKeyDown,
   onSelect,
-  nativeButton = true,
+  nativeButton,
   ...props
 }: ButtonProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
+  // A caller rendering a component that resolves to a button can say so.
+  const isNativeButton = nativeButton ?? rendersNativeButton(as, disabled);
   // Keyboard selection can arrive through React keydown, native keyup/click, or
   // Base UI internals; these refs dedupe those paths while preserving cancel.
   const ignoreNextKeyboardClickRef = useRef(false);
@@ -847,9 +854,10 @@ const Button = <T extends TgphElement = "button">({
       closeOnClick={closeOnClick}
       disabled={disabled}
       label={label}
-      nativeButton={nativeButton}
+      nativeButton={isNativeButton}
       render={createTgphBaseUIRender(
-        <MenuItem<T>
+        <MenuItem
+          as={as}
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}
           // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through
@@ -913,7 +921,12 @@ const Sub = ({ children, onOpenChange, ...props }: SubProps) => {
   );
 };
 
-type MenuSubTriggerItemProps = Omit<MenuItemProps, "onClick" | "tgphRef">;
+// `MenuItemProps<T>` and omitting `as`, for the reason given on
+// `MenuButtonItemProps` above.
+type MenuSubTriggerItemProps<T extends TgphElement = "button"> = Omit<
+  MenuItemProps<T>,
+  "onClick" | "tgphRef" | "as"
+>;
 
 export type SubTriggerProps<T extends TgphElement = "button"> = Partial<
   Omit<
@@ -921,13 +934,14 @@ export type SubTriggerProps<T extends TgphElement = "button"> = Partial<
     "children" | "className" | "onClick" | "render" | "style"
   >
 > &
-  MenuSubTriggerItemProps & {
+  MenuSubTriggerItemProps<T> & {
     as?: T;
     onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
     tgphRef?: Ref<HTMLElement>;
   };
 
 const SubTrigger = <T extends TgphElement = "button">({
+  as,
   closeDelay,
   delay,
   disabled,
@@ -941,11 +955,12 @@ const SubTrigger = <T extends TgphElement = "button">({
   openOnHover,
   tgphRef,
   onClick,
-  nativeButton = true,
+  nativeButton,
   ...props
 }: SubTriggerProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const menuItemProps = props as MenuItemProps<T>;
+  const isNativeButton = nativeButton ?? rendersNativeButton(as, disabled);
   const combinedTrailingIcon: typeof trailingIcon =
     trailingIcon === undefined && trailingComponent === undefined
       ? { icon: ChevronRight, "aria-hidden": true }
@@ -961,10 +976,11 @@ const SubTrigger = <T extends TgphElement = "button">({
       delay={delay}
       disabled={disabled}
       label={label}
-      nativeButton={nativeButton}
+      nativeButton={isNativeButton}
       openOnHover={openOnHover}
       render={createTgphBaseUIRender((state: MenuSubTriggerRenderState) => (
-        <MenuItem<T>
+        <MenuItem
+          as={as}
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}
           leadingIcon={combinedLeadingIcon}
