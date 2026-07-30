@@ -258,6 +258,26 @@ describe("CheckboxGroup", () => {
       expect(getCheckbox("run-3")).not.toBeChecked();
     });
 
+    // Base UI derives its own input id inside a select-all group and ignores
+    // the one we pass, so `htmlFor` has to track the id it actually used or
+    // clicking label text does nothing. Role-based queries hit the control
+    // directly and would not catch this.
+    it("toggles a child from a label click", async () => {
+      const user = userEvent.setup();
+      render(<ControlledGroup />);
+
+      await user.click(screen.getByText("run-1"));
+      expect(getCheckbox("run-1")).toBeChecked();
+    });
+
+    it("toggles the parent from a label click", async () => {
+      const user = userEvent.setup();
+      render(<ControlledGroup />);
+
+      await user.click(screen.getByText("Select all"));
+      RUNS.forEach((run) => expect(getCheckbox(run)).toBeChecked());
+    });
+
     it("restores the hand-picked selection on the third click", async () => {
       const user = userEvent.setup();
       render(<ControlledGroup />);

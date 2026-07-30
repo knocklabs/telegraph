@@ -1,4 +1,5 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
+import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type AsAndTgphRefProps,
   type RemappedOmit,
@@ -15,8 +16,10 @@ import {
   type ReactNode,
   type Ref,
   createContext,
+  useCallback,
   useContext,
   useId,
+  useState,
 } from "react";
 
 import { useCheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
@@ -37,6 +40,13 @@ type InternalContextType = {
   parent: boolean;
   id: string;
   labelId: string;
+  /**
+   * The id Base UI actually put on the hidden input, which is not always the
+   * `id` we passed: inside a select-all group it derives its own and discards
+   * ours. `Checkbox.Label` needs the real one or `htmlFor` points at nothing.
+   */
+  inputId?: string;
+  registerInputId: (id: string) => void;
   value?: boolean;
   defaultValue?: boolean;
   onValueChange?: (value: boolean) => void;
@@ -55,6 +65,7 @@ const CheckboxContext = createContext<InternalContextType>({
   parent: false,
   id: "",
   labelId: "",
+  registerInputId: () => {},
 });
 
 export type RootBaseProps = {
@@ -137,6 +148,12 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
   const id = idProp || generatedId;
   const labelId = `${id}-label`;
 
+  const [inputId, setInputId] = useState<string>();
+  const registerInputId = useCallback(
+    (nextId: string) => setInputId((current) => current ?? nextId),
+    [],
+  );
+
   return (
     <CheckboxContext.Provider
       value={{
@@ -147,6 +164,8 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         parent,
         id,
         labelId,
+        inputId,
+        registerInputId,
         value,
         defaultValue,
         onValueChange,
@@ -210,13 +229,27 @@ export type ControlProps = RemappedOmit<
   tgphRef?: Ref<HTMLElement>;
 };
 
-const Control = ({ style, tgphRef, ...props }: ControlProps) => {
+const Control = ({ style, tgphRef, inputRef, ...props }: ControlProps) => {
   const context = useContext(CheckboxContext);
   const { size, iconSize } = CHECKBOX_SIZE_MAP[context.size];
   const { backgroundColor, indicatorColor } = CHECKBOX_COLOR_MAP[context.color];
+  const { registerInputId } = context;
+
+  // Report whatever id Base UI settled on, so `Checkbox.Label` can point
+  // `htmlFor` at it. Composed with any caller-supplied `inputRef`.
+  const composedInputRef = useComposedRefs<HTMLInputElement>(
+    inputRef,
+    useCallback(
+      (node: HTMLInputElement | null) => {
+        if (node?.id) registerInputId(node.id);
+      },
+      [registerInputId],
+    ),
+  );
 
   return (
     <BaseCheckbox.Root
+      inputRef={composedInputRef}
       id={context.id}
       name={context.name}
       value={context.formValue}
@@ -294,7 +327,9 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
   return (
     <Text
       as={as || "label"}
-      htmlFor={context.id}
+      // The id Base UI actually used, falling back to ours before the input
+      // has mounted. Inside a select-all group these differ.
+      htmlFor={context.inputId ?? context.id}
       id={context.labelId}
       size={LABEL_SIZE_MAP[context.size]}
       data-tgph-checkbox-label

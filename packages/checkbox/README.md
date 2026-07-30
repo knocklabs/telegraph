@@ -198,7 +198,13 @@ temporary and it should still block the parent from reading as complete.
 
 ### Known limitation
 
-Base UI derives child ids inside a select-all group, so an explicit `id` on a
-child checkbox is ignored there
-([mui/base-ui#2691](https://github.com/mui/base-ui/issues/2691)). Everywhere
-else `id` behaves normally.
+Inside a select-all group, Base UI derives its own id for each checkbox and
+discards the one it was given
+([mui/base-ui#2691](https://github.com/mui/base-ui/issues/2691)). So an `id`
+you pass to a checkbox in that group does not reach the input. Everywhere else
+`id` behaves normally.
+
+`Checkbox.Label` handles this for you — it reads back the id Base UI actually
+used, so clicking label text still toggles the checkbox. If you write your own
+label, associate it the same way rather than assuming the `id` you passed was
+honored.
