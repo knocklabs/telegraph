@@ -70,7 +70,6 @@ describe("Tooltip", () => {
     it("accepts legacy wrapper passthrough props", () => {
       const validProps: TooltipProps = {
         label: "Tooltip text",
-        asChild: true,
         style: { zIndex: 9999 },
         children: null,
       };

@@ -108,7 +108,6 @@ export type TooltipBaseProps<T extends TgphElement = "div"> = {
   // Drop `as`: the popup label always renders `motion.div` (KNO-14501).
   labelProps?: Omit<TgphComponentProps<typeof Stack<T>>, "as">;
   enabled?: boolean;
-  asChild?: boolean;
   // When true, prevents focus events from instantly opening the tooltip. This
   // preserves delayed hover behavior when Select/Combobox move DOM focus on hover.
   disableFocusOpen?: boolean;
