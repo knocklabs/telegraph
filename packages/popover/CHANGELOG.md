@@ -1,5 +1,64 @@
 # @telegraph/popover
 
+## 0.5.0
+
+### Minor Changes
+
+- [#922](https://github.com/knocklabs/telegraph/pull/922) [`32a08b3`](https://github.com/knocklabs/telegraph/commit/32a08b3c8e4280c9d2f93f6bb53a76b8ab5e47b3) Thanks [@kylemcd](https://github.com/kylemcd)! - Restore prop validation across all components. Extracting props from a generic component (`TgphComponentProps<typeof Stack>`) instantiated the element type parameter at its constraint, making `React.ComponentProps<React.ElementType>` resolve to `any` and leaving a `{ [x: string]: any }` index signature on every inheriting component. That disabled excess-property checking _and_ widened declared props to `any`, so `<Button fontSize={16}>` and `<Button variant="nonsense">` both compiled.
+
+  `PolymorphicProps` now drops the element passthrough when the element type is unresolved, and every inherited prop type threads the element parameter through (`StackProps<T>` rather than the bare form). **Breaking for type consumers** that were passing props which never belonged to a component — those are now errors. Props that genuinely exist are unaffected.
+
+  Consequences worth knowing about:
+  - **A `data-*` key alone in a nested prop bag is an error.** Two separate checks apply, and which one fires depends on the shape. A fresh object literal gets excess-property checking, so `textProps={{ "data-testid": "x" }}` fails. A variable does not, but it hits weak-type detection when it shares no property with an all-optional target, so a bag holding only `data-*` keys fails as well. Anything carrying one real prop passes either check:
+
+    ```tsx
+    <Text data-testid="x" />                      // fine, JSX exempts hyphenated attributes
+    textProps={{ size: "2", "data-testid": "x" }} // fails, fresh literal
+    textProps={{ size: "2", ...dataAttrs }}       // fine, spread properties are exempt
+    textProps={bagWithARealProp}                  // fine, not fresh
+    textProps={{ ...dataAttrs }}                  // fails, no property in common
+    ```
+
+    A `data-${string}` index signature on `PolymorphicProps` removes the limitation. It was measured against `control/dashboard` twice, before and after the passthrough deduplication: it fixes 0 errors there and adds 5 `TS2590` "union type is too complex to represent" at ordinary call sites such as `{...buttonProps}` and `kbdProps={{ ...kbdProps, name }}`. A compiler limit with no call-site workaround is a worse failure than an excess-property error with three, so it stays out.
+
+  - `tgphRef` is no longer `any`. A ref whose element type does not match the component's is now an error — e.g. a `RefObject<HTMLDivElement>` on `Combobox.Trigger`, which renders a `button`.
+  - `Input`'s `stackProps` and `Modal.Content`'s inherited `StackProps` are the non-generic form, which is `div`-shaped. Both wrappers do render a `div`, so element-specific props pushed through them are now correctly rejected.
+  - `Input.Slot` is validated too. It took its props from `TgphSlotProps`, which intersects `Record<string, unknown>` so the slot primitive can merge arbitrary props onto its child. `Omit` over an index signature keeps the index signature, so every key was swallowed and `<Input.Slot position="middle" />` compiled. It now declares its own props. `TgphSlot` itself is unchanged.
+
+  Also: `style` accepts CSS custom properties (`--*`) again, `Button.Root` declares `disabled` so it survives `as="a"`, and `Toggle` declares `disabled`/`required`/`name`.
+
+  `CSSPropertiesWithVars` is a union rather than an intersection. `React.CSSProperties` is an interface, so it gains no implicit index signature, and an intersection with the `--*` half rejected every value declared as plain `CSSProperties` — including the common `({ style }: { style?: CSSProperties }) => <Stack style={style} />` wrapper.
+
+- [#924](https://github.com/knocklabs/telegraph/pull/924) [`88ea929`](https://github.com/knocklabs/telegraph/commit/88ea9296955fd6202c01686cfe2b097306019a19) Thanks [@kylemcd](https://github.com/kylemcd)! - `as` no longer replaces the animated element on `Popover.Content`, `Tooltip`'s popup label, `Modal.Root`, and Combobox's trigger indicator and trigger tag. Each renders a `framer-motion` element and then spread the caller's rest props after it, so a caller-supplied `as` won that spread. The animation stopped running, motion props reached a plain DOM node, and for `Popover.Content` the popup could stay mounted after close, because `onAnimationComplete` never fired on a non-motion element.
+
+  `as` is now dropped from each props type and discarded at runtime. Passing it is a type error, and a spread cannot smuggle it through.
+
+  `Modal.Root` needed one more change to keep that promise. The cast that let the body destructure `as` sat on the parameter. That put `as` straight back into the public type, so `<Modal.Root as="div">` compiled and did nothing. The cast now sits in the body.
+
+  `Tooltip` also drops `asChild`. It declared the prop and never read it. Tooltip always merges its props onto its child, so `asChild` had no meaning. Passing it is now a type error, and you can remove it.
+
+  `Combobox.Primitives.TriggerIndicator` also drops `alt`. The body discards it, because `Button.Icon` rejects `alt` and `aria-hidden` together. Leaving `alt` in the type promised an accessible name that never rendered.
+
+### Patch Changes
+
+- [#931](https://github.com/knocklabs/telegraph/pull/931) [`4de60e4`](https://github.com/knocklabs/telegraph/commit/4de60e4b49c051dc9c3399e573cf623dc397ae34) Thanks [@kylemcd](https://github.com/kylemcd)! - Update the READMEs for the prop-validation change.
+
+  The `Modal.Content` custom-animation example passed `as={motion.div}`. `Modal.Content` always renders the animated element now, so the example animates a child instead. Copying it used to give a type error.
+
+  `Popover.Content` drops its custom-animation example. The props table and the `skipAnimation` example already cover turning the built-in animation off.
+
+  `Modal.Body` no longer documents `flex`, and the Tabs root no longer documents `disabled`. Neither prop existed. The catch-all index signature hid that.
+
+  `Menu.Button` documents `as` and `nativeButton`. `SegmentedControl.Option` and `Select.Option` document `as`. `Select.Option` documents `label`.
+
+  The `@telegraph/textarea` README documented seven props that do not exist: `autoResize`, `minRows`, `maxRows`, `showCharacterCount`, `state`, `errorMessage` and `helperText`. Roughly half its examples were built around them. It also gave `size` two values outside the scale, and the wrong default for `size` and `resize`. The README now documents the real component, and every example in it compiles.
+
+  `@telegraph/helpers` gains a "Type checking" section covering the two cases that surprise people: a `data-*` key alone in a nested prop bag, and a `tgphRef` whose element type does not match. The README is the only prose that reaches an installed package, because no package publishes its changelog.
+
+- Updated dependencies [[`32a08b3`](https://github.com/knocklabs/telegraph/commit/32a08b3c8e4280c9d2f93f6bb53a76b8ab5e47b3), [`4de60e4`](https://github.com/knocklabs/telegraph/commit/4de60e4b49c051dc9c3399e573cf623dc397ae34), [`de498f8`](https://github.com/knocklabs/telegraph/commit/de498f80da2b93ddf252d3699088658039dda859)]:
+  - @telegraph/helpers@0.2.0
+  - @telegraph/layout@0.6.0
+
 ## 0.4.2
 
 ### Patch Changes

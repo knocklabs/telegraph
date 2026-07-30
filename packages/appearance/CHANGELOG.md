@@ -1,5 +1,12 @@
 # @telegraph/appearance
 
+## 0.0.15
+
+### Patch Changes
+
+- Updated dependencies [[`32a08b3`](https://github.com/knocklabs/telegraph/commit/32a08b3c8e4280c9d2f93f6bb53a76b8ab5e47b3), [`4de60e4`](https://github.com/knocklabs/telegraph/commit/4de60e4b49c051dc9c3399e573cf623dc397ae34)]:
+  - @telegraph/helpers@0.2.0
+
 ## 0.0.14
 
 ### Patch Changes

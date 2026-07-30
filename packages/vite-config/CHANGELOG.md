@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.1.0
+
+### Minor Changes
+
+- [#922](https://github.com/knocklabs/telegraph/pull/922) [`32a08b3`](https://github.com/knocklabs/telegraph/commit/32a08b3c8e4280c9d2f93f6bb53a76b8ab5e47b3) Thanks [@kylemcd](https://github.com/kylemcd)! - Exclude `*.test-d.ts`/`*.test-d.tsx` type-test files from declaration emit. They do not match the existing `*.test.tsx` exclude globs, so without this they emit `.d.ts` files into `dist/types` and ship to npm.
+
 ## 0.0.22
 
 ### Patch Changes
