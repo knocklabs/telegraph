@@ -1,19 +1,23 @@
-import { type TgphComponentProps, type TgphElement } from "@telegraph/helpers";
+import { type TgphElement } from "@telegraph/helpers";
 import { LoaderCircle } from "lucide-react";
 
-import { Icon } from "../Icon";
+import { Icon, type IconBaseProps } from "../Icon";
 
+// `IconBaseProps`, not `IconProps`: Spinner supplies its own `alt`.
 type SpinnerProps<T extends TgphElement = "span"> = Partial<
-  TgphComponentProps<typeof Icon<T>>
->;
+  IconBaseProps<T>
+> & {
+  alt?: string;
+};
 
-const Spinner = <T extends TgphElement = "span">({
-  color = "gray",
-  icon = LoaderCircle,
-  animation = "spin",
-  alt = "Loading...",
-  ...props
-}: SpinnerProps<T>) => {
+const Spinner = <T extends TgphElement = "span">(props: SpinnerProps<T>) => {
+  const {
+    color = "gray",
+    icon = LoaderCircle,
+    animation = "spin",
+    alt = "Loading...",
+    ...rest
+  } = props as SpinnerProps<"span">;
   return (
     <Icon
       color={color}
@@ -22,7 +26,10 @@ const Spinner = <T extends TgphElement = "span">({
       alt={alt}
       role="status"
       aria-live="polite"
-      {...props}
+      {...(rest as Omit<
+        IconBaseProps<"span">,
+        "color" | "icon" | "animation" | "aria-hidden"
+      >)}
     />
   );
 };

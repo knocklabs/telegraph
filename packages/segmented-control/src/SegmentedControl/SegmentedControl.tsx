@@ -4,14 +4,18 @@ import {
 } from "@base-ui/react/direction-provider";
 import { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
-import { Button } from "@telegraph/button";
+import {
+  Button,
+  type ButtonProps,
+  type ButtonRootProps,
+} from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
-  type TgphComponentProps,
+  type RemappedOmit,
   createTgphBaseUIRender,
   useControllableState,
 } from "@telegraph/helpers";
-import { Box, Stack } from "@telegraph/layout";
+import { Box, Stack, type StackProps } from "@telegraph/layout";
 import { useTruncate } from "@telegraph/truncate";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -69,7 +73,7 @@ type SegmentedControlValueChangeHandler<
 
 const SegmentedControlContextState = createContext<{
   disabled?: boolean;
-  size?: ComponentPropsWithoutRef<typeof Button.Root>["size"];
+  size?: ButtonRootProps["size"];
   showScrollButtons?: boolean;
   activeOptionRef?: HTMLButtonElement | null;
   setActiveOptionRef?: Dispatch<SetStateAction<HTMLButtonElement | null>>;
@@ -101,7 +105,7 @@ export type RootProps<
   | "style"
   | "value"
 > &
-  Omit<TgphComponentProps<typeof Stack>, "defaultValue" | "dir"> & {
+  Omit<StackProps, "defaultValue" | "dir"> & {
     defaultValue?: Value;
     dir?: TextDirection;
     disabled?: boolean;
@@ -110,7 +114,7 @@ export type RootProps<
     orientation?: BaseToggleGroupProps["orientation"];
     rovingFocus?: boolean;
     scrollControls?: "arrows" | "none";
-    size?: ComponentPropsWithoutRef<typeof Button.Root>["size"];
+    size?: ButtonRootProps["size"];
     type?: T;
     value?: Value;
   };
@@ -442,21 +446,19 @@ const Root = <
   );
 };
 
-const ButtonStyleProps: Record<
-  SegmentedControlOptionStatus,
-  TgphComponentProps<typeof Button.Root>
-> = {
-  active: {
-    variant: "outline",
-    color: "default",
-  },
-  inactive: {
-    variant: "ghost",
-    color: "gray",
-  },
-};
+const ButtonStyleProps: Record<SegmentedControlOptionStatus, ButtonRootProps> =
+  {
+    active: {
+      variant: "outline",
+      color: "default",
+    },
+    inactive: {
+      variant: "ghost",
+      color: "gray",
+    },
+  };
 
-export type OptionProps = Omit<TgphComponentProps<typeof Button>, "value"> & {
+export type OptionProps = Omit<ButtonProps, "value"> & {
   value: string;
 };
 
@@ -502,7 +504,12 @@ const OptionButton = ({
       data-tgph-segmented-control-option
       data-tgph-segmented-control-option-status={status}
       tgphRef={composedButtonRef}
-      {...props}
+      // `RemappedOmit` distributes over Button's `icon`/`leadingIcon` union;
+      // `Omit` would collapse it into one object where both sides look present.
+      {...(props as RemappedOmit<
+        ButtonProps,
+        "size" | "disabled" | "style" | "tgphRef"
+      >)}
       // Base UI's Toggle marks each option with `aria-pressed`, which reads as an
       // independent toggle. For single-select, present each option as a radio
       // (`role="radio"` + `aria-checked`) so assistive tech announces single

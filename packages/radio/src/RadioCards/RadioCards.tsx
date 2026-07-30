@@ -7,15 +7,15 @@ import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
 import { Button } from "@telegraph/button";
 import {
+  type CSSPropertiesWithVars,
   type TgphComponentProps,
   type TgphElement,
   createTgphBaseUIRender,
 } from "@telegraph/helpers";
-import type { Icon } from "@telegraph/icon";
-import { Box, Stack } from "@telegraph/layout";
+import type { IconProps } from "@telegraph/icon";
+import { Box, Stack, type StackProps } from "@telegraph/layout";
 import {
   type CSSProperties,
-  type ComponentProps,
   type ComponentPropsWithoutRef,
   type ReactNode,
   type Ref,
@@ -52,7 +52,7 @@ export type RootProps = Omit<
   | "style"
   | "value"
 > &
-  TgphComponentProps<typeof Stack> &
+  StackProps &
   LegacyRadioGroupProps & {
     defaultValue?: string;
     value?: string | null;
@@ -149,13 +149,14 @@ type BaseRadioState = {
   disabled: boolean;
 };
 
+// Returns `CSSPropertiesWithVars` because the object carries a `--tgph-*`
+// custom property and Button.Root's `style` prop is typed to allow them.
 const getRadioCardButtonStyle = (
   style: CSSProperties | undefined,
-): CSSProperties =>
-  ({
-    "--tgph-button-active-shadow": "inset 0 0 0 1px var(--tgph-blue-8)",
-    ...style,
-  }) as CSSProperties;
+): CSSPropertiesWithVars => ({
+  "--tgph-button-active-shadow": "inset 0 0 0 1px var(--tgph-blue-8)",
+  ...style,
+});
 
 export type ItemProps = Omit<
   BaseRadioRootProps,
@@ -203,26 +204,33 @@ export type ItemTitleProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof Button.Text<T>
 >;
 
-const ItemTitle = <T extends TgphElement = "span">({
-  size = "2",
-  ...props
-}: ItemTitleProps<T>) => {
-  return <Button.Text as={"span"} size={size} {...props} />;
+const ItemTitle = <T extends TgphElement = "span">(
+  itemTitleProps: ItemTitleProps<T>,
+) => {
+  const { size = "2", ...props } = itemTitleProps as ItemTitleProps<"span">;
+  return (
+    <Button.Text
+      as={"span"}
+      size={size}
+      {...(props as Omit<ItemTitleProps<"span">, "size">)}
+    />
+  );
 };
 
 export type ItemDescriptionProps<T extends TgphElement = "span"> =
   TgphComponentProps<typeof Button.Text<T>>;
-const ItemDescription = <T extends TgphElement = "span">({
-  size = "0",
-  ...props
-}: ItemDescriptionProps<T>) => {
+const ItemDescription = <T extends TgphElement = "span">(
+  itemDescriptionProps: ItemDescriptionProps<T>,
+) => {
+  const { size = "0", ...props } =
+    itemDescriptionProps as ItemDescriptionProps<"span">;
   return (
     <Button.Text
       as={"span"}
       size={size}
       color="gray"
       data-tgph-radio-card-description
-      {...props}
+      {...(props as Omit<ItemDescriptionProps<"span">, "size">)}
     />
   );
 };
@@ -235,7 +243,7 @@ const ItemIcon = <T extends TgphElement = "span">(props: ItemIconProps<T>) => {
   return <Button.Icon color="gray" data-tgph-radio-card-icon {...props} />;
 };
 
-type DefaultIconProps = ComponentProps<typeof Icon>;
+type DefaultIconProps = IconProps;
 
 export type DefaultProps = ComponentPropsWithoutRef<typeof Root> & {
   options: Array<

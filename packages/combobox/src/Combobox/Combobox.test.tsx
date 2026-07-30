@@ -1519,8 +1519,8 @@ describe("Combobox type inheritance", () => {
     const invalidProp: ComboboxContentProps = { invalidProp: "invalid" };
     void invalidProp;
 
-    // @ts-expect-error unknown prop rejected on ComboboxOptionsProps
     const invalidOptionsProp: ComboboxOptionsProps = {
+      // @ts-expect-error unknown prop rejected on ComboboxOptionsProps
       invalidProp: "invalid",
     };
     void invalidOptionsProp;

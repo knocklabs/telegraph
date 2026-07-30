@@ -1,13 +1,13 @@
+import type { LinkProps } from ".";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Text as TelegraphText } from "@telegraph/typography";
 import * as Icons from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import { Link as TelegraphLink } from "./Link";
 import { LINK_SIZE_MAP, LINK_WEIGHT_MAP } from "./Link.constants";
 
-const LINK_COLOR_OPTIONS: Array<
-  NonNullable<React.ComponentProps<typeof TelegraphLink>["color"]>
-> = [
+const LINK_COLOR_OPTIONS: Array<NonNullable<LinkProps<"a">["color"]>> = [
   "default",
   "gray",
   "red",
@@ -21,6 +21,14 @@ const LINK_COLOR_OPTIONS: Array<
   "black",
   "disabled",
 ];
+
+// `lucide-react` also exports non-icon helpers, so the control's options are
+// narrowed to the exports that really are `LucideIcon`s.
+type LucideIconName = {
+  [K in keyof typeof Icons]: (typeof Icons)[K] extends LucideIcon ? K : never;
+}[keyof typeof Icons];
+
+const ICON_NAMES = Object.keys(Icons) as Array<LucideIconName>;
 
 const meta: Meta<typeof TelegraphLink> = {
   title: "Components/Link",
@@ -46,7 +54,7 @@ const meta: Meta<typeof TelegraphLink> = {
       },
     },
     icon: {
-      options: ["", ...Object.keys(Icons)],
+      options: ["", ...ICON_NAMES],
       control: {
         type: "select",
       },
@@ -54,42 +62,43 @@ const meta: Meta<typeof TelegraphLink> = {
   },
   args: {
     children: "Link",
-    href: "#",
     size: "2",
     color: "blue",
     weight: "regular",
-    icon: "",
-  },
-  render: ({ icon, ...args }: StorybookLinkType) => {
-    const mergedProps = icon
-      ? {
-          icon: {
-            icon: Icons[icon as keyof typeof Icons],
-            "aria-hidden": true,
-          },
-          ...args,
-        }
-      : args;
-    // @ts-expect-error: story control maps string icon names to icon object props
-    return <TelegraphLink {...mergedProps} />;
   },
 };
 
 export default meta;
 
-type StorybookLinkType = Omit<
-  React.ComponentProps<typeof TelegraphLink>,
-  "icon"
-> & {
-  icon?: string;
+// The `icon` control picks a lucide icon by name (or `""` for none); `render`
+// translates it back into real `Link.Icon` props.
+type StorybookLinkType = Omit<LinkProps<"a">, "icon"> & {
+  icon?: LucideIconName | "";
 };
 
 type Story = StoryObj<StorybookLinkType>;
 
-export const Default: Story = {};
+const renderLink = ({ icon, ...args }: StorybookLinkType) => (
+  <TelegraphLink
+    {...args}
+    {...(icon
+      ? { icon: { icon: Icons[icon], "aria-hidden": true as const } }
+      : {})}
+  />
+);
+
+export const Default: Story = {
+  render: renderLink,
+  args: {
+    href: "#",
+    icon: "",
+  },
+};
 
 export const WithIcon: Story = {
+  render: renderLink,
   args: {
+    href: "#",
     icon: "ArrowUpRight",
   },
 };
@@ -101,33 +110,27 @@ export const InParagraph: Story = {
     children: "Telegraph docs",
     icon: "",
   },
-  render: ({ icon, children, ...args }) => {
-    const mergedProps = icon
-      ? {
-          icon: {
-            icon: Icons[icon as keyof typeof Icons],
-            "aria-hidden": true,
-          },
-          children,
-          ...args,
-        }
-      : { children, ...args };
-
-    // @ts-expect-error: story control maps string icon names to icon object props
-    return (
-      <TelegraphText as="p" size="2" color="gray">
-        Building a cohesive interface starts with primitives that compose
-        predictably in real copy. Read the <TelegraphLink {...mergedProps} /> to
-        understand usage patterns, then browse{" "}
-        <TelegraphLink
-          href="#"
-          color="accent"
-          icon={{ icon: Icons.ArrowUpRight, "aria-hidden": true }}
-        >
-          migration guidance
-        </TelegraphLink>{" "}
-        for practical integration details across existing product surfaces.
-      </TelegraphText>
-    );
-  },
+  render: ({ icon, children, ...args }) => (
+    <TelegraphText as="p" size="2" color="gray">
+      Building a cohesive interface starts with primitives that compose
+      predictably in real copy. Read the{" "}
+      <TelegraphLink
+        {...args}
+        {...(icon
+          ? { icon: { icon: Icons[icon], "aria-hidden": true as const } }
+          : {})}
+      >
+        {children}
+      </TelegraphLink>{" "}
+      to understand usage patterns, then browse{" "}
+      <TelegraphLink
+        href="#"
+        color="accent"
+        icon={{ icon: Icons.ArrowUpRight, "aria-hidden": true }}
+      >
+        migration guidance
+      </TelegraphLink>{" "}
+      for practical integration details across existing product surfaces.
+    </TelegraphText>
+  ),
 };

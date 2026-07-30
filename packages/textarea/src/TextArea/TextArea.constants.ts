@@ -1,5 +1,4 @@
-import type { TgphComponentProps } from "@telegraph/helpers";
-import type { Text } from "@telegraph/typography";
+import type { TextProps } from "@telegraph/typography";
 
 export type Size = "1" | "2" | "3";
 export type Variant = "outline" | "ghost";
@@ -7,29 +6,20 @@ export type State = "default" | "disabled" | "error";
 
 type SizeMap = {
   [key in Size]: Partial<
-    Pick<
-      TgphComponentProps<typeof Text>,
-      "p" | "size" | "px" | "py" | "rounded"
-    >
+    Pick<TextProps, "p" | "size" | "px" | "py" | "rounded">
   >;
 };
 
 type VariantMap = {
   [key in Variant]: Partial<
-    Pick<
-      TgphComponentProps<typeof Text>,
-      "border" | "borderColor" | "_hover" | "_active" | "_focus"
-    >
+    Pick<TextProps, "border" | "borderColor" | "_hover" | "_active" | "_focus">
   >;
 };
 
 type StateMap = {
   [key in State]: {
     [key in Variant]: Partial<
-      Pick<
-        TgphComponentProps<typeof Text>,
-        "bg" | "borderColor" | "_hover" | "_active" | "_focus"
-      >
+      Pick<TextProps, "bg" | "borderColor" | "_hover" | "_active" | "_focus">
     >;
   };
 };

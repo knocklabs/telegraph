@@ -13,7 +13,7 @@ import {
   createTgphBaseUIRender,
   useControllableState,
 } from "@telegraph/helpers";
-import { Box, Stack } from "@telegraph/layout";
+import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
 import { Heading as TelegraphHeading } from "@telegraph/typography";
 import { X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -130,7 +130,7 @@ const useBodyScrollLock = (layerId: string, enabled: boolean) => {
 
 export type RootProps = RootDialogProps &
   LegacyFocusScopeProps &
-  TgphComponentProps<typeof Stack> & {
+  StackProps & {
     a11yTitle: string;
     a11yDescription?: string;
     layer?: number;
@@ -485,7 +485,14 @@ const RootComponent = ({
                       rounded="4"
                       shadow="3"
                       key={`content-${layerId}`}
-                      {...props}
+                      // `as` is omitted from the cast so the rest props do not
+                      // add a second candidate to Stack's element inference,
+                      // which would widen `T` to a union and hide the motion
+                      // props used above.
+                      {...(props as Omit<
+                        StackProps<typeof motion.div>,
+                        "as" | "children"
+                      >)}
                     >
                       {children}
                     </Stack>
@@ -500,7 +507,7 @@ const RootComponent = ({
   );
 };
 
-export type OverlayProps = TgphComponentProps<typeof Box> & {
+export type OverlayProps = BoxProps & {
   layer: number;
 };
 
@@ -565,10 +572,10 @@ export type ContentProps = Partial<
     // runtime (KNO-14309). Expose the ref through `tgphRef`, matching
     // Popover/Menu Content.
     tgphRef?: Ref<ContentRef>;
-  } & TgphComponentProps<typeof Stack>;
+  } & StackProps;
 type ContentRef = HTMLDivElement;
 
-type ModalContentStackProps = TgphComponentProps<typeof Stack>;
+type ModalContentStackProps = StackProps;
 
 // Bridges the ref Base UI's `render` prop hands us onto Stack's `tgphRef`.
 // Content forwards the consumer's `tgphRef` to `BaseDialog.Popup` directly, so
@@ -665,16 +672,22 @@ export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
   typeof Button<T>
 > &
   Omit<BaseDialogCloseProps, "children" | "color" | "render">;
-const Close = <T extends TgphElement = "button">({
-  disabled,
-  onClick,
-  size = "1",
-  variant = "ghost",
-  ...props
-}: CloseProps<T>) => {
+const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
+  const {
+    disabled,
+    onClick,
+    size = "1",
+    variant = "ghost",
+    ...props
+  } = closeProps as CloseProps<"button">;
   const handleClick = useCallback(
     (event: BaseUIPreventableEvent) => {
-      onClick?.(event);
+      // `onClick` is the intersection of Button's handler and Base UI's, so its
+      // parameter narrows to Base UI's mouse event — which is what Base UI
+      // hands us. Only the declared type is widened.
+      (onClick as ((event: BaseUIPreventableEvent) => void) | undefined)?.(
+        event,
+      );
 
       if (event.defaultPrevented) {
         // Prevented custom close clicks should also opt out of Base UI's close
@@ -695,7 +708,20 @@ const Close = <T extends TgphElement = "button">({
           onClick={handleClick}
           variant={variant}
           size={size}
-          {...props}
+          {...(props as Omit<
+            TgphComponentProps<typeof Button<"button">>,
+            // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
+            // caller can still replace the close glyph. They are omitted here
+            // because Button's icon union rejects the explicit `icon` below
+            // alongside a spread that might carry the other arm. See KNO-14501.
+            | "disabled"
+            | "icon"
+            | "leadingIcon"
+            | "onClick"
+            | "size"
+            | "trailingIcon"
+            | "variant"
+          >)}
         />,
       )}
     />
@@ -703,7 +729,7 @@ const Close = <T extends TgphElement = "button">({
 };
 
 export type BodyProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<TgphComponentProps<typeof Stack>, "as">;
+  Omit<StackProps<T>, "as">;
 
 const Body = <T extends TgphElement = "div">({
   style,
@@ -727,7 +753,7 @@ const Body = <T extends TgphElement = "div">({
 };
 
 export type HeaderProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<TgphComponentProps<typeof Stack>, "as">;
+  Omit<StackProps<T>, "as">;
 
 const Header = <T extends TgphElement = "div">({
   children,
@@ -749,7 +775,7 @@ const Header = <T extends TgphElement = "div">({
 };
 
 export type FooterProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<TgphComponentProps<typeof Stack>, "as">;
+  Omit<StackProps<T>, "as">;
 
 const Footer = <T extends TgphElement = "div">({
   children,

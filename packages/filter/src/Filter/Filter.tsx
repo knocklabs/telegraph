@@ -58,7 +58,7 @@ export const Root = ({ children }: FilterProps) => {
     null,
   );
   const [searchValue, setSearchValue] = React.useState<string>("");
-  const triggerRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLElement>(null);
 
   // Initialize state at the Root level, the only time this hook should be used
   const stateControl = useInternalFilterState();
@@ -100,7 +100,10 @@ export const Trigger = ({ children }: TriggerProps) => {
   const { triggerRef } = useFilter();
   return (
     <Menu.Trigger
-      tgphRef={triggerRef as React.RefObject<HTMLDivElement>}
+      // With `asChild` the ref lands on whatever element the consumer renders,
+      // so it is narrowed to `Menu.Trigger`'s `Ref<HTMLButtonElement>`
+      // contract.
+      tgphRef={triggerRef as React.RefObject<HTMLButtonElement>}
       asChild={true}
     >
       {children}

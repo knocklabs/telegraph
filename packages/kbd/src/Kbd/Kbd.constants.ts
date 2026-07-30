@@ -1,7 +1,6 @@
-import type { TgphComponentProps } from "@telegraph/helpers";
-import { Icon } from "@telegraph/icon";
-import type { Stack } from "@telegraph/layout";
-import type { Text } from "@telegraph/typography";
+import type { IconProps } from "@telegraph/icon";
+import type { StackProps } from "@telegraph/layout";
+import type { TextProps } from "@telegraph/typography";
 
 export const sizeMap = {
   "0": {
@@ -56,17 +55,17 @@ export const sizeMap = {
 } as const;
 
 type StackColor = {
-  borderColor: TgphComponentProps<typeof Stack>["borderColor"];
-  bg: TgphComponentProps<typeof Stack>["bg"];
-  bgPressed: TgphComponentProps<typeof Stack>["bg"];
+  borderColor: StackProps["borderColor"];
+  bg: StackProps["bg"];
+  bgPressed: StackProps["bg"];
 };
 
 type TextColor = {
-  color: TgphComponentProps<typeof Text>["color"];
+  color: TextProps["color"];
 };
 
 type IconColor = {
-  color: TgphComponentProps<typeof Icon>["color"];
+  color: IconProps["color"];
 };
 
 export type Appearance = "light" | "dark";

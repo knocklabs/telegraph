@@ -1,8 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { TgphComponentProps } from "@telegraph/helpers";
+import type { ButtonIconProps } from "@telegraph/button";
 import * as Lucide from "lucide-react";
 
-import { MenuItem as TelegraphMenuItem } from "./MenuItem";
+import { type MenuItemProps, MenuItem as TelegraphMenuItem } from "./MenuItem";
+
+// `lucide-react` also exports non-icon helpers, so the icon controls are keyed
+// on just the exports that are icon components.
+type LucideIconName = {
+  [K in keyof typeof Lucide]: (typeof Lucide)[K] extends Lucide.LucideIcon
+    ? K
+    : never;
+}[keyof typeof Lucide];
+
+// Storybook-only args, mapped onto the real props in `render`: the icons are
+// picked by name, and `type` toggles the presentation the component itself
+// infers from `selected`.
+type StorybookMenuItemType = Omit<
+  MenuItemProps,
+  "leadingIcon" | "trailingIcon" | "type"
+> & {
+  leadingIcon?: LucideIconName;
+  trailingIcon?: LucideIconName;
+  type?: "navigation" | "selectable";
+};
 
 const meta: Meta = {
   tags: ["autodocs"],
@@ -59,7 +79,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof TelegraphMenuItem>>;
+type Story = StoryObj<StorybookMenuItemType>;
 
 export const Default: Story = {
   render: ({
@@ -69,10 +89,10 @@ export const Default: Story = {
     type,
     ...args
   }) => {
-    const leadingIcon = leadingIconProp
+    const leadingIcon: ButtonIconProps | undefined = leadingIconProp
       ? { icon: Lucide[leadingIconProp], "aria-hidden": true }
       : undefined;
-    const trailingIcon = trailingIconProp
+    const trailingIcon: ButtonIconProps | undefined = trailingIconProp
       ? { icon: Lucide[trailingIconProp], "aria-hidden": true }
       : undefined;
 

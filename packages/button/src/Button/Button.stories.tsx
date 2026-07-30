@@ -88,7 +88,7 @@ export default meta;
 
 type StorybookButtonType = Omit<
   React.ComponentProps<typeof TelegraphButton>,
-  "leadingIcon"
+  "leadingIcon" | "trailingIcon" | "icon"
 > & {
   leadingIcon?: string;
   trailingIcon?: string;

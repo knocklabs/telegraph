@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 
-import { Kbd as TelegraphKbd } from "./Kbd";
+import { type KbdProps, Kbd as TelegraphKbd } from "./Kbd";
 import { sizeMap } from "./Kbd.constants";
 import { KbdProvider } from "./Kbd.hooks";
 
@@ -43,7 +42,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof TelegraphKbd>>;
+type Story = StoryObj<KbdProps>;
 
 export const Default: Story = {
   render: ({ ...args }) => {

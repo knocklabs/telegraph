@@ -2,15 +2,13 @@ import { useComposedRefs } from "@telegraph/compose-refs";
 import type {
   PolymorphicProps,
   Required,
-  TgphComponentProps,
   TgphElement,
-  TgphSlotProps,
 } from "@telegraph/helpers";
 import { TgphSlot } from "@telegraph/helpers";
-import { Stack } from "@telegraph/layout";
-import { Text } from "@telegraph/typography";
+import { Stack, type StackProps } from "@telegraph/layout";
+import { Text, type TextProps } from "@telegraph/typography";
 import {
-  type ComponentProps,
+  type ComponentPropsWithRef,
   type MouseEvent,
   type ReactNode,
   createContext,
@@ -28,9 +26,11 @@ export type BaseRootProps = {
 };
 
 export type RootProps<T extends TgphElement = "input"> = BaseRootProps & {
-  textProps?: Omit<ComponentProps<typeof Text<T>>, "as">;
-  stackProps?: Omit<ComponentProps<typeof Stack>, "as">;
-} & Omit<ComponentProps<typeof Text<T>>, "as" | keyof BaseRootProps>;
+  // Declared because the `Omit` below strips Text's own `as`.
+  as?: T;
+  textProps?: Omit<TextProps<T>, "as">;
+  stackProps?: Omit<StackProps, "as">;
+} & Omit<TextProps<T>, "as" | keyof BaseRootProps>;
 
 type InternalProps = Omit<BaseRootProps, "errored"> & {
   state: "default" | "disabled" | "error";
@@ -42,18 +42,19 @@ const InputContext = createContext<Required<InternalProps>>({
   variant: "outline",
 });
 
-const Root = <T extends TgphElement = "input">({
-  as = "input" as T,
-  size = "2",
-  variant = "outline",
-  textProps,
-  stackProps,
-  disabled,
-  errored,
-  children,
-  tgphRef,
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "input">(rootProps: RootProps<T>) => {
+  const {
+    as = "input",
+    size = "2",
+    variant = "outline",
+    textProps,
+    stackProps,
+    disabled,
+    errored,
+    children,
+    tgphRef,
+    ...props
+  } = rootProps as RootProps<"input">;
   const Component = as;
   const inputRef = useRef<HTMLInputElement>(null);
   const composedRefs = useComposedRefs(tgphRef, inputRef);
@@ -113,7 +114,12 @@ const Root = <T extends TgphElement = "input">({
   );
 };
 
-export type SlotProps = Omit<TgphSlotProps, "size"> & {
+// Declared rather than inherited from `TgphSlotProps`. That type intersects
+// `Record<string, unknown>` so the slot primitive can merge arbitrary props
+// onto its child, and `Omit` over an index signature keeps the index
+// signature — which swallowed every key here, valid or not.
+export type SlotProps = Omit<ComponentPropsWithRef<"span">, "size"> & {
+  children?: ReactNode;
   size?: "1" | "2" | "3";
   position?: "leading" | "trailing";
 };
@@ -145,7 +151,7 @@ export type DefaultProps<T extends TgphElement = "input"> = Omit<
   PolymorphicProps<T>,
   keyof BaseRootProps
 > &
-  TgphComponentProps<typeof Root> & {
+  RootProps<T> & {
     LeadingComponent?: ReactNode;
     TrailingComponent?: ReactNode;
   };
@@ -155,8 +161,10 @@ const Default = <T extends TgphElement = "input">({
   TrailingComponent,
   ...props
 }: DefaultProps<T>) => {
+  const rootProps = props as RootProps<T>;
+
   return (
-    <Root {...props}>
+    <Root<T> {...rootProps}>
       {LeadingComponent && <Slot position="leading">{LeadingComponent}</Slot>}
       {TrailingComponent && (
         <Slot position="trailing">{TrailingComponent}</Slot>

@@ -1,4 +1,4 @@
-import { Button } from "@telegraph/button";
+import { Button, type ButtonRootProps } from "@telegraph/button";
 import {
   type PolymorphicPropsWithTgphRef,
   type TgphComponentProps,
@@ -7,7 +7,7 @@ import {
   useControllableState,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { Tag } from "@telegraph/tag";
 import { Text } from "@telegraph/typography";
 import { CheckCircle2, Circle } from "lucide-react";
@@ -35,7 +35,7 @@ type InternalContextType = {
   onValueChange: (value: boolean) => void;
   required?: boolean;
   name?: string;
-  color: TgphComponentProps<typeof Button.Root>["color"];
+  color: ButtonRootProps["color"];
   "aria-label"?: string;
 };
 
@@ -56,33 +56,44 @@ export type RootBaseProps = {
   value?: boolean;
   defaultValue?: boolean;
   onValueChange?: (value: boolean) => void;
-  color?: TgphComponentProps<typeof Button.Root>["color"];
+  color?: ButtonRootProps["color"];
+  // Declared rather than inherited: the root renders a `div`, and these are
+  // forwarded to the hidden checkbox `Toggle.Switch` renders.
+  disabled?: boolean;
+  required?: boolean;
+  name?: string;
 };
 
+// `value`/`defaultValue` are dropped from the passthrough: every element
+// declares `defaultValue?: string | number | readonly string[]`, and
+// intersecting that with the toggle's boolean state makes both unusable.
 export type RootProps<T extends TgphElement = "div"> = Omit<
-  TgphComponentProps<typeof Stack<T>>,
-  "tgphRef" | "as"
+  StackProps<T>,
+  "tgphRef" | "as" | "value" | "defaultValue"
 > &
-  PolymorphicPropsWithTgphRef<T, HTMLInputElement> &
-  RootBaseProps;
+  Omit<
+    PolymorphicPropsWithTgphRef<T, HTMLInputElement>,
+    "as" | "value" | "defaultValue"
+  > & { as?: T } & RootBaseProps;
 
-const Root = <T extends TgphElement = "div">({
-  size = "2",
-  color = "blue",
-  value: valueProp,
-  defaultValue = false,
-  onValueChange: onValueChangeProp,
-  disabled = false,
-  required = false,
-  id: idProp,
-  name,
-  className,
-  children,
-  as,
-  style,
-  "aria-label": ariaLabel,
-  ...props
-}: RootProps<T>) => {
+const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
+  const {
+    size = "2",
+    color = "blue",
+    value: valueProp,
+    defaultValue = false,
+    onValueChange: onValueChangeProp,
+    disabled = false,
+    required = false,
+    id: idProp,
+    name,
+    className,
+    children,
+    as,
+    style,
+    "aria-label": ariaLabel,
+    ...props
+  } = rootProps as RootProps<"div">;
   const [value, onValueChange] = useControllableState({
     prop: valueProp,
     defaultProp: defaultValue,
@@ -109,6 +120,7 @@ const Root = <T extends TgphElement = "div">({
       }}
     >
       <Stack
+        as={as}
         direction="row"
         align="center"
         gap="2"
@@ -128,12 +140,17 @@ const Root = <T extends TgphElement = "div">({
   );
 };
 
-export type SwitchProps = TgphComponentProps<typeof Button.Root>;
+export type SwitchProps = ButtonRootProps<"label">;
 
 const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   const context = useContext(ToggleContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const { iconSize, ...sizeConfig } = TOGGLE_SIZE_MAP[context.size];
+  // A `label` has no native `disabled`, so Button.Root's own `disabled` is
+  // spread in at the same position, typed against the button element.
+  const disabledProp: Pick<ButtonRootProps<"button">, "disabled"> = {
+    disabled: context.disabled,
+  };
 
   return (
     <Stack position="relative" align="center">
@@ -161,7 +178,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
         rounded="full"
         align="center"
         justify="flex-start"
-        disabled={context.disabled}
+        {...disabledProp}
         data-tgph-toggle-switch
         data-tgph-toggle-size={context.size}
         data-tgph-toggle-checked={context.value}
@@ -201,19 +218,24 @@ export type LabelProps<T extends TgphElement = "label"> = TgphComponentProps<
   hidden?: boolean;
 };
 
-const Label = <T extends TgphElement = "label">({
-  hidden = false,
-  as,
-  style,
-  ...props
-}: LabelProps<T>) => {
+const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
+  const {
+    hidden = false,
+    as,
+    style,
+    ...props
+  } = labelProps as LabelProps<"label">;
   const context = useContext(ToggleContext);
+  const textProps = props as Omit<
+    TgphComponentProps<typeof Text<"label">>,
+    "as" | "style"
+  >;
 
   if (hidden) {
     return (
       <VisuallyHidden asChild>
         <Text
-          as={(as || "label") as T}
+          as={as || "label"}
           htmlFor={context.id}
           id={context.labelId}
           size={LABEL_SIZE_MAP[context.size]}
@@ -223,7 +245,7 @@ const Label = <T extends TgphElement = "label">({
             cursor: context.disabled ? "not-allowed" : "pointer",
             ...style,
           }}
-          {...props}
+          {...textProps}
         />
       </VisuallyHidden>
     );
@@ -231,7 +253,7 @@ const Label = <T extends TgphElement = "label">({
 
   return (
     <Text
-      as={(as || "label") as T}
+      as={as || "label"}
       htmlFor={context.id}
       id={context.labelId}
       size={LABEL_SIZE_MAP[context.size]}
@@ -241,7 +263,7 @@ const Label = <T extends TgphElement = "label">({
         cursor: context.disabled ? "not-allowed" : "pointer",
         ...style,
       }}
-      {...props}
+      {...textProps}
     />
   );
 };
@@ -253,19 +275,25 @@ export type IndicatorProps<T extends TgphElement = "span"> = TgphComponentProps<
   disabledContent?: ReactNode;
 };
 
-const Indicator = <T extends TgphElement = "span">({
-  as,
-  enabledContent = "Enabled",
-  disabledContent = "Disabled",
-  style,
-  children,
-  ...props
-}: IndicatorProps<T>) => {
+const Indicator = <T extends TgphElement = "span">(
+  indicatorProps: IndicatorProps<T>,
+) => {
+  const {
+    as,
+    enabledContent = "Enabled",
+    disabledContent = "Disabled",
+    style,
+    children,
+    ...props
+  } = indicatorProps as IndicatorProps<"label">;
   const context = useContext(ToggleContext);
 
   const content =
     children || (context.value ? enabledContent : disabledContent);
   const size = INDICATOR_SIZE_MAP[context.size];
+  // No `Omit`: it would flatten Tag's discriminated `onRemove`/`onCopy` union
+  // into a shape no branch accepts.
+  const tagProps = props as TgphComponentProps<typeof Tag<"label">>;
 
   return (
     <Tag
@@ -278,7 +306,7 @@ const Indicator = <T extends TgphElement = "span">({
         cursor: context.disabled ? "not-allowed" : "pointer",
         ...style,
       }}
-      {...props}
+      {...tagProps}
     >
       {content}
     </Tag>
@@ -299,15 +327,21 @@ const Default = <T extends TgphElement = "div">({
   indicatorProps,
   ...props
 }: DefaultProps<T>) => {
+  const rootProps = props as RootProps<T>;
+
   return (
-    <Root {...props}>
+    <Root<T> {...rootProps}>
       {label && (
         <Label as="label" {...labelProps}>
           {label}
         </Label>
       )}
       <Stack direction="row" gap="1" align="center">
-        {indicator && <Indicator {...indicatorProps} />}
+        {indicator && (
+          // `Omit` flattens Tag's discriminated `onRemove`/`onCopy` union, so
+          // restore the original shape for the child.
+          <Indicator {...(indicatorProps as IndicatorProps<"span">)} />
+        )}
         <Switch />
       </Stack>
     </Root>

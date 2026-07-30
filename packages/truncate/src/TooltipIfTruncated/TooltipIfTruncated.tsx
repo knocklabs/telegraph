@@ -1,16 +1,9 @@
-import {
-  type Optional,
-  RefToTgphRef,
-  type TgphComponentProps,
-} from "@telegraph/helpers";
-import { Tooltip } from "@telegraph/tooltip";
+import { type Optional, RefToTgphRef } from "@telegraph/helpers";
+import { Tooltip, type TooltipProps } from "@telegraph/tooltip";
 import { Text } from "@telegraph/typography";
 import { type ReactNode, isValidElement, useRef, useState } from "react";
 
-export type TooltipIfTruncatedProps = Optional<
-  TgphComponentProps<typeof Tooltip>,
-  "label"
-> & {
+export type TooltipIfTruncatedProps = Optional<TooltipProps, "label"> & {
   /**
    * How to decide whether the trigger is truncated. Defaults to
    * `scrollWidth > clientWidth`, which is correct for a single clipped element.

@@ -1,4 +1,8 @@
-import { Button } from "@telegraph/button";
+import {
+  Button,
+  type ButtonIconProps,
+  type ButtonTextProps,
+} from "@telegraph/button";
 import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
@@ -6,9 +10,9 @@ import * as motion from "motion/react-m";
 import type { ReactNode } from "react";
 
 type MenuItemIconProps = {
-  icon?: TgphComponentProps<typeof Button.Icon>;
-  leadingIcon?: TgphComponentProps<typeof Button.Icon>;
-  trailingIcon?: TgphComponentProps<typeof Button.Icon>;
+  icon?: ButtonIconProps;
+  leadingIcon?: ButtonIconProps;
+  trailingIcon?: ButtonIconProps;
 };
 
 export type MenuItemProps<T extends TgphElement = "button"> =
@@ -17,26 +21,36 @@ export type MenuItemProps<T extends TgphElement = "button"> =
       selected?: boolean | null;
       leadingComponent?: ReactNode;
       trailingComponent?: ReactNode;
-      textProps?: TgphComponentProps<typeof Button.Text>;
+      textProps?: ButtonTextProps;
+      // Declared rather than inherited: no `fontWeight` exists on Button.Root
+      // or the element passthrough. It seeds the label's weight below.
+      fontWeight?: ButtonTextProps["weight"];
     };
 
-const MenuItem = <T extends TgphElement = "button">({
-  variant = "ghost",
-  size = "2",
-  px = "2",
-  gap = "1_5",
-  justify = "space-between",
-  w = "auto",
-  selected,
-  icon,
-  leadingIcon,
-  leadingComponent,
-  trailingIcon,
-  trailingComponent,
-  textProps,
-  ...props
-}: MenuItemProps<T>) => {
-  const rootProps = props as TgphComponentProps<typeof Button.Root>;
+const MenuItem = <T extends TgphElement = "button">(
+  menuItemProps: MenuItemProps<T>,
+) => {
+  const {
+    variant = "ghost",
+    size = "2",
+    px = "2",
+    gap = "1_5",
+    justify = "space-between",
+    w = "auto",
+    selected,
+    icon,
+    leadingIcon,
+    leadingComponent,
+    trailingIcon,
+    trailingComponent,
+    textProps,
+    // Destructured so it stops here. `Button.Root` has no `fontWeight`, so
+    // leaving it in the rest props spread it onto the rendered element and it
+    // reached the DOM as a `font-weight` attribute.
+    fontWeight,
+    ...props
+  } = menuItemProps as MenuItemProps<"button">;
+  const rootProps = props;
 
   return (
     <Button.Root
@@ -56,7 +70,7 @@ const MenuItem = <T extends TgphElement = "button">({
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight={rootProps.fontWeight || "medium"}
+          weight={fontWeight || "medium"}
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"
@@ -74,7 +88,7 @@ const MenuItem = <T extends TgphElement = "button">({
 };
 
 type MenuItemLeadingProps = Pick<
-  TgphComponentProps<typeof MenuItem>,
+  MenuItemProps,
   "leadingIcon" | "icon" | "selected" | "leadingComponent"
 >;
 
@@ -128,7 +142,7 @@ const MenuItemLeading = ({
 };
 
 type MenuItemTrailingProps = Pick<
-  TgphComponentProps<typeof MenuItem>,
+  MenuItemProps,
   "trailingIcon" | "trailingComponent"
 >;
 

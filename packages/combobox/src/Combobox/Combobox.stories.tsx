@@ -19,7 +19,14 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof TelegraphCombobox>>;
+// The value-carrying props are dropped from the shared args: every story owns
+// that state locally, over its own value type.
+type Story = StoryObj<
+  Omit<
+    TgphComponentProps<typeof TelegraphCombobox.Root>,
+    "value" | "defaultValue" | "onValueChange" | "layout"
+  >
+>;
 
 const LABELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
 

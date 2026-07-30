@@ -3,6 +3,7 @@ import { Bell, DoorClosed } from "lucide-react";
 import { useState } from "react";
 
 import { RadioCards as TelegraphRadioCards } from "./RadioCards";
+import type { DefaultProps as RadioCardsProps } from "./RadioCards";
 
 const meta: Meta<typeof TelegraphRadioCards> = {
   tags: ["autodocs"],
@@ -25,7 +26,12 @@ export default meta;
 
 type StorybookRadioCardsType = StoryObj<typeof TelegraphRadioCards>;
 
-const DEFAULT_OPTIONS = [
+type RadioCardOption = RadioCardsProps["options"][number];
+
+// A tuple so `DEFAULT_OPTIONS[0]` is not `| undefined` under
+// `noUncheckedIndexedAccess`, but mutable so it can still be passed straight
+// through as `options`.
+const DEFAULT_OPTIONS: [RadioCardOption, RadioCardOption] = [
   {
     icon: { icon: Bell, alt: "Bell" },
     title: "Option 1",

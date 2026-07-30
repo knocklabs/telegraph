@@ -1,27 +1,29 @@
 import { useAppearance } from "@telegraph/appearance";
+import type { TgphElement } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
-import { Stack } from "@telegraph/layout";
+import { Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 
 import { colorMap, sizeMap } from "./Kbd.constants";
 import { getIconOrKey } from "./Kbd.helpers";
 import { usePressed } from "./Kbd.hooks";
 
-export type KbdProps = {
+export type KbdProps<T extends TgphElement = "div"> = {
   size?: keyof typeof sizeMap;
   contrast?: boolean;
   label: string;
   eventKey?: KeyboardEvent["key"];
-} & React.ComponentProps<typeof Stack>;
+} & StackProps<T>;
 
-const Kbd = ({
-  size = "1",
-  contrast: contrastProp = false,
-  label,
-  style,
-  eventKey,
-  ...props
-}: KbdProps) => {
+const Kbd = <T extends TgphElement = "div">(kbdProps: KbdProps<T>) => {
+  const {
+    size = "1",
+    contrast: contrastProp = false,
+    label,
+    style,
+    eventKey,
+    ...props
+  } = kbdProps as KbdProps<"div">;
   const { appearance: appearanceProp } = useAppearance();
   const { pressed } = usePressed({ key: eventKey || label });
   const { icon, text } = getIconOrKey(label);

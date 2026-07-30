@@ -3,7 +3,10 @@ import React from "react";
 
 import { Select } from "./Select";
 
-const meta = {
+// Annotated rather than inferred: the inferred type reaches Combobox's
+// unexported `Option`/`DefinedOption`, which declaration emit cannot name
+// (TS2883).
+const meta: Meta<typeof Select.Root> = {
   title: "Components/Select",
   component: Select.Root,
   tags: ["autodocs"],
@@ -24,7 +27,7 @@ const meta = {
     size: "2",
     disabled: false,
   },
-} satisfies Meta<typeof Select.Root>;
+};
 
 type Story = StoryObj<typeof meta>;
 
@@ -59,7 +62,6 @@ export const MultiSelect: Story = {
         value={value}
         onValueChange={setValue}
         size={args.size}
-        multiple
         disabled={args.disabled}
       >
         <Select.Option value="1">Option 1</Select.Option>

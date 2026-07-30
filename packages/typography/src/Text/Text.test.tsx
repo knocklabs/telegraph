@@ -75,7 +75,7 @@ describe("Text", () => {
       const validProps: TextProps<"span"> = {
         as: "span",
         size: "2",
-        weight: "bold",
+        weight: "semi-bold",
         color: "gray",
         padding: "1",
       };
@@ -89,9 +89,9 @@ describe("Text", () => {
     });
 
     it("rejects unknown props on type level", () => {
-      // @ts-expect-error unknown prop rejected on TextProps
       const invalidProp: TextProps<"span"> = {
         as: "span",
+        // @ts-expect-error unknown prop rejected on TextProps
         invalidProp: "invalid",
       };
       void invalidProp;

@@ -4,12 +4,11 @@ import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
   type PolymorphicProps,
-  type TgphComponentProps,
   type TgphElement,
   createTgphBaseUIRender,
   getBaseUIPositionerVisibilityStyle,
 } from "@telegraph/helpers";
-import { Box, Stack, type StackProps } from "@telegraph/layout";
+import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
 import { ChevronRight } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import {
@@ -80,10 +79,7 @@ type MenuSubTriggerRenderState = {
   open: boolean;
 };
 
-type MenuPopupContentProps = Omit<
-  TgphComponentProps<typeof Stack>,
-  "children" | "tgphRef"
-> & {
+type MenuPopupContentProps = Omit<StackProps, "children" | "tgphRef"> & {
   children?: ReactNode;
   contentRef: Ref<HTMLElement>;
   onOpenAutoFocus?: LegacyDismissEventHandler;
@@ -403,9 +399,7 @@ const MenuPopupContent = ({
     <Stack
       {...props}
       data-state={popupState.open ? "open" : "closed"}
-      tgphRef={
-        composedContentRef as TgphComponentProps<typeof Stack>["tgphRef"]
-      }
+      tgphRef={composedContentRef as StackProps["tgphRef"]}
     >
       {children}
     </Stack>
@@ -512,7 +506,7 @@ const Content = <T extends TgphElement = "div">({
       // finalFocus result, so invert the same cancellation signal.
       return event.defaultPrevented ? false : true;
     });
-  const stackProps = props as TgphComponentProps<typeof Stack>;
+  const stackProps = props as StackProps;
 
   useLayoutEffect(() => {
     if (!compatibilityContext) {
@@ -713,9 +707,11 @@ const Button = <T extends TgphElement = "button">({
   const nativeKeyboardSelectionPendingRef = useRef(false);
   const preventNextKeyboardCloseRef = useRef(false);
   const reactKeyboardSelectionHandledRef = useRef(false);
-  const fallbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  );
+  // The timer is scheduled on the item's own `defaultView`, so its handle is a
+  // DOM timeout id; the ambient `setTimeout` here resolves to Node's overload.
+  const fallbackTimeoutRef = useRef<
+    ReturnType<Window["setTimeout"]> | undefined
+  >(undefined);
   const composedTgphRef = useComposedRefs<HTMLElement>(
     tgphRef,
     itemRef,
@@ -856,7 +852,10 @@ const Button = <T extends TgphElement = "button">({
         <MenuItem<T>
           {...menuItemProps}
           onClick={handleClick as MenuItemProps<T>["onClick"]}
-          onKeyDown={handleKeyDown as MenuItemProps<T>["onKeyDown"]}
+          // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through
+          // the element passthrough, which is a deferred conditional while `T`
+          // is unresolved and therefore not indexable.
+          onKeyDown={handleKeyDown as MenuItemProps<"button">["onKeyDown"]}
           selected={selected}
           leadingIcon={combinedLeadingIcon}
           trailingIcon={trailingIcon}
@@ -1004,13 +1003,17 @@ const SubContent = <T extends TgphElement = "div">({
   );
 };
 
-export type DividerProps = TgphComponentProps<typeof Box>;
+export type DividerProps<T extends TgphElement = "hr"> = BoxProps<T>;
 
-const Divider = ({
-  w = "full",
-  borderBottom = "px",
-  ...props
-}: DividerProps) => {
+const Divider = <T extends TgphElement = "hr">(
+  dividerProps: DividerProps<T>,
+) => {
+  const {
+    w = "full",
+    borderBottom = "px",
+    ...props
+  } = dividerProps as DividerProps<"hr">;
+
   return <Box as="hr" w={w} borderBottom={borderBottom} {...props} />;
 };
 

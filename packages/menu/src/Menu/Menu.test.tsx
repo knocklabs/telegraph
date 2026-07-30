@@ -218,6 +218,33 @@ describe("Menu", () => {
     expectToHaveNoViolations(await axe(menu));
   });
 
+  it("keeps fontWeight off the DOM", async () => {
+    // `fontWeight` seeds the label's weight. `Button.Root` has no such prop, so
+    // leaving it in the rest props sent it to the DOM as a `font-weight`
+    // attribute on every item that set it.
+    render(
+      <Menu.Root defaultOpen>
+        <Menu.Trigger>
+          <TestButton>Workflow actions</TestButton>
+        </Menu.Trigger>
+        <Menu.Content>
+          <Menu.Button fontWeight="bold">Manage workflow</Menu.Button>
+        </Menu.Content>
+      </Menu.Root>,
+    );
+
+    const item = await screen.findByRole("menuitem", {
+      name: "Manage workflow",
+    });
+
+    expect(item).not.toHaveAttribute("font-weight");
+    expect(item).not.toHaveAttribute("fontweight");
+    // The prop still does its real job on the label.
+    expect(
+      item.querySelector("[data-button-text]")?.getAttribute("style"),
+    ).toContain("bold");
+  });
+
   it("opens and closes with the trigger in uncontrolled mode", async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();

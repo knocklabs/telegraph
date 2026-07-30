@@ -1,9 +1,8 @@
 import type {
   PolymorphicPropsWithTgphRef,
-  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import type { BoxProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
@@ -16,32 +15,37 @@ type BaseIconProps = {
   variant?: keyof typeof COLOR_MAP;
   color?: keyof (typeof COLOR_MAP)["primary"];
   animation?: "spin" | "none";
-} & (
-  | {
-      alt: string;
-    }
-  | {
-      ["aria-hidden"]: true;
-    }
-);
+};
 
-export type IconProps<T extends TgphElement = "span"> =
+// An icon is either labelled or explicitly hidden. Both keys appear on both
+// arms (one as `never`) so the component can still destructure them.
+type IconA11yProps =
+  | { alt: string; ["aria-hidden"]?: never }
+  | { alt?: never; ["aria-hidden"]: true };
+
+// Separate from the a11y union so Spinner, which supplies its own label, can
+// build on it without inheriting the XOR.
+export type IconBaseProps<T extends TgphElement = "span"> =
   PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
-    Omit<TgphComponentProps<typeof Box>, "as" | "tgphRef"> &
+    Omit<BoxProps<T>, "as" | "tgphRef"> &
     BaseIconProps;
 
-const Icon = <T extends TgphElement = "span">({
-  as,
-  size = "2",
-  color = "default",
-  variant = "primary",
-  animation = "none",
-  icon,
-  alt,
-  className,
-  style,
-  ...props
-}: IconProps<T>) => {
+export type IconProps<T extends TgphElement = "span"> = IconBaseProps<T> &
+  IconA11yProps;
+
+const Icon = <T extends TgphElement = "span">(iconProps: IconProps<T>) => {
+  const {
+    as,
+    size = "2",
+    color = "default",
+    variant = "primary",
+    animation = "none",
+    icon,
+    alt,
+    className,
+    style,
+    ...props
+  } = iconProps as IconProps<"span">;
   const IconComponent = icon;
 
   if (!IconComponent) {

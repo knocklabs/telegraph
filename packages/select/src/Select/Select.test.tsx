@@ -261,6 +261,78 @@ describe("Select", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("sms");
   });
 
+  it("uses an option's `label` over its children, in the trigger and the list", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Select.Root defaultValue="email">
+        <Select.Option value="email" label="Email address">
+          <b>Email</b>
+        </Select.Option>
+      </Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await waitFor(() => expect(trigger).toHaveTextContent("Email address"));
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // The option list and the trigger must agree. They read the label through
+    // different paths: the list renders it, the trigger reads the registry
+    // Combobox builds by introspecting the option elements.
+    expect(getOptionByText("Email address")).not.toBeNull();
+  });
+
+  it("falls back to children when `label` is explicitly undefined", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Select.Root defaultValue="email">
+        <Select.Option value="email" label={undefined}>
+          Email
+        </Select.Option>
+      </Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // The rendered option is the path that regressed: the trigger reads the
+    // registry, which resolves `label || children` off the element and never
+    // saw the explicit undefined. Passing it on would render the raw value.
+    const option = document.querySelector("[data-tgph-combobox-option]");
+    expect(option?.textContent).toBe("Email");
+  });
+
+  it("discards legacyBehavior instead of forwarding it to Combobox", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    // Spread rather than written as an attribute: a JSX spread of a non-literal
+    // skips excess-property checking, which is the only way it can still reach
+    // the component now that the prop is gone from the props type.
+    const smuggled = { legacyBehavior: true } as Record<string, unknown>;
+    const { container } = render(
+      <Select.Root
+        defaultValue="email"
+        onValueChange={onValueChange}
+        {...smuggled}
+      >
+        {renderSelectOptions()}
+      </Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await user.click(getOptionByText("SMS")!);
+
+    // Legacy mode would emit `{ value: "sms", label: "SMS" }`.
+    await waitFor(() => expect(onValueChange).toHaveBeenLastCalledWith("sms"));
+  });
+
   it("does not select disabled options", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();

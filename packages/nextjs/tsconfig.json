@@ -4,6 +4,8 @@
   "display": "@telegraph/nextjs",
   "compilerOptions": {
     "outDir": "dist",
+    // `with-telegraph.ts` reads `process.env` to detect local development.
+    "types": ["node"],
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "dist", "node_modules"],

@@ -191,43 +191,46 @@ export type ContentProps<T extends TgphElement = "div"> = Omit<
     skipAnimation?: boolean;
   };
 
-const Content = <T extends TgphElement = "div">({
-  align = "center",
-  alignOffset,
-  anchor,
-  arrowPadding,
-  children,
-  avoidCollisions,
-  collisionAvoidance,
-  collisionBoundary,
-  collisionPadding,
-  contentStackRef,
-  direction = "column",
-  disableAnchorTracking,
-  finalFocus,
-  forceMount,
-  gap = "1",
-  hideWhenDetached,
-  initialFocus,
-  onCloseAutoFocus,
-  onEscapeKeyDown,
-  onFocusOutside,
-  onInteractOutside,
-  onOpenAutoFocus,
-  onPointerDownOutside,
-  positionMethod,
-  rounded = "4",
-  py = "1",
-  shadow = "2",
-  side = "bottom",
-  sideOffset = 4,
-  skipAnimation,
-  sticky,
-  bg = "surface-1",
-  tgphRef,
-  style,
-  ...props
-}: ContentProps<T>) => {
+const Content = <T extends TgphElement = "div">(
+  contentProps: ContentProps<T>,
+) => {
+  const {
+    align = "center",
+    alignOffset,
+    anchor,
+    arrowPadding,
+    children,
+    avoidCollisions,
+    collisionAvoidance,
+    collisionBoundary,
+    collisionPadding,
+    contentStackRef,
+    direction = "column",
+    disableAnchorTracking,
+    finalFocus,
+    forceMount,
+    gap = "1",
+    hideWhenDetached,
+    initialFocus,
+    onCloseAutoFocus,
+    onEscapeKeyDown,
+    onFocusOutside,
+    onInteractOutside,
+    onOpenAutoFocus,
+    onPointerDownOutside,
+    positionMethod,
+    rounded = "4",
+    py = "1",
+    shadow = "2",
+    side = "bottom",
+    sideOffset = 4,
+    skipAnimation,
+    sticky,
+    bg = "surface-1",
+    tgphRef,
+    style,
+    ...props
+  } = contentProps as ContentProps<"div">;
   const compatibilityContext = useContext(PopoverCompatibilityContext);
   const contentRef = useComposedRefs<HTMLElement>(
     tgphRef as Ref<HTMLElement>,
@@ -396,7 +399,13 @@ const Content = <T extends TgphElement = "div">({
               tgphRef={contentRef}
               zIndex="popover"
               key="tgph-popover-content"
-              {...stackProps}
+              // `as` is omitted from the cast so the rest props do not add a
+              // second candidate to Stack's element inference, which would
+              // widen `T` to a union and hide the motion props used here.
+              {...(stackProps as Omit<
+                StackProps<typeof motion.div>,
+                "as" | "children" | "onAnimationComplete"
+              >)}
               onAnimationComplete={(definition) => {
                 onAnimationComplete?.(definition);
 

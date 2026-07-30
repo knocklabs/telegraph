@@ -107,6 +107,10 @@ export default {
         "src/**/*.stories.tsx",
         "src/**/*.test.tsx",
         "src/**/*.test.ts",
+        // Type tests (*.test-d.tsx) do not match the *.test.tsx globs above,
+        // so without these they emit declarations into dist/types and ship.
+        "src/**/*.test-d.tsx",
+        "src/**/*.test-d.ts",
       ],
       // Pin the declaration root to src so every package emits to
       // dist/types/index.d.ts. The emitted layout follows the TypeScript

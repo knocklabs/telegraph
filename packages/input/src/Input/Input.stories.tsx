@@ -3,10 +3,15 @@ import { Button } from "@telegraph/button";
 import { Icon } from "@telegraph/icon";
 import * as Icons from "lucide-react";
 
-import { Input as TelegraphInput } from "./Input";
+import {
+  type DefaultProps as InputProps,
+  Input as TelegraphInput,
+} from "./Input";
 import { COLOR, SIZE } from "./Input.constants";
 
-const meta: Meta<typeof TelegraphInput> = {
+type StorybookInputType = InputProps<"input">;
+
+const meta: Meta<StorybookInputType> = {
   tags: ["autodocs"],
   title: "Components/Input",
   component: TelegraphInput,
@@ -58,7 +63,7 @@ const meta: Meta<typeof TelegraphInput> = {
 
 export default meta;
 
-type Story = StoryObj<typeof TelegraphInput>;
+type Story = StoryObj<StorybookInputType>;
 
 export const Default: Story = {
   render: ({ LeadingComponent, TrailingComponent, ...props }) => (

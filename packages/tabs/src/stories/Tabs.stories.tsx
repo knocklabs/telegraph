@@ -198,12 +198,12 @@ export const Controlled = () => {
         <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
       </Tabs.List>
 
-      <Box display="flex" gap="2" py="4">
+      <Stack gap="2" py="4">
         <Box>Current active tab: {activeTab}</Box>
         <button onClick={() => setActiveTab("tab1")}>Activate Tab 1</button>
         <button onClick={() => setActiveTab("tab2")}>Activate Tab 2</button>
         <button onClick={() => setActiveTab("tab3")}>Activate Tab 3</button>
-      </Box>
+      </Stack>
 
       <Tabs.Panel value="tab1">
         <Box py="4">Content for the first tab</Box>

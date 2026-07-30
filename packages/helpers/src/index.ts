@@ -9,6 +9,7 @@ export type {
   TgphComponentProps,
   OptionalAsPropConfig,
   RemappedOmit,
+  CSSPropertiesWithVars,
 } from "./types/utility";
 
 export { RefToTgphRef } from "./components/RefToTgphRef";

@@ -15,10 +15,10 @@ const meta: Meta<typeof TelegraphModal.Root> = {
         type: "boolean",
       },
     },
+    // A callback has no meaningful control widget: Storybook's `ControlType`
+    // union has no "function" member, so the control is disabled instead.
     onOpenChange: {
-      control: {
-        type: "function",
-      },
+      control: false,
     },
   },
   args: {
