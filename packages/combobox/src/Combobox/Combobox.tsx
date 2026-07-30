@@ -866,7 +866,7 @@ const Trigger = <V extends ChildrenValue>({
 // `onInputValueChange`, or its `value` in `selectionMode="none"`). An input
 // rendered inside `Combobox.Content` is a `Combobox.Search`, not this part.
 export type InputProps = RemappedOmit<
-  TgphComponentProps<typeof TelegraphInput>,
+  TgphComponentProps<typeof TelegraphInput<"input">>,
   "value" | "onChange" | "defaultValue"
 >;
 
