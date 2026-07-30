@@ -12,7 +12,6 @@ describe("Tooltip types", () => {
     expectTypeOf<TooltipProps["label"]>().not.toBeAny();
     expectTypeOf<TooltipProps["labelProps"]>().not.toBeAny();
     expectTypeOf<TooltipProps["enabled"]>().not.toBeAny();
-    expectTypeOf<TooltipProps["asChild"]>().not.toBeAny();
     expectTypeOf<TooltipProps["disableFocusOpen"]>().not.toBeAny();
     expectTypeOf<TooltipProps["skipAnimation"]>().not.toBeAny();
     expectTypeOf<TooltipProps["triggerRef"]>().not.toBeAny();
@@ -45,6 +44,14 @@ describe("Tooltip types", () => {
       label="hi"
       // @ts-expect-error unknown prop
       fontSize={16}
+    >
+      <button>trigger</button>
+    </Tooltip>;
+    <Tooltip
+      label="hi"
+      // Tooltip always merges onto its child, so `asChild` never did anything.
+      // @ts-expect-error asChild is not a Tooltip prop
+      asChild
     >
       <button>trigger</button>
     </Tooltip>;

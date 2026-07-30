@@ -31,6 +31,22 @@ afterEach(() => {
 });
 
 describe("Tooltip", () => {
+  it("keeps the animated label element when a spread supplies `as`", async () => {
+    const user = userEvent.setup();
+    // A spread is the only route left: `as` is gone from `labelProps`.
+    const smuggled = { as: "section" } as Record<string, unknown>;
+    render(
+      <Tooltip label="Helpful context" delayDuration={0} labelProps={smuggled}>
+        <TestButton>Hover target</TestButton>
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button", { name: "Hover target" }));
+    await screen.findByRole("tooltip");
+
+    expect(document.querySelector("section")).toBeNull();
+  });
+
   describe("type inheritance", () => {
     it("accepts valid tooltip-specific props", () => {
       const validProps: TooltipProps = {
@@ -54,7 +70,6 @@ describe("Tooltip", () => {
     it("accepts legacy wrapper passthrough props", () => {
       const validProps: TooltipProps = {
         label: "Tooltip text",
-        asChild: true,
         style: { zIndex: 9999 },
         children: null,
       };

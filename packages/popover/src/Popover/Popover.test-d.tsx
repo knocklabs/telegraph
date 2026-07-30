@@ -99,7 +99,15 @@ describe("Popover types", () => {
         Content
       </Popover.Content>
     </Popover.Root>;
-    <Popover.Content as="section" forceMount skipAnimation />;
+    <Popover.Content forceMount skipAnimation />;
     <Popover.Trigger disabled className="trigger" />;
+  });
+
+  it("rejects `as` on animated content", () => {
+    // KNO-14501.
+    <Popover.Content
+      // @ts-expect-error as is not a Popover.Content prop
+      as="section"
+    />;
   });
 });

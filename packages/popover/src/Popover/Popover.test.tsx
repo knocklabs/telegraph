@@ -37,6 +37,28 @@ afterEach(() => {
 });
 
 describe("Popover", () => {
+  it("keeps the animated element when a spread supplies `as`", async () => {
+    const user = userEvent.setup();
+    // A spread is the only route left: `as` is gone from the props type.
+    const smuggled = { as: "section" } as Record<string, unknown>;
+    render(
+      <Popover.Root>
+        <Popover.Trigger>
+          <TestButton>Open</TestButton>
+        </Popover.Trigger>
+        <Popover.Content {...smuggled} data-testid="content">
+          Body
+        </Popover.Content>
+      </Popover.Root>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open" }));
+
+    const content = await screen.findByTestId("content");
+    expect(content.tagName).toBe("DIV");
+    expect(document.querySelector("section")).toBeNull();
+  });
+
   describe("type inheritance", () => {
     it("accepts valid content-specific props", () => {
       const validProps: PopoverContentProps = {

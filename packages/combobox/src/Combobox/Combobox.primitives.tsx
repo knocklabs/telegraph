@@ -28,8 +28,12 @@ import type {
   SingleSelect,
 } from "./Combobox.types";
 
-type TriggerIndicatorProps<T extends TgphElement> = Partial<
-  TgphComponentProps<typeof Button.Icon<T>>
+// Drop `as`: this always renders `motion.span` (KNO-14501). Drop `alt` too:
+// the body discards it, so leaving it in the type promised an accessible name
+// this never renders.
+type TriggerIndicatorProps<T extends TgphElement> = Omit<
+  Partial<TgphComponentProps<typeof Button.Icon<T>>>,
+  "as" | "alt"
 >;
 
 const TriggerIndicator = <T extends TgphElement>(
@@ -38,8 +42,15 @@ const TriggerIndicator = <T extends TgphElement>(
   const {
     icon = ChevronsUpDown,
     "aria-hidden": ariaHidden = true,
+    // Destructure `alt` for the same reason the cast omits it: Button.Icon
+    // rejects `alt` and `aria-hidden` arriving together.
+    as: _as,
+    alt: _alt,
     ...props
-  } = triggerIndicatorProps as TriggerIndicatorProps<"span">;
+  } = triggerIndicatorProps as TriggerIndicatorProps<"span"> & {
+    as?: TgphElement;
+    alt?: string;
+  };
   const context = React.useContext(ComboboxContext);
   return (
     <Button.Icon
@@ -290,15 +301,22 @@ const TriggerTagContext = React.createContext<{
   value: "",
 });
 
+// Drop `as`: this always renders `motion.span` (KNO-14501).
 type TriggerTagRootProps<T extends TgphElement> = {
   value: string;
-} & TgphComponentProps<typeof Tag.Root<T>>;
+} & Omit<TgphComponentProps<typeof Tag.Root<T>>, "as">;
 
 const TriggerTagRoot = <T extends TgphElement>(
   triggerTagRootProps: TriggerTagRootProps<T>,
 ) => {
-  const { value, children, ...props } =
-    triggerTagRootProps as TriggerTagRootProps<"span">;
+  const {
+    value,
+    children,
+    as: _as,
+    ...props
+  } = triggerTagRootProps as TriggerTagRootProps<"span"> & {
+    as?: TgphElement;
+  };
   return (
     <TriggerTagContext.Provider value={{ value }}>
       <Tag.Root

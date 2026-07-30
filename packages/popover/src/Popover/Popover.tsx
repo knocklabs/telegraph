@@ -166,17 +166,8 @@ export type ContentProps<T extends TgphElement = "div"> = Omit<
   "children" | "className" | "render"
 > &
   Omit<BasePopoverPopupProps, "children" | "className" | "render" | "style"> &
-  // Source the polymorphic element props from `PolymorphicProps<T>` and the
-  // Stack style props from the *non-generic* Stack. Wrapping the generic
-  // `typeof Stack<T>` in `Omit<…, "align">` produces a deferred mapped type,
-  // and TypeScript then fails to compute a contextual type for the sibling
-  // dismiss-handler callbacks below — their `event` param silently widens to
-  // `any` at the JSX call site. That is exactly what let a stale Radix-shaped
-  // handler reading `event.detail.originalEvent` compile and crash at runtime
-  // (KNO-14309). Keeping the `Omit` off the generic makes each handler's
-  // `event` resolve to its concrete `Event` type, so `.detail`/`.originalEvent`
-  // access fails to compile.
-  PolymorphicProps<T> &
+  // Drop `as`: the content always renders `motion.div` (KNO-14501).
+  Omit<PolymorphicProps<T>, "as"> &
   Omit<StackProps, "align" | "as"> & {
     avoidCollisions?: boolean;
     contentStackRef?: Ref<HTMLDivElement>;
@@ -229,8 +220,11 @@ const Content = <T extends TgphElement = "div">(
     bg = "surface-1",
     tgphRef,
     style,
+    // Discarded as well as dropped from the type, because a spread can still
+    // carry it.
+    as: _as,
     ...props
-  } = contentProps as ContentProps<"div">;
+  } = contentProps as ContentProps<"div"> & { as?: TgphElement };
   const compatibilityContext = useContext(PopoverCompatibilityContext);
   const contentRef = useComposedRefs<HTMLElement>(
     tgphRef as Ref<HTMLElement>,
@@ -399,9 +393,8 @@ const Content = <T extends TgphElement = "div">(
               tgphRef={contentRef}
               zIndex="popover"
               key="tgph-popover-content"
-              // `as` is omitted from the cast so the rest props do not add a
-              // second candidate to Stack's element inference, which would
-              // widen `T` to a union and hide the motion props used here.
+              // Keep the `as` omission. It stops the rest props adding a second
+              // candidate to Stack's element inference.
               {...(stackProps as Omit<
                 StackProps<typeof motion.div>,
                 "as" | "children" | "onAnimationComplete"
