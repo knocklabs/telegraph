@@ -120,6 +120,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
       }}
     >
       <Stack
+        as={as}
         direction="row"
         align="center"
         gap="2"

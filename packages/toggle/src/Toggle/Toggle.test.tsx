@@ -62,6 +62,20 @@ describe("Toggle", () => {
     expect(checkbox).not.toBeChecked();
   });
 
+  it("renders Root as the element `as` names", () => {
+    // `Root` accepted `as` and never forwarded it, so it always rendered a
+    // `div` while the type said otherwise.
+    const { container } = render(
+      <Toggle.Root as="section">
+        <Toggle.Switch />
+      </Toggle.Root>,
+    );
+
+    expect(container.querySelector("[data-tgph-toggle-root]")?.tagName).toBe(
+      "SECTION",
+    );
+  });
+
   it("renders checked when defaultValue is true", () => {
     render(<Toggle.Default label="Enable notifications" defaultValue={true} />);
     const checkbox = screen.getByRole("checkbox");

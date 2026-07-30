@@ -44,6 +44,10 @@ const MenuItem = <T extends TgphElement = "button">(
     trailingIcon,
     trailingComponent,
     textProps,
+    // Destructured so it stops here. `Button.Root` has no `fontWeight`, so
+    // leaving it in the rest props spread it onto the rendered element and it
+    // reached the DOM as a `font-weight` attribute.
+    fontWeight,
     ...props
   } = menuItemProps as MenuItemProps<"button">;
   const rootProps = props;
@@ -66,7 +70,7 @@ const MenuItem = <T extends TgphElement = "button">(
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight={rootProps.fontWeight || "medium"}
+          weight={fontWeight || "medium"}
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"
