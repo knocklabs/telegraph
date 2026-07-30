@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 10
   cacheKey: 10c0
 
 "@aashutoshrathi/word-wrap@npm:^1.2.3":
@@ -2175,6 +2175,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.6.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.58.2"
     "@typescript-eslint/parser": "npm:^8.58.2"
+    "@typescript/typescript6": "npm:^6.0.2"
     "@vitest/browser": "npm:4.1.10"
     "@vitest/browser-playwright": "npm:4.1.10"
     "@vitest/coverage-v8": "npm:4.1.10"
@@ -2194,7 +2195,7 @@ __metadata:
     storybook: "npm:^10.4.6"
     storybook-addon-render-modes: "npm:^0.0.11"
     turbo: "npm:^2.9.0"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite-tsconfig-paths: "npm:^6.1.1"
     vitest: "npm:4.1.10"
     vitest-axe: "npm:0.1.0"
@@ -3458,7 +3459,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3486,7 +3487,7 @@ __metadata:
     lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3520,7 +3521,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3540,7 +3541,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3566,7 +3567,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3593,7 +3594,7 @@ __metadata:
     lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3614,7 +3615,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3639,7 +3640,7 @@ __metadata:
     lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3665,7 +3666,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3692,7 +3693,7 @@ __metadata:
     lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3718,7 +3719,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3744,7 +3745,7 @@ __metadata:
     lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3773,7 +3774,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3803,7 +3804,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3820,7 +3821,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@telegraph/vite-config": "workspace:^"
     eslint: "npm:^10.4.0"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   languageName: unknown
   linkType: soft
@@ -3843,7 +3844,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3866,7 +3867,7 @@ __metadata:
     postcss-combine-duplicated-selectors: "npm:^10.0.3"
     postcss-custom-media: "npm:^11.0.6"
     postcss-discard-empty: "npm:^8.0.1"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
   languageName: unknown
   linkType: soft
 
@@ -3877,7 +3878,7 @@ __metadata:
     "@knocklabs/typescript-config": "npm:^0.0.2"
     "@trivago/prettier-plugin-sort-imports": "npm:^6.0.2"
     prettier: "npm:^3.8.3"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
   languageName: unknown
   linkType: soft
 
@@ -3899,7 +3900,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3928,7 +3929,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3951,7 +3952,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -3976,7 +3977,7 @@ __metadata:
     next: "npm:16.2.11"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
   languageName: unknown
   linkType: soft
 
@@ -3998,7 +3999,7 @@ __metadata:
     postcss: "npm:^8.5.23"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4026,7 +4027,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4057,7 +4058,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4080,7 +4081,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4109,7 +4110,7 @@ __metadata:
     lucide-react: "npm:^1.23.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4128,7 +4129,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     lightningcss: "npm:^1.32.0"
     react: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4154,7 +4155,7 @@ __metadata:
     motion: "npm:^12.38.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4178,7 +4179,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4204,7 +4205,7 @@ __metadata:
     eslint: "npm:^10.4.0"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -4221,7 +4222,7 @@ __metadata:
     "@telegraph/prettier-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^6.0.3"
     eslint: "npm:^10.4.0"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^7.0.2"
     vite: "npm:^8.1.5"
     vite-plugin-dts: "npm:^5.0.1"
   languageName: unknown
@@ -5035,6 +5036,167 @@ __metadata:
     "@typescript-eslint/types": "npm:8.58.2"
     eslint-visitor-keys: "npm:^5.0.0"
   checksum: 10c0/6775a63dbafe7a305f0cf3f0c5eb077e30dba8a60022e4ce3220669c7f1e742c6ea2ebff8c6c0288dc17eeef8f4015089a23abbdc82a6a9382abe4a77950b695
+  languageName: node
+  linkType: hard
+
+"@typescript/old@npm:typescript@^6":
+  version: 6.0.3
+  resolution: "typescript@npm:6.0.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/4a25ff5045b984370f48f196b3a0120779b1b343d40b9a68d114ea5e5fff099809b2bb777576991a63a5cd59cf7bffd96ff6fe10afcefbcb8bd6fb96ad4b6606
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-aix-ppc64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-aix-ppc64@npm:7.0.2"
+  conditions: os=aix & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-darwin-arm64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-darwin-arm64@npm:7.0.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-darwin-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-darwin-x64@npm:7.0.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-freebsd-arm64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-freebsd-arm64@npm:7.0.2"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-freebsd-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-freebsd-x64@npm:7.0.2"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-arm64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-arm64@npm:7.0.2"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-arm@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-arm@npm:7.0.2"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-loong64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-loong64@npm:7.0.2"
+  conditions: os=linux & cpu=loong64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-mips64el@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-mips64el@npm:7.0.2"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-ppc64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-ppc64@npm:7.0.2"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-riscv64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-riscv64@npm:7.0.2"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-s390x@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-s390x@npm:7.0.2"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-linux-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-linux-x64@npm:7.0.2"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-netbsd-arm64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-netbsd-arm64@npm:7.0.2"
+  conditions: os=netbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-netbsd-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-netbsd-x64@npm:7.0.2"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-openbsd-arm64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-openbsd-arm64@npm:7.0.2"
+  conditions: os=openbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-openbsd-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-openbsd-x64@npm:7.0.2"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-sunos-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-sunos-x64@npm:7.0.2"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-win32-arm64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-win32-arm64@npm:7.0.2"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript-win32-x64@npm:7.0.2":
+  version: 7.0.2
+  resolution: "@typescript/typescript-win32-x64@npm:7.0.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/typescript6@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "@typescript/typescript6@npm:6.0.2"
+  dependencies:
+    "@typescript/old": "npm:typescript@^6"
+  bin:
+    tsc6: bin/tsc6
+  checksum: 10c0/0c6e5c1c3a61b79f2bc61506feb82f8ce54275b2af1aebc3dd9310d7f57b1de2aca40256d018cf736c524152ae4a731f5810ff7cd028d565158d53368e681af2
   languageName: node
   linkType: hard
 
@@ -11829,50 +11991,50 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.1.7#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.4#optional!builtin<compat/resolve>":
   version: 1.22.8
-  resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.13.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10c0/0446f024439cd2e50c6c8fa8ba77eaa8370b4180f401a96abf3d1ebc770ac51c1955e12764cde449fde3fff480a61f84388e3505ecdbab778f4bef5f8212c729
+  checksum: 10c0/4bc6de64a713422234e0e773bff296767d77d6e545b98042ff90a796d356f2b131853f4fa1d54e2c415aa6efa6dc2eed5b3f501f63164f834619fda900e33b8e
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A^1.22.8#optional!builtin<compat/resolve>":
   version: 1.22.10
-  resolution: "resolve@patch:resolve@npm%3A1.22.10#optional!builtin<compat/resolve>::version=1.22.10&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.10#optional!builtin<compat/resolve>::version=1.22.10&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.16.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10c0/52a4e505bbfc7925ac8f4cd91fd8c4e096b6a89728b9f46861d3b405ac9a1ccf4dcbf8befb4e89a2e11370dacd0160918163885cbc669369590f2f31f4c58939
+  checksum: 10c0/da5c4a85971e6eeb821805d117092321c6c257a6e1e45382c0b7ef41368a7e98690e01a08bac88b111443410a49e2fb17d1802ac5c51c8fc5532d77bef9f4be9
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A^2.0.0-next.5#optional!builtin<compat/resolve>":
   version: 2.0.0-next.5
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.5#optional!builtin<compat/resolve>::version=2.0.0-next.5&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.5#optional!builtin<compat/resolve>::version=2.0.0-next.5&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.13.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10c0/78ad6edb8309a2bfb720c2c1898f7907a37f858866ce11a5974643af1203a6a6e05b2fa9c53d8064a673a447b83d42569260c306d43628bff5bb101969708355
+  checksum: 10c0/9f2cb75a47ee17edca53b3a4e96883e82fe92dadc323a19868621b897da5136f7dd3189b7bac4d4e7715bb3b2fd5c1e8c5145ebccc7e0368b1546206f9644c12
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A~1.19.0#optional!builtin<compat/resolve>":
   version: 1.19.0
-  resolution: "resolve@patch:resolve@npm%3A1.19.0#optional!builtin<compat/resolve>::version=1.19.0&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.19.0#optional!builtin<compat/resolve>::version=1.19.0&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.1.0"
     path-parse: "npm:^1.0.6"
-  checksum: 10c0/254980f60dd9fdb28b34a511e70df6e3027d9627efce86a40757eea9b87252d172829c84517554560c4541ebfe207868270c19a0f086997b41209367aa8ef74f
+  checksum: 10c0/4d132cf530b0fd87f90901bf8caa35d85c6b4a7f1f3a9c1e7b3985223dc086ff1ff75a02cab72db83c1fa16fce78f3769fc1dceaf9b11396344370a58bb52af3
   languageName: node
   linkType: hard
 
@@ -13413,42 +13575,164 @@ __metadata:
   linkType: hard
 
 "typescript@npm:^5.8.3":
-  version: 5.9.2
-  resolution: "typescript@npm:5.9.2"
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
+  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
   languageName: node
   linkType: hard
 
-"typescript@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "typescript@npm:6.0.2"
+"typescript@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "typescript@npm:7.0.2"
+  dependencies:
+    "@typescript/typescript-aix-ppc64": "npm:7.0.2"
+    "@typescript/typescript-darwin-arm64": "npm:7.0.2"
+    "@typescript/typescript-darwin-x64": "npm:7.0.2"
+    "@typescript/typescript-freebsd-arm64": "npm:7.0.2"
+    "@typescript/typescript-freebsd-x64": "npm:7.0.2"
+    "@typescript/typescript-linux-arm": "npm:7.0.2"
+    "@typescript/typescript-linux-arm64": "npm:7.0.2"
+    "@typescript/typescript-linux-loong64": "npm:7.0.2"
+    "@typescript/typescript-linux-mips64el": "npm:7.0.2"
+    "@typescript/typescript-linux-ppc64": "npm:7.0.2"
+    "@typescript/typescript-linux-riscv64": "npm:7.0.2"
+    "@typescript/typescript-linux-s390x": "npm:7.0.2"
+    "@typescript/typescript-linux-x64": "npm:7.0.2"
+    "@typescript/typescript-netbsd-arm64": "npm:7.0.2"
+    "@typescript/typescript-netbsd-x64": "npm:7.0.2"
+    "@typescript/typescript-openbsd-arm64": "npm:7.0.2"
+    "@typescript/typescript-openbsd-x64": "npm:7.0.2"
+    "@typescript/typescript-sunos-x64": "npm:7.0.2"
+    "@typescript/typescript-win32-arm64": "npm:7.0.2"
+    "@typescript/typescript-win32-x64": "npm:7.0.2"
+  dependenciesMeta:
+    "@typescript/typescript-aix-ppc64":
+      optional: true
+    "@typescript/typescript-darwin-arm64":
+      optional: true
+    "@typescript/typescript-darwin-x64":
+      optional: true
+    "@typescript/typescript-freebsd-arm64":
+      optional: true
+    "@typescript/typescript-freebsd-x64":
+      optional: true
+    "@typescript/typescript-linux-arm":
+      optional: true
+    "@typescript/typescript-linux-arm64":
+      optional: true
+    "@typescript/typescript-linux-loong64":
+      optional: true
+    "@typescript/typescript-linux-mips64el":
+      optional: true
+    "@typescript/typescript-linux-ppc64":
+      optional: true
+    "@typescript/typescript-linux-riscv64":
+      optional: true
+    "@typescript/typescript-linux-s390x":
+      optional: true
+    "@typescript/typescript-linux-x64":
+      optional: true
+    "@typescript/typescript-netbsd-arm64":
+      optional: true
+    "@typescript/typescript-netbsd-x64":
+      optional: true
+    "@typescript/typescript-openbsd-arm64":
+      optional: true
+    "@typescript/typescript-openbsd-x64":
+      optional: true
+    "@typescript/typescript-sunos-x64":
+      optional: true
+    "@typescript/typescript-win32-arm64":
+      optional: true
+    "@typescript/typescript-win32-x64":
+      optional: true
   bin:
     tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/4b860b0bf87cc0fee0f66d8ef2640b5a8a8a8c74d1129adb82e389e5f97124383823c47946bef8a73ede371461143a3aa8544399d2133c7b2e4f07e81860af7f
+  checksum: 10c0/3dcee51ec8c332492325bcdbf7df48b66668751f127e622ae7d41b6c716eb19184424a45e14f7750f50f340232388b69e6287859155f06a5ce2df76f12cb31cf
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
-  version: 5.9.2
-  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/34d2a8e23eb8e0d1875072064d5e1d9c102e0bdce56a10a25c0b917b8aa9001a9cf5c225df12497e99da107dc379360bc138163c66b55b95f5b105b50578067e
+  checksum: 10c0/ad09fdf7a756814dce65bc60c1657b40d44451346858eea230e10f2e95a289d9183b6e32e5c11e95acc0ccc214b4f36289dcad4bf1886b0adb84d711d336a430
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^6.0.2#optional!builtin<compat/typescript>":
-  version: 6.0.2
-  resolution: "typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"
+"typescript@patch:typescript@npm%3A^7.0.2#optional!builtin<compat/typescript>":
+  version: 7.0.2
+  resolution: "typescript@patch:typescript@npm%3A7.0.2#optional!builtin<compat/typescript>::version=7.0.2&hash=3bafbf"
+  dependencies:
+    "@typescript/typescript-aix-ppc64": "npm:7.0.2"
+    "@typescript/typescript-darwin-arm64": "npm:7.0.2"
+    "@typescript/typescript-darwin-x64": "npm:7.0.2"
+    "@typescript/typescript-freebsd-arm64": "npm:7.0.2"
+    "@typescript/typescript-freebsd-x64": "npm:7.0.2"
+    "@typescript/typescript-linux-arm": "npm:7.0.2"
+    "@typescript/typescript-linux-arm64": "npm:7.0.2"
+    "@typescript/typescript-linux-loong64": "npm:7.0.2"
+    "@typescript/typescript-linux-mips64el": "npm:7.0.2"
+    "@typescript/typescript-linux-ppc64": "npm:7.0.2"
+    "@typescript/typescript-linux-riscv64": "npm:7.0.2"
+    "@typescript/typescript-linux-s390x": "npm:7.0.2"
+    "@typescript/typescript-linux-x64": "npm:7.0.2"
+    "@typescript/typescript-netbsd-arm64": "npm:7.0.2"
+    "@typescript/typescript-netbsd-x64": "npm:7.0.2"
+    "@typescript/typescript-openbsd-arm64": "npm:7.0.2"
+    "@typescript/typescript-openbsd-x64": "npm:7.0.2"
+    "@typescript/typescript-sunos-x64": "npm:7.0.2"
+    "@typescript/typescript-win32-arm64": "npm:7.0.2"
+    "@typescript/typescript-win32-x64": "npm:7.0.2"
+  dependenciesMeta:
+    "@typescript/typescript-aix-ppc64":
+      optional: true
+    "@typescript/typescript-darwin-arm64":
+      optional: true
+    "@typescript/typescript-darwin-x64":
+      optional: true
+    "@typescript/typescript-freebsd-arm64":
+      optional: true
+    "@typescript/typescript-freebsd-x64":
+      optional: true
+    "@typescript/typescript-linux-arm":
+      optional: true
+    "@typescript/typescript-linux-arm64":
+      optional: true
+    "@typescript/typescript-linux-loong64":
+      optional: true
+    "@typescript/typescript-linux-mips64el":
+      optional: true
+    "@typescript/typescript-linux-ppc64":
+      optional: true
+    "@typescript/typescript-linux-riscv64":
+      optional: true
+    "@typescript/typescript-linux-s390x":
+      optional: true
+    "@typescript/typescript-linux-x64":
+      optional: true
+    "@typescript/typescript-netbsd-arm64":
+      optional: true
+    "@typescript/typescript-netbsd-x64":
+      optional: true
+    "@typescript/typescript-openbsd-arm64":
+      optional: true
+    "@typescript/typescript-openbsd-x64":
+      optional: true
+    "@typescript/typescript-sunos-x64":
+      optional: true
+    "@typescript/typescript-win32-arm64":
+      optional: true
+    "@typescript/typescript-win32-x64":
+      optional: true
   bin:
     tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/49f0b84fc6ca55653e77752b8a61beabc09ee3dae5d965c31596225aa6ef213c5727b1d2e895b900416dc603854ba0872ac4a812c2a4ed6793a601f9c675de02
+  checksum: 10c0/6b3cdc369cd829d46e00734ea64233ee84419c2825ad8fe408915adde77abced4b7a2401f7eed517d54a7a4f5d1c1869753cb99018df1c2159c761d9f33483a6
   languageName: node
   linkType: hard
 
