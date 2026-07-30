@@ -9,12 +9,8 @@ import clsx from "clsx";
 
 import { StyleProps, cssVars } from "./Box.constants";
 
-// `color` is dropped from the passthrough. It is a deprecated HTML attribute
-// that React accepts on every element, so it type-checked here and rendered a
-// `color` attribute that paints nothing. `Text`, `Button` and `Icon` all have a
-// real `color` prop, so the name worked on those and did nothing on this one.
-// `as` and `tgphRef` come back at the top level, because a mapped type in front
-// of `as?: T` stops `<Box as="a" />` resolving `T`.
+// `color` is dropped from the passthrough. React accepts it on every element,
+// so it type-checked here and rendered an attribute that paints nothing.
 export type BoxProps<T extends TgphElement = "div"> = RemappedOmit<
   PolymorphicPropsWithTgphRef<T, HTMLElement>,
   "as" | "tgphRef" | "color"
