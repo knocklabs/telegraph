@@ -73,7 +73,7 @@
     "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
     "@github-ui/storybook-addon-performance-panel": "^1.1.4",
-    "@knocklabs/eslint-config": "^0.0.5",
+    "@knocklabs/eslint-config": "^0.0.6",
     "@manypkg/cli": "^0.25.1",
     "@moonrepo/cli": "^2.3.5",
     "@storybook/addon-links": "^10.4.0",
