@@ -54,7 +54,7 @@
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "eslint": "^10.4.0",
-    "lightningcss": "^1.32.0",
+    "lightningcss": "^1.33.0",
     "react": "^19.2.7",
     "typescript": "^6.0.2",
     "vite": "^8.1.5"
