@@ -1,4 +1,7 @@
-import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
+import {
+  CheckboxGroup as BaseCheckboxGroup,
+  type CheckboxGroupChangeEventDetails,
+} from "@base-ui/react/checkbox-group";
 import { type RemappedOmit, createTgphBaseUIRender } from "@telegraph/helpers";
 import { Stack, type StackProps } from "@telegraph/layout";
 import {
@@ -35,7 +38,15 @@ export type CheckboxGroupBaseProps = {
   value?: string[];
   /** Initial selection for an uncontrolled group. */
   defaultValue?: string[];
-  onValueChange?: (value: string[]) => void;
+  /**
+   * Called with the new selection. The second argument is Base UI's event
+   * detail: it carries the native event (`eventDetails.event`, useful for
+   * shift-click range selection) and `eventDetails.cancel()`.
+   */
+  onValueChange?: (
+    value: string[],
+    eventDetails: CheckboxGroupChangeEventDetails,
+  ) => void;
   /**
    * Every checkbox key in the group. Required when the group contains a
    * checkbox marked `parent`, since the parent's checked and indeterminate
@@ -89,6 +100,9 @@ const CheckboxGroup = ({
   style,
   tgphRef,
   children,
+  // Base UI consumes `id` for its own field registration and never renders it,
+  // so put it on the element ourselves.
+  id,
   ...props
 }: CheckboxGroupProps) => {
   return (
@@ -98,7 +112,7 @@ const CheckboxGroup = ({
         defaultValue={defaultValue}
         allValues={allValues}
         disabled={disabled}
-        onValueChange={(nextValue) => onValueChange?.(nextValue)}
+        onValueChange={onValueChange}
         {...props}
         render={createTgphBaseUIRender<
           BaseCheckboxGroupRenderProps,
@@ -112,6 +126,7 @@ const CheckboxGroup = ({
             display="flex"
             className={className}
             data-tgph-checkbox-group
+            id={id}
             tgphRef={tgphRef}
             style={style}
           >

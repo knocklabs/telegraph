@@ -8,6 +8,8 @@ import type {
   CheckboxRootProps,
   CheckboxSize,
 } from ".";
+import type { CheckboxRootChangeEventDetails } from "@base-ui/react/checkbox";
+import type { CheckboxGroupChangeEventDetails } from "@base-ui/react/checkbox-group";
 import type { RefObject } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -69,7 +71,22 @@ describe("Checkbox types", () => {
       .toEqualTypeOf<boolean>();
     expectTypeOf<
       Parameters<NonNullable<CheckboxProps["onValueChange"]>>
-    >().toEqualTypeOf<[boolean]>();
+    >().toEqualTypeOf<[boolean, CheckboxRootChangeEventDetails]>();
+  });
+
+  it("forwards Base UI's event details to onValueChange", () => {
+    <Checkbox.Default
+      label="Cancel this run"
+      onValueChange={(value, eventDetails) => {
+        expectTypeOf(value).toEqualTypeOf<boolean>();
+        expectTypeOf(
+          eventDetails,
+        ).toEqualTypeOf<CheckboxRootChangeEventDetails>();
+        // The escape hatch the second argument exists for: the native event
+        // (for shift-click range selection) and cancellation.
+        expectTypeOf(eventDetails.cancel).toBeFunction();
+      }}
+    />;
   });
 
   it("rejects unknown props", () => {
@@ -119,6 +136,20 @@ describe("Checkbox types", () => {
       // @ts-expect-error a data-* key alone gets no attribute exemption here
       labelProps={{ "data-testid": "x" }}
     />;
+  });
+
+  // Base UI moves the id onto the rendered element under `nativeButton`, which
+  // leaves `Checkbox.Label`'s `htmlFor` pointing at a div.
+  it("rejects nativeButton on the control", () => {
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error nativeButton is not part of the public surface
+      controlProps={{ nativeButton: true }}
+    />;
+    <Checkbox.Root>
+      {/* @ts-expect-error nativeButton is not part of the public surface */}
+      <Checkbox.Control nativeButton />
+    </Checkbox.Root>;
   });
 
   it("rejects invalid values for declared props", () => {
@@ -255,7 +286,7 @@ describe("Checkbox types", () => {
       name="runs"
       formValue="run_1"
       labelProps={{ color: "gray" }}
-      controlProps={{ nativeButton: false }}
+      controlProps={{ inputRef: { current: null } }}
     />;
     <Checkbox.Default label="Cancel this run" defaultValue />;
   });
@@ -285,7 +316,18 @@ describe("CheckboxGroup types", () => {
       .toEqualTypeOf<string[]>();
     expectTypeOf<
       Parameters<NonNullable<CheckboxGroupProps["onValueChange"]>>
-    >().toEqualTypeOf<[string[]]>();
+    >().toEqualTypeOf<[string[], CheckboxGroupChangeEventDetails]>();
+  });
+
+  it("forwards Base UI's event details to the group's onValueChange", () => {
+    <CheckboxGroup
+      onValueChange={(value, eventDetails) => {
+        expectTypeOf(value).toEqualTypeOf<string[]>();
+        expectTypeOf(
+          eventDetails,
+        ).toEqualTypeOf<CheckboxGroupChangeEventDetails>();
+      }}
+    />;
   });
 
   it("rejects unknown props and invalid values", () => {

@@ -81,23 +81,23 @@ Set both when several checkboxes should submit under one field name:
 The simple API for common use cases: renders the control and an associated
 label.
 
-| Prop            | Type                       | Default  | Description                                                  |
-| --------------- | -------------------------- | -------- | ------------------------------------------------------------ |
-| `label`         | `ReactNode`                | —        | Visible label, associated via `htmlFor`                      |
-| `size`          | `"1" \| "2"`               | `"2"`    | Control size                                                 |
-| `color`         | `CheckboxColor`            | `"blue"` | Color when checked                                           |
-| `value`         | `boolean`                  | —        | Controlled checked state                                     |
-| `defaultValue`  | `boolean`                  | `false`  | Initial checked state when uncontrolled                      |
-| `onValueChange` | `(value: boolean) => void` | —        | Fired when the checkbox is ticked or unticked                |
-| `indeterminate` | `boolean`                  | `false`  | Renders the mixed state                                      |
-| `parent`        | `boolean`                  | `false`  | Marks this as the group's select-all                         |
-| `disabled`      | `boolean`                  | `false`  | Disables interaction                                         |
-| `readOnly`      | `boolean`                  | `false`  | Prevents changes but stays focusable                         |
-| `required`      | `boolean`                  | `false`  | Must be ticked before the form submits                       |
-| `name`          | `string`                   | —        | Form field name, and the group key when `formValue` is unset |
-| `formValue`     | `string`                   | `"on"`   | The string submitted with the form                           |
-| `labelProps`    | `CheckboxLabelProps`       | —        | Forwarded to `Checkbox.Label`                                |
-| `controlProps`  | `CheckboxControlProps`     | —        | Forwarded to `Checkbox.Control`                              |
+| Prop            | Type                    | Default  | Description                                                  |
+| --------------- | ----------------------- | -------- | ------------------------------------------------------------ |
+| `label`         | `ReactNode`             | —        | Visible label, associated via `htmlFor`                      |
+| `size`          | `"1" \| "2"`            | `"2"`    | Control size                                                 |
+| `color`         | `CheckboxColor`         | `"blue"` | Color when checked                                           |
+| `value`         | `boolean`               | —        | Controlled checked state                                     |
+| `defaultValue`  | `boolean`               | `false`  | Initial checked state when uncontrolled                      |
+| `onValueChange` | `(value, eventDetails)` | —        | Fired when the checkbox is ticked or unticked                |
+| `indeterminate` | `boolean`               | `false`  | Renders the mixed state                                      |
+| `parent`        | `boolean`               | `false`  | Marks this as the group's select-all                         |
+| `disabled`      | `boolean`               | `false`  | Disables interaction                                         |
+| `readOnly`      | `boolean`               | `false`  | Prevents changes but stays focusable                         |
+| `required`      | `boolean`               | `false`  | Must be ticked before the form submits                       |
+| `name`          | `string`                | —        | Form field name, and the group key when `formValue` is unset |
+| `formValue`     | `string`                | `"on"`   | The string submitted with the form                           |
+| `labelProps`    | `CheckboxLabelProps`    | —        | Forwarded to `Checkbox.Label`                                |
+| `controlProps`  | `CheckboxControlProps`  | —        | Forwarded to `Checkbox.Control`                              |
 
 `color` accepts `default`, `accent`, `blue`, `gray`, `green`, `purple`, `red`,
 and `yellow` — the same set as `@telegraph/button`, so a checked checkbox
@@ -118,23 +118,55 @@ matches a solid button of the same color.
 - **`<Checkbox.Control>`** — the box and its indicator.
 - **`<Checkbox.Label>`** — the label, associated with the control automatically.
 
-Use `aria-label` on `Root` when there is no visible label.
+Use `aria-label` on `Root` when there is no visible label. Without either one,
+the control falls back to a wrapping `<label>` or a `Field.Label`, so those
+compositions name it correctly too.
 
 ### `<CheckboxGroup>`
 
-| Prop            | Type                        | Default    | Description                                   |
-| --------------- | --------------------------- | ---------- | --------------------------------------------- |
-| `value`         | `string[]`                  | —          | Controlled selection                          |
-| `defaultValue`  | `string[]`                  | —          | Initial selection when uncontrolled           |
-| `onValueChange` | `(value: string[]) => void` | —          | Fired when any checkbox in the group changes  |
-| `allValues`     | `string[]`                  | —          | Every key in the group. Required for `parent` |
-| `size`          | `"1" \| "2"`                | —          | Applied to children that don't set their own  |
-| `color`         | `CheckboxColor`             | —          | Applied to children that don't set their own  |
-| `disabled`      | `boolean`                   | `false`    | Disables every child                          |
-| `direction`     | `"row" \| "column"`         | `"column"` | Layout direction                              |
-| `gap`           | Telegraph spacing token     | `"2"`      | Space between checkboxes                      |
+| Prop            | Type                    | Default    | Description                                   |
+| --------------- | ----------------------- | ---------- | --------------------------------------------- |
+| `value`         | `string[]`              | —          | Controlled selection                          |
+| `defaultValue`  | `string[]`              | —          | Initial selection when uncontrolled           |
+| `onValueChange` | `(value, eventDetails)` | —          | Fired when any checkbox in the group changes  |
+| `allValues`     | `string[]`              | —          | Every key in the group. Required for `parent` |
+| `size`          | `"1" \| "2"`            | —          | Applied to children that don't set their own  |
+| `color`         | `CheckboxColor`         | —          | Applied to children that don't set their own  |
+| `disabled`      | `boolean`               | `false`    | Disables every child                          |
+| `direction`     | `"row" \| "column"`     | `"column"` | Layout direction                              |
+| `gap`           | Telegraph spacing token | `"2"`      | Space between checkboxes                      |
 
 It renders a `Stack`, so the usual layout props apply.
+
+A group's `disabled` wins over a child's. `<Checkbox.Default disabled={false}>`
+inside a disabled group stays disabled — that is Base UI's rule, and `size` and
+`color` are the ones a child can override.
+
+### Event details
+
+Both `onValueChange` callbacks take a second argument carrying the event behind
+the change. Use it to reach the native event — `shiftKey` for range selection,
+for example — or to reject the change outright.
+
+Base UI types `event` as the base DOM `Event`, so narrow before reading
+modifier keys. Toggling with the space key goes through a synthesized click, so
+both paths arrive as a `PointerEvent`.
+
+```tsx
+<CheckboxGroup
+  value={selected}
+  onValueChange={(next, eventDetails) => {
+    const { event } = eventDetails;
+    if (event instanceof MouseEvent && event.shiftKey) {
+      setSelected(extendRange(selected, next));
+      return;
+    }
+    setSelected(next);
+  }}
+>
+```
+
+Call `eventDetails.cancel()` to leave the checkbox as it was.
 
 ### Select-all
 
@@ -198,13 +230,16 @@ temporary and it should still block the parent from reading as complete.
 
 ### Known limitation
 
-Inside a select-all group, Base UI derives its own id for each checkbox and
-discards the one it was given
-([mui/base-ui#2691](https://github.com/mui/base-ui/issues/2691)). So an `id`
-you pass to a checkbox in that group does not reach the input. Everywhere else
-`id` behaves normally.
+`id` never lands on the element you probably expect. Base UI puts it on the
+hidden input, not on the styled element that carries `role="checkbox"`, so
+`getElementById` returns an `aria-hidden` input rather than the control.
 
-`Checkbox.Label` handles this for you — it reads back the id Base UI actually
-used, so clicking label text still toggles the checkbox. If you write your own
-label, associate it the same way rather than assuming the `id` you passed was
-honored.
+In any group that sets `allValues` — with or without a `parent` checkbox —
+Base UI ignores the `id` you passed and derives its own from the group's id
+plus the checkbox's key
+([mui/base-ui#2691](https://github.com/mui/base-ui/issues/2691)).
+
+`Checkbox.Label` handles both cases for you: it reads back whatever id Base UI
+settled on, and it re-reads it whenever that id changes, so clicking label text
+keeps toggling the checkbox. If you write your own label, associate it the same
+way rather than assuming the `id` you passed was honored.

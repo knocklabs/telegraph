@@ -329,4 +329,118 @@ describe("CheckboxGroup", () => {
       expect(data.get("run-1")).toBe("on");
     });
   });
+
+  describe("group id", () => {
+    it("renders the id on the group element", () => {
+      const { container } = render(
+        <CheckboxGroup id="channels" aria-labelledby="channels-heading">
+          <Checkbox.Default name="email" label="Email" />
+        </CheckboxGroup>,
+      );
+
+      expect(container.querySelector("#channels")).toHaveAttribute(
+        "data-tgph-checkbox-group",
+      );
+    });
+  });
+
+  // Base UI ORs the group's `disabled` over each checkbox's own, so a child
+  // cannot opt out. If our own resolution disagreed, the label would style
+  // itself enabled over a control Base UI had already disabled.
+  describe("disabled precedence", () => {
+    it("keeps a child disabled even when it passes disabled={false}", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      const { container } = render(
+        <CheckboxGroup disabled onValueChange={onValueChange}>
+          <Checkbox.Default name="email" label="Email" disabled={false} />
+        </CheckboxGroup>,
+      );
+
+      // The control is Base UI's rendered div, so `toBeDisabled` doesn't apply;
+      // the real input is the aria-hidden sibling.
+      const control = getCheckbox("Email");
+      expect(control).toHaveAttribute("aria-disabled", "true");
+      expect(control).toHaveAttribute("data-disabled");
+      expect(
+        container.querySelector<HTMLInputElement>('input[type="checkbox"]')!
+          .disabled,
+      ).toBe(true);
+
+      // The parts we style ourselves have to agree with Base UI, or the label
+      // renders at full contrast with a pointer cursor over a dead control.
+      expect(
+        container.querySelector("[data-tgph-checkbox-root]"),
+      ).toHaveAttribute("data-tgph-checkbox-disabled", "true");
+      expect(
+        container.querySelector("[data-tgph-checkbox-label]"),
+      ).toHaveAttribute("data-tgph-checkbox-disabled", "true");
+
+      await user.click(screen.getByText("Email"));
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("event details", () => {
+    it("passes Base UI's event details to the group's onValueChange", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      render(
+        <CheckboxGroup onValueChange={onValueChange}>
+          <Checkbox.Default name="email" label="Email" />
+        </CheckboxGroup>,
+      );
+
+      await user.click(getCheckbox("Email"));
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      const [value, eventDetails] = onValueChange.mock.calls[0]!;
+      expect(value).toEqual(["email"]);
+      expect(typeof eventDetails.cancel).toBe("function");
+    });
+  });
+
+  // Inside a select-all group Base UI derives the input id from the group's own
+  // id plus the checkbox's key, so `allValues` arriving after mount rewrites
+  // every input id in place. `Checkbox.Label` has to follow.
+  describe("label association when allValues arrives late", () => {
+    const LateAllValues = () => {
+      const [allValues, setAllValues] = useState<string[] | undefined>(
+        undefined,
+      );
+      const [value, setValue] = useState<string[]>([]);
+      return (
+        <>
+          <button type="button" onClick={() => setAllValues(RUNS)}>
+            Load
+          </button>
+          <CheckboxGroup
+            value={value}
+            onValueChange={setValue}
+            allValues={allValues}
+          >
+            <Checkbox.Default parent label="Select all" />
+            {RUNS.map((run) => (
+              <Checkbox.Default key={run} name={run} label={run} />
+            ))}
+          </CheckboxGroup>
+        </>
+      );
+    };
+
+    it("keeps label clicks working after the ids change", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<LateAllValues />);
+
+      await user.click(screen.getByRole("button", { name: "Load" }));
+
+      const label = Array.from(container.querySelectorAll("label")).find(
+        (node) => node.textContent === "run-1",
+      )!;
+      expect(document.getElementById(label.getAttribute("for")!)).toBeTruthy();
+
+      await user.click(label);
+      expect(getCheckbox("run-1")).toBeChecked();
+    });
+  });
 });

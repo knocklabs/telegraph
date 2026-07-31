@@ -106,22 +106,9 @@ describe("Checkbox", () => {
 
     await user.click(getControl());
 
-    expect(onValueChange).toHaveBeenCalledWith(true);
+    expect(onValueChange.mock.calls[0]![0]).toBe(true);
     // Controlled: stays false until the parent updates `value`.
     expect(getControl()).not.toBeChecked();
-  });
-
-  it("calls onValueChange with a single boolean argument", async () => {
-    const user = userEvent.setup();
-    const onValueChange = vi.fn();
-    render(
-      <Checkbox.Default label="Select run" onValueChange={onValueChange} />,
-    );
-
-    await user.click(getControl());
-
-    expect(onValueChange).toHaveBeenCalledTimes(1);
-    expect(onValueChange.mock.calls[0]).toEqual([true]);
   });
 
   it("toggles with the space key", async () => {
@@ -235,6 +222,90 @@ describe("Checkbox", () => {
         </Checkbox.Root>,
       );
       expect(getControl()).toHaveAccessibleName("Select run");
+    });
+  });
+
+  // Pointing `aria-labelledby` at a label that never rendered dangles the
+  // IDREF and, worse, stops Base UI falling back to a wrapping `<label>`. The
+  // control then has no accessible name at all.
+  describe("labelling without Checkbox.Label", () => {
+    it("leaves aria-labelledby unset when no label rendered", () => {
+      render(
+        <Checkbox.Root>
+          <Checkbox.Control />
+        </Checkbox.Root>,
+      );
+      expect(getControl()).not.toHaveAttribute("aria-labelledby");
+    });
+
+    it("takes its name from a wrapping native label", async () => {
+      const { container } = render(
+        <label>
+          Accept terms
+          <Checkbox.Root>
+            <Checkbox.Control />
+          </Checkbox.Root>
+        </label>,
+      );
+
+      expect(getControl()).toHaveAccessibleName("Accept terms");
+      expectToHaveNoViolations(await axe(container));
+    });
+
+    it("still prefers an explicit Checkbox.Label", () => {
+      render(
+        <Checkbox.Root>
+          <Checkbox.Control />
+          <Checkbox.Label>Select run</Checkbox.Label>
+        </Checkbox.Root>,
+      );
+      expect(getControl()).toHaveAccessibleName("Select run");
+    });
+  });
+
+  describe("event details", () => {
+    it("passes Base UI's event details to onValueChange", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      render(
+        <Checkbox.Default label="Select run" onValueChange={onValueChange} />,
+      );
+
+      await user.click(getControl());
+
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      const [value, eventDetails] = onValueChange.mock.calls[0]!;
+      expect(value).toBe(true);
+      // The reason this argument exists: the native event behind the change,
+      // so consumers can read `shiftKey` for range selection.
+      expect(eventDetails.event).toBeInstanceOf(Object);
+      expect(typeof eventDetails.cancel).toBe("function");
+    });
+  });
+
+  // Base UI recomputes the hidden input's id from `value ?? name`, so anything
+  // that changes the key changes the id — on the same DOM node. `Checkbox.Label`
+  // has to follow it or `htmlFor` silently points at nothing.
+  describe("label association follows Base UI's input id", () => {
+    // Outside a group Base UI takes the input id straight from `id`, so
+    // changing `id` is what moves it. (Inside a select-all group it derives the
+    // id from the group instead — covered in the CheckboxGroup tests.)
+    it("updates htmlFor when the id changes", async () => {
+      const user = userEvent.setup();
+      const { container, rerender } = render(
+        <Checkbox.Default label="Select run" id="first" />,
+      );
+
+      const labelFor = () =>
+        container.querySelector("label")!.getAttribute("for");
+      expect(labelFor()).toBe("first");
+
+      rerender(<Checkbox.Default label="Select run" id="second" />);
+
+      expect(getHiddenInput(container).id).toBe("second");
+      expect(labelFor()).toBe("second");
+      await user.click(screen.getByText("Select run"));
+      expect(getControl()).toBeChecked();
     });
   });
 });

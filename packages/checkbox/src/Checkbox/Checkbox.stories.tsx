@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Stack } from "@telegraph/layout";
 
-import { Checkbox } from "./Checkbox";
+import { Checkbox, type DefaultProps } from "./Checkbox";
 import {
   CHECKBOX_COLOR_MAP,
   CHECKBOX_SIZE_MAP,
@@ -41,7 +41,11 @@ const meta: Meta<typeof Checkbox.Default> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Checkbox.Default>;
+
+// `Checkbox.Default` is polymorphic, so `typeof Checkbox.Default` leaves `T`
+// unresolved and the element passthrough drops out — `args` would then reject
+// every HTML attribute. Pin the element the stories actually render.
+type Story = StoryObj<DefaultProps<"div">>;
 
 export const Default: Story = {
   args: {

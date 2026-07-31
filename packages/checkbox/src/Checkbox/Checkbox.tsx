@@ -1,4 +1,7 @@
-import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
+import {
+  Checkbox as BaseCheckbox,
+  type CheckboxRootChangeEventDetails,
+} from "@base-ui/react/checkbox";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type AsAndTgphRefProps,
@@ -18,7 +21,9 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useId,
+  useRef,
   useState,
 } from "react";
 
@@ -47,9 +52,19 @@ type InternalContextType = {
    */
   inputId?: string;
   registerInputId: (id: string) => void;
+  /**
+   * Whether a `Checkbox.Label` rendered. When none did, the control leaves
+   * `aria-labelledby` unset so Base UI can fall back to a wrapping `<label>`
+   * or a `Field.Label`.
+   */
+  hasLabel: boolean;
+  registerLabel: (present: boolean) => void;
   value?: boolean;
   defaultValue?: boolean;
-  onValueChange?: (value: boolean) => void;
+  onValueChange?: (
+    value: boolean,
+    eventDetails: CheckboxRootChangeEventDetails,
+  ) => void;
   formValue?: string;
   name?: string;
   required?: boolean;
@@ -66,6 +81,8 @@ const CheckboxContext = createContext<InternalContextType>({
   id: "",
   labelId: "",
   registerInputId: () => {},
+  hasLabel: false,
+  registerLabel: () => {},
 });
 
 export type RootBaseProps = {
@@ -75,7 +92,15 @@ export type RootBaseProps = {
   value?: boolean;
   /** Initial ticked state for an uncontrolled checkbox. */
   defaultValue?: boolean;
-  onValueChange?: (value: boolean) => void;
+  /**
+   * Called with the new ticked state. The second argument is Base UI's event
+   * detail: it carries the native event (`eventDetails.event`, useful for
+   * shift-click range selection) and `eventDetails.cancel()`.
+   */
+  onValueChange?: (
+    value: boolean,
+    eventDetails: CheckboxRootChangeEventDetails,
+  ) => void;
   /** Renders the mixed state: `aria-checked="mixed"` plus a dash indicator. */
   indeterminate?: boolean;
   /**
@@ -142,17 +167,25 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
   // Own prop wins, then the group's default, then the component default.
   const size = sizeProp ?? group?.size ?? "2";
   const color = colorProp ?? group?.color ?? "blue";
-  const disabled = disabledProp ?? group?.disabled ?? false;
+  // `disabled` is the exception: Base UI ORs the group's value over the
+  // checkbox's own (`CheckboxRoot.js`), so a group that disables its children
+  // cannot be opted out of. Match that here or the label styles itself enabled
+  // over a control Base UI has already disabled.
+  const disabled = group?.disabled || disabledProp || false;
 
   const generatedId = useId();
   const id = idProp || generatedId;
   const labelId = `${id}-label`;
 
   const [inputId, setInputId] = useState<string>();
-  const registerInputId = useCallback(
-    (nextId: string) => setInputId((current) => current ?? nextId),
-    [],
-  );
+  const registerInputId = useCallback((nextId: string) => {
+    setInputId(nextId);
+  }, []);
+
+  const [hasLabel, setHasLabel] = useState(false);
+  const registerLabel = useCallback((present: boolean) => {
+    setHasLabel(present);
+  }, []);
 
   return (
     <CheckboxContext.Provider
@@ -166,6 +199,8 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         labelId,
         inputId,
         registerInputId,
+        hasLabel,
+        registerLabel,
         value,
         defaultValue,
         onValueChange,
@@ -219,6 +254,9 @@ export type ControlProps = RemappedOmit<
   | "id"
   | "indeterminate"
   | "name"
+  // Base UI moves the id onto the rendered element and warns that it expected a
+  // native `<button>`, which breaks `Checkbox.Label`'s `htmlFor`.
+  | "nativeButton"
   | "onCheckedChange"
   | "parent"
   | "render"
@@ -235,17 +273,20 @@ const Control = ({ style, tgphRef, inputRef, ...props }: ControlProps) => {
   const { backgroundColor, indicatorColor } = CHECKBOX_COLOR_MAP[context.color];
   const { registerInputId } = context;
 
-  // Report whatever id Base UI settled on, so `Checkbox.Label` can point
-  // `htmlFor` at it. Composed with any caller-supplied `inputRef`.
+  const localInputRef = useRef<HTMLInputElement>(null);
   const composedInputRef = useComposedRefs<HTMLInputElement>(
     inputRef,
-    useCallback(
-      (node: HTMLInputElement | null) => {
-        if (node?.id) registerInputId(node.id);
-      },
-      [registerInputId],
-    ),
+    localInputRef,
   );
+
+  // Report whatever id Base UI settled on, so `Checkbox.Label` can point
+  // `htmlFor` at it. Base UI recomputes that id from `value ?? name`, the
+  // group's `allValues`, and `id` — on the *same* input node, so a ref callback
+  // would fire once and then go stale. Read it after every render instead.
+  useEffect(() => {
+    const nextId = localInputRef.current?.id;
+    if (nextId) registerInputId(nextId);
+  });
 
   return (
     <BaseCheckbox.Root
@@ -261,8 +302,15 @@ const Control = ({ style, tgphRef, inputRef, ...props }: ControlProps) => {
       required={context.required}
       readOnly={context.readOnly}
       aria-label={context["aria-label"]}
-      aria-labelledby={context["aria-label"] ? undefined : context.labelId}
-      onCheckedChange={(checked) => context.onValueChange?.(checked)}
+      // Only point at a label that exists. Setting this unconditionally both
+      // dangles the IDREF and stops Base UI falling back to a wrapping
+      // `<label>` or a `Field.Label`, leaving the control with no name.
+      aria-labelledby={
+        context["aria-label"] || !context.hasLabel ? undefined : context.labelId
+      }
+      onCheckedChange={(checked, eventDetails) =>
+        context.onValueChange?.(checked, eventDetails)
+      }
       {...props}
       render={createTgphBaseUIRender<
         BaseCheckboxRenderProps,
@@ -323,6 +371,13 @@ export type LabelProps<T extends TgphElement = "label"> = RemappedOmit<
 const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
   const { as, style, ...props } = labelProps as LabelProps<"label">;
   const context = useContext(CheckboxContext);
+  const { registerLabel } = context;
+
+  // Tells `Checkbox.Control` it has something to point `aria-labelledby` at.
+  useEffect(() => {
+    registerLabel(true);
+    return () => registerLabel(false);
+  }, [registerLabel]);
 
   return (
     <Text
