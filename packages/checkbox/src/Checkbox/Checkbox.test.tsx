@@ -263,6 +263,62 @@ describe("Checkbox", () => {
     });
   });
 
+  describe("label rendering", () => {
+    // `{label && …}` renders a bare `0` instead of a label.
+    it("renders a zero label inside a real label element", () => {
+      const { container } = render(<Checkbox.Default label={0} />);
+      const label = container.querySelector("label");
+      expect(label).toHaveTextContent("0");
+      expect(getControl()).toHaveAccessibleName("0");
+    });
+
+    // `label={cond && "text"}` yields `false` when the condition fails.
+    it("renders no label for false", () => {
+      const { container } = render(
+        <Checkbox.Default aria-label="Select run" label={false} />,
+      );
+      expect(container.querySelector("label")).toBeNull();
+    });
+  });
+
+  describe("styling hooks", () => {
+    it("puts className on each part", () => {
+      const { container } = render(
+        <Checkbox.Default
+          label="Select run"
+          className="my-root"
+          controlProps={{ className: "my-control" }}
+          labelProps={{ className: "my-label" }}
+        />,
+      );
+
+      expect(container.querySelector("[data-tgph-checkbox-root]")).toHaveClass(
+        "my-root",
+      );
+      expect(
+        container.querySelector("[data-tgph-checkbox-control]"),
+      ).toHaveClass("my-control");
+      expect(container.querySelector("[data-tgph-checkbox-label]")).toHaveClass(
+        "my-label",
+      );
+    });
+
+    // Cursor belongs to the stylesheet. Inline styles beat it, and the root's
+    // covers the inert gap between the box and the label.
+    it("sets no inline cursor on the root or the label", () => {
+      const { container } = render(<Checkbox.Default label="Select run" />);
+
+      expect(
+        container.querySelector<HTMLElement>("[data-tgph-checkbox-root]")!.style
+          .cursor,
+      ).toBe("");
+      expect(
+        container.querySelector<HTMLElement>("[data-tgph-checkbox-label]")!
+          .style.cursor,
+      ).toBe("");
+    });
+  });
+
   describe("event details", () => {
     it("passes Base UI's event details to onValueChange", async () => {
       const user = userEvent.setup();

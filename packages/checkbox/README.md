@@ -67,6 +67,10 @@ back to its `name`. So in the common case you only set `name`:
 </CheckboxGroup>
 ```
 
+Inside a group, the group owns the selection: a checkbox's own `value` or
+`defaultValue` is ignored. Put the initial selection on the group instead.
+Passing one anyway logs a warning in development.
+
 Set both when several checkboxes should submit under one field name:
 
 ```tsx

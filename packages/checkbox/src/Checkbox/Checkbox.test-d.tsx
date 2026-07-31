@@ -138,6 +138,28 @@ describe("Checkbox types", () => {
     />;
   });
 
+  // `Default` renders its own control and label, so children would be dropped.
+  it("rejects children on Default but keeps them on Root", () => {
+    // @ts-expect-error Default has no slot for children
+    <Checkbox.Default label="Cancel run">extra</Checkbox.Default>;
+    <Checkbox.Root>
+      <Checkbox.Control />
+    </Checkbox.Root>;
+  });
+
+  it("accepts className on every part", () => {
+    <Checkbox.Default label="Cancel run" className="root" />;
+    <Checkbox.Default
+      label="Cancel run"
+      controlProps={{ className: "control" }}
+      labelProps={{ className: "label" }}
+    />;
+    <Checkbox.Root className="root">
+      <Checkbox.Control className="control" />
+      <Checkbox.Label className="label">Cancel run</Checkbox.Label>
+    </Checkbox.Root>;
+  });
+
   // Base UI moves the id onto the rendered element under `nativeButton`, which
   // leaves `Checkbox.Label`'s `htmlFor` pointing at a div.
   it("rejects nativeButton on the control", () => {
@@ -328,6 +350,15 @@ describe("CheckboxGroup types", () => {
         ).toEqualTypeOf<CheckboxGroupChangeEventDetails>();
       }}
     />;
+  });
+
+  // The group renders its element inside Base UI's `render` callback, so it is
+  // deliberately not polymorphic — `as` should not be part of its surface.
+  it("rejects as", () => {
+    // @ts-expect-error CheckboxGroup is not polymorphic
+    <CheckboxGroup as="section" />;
+    // @ts-expect-error not even the element it actually renders
+    <CheckboxGroup as="div" />;
   });
 
   it("rejects unknown props and invalid values", () => {

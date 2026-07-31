@@ -187,6 +187,27 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     setHasLabel(present);
   }, []);
 
+  // Two combinations that do nothing at all rather than failing loudly.
+  const hasOwnValue = value !== undefined || defaultValue !== undefined;
+  const inGroup = group !== null;
+  const groupHasAllValues = group?.hasAllValues ?? false;
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    if (parent && !groupHasAllValues) {
+      console.warn(
+        "Checkbox warning: `parent` needs a `CheckboxGroup` with `allValues` to " +
+          "derive its state. Without it the select-all checkbox toggles nothing.",
+      );
+    }
+    if (inGroup && hasOwnValue) {
+      console.warn(
+        "Checkbox warning: a checkbox inside a `CheckboxGroup` ignores its own " +
+          "`value` / `defaultValue`. The group owns the selection — set it on " +
+          "the group instead, keyed by this checkbox's `formValue` (or `name`).",
+      );
+    }
+  }, [parent, groupHasAllValues, inGroup, hasOwnValue]);
+
   return (
     <CheckboxContext.Provider
       value={{
@@ -220,10 +241,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         className={className}
         data-tgph-checkbox-root
         data-tgph-checkbox-disabled={disabled}
-        style={{
-          cursor: disabled ? "not-allowed" : "pointer",
-          ...style,
-        }}
+        style={style}
         {...props}
       >
         {children}
@@ -263,11 +281,20 @@ export type ControlProps = RemappedOmit<
   | "style"
   | "value"
 > & {
+  // Base UI types both of these as `string | ((state) => string)`. They land on
+  // the styled `Stack`, which takes the plain forms.
+  className?: string;
   style?: CSSProperties;
   tgphRef?: Ref<HTMLElement>;
 };
 
-const Control = ({ style, tgphRef, inputRef, ...props }: ControlProps) => {
+const Control = ({
+  className,
+  style,
+  tgphRef,
+  inputRef,
+  ...props
+}: ControlProps) => {
   const context = useContext(CheckboxContext);
   const { size, iconSize } = CHECKBOX_SIZE_MAP[context.size];
   const { backgroundColor, indicatorColor } = CHECKBOX_COLOR_MAP[context.color];
@@ -330,6 +357,7 @@ const Control = ({ style, tgphRef, inputRef, ...props }: ControlProps) => {
             data-tgph-checkbox-control
             data-tgph-checkbox-size={context.size}
             data-tgph-checkbox-color={context.color}
+            className={className}
             tgphRef={tgphRef}
             style={style}
           >
@@ -389,16 +417,18 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
       size={LABEL_SIZE_MAP[context.size]}
       data-tgph-checkbox-label
       data-tgph-checkbox-disabled={context.disabled}
-      style={{
-        cursor: context.disabled ? "not-allowed" : "pointer",
-        ...style,
-      }}
+      style={style}
       {...props}
     />
   );
 };
 
-export type DefaultProps<T extends TgphElement = "div"> = RootProps<T> & {
+// `children` is dropped: `Default` renders its own control and label, so
+// anything passed would be silently discarded.
+export type DefaultProps<T extends TgphElement = "div"> = RemappedOmit<
+  RootProps<T>,
+  "children"
+> & {
   label?: ReactNode;
   labelProps?: RemappedOmit<LabelProps<"label">, "as">;
   controlProps?: ControlProps;
@@ -413,7 +443,9 @@ const Default = <T extends TgphElement = "div">({
   return (
     <Root {...(props as RootProps<T>)}>
       <Control {...controlProps} />
-      {label && (
+      {/* Not `label &&`: that renders a bare `0` for `label={0}`, and `false`
+          is what `label={cond && "text"}` yields when the condition fails. */}
+      {label != null && label !== false && (
         <Label as="label" {...labelProps}>
           {label}
         </Label>

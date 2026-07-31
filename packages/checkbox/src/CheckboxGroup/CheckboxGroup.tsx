@@ -68,7 +68,7 @@ export type CheckboxGroupBaseProps = {
  */
 export type CheckboxGroupProps = RemappedOmit<
   StackProps<"div">,
-  "tgphRef" | "value" | "defaultValue" | "onChange" | "color"
+  "tgphRef" | "as" | "value" | "defaultValue" | "onChange" | "color"
 > &
   RemappedOmit<
     BaseCheckboxGroupProps,
@@ -106,7 +106,9 @@ const CheckboxGroup = ({
   ...props
 }: CheckboxGroupProps) => {
   return (
-    <CheckboxGroupContext.Provider value={{ size, color, disabled }}>
+    <CheckboxGroupContext.Provider
+      value={{ size, color, disabled, hasAllValues: allValues !== undefined }}
+    >
       <BaseCheckboxGroup
         value={value}
         defaultValue={defaultValue}
