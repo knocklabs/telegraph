@@ -160,6 +160,30 @@ describe("Checkbox types", () => {
     </Checkbox.Root>;
   });
 
+  // `Checkbox.Root` resolves these and forwards them. Through `controlProps`
+  // they would spread over the resolved value and leave the control live under
+  // a root and label styled disabled.
+  it("rejects root-owned state props on the control", () => {
+    <Checkbox.Default
+      label="Cancel run"
+      disabled
+      // @ts-expect-error disabled belongs on the root
+      controlProps={{ disabled: false }}
+    />;
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error readOnly belongs on the root
+      controlProps={{ readOnly: true }}
+    />;
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error required belongs on the root
+      controlProps={{ required: true }}
+    />;
+    // The root still takes all three.
+    <Checkbox.Default label="Cancel run" disabled readOnly required />;
+  });
+
   // Base UI moves the id onto the rendered element under `nativeButton`, which
   // leaves `Checkbox.Label`'s `htmlFor` pointing at a div.
   it("rejects nativeButton on the control", () => {

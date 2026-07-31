@@ -11,5 +11,11 @@
     "rootDir": "src"
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": [
+    "src/**/*.test.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.test-d.tsx",
+    "dist",
+    "node_modules"
+  ]
 }

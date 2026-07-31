@@ -15,14 +15,17 @@ import { Text, type TextProps } from "@telegraph/typography";
 import { Check, Minus } from "lucide-react";
 import {
   type CSSProperties,
+  Children,
   type ComponentPropsWithoutRef,
   type ReactNode,
   type Ref,
   createContext,
+  isValidElement,
   useCallback,
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -53,12 +56,14 @@ type InternalContextType = {
   inputId?: string;
   registerInputId: (id: string) => void;
   /**
-   * Whether a `Checkbox.Label` rendered. When none did, the control leaves
-   * `aria-labelledby` unset so Base UI can fall back to a wrapping `<label>`
-   * or a `Field.Label`.
+   * Whether a `Checkbox.Label` is among the children. Decided during render,
+   * not in an effect: the control has to emit `aria-labelledby` in the very
+   * first pass or server-rendered markup ships with an unnamed checkbox.
+   *
+   * When no label is found the control leaves `aria-labelledby` unset, so Base
+   * UI can fall back to a wrapping `<label>` or a `Field.Label`.
    */
   hasLabel: boolean;
-  registerLabel: (present: boolean) => void;
   value?: boolean;
   defaultValue?: boolean;
   onValueChange?: (
@@ -70,6 +75,8 @@ type InternalContextType = {
   required?: boolean;
   readOnly?: boolean;
   "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 };
 
 const CheckboxContext = createContext<InternalContextType>({
@@ -82,8 +89,21 @@ const CheckboxContext = createContext<InternalContextType>({
   labelId: "",
   registerInputId: () => {},
   hasLabel: false,
-  registerLabel: () => {},
 });
+
+/**
+ * Counts `Checkbox.Label` children, walking into plain wrappers so a label
+ * inside a `Stack` still counts. It cannot see through a custom component; in
+ * that case `hasLabel` stays false and Base UI names the control from the
+ * rendered `<label for>` instead, which is the right fallback.
+ */
+const countLabels = (node: ReactNode): number =>
+  Children.toArray(node).reduce<number>((total, child) => {
+    if (!isValidElement(child)) return total;
+    if (child.type === Label) return total + 1;
+    const nested = (child.props as { children?: ReactNode }).children;
+    return nested ? total + countLabels(nested) : total;
+  }, 0);
 
 export type RootBaseProps = {
   size?: CheckboxSize;
@@ -159,7 +179,12 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     children,
     as,
     style,
+    // These three describe the checkbox, so they belong on the element Base UI
+    // gives `role="checkbox"`. Left in the spread they land on the layout
+    // wrapper, where a screen reader never reads them.
     "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedBy,
     ...props
   } = rootProps as RootProps<"div">;
   const group = useCheckboxGroupContext();
@@ -182,17 +207,30 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     setInputId(nextId);
   }, []);
 
-  const [hasLabel, setHasLabel] = useState(false);
-  const registerLabel = useCallback((present: boolean) => {
-    setHasLabel(present);
-  }, []);
+  const labelCount = useMemo(() => countLabels(children), [children]);
+  const hasLabel = labelCount > 0;
 
-  // Two combinations that do nothing at all rather than failing loudly.
+  // Combinations that do nothing at all rather than failing loudly.
   const hasOwnValue = value !== undefined || defaultValue !== undefined;
   const inGroup = group !== null;
   const groupHasAllValues = group?.hasAllValues ?? false;
+  const untrackedInGroup = inGroup && !parent && !formValue && !name;
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
+    if (labelCount > 1) {
+      console.warn(
+        "Checkbox warning: more than one `Checkbox.Label` under a single " +
+          "`Checkbox.Root`. They share one id, which is invalid HTML. Use one " +
+          "label per checkbox.",
+      );
+    }
+    if (untrackedInGroup) {
+      console.warn(
+        "Checkbox warning: a checkbox inside a `CheckboxGroup` needs a `name` " +
+          "or a `formValue`. Without one the group cannot track it, so it never " +
+          "appears in the group value and never reaches `onValueChange`.",
+      );
+    }
     if (parent && !groupHasAllValues) {
       console.warn(
         "Checkbox warning: `parent` needs a `CheckboxGroup` with `allValues` to " +
@@ -206,7 +244,14 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
           "the group instead, keyed by this checkbox's `formValue` (or `name`).",
       );
     }
-  }, [parent, groupHasAllValues, inGroup, hasOwnValue]);
+  }, [
+    parent,
+    groupHasAllValues,
+    inGroup,
+    hasOwnValue,
+    labelCount,
+    untrackedInGroup,
+  ]);
 
   return (
     <CheckboxContext.Provider
@@ -221,7 +266,6 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         inputId,
         registerInputId,
         hasLabel,
-        registerLabel,
         value,
         defaultValue,
         onValueChange,
@@ -230,6 +274,8 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         required,
         readOnly,
         "aria-label": ariaLabel,
+        "aria-labelledby": ariaLabelledBy,
+        "aria-describedby": ariaDescribedBy,
       }}
     >
       <Stack
@@ -240,7 +286,6 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         display="flex"
         className={className}
         data-tgph-checkbox-root
-        data-tgph-checkbox-disabled={disabled}
         style={style}
         {...props}
       >
@@ -269,6 +314,12 @@ export type ControlProps = RemappedOmit<
   | "checked"
   | "className"
   | "defaultChecked"
+  // `Checkbox.Root` owns these and forwards them here. Left open, a value
+  // passed through `controlProps` would spread over the one the root resolved
+  // and leave the control live under a root and label styled disabled.
+  | "disabled"
+  | "readOnly"
+  | "required"
   | "id"
   | "indeterminate"
   | "name"
@@ -288,13 +339,24 @@ export type ControlProps = RemappedOmit<
   tgphRef?: Ref<HTMLElement>;
 };
 
-const Control = ({
-  className,
-  style,
-  tgphRef,
-  inputRef,
-  ...props
-}: ControlProps) => {
+const Control = (controlProps: ControlProps) => {
+  const {
+    className,
+    style,
+    tgphRef,
+    inputRef,
+    // Omitting these from `ControlProps` only stops a type-checked caller.
+    // They are spread below, after the values the root resolved, so anything
+    // that slips through untyped would win. Drop them here instead.
+    disabled: _disabled,
+    readOnly: _readOnly,
+    required: _required,
+    ...props
+  } = controlProps as ControlProps & {
+    disabled?: boolean;
+    readOnly?: boolean;
+    required?: boolean;
+  };
   const context = useContext(CheckboxContext);
   const { size, iconSize } = CHECKBOX_SIZE_MAP[context.size];
   const { backgroundColor, indicatorColor } = CHECKBOX_COLOR_MAP[context.color];
@@ -329,11 +391,15 @@ const Control = ({
       required={context.required}
       readOnly={context.readOnly}
       aria-label={context["aria-label"]}
-      // Only point at a label that exists. Setting this unconditionally both
-      // dangles the IDREF and stops Base UI falling back to a wrapping
-      // `<label>` or a `Field.Label`, leaving the control with no name.
+      aria-describedby={context["aria-describedby"]}
+      // An explicit `aria-labelledby` wins. Otherwise point at our own label,
+      // but only when one exists: a dangling IDREF names nothing and also stops
+      // Base UI falling back to a wrapping `<label>` or a `Field.Label`.
       aria-labelledby={
-        context["aria-label"] || !context.hasLabel ? undefined : context.labelId
+        context["aria-labelledby"] ??
+        (context["aria-label"] || !context.hasLabel
+          ? undefined
+          : context.labelId)
       }
       onCheckedChange={(checked, eventDetails) =>
         context.onValueChange?.(checked, eventDetails)
@@ -399,13 +465,6 @@ export type LabelProps<T extends TgphElement = "label"> = RemappedOmit<
 const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
   const { as, style, ...props } = labelProps as LabelProps<"label">;
   const context = useContext(CheckboxContext);
-  const { registerLabel } = context;
-
-  // Tells `Checkbox.Control` it has something to point `aria-labelledby` at.
-  useEffect(() => {
-    registerLabel(true);
-    return () => registerLabel(false);
-  }, [registerLabel]);
 
   return (
     <Text
@@ -416,7 +475,6 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
       id={context.labelId}
       size={LABEL_SIZE_MAP[context.size]}
       data-tgph-checkbox-label
-      data-tgph-checkbox-disabled={context.disabled}
       style={style}
       {...props}
     />

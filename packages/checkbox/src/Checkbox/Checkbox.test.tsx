@@ -1,6 +1,8 @@
+import { Stack } from "@telegraph/layout";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { FormEvent } from "react";
+import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 import { axe, expectToHaveNoViolations } from "../../../../vitest/axe";
@@ -263,6 +265,79 @@ describe("Checkbox", () => {
     });
   });
 
+  // Label presence is decided during render, not in an effect. An effect never
+  // runs on the server, so server-rendered markup would ship an unnamed
+  // checkbox and stay that way until hydration.
+  describe("server rendering", () => {
+    it("names the control in the server-rendered markup", () => {
+      const html = renderToString(<Checkbox.Default label="Select run" />);
+      const control = html.slice(html.indexOf('role="checkbox"'));
+
+      expect(control).toContain("aria-labelledby=");
+      const labelId = /aria-labelledby="([^"]+)"/.exec(control)![1]!;
+      expect(html).toContain(`id="${labelId}"`);
+    });
+
+    it("finds a label nested inside a wrapper", () => {
+      const html = renderToString(
+        <Checkbox.Root>
+          <Checkbox.Control />
+          <Stack>
+            <Checkbox.Label>Select run</Checkbox.Label>
+          </Stack>
+        </Checkbox.Root>,
+      );
+      expect(html.slice(html.indexOf('role="checkbox"'))).toContain(
+        "aria-labelledby=",
+      );
+    });
+
+    it("emits no aria-labelledby when there is no label to point at", () => {
+      const html = renderToString(
+        <Checkbox.Root>
+          <Checkbox.Control />
+        </Checkbox.Root>,
+      );
+      expect(html.slice(html.indexOf('role="checkbox"'))).not.toContain(
+        "aria-labelledby=",
+      );
+    });
+  });
+
+  // These describe the checkbox, so they belong on the element that carries
+  // `role="checkbox"` — not on the layout wrapper, where nothing reads them.
+  describe("aria props on Root", () => {
+    it("forwards aria-labelledby to the control", async () => {
+      const { container } = render(
+        <>
+          <span id="heading">Cancel this run</span>
+          <Checkbox.Default aria-labelledby="heading" />
+        </>,
+      );
+
+      expect(getControl()).toHaveAttribute("aria-labelledby", "heading");
+      expect(
+        container.querySelector("[data-tgph-checkbox-root]"),
+      ).not.toHaveAttribute("aria-labelledby");
+      expect(getControl()).toHaveAccessibleName("Cancel this run");
+      expectToHaveNoViolations(await axe(container));
+    });
+
+    it("forwards aria-describedby to the control", () => {
+      const { container } = render(
+        <>
+          <span id="hint">Stops the run immediately</span>
+          <Checkbox.Default label="Cancel this run" aria-describedby="hint" />
+        </>,
+      );
+
+      expect(getControl()).toHaveAttribute("aria-describedby", "hint");
+      expect(
+        container.querySelector("[data-tgph-checkbox-root]"),
+      ).not.toHaveAttribute("aria-describedby");
+    });
+  });
+
   describe("label rendering", () => {
     // `{label && …}` renders a bare `0` instead of a label.
     it("renders a zero label inside a real label element", () => {
@@ -304,7 +379,10 @@ describe("Checkbox", () => {
     });
 
     // Cursor belongs to the stylesheet. Inline styles beat it, and the root's
-    // covers the inert gap between the box and the label.
+    // covers the inert gap between the box and the label. jsdom applies no
+    // stylesheet, so this checks the half that is observable here: that nothing
+    // inline outranks the rules. Whether the rules themselves match is pinned
+    // by the DOM-shape assertions in CheckboxGroup.test.tsx.
     it("sets no inline cursor on the root or the label", () => {
       const { container } = render(<Checkbox.Default label="Select run" />);
 
@@ -332,9 +410,11 @@ describe("Checkbox", () => {
       expect(onValueChange).toHaveBeenCalledTimes(1);
       const [value, eventDetails] = onValueChange.mock.calls[0]!;
       expect(value).toBe(true);
-      // The reason this argument exists: the native event behind the change,
-      // so consumers can read `shiftKey` for range selection.
-      expect(eventDetails.event).toBeInstanceOf(Object);
+      // The reason this argument exists: the real native event behind the
+      // change, so consumers can read `shiftKey` for range selection. A click
+      // arrives as a PointerEvent, which is where `shiftKey` lives.
+      expect(eventDetails.event).toBeInstanceOf(MouseEvent);
+      expect(eventDetails.event).toHaveProperty("shiftKey", false);
       expect(typeof eventDetails.cancel).toBe("function");
     });
   });

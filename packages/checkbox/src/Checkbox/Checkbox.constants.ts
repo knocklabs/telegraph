@@ -1,8 +1,8 @@
 // Size mappings for the checkbox component.
 //
-// Intentionally kept in sync with the radio sizing in `@telegraph/radio`. The
-// two controls are meant to read as the same size when stacked in one form, so
-// changing a value here means changing it there too.
+// `@telegraph/radio` ships only `RadioCards` today, so there is no radio
+// control to match. KNO-14479 adds one, and it should adopt these values —
+// a checkbox and a radio have to read as the same size in one form.
 export const CHECKBOX_SIZE_MAP = {
   "1": {
     size: "4",

@@ -170,7 +170,10 @@ both paths arrive as a `PointerEvent`.
 >
 ```
 
-Call `eventDetails.cancel()` to leave the checkbox as it was.
+Call `eventDetails.cancel()` to leave the checkbox as it was. This works on a
+standalone checkbox and on the group callback. It does not work on a child of a
+group that sets `allValues`, because Base UI commits the group selection before
+the child callback runs. Cancel on the group there instead.
 
 ### Select-all
 

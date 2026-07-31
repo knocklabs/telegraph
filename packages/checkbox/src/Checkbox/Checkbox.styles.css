@@ -39,7 +39,13 @@
   user-select: none;
 }
 
-[data-tgph-checkbox-label][data-tgph-checkbox-disabled="true"] {
+/* Keyed off Base UI's own `data-disabled` rather than a flag this package
+   computes. Base UI ORs together the checkbox prop, the group, and any
+   enclosing `Field`, and only the first two are visible from here — so
+   deriving it a second time drifts, and the label renders enabled over a dead
+   control. */
+[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-disabled])
+  [data-tgph-checkbox-label] {
   cursor: not-allowed;
   color: var(--tgph-gray-9);
 }

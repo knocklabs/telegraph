@@ -1,3 +1,4 @@
+import { Field } from "@base-ui/react/field";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type FormEvent, useState } from "react";
@@ -417,17 +418,57 @@ describe("CheckboxGroup", () => {
           .disabled,
       ).toBe(true);
 
-      // The parts we style ourselves have to agree with Base UI, or the label
-      // renders at full contrast with a pointer cursor over a dead control.
+      // The label styling hangs off the control's `data-disabled` via `:has()`,
+      // so this attribute is the whole contract. Nothing recomputes `disabled`
+      // a second time, which is what used to drift.
       expect(
-        container.querySelector("[data-tgph-checkbox-root]"),
-      ).toHaveAttribute("data-tgph-checkbox-disabled", "true");
-      expect(
-        container.querySelector("[data-tgph-checkbox-label]"),
-      ).toHaveAttribute("data-tgph-checkbox-disabled", "true");
+        container.querySelector(
+          "[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-disabled]) [data-tgph-checkbox-label]",
+        ),
+      ).not.toBeNull();
 
       await user.click(screen.getByText("Email"));
       expect(onValueChange).not.toHaveBeenCalled();
+    });
+
+    // Base UI ORs in an enclosing `Field` too. That axis is invisible from this
+    // package, which is exactly why the label styling reads Base UI's output
+    // instead of recomputing it.
+    it("styles the label disabled from a Field it cannot see", () => {
+      const { container } = render(
+        <Field.Root disabled>
+          <Checkbox.Default name="email" label="Email" />
+        </Field.Root>,
+      );
+
+      expect(getCheckbox("Email")).toHaveAttribute("data-disabled");
+      expect(
+        container.querySelector(
+          "[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-disabled]) [data-tgph-checkbox-label]",
+        ),
+      ).not.toBeNull();
+    });
+
+    // Standalone, not in a group: inside a group Base UI ORs the group value
+    // back in and hides the bug. Here the root prop is the only source, so a
+    // `controlProps.disabled` spreading over it really does re-enable it.
+    it("blocks disabled from controlProps, which would spread over the root", () => {
+      const { container } = render(
+        <Checkbox.Default
+          name="email"
+          label="Email"
+          disabled
+          // The type rejects this; `Checkbox.test-d.tsx` asserts that. Here we
+          // only care that it cannot win at runtime either.
+          controlProps={{ disabled: false } as never}
+        />,
+      );
+
+      expect(getCheckbox("Email")).toHaveAttribute("aria-disabled", "true");
+      expect(
+        container.querySelector<HTMLInputElement>('input[type="checkbox"]')!
+          .disabled,
+      ).toBe(true);
     });
   });
 
