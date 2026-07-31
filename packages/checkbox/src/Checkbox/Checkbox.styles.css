@@ -24,6 +24,15 @@
   outline-offset: 2px;
 }
 
+/* Read-only is not disabled: the value still submits and the control stays in
+   the tab order, so it must not read as inert. Only the cursor changes —
+   `default` rather than `not-allowed`, because nothing is being refused. This
+   sits above the disabled rule so that disabled wins when both are set; the
+   two selectors have equal specificity. */
+[data-tgph-checkbox-control][data-readonly] {
+  cursor: default;
+}
+
 [data-tgph-checkbox-control][data-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
@@ -37,6 +46,11 @@
 [data-tgph-checkbox-label] {
   cursor: pointer;
   user-select: none;
+}
+
+[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-readonly])
+  [data-tgph-checkbox-label] {
+  cursor: default;
 }
 
 /* Keyed off Base UI's own `data-disabled` rather than a flag this package

@@ -397,6 +397,97 @@ describe("Checkbox", () => {
     });
   });
 
+  // Native `readonly` does nothing on a checkbox, so Base UI implements it.
+  // The point of the prop is that it is NOT disabled: the value still submits
+  // and the control stays reachable. Pin that difference, because collapsing
+  // the two would silently drop the value from the form.
+  describe("readOnly", () => {
+    const submitOnce = async (ui: React.ReactNode) => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      const { unmount } = render(
+        <form
+          onSubmit={(event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            onSubmit(new FormData(event.currentTarget));
+          }}
+        >
+          {ui}
+          <button type="submit">Submit</button>
+        </form>,
+      );
+      await user.click(screen.getByRole("button", { name: "Submit" }));
+      const submitted = getSubmitted(onSubmit).get("ch");
+      unmount();
+      return submitted;
+    };
+
+    it("still submits its value, unlike disabled", async () => {
+      await expect(
+        submitOnce(
+          <Checkbox.Default
+            name="ch"
+            label="Read only"
+            defaultValue
+            readOnly
+          />,
+        ),
+      ).resolves.toBe("on");
+
+      await expect(
+        submitOnce(
+          <Checkbox.Default name="ch" label="Disabled" defaultValue disabled />,
+        ),
+      ).resolves.toBeNull();
+    });
+
+    it("stays in the tab order, unlike disabled", () => {
+      const { rerender } = render(
+        <Checkbox.Default label="Read only" readOnly />,
+      );
+      expect(getControl()).toHaveAttribute("tabindex", "0");
+      expect(getControl()).toHaveAttribute("aria-readonly", "true");
+      expect(getControl()).not.toHaveAttribute("aria-disabled");
+
+      rerender(<Checkbox.Default label="Read only" disabled />);
+      expect(getControl()).toHaveAttribute("tabindex", "-1");
+    });
+
+    it("refuses changes from the control and the label", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      render(
+        <Checkbox.Default
+          label="Read only"
+          readOnly
+          onValueChange={onValueChange}
+        />,
+      );
+
+      await user.click(getControl());
+      await user.click(screen.getByText("Read only"));
+      await user.keyboard(" ");
+
+      expect(onValueChange).not.toHaveBeenCalled();
+      expect(getControl()).not.toBeChecked();
+    });
+
+    // The cursor rules hang off these attributes. Without them a read-only
+    // checkbox keeps `cursor: pointer` and looks live.
+    it("exposes the hooks the read-only cursor rules need", () => {
+      const { container } = render(
+        <Checkbox.Default label="Read only" readOnly />,
+      );
+
+      expect(getControl()).toHaveAttribute("data-readonly");
+      expect(
+        container.querySelector(
+          "[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-readonly]) [data-tgph-checkbox-label]",
+        ),
+      ).not.toBeNull();
+    });
+  });
+
   describe("event details", () => {
     it("passes Base UI's event details to onValueChange", async () => {
       const user = userEvent.setup();

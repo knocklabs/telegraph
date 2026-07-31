@@ -96,7 +96,7 @@ label.
 | `indeterminate` | `boolean`               | `false`  | Renders the mixed state                                      |
 | `parent`        | `boolean`               | `false`  | Marks this as the group's select-all                         |
 | `disabled`      | `boolean`               | `false`  | Disables interaction                                         |
-| `readOnly`      | `boolean`               | `false`  | Prevents changes but stays focusable                         |
+| `readOnly`      | `boolean`               | `false`  | Blocks changes, but still submits. See below                 |
 | `required`      | `boolean`               | `false`  | Must be ticked before the form submits                       |
 | `name`          | `string`                | —        | Form field name, and the group key when `formValue` is unset |
 | `formValue`     | `string`                | `"on"`   | The string submitted with the form                           |
@@ -106,6 +106,25 @@ label.
 `color` accepts `default`, `accent`, `blue`, `gray`, `green`, `purple`, `red`,
 and `yellow` — the same set as `@telegraph/button`, so a checked checkbox
 matches a solid button of the same color.
+
+### `readOnly` against `disabled`
+
+Both block changes, and they behave differently everywhere else. Pick by what
+the form has to submit.
+
+|                    | `readOnly` | `disabled`  |
+| ------------------ | ---------- | ----------- |
+| Submits its value  | yes        | no          |
+| Keyboard reachable | yes        | no          |
+| Announced as       | read-only  | disabled    |
+| Dimmed             | no         | yes, to 50% |
+| Cursor             | default    | not-allowed |
+
+Use `readOnly` for a value the user must see and that must survive the round
+trip, but that they cannot edit here. `disabled` drops the value from
+`FormData` entirely, which is a quiet way to lose data.
+
+Native `readonly` does nothing on a checkbox, so Base UI does this work.
 
 ### Composable parts
 

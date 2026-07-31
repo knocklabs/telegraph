@@ -134,3 +134,19 @@ export const States: Story = {
     </Stack>
   ),
 };
+
+/**
+ * `readOnly` blocks changes but keeps the value in the form and the control in
+ * the tab order, so it stays at full contrast. Only the cursor marks it. Tab
+ * through these: the read-only rows take focus, the disabled ones do not.
+ */
+export const ReadOnly: Story = {
+  render: () => (
+    <Stack direction="column" gap="3">
+      <Checkbox.Default label="Read only" readOnly />
+      <Checkbox.Default label="Read only, checked" readOnly defaultValue />
+      <Checkbox.Default label="Disabled, checked" disabled defaultValue />
+      <Checkbox.Default label="Editable, checked" defaultValue />
+    </Stack>
+  ),
+};
