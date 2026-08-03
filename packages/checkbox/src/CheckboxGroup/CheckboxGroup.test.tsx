@@ -484,4 +484,31 @@ describe("CheckboxGroup", () => {
       expect(getCheckbox("run-1")).toBeChecked();
     });
   });
+
+  // `CheckboxRoot.js` guards the hidden input on `!groupContext`, so the prop
+  // is inert here. The group owns the submitted set instead.
+  describe("uncheckedValue inside a group", () => {
+    it("submits nothing for an unchecked child", async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      render(
+        <form
+          onSubmit={(event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            onSubmit(new FormData(event.currentTarget));
+          }}
+        >
+          <CheckboxGroup defaultValue={[]}>
+            <Checkbox.Default name="run-1" label="run-1" uncheckedValue="off" />
+          </CheckboxGroup>
+          <button type="submit">Submit</button>
+        </form>,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Submit" }));
+
+      const submitted = onSubmit.mock.calls[0]![0] as FormData;
+      expect(submitted.get("run-1")).toBeNull();
+    });
+  });
 });

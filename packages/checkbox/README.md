@@ -44,14 +44,15 @@ export const Example = () => (
 
 ## A note on `value`
 
-Three similarly-named props do different jobs. Worth reading once before you
+Four similarly-named props do different jobs. Worth reading once before you
 use the group:
 
-| Prop                  | Type       | What it is                                             |
-| --------------------- | ---------- | ------------------------------------------------------ |
-| `Checkbox.value`      | `boolean`  | Whether this checkbox is ticked                        |
-| `Checkbox.formValue`  | `string`   | The string submitted with the form. Defaults to `"on"` |
-| `CheckboxGroup.value` | `string[]` | Which checkboxes in the group are ticked               |
+| Prop                      | Type       | What it is                                             |
+| ------------------------- | ---------- | ------------------------------------------------------ |
+| `Checkbox.value`          | `boolean`  | Whether this checkbox is ticked                        |
+| `Checkbox.formValue`      | `string`   | The string submitted with the form. Defaults to `"on"` |
+| `Checkbox.uncheckedValue` | `string`   | The string submitted when it is _unticked_             |
+| `CheckboxGroup.value`     | `string[]` | Which checkboxes in the group are ticked               |
 
 Telegraph's convention is that `value` is whatever a control holds — a boolean
 for one checkbox, a list for a group. That's why the string a form submits is
@@ -79,6 +80,27 @@ Set both when several checkboxes should submit under one field name:
 <Checkbox.Default name="channels" formValue="sms" label="SMS" />
 ```
 
+### Submitting a value when unticked
+
+An unticked checkbox submits nothing. The field is absent from the form data
+rather than false, so the server cannot tell "the user unticked it" from "the
+field was not on the page".
+
+`uncheckedValue` closes that gap. Base UI renders a hidden input with the same
+name, so the field is always present:
+
+```tsx
+<Checkbox.Default name="notify" uncheckedValue="off" label="Email me" />
+```
+
+```
+unticked -> notify=off
+ticked   -> notify=on
+```
+
+It needs a `name`. Base UI ignores it on a `parent` checkbox and inside a
+`CheckboxGroup`, because the group's `value` is the payload there.
+
 ## API Reference
 
 ### `<Checkbox.Default>` (Default Component)
@@ -86,23 +108,24 @@ Set both when several checkboxes should submit under one field name:
 The simple API for common use cases: renders the control and an associated
 label.
 
-| Prop            | Type                    | Default     | Description                                                  |
-| --------------- | ----------------------- | ----------- | ------------------------------------------------------------ |
-| `label`         | `ReactNode`             | —           | Visible label, associated via `htmlFor`                      |
-| `size`          | `"1" \| "2"`            | `"2"`       | Control size                                                 |
-| `color`         | `CheckboxColor`         | `"default"` | Color when checked                                           |
-| `value`         | `boolean`               | —           | Controlled checked state                                     |
-| `defaultValue`  | `boolean`               | `false`     | Initial checked state when uncontrolled                      |
-| `onValueChange` | `(value, eventDetails)` | —           | Fired when the checkbox is ticked or unticked                |
-| `indeterminate` | `boolean`               | `false`     | Renders the mixed state                                      |
-| `parent`        | `boolean`               | `false`     | Marks this as the group's select-all                         |
-| `disabled`      | `boolean`               | `false`     | Disables interaction                                         |
-| `readOnly`      | `boolean`               | `false`     | Blocks changes, but still submits. See below                 |
-| `required`      | `boolean`               | `false`     | Must be ticked before the form submits                       |
-| `name`          | `string`                | —           | Form field name, and the group key when `formValue` is unset |
-| `formValue`     | `string`                | `"on"`      | The string submitted with the form                           |
-| `labelProps`    | `CheckboxLabelProps`    | —           | Forwarded to `Checkbox.Label`                                |
-| `controlProps`  | `CheckboxControlProps`  | —           | Forwarded to `Checkbox.Control`                              |
+| Prop             | Type                    | Default     | Description                                                  |
+| ---------------- | ----------------------- | ----------- | ------------------------------------------------------------ |
+| `label`          | `ReactNode`             | —           | Visible label, associated via `htmlFor`                      |
+| `size`           | `"1" \| "2"`            | `"2"`       | Control size                                                 |
+| `color`          | `CheckboxColor`         | `"default"` | Color when checked                                           |
+| `value`          | `boolean`               | —           | Controlled checked state                                     |
+| `defaultValue`   | `boolean`               | `false`     | Initial checked state when uncontrolled                      |
+| `onValueChange`  | `(value, eventDetails)` | —           | Fired when the checkbox is ticked or unticked                |
+| `indeterminate`  | `boolean`               | `false`     | Renders the mixed state                                      |
+| `parent`         | `boolean`               | `false`     | Marks this as the group's select-all                         |
+| `disabled`       | `boolean`               | `false`     | Disables interaction                                         |
+| `readOnly`       | `boolean`               | `false`     | Blocks changes, but still submits. See below                 |
+| `required`       | `boolean`               | `false`     | Must be ticked before the form submits                       |
+| `name`           | `string`                | —           | Form field name, and the group key when `formValue` is unset |
+| `formValue`      | `string`                | `"on"`      | The string submitted with the form                           |
+| `uncheckedValue` | `string`                | —           | The string submitted when unticked. See below                |
+| `labelProps`     | `CheckboxLabelProps`    | —           | Forwarded to `Checkbox.Label`                                |
+| `controlProps`   | `CheckboxControlProps`  | —           | Forwarded to `Checkbox.Control`                              |
 
 `color` accepts `default`, `accent`, `blue`, `gray`, `green`, `purple`, `red`,
 and `yellow` — the same set as `@telegraph/button`, so a checked checkbox

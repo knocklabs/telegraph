@@ -1,5 +1,6 @@
 import {
   Checkbox as BaseCheckbox,
+  type CheckboxRootProps as BaseCheckboxRootProps,
   type CheckboxRootChangeEventDetails,
 } from "@base-ui/react/checkbox";
 import { useComposedRefs } from "@telegraph/compose-refs";
@@ -14,12 +15,10 @@ import { Stack, type StackProps } from "@telegraph/layout";
 import { Text, type TextProps } from "@telegraph/typography";
 import { Check, Minus } from "lucide-react";
 import {
-  Children,
   type ComponentPropsWithoutRef,
   type ReactNode,
   type Ref,
   createContext,
-  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -38,30 +37,23 @@ import {
   type CheckboxColor,
   type CheckboxSize,
 } from "./Checkbox.constants";
+import { countLabels } from "./Checkbox.helpers";
 
 type InternalContextType = {
+  // Not from Base UI: `size` and `color` are Telegraph tokens, and `Root`
+  // always resolves the two ids, so ours are required where Base UI's `id`
+  // is optional.
   size: CheckboxSize;
   color: CheckboxColor;
-  disabled?: boolean;
-  indeterminate?: boolean;
-  parent?: boolean;
   id: string;
   labelId: string;
-  /**
-   * The id Base UI actually put on the hidden input, which is not always the
-   * `id` we passed: inside a select-all group it derives its own and discards
-   * ours. `Checkbox.Label` needs the real one or `htmlFor` points at nothing.
-   */
+  // The id Base UI actually put on the hidden input, which is not always the
+  // `id` we passed: inside a select-all group it derives its own and discards
+  // ours. `Checkbox.Label` needs the real one or `htmlFor` points at nothing.
   inputId?: string;
   registerInputId: (id: string) => void;
-  /**
-   * Whether a `Checkbox.Label` is among the children. Decided during render,
-   * not in an effect: the control has to emit `aria-labelledby` in the very
-   * first pass or server-rendered markup ships with an unnamed checkbox.
-   *
-   * When no label is found the control leaves `aria-labelledby` unset, so Base
-   * UI can fall back to a wrapping `<label>` or a `Field.Label`.
-   */
+  // Decided during render, not in an effect: the control has to emit
+  // `aria-labelledby` in the first pass or SSR ships an unnamed checkbox.
   hasLabel: boolean;
   // Renamed on the way in, so these four cannot come from Base UI:
   // `checked` -> `value`, `defaultChecked` -> `defaultValue`,
@@ -75,7 +67,15 @@ type InternalContextType = {
   formValue?: string;
 } & Pick<
   BaseCheckboxRootProps,
-  "name" | "required" | "readOnly" | "aria-label" | "aria-describedby"
+  | "name"
+  | "required"
+  | "readOnly"
+  | "disabled"
+  | "indeterminate"
+  | "parent"
+  | "uncheckedValue"
+  | "aria-label"
+  | "aria-describedby"
 > & {
     // Base UI types this as `string | null`; we only ever pass a string.
     "aria-labelledby"?: string;
@@ -92,20 +92,6 @@ const CheckboxContext = createContext<InternalContextType>({
   registerInputId: () => {},
   hasLabel: false,
 });
-
-/**
- * Counts `Checkbox.Label` children, walking into plain wrappers so a label
- * inside a `Stack` still counts. It cannot see through a custom component; in
- * that case `hasLabel` stays false and Base UI names the control from the
- * rendered `<label for>` instead, which is the right fallback.
- */
-const countLabels = (node: ReactNode): number =>
-  Children.toArray(node).reduce<number>((total, child) => {
-    if (!isValidElement(child)) return total;
-    if (child.type === Label) return total + 1;
-    const nested = (child.props as { children?: ReactNode }).children;
-    return nested ? total + countLabels(nested) : total;
-  }, 0);
 
 export type RootBaseProps = {
   size?: CheckboxSize;
@@ -136,6 +122,13 @@ export type RootBaseProps = {
    * the key the group tracks this checkbox by. Falls back to `name`.
    */
   formValue?: string;
+  /**
+   * The string submitted when the checkbox is *unticked*. Without it an unticked
+   * checkbox submits nothing at all, so the field is absent rather than false.
+   * Needs `name`, and Base UI ignores it inside a `CheckboxGroup` and on a
+   * `parent` checkbox.
+   */
+  uncheckedValue?: string;
   name?: string;
   required?: boolean;
   readOnly?: boolean;
@@ -172,6 +165,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     indeterminate,
     parent,
     formValue,
+    uncheckedValue,
     name,
     disabled: disabledProp,
     required,
@@ -209,7 +203,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     setInputId(nextId);
   }, []);
 
-  const hasLabel = useMemo(() => countLabels(children) > 0, [children]);
+  const hasLabel = useMemo(() => countLabels(children, Label) > 0, [children]);
 
   return (
     <CheckboxContext.Provider
@@ -228,6 +222,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         defaultValue,
         onValueChange,
         formValue,
+        uncheckedValue,
         name,
         required,
         readOnly,
@@ -251,8 +246,6 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
   );
 };
 
-type BaseCheckboxRootProps = ComponentPropsWithoutRef<typeof BaseCheckbox.Root>;
-
 type BaseCheckboxRenderProps = ComponentPropsWithoutRef<"span"> & {
   ref?: Ref<HTMLElement>;
 };
@@ -265,29 +258,11 @@ type BaseCheckboxState = {
   required: boolean;
 };
 
-export type ControlProps = RemappedOmit<
-  BaseCheckboxRootProps,
-  | "checked"
-  | "className"
-  | "defaultChecked"
-  // `Checkbox.Root` owns these and forwards them here. Left open, a value
-  // passed through `controlProps` would spread over the one the root resolved
-  // and leave the control live under a root and label styled disabled.
-  | "disabled"
-  | "readOnly"
-  | "required"
-  | "id"
-  | "indeterminate"
-  | "name"
-  // Base UI moves the id onto the rendered element and warns that it expected a
-  // native `<button>`, which breaks `Checkbox.Label`'s `htmlFor`.
-  | "nativeButton"
-  | "onCheckedChange"
-  | "parent"
-  | "render"
-  | "style"
-  | "value"
-> &
+// Picked, not omitted: `Checkbox.Root` owns every other Base UI prop and
+// forwards it, and the HTML attribute surface already arrives with the `Stack`
+// props below. An omit list let anything Base UI added later — `uncheckedValue`
+// did exactly this — type-check here and then spread onto the styled `div`.
+export type ControlProps = Pick<BaseCheckboxRootProps, "form" | "inputRef"> &
   // Layout props reach the styled box, so callers can size or recolor it.
   // `className` and `style` come from here too: Base UI types both as
   // `string | ((state) => string)`, and the `Stack` takes the plain forms.
@@ -316,7 +291,7 @@ const Control = (controlProps: ControlProps) => {
     // Base UI owns these two; everything left over styles the box.
     inputRef,
     form,
-    // Omitting these from `ControlProps` only stops a type-checked caller.
+    // Keeping these out of `ControlProps` only stops a type-checked caller.
     // Base UI resolves them from the root, so drop anything that slips
     // through untyped rather than let it spread over the resolved value.
     disabled: _disabled,
@@ -354,6 +329,7 @@ const Control = (controlProps: ControlProps) => {
       id={context.id}
       name={context.name}
       value={context.formValue}
+      uncheckedValue={context.uncheckedValue}
       checked={context.value}
       defaultChecked={context.defaultValue}
       indeterminate={context.indeterminate}

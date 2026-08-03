@@ -44,6 +44,7 @@ describe("Checkbox types", () => {
     expectTypeOf<CheckboxProps["indeterminate"]>().not.toBeAny();
     expectTypeOf<CheckboxProps["parent"]>().not.toBeAny();
     expectTypeOf<CheckboxProps["formValue"]>().not.toBeAny();
+    expectTypeOf<CheckboxProps["uncheckedValue"]>().not.toBeAny();
     expectTypeOf<CheckboxProps["label"]>().not.toBeAny();
     expectTypeOf<CheckboxRootProps["value"]>().not.toBeAny();
     expectTypeOf<CheckboxRootProps["onValueChange"]>().not.toBeAny();
@@ -57,6 +58,9 @@ describe("Checkbox types", () => {
       boolean | undefined
     >();
     expectTypeOf<CheckboxProps["formValue"]>().toEqualTypeOf<
+      string | undefined
+    >();
+    expectTypeOf<CheckboxProps["uncheckedValue"]>().toEqualTypeOf<
       string | undefined
     >();
   });
@@ -184,6 +188,25 @@ describe("Checkbox types", () => {
     <Checkbox.Default label="Cancel run" disabled readOnly required />;
   });
 
+  // The control's Base UI half is a `Pick`, not an omit list. Under an omit
+  // list every Base UI prop it did not name — `uncheckedValue` among them —
+  // type-checked here and then spread onto the styled div.
+  it("rejects Base UI form props the control does not forward", () => {
+    <Checkbox.Default
+      label="Cancel run"
+      // @ts-expect-error uncheckedValue belongs on the root
+      controlProps={{ uncheckedValue: "off" }}
+    />;
+    <Checkbox.Root>
+      {/* @ts-expect-error uncheckedValue belongs on the root */}
+      <Checkbox.Control uncheckedValue="off" />
+    </Checkbox.Root>;
+    // The two Base UI props the control does forward.
+    <Checkbox.Root>
+      <Checkbox.Control form="my-form" inputRef={{ current: null }} />
+    </Checkbox.Root>;
+  });
+
   // Base UI moves the id onto the rendered element under `nativeButton`, which
   // leaves `Checkbox.Label`'s `htmlFor` pointing at a div.
   it("rejects nativeButton on the control", () => {
@@ -218,6 +241,10 @@ describe("Checkbox types", () => {
     <Checkbox.Default
       // @ts-expect-error formValue must be a string
       formValue={1}
+    />;
+    <Checkbox.Default
+      // @ts-expect-error uncheckedValue must be a string
+      uncheckedValue={0}
     />;
     <Checkbox.Default
       // @ts-expect-error onValueChange receives a boolean
@@ -331,6 +358,7 @@ describe("Checkbox types", () => {
       required={false}
       name="runs"
       formValue="run_1"
+      uncheckedValue="off"
       labelProps={{ color: "gray" }}
       controlProps={{ inputRef: { current: null } }}
     />;

@@ -36,13 +36,12 @@ type BaseCheckboxGroupState = {
  */
 export type CheckboxGroupBaseProps = Pick<
   BaseCheckboxGroupProps,
-  "value" | "defaultValue" | "onValueChange" | "allValues"
+  "value" | "defaultValue" | "onValueChange" | "allValues" | "disabled"
 > & {
   /** Applied to every checkbox in the group unless one sets its own. */
   size?: CheckboxSize;
   /** Applied to every checkbox in the group unless one sets its own. */
   color?: CheckboxColor;
-  disabled?: boolean;
   children?: ReactNode;
 };
 

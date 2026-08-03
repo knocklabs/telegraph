@@ -202,6 +202,38 @@ describe("Checkbox", () => {
 
       expect(getSubmitted(onSubmit).get("run")).toBeNull();
     });
+
+    it("submits uncheckedValue when unchecked", async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      renderForm(
+        <Checkbox.Default label="Select run" name="run" uncheckedValue="off" />,
+        onSubmit,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Submit" }));
+
+      expect(getSubmitted(onSubmit).get("run")).toBe("off");
+    });
+
+    it("submits the checked value even when uncheckedValue is set", async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      renderForm(
+        <Checkbox.Default
+          label="Select run"
+          name="run"
+          formValue="run_1"
+          uncheckedValue="off"
+          defaultValue
+        />,
+        onSubmit,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Submit" }));
+
+      expect(getSubmitted(onSubmit).getAll("run")).toEqual(["run_1"]);
+    });
   });
 
   describe("composition", () => {
