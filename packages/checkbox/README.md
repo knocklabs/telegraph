@@ -68,8 +68,9 @@ back to its `name`. So in the common case you only set `name`:
 ```
 
 Inside a group, the group owns the selection: a checkbox's own `value` or
-`defaultValue` is ignored. Put the initial selection on the group instead.
-Passing one anyway logs a warning in development.
+`defaultValue` is ignored. Put the initial selection on the group instead. A
+checkbox in a group also needs a `name` or a `formValue`. Without one the group
+cannot track it, so it never enters the group value.
 
 Set both when several checkboxes should submit under one field name:
 
@@ -85,23 +86,23 @@ Set both when several checkboxes should submit under one field name:
 The simple API for common use cases: renders the control and an associated
 label.
 
-| Prop            | Type                    | Default  | Description                                                  |
-| --------------- | ----------------------- | -------- | ------------------------------------------------------------ |
-| `label`         | `ReactNode`             | —        | Visible label, associated via `htmlFor`                      |
-| `size`          | `"1" \| "2"`            | `"2"`    | Control size                                                 |
-| `color`         | `CheckboxColor`         | `"blue"` | Color when checked                                           |
-| `value`         | `boolean`               | —        | Controlled checked state                                     |
-| `defaultValue`  | `boolean`               | `false`  | Initial checked state when uncontrolled                      |
-| `onValueChange` | `(value, eventDetails)` | —        | Fired when the checkbox is ticked or unticked                |
-| `indeterminate` | `boolean`               | `false`  | Renders the mixed state                                      |
-| `parent`        | `boolean`               | `false`  | Marks this as the group's select-all                         |
-| `disabled`      | `boolean`               | `false`  | Disables interaction                                         |
-| `readOnly`      | `boolean`               | `false`  | Blocks changes, but still submits. See below                 |
-| `required`      | `boolean`               | `false`  | Must be ticked before the form submits                       |
-| `name`          | `string`                | —        | Form field name, and the group key when `formValue` is unset |
-| `formValue`     | `string`                | `"on"`   | The string submitted with the form                           |
-| `labelProps`    | `CheckboxLabelProps`    | —        | Forwarded to `Checkbox.Label`                                |
-| `controlProps`  | `CheckboxControlProps`  | —        | Forwarded to `Checkbox.Control`                              |
+| Prop            | Type                    | Default     | Description                                                  |
+| --------------- | ----------------------- | ----------- | ------------------------------------------------------------ |
+| `label`         | `ReactNode`             | —           | Visible label, associated via `htmlFor`                      |
+| `size`          | `"1" \| "2"`            | `"2"`       | Control size                                                 |
+| `color`         | `CheckboxColor`         | `"default"` | Color when checked                                           |
+| `value`         | `boolean`               | —           | Controlled checked state                                     |
+| `defaultValue`  | `boolean`               | `false`     | Initial checked state when uncontrolled                      |
+| `onValueChange` | `(value, eventDetails)` | —           | Fired when the checkbox is ticked or unticked                |
+| `indeterminate` | `boolean`               | `false`     | Renders the mixed state                                      |
+| `parent`        | `boolean`               | `false`     | Marks this as the group's select-all                         |
+| `disabled`      | `boolean`               | `false`     | Disables interaction                                         |
+| `readOnly`      | `boolean`               | `false`     | Blocks changes, but still submits. See below                 |
+| `required`      | `boolean`               | `false`     | Must be ticked before the form submits                       |
+| `name`          | `string`                | —           | Form field name, and the group key when `formValue` is unset |
+| `formValue`     | `string`                | `"on"`      | The string submitted with the form                           |
+| `labelProps`    | `CheckboxLabelProps`    | —           | Forwarded to `Checkbox.Label`                                |
+| `controlProps`  | `CheckboxControlProps`  | —           | Forwarded to `Checkbox.Control`                              |
 
 `color` accepts `default`, `accent`, `blue`, `gray`, `green`, `purple`, `red`,
 and `yellow` — the same set as `@telegraph/button`, so a checked checkbox
@@ -138,7 +139,11 @@ Native `readonly` does nothing on a checkbox, so Base UI does this work.
 - **`<Checkbox.Root>`** — holds state and layout, and provides context. Takes
   every prop in the table above except `label`, `labelProps` and `controlProps`.
   Also accepts `Stack` layout props and `as` / `tgphRef`.
-- **`<Checkbox.Control>`** — the box and its indicator.
+- **`<Checkbox.Control>`** — the box and its indicator. Takes `Stack` layout
+  props, so `controlProps={{ w: "6", bg: "red-3" }}` restyles the box. Pass
+  `iconProps` to change the indicator: `iconProps={{ icon: X }}` swaps the
+  glyph, and `size` / `color` / `variant` are also accepted. The indicator stays
+  `aria-hidden` — the control carries the accessible name.
 - **`<Checkbox.Label>`** — the label, associated with the control automatically.
 
 Use `aria-label` on `Root` when there is no visible label. Without either one,

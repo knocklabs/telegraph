@@ -1,6 +1,7 @@
 import { Stack } from "@telegraph/layout";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { X } from "lucide-react";
 import type { FormEvent } from "react";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
@@ -376,6 +377,41 @@ describe("Checkbox", () => {
       expect(container.querySelector("[data-tgph-checkbox-label]")).toHaveClass(
         "my-label",
       );
+    });
+
+    it("lets controlProps size and recolor the box", () => {
+      const { container } = render(
+        <Checkbox.Default
+          label="Select run"
+          controlProps={{ w: "10", h: "10", bg: "red-3" }}
+        />,
+      );
+
+      const style = container
+        .querySelector<HTMLElement>("[data-tgph-checkbox-control]")!
+        .getAttribute("style")!;
+      expect(style).toContain("--width: var(--tgph-spacing-10)");
+      expect(style).toContain("--height: var(--tgph-spacing-10)");
+      expect(style).toContain("--background-color: var(--tgph-red-3)");
+    });
+
+    it("swaps the indicator glyph through iconProps", () => {
+      const { container } = render(
+        <Checkbox.Default
+          label="Select run"
+          defaultValue
+          controlProps={{ iconProps: { icon: X } }}
+        />,
+      );
+
+      const icon = container.querySelector(
+        "[data-tgph-checkbox-indicator] svg",
+      );
+      expect(icon).toHaveClass("lucide-x");
+      // Decorative whatever is passed: the control carries the name.
+      expect(
+        container.querySelector("[data-tgph-checkbox-indicator] [aria-hidden]"),
+      ).not.toBeNull();
     });
 
     // Cursor belongs to the stylesheet. Inline styles beat it, and the root's

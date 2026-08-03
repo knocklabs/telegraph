@@ -100,7 +100,7 @@ const Controlled = ({
 };
 
 export const Default: Story = {
-  args: { size: "2", color: "blue", direction: "column", disabled: false },
+  args: { size: "2", color: "default", direction: "column", disabled: false },
   render: (args) => (
     <Controlled
       size={args.size}
@@ -113,13 +113,13 @@ export const Default: Story = {
 
 /** `direction="row"` lays the group out horizontally. */
 export const Horizontal: Story = {
-  render: () => <Controlled direction="row" color="blue" />,
+  render: () => <Controlled direction="row" />,
 };
 
 /** Without a `value`, the group manages its own selection from `defaultValue`. */
 export const Uncontrolled: Story = {
   render: () => (
-    <CheckboxGroup defaultValue={["email", "push"]} color="blue">
+    <CheckboxGroup defaultValue={["email", "push"]}>
       {CHANNELS.map((channel) => (
         <Checkbox.Default
           key={channel.name}
@@ -158,7 +158,7 @@ export const GroupDefaults: Story = {
 /** `disabled` on the group disables every child at once. */
 export const DisabledGroup: Story = {
   render: () => (
-    <CheckboxGroup defaultValue={["email"]} disabled color="blue">
+    <CheckboxGroup defaultValue={["email"]} disabled>
       {CHANNELS.map((channel) => (
         <Checkbox.Default
           key={channel.name}
@@ -174,12 +174,7 @@ const SelectAllExample = () => {
   const [value, setValue] = useState<string[]>([]);
   return (
     <Stack direction="column" gap="3">
-      <CheckboxGroup
-        value={value}
-        onValueChange={setValue}
-        allValues={RUNS}
-        color="blue"
-      >
+      <CheckboxGroup value={value} onValueChange={setValue} allValues={RUNS}>
         <Checkbox.Default parent label="Select all" />
         <Stack direction="column" gap="2" ml="5">
           {RUNS.map((run) => (
@@ -213,7 +208,6 @@ const SelectAllWithDisabledExample = () => {
         value={value}
         onValueChange={setValue}
         allValues={selectable}
-        color="blue"
       >
         <Checkbox.Default parent label="Select all" />
         <Stack direction="column" gap="2" ml="5">
@@ -255,7 +249,7 @@ const FormExample = () => {
         );
       }}
     >
-      <CheckboxGroup defaultValue={["email"]} color="blue">
+      <CheckboxGroup defaultValue={["email"]}>
         {CHANNELS.map((channel) => (
           <Checkbox.Default
             key={channel.name}

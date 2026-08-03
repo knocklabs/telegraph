@@ -9,6 +9,6 @@ export type {
 export {
   CHECKBOX_COLOR_MAP,
   CHECKBOX_SIZE_MAP,
-  LABEL_SIZE_MAP,
+  CHECKBOX_UNCHECKED,
 } from "./Checkbox.constants";
 export type { CheckboxColor, CheckboxSize } from "./Checkbox.constants";

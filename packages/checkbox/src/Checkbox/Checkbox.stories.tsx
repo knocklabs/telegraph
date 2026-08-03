@@ -51,7 +51,7 @@ export const Default: Story = {
   args: {
     label: "Cancel this run",
     size: "2",
-    color: "blue",
+    color: "default",
     disabled: false,
   },
 };
@@ -61,7 +61,7 @@ export const Checked: Story = {
     label: "Cancel this run",
     defaultValue: true,
     size: "2",
-    color: "blue",
+    color: "default",
   },
 };
 
@@ -70,7 +70,7 @@ export const Indeterminate: Story = {
     label: "Select all",
     indeterminate: true,
     size: "2",
-    color: "blue",
+    color: "default",
   },
 };
 
@@ -80,7 +80,7 @@ export const Disabled: Story = {
     disabled: true,
     defaultValue: true,
     size: "2",
-    color: "blue",
+    color: "default",
   },
 };
 
@@ -88,7 +88,7 @@ export const WithoutLabel: Story = {
   args: {
     "aria-label": "Select row",
     size: "2",
-    color: "blue",
+    color: "default",
   },
 };
 

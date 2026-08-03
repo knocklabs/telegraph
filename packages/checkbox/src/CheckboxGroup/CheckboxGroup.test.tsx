@@ -331,56 +331,6 @@ describe("CheckboxGroup", () => {
     });
   });
 
-  // Both combinations render fine and then do nothing, which is expensive to
-  // debug. Warn in development instead.
-  describe("development warnings", () => {
-    it("warns when parent has no allValues to work from", () => {
-      const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-      render(
-        <CheckboxGroup>
-          <Checkbox.Default parent label="Select all" />
-          <Checkbox.Default name="run-1" label="run-1" />
-        </CheckboxGroup>,
-      );
-
-      expect(warn.mock.calls.flat().join(" ")).toContain("`allValues`");
-      warn.mockRestore();
-    });
-
-    it("stays quiet when allValues is supplied", () => {
-      const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-      render(
-        <CheckboxGroup allValues={RUNS}>
-          <Checkbox.Default parent label="Select all" />
-          <Checkbox.Default name="run-1" label="run-1" />
-        </CheckboxGroup>,
-      );
-
-      expect(warn).not.toHaveBeenCalled();
-      warn.mockRestore();
-    });
-
-    it("warns when a child brings its own value into a group", () => {
-      const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-      render(
-        <CheckboxGroup>
-          <Checkbox.Default name="run-1" label="run-1" defaultValue />
-        </CheckboxGroup>,
-      );
-
-      expect(warn.mock.calls.flat().join(" ")).toContain("ignores its own");
-      warn.mockRestore();
-    });
-
-    it("stays quiet for the same checkbox outside a group", () => {
-      const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-      render(<Checkbox.Default name="run-1" label="run-1" defaultValue />);
-
-      expect(warn).not.toHaveBeenCalled();
-      warn.mockRestore();
-    });
-  });
-
   describe("group id", () => {
     it("renders the id on the group element", () => {
       const { container } = render(

@@ -9,12 +9,11 @@ import {
   type TgphElement,
   createTgphBaseUIRender,
 } from "@telegraph/helpers";
-import { Icon } from "@telegraph/icon";
+import { Icon, type IconProps, type LucideIcon } from "@telegraph/icon";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { Text, type TextProps } from "@telegraph/typography";
 import { Check, Minus } from "lucide-react";
 import {
-  type CSSProperties,
   Children,
   type ComponentPropsWithoutRef,
   type ReactNode,
@@ -35,17 +34,17 @@ import { useCheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context"
 import {
   CHECKBOX_COLOR_MAP,
   CHECKBOX_SIZE_MAP,
+  CHECKBOX_UNCHECKED,
   type CheckboxColor,
   type CheckboxSize,
-  LABEL_SIZE_MAP,
 } from "./Checkbox.constants";
 
 type InternalContextType = {
   size: CheckboxSize;
   color: CheckboxColor;
-  disabled: boolean;
-  indeterminate: boolean;
-  parent: boolean;
+  disabled?: boolean;
+  indeterminate?: boolean;
+  parent?: boolean;
   id: string;
   labelId: string;
   /**
@@ -64,6 +63,9 @@ type InternalContextType = {
    * UI can fall back to a wrapping `<label>` or a `Field.Label`.
    */
   hasLabel: boolean;
+  // Renamed on the way in, so these four cannot come from Base UI:
+  // `checked` -> `value`, `defaultChecked` -> `defaultValue`,
+  // `onCheckedChange` -> `onValueChange`, and Base UI's `value` -> `formValue`.
   value?: boolean;
   defaultValue?: boolean;
   onValueChange?: (
@@ -71,17 +73,17 @@ type InternalContextType = {
     eventDetails: CheckboxRootChangeEventDetails,
   ) => void;
   formValue?: string;
-  name?: string;
-  required?: boolean;
-  readOnly?: boolean;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
-  "aria-describedby"?: string;
-};
+} & Pick<
+  BaseCheckboxRootProps,
+  "name" | "required" | "readOnly" | "aria-label" | "aria-describedby"
+> & {
+    // Base UI types this as `string | null`; we only ever pass a string.
+    "aria-labelledby"?: string;
+  };
 
 const CheckboxContext = createContext<InternalContextType>({
   size: "2",
-  color: "blue",
+  color: "default",
   disabled: false,
   indeterminate: false,
   parent: false,
@@ -167,13 +169,13 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     value,
     defaultValue,
     onValueChange,
-    indeterminate = false,
-    parent = false,
+    indeterminate,
+    parent,
     formValue,
     name,
     disabled: disabledProp,
-    required = false,
-    readOnly = false,
+    required,
+    readOnly,
     id: idProp,
     className,
     children,
@@ -191,7 +193,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
 
   // Own prop wins, then the group's default, then the component default.
   const size = sizeProp ?? group?.size ?? "2";
-  const color = colorProp ?? group?.color ?? "blue";
+  const color = colorProp ?? group?.color ?? "default";
   // `disabled` is the exception: Base UI ORs the group's value over the
   // checkbox's own (`CheckboxRoot.js`), so a group that disables its children
   // cannot be opted out of. Match that here or the label styles itself enabled
@@ -207,51 +209,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     setInputId(nextId);
   }, []);
 
-  const labelCount = useMemo(() => countLabels(children), [children]);
-  const hasLabel = labelCount > 0;
-
-  // Combinations that do nothing at all rather than failing loudly.
-  const hasOwnValue = value !== undefined || defaultValue !== undefined;
-  const inGroup = group !== null;
-  const groupHasAllValues = group?.hasAllValues ?? false;
-  const untrackedInGroup = inGroup && !parent && !formValue && !name;
-  useEffect(() => {
-    if (process.env.NODE_ENV === "production") return;
-    if (labelCount > 1) {
-      console.warn(
-        "Checkbox warning: more than one `Checkbox.Label` under a single " +
-          "`Checkbox.Root`. They share one id, which is invalid HTML. Use one " +
-          "label per checkbox.",
-      );
-    }
-    if (untrackedInGroup) {
-      console.warn(
-        "Checkbox warning: a checkbox inside a `CheckboxGroup` needs a `name` " +
-          "or a `formValue`. Without one the group cannot track it, so it never " +
-          "appears in the group value and never reaches `onValueChange`.",
-      );
-    }
-    if (parent && !groupHasAllValues) {
-      console.warn(
-        "Checkbox warning: `parent` needs a `CheckboxGroup` with `allValues` to " +
-          "derive its state. Without it the select-all checkbox toggles nothing.",
-      );
-    }
-    if (inGroup && hasOwnValue) {
-      console.warn(
-        "Checkbox warning: a checkbox inside a `CheckboxGroup` ignores its own " +
-          "`value` / `defaultValue`. The group owns the selection — set it on " +
-          "the group instead, keyed by this checkbox's `formValue` (or `name`).",
-      );
-    }
-  }, [
-    parent,
-    groupHasAllValues,
-    inGroup,
-    hasOwnValue,
-    labelCount,
-    untrackedInGroup,
-  ]);
+  const hasLabel = useMemo(() => countLabels(children) > 0, [children]);
 
   return (
     <CheckboxContext.Provider
@@ -280,10 +238,8 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
     >
       <Stack
         as={as}
-        direction="row"
         align="center"
         gap="2"
-        display="flex"
         className={className}
         data-tgph-checkbox-root
         style={style}
@@ -331,27 +287,42 @@ export type ControlProps = RemappedOmit<
   | "render"
   | "style"
   | "value"
-> & {
-  // Base UI types both of these as `string | ((state) => string)`. They land on
-  // the styled `Stack`, which takes the plain forms.
-  className?: string;
-  style?: CSSProperties;
-  tgphRef?: Ref<HTMLElement>;
-};
+> &
+  // Layout props reach the styled box, so callers can size or recolor it.
+  // `className` and `style` come from here too: Base UI types both as
+  // `string | ((state) => string)`, and the `Stack` takes the plain forms.
+  RemappedOmit<StackProps<"div">, "as" | "tgphRef" | "color"> & {
+    tgphRef?: Ref<HTMLElement>;
+    /**
+     * Overrides the check / dash indicator. Listed field by field rather than
+     * omitted from `IconProps`: that type is a discriminated union over every
+     * HTML attribute, and an `Omit` across it pushed `tsc` on this package past
+     * two minutes. No `alt` or `aria-hidden` either — the indicator is
+     * decorative and the control carries the accessible name.
+     */
+    iconProps?: {
+      /** Replaces the check and dash glyphs. */
+      icon?: LucideIcon;
+      size?: IconProps<"span">["size"];
+      variant?: IconProps<"span">["variant"];
+      color?: IconProps<"span">["color"];
+    };
+  };
 
 const Control = (controlProps: ControlProps) => {
   const {
-    className,
-    style,
     tgphRef,
+    iconProps,
+    // Base UI owns these two; everything left over styles the box.
     inputRef,
+    form,
     // Omitting these from `ControlProps` only stops a type-checked caller.
-    // They are spread below, after the values the root resolved, so anything
-    // that slips through untyped would win. Drop them here instead.
+    // Base UI resolves them from the root, so drop anything that slips
+    // through untyped rather than let it spread over the resolved value.
     disabled: _disabled,
     readOnly: _readOnly,
     required: _required,
-    ...props
+    ...stackProps
   } = controlProps as ControlProps & {
     disabled?: boolean;
     readOnly?: boolean;
@@ -404,7 +375,7 @@ const Control = (controlProps: ControlProps) => {
       onCheckedChange={(checked, eventDetails) =>
         context.onValueChange?.(checked, eventDetails)
       }
-      {...props}
+      form={form}
       render={createTgphBaseUIRender<
         BaseCheckboxRenderProps,
         BaseCheckboxState
@@ -418,14 +389,15 @@ const Control = (controlProps: ControlProps) => {
             h={size}
             rounded="2"
             border="px"
-            borderColor={active ? backgroundColor : "gray-6"}
-            bg={active ? backgroundColor : "surface-1"}
+            borderColor={
+              active ? backgroundColor : CHECKBOX_UNCHECKED.borderColor
+            }
+            bg={active ? backgroundColor : CHECKBOX_UNCHECKED.backgroundColor}
             data-tgph-checkbox-control
             data-tgph-checkbox-size={context.size}
             data-tgph-checkbox-color={context.color}
-            className={className}
             tgphRef={tgphRef}
-            style={style}
+            {...stackProps}
           >
             <BaseCheckbox.Indicator
               render={createTgphBaseUIRender<
@@ -441,6 +413,7 @@ const Control = (controlProps: ControlProps) => {
                     icon={indicatorState.indeterminate ? Minus : Check}
                     size={iconSize}
                     color={indicatorColor}
+                    {...iconProps}
                     aria-hidden
                   />
                 </Stack>
@@ -473,7 +446,7 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
       // has mounted. Inside a select-all group these differ.
       htmlFor={context.inputId ?? context.id}
       id={context.labelId}
-      size={LABEL_SIZE_MAP[context.size]}
+      size={CHECKBOX_SIZE_MAP[context.size].labelSize}
       data-tgph-checkbox-label
       style={style}
       {...props}

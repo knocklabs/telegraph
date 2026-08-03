@@ -16,8 +16,6 @@ export type CheckboxGroupContextType = {
   size?: CheckboxSize;
   color?: CheckboxColor;
   disabled?: boolean;
-  /** Whether the group was given `allValues`, which `parent` needs to work. */
-  hasAllValues: boolean;
 };
 
 const CheckboxGroupContext = createContext<CheckboxGroupContextType | null>(
