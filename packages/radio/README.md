@@ -1,6 +1,13 @@
-# 📻 Radio Cards
+# 📻 Radio
 
-> Card-style radio group component with flexible layouts and Telegraph design system integration.
+> A standalone radio and a card-style radio group for the Telegraph design system.
+
+This package ships two ways to pick one option from a set:
+
+- **`Radio`** with **`RadioGroup`** — a plain radio: a circle with a dot, and a
+  label. Visually the checkbox from `@telegraph/checkbox`, rounded.
+- **`RadioCards`** — the same choice rendered as selectable cards, with a
+  title, description, and icon per option.
 
 ![Telegraph by Knock](https://github.com/knocklabs/telegraph/assets/29106675/9b5022e3-b02c-4582-ba57-3d6171e45e44)
 
@@ -71,6 +78,115 @@ export const ActionSelector = () => {
 ```
 
 ## API Reference
+
+### A note on `value`
+
+Two props share the name and do different jobs. Worth reading once:
+
+| Prop               | Type     | What it is                                   |
+| ------------------ | -------- | -------------------------------------------- |
+| `RadioGroup.value` | `string` | Which option is selected                     |
+| `Radio.value`      | `string` | This option's identity, and its form payload |
+
+A radio has no selected state of its own. Base UI derives it entirely from the
+enclosing group, so `Radio` needs a `RadioGroup` ancestor and there is no
+single-radio API. That also means there is no `indeterminate` state: radios do
+not have one.
+
+`RadioGroup` owns the `name`, so each radio's `value` is what the form submits
+under it. The `formValue` collision that `@telegraph/checkbox` has does not
+arise here.
+
+### `<Radio.Default>` (Default Component)
+
+Renders the control and an associated label.
+
+| Prop           | Type                | Default     | Description                             |
+| -------------- | ------------------- | ----------- | --------------------------------------- |
+| `value`        | `string`            | —           | **Required.** This option's identity    |
+| `label`        | `ReactNode`         | —           | Visible label, associated via `htmlFor` |
+| `size`         | `"1" \| "2"`        | `"2"`       | Control size                            |
+| `color`        | `RadioColor`        | `"default"` | Color when selected                     |
+| `disabled`     | `boolean`           | `false`     | Disables this option                    |
+| `readOnly`     | `boolean`           | `false`     | Blocks changes, but still submits       |
+| `required`     | `boolean`           | `false`     | Must be chosen before the form submits  |
+| `labelProps`   | `RadioLabelProps`   | —           | Forwarded to `Radio.Label`. No `id`     |
+| `controlProps` | `RadioControlProps` | —           | Forwarded to `Radio.Control`            |
+
+`color` accepts `default`, `accent`, `blue`, `gray`, `green`, `purple`, `red`,
+and `yellow` — the same set as `@telegraph/button` and `@telegraph/checkbox`.
+
+```tsx
+import { Radio, RadioGroup } from "@telegraph/radio";
+
+<RadioGroup name="plan" value={plan} onValueChange={setPlan}>
+  <Radio.Default value="free" label="Free" />
+  <Radio.Default value="pro" label="Pro" />
+  <Radio.Default value="enterprise" label="Enterprise" disabled />
+</RadioGroup>;
+```
+
+### Composable parts
+
+```tsx
+<RadioGroup name="plan" defaultValue="pro">
+  <Radio.Root value="pro">
+    <Radio.Control />
+    <Radio.Label>Pro</Radio.Label>
+  </Radio.Root>
+</RadioGroup>
+```
+
+- **`<Radio.Root>`** — holds state and layout, and provides context. Takes
+  every prop in the table above except `label`, `labelProps` and
+  `controlProps`. Also accepts `Stack` layout props and `as` / `tgphRef`.
+- **`<Radio.Control>`** — the circle and its dot. Takes `Stack` layout props,
+  so `controlProps={{ w: "6" }}` resizes it. Pass `dotProps` to restyle the
+  dot.
+- **`<Radio.Label>`** — the label, associated with the control automatically.
+  It sets its own `id`, because that is what the control points
+  `aria-labelledby` at, so `labelProps` does not take one.
+
+### What names the control
+
+The first of these that applies wins:
+
+1. `aria-labelledby` on `Radio.Root`
+2. A visible `Radio.Label`
+3. `aria-label` on `Radio.Root`
+4. A wrapping `<label>` or a `Field.Label`
+
+So `aria-label` is for a radio with no visible label. Passing it alongside a
+label does nothing, because Base UI derives `aria-labelledby` from the
+associated `<label>` and that outranks `aria-label`. Use `aria-labelledby` when
+the accessible name has to differ from the visible text.
+
+### `<RadioGroup>`
+
+| Prop            | Type                    | Default    | Description                                   |
+| --------------- | ----------------------- | ---------- | --------------------------------------------- |
+| `value`         | `string`                | —          | Controlled selection                          |
+| `defaultValue`  | `string`                | —          | Initial selection when uncontrolled           |
+| `onValueChange` | `(value, eventDetails)` | —          | Fired when the selection changes              |
+| `name`          | `string`                | —          | Form field name for the whole group           |
+| `form`          | `string`                | —          | Id of a form the group is rendered outside of |
+| `size`          | `"1" \| "2"`            | —          | Applied to children that don't set their own  |
+| `color`         | `RadioColor`            | —          | Applied to children that don't set their own  |
+| `disabled`      | `boolean`               | `false`    | Disables every child                          |
+| `readOnly`      | `boolean`               | `false`    | Blocks changes across the group               |
+| `required`      | `boolean`               | `false`    | An option must be chosen before submitting    |
+| `direction`     | `"row" \| "column"`     | `"column"` | Layout direction                              |
+| `gap`           | Telegraph spacing token | `"2"`      | Space between radios                          |
+
+It renders a `Stack`, so the usual layout props apply. Arrow keys move the
+selection and the whole group is a single tab stop — that is Base UI's own
+roving focus, not a Telegraph shim.
+
+A group's `disabled` wins over a child's. `<Radio.Default disabled={false}>`
+inside a disabled group stays disabled, which is Base UI's rule.
+
+The second argument to `onValueChange` is Base UI's event detail, matching
+`@telegraph/checkbox`. It carries the native event and `cancel()`.
 
 ### `<RadioCards>`
 
