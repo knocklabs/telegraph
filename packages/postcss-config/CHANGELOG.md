@@ -1,5 +1,11 @@
 # @telegraph/postcss-config
 
+## 0.1.10
+
+### Patch Changes
+
+- [#935](https://github.com/knocklabs/telegraph/pull/935) [`95f65e3`](https://github.com/knocklabs/telegraph/commit/95f65e3e9d8d18b292f5705bc9cd770ef0ebd20d) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump autoprefixer from 10.5.2 to 10.5.4
+
 ## 0.1.9
 
 ### Patch Changes
