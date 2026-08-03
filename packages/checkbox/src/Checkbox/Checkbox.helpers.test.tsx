@@ -4,7 +4,7 @@ import { countLabels } from "./Checkbox.helpers";
 
 const Label = () => null;
 const NotALabel = () => null;
-/** Stands in for any component that returns a label from inside itself. */
+// Stands in for any component that returns a label from inside itself.
 const Opaque = () => <Label />;
 
 const count = (node: Parameters<typeof countLabels>[0]) =>

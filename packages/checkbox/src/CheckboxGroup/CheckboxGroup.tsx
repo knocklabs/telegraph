@@ -27,34 +27,25 @@ type BaseCheckboxGroupState = {
   disabled: boolean;
 };
 
-/**
- * The group keeps Base UI's names and signatures for the selection props, so
- * they come straight from Base UI rather than being redeclared. The README
- * covers what they mean here: `value` is keyed by each checkbox's `formValue`
- * (falling back to `name`), and `allValues` is required whenever the group
- * contains a `parent` checkbox.
- */
+// Selection props come straight from Base UI. The README covers what they mean
+// here: `value` is keyed by each checkbox's `formValue` (falling back to
+// `name`), and `allValues` is required whenever the group holds a `parent`.
 export type CheckboxGroupBaseProps = Pick<
   BaseCheckboxGroupProps,
   "value" | "defaultValue" | "onValueChange" | "allValues" | "disabled"
 > & {
-  /** Applied to every checkbox in the group unless one sets its own. */
+  // Applied to every checkbox in the group unless one sets its own.
   size?: CheckboxSize;
-  /** Applied to every checkbox in the group unless one sets its own. */
   color?: CheckboxColor;
   children?: ReactNode;
 };
 
-/**
- * Not polymorphic: the group renders a `Stack` and the element would have to
- * resolve inside the Base UI `render` callback. `StackProps<"div">` pins the
- * passthrough to the element actually rendered.
- *
- * Base UI's own props are listed on `CheckboxGroupBaseProps` and destructured
- * by name below. Everything else is a `Stack` prop and spreads onto the
- * element. Handing the leftovers to Base UI instead would let it swallow any
- * prop it happens to consume — `id` did exactly that.
- */
+// Not polymorphic: the element resolves inside Base UI's `render` callback, so
+// `StackProps<"div">` pins the passthrough to what is actually rendered.
+//
+// Base UI's props are destructured by name below and everything else spreads
+// onto the `Stack`. Handing the leftovers to Base UI instead would let it
+// swallow any prop it happens to consume — `id` did exactly that.
 export type CheckboxGroupProps = RemappedOmit<
   StackProps<"div">,
   "tgphRef" | "as" | "value" | "defaultValue" | "onChange" | "color"

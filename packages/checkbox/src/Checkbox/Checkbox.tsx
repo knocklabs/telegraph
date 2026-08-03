@@ -19,7 +19,6 @@ import {
   type ReactNode,
   type Ref,
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useId,
@@ -39,44 +38,68 @@ import {
 } from "./Checkbox.constants";
 import { countLabels } from "./Checkbox.helpers";
 
-type InternalContextType = {
-  // Not from Base UI: `size` and `color` are Telegraph tokens, and `Root`
-  // always resolves the two ids, so ours are required where Base UI's `id`
-  // is optional.
-  size: CheckboxSize;
-  color: CheckboxColor;
-  id: string;
-  labelId: string;
-  // The id Base UI actually put on the hidden input, which is not always the
-  // `id` we passed: inside a select-all group it derives its own and discards
-  // ours. `Checkbox.Label` needs the real one or `htmlFor` points at nothing.
-  inputId?: string;
-  registerInputId: (id: string) => void;
-  // Decided during render, not in an effect: the control has to emit
-  // `aria-labelledby` in the first pass or SSR ships an unnamed checkbox.
-  hasLabel: boolean;
-  // Renamed on the way in, so these four cannot come from Base UI:
-  // `checked` -> `value`, `defaultChecked` -> `defaultValue`,
-  // `onCheckedChange` -> `onValueChange`, and Base UI's `value` -> `formValue`.
+// `name`, `required`, `readOnly`, `disabled` and `id` pass straight through to
+// Base UI and mean exactly what they mean there, so they come from its types.
+// The rest are declared here: `size` and `color` are Telegraph tokens, and the
+// four below are renamed on the way in — `checked` -> `value`,
+// `defaultChecked` -> `defaultValue`, `onCheckedChange` -> `onValueChange`,
+// and Base UI's `value` -> `formValue`.
+export type RootBaseProps = Pick<
+  BaseCheckboxRootProps,
+  "name" | "required" | "readOnly" | "disabled" | "id"
+> & {
+  size?: CheckboxSize;
+  color?: CheckboxColor;
   value?: boolean;
   defaultValue?: boolean;
+  // The second argument carries the native event and `cancel()`.
   onValueChange?: (
     value: boolean,
     eventDetails: CheckboxRootChangeEventDetails,
   ) => void;
+  indeterminate?: boolean;
+  // Needs a `CheckboxGroup` with `allValues`. The group derives this
+  // checkbox's state, so don't pass `value` alongside it.
+  parent?: boolean;
+  // Also the key its group tracks it by. Falls back to `name`.
   formValue?: string;
-} & Pick<
-  BaseCheckboxRootProps,
+  // Submitted when unticked, where a plain checkbox submits nothing. Base UI
+  // ignores it inside a `CheckboxGroup` and on a `parent`.
+  uncheckedValue?: string;
+};
+
+// Everything the root resolves and the parts read back. Sourced from
+// `RootBaseProps` so a prop added to the public surface cannot silently fail to
+// reach the parts that render it.
+type InternalContextType = Pick<
+  RootBaseProps,
+  | "value"
+  | "defaultValue"
+  | "onValueChange"
+  | "formValue"
+  | "indeterminate"
+  | "parent"
+  | "uncheckedValue"
   | "name"
   | "required"
   | "readOnly"
   | "disabled"
-  | "indeterminate"
-  | "parent"
-  | "uncheckedValue"
-  | "aria-label"
-  | "aria-describedby"
-> & {
+> &
+  Pick<BaseCheckboxRootProps, "aria-label" | "aria-describedby"> & {
+    // `Root` always resolves these three, so the context holds them where
+    // `RootBaseProps` leaves them optional.
+    size: CheckboxSize;
+    color: CheckboxColor;
+    id: string;
+    labelId: string;
+    // The id Base UI actually put on the hidden input, which is not always the
+    // `id` we passed: inside a select-all group it derives its own and discards
+    // ours. `Checkbox.Label` needs the real one or `htmlFor` points at nothing.
+    inputId?: string;
+    registerInputId: (id: string) => void;
+    // Decided during render, not in an effect: the control has to emit
+    // `aria-labelledby` in the first pass or SSR ships an unnamed checkbox.
+    hasLabel: boolean;
     // Base UI types this as `string | null`; we only ever pass a string.
     "aria-labelledby"?: string;
   };
@@ -92,49 +115,6 @@ const CheckboxContext = createContext<InternalContextType>({
   registerInputId: () => {},
   hasLabel: false,
 });
-
-export type RootBaseProps = {
-  size?: CheckboxSize;
-  color?: CheckboxColor;
-  /** Whether the checkbox is ticked. Use `defaultValue` for an uncontrolled checkbox. */
-  value?: boolean;
-  /** Initial ticked state for an uncontrolled checkbox. */
-  defaultValue?: boolean;
-  /**
-   * Called with the new ticked state. The second argument is Base UI's event
-   * detail: it carries the native event (`eventDetails.event`, useful for
-   * shift-click range selection) and `eventDetails.cancel()`.
-   */
-  onValueChange?: (
-    value: boolean,
-    eventDetails: CheckboxRootChangeEventDetails,
-  ) => void;
-  /** Renders the mixed state: `aria-checked="mixed"` plus a dash indicator. */
-  indeterminate?: boolean;
-  /**
-   * Marks this checkbox as the select-all for its group. Requires a
-   * `CheckboxGroup` with `allValues`; the group derives this checkbox's
-   * checked and indeterminate state, so don't pass `value` alongside it.
-   */
-  parent?: boolean;
-  /**
-   * The string submitted with the form. Inside a `CheckboxGroup` this is also
-   * the key the group tracks this checkbox by. Falls back to `name`.
-   */
-  formValue?: string;
-  /**
-   * The string submitted when the checkbox is *unticked*. Without it an unticked
-   * checkbox submits nothing at all, so the field is absent rather than false.
-   * Needs `name`, and Base UI ignores it inside a `CheckboxGroup` and on a
-   * `parent` checkbox.
-   */
-  uncheckedValue?: string;
-  name?: string;
-  required?: boolean;
-  readOnly?: boolean;
-  disabled?: boolean;
-  id?: string;
-};
 
 // Stripped from *both* halves. Every element declares `defaultValue?: string |
 // number | readonly string[]`, so leaving it in the passthrough intersects it
@@ -199,9 +179,6 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
   const labelId = `${id}-label`;
 
   const [inputId, setInputId] = useState<string>();
-  const registerInputId = useCallback((nextId: string) => {
-    setInputId(nextId);
-  }, []);
 
   const hasLabel = useMemo(() => countLabels(children, Label) > 0, [children]);
 
@@ -216,7 +193,7 @@ const Root = <T extends TgphElement = "div">(rootProps: RootProps<T>) => {
         id,
         labelId,
         inputId,
-        registerInputId,
+        registerInputId: setInputId,
         hasLabel,
         value,
         defaultValue,
@@ -268,15 +245,11 @@ export type ControlProps = Pick<BaseCheckboxRootProps, "form" | "inputRef"> &
   // `string | ((state) => string)`, and the `Stack` takes the plain forms.
   RemappedOmit<StackProps<"div">, "as" | "tgphRef" | "color"> & {
     tgphRef?: Ref<HTMLElement>;
-    /**
-     * Overrides the check / dash indicator. Listed field by field rather than
-     * omitted from `IconProps`: that type is a discriminated union over every
-     * HTML attribute, and an `Omit` across it pushed `tsc` on this package past
-     * two minutes. No `alt` or `aria-hidden` either — the indicator is
-     * decorative and the control carries the accessible name.
-     */
+    // Overrides the indicator. Listed field by field rather than omitted from
+    // `IconProps`: that type is a discriminated union over every HTML
+    // attribute, and an `Omit` across it pushed `tsc` past two minutes. No
+    // `alt` or `aria-hidden` — the control carries the accessible name.
     iconProps?: {
-      /** Replaces the check and dash glyphs. */
       icon?: LucideIcon;
       size?: IconProps<"span">["size"];
       variant?: IconProps<"span">["variant"];
@@ -323,6 +296,15 @@ const Control = (controlProps: ControlProps) => {
     if (nextId) registerInputId(nextId);
   });
 
+  const ariaProps = {
+    ...(context["aria-label"] !== undefined && {
+      "aria-label": context["aria-label"],
+    }),
+    ...(context["aria-describedby"] !== undefined && {
+      "aria-describedby": context["aria-describedby"],
+    }),
+  };
+
   return (
     <BaseCheckbox.Root
       inputRef={composedInputRef}
@@ -337,16 +319,20 @@ const Control = (controlProps: ControlProps) => {
       disabled={context.disabled}
       required={context.required}
       readOnly={context.readOnly}
-      aria-label={context["aria-label"]}
-      aria-describedby={context["aria-describedby"]}
-      // An explicit `aria-labelledby` wins. Otherwise point at our own label,
-      // but only when one exists: a dangling IDREF names nothing and also stops
-      // Base UI falling back to a wrapping `<label>` or a `Field.Label`.
+      // Only the aria props we actually have. Base UI does not destructure
+      // `aria-describedby`, so it lands in `elementProps` and merges *after*
+      // `getDescriptionProps` — and that merge has no undefined guard. Passing
+      // `aria-describedby={undefined}` would erase the id a wrapping
+      // `Field.Description` or `Field.Error` just computed.
+      {...ariaProps}
+      // An explicit `aria-labelledby` wins. Otherwise point at our own label
+      // whenever one exists. `aria-label` does not suppress this: Base UI's
+      // fallback re-derives `aria-labelledby` from the associated `<label>`
+      // anyway, and that outranks `aria-label` in the name computation. Naming
+      // it here just moves the same result into the first paint.
       aria-labelledby={
         context["aria-labelledby"] ??
-        (context["aria-label"] || !context.hasLabel
-          ? undefined
-          : context.labelId)
+        (context.hasLabel ? context.labelId : undefined)
       }
       onCheckedChange={(checked, eventDetails) =>
         context.onValueChange?.(checked, eventDetails)
@@ -404,15 +390,25 @@ const Control = (controlProps: ControlProps) => {
 
 // `as` is re-declared as optional so `<Checkbox.Label>` works without it;
 // Telegraph's `Text` otherwise requires `as` unless `internal_optionalAs` is set.
+// `id` is not the caller's to set: `Checkbox.Control` points `aria-labelledby`
+// at `context.labelId` during render, so a different id here leaves a dangling
+// IDREF and the control ends up with no accessible name at all.
 export type LabelProps<T extends TgphElement = "label"> = RemappedOmit<
   TextProps<T>,
-  "as"
+  "as" | "id"
 > & {
   as?: T;
 };
 
 const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
-  const { as, style, ...props } = labelProps as LabelProps<"label">;
+  // `id` is destructured away rather than merely omitted from the type, so an
+  // untyped caller cannot spread over the one `aria-labelledby` points at.
+  const {
+    as,
+    style,
+    id: _id,
+    ...props
+  } = labelProps as LabelProps<"label"> & { id?: string };
   const context = useContext(CheckboxContext);
 
   return (

@@ -1,8 +1,9 @@
+import { Field } from "@base-ui/react/field";
 import { Stack } from "@telegraph/layout";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { X } from "lucide-react";
-import type { FormEvent } from "react";
+import type { FormEvent, ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
@@ -19,7 +20,7 @@ const getControl = () => screen.getByRole("checkbox");
 const getHiddenInput = (container: HTMLElement) =>
   container.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
 
-/** The FormData captured by the first call to a submit spy. */
+// The FormData captured by the first call to a submit spy.
 const getSubmitted = (onSubmit: { mock: { calls: unknown[][] } }) =>
   onSubmit.mock.calls[0]![0] as FormData;
 
@@ -149,7 +150,7 @@ describe("Checkbox", () => {
   });
 
   describe("form submission", () => {
-    const renderForm = (ui: React.ReactNode, onSubmit: (d: FormData) => void) =>
+    const renderForm = (ui: ReactNode, onSubmit: (d: FormData) => void) =>
       render(
         <form
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -369,6 +370,51 @@ describe("Checkbox", () => {
         container.querySelector("[data-tgph-checkbox-root]"),
       ).not.toHaveAttribute("aria-describedby");
     });
+
+    // Base UI does not destructure `aria-describedby`, so it lands in
+    // `elementProps` and merges after `getDescriptionProps` — and that merge
+    // overwrites with `undefined`. Forwarding the prop unconditionally erased
+    // whatever a wrapping `Field` had computed.
+    it("does not erase a Field description by forwarding undefined", async () => {
+      const { container } = render(
+        <Field.Root>
+          <Checkbox.Default label="Cancel run" name="run" />
+          <Field.Description>Stops the run immediately</Field.Description>
+        </Field.Root>,
+      );
+
+      expect(getControl()).toHaveAccessibleDescription(
+        "Stops the run immediately",
+      );
+      expectToHaveNoViolations(await axe(container));
+    });
+
+    // A visible label wins over `aria-label`: Base UI's fallback re-derives
+    // `aria-labelledby` from the associated `<label>`, and that outranks
+    // `aria-label`. Naming it during render keeps the result stable from the
+    // first paint instead of flipping at hydration.
+    it("names a labelled checkbox from the label, at render time", () => {
+      const html = renderToString(
+        <Checkbox.Default aria-label="Select run 1" label="1" />,
+      );
+      expect(html.slice(html.indexOf('role="checkbox"'))).toContain(
+        "aria-labelledby=",
+      );
+
+      render(<Checkbox.Default aria-label="Select run 1" label="1" />);
+      expect(getControl()).toHaveAccessibleName("1");
+    });
+
+    // The escape hatch for a longer accessible name than the visible text.
+    it("lets aria-labelledby override a visible label", () => {
+      render(
+        <>
+          <span id="row">Select run 1</span>
+          <Checkbox.Default aria-labelledby="row" label="1" />
+        </>,
+      );
+      expect(getControl()).toHaveAccessibleName("Select run 1");
+    });
   });
 
   describe("label rendering", () => {
@@ -386,6 +432,25 @@ describe("Checkbox", () => {
         <Checkbox.Default aria-label="Select run" label={false} />,
       );
       expect(container.querySelector("label")).toBeNull();
+    });
+
+    // `Checkbox.Control` points `aria-labelledby` at `context.labelId` during
+    // render, so a caller-supplied id would leave a dangling IDREF and the
+    // control would have no accessible name at all.
+    it("keeps its own id even when a caller passes one", async () => {
+      const { container } = render(
+        <Checkbox.Default
+          label="Cancel run"
+          // @ts-expect-error id is not part of the label surface
+          labelProps={{ id: "my-label" }}
+        />,
+      );
+
+      const label = container.querySelector("label")!;
+      expect(label.id).not.toBe("my-label");
+      expect(getControl()).toHaveAttribute("aria-labelledby", label.id);
+      expect(getControl()).toHaveAccessibleName("Cancel run");
+      expectToHaveNoViolations(await axe(container));
     });
   });
 
@@ -470,7 +535,7 @@ describe("Checkbox", () => {
   // and the control stays reachable. Pin that difference, because collapsing
   // the two would silently drop the value from the form.
   describe("readOnly", () => {
-    const submitOnce = async (ui: React.ReactNode) => {
+    const submitOnce = async (ui: ReactNode) => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
       const { unmount } = render(

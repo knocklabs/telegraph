@@ -124,7 +124,7 @@ label.
 | `name`           | `string`                | —           | Form field name, and the group key when `formValue` is unset |
 | `formValue`      | `string`                | `"on"`      | The string submitted with the form                           |
 | `uncheckedValue` | `string`                | —           | The string submitted when unticked. See below                |
-| `labelProps`     | `CheckboxLabelProps`    | —           | Forwarded to `Checkbox.Label`                                |
+| `labelProps`     | `CheckboxLabelProps`    | —           | Forwarded to `Checkbox.Label`. No `id` — see below           |
 | `controlProps`   | `CheckboxControlProps`  | —           | Forwarded to `Checkbox.Control`                              |
 
 `color` accepts `default`, `accent`, `blue`, `gray`, `green`, `purple`, `red`,
@@ -167,11 +167,33 @@ Native `readonly` does nothing on a checkbox, so Base UI does this work.
   `iconProps` to change the indicator: `iconProps={{ icon: X }}` swaps the
   glyph, and `size` / `color` / `variant` are also accepted. The indicator stays
   `aria-hidden` — the control carries the accessible name.
-- **`<Checkbox.Label>`** — the label, associated with the control automatically.
+- **`<Checkbox.Label>`** — the label, associated with the control
+  automatically. It sets its own `id`, because that is what the control points
+  `aria-labelledby` at, so `labelProps` does not take one.
 
-Use `aria-label` on `Root` when there is no visible label. Without either one,
-the control falls back to a wrapping `<label>` or a `Field.Label`, so those
-compositions name it correctly too.
+### What names the control
+
+The first of these that applies wins:
+
+1. `aria-labelledby` on `Root`
+2. A visible `Checkbox.Label`
+3. `aria-label` on `Root`
+4. A wrapping `<label>` or a `Field.Label`
+
+So `aria-label` is for a checkbox with no visible label. Passing it _alongside_
+a label does nothing — the label still wins, because Base UI derives
+`aria-labelledby` from the associated `<label>` and that outranks `aria-label`
+in the name computation.
+
+When the accessible name has to differ from the visible text — a table row
+labelled `1` that should read as "Select run 1" — use `aria-labelledby`:
+
+```tsx
+<span id="run-1-name" hidden>
+  Select run 1
+</span>
+<Checkbox.Default aria-labelledby="run-1-name" label="1" />
+```
 
 ### `<CheckboxGroup>`
 

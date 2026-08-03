@@ -13,11 +13,11 @@ const RUNS = ["run-1", "run-2", "run-3"];
 
 const getCheckbox = (name: string) => screen.getByRole("checkbox", { name });
 
-/** The FormData captured by the first call to a submit spy. */
+// The FormData captured by the first call to a submit spy.
 const getSubmitted = (onSubmit: { mock: { calls: unknown[][] } }) =>
   onSubmit.mock.calls[0]![0] as FormData;
 
-/** Controlled group, so tests can assert on the value the group reports. */
+// Controlled group, so tests can assert on the value the group reports.
 const ControlledGroup = ({
   initialValue = [],
   onValueChange,
