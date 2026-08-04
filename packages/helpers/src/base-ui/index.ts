@@ -14,4 +14,7 @@ export {
   type LegacyDismissHandlers,
 } from "./compatibility";
 
-export { inferTriggerNativeButton } from "./inferTriggerNativeButton";
+export {
+  inferTriggerNativeButton,
+  type InferTriggerNativeButtonOptions,
+} from "./inferTriggerNativeButton";

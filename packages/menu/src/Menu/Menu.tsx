@@ -189,12 +189,12 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
       forwardedRef as Ref<HTMLButtonElement>,
       tgphRef,
     ) as Ref<HTMLButtonElement>;
-    const nativeButton =
-      nativeButtonProp ??
-      (asChild && isValidElement(children)
-        ? (inferTriggerNativeButton(children, TELEGRAPH_BUTTON_COMPONENTS) ??
-          true)
-        : true);
+    const nativeButton = inferTriggerNativeButton({
+      asChild,
+      buttonComponents: TELEGRAPH_BUTTON_COMPONENTS,
+      children,
+      nativeButton: nativeButtonProp,
+    });
     // A custom onClick means callers likely own the trigger activation path, so
     // avoid also letting Base UI process mousedown as a separate open signal.
     const shouldSuppressBaseMouseDown = Boolean(onClick);

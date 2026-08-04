@@ -155,12 +155,12 @@ const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
       forwardedRef,
       tgphRef,
     );
-    const nativeButton =
-      nativeButtonProp ??
-      (asChild && isValidElement(children)
-        ? (inferTriggerNativeButton(children, TELEGRAPH_BUTTON_COMPONENTS) ??
-          true)
-        : true);
+    const nativeButton = inferTriggerNativeButton({
+      asChild,
+      buttonComponents: TELEGRAPH_BUTTON_COMPONENTS,
+      children,
+      nativeButton: nativeButtonProp,
+    });
 
     if (!asChild || !isValidElement(children)) {
       return (

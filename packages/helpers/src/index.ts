@@ -29,6 +29,7 @@ export {
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
   inferTriggerNativeButton,
+  type InferTriggerNativeButtonOptions,
   type BaseUIChangeDetails,
   type BaseUIFloatingSide,
   type BaseUIPositionerVisibilityStyleParams,
