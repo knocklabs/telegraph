@@ -16,5 +16,10 @@ export {
 
 export {
   inferTriggerNativeButton,
+  registerNativeButtonResolver,
+  resolveNativeButton,
   type InferTriggerNativeButtonOptions,
+  type NativeButtonResolver,
+  type RegisterNativeButtonResolverOptions,
+  type ResolveNativeButtonOptions,
 } from "./inferTriggerNativeButton";

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { type ComponentPropsWithoutRef, type Ref, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
 
 import { Modal } from "./Modal";
@@ -10,6 +10,14 @@ import type {
   ModalFooterProps,
   ModalHeaderProps,
 } from "./index";
+
+type NativeButtonProps = ComponentPropsWithoutRef<"button"> & {
+  tgphRef?: Ref<HTMLButtonElement>;
+};
+
+const NativeButton = ({ tgphRef, ...props }: NativeButtonProps) => (
+  <button ref={tgphRef} {...props} />
+);
 
 const TestModal = ({
   a11yTitle = "Settings",
@@ -65,6 +73,28 @@ describe("Modal", () => {
 
       const close = await screen.findByRole("button", { name: "Close Modal" });
       expect(close.tagName).toBe("DIV");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("preserves Base UI's default for an opaque close component", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Modal.Root open a11yTitle="Settings">
+          <Modal.Content>
+            <Modal.Close as={NativeButton} />
+          </Modal.Content>
+        </Modal.Root>,
+      );
+
+      const close = await screen.findByRole("button", { name: "Close Modal" });
+      expect(close.tagName).toBe("BUTTON");
       expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
         "nativeButton",
       );

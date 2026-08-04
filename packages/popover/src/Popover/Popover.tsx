@@ -1,5 +1,4 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { Button } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
@@ -155,7 +154,6 @@ const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
     );
     const nativeButton = inferTriggerNativeButton({
       asChild,
-      buttonComponent: Button,
       children,
       nativeButton: nativeButtonProp,
     });

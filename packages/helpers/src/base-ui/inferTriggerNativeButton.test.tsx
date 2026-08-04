@@ -1,18 +1,30 @@
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 
-import { inferTriggerNativeButton } from "./inferTriggerNativeButton";
+import type { TgphElement } from "../types/utility";
+
+import {
+  inferTriggerNativeButton,
+  registerNativeButtonResolver,
+  resolveNativeButton,
+} from "./inferTriggerNativeButton";
 
 type PolymorphicButtonProps = {
   as?: "button" | "div";
   disabled?: boolean;
 };
 
-const PolymorphicButtonRoot = (_props: PolymorphicButtonProps) => null;
-const PolymorphicButton = Object.assign(
-  (_props: PolymorphicButtonProps) => null,
-  { Root: PolymorphicButtonRoot },
-);
+const resolvePolymorphicButton = (props: unknown) => {
+  const { as, disabled } = props as PolymorphicButtonProps;
+  return !!disabled || as === undefined || as === "button";
+};
+
+const PolymorphicButton = (_props: PolymorphicButtonProps) => null;
+
+registerNativeButtonResolver({
+  component: PolymorphicButton,
+  resolver: resolvePolymorphicButton,
+});
 
 const infer = (
   children: ReactNode,
@@ -20,10 +32,23 @@ const infer = (
 ) =>
   inferTriggerNativeButton({
     asChild: options.asChild ?? true,
-    buttonComponent: PolymorphicButton,
     children,
     nativeButton: options.nativeButton,
   });
+
+describe("resolveNativeButton", () => {
+  it("unwraps Motion components using their stable component symbol", () => {
+    const MotionDiv = {
+      [Symbol.for("motionComponentSymbol")]: "div",
+    } as unknown as TgphElement;
+    const MotionButton = {
+      [Symbol.for("motionComponentSymbol")]: "button",
+    } as unknown as TgphElement;
+
+    expect(resolveNativeButton({ component: MotionDiv })).toBe(false);
+    expect(resolveNativeButton({ component: MotionButton })).toBe(true);
+  });
+});
 
 describe("inferTriggerNativeButton", () => {
   it("prefers an explicit nativeButton value", () => {
@@ -41,11 +66,22 @@ describe("inferTriggerNativeButton", () => {
     expect(infer(<div />)).toBe(false);
   });
 
-  it("infers recognized polymorphic button semantics", () => {
+  it("uses a stable resolver registered by a polymorphic component", () => {
     expect(infer(<PolymorphicButton />)).toBe(true);
     expect(infer(<PolymorphicButton as="div" />)).toBe(false);
     expect(infer(<PolymorphicButton as="div" disabled />)).toBe(true);
-    expect(infer(<PolymorphicButton.Root as="div" />)).toBe(false);
+  });
+
+  it("recognizes a resolver registered by another package instance", () => {
+    const ForeignButton = (_props: PolymorphicButtonProps) => null;
+
+    Object.defineProperty(
+      ForeignButton,
+      Symbol.for("@telegraph/native-button-resolver"),
+      { value: resolvePolymorphicButton },
+    );
+
+    expect(infer(<ForeignButton as="div" />)).toBe(false);
   });
 
   it("uses the Base UI default for unrecognized components", () => {

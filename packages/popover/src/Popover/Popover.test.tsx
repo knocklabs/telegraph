@@ -61,6 +61,50 @@ describe("Popover", () => {
     }
   });
 
+  it("infers native semantics from a Motion button", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger>
+            <Button as={motion.button}>Open</Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("preserves Base UI's default for an opaque component", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger>
+            <Button as={TestButton}>Open</Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("keeps the animated element when a spread supplies `as`", async () => {
     const user = userEvent.setup();
     // A spread is the only route left: `as` is gone from the props type.

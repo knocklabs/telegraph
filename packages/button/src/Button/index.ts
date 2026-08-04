@@ -1,4 +1,8 @@
-export { Button, rendersNativeButton } from "./Button";
+export {
+  Button,
+  rendersNativeButton,
+  resolveButtonNativeButton,
+} from "./Button";
 export type {
   RootProps as ButtonRootProps,
   TextProps as ButtonTextProps,

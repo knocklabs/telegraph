@@ -1,51 +1,79 @@
-import {
-  type ElementType,
-  type ReactElement,
-  type ReactNode,
-  isValidElement,
-} from "react";
+import { type ReactNode, isValidElement } from "react";
 
-import type { AsProp, TgphElement } from "../types/utility";
+import type { TgphElement } from "../types/utility";
 
-type PolymorphicButtonProps = AsProp<TgphElement> & {
-  disabled?: boolean;
+const MOTION_COMPONENT_SYMBOL = Symbol.for("motionComponentSymbol");
+const NATIVE_BUTTON_RESOLVER_SYMBOL = Symbol.for(
+  "@telegraph/native-button-resolver",
+);
+
+type NativeButtonComponent = string | TgphElement;
+
+type NativeButtonResolver = (props: unknown) => boolean | undefined;
+
+type ResolvableComponent = {
+  [MOTION_COMPONENT_SYMBOL]?: NativeButtonComponent;
+  [NATIVE_BUTTON_RESOLVER_SYMBOL]?: NativeButtonResolver;
 };
 
-type CompoundButtonComponent = ElementType & {
-  Root: ElementType;
+type RegisterNativeButtonResolverOptions = {
+  component: object;
+  resolver: NativeButtonResolver;
 };
 
-type InferElementNativeButtonOptions = {
-  buttonComponent: CompoundButtonComponent;
-  element: ReactElement;
+type RegisterNativeButtonResolver = (
+  options: RegisterNativeButtonResolverOptions,
+) => void;
+
+const registerNativeButtonResolver: RegisterNativeButtonResolver = ({
+  component,
+  resolver,
+}) => {
+  Object.defineProperty(component, NATIVE_BUTTON_RESOLVER_SYMBOL, {
+    configurable: true,
+    value: resolver,
+  });
 };
 
-type InferElementNativeButton = (
-  options: InferElementNativeButtonOptions,
+type ResolveNativeButtonOptions = {
+  component: NativeButtonComponent;
+  props?: unknown;
+};
+
+type ResolveNativeButton = (
+  options: ResolveNativeButtonOptions,
 ) => boolean | undefined;
 
-const inferElementNativeButton: InferElementNativeButton = ({
-  buttonComponent,
-  element,
-}) => {
-  if (typeof element.type === "string") {
-    return element.type === "button";
+const resolveNativeButton: ResolveNativeButton = ({ component, props }) => {
+  if (typeof component === "string") {
+    return component === "button";
   }
 
   if (
-    element.type !== buttonComponent &&
-    element.type !== buttonComponent.Root
+    (typeof component !== "function" && typeof component !== "object") ||
+    component === null
   ) {
     return undefined;
   }
 
-  const { as, disabled } = element.props as PolymorphicButtonProps;
-  return !!disabled || as === undefined || as === "button";
+  const resolvableComponent = component as ResolvableComponent;
+  const resolver = resolvableComponent[NATIVE_BUTTON_RESOLVER_SYMBOL];
+
+  if (resolver) {
+    return resolver(props);
+  }
+
+  const motionComponent = resolvableComponent[MOTION_COMPONENT_SYMBOL];
+
+  if (motionComponent && motionComponent !== component) {
+    return resolveNativeButton({ component: motionComponent, props });
+  }
+
+  return undefined;
 };
 
 type InferTriggerNativeButtonOptions = {
   asChild: boolean;
-  buttonComponent: CompoundButtonComponent;
   children: ReactNode;
   nativeButton?: boolean;
 };
@@ -56,10 +84,9 @@ type InferTriggerNativeButton = (
 
 const inferTriggerNativeButton: InferTriggerNativeButton = ({
   asChild,
-  buttonComponent,
   children,
   nativeButton,
-}: InferTriggerNativeButtonOptions): boolean => {
+}) => {
   if (nativeButton !== undefined) {
     return nativeButton;
   }
@@ -69,11 +96,19 @@ const inferTriggerNativeButton: InferTriggerNativeButton = ({
   }
 
   return (
-    inferElementNativeButton({
-      buttonComponent,
-      element: children,
+    resolveNativeButton({
+      component: children.type,
+      props: children.props,
     }) ?? true
   );
 };
 
-export { inferTriggerNativeButton, type InferTriggerNativeButtonOptions };
+export {
+  inferTriggerNativeButton,
+  registerNativeButtonResolver,
+  resolveNativeButton,
+  type InferTriggerNativeButtonOptions,
+  type NativeButtonResolver,
+  type RegisterNativeButtonResolverOptions,
+  type ResolveNativeButtonOptions,
+};

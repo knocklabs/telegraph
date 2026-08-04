@@ -85,6 +85,10 @@ The trigger element that opens/closes the menu. Must wrap a single focusable ele
 | `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)               |
 | `nativeButton` | `boolean`         | inferred from child | Overrides whether the child renders a `<button>` |
 
+Intrinsic elements, Telegraph Buttons, and Motion intrinsic components are
+inferred automatically. Opaque components preserve Base UI's native-button
+default; pass `nativeButton={false}` when one resolves to a non-button element.
+
 ### `<Menu.Content>`
 
 The dropdown content container that holds menu items.

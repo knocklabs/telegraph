@@ -73,6 +73,10 @@ The trigger element that opens/closes the popover. Must wrap a single focusable 
 | `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)               |
 | `nativeButton` | `boolean`         | inferred from child | Overrides whether the child renders a `<button>` |
 
+Intrinsic elements, Telegraph Buttons, and Motion intrinsic components are
+inferred automatically. Opaque components preserve Base UI's native-button
+default; pass `nativeButton={false}` when one resolves to a non-button element.
+
 ### `<Popover.Content>`
 
 The popover content container that appears in a portal.

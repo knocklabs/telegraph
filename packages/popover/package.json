@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
-    "@telegraph/button": "workspace:^",
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
@@ -42,6 +41,7 @@
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.6",
     "@knocklabs/typescript-config": "^0.0.2",
+    "@telegraph/button": "workspace:^",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",

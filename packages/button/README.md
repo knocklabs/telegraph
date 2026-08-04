@@ -44,6 +44,14 @@ export const Example = () => (
 );
 ```
 
+### Base UI integration
+
+`resolveButtonNativeButton({ as, disabled })` reports whether a polymorphic
+Button resolves to a native `<button>`. It recognizes intrinsic elements and
+Motion components; opaque components return `undefined` so Base UI can preserve
+its default. Telegraph Base UI wrappers use a stable resolver registered by the
+Button package, including when multiple package instances are installed.
+
 ## Props
 
 ### `<Button>` (Default Component)

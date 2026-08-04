@@ -396,16 +396,18 @@ polymorphic button component and preserves Base UI's default for unknown
 components.
 
 ```tsx
-import { Button } from "@telegraph/button";
 import { inferTriggerNativeButton } from "@telegraph/helpers";
 
 const nativeButton = inferTriggerNativeButton({
   asChild,
-  buttonComponent: Button,
   children,
   nativeButton: nativeButtonProp,
 });
 ```
+
+Polymorphic components can register a resolver with
+`registerNativeButtonResolver`. The registration uses a global symbol, so it
+continues to work when consumers and wrappers load different package instances.
 
 ### Base UI Compatibility Utilities
 

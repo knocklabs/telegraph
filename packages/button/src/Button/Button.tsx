@@ -1,9 +1,12 @@
 import {
   type AsAndTgphRefProps,
+  type AsProp,
   RemappedOmit,
   type Required,
   type TgphComponentProps,
   type TgphElement,
+  registerNativeButtonResolver,
+  resolveNativeButton,
   useDeterminateState,
 } from "@telegraph/helpers";
 import { Spinner, Icon as TelegraphIcon } from "@telegraph/icon";
@@ -86,12 +89,32 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
   return params.state;
 };
 
-// Whether `Button.Root` renders a real `<button>` for this `as`/`disabled`
-// pair. Base UI components that render a Button need it: they log an error
-// when their `nativeButton` prop disagrees with the tag that renders, and
-// they swap native `disabled` for `aria-disabled` when it is false.
+type ResolveButtonNativeButtonOptions = AsProp<TgphElement> & {
+  disabled?: boolean;
+};
+
+type ResolveButtonNativeButton = (
+  options: ResolveButtonNativeButtonOptions,
+) => boolean | undefined;
+
+// Base UI needs this before render so it can choose native attributes or
+// synthetic button semantics. Motion exposes its underlying intrinsic tag via
+// a stable symbol; arbitrary components remain unknown for Base UI to default.
+const resolveButtonNativeButton: ResolveButtonNativeButton = ({
+  as,
+  disabled,
+}) => {
+  if (disabled || !as) {
+    return true;
+  }
+
+  return resolveNativeButton({ component: as });
+};
+
+// Preserve the existing boolean API used by Button.Root to decide whether it
+// should force a disabled polymorphic component back to a native button.
 const rendersNativeButton = (as?: TgphElement, disabled?: boolean) =>
-  !!disabled || !as || as === "button";
+  resolveButtonNativeButton({ as, disabled }) ?? false;
 
 const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   const {
@@ -348,4 +371,18 @@ const Button = Default as typeof Default & {
   Text: typeof Text;
 };
 
-export { Button, rendersNativeButton };
+const resolveButtonPropsNativeButton = (props: unknown) => {
+  const { as, disabled } = props as ResolveButtonNativeButtonOptions;
+  return resolveButtonNativeButton({ as, disabled });
+};
+
+registerNativeButtonResolver({
+  component: Button,
+  resolver: resolveButtonPropsNativeButton,
+});
+registerNativeButtonResolver({
+  component: Button.Root,
+  resolver: resolveButtonPropsNativeButton,
+});
+
+export { Button, rendersNativeButton, resolveButtonNativeButton };

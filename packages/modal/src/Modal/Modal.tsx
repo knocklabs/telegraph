@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { Button, rendersNativeButton } from "@telegraph/button";
+import { Button, resolveButtonNativeButton } from "@telegraph/button";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
@@ -707,7 +707,8 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
   );
 
   const nativeButton =
-    nativeButtonProp ?? rendersNativeButton(closeProps.as, disabled);
+    nativeButtonProp ??
+    resolveButtonNativeButton({ as: closeProps.as, disabled });
 
   return (
     <BaseDialog.Close

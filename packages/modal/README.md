@@ -159,6 +159,10 @@ Close button that dismisses the modal.
 
 Inherits all Button props for additional styling.
 
+Intrinsic elements and Motion intrinsic components are inferred automatically.
+Opaque components preserve Base UI's native-button default; pass
+`nativeButton={false}` when one resolves to a non-button element.
+
 ### `<ModalStackingProvider>`
 
 Provider for managing multiple stacked modals.
