@@ -53,17 +53,23 @@ export const Default: Story = {};
  */
 export const States: Story = {
   decorators: [(Story) => <Story />],
+  // Two groups on purpose. A group holds one selection, so the selected and
+  // the disabled-selected radios cannot both be checked inside the same one.
   render: () => (
-    <RadioGroup name="states" defaultValue="selected">
-      <Radio.Default value="unselected" label="Unselected" />
-      <Radio.Default value="selected" label="Selected" />
-      <Radio.Default value="disabled" label="Disabled" disabled />
-      <Radio.Default
-        value="disabled-selected"
-        label="Disabled, selected"
-        disabled
-      />
-    </RadioGroup>
+    <Stack direction="column" gap="4">
+      <RadioGroup name="states" defaultValue="selected">
+        <Radio.Default value="unselected" label="Unselected" />
+        <Radio.Default value="selected" label="Selected" />
+        <Radio.Default value="disabled" label="Disabled" disabled />
+      </RadioGroup>
+      <RadioGroup name="states-disabled" defaultValue="disabled-selected">
+        <Radio.Default
+          value="disabled-selected"
+          label="Disabled, selected"
+          disabled
+        />
+      </RadioGroup>
+    </Stack>
   ),
 };
 
