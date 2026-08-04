@@ -67,11 +67,11 @@ The root container that manages popover state and provides context.
 
 The trigger element that opens/closes the popover. Must wrap a single focusable element.
 
-| Prop           | Type              | Default             | Description                                      |
-| -------------- | ----------------- | ------------------- | ------------------------------------------------ |
-| `asChild`      | `boolean`         | `true`              | Whether to render as child element               |
-| `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)               |
-| `nativeButton` | `boolean`         | inferred from child | Overrides whether the child renders a `<button>` |
+| Prop           | Type              | Default             | Description                                        |
+| -------------- | ----------------- | ------------------- | -------------------------------------------------- |
+| `asChild`      | `boolean`         | `true`              | Whether to render as child element                 |
+| `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)                 |
+| `nativeButton` | `boolean`         | inferred from child | Overrides the button semantics reported to Base UI |
 
 Intrinsic elements, Telegraph Buttons, and Motion intrinsic components are
 inferred automatically. Opaque components preserve Base UI's native-button

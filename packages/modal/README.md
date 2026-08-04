@@ -151,11 +151,11 @@ Inherits all Heading props from `@telegraph/typography` for additional styling.
 
 Close button that dismisses the modal.
 
-| Prop           | Type            | Default            | Description                                          |
-| -------------- | --------------- | ------------------ | ---------------------------------------------------- |
-| `size`         | `ButtonSize`    | `"1"`              | Button size                                          |
-| `variant`      | `ButtonVariant` | `"ghost"`          | Button variant                                       |
-| `nativeButton` | `boolean`       | inferred from `as` | Overrides whether the close control renders a button |
+| Prop           | Type            | Default            | Description                                        |
+| -------------- | --------------- | ------------------ | -------------------------------------------------- |
+| `size`         | `ButtonSize`    | `"1"`              | Button size                                        |
+| `variant`      | `ButtonVariant` | `"ghost"`          | Button variant                                     |
+| `nativeButton` | `boolean`       | inferred from `as` | Overrides the button semantics reported to Base UI |
 
 Inherits all Button props for additional styling.
 

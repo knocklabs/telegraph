@@ -390,10 +390,12 @@ import type { ComponentProps } from "react";
 
 ### `inferTriggerNativeButton`
 
-Resolves the `nativeButton` value for a Base UI trigger. Explicit values win;
-otherwise it infers the value from an intrinsic child or a recognized
-polymorphic button component and preserves Base UI's default for unknown
-components.
+Resolves the `nativeButton` value for a Base UI trigger. Explicit values
+normally win; a recognized polymorphic component can override one when its
+props force a known render target, such as a disabled Telegraph Button coercing
+an anchor to a native button. Without an explicit value, the helper infers from
+intrinsic and recognized polymorphic children and preserves Base UI's default
+for unknown components.
 
 ```tsx
 import { inferTriggerNativeButton } from "@telegraph/helpers";
