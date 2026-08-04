@@ -467,6 +467,7 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
   ButtonProps<T>,
   "value"
 > & {
+  nativeButton?: boolean;
   value: string;
 };
 
@@ -474,7 +475,10 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
 // the internals stacks mapped types over Button's icon union inside Base UI's
 // `render` callback, which takes package type-checking from seconds to minutes.
 // `Button.Root` reads its own props the same way.
-type OptionButtonProps = Omit<OptionProps<"button">, "value"> & {
+type OptionButtonProps = Omit<
+  OptionProps<"button">,
+  "nativeButton" | "value"
+> & {
   buttonRef: RefObject<HTMLButtonElement | null>;
   status: SegmentedControlOptionStatus;
 };
@@ -545,8 +549,13 @@ const OptionButton = ({
 const Option = <T extends TgphElement = "button">(
   optionProps: OptionProps<T>,
 ) => {
-  const { as, value, disabled, ...props } =
-    optionProps as OptionProps<"button">;
+  const {
+    as,
+    value,
+    disabled,
+    nativeButton: nativeButtonProp,
+    ...props
+  } = optionProps as OptionProps<"button">;
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { disabled: groupDisabled } = useContext(SegmentedControlContextState);
   // `Root`'s `disabled` reaches `Button` through context, so it decides the
@@ -557,7 +566,10 @@ const Option = <T extends TgphElement = "button">(
     <BaseToggle
       value={getBaseToggleValue(value)}
       disabled={disabled}
-      nativeButton={resolveButtonNativeButton({ as, disabled: isDisabled })}
+      nativeButton={
+        nativeButtonProp ??
+        resolveButtonNativeButton({ as, disabled: isDisabled })
+      }
       render={createTgphBaseUIRender((state) => (
         <OptionButton
           as={as}

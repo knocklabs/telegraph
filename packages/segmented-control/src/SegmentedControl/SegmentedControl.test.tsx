@@ -1,10 +1,23 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { motion } from "motion/react";
-import { createRef, useState } from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type Ref,
+  createRef,
+  useState,
+} from "react";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { SegmentedControl } from "./SegmentedControl";
+
+type CustomLinkProps = ComponentPropsWithoutRef<"a"> & {
+  tgphRef?: Ref<HTMLAnchorElement>;
+};
+
+const CustomLink = ({ tgphRef, ...props }: CustomLinkProps) => (
+  <a ref={tgphRef} {...props} />
+);
 
 class ResizeObserverMock implements ResizeObserver {
   disconnect = vi.fn();
@@ -102,6 +115,39 @@ describe("SegmentedControl", () => {
       expect(divOption).toHaveStyle({ opacity: "0" });
       expect(buttonOption).not.toHaveAttribute("initial");
       expect(divOption).not.toHaveAttribute("initial");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("honors nativeButton for an opaque non-button option", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <SegmentedControl.Root defaultValue="docs">
+          <SegmentedControl.Option
+            as={CustomLink}
+            href="/docs"
+            nativeButton={false}
+            value="docs"
+          >
+            Docs
+          </SegmentedControl.Option>
+        </SegmentedControl.Root>,
+      );
+
+      const option = screen.getByRole("radio", { name: "Docs" });
+
+      expect(option.tagName).toBe("A");
+      expect(option).toHaveAttribute("href", "/docs");
+      expect(option).not.toHaveAttribute("nativeButton");
       expect(
         errors.filter((error) => String(error).includes("nativeButton")),
       ).toHaveLength(0);

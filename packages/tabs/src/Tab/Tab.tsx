@@ -17,6 +17,7 @@ type BaseTabState = {
 };
 
 export type TabProps<T extends TgphElement = "button"> = {
+  nativeButton?: boolean;
   value: string;
 } & TgphComponentProps<typeof MenuItem<T>>;
 
@@ -33,6 +34,7 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     leadingIcon,
     trailingIcon,
     icon,
+    nativeButton: nativeButtonProp,
     ...props
   } = tabProps as TabProps<"button">;
 
@@ -54,10 +56,12 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     ? ({ ...defaultIconProps, ...trailingIcon } as const)
     : undefined;
   const menuItemProps = props as TgphComponentProps<typeof MenuItem<T>>;
-  const nativeButton = resolveButtonNativeButton({
-    as: props.as,
-    disabled,
-  });
+  const nativeButton =
+    nativeButtonProp ??
+    resolveButtonNativeButton({
+      as: props.as,
+      disabled,
+    });
 
   return (
     <BaseTabs.Tab

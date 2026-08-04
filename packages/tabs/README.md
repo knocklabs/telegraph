@@ -112,10 +112,12 @@ Individual tab button that triggers content panel display.
 | `leadingIcon`  | `IconProps`  | `undefined` | Icon displayed at the start of the tab       |
 | `trailingIcon` | `IconProps`  | `undefined` | Icon displayed at the end of the tab         |
 | `icon`         | `IconProps`  | `undefined` | Alias for `leadingIcon`                      |
+| `nativeButton` | `boolean`    | inferred    | Overrides whether the tab renders a button   |
 | `onClick`      | `() => void` | `undefined` | Additional callback when tab is clicked      |
 
 Intrinsic elements and Motion intrinsic components receive matching Base UI
 native-button semantics. Opaque components preserve Base UI's default.
+Pass `nativeButton={false}` when an opaque component renders a non-button.
 
 #### IconProps Type
 
