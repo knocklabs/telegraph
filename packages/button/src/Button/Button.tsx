@@ -111,10 +111,11 @@ const resolveButtonNativeButton: ResolveButtonNativeButton = ({
   return resolveNativeButton({ component: as });
 };
 
-// Preserve the existing boolean API used by Button.Root to decide whether it
-// should force a disabled polymorphic component back to a native button.
+// Button.Root uses this only to choose which component to render. A component
+// such as motion.button may resolve to a native button, but it must not be
+// replaced with the intrinsic tag or its component behavior will be lost.
 const rendersNativeButton = (as?: TgphElement, disabled?: boolean) =>
-  resolveButtonNativeButton({ as, disabled }) ?? false;
+  !!disabled || !as || as === "button";
 
 const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   const {
@@ -371,7 +372,7 @@ const Button = Default as typeof Default & {
   Text: typeof Text;
 };
 
-const resolveButtonPropsNativeButton = (props: unknown) => {
+const resolveButtonPropsNativeButton = (props: unknown = {}) => {
   const { as, disabled } = props as ResolveButtonNativeButtonOptions;
   return resolveButtonNativeButton({ as, disabled });
 };

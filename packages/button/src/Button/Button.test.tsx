@@ -1,4 +1,5 @@
 import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
+import { resolveNativeButton } from "@telegraph/helpers";
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
 import {
@@ -25,6 +26,10 @@ afterEach(() => {
 });
 
 describe("Button", () => {
+  it("resolves default native semantics without props", () => {
+    expect(resolveNativeButton({ component: Button })).toBe(true);
+  });
+
   it("text button is accessible", async () => {
     const { container } = render(<Button>Click me</Button>);
     expectToHaveNoViolations(await axe(container));

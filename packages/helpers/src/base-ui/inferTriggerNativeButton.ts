@@ -9,7 +9,7 @@ const NATIVE_BUTTON_RESOLVER_SYMBOL = Symbol.for(
 
 type NativeButtonComponent = string | TgphElement;
 
-type NativeButtonResolver = (props: unknown) => boolean | undefined;
+type NativeButtonResolver = (props?: unknown) => boolean | undefined;
 
 type ResolvableComponent = {
   [MOTION_COMPONENT_SYMBOL]?: NativeButtonComponent;

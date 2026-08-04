@@ -14,7 +14,7 @@ type PolymorphicButtonProps = {
   disabled?: boolean;
 };
 
-const resolvePolymorphicButton = (props: unknown) => {
+const resolvePolymorphicButton = (props: unknown = {}) => {
   const { as, disabled } = props as PolymorphicButtonProps;
   return !!disabled || as === undefined || as === "button";
 };

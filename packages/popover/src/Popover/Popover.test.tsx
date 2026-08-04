@@ -68,13 +68,22 @@ describe("Popover", () => {
       render(
         <Popover.Root>
           <Popover.Trigger>
-            <Button as={motion.button}>Open</Button>
+            <Button
+              as={motion.button}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0 }}
+            >
+              Open
+            </Button>
           </Popover.Trigger>
         </Popover.Root>,
       );
 
       const trigger = screen.getByRole("button", { name: "Open" });
       expect(trigger.tagName).toBe("BUTTON");
+      expect(trigger).toHaveStyle({ opacity: "0" });
+      expect(trigger).not.toHaveAttribute("initial");
+      expect(trigger).not.toHaveAttribute("animate");
       expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
         "nativeButton",
       );
