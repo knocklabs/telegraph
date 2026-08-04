@@ -1,5 +1,5 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-import { rendersNativeButton } from "@telegraph/button";
+import { resolveButtonNativeButton } from "@telegraph/button";
 import {
   type TgphComponentProps,
   type TgphElement,
@@ -54,7 +54,10 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     ? ({ ...defaultIconProps, ...trailingIcon } as const)
     : undefined;
   const menuItemProps = props as TgphComponentProps<typeof MenuItem<T>>;
-  const nativeButton = rendersNativeButton(props.as, disabled);
+  const nativeButton = resolveButtonNativeButton({
+    as: props.as,
+    disabled,
+  });
 
   return (
     <BaseTabs.Tab

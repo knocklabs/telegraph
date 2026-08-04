@@ -114,6 +114,9 @@ Individual tab button that triggers content panel display.
 | `icon`         | `IconProps`  | `undefined` | Alias for `leadingIcon`                      |
 | `onClick`      | `() => void` | `undefined` | Additional callback when tab is clicked      |
 
+Intrinsic elements and Motion intrinsic components receive matching Base UI
+native-button semantics. Opaque components preserve Base UI's default.
+
 #### IconProps Type
 
 ```tsx

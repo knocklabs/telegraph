@@ -1,6 +1,7 @@
 import { Stack } from "@telegraph/layout";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { motion } from "motion/react";
 import { createRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -34,6 +35,55 @@ describe("Tabs", () => {
     expect(activeTab).toHaveAttribute("data-active", "");
     expect(activeTab).toHaveAttribute("data-state", "active");
     expect(screen.getByRole("tabpanel")).toHaveTextContent("First panel");
+  });
+
+  it("matches Base UI semantics for Motion button and div tabs", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <Tabs defaultValue="button">
+          <Tabs.List>
+            <Tabs.Tab
+              as={motion.button}
+              value="button"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0 }}
+            >
+              Motion button
+            </Tabs.Tab>
+            <Tabs.Tab
+              as={motion.div}
+              value="div"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0 }}
+            >
+              Motion div
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="button">Button panel</Tabs.Panel>
+          <Tabs.Panel value="div">Div panel</Tabs.Panel>
+        </Tabs>,
+      );
+
+      const buttonTab = screen.getByRole("tab", { name: "Motion button" });
+      const divTab = screen.getByRole("tab", { name: "Motion div" });
+
+      expect(buttonTab.tagName).toBe("BUTTON");
+      expect(divTab.tagName).toBe("DIV");
+      expect(buttonTab).toHaveStyle({ opacity: "0" });
+      expect(divTab).toHaveStyle({ opacity: "0" });
+      expect(buttonTab).not.toHaveAttribute("initial");
+      expect(divTab).not.toHaveAttribute("initial");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("stacks the tab list above the panel by rendering a vertical Stack", () => {

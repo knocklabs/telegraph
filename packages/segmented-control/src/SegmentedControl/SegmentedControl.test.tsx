@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { motion } from "motion/react";
 import { createRef, useState } from "react";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
@@ -56,6 +57,53 @@ describe("SegmentedControl", () => {
       // Base UI reports an error when `nativeButton` disagrees with the tag.
       expect(
         errors.filter((e) => String(e).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("matches Base UI semantics for Motion button and div options", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <SegmentedControl.Root defaultValue="button">
+          <SegmentedControl.Option
+            as={motion.button}
+            value="button"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0 }}
+          >
+            Motion button
+          </SegmentedControl.Option>
+          <SegmentedControl.Option
+            as={motion.div}
+            value="div"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0 }}
+          >
+            Motion div
+          </SegmentedControl.Option>
+        </SegmentedControl.Root>,
+      );
+
+      const buttonOption = screen.getByRole("radio", {
+        name: "Motion button",
+      });
+      const divOption = screen.getByRole("radio", { name: "Motion div" });
+
+      expect(buttonOption.tagName).toBe("BUTTON");
+      expect(divOption.tagName).toBe("DIV");
+      expect(buttonOption).toHaveStyle({ opacity: "0" });
+      expect(divOption).toHaveStyle({ opacity: "0" });
+      expect(buttonOption).not.toHaveAttribute("initial");
+      expect(divOption).not.toHaveAttribute("initial");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
       ).toHaveLength(0);
     } finally {
       spy.mockRestore();

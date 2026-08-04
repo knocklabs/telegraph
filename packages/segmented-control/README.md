@@ -86,6 +86,9 @@ Individual option button within the segmented control.
 | `children` | `ReactNode`                | -          | Content of the option             |
 | `as`       | `TgphElement`              | `"button"` | Element or component to render    |
 
+Intrinsic elements and Motion intrinsic components receive matching Base UI
+native-button semantics. Opaque components preserve Base UI's default.
+
 ## Usage Patterns
 
 ### Single Selection

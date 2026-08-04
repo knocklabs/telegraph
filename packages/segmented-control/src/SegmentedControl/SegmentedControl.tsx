@@ -8,7 +8,7 @@ import {
   Button,
   type ButtonProps,
   type ButtonRootProps,
-  rendersNativeButton,
+  resolveButtonNativeButton,
 } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
@@ -557,7 +557,7 @@ const Option = <T extends TgphElement = "button">(
     <BaseToggle
       value={getBaseToggleValue(value)}
       disabled={disabled}
-      nativeButton={rendersNativeButton(as, isDisabled)}
+      nativeButton={resolveButtonNativeButton({ as, disabled: isDisabled })}
       render={createTgphBaseUIRender((state) => (
         <OptionButton
           as={as}
