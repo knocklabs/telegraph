@@ -1,3 +1,4 @@
+import { inferNativeButton } from "@telegraph/helpers";
 import { render } from "@testing-library/react";
 import React from "react";
 import { describe, expect, expectTypeOf, it } from "vitest";
@@ -8,6 +9,12 @@ import { Box } from "./Box";
 import type { BoxProps } from "./Box";
 
 describe("Box", () => {
+  it("reports its intrinsic native button semantics", () => {
+    expect(inferNativeButton(<Box />)).toBe(false);
+    expect(inferNativeButton(<Box as="button" />)).toBe(true);
+    expect(inferNativeButton(<Box as="a" />)).toBe(false);
+  });
+
   describe("borderColor", () => {
     it("applies borderColor correctly", () => {
       const { container } = render(<Box borderColor="red-11" />);

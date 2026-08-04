@@ -388,6 +388,32 @@ import type { ComponentProps } from "react";
 />;
 ```
 
+### Base UI Native Button Inference
+
+`inferNativeButton` lets a Base UI wrapper determine whether an intrinsic or
+registered Telegraph child renders a native `<button>` before rendering it.
+Use `withNativeButtonResolver` when defining a polymorphic component so wrappers
+can derive the correct `nativeButton` value from its props.
+
+```tsx
+import {
+  inferNativeButton,
+  withNativeButtonResolver,
+} from "@telegraph/helpers";
+
+const Trigger = ({ as: Component = "div", ...props }) => (
+  <Component {...props} />
+);
+
+withNativeButtonResolver(Trigger, ({ as }) => (as ?? "div") === "button");
+
+const nativeButton = inferNativeButton(<Trigger as="button" />); // true
+```
+
+The inference returns `undefined` for an unregistered custom component. Base UI
+wrappers should preserve their existing default in that case and continue to
+allow an explicit `nativeButton` override.
+
 ### Base UI Compatibility Utilities
 
 Small helpers for preserving legacy Radix-style Telegraph behavior while

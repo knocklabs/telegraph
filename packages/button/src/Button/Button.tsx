@@ -5,6 +5,7 @@ import {
   type TgphComponentProps,
   type TgphElement,
   useDeterminateState,
+  withNativeButtonResolver,
 } from "@telegraph/helpers";
 import { Spinner, Icon as TelegraphIcon } from "@telegraph/icon";
 import { Stack, type StackProps } from "@telegraph/layout";
@@ -92,6 +93,11 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
 // they swap native `disabled` for `aria-disabled` when it is false.
 const rendersNativeButton = (as?: TgphElement, disabled?: boolean) =>
   !!disabled || !as || as === "button";
+
+type NativeButtonProps = {
+  as?: TgphElement;
+  disabled?: boolean;
+};
 
 const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   const {
@@ -335,6 +341,12 @@ const Default = <T extends TgphElement = "button">({
     </Root>
   );
 };
+
+const resolveButtonNativeButton = ({ as, disabled }: NativeButtonProps) =>
+  rendersNativeButton(as, disabled);
+
+withNativeButtonResolver(Root, resolveButtonNativeButton);
+withNativeButtonResolver(Default, resolveButtonNativeButton);
 
 Object.assign(Default, {
   Root,

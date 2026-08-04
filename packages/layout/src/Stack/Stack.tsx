@@ -1,4 +1,8 @@
-import type { AsProp, TgphElement } from "@telegraph/helpers";
+import {
+  type AsProp,
+  type TgphElement,
+  withNativeButtonResolver,
+} from "@telegraph/helpers";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -32,5 +36,13 @@ const Stack = <T extends TgphElement = "div">({
     />
   );
 };
+
+withNativeButtonResolver(Stack, ({ as }: { as?: TgphElement }) =>
+  as === undefined
+    ? false
+    : typeof as === "string"
+      ? as === "button"
+      : undefined,
+);
 
 export { Stack };

@@ -11,6 +11,7 @@ import {
   VisuallyHidden,
   callLegacyDismissHandlers,
   createTgphBaseUIRender,
+  inferNativeButton,
   useControllableState,
 } from "@telegraph/helpers";
 import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
@@ -682,6 +683,7 @@ export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
 const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
   const {
     disabled,
+    nativeButton: nativeButtonProp,
     onClick,
     size = "1",
     variant = "ghost",
@@ -705,32 +707,38 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
     [onClick],
   );
 
+  const closeButton = (
+    <Button
+      disabled={disabled}
+      icon={{ icon: X, alt: "Close Modal" }}
+      onClick={handleClick}
+      variant={variant}
+      size={size}
+      {...(props as Omit<
+        TgphComponentProps<typeof Button<"button">>,
+        // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
+        // caller can still replace the close glyph. They are omitted here
+        // because Button's icon union rejects the explicit `icon` below
+        // alongside a spread that might carry the other arm. See KNO-14501.
+        | "disabled"
+        | "icon"
+        | "leadingIcon"
+        | "nativeButton"
+        | "onClick"
+        | "size"
+        | "trailingIcon"
+        | "variant"
+      >)}
+    />
+  );
+  const nativeButton =
+    nativeButtonProp ?? inferNativeButton(closeButton) ?? true;
+
   return (
     <BaseDialog.Close
       disabled={disabled}
-      render={createTgphBaseUIRender(
-        <Button
-          disabled={disabled}
-          icon={{ icon: X, alt: "Close Modal" }}
-          onClick={handleClick}
-          variant={variant}
-          size={size}
-          {...(props as Omit<
-            TgphComponentProps<typeof Button<"button">>,
-            // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
-            // caller can still replace the close glyph. They are omitted here
-            // because Button's icon union rejects the explicit `icon` below
-            // alongside a spread that might carry the other arm. See KNO-14501.
-            | "disabled"
-            | "icon"
-            | "leadingIcon"
-            | "onClick"
-            | "size"
-            | "trailingIcon"
-            | "variant"
-          >)}
-        />,
-      )}
+      nativeButton={nativeButton}
+      render={createTgphBaseUIRender(closeButton)}
     />
   );
 };

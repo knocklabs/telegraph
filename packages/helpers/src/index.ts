@@ -28,10 +28,13 @@ export {
   createTgphBaseUIRender,
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
+  inferNativeButton,
+  withNativeButtonResolver,
   type BaseUIChangeDetails,
   type BaseUIFloatingSide,
   type BaseUIPositionerVisibilityStyleParams,
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
+  type NativeButtonResolver,
   type TgphBaseUIRenderElement,
 } from "./base-ui";

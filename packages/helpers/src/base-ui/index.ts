@@ -13,3 +13,9 @@ export {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
 } from "./compatibility";
+
+export {
+  inferNativeButton,
+  withNativeButtonResolver,
+  type NativeButtonResolver,
+} from "./nativeButton";

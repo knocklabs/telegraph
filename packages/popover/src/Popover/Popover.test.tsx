@@ -1,3 +1,4 @@
+import { Stack } from "@telegraph/layout";
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -37,6 +38,28 @@ afterEach(() => {
 });
 
 describe("Popover", () => {
+  it("infers non-native semantics from a Telegraph trigger child", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger>
+            <Stack>Open</Stack>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("DIV");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("keeps the animated element when a spread supplies `as`", async () => {
     const user = userEvent.setup();
     // A spread is the only route left: `as` is gone from the props type.

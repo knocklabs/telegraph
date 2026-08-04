@@ -4,6 +4,7 @@ import type {
   RemappedOmit,
   TgphElement,
 } from "@telegraph/helpers";
+import { withNativeButtonResolver } from "@telegraph/helpers";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -47,5 +48,13 @@ const Box = <T extends TgphElement = "div">({
     </Component>
   );
 };
+
+withNativeButtonResolver(Box, ({ as }: { as?: TgphElement }) =>
+  as === undefined
+    ? false
+    : typeof as === "string"
+      ? as === "button"
+      : undefined,
+);
 
 export { Box };

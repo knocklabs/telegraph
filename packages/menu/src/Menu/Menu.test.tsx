@@ -1,3 +1,4 @@
+import { Button } from "@telegraph/button";
 import "@testing-library/jest-dom/vitest";
 import {
   act,
@@ -9,6 +10,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChevronRight } from "lucide-react";
+import * as motion from "motion/react-m";
 import {
   type ComponentPropsWithoutRef,
   type Ref,
@@ -77,6 +79,28 @@ afterEach(() => {
 });
 
 describe("Menu", () => {
+  it("infers non-native semantics from a polymorphic Telegraph button", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Menu.Root>
+          <Menu.Trigger>
+            <Button as={motion.div}>Open</Button>
+          </Menu.Trigger>
+        </Menu.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("DIV");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   describe("as a link", () => {
     it("renders the item as an anchor without a Base UI nativeButton warning", async () => {
       const errors: Array<unknown> = [];

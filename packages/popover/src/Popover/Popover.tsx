@@ -9,6 +9,7 @@ import {
   createTgphBaseUIRender,
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
+  inferNativeButton,
 } from "@telegraph/helpers";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -137,15 +138,33 @@ export type TriggerProps = Omit<BasePopoverTriggerProps, "render"> & {
 };
 
 const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
-  ({ asChild = true, tgphRef, children, ...props }, forwardedRef) => {
+  (
+    {
+      asChild = true,
+      nativeButton: nativeButtonProp,
+      tgphRef,
+      children,
+      ...props
+    },
+    forwardedRef,
+  ) => {
     const triggerRef = useComposedRefs<HTMLButtonElement>(
       forwardedRef,
       tgphRef,
     );
+    const nativeButton =
+      nativeButtonProp ??
+      (asChild && isValidElement(children)
+        ? (inferNativeButton(children) ?? true)
+        : true);
 
     if (!asChild || !isValidElement(children)) {
       return (
-        <BasePopover.Trigger {...props} ref={triggerRef}>
+        <BasePopover.Trigger
+          {...props}
+          nativeButton={nativeButton}
+          ref={triggerRef}
+        >
           {children}
         </BasePopover.Trigger>
       );
@@ -154,6 +173,7 @@ const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
     return (
       <BasePopover.Trigger
         {...props}
+        nativeButton={nativeButton}
         ref={triggerRef}
         render={createTgphBaseUIRender(children as ReactElement)}
       />

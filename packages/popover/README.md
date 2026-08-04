@@ -67,10 +67,11 @@ The root container that manages popover state and provides context.
 
 The trigger element that opens/closes the popover. Must wrap a single focusable element.
 
-| Prop       | Type              | Default  | Description                        |
-| ---------- | ----------------- | -------- | ---------------------------------- |
-| `asChild`  | `boolean`         | `true`   | Whether to render as child element |
-| `children` | `React.ReactNode` | required | Trigger element (usually a Button) |
+| Prop           | Type              | Default             | Description                                      |
+| -------------- | ----------------- | ------------------- | ------------------------------------------------ |
+| `asChild`      | `boolean`         | `true`              | Whether to render as child element               |
+| `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)               |
+| `nativeButton` | `boolean`         | inferred from child | Overrides whether the child renders a `<button>` |
 
 ### `<Popover.Content>`
 

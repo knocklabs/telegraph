@@ -8,6 +8,7 @@ import {
   type TgphElement,
   createTgphBaseUIRender,
   getBaseUIPositionerVisibilityStyle,
+  inferNativeButton,
 } from "@telegraph/helpers";
 import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
 import { ChevronRight } from "lucide-react";
@@ -173,6 +174,7 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
       onKeyDown,
       onKeyDownCapture,
       onMouseDown,
+      nativeButton: nativeButtonProp,
       tgphRef,
       ...props
     },
@@ -182,6 +184,11 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
       forwardedRef as Ref<HTMLButtonElement>,
       tgphRef,
     ) as Ref<HTMLButtonElement>;
+    const nativeButton =
+      nativeButtonProp ??
+      (asChild && isValidElement(children)
+        ? (inferNativeButton(children) ?? true)
+        : true);
     // A custom onClick means callers likely own the trigger activation path, so
     // avoid also letting Base UI process mousedown as a separate open signal.
     const shouldSuppressBaseMouseDown = Boolean(onClick);
@@ -281,6 +288,7 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
         onKeyDown={handleKeyDown}
         onKeyDownCapture={handleKeyDownCapture}
         onMouseDown={handleMouseDown}
+        nativeButton={nativeButton}
         ref={triggerRef}
         render={createTgphBaseUIRender(renderTriggerElement)}
       />

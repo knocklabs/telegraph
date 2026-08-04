@@ -51,6 +51,28 @@ const TestModal = ({
 };
 
 describe("Modal", () => {
+  it("infers non-native semantics for a polymorphic close button", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Modal.Root open a11yTitle="Settings">
+          <Modal.Content>
+            <Modal.Close as="div" />
+          </Modal.Content>
+        </Modal.Root>,
+      );
+
+      const close = await screen.findByRole("button", { name: "Close Modal" });
+      expect(close.tagName).toBe("DIV");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("keeps the animated element when a spread supplies `as`", async () => {
     // A spread is the only route left: `as` is gone from the props type.
     const smuggled = { as: "section" } as Record<string, unknown>;
