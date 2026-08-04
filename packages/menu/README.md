@@ -79,15 +79,17 @@ The root container that manages menu state and provides context.
 
 The trigger element that opens/closes the menu. Must wrap a single focusable element.
 
-| Prop           | Type              | Default             | Description                                        |
-| -------------- | ----------------- | ------------------- | -------------------------------------------------- |
-| `asChild`      | `boolean`         | `true`              | Whether to render as child element                 |
-| `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)                 |
-| `nativeButton` | `boolean`         | inferred from child | Overrides the button semantics reported to Base UI |
+| Prop           | Type              | Default             | Description                                       |
+| -------------- | ----------------- | ------------------- | ------------------------------------------------- |
+| `asChild`      | `boolean`         | `true`              | Whether to render as child element                |
+| `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)                |
+| `nativeButton` | `boolean`         | inferred from child | Declares the button semantics reported to Base UI |
 
 Intrinsic elements, Telegraph Buttons, and Motion intrinsic components are
 inferred automatically. Opaque components preserve Base UI's native-button
 default; pass `nativeButton={false}` when one resolves to a non-button element.
+If a disabled Telegraph Button coerces its target to `<button>`, native
+semantics take precedence so Base UI matches the rendered element.
 
 ### `<Menu.Content>`
 
@@ -135,6 +137,8 @@ Individual menu item that can be clicked or selected.
 | `nativeButton`         | `boolean`                     | follows `as` | Declares whether the rendered element is a native button |
 
 Inherits all Button props for additional styling.
+If `disabled` coerces the item to `<button>`, native semantics take precedence
+over `nativeButton={false}` so Base UI matches the rendered element.
 
 ### `<Menu.Sub>`
 

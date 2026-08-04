@@ -78,18 +78,20 @@ the same scroll-button behavior.
 
 Individual option button within the segmented control.
 
-| Prop           | Type                       | Default    | Description                       |
-| -------------- | -------------------------- | ---------- | --------------------------------- |
-| `value`        | `string`                   | -          | Unique identifier for this option |
-| `disabled`     | `boolean`                  | `false`    | Disable this specific option      |
-| `size`         | `"0" \| "1" \| "2" \| "3"` | `"1"`      | Button size                       |
-| `children`     | `ReactNode`                | -          | Content of the option             |
-| `as`           | `TgphElement`              | `"button"` | Element or component to render    |
-| `nativeButton` | `boolean`                  | inferred   | Overrides native button semantics |
+| Prop           | Type                       | Default    | Description                          |
+| -------------- | -------------------------- | ---------- | ------------------------------------ |
+| `value`        | `string`                   | -          | Unique identifier for this option    |
+| `disabled`     | `boolean`                  | `false`    | Disable this specific option         |
+| `size`         | `"0" \| "1" \| "2" \| "3"` | `"1"`      | Button size                          |
+| `children`     | `ReactNode`                | -          | Content of the option                |
+| `as`           | `TgphElement`              | `"button"` | Element or component to render       |
+| `nativeButton` | `boolean`                  | inferred   | Declares button semantics to Base UI |
 
 Intrinsic elements and Motion intrinsic components receive matching Base UI
 native-button semantics. Opaque components preserve Base UI's default.
 Pass `nativeButton={false}` when an opaque component renders a non-button.
+If the option or group is disabled and the option is coerced to `<button>`,
+native semantics take precedence so Base UI matches the rendered element.
 
 ## Usage Patterns
 

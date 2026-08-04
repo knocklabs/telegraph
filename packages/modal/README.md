@@ -151,17 +151,19 @@ Inherits all Heading props from `@telegraph/typography` for additional styling.
 
 Close button that dismisses the modal.
 
-| Prop           | Type            | Default            | Description                                        |
-| -------------- | --------------- | ------------------ | -------------------------------------------------- |
-| `size`         | `ButtonSize`    | `"1"`              | Button size                                        |
-| `variant`      | `ButtonVariant` | `"ghost"`          | Button variant                                     |
-| `nativeButton` | `boolean`       | inferred from `as` | Overrides the button semantics reported to Base UI |
+| Prop           | Type            | Default            | Description                                       |
+| -------------- | --------------- | ------------------ | ------------------------------------------------- |
+| `size`         | `ButtonSize`    | `"1"`              | Button size                                       |
+| `variant`      | `ButtonVariant` | `"ghost"`          | Button variant                                    |
+| `nativeButton` | `boolean`       | inferred from `as` | Declares the button semantics reported to Base UI |
 
 Inherits all Button props for additional styling.
 
 Intrinsic elements and Motion intrinsic components are inferred automatically.
 Opaque components preserve Base UI's native-button default; pass
 `nativeButton={false}` when one resolves to a non-button element.
+If `disabled` coerces the close control to `<button>`, native semantics take
+precedence so Base UI matches the rendered element.
 
 ### `<ModalStackingProvider>`
 
