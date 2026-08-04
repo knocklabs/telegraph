@@ -3911,6 +3911,7 @@ __metadata:
     "@telegraph/icon": "workspace:^"
     "@telegraph/layout": "workspace:^"
     "@telegraph/postcss-config": "workspace:^"
+    "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.17"
     eslint: "npm:^10.4.0"
