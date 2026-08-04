@@ -464,4 +464,4 @@ const Checkbox = {
   Label,
 };
 
-export { Checkbox, CheckboxContext };
+export { Checkbox };

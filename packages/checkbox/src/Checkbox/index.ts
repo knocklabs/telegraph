@@ -1,4 +1,4 @@
-export { Checkbox, CheckboxContext } from "./Checkbox";
+export { Checkbox } from "./Checkbox";
 export type {
   RootBaseProps as CheckboxRootBaseProps,
   RootProps as CheckboxRootProps,
