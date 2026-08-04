@@ -153,13 +153,35 @@ The first of these that applies wins:
 
 1. `aria-labelledby` on `Radio.Root`
 2. A visible `Radio.Label`
-3. `aria-label` on `Radio.Root`
-4. A wrapping `<label>` or a `Field.Label`
+3. A wrapping `<label>` or a `Field.Label`
+4. `aria-label` on `Radio.Root`
 
 So `aria-label` is for a radio with no visible label. Passing it alongside a
 label does nothing, because Base UI derives `aria-labelledby` from the
 associated `<label>` and that outranks `aria-label`. Use `aria-labelledby` when
 the accessible name has to differ from the visible text.
+
+### Inside a `Field`
+
+Wrap each radio in a `Field.Item`:
+
+```tsx
+<Field.Root>
+  <Field.Label>Billing plan</Field.Label>
+  <RadioGroup name="plan" defaultValue="pro">
+    <Field.Item>
+      <Radio.Default value="free" label="Free" />
+    </Field.Item>
+    <Field.Item>
+      <Radio.Default value="pro" label="Pro" />
+    </Field.Item>
+  </RadioGroup>
+</Field.Root>
+```
+
+A `Field.Root` carries one control id and hands it to every radio inside it, so
+without `Field.Item` all the inputs share an id and only the first label
+responds to a click. `Field.Item` gives each radio its own scope.
 
 ### `<RadioGroup>`
 

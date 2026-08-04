@@ -49,7 +49,14 @@ export type RootBaseProps = Pick<
 
 // `value` is stripped from the `Stack` half because a radio's `value` is a
 // string option id, while every element declares its own conflicting `value`.
-type StripConflicting = "value" | "defaultValue" | "onChange" | "disabled";
+// `disabled` and `id` are declared on `RootBaseProps` instead, since the root
+// renders a `div` but forwards them to the input `Radio.Control` renders.
+type StripConflicting =
+  | "value"
+  | "defaultValue"
+  | "onChange"
+  | "disabled"
+  | "id";
 
 export type RootProps<T extends TgphElement = "div"> = RemappedOmit<
   StackProps<T>,
@@ -368,4 +375,4 @@ const Radio = {
   Label,
 };
 
-export { Radio, RadioContext };
+export { Radio };

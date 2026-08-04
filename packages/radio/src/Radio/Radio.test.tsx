@@ -2,7 +2,7 @@ import { Field } from "@base-ui/react/field";
 import { Stack } from "@telegraph/layout";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { FormEvent } from "react";
+import type { ComponentProps, FormEvent, ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
@@ -22,10 +22,7 @@ const getInputs = (container: HTMLElement) =>
     container.querySelectorAll<HTMLInputElement>('input[type="radio"]'),
   );
 
-const Group = ({
-  children,
-  ...props
-}: React.ComponentProps<typeof RadioGroup>) => (
+const Group = ({ children, ...props }: ComponentProps<typeof RadioGroup>) => (
   <RadioGroup name="plan" {...props}>
     {children ?? (
       <>
@@ -113,7 +110,7 @@ describe("Radio", () => {
   });
 
   describe("form submission", () => {
-    const renderForm = (ui: React.ReactNode, onSubmit: (d: FormData) => void) =>
+    const renderForm = (ui: ReactNode, onSubmit: (d: FormData) => void) =>
       render(
         <form
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -224,6 +221,61 @@ describe("Radio", () => {
       );
 
       expect(getRadio("Pro")).toHaveAccessibleDescription("Billed yearly");
+    });
+
+    // Base UI resolves the input id through `useLabelableId`, which returns
+    // the enclosing labelable scope's control id ahead of the `id` we pass, so
+    // the input does not always keep the id `Radio.Root` generated.
+    // `Radio.Control` reports the real one back and `Radio.Label` points
+    // `htmlFor` at that. With one radio the first id happens to line up
+    // anyway, so this needs three to catch a regression.
+    it("keeps label association working for every radio inside a Field", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      const { container } = render(
+        <Field.Root>
+          <RadioGroup name="plan" onValueChange={onValueChange}>
+            <Field.Item>
+              <Radio.Default value="free" label="Free" />
+            </Field.Item>
+            <Field.Item>
+              <Radio.Default value="pro" label="Pro" />
+            </Field.Item>
+            <Field.Item>
+              <Radio.Default value="enterprise" label="Enterprise" />
+            </Field.Item>
+          </RadioGroup>
+        </Field.Root>,
+      );
+
+      const ids = getInputs(container).map((input) => input.id);
+      expect(new Set(ids).size).toBe(3);
+
+      // Every label resolves to its own input, not just the first.
+      const labels = Array.from(container.querySelectorAll("label"));
+      expect(labels.map((label) => label.control)).not.toContain(null);
+
+      // The last label is the one that breaks when the ids collide.
+      await user.click(screen.getByText("Enterprise"));
+      expect(onValueChange.mock.calls[0]![0]).toBe("enterprise");
+    });
+
+    // A bare `Field.Root` holds one control id and hands it to every radio
+    // inside it, so the inputs collide and only the first label works. That is
+    // Base UI's scoping, not something this package can undo: `Field.Item` is
+    // the supported way to put more than one control in a field. Pinned so a
+    // future Base UI release that fixes it shows up as a failure here.
+    it("shares one input id across radios in a bare Field, so Field.Item is required", () => {
+      const { container } = render(
+        <Field.Root>
+          <RadioGroup name="plan">
+            <Radio.Default value="free" label="Free" />
+            <Radio.Default value="pro" label="Pro" />
+          </RadioGroup>
+        </Field.Root>,
+      );
+      const ids = getInputs(container).map((input) => input.id);
+      expect(new Set(ids).size).toBe(1);
     });
 
     // A visible label wins over `aria-label`: Base UI's fallback re-derives
