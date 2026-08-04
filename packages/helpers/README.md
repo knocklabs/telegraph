@@ -401,7 +401,7 @@ import { inferTriggerNativeButton } from "@telegraph/helpers";
 
 const nativeButton = inferTriggerNativeButton({
   asChild,
-  buttonComponents: [Button, Button.Root],
+  buttonComponent: Button,
   children,
   nativeButton: nativeButtonProp,
 });

@@ -168,8 +168,6 @@ export type TriggerProps = Omit<
     tgphRef?: Ref<HTMLButtonElement>;
   };
 
-const TELEGRAPH_BUTTON_COMPONENTS = [TelegraphButton, TelegraphButton.Root];
-
 const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
   (
     {
@@ -191,7 +189,7 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
     ) as Ref<HTMLButtonElement>;
     const nativeButton = inferTriggerNativeButton({
       asChild,
-      buttonComponents: TELEGRAPH_BUTTON_COMPONENTS,
+      buttonComponent: TelegraphButton,
       children,
       nativeButton: nativeButtonProp,
     });

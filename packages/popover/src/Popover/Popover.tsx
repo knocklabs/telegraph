@@ -138,8 +138,6 @@ export type TriggerProps = Omit<BasePopoverTriggerProps, "render"> & {
   tgphRef?: Ref<HTMLButtonElement>;
 };
 
-const TELEGRAPH_BUTTON_COMPONENTS = [Button, Button.Root];
-
 const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
   (
     {
@@ -157,7 +155,7 @@ const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
     );
     const nativeButton = inferTriggerNativeButton({
       asChild,
-      buttonComponents: TELEGRAPH_BUTTON_COMPONENTS,
+      buttonComponent: Button,
       children,
       nativeButton: nativeButtonProp,
     });

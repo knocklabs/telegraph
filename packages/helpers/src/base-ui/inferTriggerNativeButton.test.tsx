@@ -3,12 +3,16 @@ import { describe, expect, it } from "vitest";
 
 import { inferTriggerNativeButton } from "./inferTriggerNativeButton";
 
-const PolymorphicButton = (_props: {
+type PolymorphicButtonProps = {
   as?: "button" | "div";
   disabled?: boolean;
-}) => null;
+};
 
-const BUTTON_COMPONENTS = [PolymorphicButton];
+const PolymorphicButtonRoot = (_props: PolymorphicButtonProps) => null;
+const PolymorphicButton = Object.assign(
+  (_props: PolymorphicButtonProps) => null,
+  { Root: PolymorphicButtonRoot },
+);
 
 const infer = (
   children: ReactNode,
@@ -16,7 +20,7 @@ const infer = (
 ) =>
   inferTriggerNativeButton({
     asChild: options.asChild ?? true,
-    buttonComponents: BUTTON_COMPONENTS,
+    buttonComponent: PolymorphicButton,
     children,
     nativeButton: options.nativeButton,
   });
@@ -41,6 +45,7 @@ describe("inferTriggerNativeButton", () => {
     expect(infer(<PolymorphicButton />)).toBe(true);
     expect(infer(<PolymorphicButton as="div" />)).toBe(false);
     expect(infer(<PolymorphicButton as="div" disabled />)).toBe(true);
+    expect(infer(<PolymorphicButton.Root as="div" />)).toBe(false);
   });
 
   it("uses the Base UI default for unrecognized components", () => {

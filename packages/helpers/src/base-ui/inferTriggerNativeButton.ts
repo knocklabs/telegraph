@@ -11,8 +11,12 @@ type PolymorphicButtonProps = AsProp<TgphElement> & {
   disabled?: boolean;
 };
 
+type CompoundButtonComponent = ElementType & {
+  Root: ElementType;
+};
+
 type InferElementNativeButtonOptions = {
-  buttonComponents: readonly ElementType[];
+  buttonComponent: CompoundButtonComponent;
   element: ReactElement;
 };
 
@@ -21,14 +25,17 @@ type InferElementNativeButton = (
 ) => boolean | undefined;
 
 const inferElementNativeButton: InferElementNativeButton = ({
-  buttonComponents,
+  buttonComponent,
   element,
 }) => {
   if (typeof element.type === "string") {
     return element.type === "button";
   }
 
-  if (!buttonComponents.includes(element.type as ElementType)) {
+  if (
+    element.type !== buttonComponent &&
+    element.type !== buttonComponent.Root
+  ) {
     return undefined;
   }
 
@@ -38,7 +45,7 @@ const inferElementNativeButton: InferElementNativeButton = ({
 
 type InferTriggerNativeButtonOptions = {
   asChild: boolean;
-  buttonComponents: readonly ElementType[];
+  buttonComponent: CompoundButtonComponent;
   children: ReactNode;
   nativeButton?: boolean;
 };
@@ -49,7 +56,7 @@ type InferTriggerNativeButton = (
 
 const inferTriggerNativeButton: InferTriggerNativeButton = ({
   asChild,
-  buttonComponents,
+  buttonComponent,
   children,
   nativeButton,
 }: InferTriggerNativeButtonOptions): boolean => {
@@ -63,7 +70,7 @@ const inferTriggerNativeButton: InferTriggerNativeButton = ({
 
   return (
     inferElementNativeButton({
-      buttonComponents,
+      buttonComponent,
       element: children,
     }) ?? true
   );
