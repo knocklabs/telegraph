@@ -1,0 +1,65 @@
+/* `cursor` lives here rather than inline on the root, so it covers only the
+   parts that actually respond to a click. The root is a plain `div` with no
+   handler of its own, so the gap between the box and the label does nothing —
+   a pointer over it was a lie. */
+[data-tgph-checkbox-control] {
+  /* Without this the 1px border sits outside the size token, so size "2"
+     renders 22px instead of 20px and falls off the spacing grid. Button,
+     Input and Link set this in their own stylesheets too. */
+  box-sizing: border-box;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition:
+    background-color 120ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base UI puts `role="checkbox"` and `tabindex="0"` on the element it renders
+   (this one) and keeps the real input as an aria-hidden, tabindex="-1"
+   sibling. So focus lands here, not on the input — don't reach for
+   `:has(input:focus-visible)` like Toggle does; the input is not a descendant
+   and never receives focus. Ring matches the Toggle/Link convention. */
+[data-tgph-checkbox-control]:focus-visible {
+  outline: 2px solid var(--tgph-blue-8);
+  outline-offset: 2px;
+}
+
+/* Read-only is not disabled: the value still submits and the control stays in
+   the tab order, so it must not read as inert. Only the cursor changes —
+   `default` rather than `not-allowed`, because nothing is being refused. This
+   sits above the disabled rule so that disabled wins when both are set; the
+   two selectors have equal specificity. */
+[data-tgph-checkbox-control][data-readonly] {
+  cursor: default;
+}
+
+[data-tgph-checkbox-control][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* The indicator is a `Stack`, so `.tgph-stack` already makes it a flex box. */
+[data-tgph-checkbox-indicator] {
+  line-height: 0;
+}
+
+[data-tgph-checkbox-label] {
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-readonly])
+  [data-tgph-checkbox-label] {
+  cursor: default;
+}
+
+/* Keyed off Base UI's own `data-disabled` rather than a flag this package
+   computes. Base UI ORs together the checkbox prop, the group, and any
+   enclosing `Field`, and only the first two are visible from here — so
+   deriving it a second time drifts, and the label renders enabled over a dead
+   control. */
+[data-tgph-checkbox-root]:has([data-tgph-checkbox-control][data-disabled])
+  [data-tgph-checkbox-label] {
+  cursor: not-allowed;
+  color: var(--tgph-gray-9);
+}
