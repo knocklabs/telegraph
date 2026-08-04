@@ -3,15 +3,17 @@
 // the control and label sizes have to match. The two packages are independent
 // and a shared constants dependency is not worth two package entries, so this
 // is a copy on purpose: change one, change the other.
+// `dotSize` is radio-only, and deliberately half the control at both sizes.
+// A smaller dot reads as a thick ring rather than a radio.
 export const RADIO_SIZE_MAP = {
   "1": {
     size: "4",
-    dotSize: "1_5",
+    dotSize: "2",
     labelSize: "1",
   },
   "2": {
     size: "5",
-    dotSize: "2",
+    dotSize: "2_5",
     labelSize: "2",
   },
 } as const;
