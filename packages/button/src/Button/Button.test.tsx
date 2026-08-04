@@ -1,5 +1,4 @@
 import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
-import { inferNativeButton } from "@telegraph/helpers";
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
 import {
@@ -26,19 +25,6 @@ afterEach(() => {
 });
 
 describe("Button", () => {
-  it("reports the native element produced by its polymorphic props", () => {
-    expect(inferNativeButton(<Button>Default</Button>)).toBe(true);
-    expect(inferNativeButton(<Button.Root>Root</Button.Root>)).toBe(true);
-    expect(inferNativeButton(<Button as="a">Link</Button>)).toBe(false);
-    expect(
-      inferNativeButton(
-        <Button as="a" disabled>
-          Disabled
-        </Button>,
-      ),
-    ).toBe(true);
-  });
-
   it("text button is accessible", async () => {
     const { container } = render(<Button>Click me</Button>);
     expectToHaveNoViolations(await axe(container));

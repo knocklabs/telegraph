@@ -1,4 +1,5 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
+import { Button, rendersNativeButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
@@ -9,7 +10,6 @@ import {
   createTgphBaseUIRender,
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
-  inferNativeButton,
 } from "@telegraph/helpers";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -137,6 +137,26 @@ export type TriggerProps = Omit<BasePopoverTriggerProps, "render"> & {
   tgphRef?: Ref<HTMLButtonElement>;
 };
 
+type TelegraphButtonProps = {
+  as?: TgphElement;
+  disabled?: boolean;
+};
+
+const inferTriggerNativeButton = (
+  element: ReactElement,
+): boolean | undefined => {
+  if (typeof element.type === "string") {
+    return element.type === "button";
+  }
+
+  if (element.type !== Button && element.type !== Button.Root) {
+    return undefined;
+  }
+
+  const { as, disabled } = element.props as TelegraphButtonProps;
+  return rendersNativeButton(as, disabled);
+};
+
 const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
   (
     {
@@ -155,7 +175,7 @@ const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
     const nativeButton =
       nativeButtonProp ??
       (asChild && isValidElement(children)
-        ? (inferNativeButton(children) ?? true)
+        ? (inferTriggerNativeButton(children) ?? true)
         : true);
 
     if (!asChild || !isValidElement(children)) {

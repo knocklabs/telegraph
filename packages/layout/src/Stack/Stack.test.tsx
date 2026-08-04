@@ -1,4 +1,3 @@
-import { inferNativeButton } from "@telegraph/helpers";
 import { render } from "@testing-library/react";
 import { describe, expect, expectTypeOf, it } from "vitest";
 
@@ -9,15 +8,6 @@ import type { StackProps } from "./Stack";
 import { cssVars as stackCssVars } from "./Stack.constants";
 
 describe("Stack", () => {
-  it("reports its intrinsic native button semantics", () => {
-    const CustomElement = () => <div />;
-
-    expect(inferNativeButton(<Stack />)).toBe(false);
-    expect(inferNativeButton(<Stack as="button" />)).toBe(true);
-    expect(inferNativeButton(<Stack as="a" />)).toBe(false);
-    expect(inferNativeButton(<Stack as={CustomElement} />)).toBeUndefined();
-  });
-
   describe("direction css variable", () => {
     it("maps direction to --direction", () => {
       const { container } = render(<Stack direction="column" />);

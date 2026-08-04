@@ -1,7 +1,8 @@
-import { Stack } from "@telegraph/layout";
+import { Button } from "@telegraph/button";
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as motion from "motion/react-m";
 import {
   type ComponentPropsWithoutRef,
   type Ref,
@@ -38,14 +39,14 @@ afterEach(() => {
 });
 
 describe("Popover", () => {
-  it("infers non-native semantics from a Telegraph trigger child", () => {
+  it("infers non-native semantics from a polymorphic Telegraph button", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     try {
       render(
         <Popover.Root>
           <Popover.Trigger>
-            <Stack>Open</Stack>
+            <Button as={motion.div}>Open</Button>
           </Popover.Trigger>
         </Popover.Root>,
       );

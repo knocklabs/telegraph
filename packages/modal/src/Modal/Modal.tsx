@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { Button } from "@telegraph/button";
+import { Button, rendersNativeButton } from "@telegraph/button";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
@@ -11,7 +11,6 @@ import {
   VisuallyHidden,
   callLegacyDismissHandlers,
   createTgphBaseUIRender,
-  inferNativeButton,
   useControllableState,
 } from "@telegraph/helpers";
 import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
@@ -707,38 +706,38 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
     [onClick],
   );
 
-  const closeButton = (
-    <Button
-      disabled={disabled}
-      icon={{ icon: X, alt: "Close Modal" }}
-      onClick={handleClick}
-      variant={variant}
-      size={size}
-      {...(props as Omit<
-        TgphComponentProps<typeof Button<"button">>,
-        // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
-        // caller can still replace the close glyph. They are omitted here
-        // because Button's icon union rejects the explicit `icon` below
-        // alongside a spread that might carry the other arm. See KNO-14501.
-        | "disabled"
-        | "icon"
-        | "leadingIcon"
-        | "nativeButton"
-        | "onClick"
-        | "size"
-        | "trailingIcon"
-        | "variant"
-      >)}
-    />
-  );
   const nativeButton =
-    nativeButtonProp ?? inferNativeButton(closeButton) ?? true;
+    nativeButtonProp ??
+    rendersNativeButton((props as { as?: TgphElement }).as, disabled);
 
   return (
     <BaseDialog.Close
       disabled={disabled}
       nativeButton={nativeButton}
-      render={createTgphBaseUIRender(closeButton)}
+      render={createTgphBaseUIRender(
+        <Button
+          disabled={disabled}
+          icon={{ icon: X, alt: "Close Modal" }}
+          onClick={handleClick}
+          variant={variant}
+          size={size}
+          {...(props as Omit<
+            TgphComponentProps<typeof Button<"button">>,
+            // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
+            // caller can still replace the close glyph. They are omitted here
+            // because Button's icon union rejects the explicit `icon` below
+            // alongside a spread that might carry the other arm. See KNO-14501.
+            | "disabled"
+            | "icon"
+            | "leadingIcon"
+            | "nativeButton"
+            | "onClick"
+            | "size"
+            | "trailingIcon"
+            | "variant"
+          >)}
+        />,
+      )}
     />
   );
 };
