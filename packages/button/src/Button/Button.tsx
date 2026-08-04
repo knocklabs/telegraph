@@ -91,6 +91,7 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
 
 type ResolveButtonNativeButtonOptions = AsProp<TgphElement> & {
   disabled?: boolean;
+  nativeButton?: boolean;
 };
 
 type ResolveButtonNativeButton = (
@@ -103,8 +104,19 @@ type ResolveButtonNativeButton = (
 const resolveButtonNativeButton: ResolveButtonNativeButton = ({
   as,
   disabled,
+  nativeButton,
 }) => {
-  if (disabled || !as) {
+  // Disabled Telegraph buttons are always rendered as native buttons, so that
+  // coercion must win over an explicit value passed to a Base UI primitive.
+  if (disabled) {
+    return true;
+  }
+
+  if (nativeButton !== undefined) {
+    return nativeButton;
+  }
+
+  if (!as) {
     return true;
   }
 
@@ -372,9 +384,12 @@ const Button = Default as typeof Default & {
   Text: typeof Text;
 };
 
-const resolveButtonPropsNativeButton = (props: unknown = {}) => {
+const resolveButtonPropsNativeButton = (
+  props: unknown = {},
+  nativeButton?: boolean,
+) => {
   const { as, disabled } = props as ResolveButtonNativeButtonOptions;
-  return resolveButtonNativeButton({ as, disabled });
+  return resolveButtonNativeButton({ as, disabled, nativeButton });
 };
 
 registerNativeButtonResolver({

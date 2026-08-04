@@ -187,6 +187,38 @@ describe("SegmentedControl", () => {
     }
   });
 
+  it("keeps disabled option coercion native over an explicit override", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <SegmentedControl.Root defaultValue="docs">
+          <SegmentedControl.Option
+            value="docs"
+            as="a"
+            href="/docs"
+            disabled
+            nativeButton={false}
+          >
+            Docs
+          </SegmentedControl.Option>
+        </SegmentedControl.Root>,
+      );
+
+      const option = screen.getByRole("radio", { name: "Docs" });
+
+      expect(option.tagName).toBe("BUTTON");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
   afterAll(() => {
     vi.unstubAllGlobals();
   });

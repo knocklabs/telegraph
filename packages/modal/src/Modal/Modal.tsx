@@ -706,9 +706,11 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
     [onClick],
   );
 
-  const nativeButton =
-    nativeButtonProp ??
-    resolveButtonNativeButton({ as: closeProps.as, disabled });
+  const nativeButton = resolveButtonNativeButton({
+    as: closeProps.as,
+    disabled,
+    nativeButton: nativeButtonProp,
+  });
 
   return (
     <BaseDialog.Close

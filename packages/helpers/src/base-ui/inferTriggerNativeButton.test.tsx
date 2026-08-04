@@ -14,9 +14,14 @@ type PolymorphicButtonProps = {
   disabled?: boolean;
 };
 
-const resolvePolymorphicButton = (props: unknown = {}) => {
+const resolvePolymorphicButton = (
+  props: unknown = {},
+  nativeButton?: boolean,
+) => {
   const { as, disabled } = props as PolymorphicButtonProps;
-  return !!disabled || as === undefined || as === "button";
+  return disabled
+    ? true
+    : (nativeButton ?? (as === undefined || as === "button"));
 };
 
 const PolymorphicButton = (_props: PolymorphicButtonProps) => null;
@@ -56,6 +61,17 @@ describe("inferTriggerNativeButton", () => {
     expect(infer(<div />, { nativeButton: true })).toBe(true);
   });
 
+  it("lets a registered component's render coercion override an explicit value", () => {
+    expect(infer(<PolymorphicButton as="div" />, { nativeButton: true })).toBe(
+      true,
+    );
+    expect(
+      infer(<PolymorphicButton as="div" disabled />, {
+        nativeButton: false,
+      }),
+    ).toBe(true);
+  });
+
   it("uses the Base UI default when the trigger is not composed", () => {
     expect(infer(<div />, { asChild: false })).toBe(true);
     expect(infer("Trigger")).toBe(true);
@@ -82,6 +98,9 @@ describe("inferTriggerNativeButton", () => {
     );
 
     expect(infer(<ForeignButton as="div" />)).toBe(false);
+    expect(
+      infer(<ForeignButton as="div" disabled />, { nativeButton: false }),
+    ).toBe(true);
   });
 
   it("uses the Base UI default for unrecognized components", () => {

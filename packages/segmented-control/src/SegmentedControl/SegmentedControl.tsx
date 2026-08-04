@@ -566,10 +566,11 @@ const Option = <T extends TgphElement = "button">(
     <BaseToggle
       value={getBaseToggleValue(value)}
       disabled={disabled}
-      nativeButton={
-        nativeButtonProp ??
-        resolveButtonNativeButton({ as, disabled: isDisabled })
-      }
+      nativeButton={resolveButtonNativeButton({
+        as,
+        disabled: isDisabled,
+        nativeButton: nativeButtonProp,
+      })}
       render={createTgphBaseUIRender((state) => (
         <OptionButton
           as={as}

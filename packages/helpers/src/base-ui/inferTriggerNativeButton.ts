@@ -9,7 +9,10 @@ const NATIVE_BUTTON_RESOLVER_SYMBOL = Symbol.for(
 
 type NativeButtonComponent = string | TgphElement;
 
-type NativeButtonResolver = (props?: unknown) => boolean | undefined;
+type NativeButtonResolver = (
+  props?: unknown,
+  nativeButton?: boolean,
+) => boolean | undefined;
 
 type ResolvableComponent = {
   [MOTION_COMPONENT_SYMBOL]?: NativeButtonComponent;
@@ -37,6 +40,7 @@ const registerNativeButtonResolver: RegisterNativeButtonResolver = ({
 
 type ResolveNativeButtonOptions = {
   component: NativeButtonComponent;
+  nativeButton?: boolean;
   props?: unknown;
 };
 
@@ -44,9 +48,13 @@ type ResolveNativeButton = (
   options: ResolveNativeButtonOptions,
 ) => boolean | undefined;
 
-const resolveNativeButton: ResolveNativeButton = ({ component, props }) => {
+const resolveNativeButton: ResolveNativeButton = ({
+  component,
+  nativeButton,
+  props,
+}) => {
   if (typeof component === "string") {
-    return component === "button";
+    return nativeButton ?? component === "button";
   }
 
   if (
@@ -60,16 +68,20 @@ const resolveNativeButton: ResolveNativeButton = ({ component, props }) => {
   const resolver = resolvableComponent[NATIVE_BUTTON_RESOLVER_SYMBOL];
 
   if (resolver) {
-    return resolver(props);
+    return resolver(props, nativeButton);
   }
 
   const motionComponent = resolvableComponent[MOTION_COMPONENT_SYMBOL];
 
   if (motionComponent && motionComponent !== component) {
-    return resolveNativeButton({ component: motionComponent, props });
+    return resolveNativeButton({
+      component: motionComponent,
+      nativeButton,
+      props,
+    });
   }
 
-  return undefined;
+  return nativeButton;
 };
 
 type InferTriggerNativeButtonOptions = {
@@ -87,17 +99,14 @@ const inferTriggerNativeButton: InferTriggerNativeButton = ({
   children,
   nativeButton,
 }) => {
-  if (nativeButton !== undefined) {
-    return nativeButton;
-  }
-
   if (!asChild || !isValidElement(children)) {
-    return true;
+    return nativeButton ?? true;
   }
 
   return (
     resolveNativeButton({
       component: children.type,
+      nativeButton,
       props: children.props,
     }) ?? true
   );

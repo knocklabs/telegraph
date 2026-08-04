@@ -30,6 +30,23 @@ describe("Button", () => {
     expect(resolveNativeButton({ component: Button })).toBe(true);
   });
 
+  it("resolves disabled render coercion before an explicit value", () => {
+    expect(
+      resolveNativeButton({
+        component: Button,
+        nativeButton: false,
+        props: { as: "a", disabled: true },
+      }),
+    ).toBe(true);
+    expect(
+      resolveNativeButton({
+        component: Button,
+        nativeButton: false,
+        props: { as: "a" },
+      }),
+    ).toBe(false);
+  });
+
   it("text button is accessible", async () => {
     const { container } = render(<Button>Click me</Button>);
     expectToHaveNoViolations(await axe(container));

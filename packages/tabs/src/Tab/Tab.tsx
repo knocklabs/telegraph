@@ -56,12 +56,11 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     ? ({ ...defaultIconProps, ...trailingIcon } as const)
     : undefined;
   const menuItemProps = props as TgphComponentProps<typeof MenuItem<T>>;
-  const nativeButton =
-    nativeButtonProp ??
-    resolveButtonNativeButton({
-      as: props.as,
-      disabled,
-    });
+  const nativeButton = resolveButtonNativeButton({
+    as: props.as,
+    disabled,
+    nativeButton: nativeButtonProp,
+  });
 
   return (
     <BaseTabs.Tab

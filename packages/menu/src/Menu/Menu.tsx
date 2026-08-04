@@ -714,8 +714,11 @@ const Button = <T extends TgphElement = "button">({
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
   // A caller rendering a component that resolves to a button can say so.
-  const isNativeButton =
-    nativeButton ?? resolveButtonNativeButton({ as, disabled });
+  const isNativeButton = resolveButtonNativeButton({
+    as,
+    disabled,
+    nativeButton,
+  });
   // Keyboard selection can arrive through React keydown, native keyup/click, or
   // Base UI internals; these refs dedupe those paths while preserving cancel.
   const ignoreNextKeyboardClickRef = useRef(false);
@@ -969,8 +972,11 @@ const SubTrigger = <T extends TgphElement = "button">({
 }: SubTriggerProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const menuItemProps = props as MenuItemProps<T>;
-  const isNativeButton =
-    nativeButton ?? resolveButtonNativeButton({ as, disabled });
+  const isNativeButton = resolveButtonNativeButton({
+    as,
+    disabled,
+    nativeButton,
+  });
   const combinedTrailingIcon: typeof trailingIcon =
     trailingIcon === undefined && trailingComponent === undefined
       ? { icon: ChevronRight, "aria-hidden": true }

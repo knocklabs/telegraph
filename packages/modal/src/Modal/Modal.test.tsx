@@ -81,6 +81,28 @@ describe("Modal", () => {
     }
   });
 
+  it("keeps disabled close coercion native over an explicit override", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Modal.Root open a11yTitle="Settings">
+          <Modal.Content>
+            <Modal.Close as="a" disabled nativeButton={false} />
+          </Modal.Content>
+        </Modal.Root>,
+      );
+
+      const close = await screen.findByRole("button", { name: "Close Modal" });
+      expect(close.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("preserves Base UI's default for an opaque close component", async () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 

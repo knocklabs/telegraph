@@ -92,6 +92,30 @@ describe("Popover", () => {
     }
   });
 
+  it("keeps disabled Telegraph button coercion native over an explicit override", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger nativeButton={false}>
+            <Button as="a" disabled>
+              Open
+            </Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const triggerElement = screen.getByRole("button", { name: "Open" });
+      expect(triggerElement.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("preserves Base UI's default for an opaque component", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 

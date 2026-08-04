@@ -323,6 +323,40 @@ describe("Tabs", () => {
     }
   });
 
+  it("keeps disabled tab coercion native over an explicit override", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <Tabs defaultValue="docs">
+          <Tabs.List>
+            <Tabs.Tab
+              value="docs"
+              as="a"
+              href="/docs"
+              disabled
+              nativeButton={false}
+            >
+              Docs
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs>,
+      );
+
+      const tab = screen.getByRole("tab", { name: "Docs" });
+
+      expect(tab.tagName).toBe("BUTTON");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
   it("activates tabs with arrow-key focus by default", async () => {
     const user = userEvent.setup();
 
