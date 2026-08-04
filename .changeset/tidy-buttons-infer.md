@@ -1,4 +1,5 @@
 ---
+"@telegraph/helpers": minor
 "@telegraph/menu": patch
 "@telegraph/modal": patch
 "@telegraph/popover": patch

@@ -388,6 +388,20 @@ import type { ComponentProps } from "react";
 />;
 ```
 
+### `inferTriggerNativeButton`
+
+Infers the `nativeButton` value for a Base UI trigger from an intrinsic child or
+a recognized polymorphic button component. Unknown components return
+`undefined` so callers can preserve Base UI's default or honor an explicit
+override.
+
+```tsx
+import { Button } from "@telegraph/button";
+import { inferTriggerNativeButton } from "@telegraph/helpers";
+
+const nativeButton = inferTriggerNativeButton(child, [Button, Button.Root]);
+```
+
 ### Base UI Compatibility Utilities
 
 Small helpers for preserving legacy Radix-style Telegraph behavior while

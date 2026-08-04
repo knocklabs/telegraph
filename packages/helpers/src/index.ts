@@ -28,6 +28,7 @@ export {
   createTgphBaseUIRender,
   getBaseUIMotionOffset,
   getBaseUIPositionerVisibilityStyle,
+  inferTriggerNativeButton,
   type BaseUIChangeDetails,
   type BaseUIFloatingSide,
   type BaseUIPositionerVisibilityStyleParams,

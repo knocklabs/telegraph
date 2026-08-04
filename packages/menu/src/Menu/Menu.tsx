@@ -11,6 +11,7 @@ import {
   type TgphElement,
   createTgphBaseUIRender,
   getBaseUIPositionerVisibilityStyle,
+  inferTriggerNativeButton,
 } from "@telegraph/helpers";
 import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
 import { ChevronRight } from "lucide-react";
@@ -167,28 +168,7 @@ export type TriggerProps = Omit<
     tgphRef?: Ref<HTMLButtonElement>;
   };
 
-type TelegraphButtonProps = {
-  as?: TgphElement;
-  disabled?: boolean;
-};
-
-const inferTriggerNativeButton = (
-  element: ReactElement,
-): boolean | undefined => {
-  if (typeof element.type === "string") {
-    return element.type === "button";
-  }
-
-  if (
-    element.type !== TelegraphButton &&
-    element.type !== TelegraphButton.Root
-  ) {
-    return undefined;
-  }
-
-  const { as, disabled } = element.props as TelegraphButtonProps;
-  return rendersNativeButton(as, disabled);
-};
+const TELEGRAPH_BUTTON_COMPONENTS = [TelegraphButton, TelegraphButton.Root];
 
 const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
   (
@@ -212,7 +192,8 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
     const nativeButton =
       nativeButtonProp ??
       (asChild && isValidElement(children)
-        ? (inferTriggerNativeButton(children) ?? true)
+        ? (inferTriggerNativeButton(children, TELEGRAPH_BUTTON_COMPONENTS) ??
+          true)
         : true);
     // A custom onClick means callers likely own the trigger activation path, so
     // avoid also letting Base UI process mousedown as a separate open signal.
