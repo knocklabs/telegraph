@@ -5,24 +5,25 @@ import {
   isValidElement,
 } from "react";
 
-import type { TgphElement } from "../types/utility";
+import type { AsProp, TgphElement } from "../types/utility";
 
-type PolymorphicButtonProps = {
-  as?: TgphElement;
+type PolymorphicButtonProps = AsProp<TgphElement> & {
   disabled?: boolean;
 };
 
-type InferTriggerNativeButtonOptions = {
-  asChild: boolean;
+type InferElementNativeButtonOptions = {
   buttonComponents: readonly ElementType[];
-  children: ReactNode;
-  nativeButton?: boolean;
+  element: ReactElement;
 };
 
-const inferElementNativeButton = (
-  element: ReactElement,
-  buttonComponents: readonly ElementType[],
-): boolean | undefined => {
+type InferElementNativeButton = (
+  options: InferElementNativeButtonOptions,
+) => boolean | undefined;
+
+const inferElementNativeButton: InferElementNativeButton = ({
+  buttonComponents,
+  element,
+}) => {
   if (typeof element.type === "string") {
     return element.type === "button";
   }
@@ -35,7 +36,18 @@ const inferElementNativeButton = (
   return !!disabled || as === undefined || as === "button";
 };
 
-const inferTriggerNativeButton = ({
+type InferTriggerNativeButtonOptions = {
+  asChild: boolean;
+  buttonComponents: readonly ElementType[];
+  children: ReactNode;
+  nativeButton?: boolean;
+};
+
+type InferTriggerNativeButton = (
+  options: InferTriggerNativeButtonOptions,
+) => boolean;
+
+const inferTriggerNativeButton: InferTriggerNativeButton = ({
   asChild,
   buttonComponents,
   children,
@@ -49,7 +61,12 @@ const inferTriggerNativeButton = ({
     return true;
   }
 
-  return inferElementNativeButton(children, buttonComponents) ?? true;
+  return (
+    inferElementNativeButton({
+      buttonComponents,
+      element: children,
+    }) ?? true
+  );
 };
 
 export { inferTriggerNativeButton, type InferTriggerNativeButtonOptions };
