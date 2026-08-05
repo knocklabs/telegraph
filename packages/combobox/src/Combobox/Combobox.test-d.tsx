@@ -10,6 +10,9 @@ import type {
   ComboboxInputProps,
   ComboboxOptionProps,
   ComboboxOptionsProps,
+  ComboboxPageButtonProps,
+  ComboboxPageProps,
+  ComboboxPageSelectorProps,
   ComboboxRootProps,
   ComboboxSearchProps,
   ComboboxTriggerProps,
@@ -105,6 +108,30 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxInputProps>().not.toHaveProperty("defaultValue");
     // A rendered anchor input takes native attributes.
     <Combobox.Input aria-label="Search" />;
+  });
+
+  it("types the segmented-page parts", () => {
+    // No catch-all passthrough on any page part.
+    expectTypeOf<ComboboxPageProps>().not.toHaveProperty("notARealProp");
+    expectTypeOf<ComboboxPageButtonProps>().not.toHaveProperty("notARealProp");
+    expectTypeOf<ComboboxPageSelectorProps>().not.toHaveProperty(
+      "notARealProp",
+    );
+    // Declared props stay narrow.
+    expectTypeOf<ComboboxPageProps["value"]>().not.toBeAny();
+    expectTypeOf<ComboboxPageButtonProps["value"]>().not.toBeAny();
+    expectTypeOf<ComboboxPageSelectorProps["aria-label"]>().not.toBeAny();
+    // PageSelector drives page state through the engine, so onValueChange/value
+    // are omitted; aria-label is required.
+    expectTypeOf<ComboboxPageSelectorProps>().not.toHaveProperty(
+      "onValueChange",
+    );
+    <Combobox.PageSelector aria-label="Pages">
+      <Combobox.PageButton value="a">A</Combobox.PageButton>
+    </Combobox.PageSelector>;
+    <Combobox.Page value="a">
+      <Combobox.Option value="x">X</Combobox.Option>
+    </Combobox.Page>;
   });
 
   it("keeps declared props narrow", () => {
