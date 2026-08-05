@@ -1,5 +1,10 @@
-import { Button, type ButtonIconProps } from "@telegraph/button";
-import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
+import {
+  Button,
+  type ButtonIconProps,
+  type ButtonRootProps,
+  type ButtonTextProps,
+} from "@telegraph/button";
+import type { PolymorphicProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
 import * as motion from "motion/react-m";
@@ -17,13 +22,19 @@ type OptionItemIconProps = {
   trailingIcon?: ButtonIconProps;
 };
 
+// Source the polymorphic element props from `PolymorphicProps<T>` and the
+// Button.Root style props from the *non-generic* `ButtonRootProps`. A bare
+// `TgphComponentProps<typeof Button.Root<T>>` defers the mapped type at an
+// unresolved `T`, so `children` becomes inaccessible in the body — the same
+// KNO-14309 shape documented on `Combobox.Content`/`Combobox.Option`.
 export type OptionItemProps<T extends TgphElement = "button"> =
-  TgphComponentProps<typeof Button.Root<T>> &
+  PolymorphicProps<T> &
+    Omit<ButtonRootProps, "as"> &
     OptionItemIconProps & {
       selected?: boolean | null;
       leadingComponent?: ReactNode;
       trailingComponent?: ReactNode;
-      textProps?: TgphComponentProps<typeof Button.Text<"span">>;
+      textProps?: ButtonTextProps<"span">;
     };
 
 const OptionItem = <T extends TgphElement = "button">({
@@ -42,7 +53,7 @@ const OptionItem = <T extends TgphElement = "button">({
   textProps,
   ...props
 }: OptionItemProps<T>) => {
-  const rootProps = props as TgphComponentProps<typeof Button.Root<T>>;
+  const rootProps = props as ButtonRootProps<"button">;
 
   return (
     <Button.Root
@@ -80,7 +91,7 @@ const OptionItem = <T extends TgphElement = "button">({
 };
 
 type OptionItemLeadingProps = Pick<
-  TgphComponentProps<typeof OptionItem>,
+  OptionItemProps,
   "leadingIcon" | "icon" | "selected" | "leadingComponent"
 >;
 
@@ -134,7 +145,7 @@ const OptionItemLeading = ({
 };
 
 type OptionItemTrailingProps = Pick<
-  TgphComponentProps<typeof OptionItem>,
+  OptionItemProps,
   "trailingIcon" | "trailingComponent"
 >;
 

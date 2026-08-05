@@ -16,7 +16,7 @@ import {
   useControllableState,
 } from "@telegraph/helpers";
 import { Icon, type IconProps } from "@telegraph/icon";
-import { Input as TelegraphInput } from "@telegraph/input";
+import { type InputRootProps, Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
@@ -260,10 +260,12 @@ const Root = <
       .map((option) => option.value);
 
     // Reserve the `Combobox.Create` row's slot so Base UI's bounds check keeps
-    // it navigable. Over-reserving when Create is hidden (its value already
-    // exists) is harmless.
-    if (query && hasCreate) {
-      values.push(query);
+    // it navigable. Use the typed query rather than the filter `query` (which is
+    // forced empty under manualFiltering) so Create stays navigable there too.
+    // Over-reserving when Create is hidden (its value already exists) is harmless.
+    const createQuery = searchQuery ?? "";
+    if (createQuery && hasCreate) {
+      values.push(createQuery);
     }
 
     return values;
@@ -299,9 +301,13 @@ const Root = <
   const baseValue = useMemo<string | Array<string> | null>(() => {
     if (multiple) {
       const array = isMultiSelect(value) ? value : [];
-      return array
-        .map((entry) => getValueFromOption(entry, legacyBehavior))
-        .filter((entry): entry is string => Boolean(entry));
+      return (
+        array
+          .map((entry) => getValueFromOption(entry, legacyBehavior))
+          // Drop only unresolved entries; keep a legitimately empty-string value so
+          // multi-select matches single-select's `?? null` handling of `""`.
+          .filter((entry): entry is string => entry != null)
+      );
     }
 
     if (isSingleSelect(value)) {
@@ -879,9 +885,10 @@ const Content = <T extends TgphElement = "div">({
   );
 };
 
-export type OptionsProps<T extends TgphElement = "div"> = TgphComponentProps<
-  typeof Stack<T>
->;
+// `PolymorphicProps<T>` + the non-generic `StackProps` (see `ContentProps`);
+// a bare `typeof Stack<T>` defers the mapped type and drops `children`/`as`.
+export type OptionsProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<StackProps, "as">;
 
 const Options = <T extends TgphElement = "div">({
   tgphRef,
@@ -893,9 +900,10 @@ const Options = <T extends TgphElement = "div">({
 
   // Scroll to the selected option or defaultScrollToValue when the combobox opens.
   useEffect(() => {
+    let rafId: number | undefined;
     if (context.open && optionsRef.current) {
       // Small delay to ensure the DOM has rendered
-      requestAnimationFrame(() => {
+      rafId = requestAnimationFrame(() => {
         const selectedValue = isSingleSelect(context.value)
           ? getValueFromOption(context.value, context.legacyBehavior)
           : isMultiSelect(context.value) && context.value.length > 0
@@ -929,6 +937,10 @@ const Options = <T extends TgphElement = "div">({
         }
       });
     }
+    // Cancel a still-pending scroll if the popup closes or deps change first.
+    return () => {
+      if (rafId !== undefined) cancelAnimationFrame(rafId);
+    };
   }, [
     context.open,
     context.value,
@@ -1081,12 +1093,8 @@ const Option = <T extends TgphElement = "div">({
           data-tgph-combobox-option
           data-tgph-combobox-option-value={value}
           data-tgph-combobox-option-label={label}
-          tgphRef={
-            composedRef as TgphComponentProps<
-              typeof OptionItem<"div">
-            >["tgphRef"]
-          }
-          {...(props as TgphComponentProps<typeof OptionItem<"div">>)}
+          tgphRef={composedRef as OptionItemProps<"div">["tgphRef"]}
+          {...(props as OptionItemProps<"div">)}
         >
           {label || children || value}
         </OptionItem>,
@@ -1099,7 +1107,7 @@ const Option = <T extends TgphElement = "div">({
 // `onValueChange` keep the search query controllable, matching the historical
 // (menu-backed) Search API.
 export type SearchProps = RemappedOmit<
-  TgphComponentProps<typeof TelegraphInput<"input">>,
+  InputRootProps<"input">,
   "value" | "defaultValue"
 > & {
   label?: string;
@@ -1245,12 +1253,11 @@ const optionRendersUnsearchableText = (label: ReactNode): boolean => {
   return found;
 };
 
-export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
-  typeof Stack<T>
-> & {
-  icon?: IconProps | null;
-  message?: string | null;
-};
+export type EmptyProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<StackProps, "as"> & {
+    icon?: IconProps | null;
+    message?: string | null;
+  };
 
 const Empty = <T extends TgphElement = "div">({
   icon = { icon: SearchIcon, alt: "Search Icon" },
@@ -1301,9 +1308,10 @@ const Empty = <T extends TgphElement = "div">({
 export type CreateProps<
   T extends TgphElement = "div",
   LB extends boolean = false,
-> = TgphComponentProps<typeof OptionItem<T>> & {
-  leadingText?: string;
-} & (LB extends true
+> = PolymorphicProps<T> &
+  Omit<OptionItemProps<"div">, "as"> & {
+    leadingText?: string;
+  } & (LB extends true
     ? {
         values: Array<DefinedOption>;
         onCreate: (value: { value: string; label?: string }) => void;
