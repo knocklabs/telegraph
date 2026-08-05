@@ -176,19 +176,40 @@ describe("Combobox", () => {
       expect(trigger?.getAttribute("aria-expanded")).toBe("true");
     });
 
-    it("after opening, pressing the down arrow key should focus the first option", async () => {
+    // Virtual focus (Base UI): DOM focus stays on the in-popup input and the
+    // active option is tracked via data-highlighted / aria-activedescendant.
+    // Per ARIA the option matching the current value is highlighted on open, and
+    // arrow keys move that highlight rather than moving DOM focus onto an option.
+    it("after opening, the selected option is highlighted and arrow keys move the highlight", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
 
       // Open
       await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
 
-      // Focus first option
+      const firstOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="email"]',
+      );
+      await waitFor(() =>
+        expect(firstOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+      // DOM focus is on the input, not the option.
+      expect(document.activeElement?.tagName).toBe("INPUT");
+      expect(document.activeElement).not.toEqual(firstOption);
+
+      // Arrow keys move the highlight to the next option.
       await user.keyboard("[ArrowDown]");
-      const firstOption = queryPortalElement("[data-tgph-combobox-option]");
-      expect(document.activeElement).toEqual(firstOption);
+      const secondOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="sms"]',
+      );
+      await waitFor(() =>
+        expect(secondOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+      expect(firstOption?.getAttribute("data-highlighted")).toBeNull();
     });
 
     it("pressing enter on an option should select it", async () => {
@@ -205,17 +226,27 @@ describe("Combobox", () => {
       expect(trigger?.textContent).toBe("Email");
     });
 
-    it("pressing the first letter of an option should focus it", async () => {
+    // Typing now filters (via the in-popup input) and highlights the first
+    // match. Virtual focus keeps DOM focus on the input, so the match is tracked
+    // with data-highlighted rather than becoming document.activeElement.
+    it("pressing the first letter of an option highlights the matching option", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
 
       await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
 
       await user.keyboard("s");
-      const activeElementTextContent = document.activeElement?.textContent;
-      expect(activeElementTextContent).toEqual("SMS");
+      const smsOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="sms"]',
+      );
+      await waitFor(() =>
+        expect(smsOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+      expect(document.activeElement?.tagName).toBe("INPUT");
 
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("SMS");
@@ -312,7 +343,9 @@ describe("Combobox", () => {
         expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
       );
 
-      await waitFor(() => expect(trigger?.textContent).toBe("Email"));
+      // On open the selected option (Email) is highlighted per ARIA, so ArrowDown
+      // moves to the next option (SMS) before Enter selects it.
+      await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
 
       const clearButton = container.querySelector(
         "[data-tgph-combobox-clear]",
@@ -341,7 +374,9 @@ describe("Combobox", () => {
       await waitFor(() =>
         expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
       );
-      await waitFor(() => expect(trigger?.textContent).toBe("Email"));
+      // On open the selected option (Email) is highlighted per ARIA, so ArrowDown
+      // moves to the next option (SMS) before Enter selects it.
+      await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
 
       // Focus the clear button
       const clearButton = container.querySelector(
@@ -438,7 +473,10 @@ describe("Combobox", () => {
 
       await waitFor(() => expect(trigger?.textContent).toBe("EmailSMS"));
       expect(trigger).toHaveAttribute("aria-expanded", "true");
-      expect(getSmsOption()).toHaveFocus();
+      // Virtual focus: DOM focus stays on the search input and the just-selected
+      // option is tracked with data-highlighted rather than receiving DOM focus.
+      expect(queryPortalElement("[data-tgph-combobox-search]")).toHaveFocus();
+      expect(getSmsOption()?.getAttribute("data-highlighted")).not.toBeNull();
     });
 
     it("empty state should show when there are no results", async () => {
@@ -463,11 +501,20 @@ describe("Combobox", () => {
 
       // Open
       await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
 
-      // Focus first option
-      await user.keyboard("[ArrowDown]");
-      await user.keyboard("[Enter]");
+      // Clicking an already-selected option toggles it off (deselects it).
+      // (Under virtual focus, arrow keys navigate relative to the seeded
+      // selection, so clicking is the deterministic way to target Email.)
+      const emailOption = Array.from(
+        queryPortalElements("[data-tgph-combobox-option]"),
+      ).find(
+        (option) =>
+          option.getAttribute("data-tgph-combobox-option-value") === "email",
+      ) as HTMLElement;
+      await user.click(emailOption);
 
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
     });
@@ -568,6 +615,39 @@ describe("Combobox", () => {
         expect(trigger?.getAttribute("aria-expanded")).toBe("false"),
       );
       expect(onOpenChange).toHaveBeenLastCalledWith(false);
+    });
+
+    it("calls onOpenAutoFocus when the popup opens (bridged to Base UI initialFocus)", async () => {
+      const user = userEvent.setup();
+      const onOpenAutoFocus = vi.fn((event: Event) => event.preventDefault());
+
+      const Harness = () => {
+        const [value, setValue] = useState<string>(VALUES[0]!);
+        return (
+          <Combobox.Root value={value} onValueChange={setValue}>
+            <Combobox.Trigger />
+            <Combobox.Content onOpenAutoFocus={onOpenAutoFocus}>
+              <Combobox.Search />
+              <Combobox.Options>
+                {VALUES.map((option, index) => (
+                  <Combobox.Option key={option} value={option}>
+                    {LABELS[index]}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Options>
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container } = render(<Harness />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
+      await waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalled());
     });
 
     it("keeps the combobox open when escape dismissal is prevented", async () => {
@@ -746,19 +826,35 @@ describe("legacyBehavior Combobox", () => {
       expect(trigger?.getAttribute("aria-expanded")).toBe("true");
     });
 
-    it("after opening, pressing the down arrow key should focus the first option", async () => {
+    // Virtual focus: see the non-legacy counterpart above.
+    it("after opening, the selected option is highlighted and arrow keys move the highlight", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelectLegacy />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
 
       // Open
       await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
 
-      // Focus first option
+      const firstOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="email"]',
+      );
+      await waitFor(() =>
+        expect(firstOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+      expect(document.activeElement?.tagName).toBe("INPUT");
+      expect(document.activeElement).not.toEqual(firstOption);
+
       await user.keyboard("[ArrowDown]");
-      const firstOption = queryPortalElement("[data-tgph-combobox-option]");
-      expect(document.activeElement).toEqual(firstOption);
+      const secondOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="sms"]',
+      );
+      await waitFor(() =>
+        expect(secondOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+      expect(firstOption?.getAttribute("data-highlighted")).toBeNull();
     });
 
     it("pressing enter on an option should select it", async () => {
@@ -775,17 +871,25 @@ describe("legacyBehavior Combobox", () => {
       expect(trigger?.textContent).toBe("Email");
     });
 
-    it("pressing the first letter of an option should focus it", async () => {
+    // Virtual focus: see the non-legacy counterpart above.
+    it("pressing the first letter of an option highlights the matching option", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelectLegacy />);
       const trigger = container.querySelector("[data-tgph-combobox-trigger]");
 
       await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
 
       await user.keyboard("s");
-      const activeElementTextContent = document.activeElement?.textContent;
-      expect(activeElementTextContent).toEqual("SMS");
+      const smsOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="sms"]',
+      );
+      await waitFor(() =>
+        expect(smsOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+      expect(document.activeElement?.tagName).toBe("INPUT");
 
       await user.keyboard("[Enter]");
       expect(trigger?.textContent).toBe("SMS");
@@ -877,11 +981,18 @@ describe("legacyBehavior Combobox", () => {
 
       // Open
       await user.click(trigger!);
-      await waitFor(() => trigger?.getAttribute("aria-expanded") === "true");
+      await waitFor(() =>
+        expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+      );
 
-      // Focus first option
-      await user.keyboard("[ArrowDown]");
-      await user.keyboard("[Enter]");
+      // Clicking an already-selected option toggles it off (deselects it).
+      const emailOption = Array.from(
+        queryPortalElements("[data-tgph-combobox-option]"),
+      ).find(
+        (option) =>
+          option.getAttribute("data-tgph-combobox-option-value") === "email",
+      ) as HTMLElement;
+      await user.click(emailOption);
 
       await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
     });
@@ -1514,6 +1625,92 @@ describe("controlled value changes", () => {
     // Then change externally to Push again
     await user.click(getByTestId("external-change-btn"));
     await waitFor(() => expect(trigger?.textContent).toBe("Push"));
+  });
+});
+
+describe("manualFiltering", () => {
+  const renderWithSearch = (props?: { manualFiltering?: boolean }) =>
+    render(
+      <Combobox.Root defaultValue="email" {...props}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Search />
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+          <Combobox.Empty />
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+  const openAndType = async (
+    user: ReturnType<typeof userEvent.setup>,
+    container: HTMLElement,
+    text: string,
+  ) => {
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(search, text);
+  };
+
+  it("keeps every rendered option visible for a non-matching query", async () => {
+    const user = userEvent.setup();
+    const { container } = renderWithSearch({ manualFiltering: true });
+
+    await openAndType(user, container, "zzz");
+
+    // The consumer owns filtering, so the internal filter never hides a row.
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(
+        VALUES.length,
+      ),
+    );
+  });
+
+  it("filters internally when the flag is absent (control)", async () => {
+    const user = userEvent.setup();
+    const { container } = renderWithSearch();
+
+    await openAndType(user, container, "zzz");
+
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(0),
+    );
+  });
+});
+
+describe("Trigger ref", () => {
+  it("composes a consumer tgphRef with the internal trigger ref", () => {
+    const ref = { current: null as HTMLButtonElement | null };
+    const { container } = render(
+      <Combobox.Root defaultValue="email">
+        <Combobox.Trigger tgphRef={ref} />
+        <Combobox.Content>
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    // The consumer ref resolves to the trigger element; the internal ref (which
+    // drives keyboard-close refocus) is composed in rather than clobbered.
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    expect(ref.current).toBe(trigger);
   });
 });
 

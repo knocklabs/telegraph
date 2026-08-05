@@ -32,13 +32,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@base-ui/react": "^1.6.0",
     "@telegraph/button": "workspace:^",
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/icon": "workspace:^",
     "@telegraph/input": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "@telegraph/menu": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/truncate": "workspace:^",

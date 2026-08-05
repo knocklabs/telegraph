@@ -7,10 +7,6 @@ import {
 
 import type { DefinedOption, Option } from "./Combobox.types";
 
-export const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
-export const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
-export const SELECT_KEYS = ["Enter", " "];
-
 export const isMultiSelect = (
   value: Option | Array<Option> | undefined,
 ): value is Array<Option> => {
