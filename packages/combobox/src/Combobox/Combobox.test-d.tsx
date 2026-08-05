@@ -47,6 +47,11 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxOptionProps["value"]>().not.toBeAny();
     expectTypeOf<ComboboxOptionProps["label"]>().not.toBeAny();
     expectTypeOf<ComboboxOptionProps["selected"]>().not.toBeAny();
+    // Guard the callback PARAM, not just the function: closed-polymorphic typing
+    // must keep it from widening to `any` (the KNO-14309 failure mode).
+    expectTypeOf<
+      Parameters<NonNullable<ComboboxOptionProps["onSelect"]>>[0]
+    >().toEqualTypeOf<Event>();
 
     expectTypeOf<ComboboxSearchProps["label"]>().not.toBeAny();
 
@@ -56,6 +61,9 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxCreateProps["leadingText"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["values"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["onCreate"]>().not.toBeAny();
+    expectTypeOf<
+      Parameters<NonNullable<ComboboxCreateProps["onCreate"]>>[0]
+    >().toEqualTypeOf<string>();
   });
 
   it("reports undefined when a single selection is cleared", () => {
@@ -428,8 +436,10 @@ describe("Combobox types", () => {
   });
 
   it("resolves Create at its default element", () => {
-    // This combobox renders Create as an option row (a `div`), so with no `as`
-    // the default element is a `div` and `div` native attributes type-check.
+    // Create renders as an option row, so with no `as` it takes `div` native
+    // attributes (`id`) and an explicit `as="a"` switches to anchor attributes.
+    // `type` can't discriminate the default here — Create accepts Button.Root
+    // props (incl. `type`) through its option-row base regardless of element.
     <Combobox.Create id="create-row" />;
     <Combobox.Create as="a" href="/new" />;
   });
