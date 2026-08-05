@@ -6,13 +6,15 @@ import { page, userEvent } from "vitest/browser";
 import { Menu } from "./Menu";
 import { TypeableTriggerExample } from "./Menu.fixtures";
 
-// Reproduces KNO-14086 end-to-end: a typeable input composed inside
-// Menu.Trigger that prevents the legacy openAutoFocus. Base UI defers its
-// initial popup focus to a real animation frame, so this only reproduces in a
-// headed browser with real vsync — every headless environment (jsdom,
-// happy-dom, headless Chromium) fires that focus eagerly and hides the race.
-// The old setTimeout(0) restore lost the race here (focus landed in the popup);
-// the focusin bounce wins.
+// Regression coverage for the focus-bounce on a prevented `onOpenAutoFocus`
+// (KNO-14086), exercised through the legacy typeable-trigger composition — a
+// deprecated recipe kept only for this repro; new UI should use the
+// `@telegraph/combobox` input-as-trigger arrangement. Base UI defers its initial
+// popup focus to a real animation frame, so this only reproduces in a headed
+// browser with real vsync — every headless environment (jsdom, happy-dom,
+// headless Chromium) fires that focus eagerly and hides the race. The old
+// setTimeout(0) restore lost the race here (focus landed in the popup); the
+// focusin bounce wins.
 const TypeableTriggerMenu = () => {
   const [open, setOpen] = useState(false);
 
@@ -59,7 +61,7 @@ const waitFrames = (count: number) =>
     requestAnimationFrame(step);
   });
 
-describe("Menu typeable trigger (real browser)", () => {
+describe("Menu focus-bounce on prevented onOpenAutoFocus (real browser)", () => {
   it("keeps focus on the trigger input across Base UI's initial focus", async () => {
     render(<TypeableTriggerMenu />);
     const inputLocator = page.getByRole("textbox", { name: "Filter" });
@@ -87,9 +89,10 @@ describe("Menu typeable trigger (real browser)", () => {
   });
 });
 
-// Drives the exact composition the Storybook `TypeableTrigger` story ships, the
-// way a user would (real click + typing), so a broken demo can't slip through.
-describe("Menu typeable trigger story (real browser)", () => {
+// Drives the exact composition the Storybook `TypeableTrigger` story ships (now
+// the deprecated focus-bounce reference), the way a user would (real click +
+// typing), so a broken demo can't slip through.
+describe("Menu focus-bounce story fixture (real browser)", () => {
   it("opens on click and keeps focus in the input while typing to filter", async () => {
     render(<TypeableTriggerExample />);
     const inputLocator = page.getByRole("textbox", {

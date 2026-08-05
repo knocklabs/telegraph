@@ -349,15 +349,21 @@ const MenuPopupContent = ({
       return;
     }
 
-    // Base UI's MenuPopup hardcodes initial focus into the popup and exposes no
-    // way to opt out (only Popover/Dialog surface `initialFocus`). Its focus
-    // manager queues that move to the next animation frame, so the previous
-    // setTimeout(0) restore fired first and then lost the race, letting the
-    // popup steal focus from a typeable trigger input. Instead, bounce focus
-    // back the instant Base UI's initial focus lands: focusing an element inside
-    // the popup dispatches `focusin` here synchronously during Base UI's own
-    // `.focus()` call, so re-asserting the intended target from that event wins
-    // with no dependence on timer ordering.
+    // Permanent Radix-compat behavior. This implements the prevented-
+    // `onOpenAutoFocus` contract consumers carried over from Radix: when the
+    // handler calls `preventDefault()`, focus stays where it was instead of
+    // moving into the popup. Base UI's MenuPopup hardcodes initial focus into the
+    // popup and does not expose an `initialFocus` opt-out for menus — upstream
+    // declined to add one because a typeable menu trigger is not the endorsed
+    // pattern (the Autocomplete/Combobox engine is). New UI wanting a typeable
+    // trigger should use `@telegraph/combobox`'s input-as-trigger arrangement;
+    // this bounce is not a temporary shim, it stays as the Radix-compat contract.
+    // Base UI's focus manager queues its move to the next animation frame, which
+    // a `setTimeout(0)` restore loses the race to. Instead, bounce focus back the
+    // instant Base UI's initial focus lands: focusing an element inside the popup
+    // dispatches `focusin` here synchronously during Base UI's own `.focus()`
+    // call, so re-asserting the intended target from that event wins with no
+    // dependence on timer ordering.
     const abortController = new AbortController();
     openAutoFocusAbortRef.current = abortController;
     const { signal } = abortController;
