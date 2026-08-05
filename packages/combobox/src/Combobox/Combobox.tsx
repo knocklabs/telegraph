@@ -392,8 +392,9 @@ const Root = <V extends ComboboxValue = string>({
       .map((option) => option.value);
 
     // Reserve the `Combobox.Create` row's slot so Base UI's bounds check keeps
-    // it navigable. Use the typed query rather than the filter `query` (which is
-    // forced empty under manualFiltering) so Create stays navigable there too.
+    // it navigable. Use the typed query (`activeSearchQuery`) rather than the
+    // filter `query` (forced empty under manualFiltering, and the wrong field in
+    // free-text mode) so Create stays navigable in every arrangement.
     // Over-reserving when Create is hidden (its value already exists) is harmless.
     const createQuery = activeSearchQuery;
     let nextCreateIndex: number | undefined;
@@ -590,6 +591,20 @@ const Root = <V extends ComboboxValue = string>({
     [isNoneMode, isInputControlled, onInputValueChangeProp],
   );
 
+  // `context.setSearchQuery` is only ever called to clear the query (the Search
+  // clear button and Create). In free-text mode the anchor input is the query,
+  // so clear its uncontrolled value instead of the unused search-query state.
+  const clearSearchQuery = useCallback(
+    (query: string) => {
+      if (isNoneMode) {
+        if (!isInputControlled) setUncontrolledInputValue(query);
+        return;
+      }
+      setSearchQuery(query);
+    },
+    [isNoneMode, isInputControlled],
+  );
+
   // TRANSITIONAL compatibility bridge: the menu-backed combobox moved DOM
   // focus through its options. Base UI uses virtual focus instead, but legacy
   // virtualized consumers listen for the bubbling focus event to mount the next
@@ -648,7 +663,7 @@ const Root = <V extends ComboboxValue = string>({
         clearable,
         disabled,
         searchQuery: activeSearchQuery,
-        setSearchQuery,
+        setSearchQuery: clearSearchQuery,
         hasSearch: searchControl !== undefined,
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
         searchRef: searchRef as RefObject<HTMLInputElement>,
