@@ -2848,6 +2848,31 @@ const clickPageButton = async (
 };
 
 describe("Segmented pages", () => {
+  it("shows the selected option's label in the trigger, not the placeholder", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<ComboboxWithPages />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // Highlight and select "general" on the default (channels) page.
+    await user.keyboard("general");
+    await waitFor(() =>
+      expect(
+        queryPortalElement(
+          "[data-tgph-combobox-option-value='general']",
+        )?.getAttribute("data-highlighted"),
+      ).not.toBeNull(),
+    );
+    await user.keyboard("[Enter]");
+
+    // The label resolves from the all-pages `options` list, so a `Combobox.Page`
+    // (which also carries a `value`) must not shadow the real nested options.
+    await waitFor(() => expect(trigger).toHaveTextContent("general"));
+  });
+
   it("renders only the active page's options and swaps them on a page button click", async () => {
     const user = userEvent.setup();
     render(<ComboboxWithPages />);
@@ -2965,6 +2990,107 @@ describe("Segmented pages", () => {
     ).toBeTruthy();
     expect(
       queryPortalElement("[data-tgph-combobox-option-value='general']"),
+    ).toBeFalsy();
+  });
+
+  it("wraps around at the first/last page when loopPages is true (default)", async () => {
+    const user = userEvent.setup();
+    render(<ComboboxWithPages />);
+    await user.click(queryPortalElement("[data-tgph-combobox-trigger]")!);
+
+    const search = (await waitFor(() => {
+      const el = queryPortalElement("[data-tgph-combobox-search]");
+      if (!el) throw new Error("search not mounted");
+      return el;
+    })) as HTMLInputElement;
+    search.focus();
+
+    // Left from the first page (channels) wraps to the last (people), and the
+    // arrow's direction stays explicit ("back") even across the wrap.
+    await user.keyboard("{ArrowLeft}");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+    });
+    expect(
+      queryPortalElement("[data-tgph-combobox-page-panel]")?.getAttribute(
+        "data-tgph-combobox-page-direction",
+      ),
+    ).toBe("back");
+
+    // Right from the last page (people) wraps back to the first (channels).
+    await user.keyboard("{ArrowRight}");
+    await waitFor(() => {
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy();
+    });
+    expect(
+      queryPortalElement("[data-tgph-combobox-page-panel]")?.getAttribute(
+        "data-tgph-combobox-page-direction",
+      ),
+    ).toBe("forward");
+  });
+
+  it("does not switch pages from the anchor input while the popup is closed", async () => {
+    const user = userEvent.setup();
+    const Harness = () => {
+      const [value, setValue] = useState<string | undefined>(undefined);
+      return (
+        <Combobox.Root
+          value={value}
+          onValueChange={(next) => setValue(next as string | undefined)}
+          defaultPage="channels"
+        >
+          <Combobox.Input />
+          <Combobox.Content>
+            <Combobox.PageSelector aria-label="Destination type">
+              <Combobox.PageButton value="channels">
+                Channels
+              </Combobox.PageButton>
+              <Combobox.PageButton value="people">People</Combobox.PageButton>
+            </Combobox.PageSelector>
+            <Combobox.Options>
+              <Combobox.Page value="channels">
+                {PAGE_CHANNELS.map((o) => (
+                  <Combobox.Option key={o.value} value={o.value}>
+                    {o.label}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Page>
+              <Combobox.Page value="people">
+                {PAGE_PEOPLE.map((o) => (
+                  <Combobox.Option key={o.value} value={o.value}>
+                    {o.label}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Page>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+    const { container } = render(<Harness />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    // Popup closed: arrowing the always-mounted anchor input must not silently
+    // advance the page.
+    input.focus();
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+    await user.keyboard("{ArrowRight}");
+
+    // Open and confirm we're still on the default channels page.
+    await user.click(input);
+    await waitFor(() =>
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy(),
+    );
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='ada']"),
     ).toBeFalsy();
   });
 
