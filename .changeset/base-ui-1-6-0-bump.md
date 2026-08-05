@@ -1,4 +1,5 @@
 ---
+"@telegraph/checkbox": patch
 "@telegraph/helpers": patch
 "@telegraph/menu": patch
 "@telegraph/modal": patch
