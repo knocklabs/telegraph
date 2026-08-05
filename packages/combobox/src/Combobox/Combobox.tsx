@@ -91,6 +91,11 @@ export type RootProps<
   closeOnSelect?: boolean;
   clearable?: boolean;
   disabled?: boolean;
+  // Native form integration. Base UI renders a hidden form input for the
+  // selection: `required` enforces client-side required validation on submit
+  // (matching `<select required>`), and `name` submits the value under that key.
+  required?: boolean;
+  name?: string;
   legacyBehavior?: LB;
   // Disable the built-in text filtering of `Combobox.Option`s. Use this when the
   // consumer already narrows the option list itself (e.g. an async/server search
@@ -272,6 +277,8 @@ const Root = <
   loopFocus: loopFocusProp,
   onItemHighlighted: onItemHighlightedProp,
   actionsRef,
+  required,
+  name,
   children,
 }: RootProps<O, LB>) => {
   const contentId = useId();
@@ -680,6 +687,9 @@ const Root = <
           actionsRef={actionsRef}
           modal={modal}
           disabled={disabled}
+          // Native form integration; Base UI renders the hidden required input.
+          required={required}
+          name={name}
         >
           {children}
         </BaseAutocomplete.Root>
@@ -719,6 +729,9 @@ const Root = <
           filteredItems={filteredItems}
           modal={modal}
           disabled={disabled}
+          // Native form integration; Base UI renders the hidden required input.
+          required={required}
+          name={name}
         >
           {children}
         </BaseCombobox.Root>
