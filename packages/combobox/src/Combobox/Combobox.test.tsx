@@ -948,6 +948,7 @@ describe("Input as trigger", () => {
   });
 
   it("does not open when the anchor input is disabled", async () => {
+    const user = userEvent.setup();
     const { container } = render(<ComboboxInputTrigger disabled />);
     const input = container.querySelector(
       "[data-tgph-combobox-input]",
@@ -956,6 +957,14 @@ describe("Input as trigger", () => {
     // Disabled reaches both the DOM and Base UI's store (passed to BaseUI Input).
     expect(input.disabled).toBe(true);
     expect(input.getAttribute("aria-expanded")).toBe("false");
+
+    // Actually try to open it: a disabled input can't be clicked open, and no
+    // options mount.
+    await user.click(input);
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='push']"),
+    ).toBeFalsy();
   });
 
   it("clearing the anchor input clears the selection", async () => {
@@ -1001,6 +1010,47 @@ describe("Input as trigger", () => {
     // consumer as a cleared value rather than being swallowed as a sentinel.
     await user.clear(input);
     await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(undefined));
+  });
+
+  it("keeps the popup open when the anchor input is cleared to re-search", async () => {
+    const user = userEvent.setup();
+    const Harness = () => {
+      const [value, setValue] = useState<string | undefined>(undefined);
+      return (
+        <Combobox.Root value={value} onValueChange={(next) => setValue(next)}>
+          <Combobox.Input />
+          <Combobox.Content>
+            <Combobox.Options>
+              {VALUES.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {LABELS[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+    const { container } = render(<Harness />);
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    // Select a value, then reopen the popup to re-search.
+    await user.click(input);
+    await user.type(input, "push");
+    await user.click(
+      queryPortalElement('[data-tgph-combobox-option-value="push"]')!,
+    );
+    await waitFor(() => expect(input.value).toBe("push"));
+    await user.click(input);
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "true"));
+
+    // Clearing the input to re-search is not a selection, so it must not close
+    // the popup out from under the user.
+    await user.clear(input);
+    await waitFor(() => expect(input.value).toBe(""));
+    expect(input).toHaveAttribute("aria-expanded", "true");
   });
 
   it("reopening after a selection shows the full option list", async () => {

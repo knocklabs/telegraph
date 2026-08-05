@@ -370,10 +370,11 @@ const Root = <
       .map((option) => option.value);
 
     // Reserve the `Combobox.Create` row's slot so Base UI's bounds check keeps
-    // it navigable. Use the typed query rather than the filter `query` (which is
-    // forced empty under manualFiltering) so Create stays navigable there too.
+    // it navigable. Use the typed query (`activeSearchQuery`) rather than the
+    // filter `query` (forced empty under manualFiltering, and the wrong field in
+    // free-text mode) so Create stays navigable in every arrangement.
     // Over-reserving when Create is hidden (its value already exists) is harmless.
-    const createQuery = searchQuery ?? "";
+    const createQuery = activeSearchQuery;
     if (createQuery && hasCreate) {
       values.push(createQuery);
     }
@@ -511,7 +512,9 @@ const Root = <
 
       // Base UI's single-select close arrives through `onOpenChange`, but we
       // always drive closing from here so multi-select honors closeOnSelect too.
-      if (closeOnSelect === true) {
+      // A `null` commit is a clear (emptying the input), not a selection — keep
+      // the popup open then so the user can carry on searching.
+      if (closeOnSelect === true && next != null) {
         setOpen(false, eventDetails);
       }
     },
@@ -589,6 +592,21 @@ const Root = <
     [isNoneMode, isInputControlled, onInputValueChangeProp],
   );
 
+  // `context.setSearchQuery` is only ever called to CLEAR (the Search clear
+  // button and Create). In free-text `none` mode the anchor input *is* the
+  // query, so a clear must empty the (uncontrolled) input value rather than the
+  // unused search-query state; a controlled `inputValue` stays the consumer's.
+  const clearSearchQuery = useCallback(
+    (query: string) => {
+      if (isNoneMode) {
+        if (!isInputControlled) setUncontrolledInputValue(query);
+        return;
+      }
+      setSearchQuery(query);
+    },
+    [isNoneMode, isInputControlled],
+  );
+
   const handleItemHighlighted = useCallback(
     (value: string | undefined, details: ComboboxHighlightDetails) => {
       // Action items (`onSelect`/Create) carry the internal sentinel value;
@@ -618,7 +636,7 @@ const Root = <
         clearable,
         disabled,
         searchQuery: activeSearchQuery,
-        setSearchQuery,
+        setSearchQuery: clearSearchQuery,
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
         searchRef: searchRef as RefObject<HTMLInputElement>,
         contentRef: contentRef as RefObject<HTMLDivElement>,
