@@ -1072,6 +1072,7 @@ const Input = ({
               pageValues: context.pageValues,
               switchPage: context.switchPage,
               alwaysSwitch: false,
+              open: context.open,
             });
             onKeyDownCaptureProp?.(event);
           }}
@@ -1375,6 +1376,7 @@ const Content = <T extends TgphElement = "div">({
                         pageValues: context.pageValues,
                         switchPage: context.switchPage,
                         alwaysSwitch: true,
+                        open: context.open,
                       })
                     }
                   />
@@ -1700,6 +1702,7 @@ const Search = ({
                 pageValues: context.pageValues,
                 switchPage: context.switchPage,
                 alwaysSwitch: false,
+                open: context.open,
               });
               onKeyDownCaptureProp?.(event);
             }}
@@ -1738,12 +1741,17 @@ const handlePageArrowKeyDown = (
     pageValues,
     switchPage,
     alwaysSwitch,
+    open,
   }: {
     pageValues: Array<string>;
     switchPage: (direction: 1 | -1) => void;
     alwaysSwitch: boolean;
+    open: boolean;
   },
 ) => {
+  // The anchor input stays mounted while closed; arrows must not silently
+  // advance the page (and arm a slide) when there is no popup to switch in.
+  if (!open) return;
   if (pageValues.length < 2) return;
   if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
   if (!alwaysSwitch && event.currentTarget.value) return;
@@ -1812,9 +1820,14 @@ const PageTransition = lazy(() => import("./Combobox.pageTransition"));
 
 const Page = ({ value, children }: PageProps) => {
   const context = useContext(ComboboxContext);
-  if (context.activePage !== value) return null;
-  // Single page never switches, so skip the slide wrapper and its lazy chunk.
+  // Fewer than two page buttons means nothing to switch between, so render the
+  // rows unwrapped and skip the slide wrapper/its lazy chunk. Ordered before the
+  // active-page gate so a malformed group (pages but no `Combobox.PageButton`,
+  // where `activePage` is undefined) still renders its options instead of
+  // silently hiding them — matching `scopedOptions`, which returns all options
+  // when there are no page values.
   if (context.pageValues.length < 2) return <>{children}</>;
+  if (context.activePage !== value) return null;
   // Until the chunk resolves the rows render unwrapped, so options are never
   // blocked on the animation code.
   return (
@@ -1863,6 +1876,11 @@ const isOptionElement = (element: ReactElement) => {
   if (element.type === Search) return false;
   // The anchor input is not an option (and carries no committable value).
   if (element.type === Input) return false;
+  // Page parts carry a `value` for the segmented control, but they wrap/label
+  // pages — never match them as options, or the walk stops at the `Page` and
+  // never descends to the real `Option`s nested inside it.
+  if (element.type === Page) return false;
+  if (element.type === PageButton) return false;
 
   const props = element.props as {
     value?: unknown;

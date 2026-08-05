@@ -49,10 +49,33 @@ const PageTransition = ({
       // cleanup). Absent means an open/close rather than a switch — don't slide.
       // On unmount `node` is still attached (React removes it after cleanup), so
       // it can be snapshotted into a sliding clone.
-      const dir = node
-        .closest("[data-tgph-combobox-content]")
-        ?.getAttribute("data-tgph-combobox-page-slide-direction");
+      const content = node.closest("[data-tgph-combobox-content]");
+      const dir = content?.getAttribute(
+        "data-tgph-combobox-page-slide-direction",
+      );
       if (dir !== "forward" && dir !== "back") return;
+      // Consume the direction so a later unmount that isn't a switch — the popup
+      // closing — can't replay a stale slide-out. Each real switch republishes it
+      // before `setPage`, so this only clears spent state.
+      content?.removeAttribute("data-tgph-combobox-page-slide-direction");
+
+      // Clip the outgoing clone's vertical extent while it slides, so a taller
+      // outgoing page can't surface a scrollbar as the popup resizes to a
+      // shorter one. A rapid re-switch would otherwise stack un-cancelled clones
+      // and — because each snapshotted the live (already-"hidden") overflow —
+      // leave the list stuck unscrollable. So cancel any in-flight clone first,
+      // and capture the TRUE original overflow only when none is mid-slide, so
+      // every overlapping clone shares it and the last one restores it.
+      const inFlight = parent.querySelector(
+        "[data-tgph-combobox-page-panel-clone]",
+      );
+      if (inFlight) {
+        inFlight.getAnimations?.().forEach((animation) => animation.cancel());
+        inFlight.remove();
+      } else {
+        parent.dataset.tgphPagePrevOverflowY = parent.style.overflowY;
+      }
+      parent.style.overflowY = "hidden";
 
       const clone = node.cloneNode(true) as HTMLElement;
       clone.removeAttribute("data-tgph-combobox-page-panel");
@@ -64,12 +87,6 @@ const PageTransition = ({
       clone.style.height = `${node.offsetHeight}px`;
       parent.appendChild(clone);
 
-      // Clip the outgoing clone's vertical extent while it slides, so a taller
-      // outgoing page can't surface a scrollbar as the popup resizes to a
-      // shorter one. Restored once the clone is gone.
-      const prevOverflowY = parent.style.overflowY;
-      parent.style.overflowY = "hidden";
-
       const slideOut =
         dir === "forward" ? "translateX(-100%)" : "translateX(100%)";
       const animation = clone.animate(
@@ -78,12 +95,19 @@ const PageTransition = ({
       );
       const finish = () => {
         clone.remove();
-        // Only restore once no clone remains (rapid switches overlap).
+        // Restore the original overflow only once the last clone is gone.
         if (!parent.querySelector("[data-tgph-combobox-page-panel-clone]")) {
-          parent.style.overflowY = prevOverflowY;
+          parent.style.overflowY = parent.dataset.tgphPagePrevOverflowY ?? "";
+          delete parent.dataset.tgphPagePrevOverflowY;
         }
       };
-      animation.finished.then(finish, finish);
+      // `.finished` can be absent on very old WAAPI engines even when `.animate`
+      // exists; remove the clone immediately then instead of throwing.
+      if (animation.finished) {
+        animation.finished.then(finish, finish);
+      } else {
+        finish();
+      }
     };
   }, []);
 
