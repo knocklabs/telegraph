@@ -28,6 +28,8 @@ type RegisterNativeButtonResolver = (
   options: RegisterNativeButtonResolverOptions,
 ) => void;
 
+// Registers component-specific semantics on a global symbol so separate
+// Telegraph package instances can resolve the same component.
 const registerNativeButtonResolver: RegisterNativeButtonResolver = ({
   component,
   resolver,
@@ -48,6 +50,8 @@ type ResolveNativeButton = (
   options: ResolveNativeButtonOptions,
 ) => boolean | undefined;
 
+// Resolves explicit, intrinsic, registered, and Motion component semantics.
+// Unknown components remain undefined unless the caller supplies a value.
 const resolveNativeButton: ResolveNativeButton = ({
   component,
   nativeButton,
@@ -94,6 +98,8 @@ type InferTriggerNativeButton = (
   options: InferTriggerNativeButtonOptions,
 ) => boolean;
 
+// Resolves composed trigger semantics from its child and otherwise preserves
+// Base UI's native-button default.
 const inferTriggerNativeButton: InferTriggerNativeButton = ({
   asChild,
   children,
