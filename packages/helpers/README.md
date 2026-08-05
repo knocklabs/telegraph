@@ -407,8 +407,8 @@ const nativeButton = inferTriggerNativeButton({
 });
 ```
 
-Polymorphic components can register a resolver with
-`registerNativeButtonResolver`. The registration uses a global symbol, so it
+Polymorphic components can define a resolver with
+`defineNativeButtonResolver`. The resolver uses a global symbol, so it
 continues to work when consumers and wrappers load different package instances.
 
 ### Base UI Compatibility Utilities

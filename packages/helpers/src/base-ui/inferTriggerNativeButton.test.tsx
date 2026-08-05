@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import type { TgphElement } from "../types/utility";
 
 import {
+  defineNativeButtonResolver,
   inferTriggerNativeButton,
-  registerNativeButtonResolver,
   resolveNativeButton,
 } from "./inferTriggerNativeButton";
 
@@ -26,7 +26,7 @@ const resolvePolymorphicButton = (
 
 const PolymorphicButton = (_props: PolymorphicButtonProps) => null;
 
-registerNativeButtonResolver({
+defineNativeButtonResolver({
   component: PolymorphicButton,
   resolver: resolvePolymorphicButton,
 });

@@ -15,11 +15,11 @@ export {
 } from "./compatibility";
 
 export {
+  defineNativeButtonResolver,
   inferTriggerNativeButton,
-  registerNativeButtonResolver,
   resolveNativeButton,
+  type DefineNativeButtonResolverOptions,
   type InferTriggerNativeButtonOptions,
   type NativeButtonResolver,
-  type RegisterNativeButtonResolverOptions,
   type ResolveNativeButtonOptions,
 } from "./inferTriggerNativeButton";

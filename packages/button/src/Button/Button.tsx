@@ -4,7 +4,7 @@ import {
   type Required,
   type TgphComponentProps,
   type TgphElement,
-  registerNativeButtonResolver,
+  defineNativeButtonResolver,
   useDeterminateState,
 } from "@telegraph/helpers";
 import { Spinner, Icon as TelegraphIcon } from "@telegraph/icon";
@@ -355,11 +355,13 @@ const resolveButtonPropsNativeButton = (
   return resolveButtonNativeButton({ as, disabled, nativeButton });
 };
 
-registerNativeButtonResolver({
+// Base UI reads this static metadata while its parent renders, before Button's
+// React lifecycle begins, so define it once when the module loads.
+defineNativeButtonResolver({
   component: Button,
   resolver: resolveButtonPropsNativeButton,
 });
-registerNativeButtonResolver({
+defineNativeButtonResolver({
   component: Button.Root,
   resolver: resolveButtonPropsNativeButton,
 });

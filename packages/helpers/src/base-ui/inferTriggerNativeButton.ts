@@ -19,18 +19,18 @@ type ResolvableComponent = {
   [NATIVE_BUTTON_RESOLVER_SYMBOL]?: NativeButtonResolver;
 };
 
-type RegisterNativeButtonResolverOptions = {
+type DefineNativeButtonResolverOptions = {
   component: object;
   resolver: NativeButtonResolver;
 };
 
-type RegisterNativeButtonResolver = (
-  options: RegisterNativeButtonResolverOptions,
+type DefineNativeButtonResolver = (
+  options: DefineNativeButtonResolverOptions,
 ) => void;
 
-// Registers component-specific semantics on a global symbol so separate
+// Defines component-specific semantics on a global symbol so separate
 // Telegraph package instances can resolve the same component.
-const registerNativeButtonResolver: RegisterNativeButtonResolver = ({
+const defineNativeButtonResolver: DefineNativeButtonResolver = ({
   component,
   resolver,
 }) => {
@@ -119,11 +119,11 @@ const inferTriggerNativeButton: InferTriggerNativeButton = ({
 };
 
 export {
+  defineNativeButtonResolver,
   inferTriggerNativeButton,
-  registerNativeButtonResolver,
   resolveNativeButton,
+  type DefineNativeButtonResolverOptions,
   type InferTriggerNativeButtonOptions,
   type NativeButtonResolver,
-  type RegisterNativeButtonResolverOptions,
   type ResolveNativeButtonOptions,
 };
