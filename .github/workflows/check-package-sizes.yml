@@ -33,7 +33,7 @@ jobs:
         with:
           ref: main
       - name: Install Dependencies
-        run: yarn --immutable
+        run: YARN_ENABLE_HARDENED_MODE=0 yarn install --no-immutable
       - name: Build Main Branch
         run: yarn build:packages
       - name: Get Main Package Sizes
