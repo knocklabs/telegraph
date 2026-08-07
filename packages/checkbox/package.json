@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/checkbox",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Checkbox component for Telegraph",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/checkbox",
   "author": "@knocklabs",
