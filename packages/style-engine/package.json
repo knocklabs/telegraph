@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@telegraph/tokens": "workspace:^",
-    "postcss": "^8.5.25"
+    "postcss": "^8.5.26"
   },
   "devDependencies": {
     "@knocklabs/eslint-config": "^0.0.6",
