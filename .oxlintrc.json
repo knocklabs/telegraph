@@ -1,0 +1,144 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "react",
+    "react-hooks",
+    "typescript",
+    "jsx-a11y",
+    "nextjs",
+    "import",
+    "oxc",
+    "promise"
+  ],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "no-unused-expressions": "off",
+    "nextjs/no-img-element": "off",
+    "react/no-unescaped-entities": "off",
+
+    // The rule set below is the dashboard's, taken verbatim so a rule lands in both
+    // repos or neither. `categories.correctness` covers most of a preset; these are
+    // the ones it misses, and oxlint has no preset to extend, so each preset's
+    // remainder is listed out. Groups are kept in the dashboard's order so the two
+    // configs stay diffable.
+    //
+    // Telegraph's own pre-oxlint chain was only eslint:recommended,
+    // plugin:@typescript-eslint/recommended, eslint-config-turbo, and the two
+    // react-hooks rules from the root flat config. The first two groups therefore
+    // restore what was already enforced here; everything from plugin:react/recommended
+    // down is new to this repo, adopted for parity rather than to replace something.
+    // `turbo/no-undeclared-env-vars` has no oxlint equivalent and is simply lost.
+
+    // eslint:recommended
+    "no-case-declarations": "error",
+    "no-empty": "error",
+    "no-fallthrough": "error",
+    "no-inner-declarations": "error",
+    "no-prototype-builtins": "error",
+    "no-regex-spaces": "error",
+
+    // plugin:@typescript-eslint/recommended. oxlint folds no-array-constructor's
+    // typescript variant into the core rule, hence the unprefixed name.
+    "no-array-constructor": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-namespace": "error",
+    "typescript/no-require-imports": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "typescript/no-unsafe-function-type": "error",
+
+    // plugin:react/recommended. New here: telegraph never extended it, which is
+    // why the display-name and jsx-key findings had gone unreported.
+    "react/display-name": "error",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/require-render-return": "error",
+
+    // plugin:react-hooks/recommended (exhaustive-deps is already in correctness)
+    "react-hooks/rules-of-hooks": "error",
+
+    // next/core-web-vitals. New here. `no-page-custom-font` cannot fire in a
+    // component library; it is kept only so this file diffs against the dashboard.
+    "import/no-anonymous-default-export": "error",
+    "nextjs/no-page-custom-font": "error",
+
+    // The dashboard restored these from airbnb. New here, and stricter than what
+    // telegraph enforced before: `no-console` and `no-constant-condition` are what
+    // turned up the deliberate warnings in icon/filter and the `while (true)` in
+    // style-engine.
+    "no-underscore-dangle": [
+      "error",
+      {
+        // The dashboard's list, carried over unchanged for diffability. None of
+        // these names currently appear in telegraph; keep it in sync rather than
+        // pruning, so the two configs stay comparable.
+        "allow": [
+          "__typename",
+          "_tag",
+          "_persist",
+          "_exhaustive",
+          "_exhaustiveCheck"
+        ]
+      }
+    ],
+    // No `allow` list: deliberate logging gets a scoped directive naming its reason.
+    "no-console": "error",
+    "no-useless-return": "error",
+    // oxlint allows `while (true)` by default, and so did eslint:recommended, whose
+    // `checkLoops` default exempts it. "all" is a deliberate tightening.
+    "no-constant-condition": ["error", { "checkLoops": "all" }],
+    "typescript/prefer-ts-expect-error": "error",
+
+    // Both off in the dashboard for reasons specific to a Next app. Neither can fire
+    // here; kept so this file diffs cleanly against it.
+    "nextjs/no-duplicate-head": "off",
+    "import/namespace": "off",
+
+    "jsx-a11y/no-autofocus": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "jsx-a11y/tabindex-no-positive": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/interactive-supports-focus": "off",
+    "jsx-a11y/no-noninteractive-tabindex": "off",
+    "jsx-a11y/no-aria-hidden-on-focusable": "off",
+    "jsx-a11y/lang": "off",
+    "jsx-a11y/html-has-lang": "off",
+    "jsx-a11y/control-has-associated-label": "off"
+  },
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/*.d.ts",
+    "storybook-static/**",
+    // Dotfile config scripts are CommonJS by necessity. `@knocklabs/eslint-config`
+    // skipped them the same way, via its own `.*.js` ignore pattern.
+    ".*.js"
+  ],
+  "overrides": [
+    {
+      // Build-time scripts; their console output is the point. Only
+      // packages/tokens/scripts matches today.
+      "files": ["**/scripts/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

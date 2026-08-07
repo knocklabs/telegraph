@@ -276,6 +276,8 @@ describe("Checkbox", () => {
 
     it("takes its name from a wrapping native label", async () => {
       const { container } = render(
+        // The wrapped control is inside Checkbox.Root, which the rule cannot see.
+        // oxlint-disable-next-line jsx-a11y/label-has-associated-control
         <label>
           Accept terms
           <Checkbox.Root>

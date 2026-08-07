@@ -1,8 +1,10 @@
-import { Tabs } from "..";
+import type { Meta } from "@storybook/react";
 import { Box, Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Home, Plus } from "lucide-react";
 import React from "react";
+
+import { Tabs } from "..";
 
 const NestedCounter = () => {
   const [counter, setCounter] = React.useState(0);
@@ -16,11 +18,13 @@ const NestedCounter = () => {
 /**
  * Example stories for the Tabs component
  */
-export default {
+const meta: Meta = {
   tags: ["autodocs"],
   title: "Components/Tabs",
   component: Tabs,
 };
+
+export default meta;
 
 /**
  * Basic usage example

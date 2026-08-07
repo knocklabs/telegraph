@@ -39,6 +39,8 @@ const ForwardRefButton = forwardRef<
   return <button ref={ref} type="button" {...props} />;
 });
 
+ForwardRefButton.displayName = "ForwardRefButton";
+
 describe("TgphSlot", () => {
   it("merges props and refs into native children", async () => {
     const childClick = vi.fn();

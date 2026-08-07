@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Heading } from ".";
 import type { HeadingProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Heading types", () => {
   it("has no catch-all index signature", () => {

@@ -1,4 +1,4 @@
-export default {
+const styleEngineConfig = {
   build: {
     rolldownOptions: {
       output: {
@@ -16,3 +16,5 @@ export default {
   },
   plugins: [],
 };
+
+export default styleEngineConfig;

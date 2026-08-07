@@ -199,6 +199,7 @@ const Item = forwardRef<ItemRef, ItemProps>(
     );
   },
 );
+Item.displayName = "Item";
 
 export type ItemTitleProps<T extends TgphElement = "span"> = TgphComponentProps<
   typeof Button.Text<T>

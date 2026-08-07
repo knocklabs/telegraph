@@ -1,4 +1,4 @@
-export default {
+const scopedCssConfig = {
   build: {
     cssCodeSplit: true,
     lib: {
@@ -6,3 +6,5 @@ export default {
     },
   },
 };
+
+export default scopedCssConfig;

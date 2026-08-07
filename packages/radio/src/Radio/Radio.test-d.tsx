@@ -1,3 +1,10 @@
+import type { RadioGroupChangeEventDetails } from "@base-ui/react/radio-group";
+import type { RefObject } from "react";
+import { describe, expectTypeOf, it } from "vitest";
+
+import { RadioGroup } from "../RadioGroup";
+import type { RadioGroupBaseProps, RadioGroupProps } from "../RadioGroup";
+
 import { Radio } from ".";
 import type {
   RadioColor,
@@ -8,12 +15,6 @@ import type {
   RadioRootProps,
   RadioSize,
 } from ".";
-import type { RadioGroupChangeEventDetails } from "@base-ui/react/radio-group";
-import type { RefObject } from "react";
-import { describe, expectTypeOf, it } from "vitest";
-
-import { RadioGroup } from "../RadioGroup";
-import type { RadioGroupBaseProps, RadioGroupProps } from "../RadioGroup";
 
 describe("Radio types", () => {
   it("has no catch-all index signature", () => {

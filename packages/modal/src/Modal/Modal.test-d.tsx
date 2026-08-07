@@ -1,3 +1,5 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Modal } from ".";
 import type {
   ModalBodyProps,
@@ -8,7 +10,6 @@ import type {
   ModalOverlayProps,
   ModalRootProps,
 } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Modal types", () => {
   it("has no catch-all index signature", () => {

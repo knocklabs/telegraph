@@ -20,9 +20,9 @@
     "test": "vitest run --config=./vitest/config.mts",
     "test:watch": "vitest watch --config=./vitest/config.mts",
     "test:browser": "vitest run --config=./vitest.browser.config.mts",
-    "lint": "turbo lint --filter=\"./packages/**\" --filter=\"!@telegraph/prettier-config\"",
-    "format": "turbo format",
-    "format:check": "turbo format:check",
+    "lint": "oxlint packages --max-warnings=0",
+    "format": "oxfmt \"packages/**/src/**/*.ts\" \"packages/**/src/**/*.tsx\" \"packages/**/src/**/*.js\"",
+    "format:check": "oxfmt --check \"packages/**/src/**/*.ts\" \"packages/**/src/**/*.tsx\" \"packages/**/src/**/*.js\"",
     "type:check": "node node_modules/typescript-7/bin/tsc -p tsconfig.check.json",
     "dev:storybook": "storybook dev --port 3005 --no-open --exact-port",
     "build:storybook": "storybook build",
@@ -60,11 +60,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix --report-unused-disable-directives --max-warnings 0",
-      "prettier --write"
+      "oxlint --fix --max-warnings=0",
+      "oxfmt"
     ],
     "*.{js,cjs,mjs}": [
-      "prettier --write"
+      "oxfmt"
     ]
   },
   "devDependencies": {
@@ -74,7 +74,6 @@
     "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
     "@github-ui/storybook-addon-performance-panel": "^1.1.4",
-    "@knocklabs/eslint-config": "^0.0.6",
     "@manypkg/cli": "^0.25.1",
     "@moonrepo/cli": "^2.3.5",
     "@storybook/addon-links": "^10.5.6",
@@ -87,21 +86,17 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@typescript-eslint/eslint-plugin": "^8.58.2",
-    "@typescript-eslint/parser": "^8.58.2",
     "@vitest/browser": "4.1.10",
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
-    "eslint": "^10.4.0",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-turbo": "^2.10.5",
     "husky": "^9.1.7",
     "jsdom": "^30.0.1",
     "lint-staged": "^17.0.2",
+    "oxfmt": "0.60.0",
+    "oxlint": "1.75.0",
     "playwright": "^1.62.1",
     "postcss-import": "^16.1.1",
     "postcss-import-ext-glob": "^2.1.1",
-    "prettier": "^3.8.3",
     "prop-types": "^15.8.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

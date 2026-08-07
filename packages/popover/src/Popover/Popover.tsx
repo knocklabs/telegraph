@@ -181,6 +181,7 @@ const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(
     );
   },
 );
+Trigger.displayName = "Trigger";
 
 export type ContentProps<T extends TgphElement = "div"> = Omit<
   BasePopoverPositionerProps,
@@ -299,6 +300,10 @@ const Content = <T extends TgphElement = "div">(
     };
 
     return () => {
+      // Base UI compat: intentionally read the latest ref.current at teardown
+      // time; oxlint's exhaustive-deps ref-in-cleanup heuristic is a false
+      // positive for these stable context-held refs.
+      /* oxlint-disable react-hooks/exhaustive-deps */
       if (compatibilityContext.closeAnimationRef.current.pendingCloseUnmount) {
         // A controlled parent can stop rendering Content as soon as it sees
         // onOpenChange(false); in that case the motion callback below will not
@@ -311,6 +316,7 @@ const Content = <T extends TgphElement = "div">(
         pendingCloseUnmount: false,
         preventUnmountOnClose: false,
       };
+      /* oxlint-enable react-hooks/exhaustive-deps */
     };
   }, [compatibilityContext, shouldManageCloseAnimation]);
 
@@ -329,6 +335,8 @@ const Content = <T extends TgphElement = "div">(
     };
 
     return () => {
+      // Base UI compat: intentional latest-ref read at teardown.
+      // oxlint-disable-next-line react-hooks/exhaustive-deps
       compatibilityContext.contentCallbacksRef.current = {};
     };
   }, [

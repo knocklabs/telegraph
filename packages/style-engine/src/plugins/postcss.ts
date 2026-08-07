@@ -31,7 +31,7 @@ type DepObject = Record<
 function findNearestPackageJsonDir(start: string): string | undefined {
   let current = start;
 
-  while (true) {
+  for (;;) {
     const pkgJsonPath = nodePath.join(current, "package.json");
     if (nodeFs.existsSync(pkgJsonPath)) {
       return current;

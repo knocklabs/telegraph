@@ -1,3 +1,6 @@
+import { Bell } from "lucide-react";
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Tag } from ".";
 import type {
   TagButtonProps,
@@ -7,8 +10,6 @@ import type {
   TagRootProps,
   TagTextProps,
 } from ".";
-import { Bell } from "lucide-react";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Tag types", () => {
   it("has no catch-all index signature", () => {

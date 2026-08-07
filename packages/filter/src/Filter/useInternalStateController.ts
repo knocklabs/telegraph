@@ -236,6 +236,8 @@ export const useInternalFilterState = () => {
   ) => {
     // If the key doesn't exist, do nothing
     if (!filterState[filterKey]) {
+      // Deliberate developer warning for a misconfigured Filter.
+      // oxlint-disable-next-line eslint/no-console
       console.warn(
         `Calling updateKey on ${filterKey} but it does not exist in filter state`,
       );

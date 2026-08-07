@@ -1,4 +1,6 @@
-import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
+// These tests stub `console.error` to assert the component logs a warning,
+// so every `console` reference here is the subject under test, not logging.
+/* oxlint-disable eslint/no-console */
 import { resolveNativeButton } from "@telegraph/helpers";
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
@@ -13,6 +15,7 @@ import {
 } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
+import type { ButtonProps, ButtonRootProps, ButtonTextProps } from ".";
 import { Button } from "./Button";
 
 // Suppress error from showing in console as we are testing for it
@@ -320,9 +323,7 @@ describe("Button", () => {
       const withInferredTupleCallback = (
         <Button onClick={inferredTupleCallback()}>Click</Button>
       );
-      const withInline = (
-        <Button onClick={() => console.log("clicked")}>Click</Button>
-      );
+      const withInline = <Button onClick={() => {}}>Click</Button>;
       void withKeyboard;
       void withNoArg;
       void withInferredTupleCallback;

@@ -51,7 +51,7 @@ export const SingleSelect: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -81,7 +81,7 @@ export const SingleSelectWithSearch: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -113,7 +113,7 @@ export const SingleSelectWithLongLabel: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]} with more content to make the label longer
                   than the trigger width
                 </TelegraphCombobox.Option>
@@ -150,7 +150,7 @@ export const MultiSelect: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -183,7 +183,7 @@ export const MultiSelectWithWrapLayout: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -215,7 +215,7 @@ export const SingleSelectWithCreate: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -254,7 +254,7 @@ export const MultiSelectWithCreate: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -294,7 +294,7 @@ export const MultiSelectWithClear: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -348,7 +348,7 @@ export const ComboboxInModal: Story = {
                   <TelegraphCombobox.Search />
                   <TelegraphCombobox.Options>
                     {VALUES.map((v, index) => (
-                      <TelegraphCombobox.Option value={v}>
+                      <TelegraphCombobox.Option key={v} value={v}>
                         {LABELS[index]}
                       </TelegraphCombobox.Option>
                     ))}
@@ -400,7 +400,11 @@ export const LegacyComboboxSingleSelect: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {LEGACY_VALUES.map((v) => (
-                <TelegraphCombobox.Option value={v.value} label={v.label} />
+                <TelegraphCombobox.Option
+                  key={v.value}
+                  value={v.value}
+                  label={v.label}
+                />
               ))}
             </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
@@ -434,7 +438,11 @@ export const LegacyComboboxSingleSelectWithLabelOverride: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {LEGACY_VALUES.map((v) => (
-                <TelegraphCombobox.Option value={v.value} label={v.label} />
+                <TelegraphCombobox.Option
+                  key={v.value}
+                  value={v.value}
+                  label={v.label}
+                />
               ))}
             </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
@@ -467,7 +475,11 @@ export const LegacyComboboxMultiSelect: Story = {
             <TelegraphCombobox.Search />
             <TelegraphCombobox.Options>
               {LEGACY_VALUES.map((v) => (
-                <TelegraphCombobox.Option value={v.value} label={v.label} />
+                <TelegraphCombobox.Option
+                  key={v.value}
+                  value={v.value}
+                  label={v.label}
+                />
               ))}
               <TelegraphCombobox.Create
                 legacyBehavior={true}
@@ -509,7 +521,7 @@ export const SingleSelectWithCustomTrigger: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}
@@ -546,7 +558,7 @@ export const MultiSelectWithCustomTrigger: Story = {
           <TelegraphCombobox.Content>
             <TelegraphCombobox.Options>
               {VALUES.map((v, index) => (
-                <TelegraphCombobox.Option value={v}>
+                <TelegraphCombobox.Option key={v} value={v}>
                   {LABELS[index]}
                 </TelegraphCombobox.Option>
               ))}

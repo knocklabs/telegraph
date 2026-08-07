@@ -328,7 +328,6 @@ const Trigger = <V extends ChildrenValue>({
           event.stopPropagation();
           event.preventDefault();
           context.onOpenToggle();
-          return;
         }
       }}
       tgphRef={context.triggerRef}
@@ -577,6 +576,7 @@ const Content = <T extends TgphElement = "div">({
         data-tgph-combobox-content
         data-tgph-combobox-content-open={context.open}
         // Cancel out accessibility attributes related to aria menu
+        // oxlint-disable-next-line jsx-a11y/aria-role
         role={undefined}
         aria-orientation={undefined}
         onKeyDown={(event: ReactKeyboardEvent) => {

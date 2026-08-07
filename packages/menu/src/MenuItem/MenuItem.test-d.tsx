@@ -1,7 +1,8 @@
-import { MenuItem } from ".";
-import type { MenuItemProps } from ".";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { MenuItem } from ".";
+import type { MenuItemProps } from ".";
 
 describe("MenuItem types", () => {
   it("has no catch-all index signature", () => {

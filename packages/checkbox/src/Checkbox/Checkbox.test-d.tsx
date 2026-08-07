@@ -1,13 +1,3 @@
-import { Checkbox } from ".";
-import type {
-  CheckboxColor,
-  CheckboxControlProps,
-  CheckboxLabelProps,
-  CheckboxProps,
-  CheckboxRootBaseProps,
-  CheckboxRootProps,
-  CheckboxSize,
-} from ".";
 import type { CheckboxRootChangeEventDetails } from "@base-ui/react/checkbox";
 import type { CheckboxGroupChangeEventDetails } from "@base-ui/react/checkbox-group";
 import type { RefObject } from "react";
@@ -18,6 +8,17 @@ import type {
   CheckboxGroupBaseProps,
   CheckboxGroupProps,
 } from "../CheckboxGroup";
+
+import { Checkbox } from ".";
+import type {
+  CheckboxColor,
+  CheckboxControlProps,
+  CheckboxLabelProps,
+  CheckboxProps,
+  CheckboxRootBaseProps,
+  CheckboxRootProps,
+  CheckboxSize,
+} from ".";
 
 describe("Checkbox types", () => {
   it("has no catch-all index signature", () => {
