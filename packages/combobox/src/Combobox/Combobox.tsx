@@ -676,7 +676,8 @@ const Options = <T extends TgphElement = "div">({
         {
           overflowY: "auto",
           // maxHeight defaults to available height - padding from edge of screen
-          "--max-height": !props.maxHeight
+          "--max-height": !(props as TgphComponentProps<typeof Stack<T>>)
+            .maxHeight
             ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
             : undefined,
         } as CSSProperties
@@ -684,12 +685,12 @@ const Options = <T extends TgphElement = "div">({
       // Accessibility attributes
       role="listbox"
       tgphRef={composedRef}
-      {...props}
+      {...(props as TgphComponentProps<typeof Stack<T>>)}
     />
   );
 };
 
-export type OptionProps<T extends TgphElement = "button"> = Omit<
+export type OptionProps<T extends TgphElement = "button"> = RemappedOmit<
   TgphComponentProps<typeof TelegraphMenu.Button<T>>,
   "label"
 > & {
@@ -1063,7 +1064,7 @@ const Empty = <T extends TgphElement = "div">({
         w="full"
         my="8"
         data-tgph-combobox-empty
-        {...props}
+        {...(props as TgphComponentProps<typeof Stack<T>>)}
       >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
@@ -1138,7 +1139,13 @@ const Create = <T extends TgphElement = "button", LB extends boolean = false>({
             context.setSearchQuery?.("");
           }
         }}
-        {...props}
+        // Forward the remaining Create props to Option, minus the ones set
+        // explicitly above — the spread is last, so its type must not re-declare
+        // them or `value` collides (TS2783). Mirrors Button.Icon's Omit-cast.
+        {...(props as Omit<
+          OptionProps<"button">,
+          "value" | "label" | "selected" | "onSelect" | "leadingIcon" | "mx"
+        >)}
       />
     );
   }

@@ -1,6 +1,7 @@
 import { Button, type ButtonRootProps } from "@telegraph/button";
 import {
   type PolymorphicPropsWithTgphRef,
+  type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
   VisuallyHidden,
@@ -67,7 +68,7 @@ export type RootBaseProps = {
 // `value`/`defaultValue` are dropped from the passthrough: every element
 // declares `defaultValue?: string | number | readonly string[]`, and
 // intersecting that with the toggle's boolean state makes both unusable.
-export type RootProps<T extends TgphElement = "div"> = Omit<
+export type RootProps<T extends TgphElement = "div"> = RemappedOmit<
   StackProps<T>,
   "tgphRef" | "as" | "value" | "defaultValue"
 > &
@@ -226,7 +227,7 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
     ...props
   } = labelProps as LabelProps<"label">;
   const context = useContext(ToggleContext);
-  const textProps = props as Omit<
+  const textProps = props as RemappedOmit<
     TgphComponentProps<typeof Text<"label">>,
     "as" | "style"
   >;
@@ -316,9 +317,9 @@ const Indicator = <T extends TgphElement = "label">(
 
 export type DefaultProps<T extends TgphElement = "div"> = RootProps<T> & {
   label?: ReactNode;
-  labelProps?: Omit<LabelProps<"label">, "as">;
+  labelProps?: RemappedOmit<LabelProps<"label">, "as">;
   indicator?: boolean;
-  indicatorProps?: Omit<IndicatorProps<"label">, "as">;
+  indicatorProps?: RemappedOmit<IndicatorProps<"label">, "as">;
 };
 
 const Default = <T extends TgphElement = "div">({
