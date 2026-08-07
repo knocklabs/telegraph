@@ -1,7 +1,8 @@
-import { Filter } from ".";
 import { Apple, Mountain } from "lucide-react";
 import type { ComponentProps } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Filter } from ".";
 
 // The package exports only the `Filter` compound component, no prop types, so
 // the contract is read back off the exported parts.

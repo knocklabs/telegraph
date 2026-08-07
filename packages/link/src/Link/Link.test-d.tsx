@@ -1,7 +1,8 @@
-import { Link } from ".";
-import type { LinkIconProps, LinkProps, LinkRootProps, LinkTextProps } from ".";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Link } from ".";
+import type { LinkIconProps, LinkProps, LinkRootProps, LinkTextProps } from ".";
 
 describe("Link types", () => {
   it("has no catch-all index signature", () => {

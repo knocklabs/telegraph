@@ -1,8 +1,9 @@
-import { SegmentedControl } from ".";
-import type { SegmentedControlOptionProps, SegmentedControlRootProps } from ".";
 import { AlignLeft } from "lucide-react";
 import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { SegmentedControl } from ".";
+import type { SegmentedControlOptionProps, SegmentedControlRootProps } from ".";
 
 // Stands in for `next/link`: takes `href` and renders an anchor.
 const RouterLink = forwardRef<

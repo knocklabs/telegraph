@@ -1,8 +1,9 @@
-import { Tabs } from "..";
 import { Box, Stack } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Home, Plus } from "lucide-react";
 import React from "react";
+
+import { Tabs } from "..";
 
 const NestedCounter = () => {
   const [counter, setCounter] = React.useState(0);

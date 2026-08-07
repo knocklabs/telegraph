@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Kbd, KbdProvider } from ".";
 import type { KbdProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Kbd types", () => {
   it("has no catch-all index signature", () => {

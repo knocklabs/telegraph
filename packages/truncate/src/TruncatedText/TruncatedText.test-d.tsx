@@ -1,3 +1,5 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { TruncatedText } from ".";
 import type {
   CustomSplitFn,
@@ -8,7 +10,6 @@ import type {
   TruncatedTextMode,
   TruncatedTextProps,
 } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("TruncatedText types", () => {
   it("has no catch-all index signature", () => {

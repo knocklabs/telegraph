@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Code } from ".";
 import type { CodeProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Code types", () => {
   it("has no catch-all index signature", () => {

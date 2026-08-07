@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Tooltip, TooltipGroupProvider } from ".";
 import type { TooltipBaseProps, TooltipProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Tooltip types", () => {
   it("has no catch-all index signature", () => {

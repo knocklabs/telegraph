@@ -1,3 +1,6 @@
+import { Bell } from "lucide-react";
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Button } from ".";
 import type {
   ButtonIconProps,
@@ -5,8 +8,6 @@ import type {
   ButtonRootProps,
   ButtonTextProps,
 } from ".";
-import { Bell } from "lucide-react";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Button types", () => {
   it("has no catch-all index signature", () => {

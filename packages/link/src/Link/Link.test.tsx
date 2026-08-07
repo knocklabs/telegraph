@@ -1,11 +1,11 @@
-// The `Link*`-prefixed names only exist on the package index, which re-exports
-// `Link.tsx`'s `RootProps`/`TextProps`/`IconProps`/`DefaultProps` under them.
-import type { LinkIconProps, LinkProps, LinkRootProps, LinkTextProps } from ".";
 import { render, screen } from "@testing-library/react";
 import { ArrowUpRight } from "lucide-react";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
+// The `Link*`-prefixed names only exist on the package index, which re-exports
+// `Link.tsx`'s `RootProps`/`TextProps`/`IconProps`/`DefaultProps` under them.
+import type { LinkIconProps, LinkProps, LinkRootProps, LinkTextProps } from ".";
 import { Link } from "./Link";
 
 describe("Link", () => {

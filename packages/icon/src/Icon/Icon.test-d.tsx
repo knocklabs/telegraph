@@ -1,7 +1,8 @@
-import { Icon } from ".";
-import type { IconProps, LucideIcon } from ".";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Icon } from ".";
+import type { IconProps, LucideIcon } from ".";
 
 describe("Icon types", () => {
   it("has no catch-all index signature", () => {

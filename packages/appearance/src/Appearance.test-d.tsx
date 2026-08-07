@@ -1,6 +1,7 @@
-import { Appearance, InvertedAppearance, OverrideAppearance } from ".";
 import type { ComponentProps } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { Appearance, InvertedAppearance, OverrideAppearance } from ".";
 
 // The shared props type is not on the package surface, so it is pinned off the
 // components themselves.
