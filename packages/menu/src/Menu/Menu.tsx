@@ -1,5 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { rendersNativeButton } from "@telegraph/button";
+import { resolveButtonNativeButton } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
   type LegacyDismissEventHandler,
@@ -8,6 +8,7 @@ import {
   type TgphElement,
   createTgphBaseUIRender,
   getBaseUIPositionerVisibilityStyle,
+  inferTriggerNativeButton,
 } from "@telegraph/helpers";
 import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
 import { ChevronRight } from "lucide-react";
@@ -173,6 +174,7 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
       onKeyDown,
       onKeyDownCapture,
       onMouseDown,
+      nativeButton: nativeButtonProp,
       tgphRef,
       ...props
     },
@@ -182,6 +184,11 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
       forwardedRef as Ref<HTMLButtonElement>,
       tgphRef,
     ) as Ref<HTMLButtonElement>;
+    const nativeButton = inferTriggerNativeButton({
+      asChild,
+      children,
+      nativeButton: nativeButtonProp,
+    });
     // A custom onClick means callers likely own the trigger activation path, so
     // avoid also letting Base UI process mousedown as a separate open signal.
     const shouldSuppressBaseMouseDown = Boolean(onClick);
@@ -281,6 +288,7 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
         onKeyDown={handleKeyDown}
         onKeyDownCapture={handleKeyDownCapture}
         onMouseDown={handleMouseDown}
+        nativeButton={nativeButton}
         ref={triggerRef}
         render={createTgphBaseUIRender(renderTriggerElement)}
       />
@@ -706,7 +714,11 @@ const Button = <T extends TgphElement = "button">({
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
   // A caller rendering a component that resolves to a button can say so.
-  const isNativeButton = nativeButton ?? rendersNativeButton(as, disabled);
+  const isNativeButton = resolveButtonNativeButton({
+    as,
+    disabled,
+    nativeButton,
+  });
   // Keyboard selection can arrive through React keydown, native keyup/click, or
   // Base UI internals; these refs dedupe those paths while preserving cancel.
   const ignoreNextKeyboardClickRef = useRef(false);
@@ -960,7 +972,11 @@ const SubTrigger = <T extends TgphElement = "button">({
 }: SubTriggerProps<T>) => {
   const combinedLeadingIcon = leadingIcon || icon;
   const menuItemProps = props as MenuItemProps<T>;
-  const isNativeButton = nativeButton ?? rendersNativeButton(as, disabled);
+  const isNativeButton = resolveButtonNativeButton({
+    as,
+    disabled,
+    nativeButton,
+  });
   const combinedTrailingIcon: typeof trailingIcon =
     trailingIcon === undefined && trailingComponent === undefined
       ? { icon: ChevronRight, "aria-hidden": true }

@@ -79,10 +79,17 @@ The root container that manages menu state and provides context.
 
 The trigger element that opens/closes the menu. Must wrap a single focusable element.
 
-| Prop       | Type              | Default  | Description                        |
-| ---------- | ----------------- | -------- | ---------------------------------- |
-| `asChild`  | `boolean`         | `true`   | Whether to render as child element |
-| `children` | `React.ReactNode` | required | Trigger element (usually a Button) |
+| Prop           | Type              | Default             | Description                                       |
+| -------------- | ----------------- | ------------------- | ------------------------------------------------- |
+| `asChild`      | `boolean`         | `true`              | Whether to render as child element                |
+| `children`     | `React.ReactNode` | required            | Trigger element (usually a Button)                |
+| `nativeButton` | `boolean`         | inferred from child | Declares the button semantics reported to Base UI |
+
+Intrinsic elements, Telegraph Buttons, and Motion intrinsic components are
+inferred automatically. Opaque components preserve Base UI's native-button
+default; pass `nativeButton={false}` when one resolves to a non-button element.
+If a disabled Telegraph Button coerces its target to `<button>`, native
+semantics take precedence so Base UI matches the rendered element.
 
 ### `<Menu.Content>`
 
@@ -115,21 +122,23 @@ above modal overlays and other lower layering surfaces.
 
 Individual menu item that can be clicked or selected.
 
-| Prop                   | Type                          | Default      | Description                                   |
-| ---------------------- | ----------------------------- | ------------ | --------------------------------------------- |
-| `children`             | `React.ReactNode`             | required     | Button label                                  |
-| `leadingIcon` / `icon` | `IconProps`                   | `undefined`  | Icon before text                              |
-| `trailingIcon`         | `IconProps`                   | `undefined`  | Icon after text                               |
-| `leadingComponent`     | `React.ReactNode`             | `undefined`  | Custom component before text                  |
-| `trailingComponent`    | `React.ReactNode`             | `undefined`  | Custom component after text                   |
-| `selected`             | `boolean`                     | `false`      | Whether item is selected                      |
-| `disabled`             | `boolean`                     | `false`      | Whether item is disabled                      |
-| `color`                | `"gray" \| "accent" \| "red"` | `"gray"`     | Button color theme                            |
-| `onClick`              | `() => void`                  | `undefined`  | Click handler                                 |
-| `as`                   | `TgphElement`                 | `"button"`   | Element or component to render                |
-| `nativeButton`         | `boolean`                     | follows `as` | Tells Base UI whether a native button renders |
+| Prop                   | Type                          | Default      | Description                                              |
+| ---------------------- | ----------------------------- | ------------ | -------------------------------------------------------- |
+| `children`             | `React.ReactNode`             | required     | Button label                                             |
+| `leadingIcon` / `icon` | `IconProps`                   | `undefined`  | Icon before text                                         |
+| `trailingIcon`         | `IconProps`                   | `undefined`  | Icon after text                                          |
+| `leadingComponent`     | `React.ReactNode`             | `undefined`  | Custom component before text                             |
+| `trailingComponent`    | `React.ReactNode`             | `undefined`  | Custom component after text                              |
+| `selected`             | `boolean`                     | `false`      | Whether item is selected                                 |
+| `disabled`             | `boolean`                     | `false`      | Whether item is disabled                                 |
+| `color`                | `"gray" \| "accent" \| "red"` | `"gray"`     | Button color theme                                       |
+| `onClick`              | `() => void`                  | `undefined`  | Click handler                                            |
+| `as`                   | `TgphElement`                 | `"button"`   | Element or component to render                           |
+| `nativeButton`         | `boolean`                     | follows `as` | Declares whether the rendered element is a native button |
 
 Inherits all Button props for additional styling.
+If `disabled` coerces the item to `<button>`, native semantics take precedence
+over `nativeButton={false}` so Base UI matches the rendered element.
 
 ### `<Menu.Sub>`
 

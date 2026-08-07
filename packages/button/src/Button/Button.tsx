@@ -4,6 +4,7 @@ import {
   type Required,
   type TgphComponentProps,
   type TgphElement,
+  defineNativeButtonResolver,
   useDeterminateState,
 } from "@telegraph/helpers";
 import { Spinner, Icon as TelegraphIcon } from "@telegraph/icon";
@@ -26,6 +27,11 @@ import {
   TEXT_SIZE_MAP,
   cssVars,
 } from "./Button.constants";
+import {
+  type ResolveButtonNativeButtonOptions,
+  rendersNativeButton,
+  resolveButtonNativeButton,
+} from "./Button.helpers";
 
 type RootBaseProps = {
   variant?: ButtonVariant;
@@ -85,13 +91,6 @@ const deriveState = (params: DeriveStateParams): InternalProps["state"] => {
   if (params.active) return "active";
   return params.state;
 };
-
-// Whether `Button.Root` renders a real `<button>` for this `as`/`disabled`
-// pair. Base UI components that render a Button need it: they log an error
-// when their `nativeButton` prop disagrees with the tag that renders, and
-// they swap native `disabled` for `aria-disabled` when it is false.
-const rendersNativeButton = (as?: TgphElement, disabled?: boolean) =>
-  !!disabled || !as || as === "button";
 
 const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   const {
@@ -348,4 +347,23 @@ const Button = Default as typeof Default & {
   Text: typeof Text;
 };
 
-export { Button, rendersNativeButton };
+const resolveButtonPropsNativeButton = (
+  props: unknown = {},
+  nativeButton?: boolean,
+) => {
+  const { as, disabled } = props as ResolveButtonNativeButtonOptions;
+  return resolveButtonNativeButton({ as, disabled, nativeButton });
+};
+
+// Base UI reads this static metadata while its parent renders, before Button's
+// React lifecycle begins, so define it once when the module loads.
+defineNativeButtonResolver({
+  component: Button,
+  resolver: resolveButtonPropsNativeButton,
+});
+defineNativeButtonResolver({
+  component: Button.Root,
+  resolver: resolveButtonPropsNativeButton,
+});
+
+export { Button };

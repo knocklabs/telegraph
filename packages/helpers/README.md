@@ -388,6 +388,29 @@ import type { ComponentProps } from "react";
 />;
 ```
 
+### `inferTriggerNativeButton`
+
+Resolves the `nativeButton` value for a Base UI trigger. Explicit values
+normally win; a recognized polymorphic component can override one when its
+props force a known render target, such as a disabled Telegraph Button coercing
+an anchor to a native button. Without an explicit value, the helper infers from
+intrinsic and recognized polymorphic children and preserves Base UI's default
+for unknown components.
+
+```tsx
+import { inferTriggerNativeButton } from "@telegraph/helpers";
+
+const nativeButton = inferTriggerNativeButton({
+  asChild,
+  children,
+  nativeButton: nativeButtonProp,
+});
+```
+
+Polymorphic components can define a resolver with
+`defineNativeButtonResolver`. The resolver uses a global symbol, so it
+continues to work when consumers and wrappers load different package instances.
+
 ### Base UI Compatibility Utilities
 
 Small helpers for preserving legacy Radix-style Telegraph behavior while

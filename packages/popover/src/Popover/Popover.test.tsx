@@ -1,6 +1,8 @@
+import { Button } from "@telegraph/button";
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as motion from "motion/react-m";
 import {
   type ComponentPropsWithoutRef,
   type Ref,
@@ -37,6 +39,105 @@ afterEach(() => {
 });
 
 describe("Popover", () => {
+  it("infers non-native semantics from a polymorphic Telegraph button", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger>
+            <Button as={motion.div}>Open</Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("DIV");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("infers native semantics from a Motion button", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger>
+            <Button
+              as={motion.button}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0 }}
+            >
+              Open
+            </Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("BUTTON");
+      expect(trigger).toHaveStyle({ opacity: "0" });
+      expect(trigger).not.toHaveAttribute("initial");
+      expect(trigger).not.toHaveAttribute("animate");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("keeps disabled Telegraph button coercion native over an explicit override", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger nativeButton={false}>
+            <Button as="a" disabled>
+              Open
+            </Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const triggerElement = screen.getByRole("button", { name: "Open" });
+      expect(triggerElement.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("preserves Base UI's default for an opaque component", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Popover.Root>
+          <Popover.Trigger>
+            <Button as={TestButton}>Open</Button>
+          </Popover.Trigger>
+        </Popover.Root>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("keeps the animated element when a spread supplies `as`", async () => {
     const user = userEvent.setup();
     // A spread is the only route left: `as` is gone from the props type.

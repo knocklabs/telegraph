@@ -1,10 +1,24 @@
 import { Stack } from "@telegraph/layout";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createRef, useState } from "react";
+import { motion } from "motion/react";
+import {
+  type ComponentPropsWithoutRef,
+  type Ref,
+  createRef,
+  useState,
+} from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Tabs } from "../index";
+
+type CustomLinkProps = ComponentPropsWithoutRef<"a"> & {
+  tgphRef?: Ref<HTMLAnchorElement>;
+};
+
+const CustomLink = ({ tgphRef, ...props }: CustomLinkProps) => (
+  <a ref={tgphRef} {...props} />
+);
 
 const TabsFixture = () => {
   return (
@@ -34,6 +48,91 @@ describe("Tabs", () => {
     expect(activeTab).toHaveAttribute("data-active", "");
     expect(activeTab).toHaveAttribute("data-state", "active");
     expect(screen.getByRole("tabpanel")).toHaveTextContent("First panel");
+  });
+
+  it("matches Base UI semantics for Motion button and div tabs", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <Tabs defaultValue="button">
+          <Tabs.List>
+            <Tabs.Tab
+              as={motion.button}
+              value="button"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0 }}
+            >
+              Motion button
+            </Tabs.Tab>
+            <Tabs.Tab
+              as={motion.div}
+              value="div"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0 }}
+            >
+              Motion div
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="button">Button panel</Tabs.Panel>
+          <Tabs.Panel value="div">Div panel</Tabs.Panel>
+        </Tabs>,
+      );
+
+      const buttonTab = screen.getByRole("tab", { name: "Motion button" });
+      const divTab = screen.getByRole("tab", { name: "Motion div" });
+
+      expect(buttonTab.tagName).toBe("BUTTON");
+      expect(divTab.tagName).toBe("DIV");
+      expect(buttonTab).toHaveStyle({ opacity: "0" });
+      expect(divTab).toHaveStyle({ opacity: "0" });
+      expect(buttonTab).not.toHaveAttribute("initial");
+      expect(divTab).not.toHaveAttribute("initial");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("honors nativeButton for an opaque non-button tab", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <Tabs defaultValue="docs">
+          <Tabs.List>
+            <Tabs.Tab
+              as={CustomLink}
+              href="/docs"
+              nativeButton={false}
+              value="docs"
+            >
+              Docs
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="docs">Docs panel</Tabs.Panel>
+        </Tabs>,
+      );
+
+      const tab = screen.getByRole("tab", { name: "Docs" });
+
+      expect(tab.tagName).toBe("A");
+      expect(tab).toHaveAttribute("href", "/docs");
+      expect(tab).not.toHaveAttribute("nativeButton");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("stacks the tab list above the panel by rendering a vertical Stack", () => {
@@ -218,6 +317,40 @@ describe("Tabs", () => {
       expect(tab).toHaveAttribute("aria-disabled", "true");
       expect(
         errors.filter((e) => String(e).includes("nativeButton")),
+      ).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("keeps disabled tab coercion native over an explicit override", () => {
+    const errors: Array<unknown> = [];
+    const spy = vi
+      .spyOn(console, "error")
+      .mockImplementation((...args) => errors.push(args[0]));
+
+    try {
+      render(
+        <Tabs defaultValue="docs">
+          <Tabs.List>
+            <Tabs.Tab
+              value="docs"
+              as="a"
+              href="/docs"
+              disabled
+              nativeButton={false}
+            >
+              Docs
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs>,
+      );
+
+      const tab = screen.getByRole("tab", { name: "Docs" });
+
+      expect(tab.tagName).toBe("BUTTON");
+      expect(
+        errors.filter((error) => String(error).includes("nativeButton")),
       ).toHaveLength(0);
     } finally {
       spy.mockRestore();

@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { Button } from "@telegraph/button";
+import { Button, resolveButtonNativeButton } from "@telegraph/button";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
@@ -682,6 +682,7 @@ export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
 const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
   const {
     disabled,
+    nativeButton: nativeButtonProp,
     onClick,
     size = "1",
     variant = "ghost",
@@ -705,9 +706,16 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
     [onClick],
   );
 
+  const nativeButton = resolveButtonNativeButton({
+    as: closeProps.as,
+    disabled,
+    nativeButton: nativeButtonProp,
+  });
+
   return (
     <BaseDialog.Close
       disabled={disabled}
+      nativeButton={nativeButton}
       render={createTgphBaseUIRender(
         <Button
           disabled={disabled}
@@ -724,6 +732,7 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
             | "disabled"
             | "icon"
             | "leadingIcon"
+            | "nativeButton"
             | "onClick"
             | "size"
             | "trailingIcon"

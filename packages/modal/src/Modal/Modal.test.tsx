@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { type ComponentPropsWithoutRef, type Ref, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
 
 import { Modal } from "./Modal";
@@ -10,6 +10,14 @@ import type {
   ModalFooterProps,
   ModalHeaderProps,
 } from "./index";
+
+type NativeButtonProps = ComponentPropsWithoutRef<"button"> & {
+  tgphRef?: Ref<HTMLButtonElement>;
+};
+
+const NativeButton = ({ tgphRef, ...props }: NativeButtonProps) => (
+  <button ref={tgphRef} {...props} />
+);
 
 const TestModal = ({
   a11yTitle = "Settings",
@@ -51,6 +59,72 @@ const TestModal = ({
 };
 
 describe("Modal", () => {
+  it("infers non-native semantics for a polymorphic close button", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Modal.Root open a11yTitle="Settings">
+          <Modal.Content>
+            <Modal.Close as="div" />
+          </Modal.Content>
+        </Modal.Root>,
+      );
+
+      const close = await screen.findByRole("button", { name: "Close Modal" });
+      expect(close.tagName).toBe("DIV");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("keeps disabled close coercion native over an explicit override", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Modal.Root open a11yTitle="Settings">
+          <Modal.Content>
+            <Modal.Close as="a" disabled nativeButton={false} />
+          </Modal.Content>
+        </Modal.Root>,
+      );
+
+      const close = await screen.findByRole("button", { name: "Close Modal" });
+      expect(close.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("preserves Base UI's default for an opaque close component", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(
+        <Modal.Root open a11yTitle="Settings">
+          <Modal.Content>
+            <Modal.Close as={NativeButton} />
+          </Modal.Content>
+        </Modal.Root>,
+      );
+
+      const close = await screen.findByRole("button", { name: "Close Modal" });
+      expect(close.tagName).toBe("BUTTON");
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        "nativeButton",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("keeps the animated element when a spread supplies `as`", async () => {
     // A spread is the only route left: `as` is gone from the props type.
     const smuggled = { as: "section" } as Record<string, unknown>;
