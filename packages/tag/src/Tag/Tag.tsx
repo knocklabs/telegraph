@@ -37,7 +37,7 @@ type RootBaseProps = {
 
 export type RootProps<T extends TgphElement = "span"> =
   PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
-    Omit<StackProps<T>, "as" | "tgphRef"> &
+    RemappedOmit<StackProps<T>, "as" | "tgphRef"> &
     RootBaseProps;
 
 const TagContext = createContext<Required<RootBaseProps>>({

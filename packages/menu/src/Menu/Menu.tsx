@@ -5,6 +5,7 @@ import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
   type PolymorphicProps,
+  type RemappedOmit,
   type TgphElement,
   createTgphBaseUIRender,
   getBaseUIPositionerVisibilityStyle,
@@ -658,7 +659,7 @@ const Content = <T extends TgphElement = "div">({
 // `MenuItemProps<T>`, not the bare form: bare `MenuItemProps` is
 // `MenuItemProps<"button">`, whose `as?: "button"` intersects the `as?: T`
 // below and collapses `T` to `"button"`, so `as={NextLink}` could never resolve.
-type MenuButtonItemProps<T extends TgphElement = "button"> = Omit<
+type MenuButtonItemProps<T extends TgphElement = "button"> = RemappedOmit<
   MenuItemProps<T>,
   "onClick" | "onKeyDown" | "tgphRef" | "as"
 >;
@@ -923,7 +924,7 @@ const Sub = ({ children, onOpenChange, ...props }: SubProps) => {
 
 // `MenuItemProps<T>` and omitting `as`, for the reason given on
 // `MenuButtonItemProps` above.
-type MenuSubTriggerItemProps<T extends TgphElement = "button"> = Omit<
+type MenuSubTriggerItemProps<T extends TgphElement = "button"> = RemappedOmit<
   MenuItemProps<T>,
   "onClick" | "tgphRef" | "as"
 >;

@@ -3,7 +3,6 @@ import { Button } from "@telegraph/button";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
-  type PolymorphicProps,
   RefToTgphRef,
   RemappedOmit,
   type TgphComponentProps,
@@ -735,37 +734,26 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
   );
 };
 
-export type BodyProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<StackProps<T>, "as">;
+export type BodyProps<T extends TgphElement = "div"> = StackProps<T>;
 
-const Body = <T extends TgphElement = "div">({
-  style,
-  children,
-  ...props
-}: BodyProps<T>) => {
+const Body = <T extends TgphElement = "div">(bodyProps: BodyProps<T>) => {
   return (
     <Stack
       direction="column"
       px="6"
       py="4"
+      {...bodyProps}
       style={{
         overflowY: "auto",
-        ...style,
+        ...bodyProps.style,
       }}
-      {...props}
-    >
-      {children}
-    </Stack>
+    />
   );
 };
 
-export type HeaderProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<StackProps<T>, "as">;
+export type HeaderProps<T extends TgphElement = "div"> = StackProps<T>;
 
-const Header = <T extends TgphElement = "div">({
-  children,
-  ...props
-}: HeaderProps<T>) => {
+const Header = <T extends TgphElement = "div">(headerProps: HeaderProps<T>) => {
   return (
     <Stack
       direction="row"
@@ -774,20 +762,14 @@ const Header = <T extends TgphElement = "div">({
       px="6"
       py="4"
       borderBottom="px"
-      {...props}
-    >
-      {children}
-    </Stack>
+      {...headerProps}
+    />
   );
 };
 
-export type FooterProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
-  Omit<StackProps<T>, "as">;
+export type FooterProps<T extends TgphElement = "div"> = StackProps<T>;
 
-const Footer = <T extends TgphElement = "div">({
-  children,
-  ...props
-}: FooterProps<T>) => {
+const Footer = <T extends TgphElement = "div">(footerProps: FooterProps<T>) => {
   return (
     <Stack
       direction="row"
@@ -797,10 +779,8 @@ const Footer = <T extends TgphElement = "div">({
       px="6"
       py="4"
       borderTop="px"
-      {...props}
-    >
-      {children}
-    </Stack>
+      {...footerProps}
+    />
   );
 };
 

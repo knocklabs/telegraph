@@ -1,4 +1,4 @@
-import type { AsProp, TgphElement } from "@telegraph/helpers";
+import type { AsProp, RemappedOmit, TgphElement } from "@telegraph/helpers";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -8,7 +8,7 @@ import { StyleProps, cssVars } from "./Stack.constants";
 
 // `BoxProps<T>` already carries the element passthrough. Do not intersect
 // `PolymorphicProps<T>` back in, because that repeats it.
-export type StackProps<T extends TgphElement = "div"> = Omit<
+export type StackProps<T extends TgphElement = "div"> = RemappedOmit<
   BoxProps<T>,
   "as"
 > &

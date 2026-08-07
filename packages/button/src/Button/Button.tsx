@@ -50,7 +50,7 @@ type ButtonClickHandler = {
 
 type ButtonOnClick = ButtonClickHandler | boolean;
 
-export type RootProps<T extends TgphElement = "button"> = Omit<
+export type RootProps<T extends TgphElement = "button"> = RemappedOmit<
   StackProps<T>,
   "tgphRef" | "as" | "onClick"
 > &
@@ -306,7 +306,7 @@ type BaseDefaultProps =
       leadingIcon?: never;
       trailingIcon?: never;
     };
-export type DefaultProps<T extends TgphElement = "button"> = Omit<
+export type DefaultProps<T extends TgphElement = "button"> = RemappedOmit<
   RootProps<T>,
   "onClick"
 > &

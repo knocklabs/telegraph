@@ -107,7 +107,7 @@ export type RootProps<
   | "style"
   | "value"
 > &
-  Omit<StackProps, "defaultValue" | "dir"> & {
+  RemappedOmit<StackProps, "defaultValue" | "dir"> & {
     defaultValue?: Value;
     dir?: TextDirection;
     disabled?: boolean;
@@ -463,7 +463,7 @@ const ButtonStyleProps: Record<SegmentedControlOptionStatus, ButtonRootProps> =
 // `ButtonProps<T>`, not the bare form: bare `ButtonProps` is
 // `ButtonProps<"button">`, whose `as?: "button"` would pin the element and stop
 // `as={NextLink}` resolving.
-export type OptionProps<T extends TgphElement = "button"> = Omit<
+export type OptionProps<T extends TgphElement = "button"> = RemappedOmit<
   ButtonProps<T>,
   "value"
 > & {
@@ -474,7 +474,7 @@ export type OptionProps<T extends TgphElement = "button"> = Omit<
 // the internals stacks mapped types over Button's icon union inside Base UI's
 // `render` callback, which takes package type-checking from seconds to minutes.
 // `Button.Root` reads its own props the same way.
-type OptionButtonProps = Omit<OptionProps<"button">, "value"> & {
+type OptionButtonProps = RemappedOmit<OptionProps<"button">, "value"> & {
   buttonRef: RefObject<HTMLButtonElement | null>;
   status: SegmentedControlOptionStatus;
 };

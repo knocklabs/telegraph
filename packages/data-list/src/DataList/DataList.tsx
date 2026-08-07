@@ -17,7 +17,7 @@ const List = <T extends TgphElement = "div">(listProps: ListProps<T>) => {
     <Stack
       direction={direction}
       gap={gap}
-      {...(props as Omit<ListProps<"div">, "direction" | "gap">)}
+      {...(props as RemappedOmit<ListProps<"div">, "direction" | "gap">)}
     />
   );
 };
@@ -38,7 +38,10 @@ const ListItem = <T extends TgphElement = "div">(
       direction={direction}
       gap={gap}
       align={align}
-      {...(props as Omit<ListItemProps<"div">, "direction" | "gap" | "align">)}
+      {...(props as RemappedOmit<
+        ListItemProps<"div">,
+        "direction" | "gap" | "align"
+      >)}
     />
   );
 };
@@ -76,7 +79,7 @@ const Label = <T extends TgphElement = "div">(labelProps: LabelProps<T>) => {
       gap="2"
       maxW={maxW}
       w={w}
-      {...(props as Omit<
+      {...(props as RemappedOmit<
         LabelProps<"div">,
         | "maxW"
         | "w"
@@ -108,7 +111,7 @@ const Label = <T extends TgphElement = "div">(labelProps: LabelProps<T>) => {
             // `as` stays in the spread so a caller-supplied `textProps.as` keeps
             // winning as it does today; it is only omitted from the cast type so
             // it is not reported as specified twice.
-            {...(restTextProps as Omit<
+            {...(restTextProps as RemappedOmit<
               TextProps<"label">,
               "as" | "color" | "weight" | "size"
             >)}
@@ -134,7 +137,7 @@ const Value = <T extends TgphElement = "div">(valueProps: ValueProps<T>) => {
     <Stack
       w={w}
       minW={minW}
-      {...(props as Omit<ValueProps<"div">, "w" | "minW">)}
+      {...(props as RemappedOmit<ValueProps<"div">, "w" | "minW">)}
     />
   );
 };
