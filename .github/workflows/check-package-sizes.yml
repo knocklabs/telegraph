@@ -33,7 +33,7 @@ jobs:
         with:
           ref: main
       - name: Install Dependencies
-        run: yarn --immutable
+        run: yarn install
       - name: Build Main Branch
         run: yarn build:packages
       - name: Get Main Package Sizes
