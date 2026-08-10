@@ -1,5 +1,11 @@
 # @telegraph/postcss-config
 
+## 0.1.12
+
+### Patch Changes
+
+- [#953](https://github.com/knocklabs/telegraph/pull/953) [`62fed8b`](https://github.com/knocklabs/telegraph/commit/62fed8b588b7e8f7dd0836bfb0328803168a1896) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.25 to 8.5.26
+
 ## 0.1.11
 
 ### Patch Changes
