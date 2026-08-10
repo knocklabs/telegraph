@@ -1,5 +1,20 @@
 # @telegraph/button
 
+## 0.9.0
+
+### Minor Changes
+
+- [#949](https://github.com/knocklabs/telegraph/pull/949) [`5015089`](https://github.com/knocklabs/telegraph/commit/5015089fd7a94dde8214ef383fa78d86c3aec688) Thanks [@kylemcd](https://github.com/kylemcd)! - Infer Base UI `nativeButton` semantics from polymorphic Telegraph triggers using stable component resolvers and Motion intrinsic metadata.
+
+### Patch Changes
+
+- Updated dependencies [[`62fed8b`](https://github.com/knocklabs/telegraph/commit/62fed8b588b7e8f7dd0836bfb0328803168a1896), [`5015089`](https://github.com/knocklabs/telegraph/commit/5015089fd7a94dde8214ef383fa78d86c3aec688)]:
+  - @telegraph/style-engine@0.4.2
+  - @telegraph/helpers@0.3.0
+  - @telegraph/icon@0.6.1
+  - @telegraph/layout@0.6.2
+  - @telegraph/typography@0.5.1
+
 ## 0.8.0
 
 ### Minor Changes

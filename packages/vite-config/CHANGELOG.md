@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.1.1
+
+### Patch Changes
+
+- [#959](https://github.com/knocklabs/telegraph/pull/959) [`bfbe011`](https://github.com/knocklabs/telegraph/commit/bfbe0118fe18543ec7b9ea5acfe83195364045db) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump vite from 8.2.0 to 8.2.1
+
 ## 0.1.0
 
 ### Minor Changes
