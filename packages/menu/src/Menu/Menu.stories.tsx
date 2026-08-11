@@ -146,9 +146,14 @@ export const WithSubmenu: Story = {
   },
 };
 
-// A typeable input composed inside the trigger (PropertySelectorField, block
-// editor suggestion menus). Click or type to open; keystrokes keep landing in
-// the input — not the menu's typeahead — and ArrowDown moves into the list.
+// @deprecated Composing a typeable input inside `Menu.Trigger` is a legacy
+// pattern, retained here only as a reference for the retained focus-bounce
+// behavior. It does not follow the WAI-ARIA menu-button pattern, so new UI that
+// needs a typeable trigger should use the `@telegraph/combobox` input-as-trigger
+// arrangement instead (see the "Components/Combobox › Input As Trigger" story).
+// This demo keeps focus in the input across open (a prevented `onOpenAutoFocus`)
+// while ArrowDown still moves into the list.
 export const TypeableTrigger: Story = {
+  name: "Typeable Trigger (deprecated)",
   render: (args) => <TypeableTriggerExample {...args} />,
 };
