@@ -20,7 +20,21 @@ const TypeableTriggerMenu = () => {
     <Menu.Root open={open} onOpenChange={setOpen}>
       <Menu.Trigger nativeButton={false}>
         <div>
-          <input aria-label="Filter" onChange={() => setOpen(true)} />
+          <input
+            aria-label="Filter"
+            onChange={() => setOpen(true)}
+            onKeyDown={(event) => {
+              // Required on @base-ui/react >= 1.6.0: the open menu's trigger
+              // typeahead now consumes printable keys (preventDefault), so a
+              // typeable trigger must stop propagation for everything except
+              // navigation/selection keys. 1.5.0 did not need this.
+              if (
+                !["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.key)
+              ) {
+                event.stopPropagation();
+              }
+            }}
+          />
         </div>
       </Menu.Trigger>
       <Menu.Content onOpenAutoFocus={(event) => event.preventDefault()}>
