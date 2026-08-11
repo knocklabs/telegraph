@@ -59,6 +59,9 @@ const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
       <Combobox.Trigger<V> size={size} {...triggerProps} />
       <Combobox.Content {...contentProps}>
         <Combobox.Options {...optionsProps}>{children}</Combobox.Options>
+        {/* Typing filters the options in place; without a message a
+            non-matching query would leave an empty popup. */}
+        <Combobox.Empty />
       </Combobox.Content>
     </Combobox.Root>
   );

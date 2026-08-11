@@ -1,32 +1,37 @@
+import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import {
   type ButtonRootProps,
   Button as TelegraphButton,
 } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
+  type LegacyDismissEventHandler,
+  type PolymorphicProps,
   type RemappedOmit,
   type TgphComponentProps,
   type TgphElement,
   VisuallyHidden,
+  createTgphBaseUIRender,
+  getBaseUIPositionerVisibilityStyle,
   useControllableState,
 } from "@telegraph/helpers";
 import { Icon, type IconProps } from "@telegraph/icon";
-import { type InputProps, Input as TelegraphInput } from "@telegraph/input";
-import { Box, Stack } from "@telegraph/layout";
-import { Menu as TelegraphMenu } from "@telegraph/menu";
+import { type InputRootProps, Input as TelegraphInput } from "@telegraph/input";
+import { Box, Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
+import { LazyMotion, domAnimation } from "motion/react";
 import {
   type CSSProperties,
   type ChangeEvent,
-  type MouseEvent,
+  Children,
   type ReactElement,
-  type KeyboardEvent as ReactKeyboardEvent,
-  type KeyboardEventHandler as ReactKeyboardEventHandler,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
   type Ref,
   type RefObject,
   createContext,
+  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -39,9 +44,6 @@ import {
 
 import { TRIGGER_MIN_HEIGHT } from "./Combobox.constants";
 import {
-  FIRST_KEYS,
-  LAST_KEYS,
-  SELECT_KEYS,
   doesOptionMatchSearchQuery,
   getCurrentOption,
   getOptionAccessibleLabel,
@@ -51,6 +53,7 @@ import {
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
+import { OptionItem, type OptionItemProps } from "./Combobox.optionItem";
 import { Primitives } from "./Combobox.primitives";
 import type {
   DefinedOption,
@@ -58,6 +61,16 @@ import type {
   Option,
   SingleSelect,
 } from "./Combobox.types";
+
+// Base UI's change callbacks pass a cancelable details object as the second
+// argument. We only need `cancel`, `reason`, and the underlying DOM `event`, so
+// describe just that surface instead of importing Base UI's internal type.
+type BaseUIChangeEventDetails = {
+  cancel: () => void;
+  isCanceled: boolean;
+  reason: string;
+  event: Event;
+};
 
 type LayoutValue<O> = O extends DefinedOption | string | undefined
   ? never
@@ -81,6 +94,14 @@ export type RootProps<
   clearable?: boolean;
   disabled?: boolean;
   legacyBehavior?: LB;
+  // Disable the built-in text filtering of `Combobox.Option`s. Use this when the
+  // consumer already narrows the option list itself (e.g. an async/server search
+  // driven by `Combobox.Search`'s `onValueChange`): the options you render are
+  // shown as-is, and the typed query is still exposed to `Combobox.Create` and
+  // the Search clear button. Without it, the internal filter stacks on top of
+  // the consumer's, hiding server results whose text is produced by child
+  // components.
+  manualFiltering?: boolean;
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
@@ -103,8 +124,14 @@ export const ComboboxContext = createContext<
     searchRef?: RefObject<HTMLInputElement>;
     contentRef?: RefObject<HTMLDivElement>;
     onEscapeKeyDown?: (event: KeyboardEvent) => void;
+    // Content registers its escape handler here so the Root-level Base UI
+    // `onOpenChange` bridge can honor a consumer preventing dismissal.
+    onEscapeKeyDownRef?: RefObject<
+      ((event: KeyboardEvent) => void) | undefined
+    >;
     options: Array<DefinedOption>;
     legacyBehavior: boolean;
+    manualFiltering: boolean;
     defaultScrollToValue?: string;
   }
 >({
@@ -119,7 +146,35 @@ export const ComboboxContext = createContext<
   disabled: false,
   options: [],
   legacyBehavior: false,
+  manualFiltering: false,
 });
+
+// Action items (`onSelect`/`Create`) must be navigable and highlightable but
+// must never commit a selection. Base UI keys selection, highlight, and
+// "selected on open" tracking off each item's `value`, and it treats a
+// `null`/`undefined` value as equal to the "no selection" state — so a mounted
+// action item would masquerade as the selected item whenever nothing is
+// selected, dragging the highlight onto itself. Giving action items this stable
+// non-null sentinel instead keeps them distinct from every real value and from
+// "no selection", while Base UI's own commit is still cancelled for them at the
+// value bridge below. It is only ever a Base UI item value; it never reaches the
+// public value shape.
+const ON_SELECT_ITEM_VALUE = Object.freeze({}) as unknown as string;
+
+// Whether a value Base UI is trying to commit is the action-item sentinel, in
+// which case Base UI's selection must be cancelled.
+const isOnSelectItemValue = (value: unknown): boolean =>
+  value === ON_SELECT_ITEM_VALUE;
+
+// Resolve a Base UI string value back into the legacy `{ value, label }` option
+// object the public API emits when `legacyBehavior` is enabled.
+const toLegacyOption = (
+  value: string,
+  options: Array<DefinedOption>,
+): DefinedOption => {
+  const found = options.find((option) => option.value === value);
+  return found ? { value: found.value, label: found.label } : { value };
+};
 
 const Root = <
   O extends (Option | Array<Option>) | (string | Array<string>),
@@ -139,21 +194,82 @@ const Root = <
   errored,
   placeholder,
   layout,
+  manualFiltering = false,
   defaultScrollToValue,
   children,
-  ...props
 }: RootProps<O, LB>) => {
   const contentId = useId();
   const triggerId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const onEscapeKeyDownRef = useRef<
+    ((event: KeyboardEvent) => void) | undefined
+  >(undefined);
 
   const options = useMemo(() => {
     return getOptions({ children, isOptionElement });
   }, [children]);
 
+  // Whether a `Combobox.Create` is rendered. It mounts a matching row that isn't
+  // part of `options`, so `filteredItems` must reserve a slot for it (below).
+  const hasCreate = useMemo(() => childrenContainCreate(children), [children]);
+
+  // Single- vs multi-select is derived from the value shape. Consumers are
+  // expected to keep that shape stable (multi-select initializes with an array);
+  // Base UI does not support the `multiple` flag flipping after mount.
+  const multiple = useMemo(
+    () => isMultiSelect(valueProp) || isMultiSelect(defaultValueProp),
+    [valueProp, defaultValueProp],
+  );
+
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Base UI seeds the type-to-filter highlight from its filtered-items list and
+  // only re-runs that seeding when the list's identity changes. In children mode
+  // we render the options ourselves (no `items` prop), so Base UI's list is
+  // always empty and the seeding never re-fires while typing — leaving the
+  // highlight stuck on the option that was selected on open. Handing Base UI the
+  // currently visible option values (in rendered order) as `filteredItems`
+  // re-triggers that seeding per keystroke and sizes Base UI's highlight bounds
+  // to the mounted rows.
+  //
+  // The rendered DOM, selection, and highlight all remain driven by the mounted
+  // `Combobox.Option` children; Base UI only uses this list for bookkeeping. So
+  // an over-inclusive list is harmless, while an under-inclusive one would let
+  // Base UI's bounds check drop a valid highlight — hence the conservative
+  // inclusion rules below.
+  const filteredItems = useMemo<Array<string>>(() => {
+    // With manual filtering the consumer decides which options render, so keep
+    // every option in the bounds list and never filter it here.
+    const query = manualFiltering ? "" : (searchQuery ?? "");
+    const values = options
+      .filter(
+        (option) =>
+          !query ||
+          doesOptionMatchSearchQuery({
+            children: option.label,
+            value: option.value,
+            searchQuery: query,
+          }) ||
+          // Text rendered inside child components isn't observable from the
+          // Root (it's captured per-option after mount), so keep options that
+          // render such content to avoid under-counting the mounted rows.
+          optionRendersUnsearchableText(option.label),
+      )
+      .map((option) => option.value);
+
+    // Reserve the `Combobox.Create` row's slot so Base UI's bounds check keeps
+    // it navigable. Use the typed query rather than the filter `query` (which is
+    // forced empty under manualFiltering) so Create stays navigable there too.
+    // Over-reserving when Create is hidden (its value already exists) is harmless.
+    const createQuery = searchQuery ?? "";
+    if (createQuery && hasCreate) {
+      values.push(createQuery);
+    }
+
+    return values;
+  }, [options, searchQuery, hasCreate, manualFiltering]);
   // Keep open state controllable like the old menu-backed implementation while
   // still allowing uncontrolled usage through defaultOpen.
   const [open = false, setOpen] = useControllableState({
@@ -180,14 +296,114 @@ const Root = <
     }
   }, [open]);
 
+  // Map the public value shape into the flat string(s) Base UI drives selection
+  // with. `null` keeps Base UI controlled while representing "no selection".
+  const baseValue = useMemo<string | Array<string> | null>(() => {
+    if (multiple) {
+      const array = isMultiSelect(value) ? value : [];
+      return (
+        array
+          .map((entry) => getValueFromOption(entry, legacyBehavior))
+          // Drop only unresolved entries; keep a legitimately empty-string value so
+          // multi-select matches single-select's `?? null` handling of `""`.
+          .filter((entry): entry is string => entry != null)
+      );
+    }
+
+    if (isSingleSelect(value)) {
+      return getValueFromOption(value, legacyBehavior) ?? null;
+    }
+
+    return null;
+  }, [value, multiple, legacyBehavior]);
+
+  const handleBaseValueChange = useCallback(
+    (
+      next: string | Array<string> | null,
+      eventDetails: BaseUIChangeEventDetails,
+    ) => {
+      if (multiple) {
+        const array = Array.isArray(next) ? next : [];
+        // The sentinel (or a null/undefined) entry means an `onSelect`/Create
+        // item was pressed; let its own handler run instead of committing a
+        // selection.
+        if (
+          array.some((entry) => entry == null || isOnSelectItemValue(entry))
+        ) {
+          eventDetails.cancel();
+          return;
+        }
+
+        const nextValue = legacyBehavior
+          ? array.map((entry) => toLegacyOption(entry, options))
+          : array;
+        (setValue as MultiSelect["onValueChange"])?.(
+          nextValue as Array<Option>,
+        );
+      } else {
+        // Real options always carry a string value, so a sentinel (or null)
+        // commit is an `onSelect`/Create item; skip it and let `onClick` handle
+        // the action.
+        if (next == null || Array.isArray(next) || isOnSelectItemValue(next)) {
+          eventDetails.cancel();
+          return;
+        }
+
+        const nextValue = legacyBehavior ? toLegacyOption(next, options) : next;
+        (setValue as SingleSelect["onValueChange"])?.(nextValue as Option);
+      }
+
+      // Base UI's single-select close arrives through `onOpenChange`, but we
+      // always drive closing from here so multi-select honors closeOnSelect too.
+      if (closeOnSelect === true) {
+        setOpen(false);
+      }
+    },
+    [multiple, legacyBehavior, options, setValue, closeOnSelect, setOpen],
+  );
+
+  const handleBaseOpenChange = useCallback(
+    (nextOpen: boolean, eventDetails: BaseUIChangeEventDetails) => {
+      const reason = eventDetails.reason;
+
+      if (!nextOpen) {
+        // Selection open/close is managed entirely by the value bridge above so
+        // closeOnSelect behaves identically for single and multi select.
+        if (reason === "item-press") {
+          eventDetails.cancel();
+          return;
+        }
+
+        if (reason === "escape-key") {
+          const onEscapeKeyDown = onEscapeKeyDownRef.current;
+          if (onEscapeKeyDown) {
+            onEscapeKeyDown(eventDetails.event as KeyboardEvent);
+            if (eventDetails.event.defaultPrevented) {
+              // A consumer preventing default keeps the popup open.
+              eventDetails.cancel();
+              return;
+            }
+          }
+        }
+      }
+
+      setOpen(nextOpen);
+    },
+    [setOpen],
+  );
+
+  const handleInputValueChange = useCallback((nextValue: string) => {
+    setSearchQuery(nextValue);
+  }, []);
+
   return (
     <ComboboxContext.Provider
       value={{
         contentId,
         triggerId,
         value,
-        // Context consumers handle the runtime single/multi branches below, so
-        // expose one setter shape here and narrow it at the selection site.
+        // Context consumers (clear button, tag removal) call this with the
+        // public value shape; narrow it at each selection site.
         onValueChange: setValue as (value: Option | Array<Option>) => void,
         placeholder,
         open,
@@ -201,21 +417,41 @@ const Root = <
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
         searchRef: searchRef as RefObject<HTMLInputElement>,
         contentRef: contentRef as RefObject<HTMLDivElement>,
+        onEscapeKeyDownRef,
         errored,
         layout,
         options,
         legacyBehavior,
+        manualFiltering,
         defaultScrollToValue,
       }}
     >
-      <TelegraphMenu.Root
+      <BaseCombobox.Root
+        // Children mode: no `items`, so Base UI performs no filtering and drives
+        // selection/highlight/virtual-focus off the mounted `Combobox.Item`s.
+        multiple={multiple}
+        value={baseValue}
+        onValueChange={
+          handleBaseValueChange as (value: unknown, details: unknown) => void
+        }
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={
+          handleBaseOpenChange as (open: boolean, details: unknown) => void
+        }
+        onInputValueChange={handleInputValueChange}
+        // Seed the highlight on the first match after the query changes so
+        // pressing Enter selects it, mirroring the old typeahead behavior.
+        autoHighlight
+        // The rendered options stay the `Combobox.Option` children; this list
+        // only exists so Base UI re-seeds the type-to-filter highlight per
+        // keystroke and bounds it to the mounted rows. See the `filteredItems`
+        // memo above for why it is computed conservatively.
+        filteredItems={filteredItems}
         modal={modal}
-        {...props}
+        disabled={disabled}
       >
         {children}
-      </TelegraphMenu.Root>
+      </BaseCombobox.Root>
     </ComboboxContext.Provider>
   );
 };
@@ -231,10 +467,7 @@ type ChildrenFnValue<V extends ChildrenValue> = V extends never
     ? DefinedOption | undefined
     : Array<DefinedOption>;
 
-type TriggerBaseProps = RemappedOmit<
-  ButtonRootProps & TgphComponentProps<typeof TelegraphMenu.Trigger>,
-  "children"
->;
+type TriggerBaseProps = RemappedOmit<ButtonRootProps, "children">;
 
 export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   placeholder?: string;
@@ -244,9 +477,16 @@ export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
 const Trigger = <V extends ChildrenValue>({
   size = "1",
   children,
+  tgphRef,
   ...props
 }: TriggerProps<V>) => {
   const context = useContext(ComboboxContext);
+  // Compose a consumer ref with the internal trigger ref instead of letting the
+  // spread below clobber it — the internal ref drives keyboard-close refocus.
+  const composedTriggerRef = useComposedRefs(
+    tgphRef as Ref<HTMLButtonElement>,
+    context.triggerRef,
+  );
   const hasTags = isMultiSelect(context.value) && context.value.length > 0;
 
   const currentValue = useMemo<
@@ -292,163 +532,164 @@ const Trigger = <V extends ChildrenValue>({
 
     return context.placeholder;
   }, [currentValue, context.placeholder]);
+
   return (
-    <TelegraphMenu.Trigger
-      {...props}
-      asChild
-      onClick={(event: MouseEvent) => {
-        event.preventDefault();
-        context.onOpenToggle();
-        context.triggerRef?.current?.focus();
-      }}
-      onKeyDown={(event: ReactKeyboardEvent) => {
-        // If the event target isn't exactly the trigger we don't want anything to
-        // happen within this event handler. For example, if the `X` icon on a trigger
-        // tag is focused and the user presses `Enter`, this keydown event will trigger.
-        if (event.target !== context.triggerRef?.current) return;
-
-        // Lets the user tab in and out of the combobox as usual
-        if (event.key === "Tab") {
-          event.stopPropagation();
-          return;
-        }
-
-        if (event.key === "Escape") {
-          event.stopPropagation();
-          event.preventDefault();
-          context.setOpen(false);
-          context.triggerRef?.current?.focus();
-          return;
-        }
-
-        // Open the combobox when ArrowDown, Space, or Enter are pressed
-        if (event.key === "ArrowDown" || SELECT_KEYS.includes(event.key)) {
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-          event.preventDefault();
-          context.onOpenToggle();
-          return;
-        }
-      }}
-      tgphRef={context.triggerRef}
-    >
-      <TelegraphButton.Root
-        id={context.triggerId}
-        type="button"
-        bg="surface-1"
-        variant="outline"
-        align="center"
-        minH={TRIGGER_MIN_HEIGHT[size]}
-        h="full"
-        w="full"
-        py="0_5"
-        pr="1_5"
-        pl={hasTags ? "0_5" : "1_5"}
-        size={size}
-        color={context.errored ? "red" : "gray"}
-        justify="space-between"
-        // Accessibility attributes
-        role="combobox"
-        aria-label={getAriaLabelString()}
-        aria-controls={context.contentId}
-        aria-expanded={context.open}
-        aria-haspopup="listbox"
-        // Custom attributes
-        data-tgph-combobox-trigger
-        data-tgph-combobox-trigger-open={context.open}
-        disabled={context.disabled}
-        {...props}
-      >
-        {children ? (
-          typeof children === "function" ? (
-            children({ value: currentValue as ChildrenFnValue<V> })
-          ) : (
-            children
+    <BaseCombobox.Trigger
+      disabled={context.disabled}
+      nativeButton
+      // Base UI opens the popup on the trigger's mousedown. The tag-remove and
+      // clear controls live inside the trigger button and only stop the click,
+      // so intercept mousedown in the capture phase for those targets to keep
+      // the popup from opening while their own click handlers still run.
+      onMouseDownCapture={(event: ReactMouseEvent<HTMLElement>) => {
+        const target = event.target as HTMLElement;
+        if (
+          target.closest?.(
+            "[data-tgph-combobox-tag-button], [data-tgph-combobox-clear]",
           )
-        ) : (
-          <>
-            <Primitives.TriggerValue />
-            <Primitives.TriggerActionsContainer>
-              <Primitives.TriggerClear />
-              <Primitives.TriggerIndicator />
-            </Primitives.TriggerActionsContainer>
-          </>
-        )}
-      </TelegraphButton.Root>
-    </TelegraphMenu.Trigger>
+        ) {
+          event.stopPropagation();
+        }
+      }}
+      render={createTgphBaseUIRender(
+        <TelegraphButton.Root
+          id={context.triggerId}
+          type="button"
+          bg="surface-1"
+          variant="outline"
+          align="center"
+          minH={TRIGGER_MIN_HEIGHT[size]}
+          h="full"
+          w="full"
+          py="0_5"
+          pr="1_5"
+          pl={hasTags ? "0_5" : "1_5"}
+          size={size}
+          color={context.errored ? "red" : "gray"}
+          justify="space-between"
+          // Accessibility attributes
+          role="combobox"
+          aria-label={getAriaLabelString()}
+          aria-controls={context.contentId}
+          aria-expanded={context.open}
+          aria-haspopup="listbox"
+          // Custom attributes
+          data-tgph-combobox-trigger
+          data-tgph-combobox-trigger-open={context.open}
+          disabled={context.disabled}
+          {...props}
+          tgphRef={composedTriggerRef}
+        >
+          {children ? (
+            typeof children === "function" ? (
+              children({ value: currentValue as ChildrenFnValue<V> })
+            ) : (
+              children
+            )
+          ) : (
+            <>
+              <Primitives.TriggerValue />
+              <Primitives.TriggerActionsContainer>
+                <Primitives.TriggerClear />
+                <Primitives.TriggerIndicator />
+              </Primitives.TriggerActionsContainer>
+            </>
+          )}
+        </TelegraphButton.Root>,
+      )}
+    />
   );
 };
 
-export type ContentProps<T extends TgphElement = "div"> = TgphComponentProps<
-  typeof TelegraphMenu.Content<T>
->;
+// The public Content surface mirrors the props consumers relied on from the
+// menu-backed implementation. Positioning props flow to the Base UI positioner;
+// the remainder are Stack style props for the popup surface.
+//
+// Source the polymorphic element props from `PolymorphicProps<T>` and the Stack
+// style props from the *non-generic* Stack. Wrapping the generic `typeof
+// Stack<T>` in `Omit<…>` produces a deferred mapped type, and TypeScript then
+// fails to compute a contextual type for the sibling dismiss-handler callbacks
+// below — their `event` param silently widens to `any` at the JSX call site.
+// That is exactly what let a stale Radix-shaped handler reading
+// `event.detail.originalEvent` compile and crash at runtime (KNO-14309). Keeping
+// the `Omit` off the generic makes each handler's `event` resolve to its
+// concrete `Event` type. Mirrors `Menu.Content`.
+export type ContentProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<StackProps, "align" | "as"> & {
+    children?: ReactNode;
+    side?: "top" | "right" | "bottom" | "left";
+    align?: "start" | "center" | "end";
+    sideOffset?: number;
+    alignOffset?: number;
+    collisionPadding?: number;
+    sticky?: boolean;
+    hideWhenDetached?: boolean;
+    forceMount?: boolean;
+    finalFocus?:
+      | boolean
+      | RefObject<HTMLElement | null>
+      | ((closeType: string) => void | boolean | HTMLElement | null);
+    onCloseAutoFocus?: LegacyDismissEventHandler;
+    // Runs when focus is about to move into the popup on open. Prevent default to
+    // place focus yourself (bridged onto Base UI's `initialFocus`).
+    onOpenAutoFocus?: LegacyDismissEventHandler;
+    onEscapeKeyDown?: (event: KeyboardEvent) => void;
+  };
 
 const Content = <T extends TgphElement = "div">({
   style,
   children,
   onEscapeKeyDown,
+  onCloseAutoFocus,
+  onOpenAutoFocus,
+  finalFocus,
+  forceMount,
+  side = "bottom",
+  align = "start",
+  sideOffset = 4,
+  alignOffset,
+  collisionPadding,
+  sticky,
+  hideWhenDetached,
   tgphRef,
   ...props
 }: ContentProps<T>) => {
   const context = useContext(ComboboxContext);
-  const { open, setOpen, triggerRef } = context;
-  const hasInteractedOutside = useRef(false);
-  const handledEscapeKeyDownRef = useRef(false);
-  const handledEscapeKeyDownTimeoutRef = useRef<number | undefined>(undefined);
   const composedRef = useComposedRefs<unknown>(tgphRef, context.contentRef);
-
-  const internalContentRef = useRef(null);
+  const internalContentRef = useRef<HTMLDivElement>(null);
 
   const [height, setHeight] = useState(0);
   const [initialAnimationComplete, setInitialAnimationComplete] =
     useState(false);
 
-  const markEscapeKeyDownHandled = useCallback(() => {
-    handledEscapeKeyDownRef.current = true;
-    window.clearTimeout(handledEscapeKeyDownTimeoutRef.current);
-    handledEscapeKeyDownTimeoutRef.current = window.setTimeout(() => {
-      handledEscapeKeyDownRef.current = false;
-    }, 0);
-  }, []);
+  // Whether the consumer rendered a `Combobox.Search`. When absent we still need
+  // an input in the popup for Base UI's virtual focus, so we mount a hidden one.
+  const hasSearch = useMemo(() => childrenContainSearch(children), [children]);
 
-  const handleEscapeKeyDownEvent = useCallback(
-    (event: KeyboardEvent) => {
-      markEscapeKeyDownHandled();
-      event.stopPropagation();
-      onEscapeKeyDown?.(event);
-
-      if (event.defaultPrevented) {
-        return true;
+  // Register the escape handler so the Root-level open-change bridge can call it
+  // and honor a consumer preventing dismissal.
+  useEffect(() => {
+    if (!context.onEscapeKeyDownRef) return undefined;
+    context.onEscapeKeyDownRef.current = onEscapeKeyDown;
+    return () => {
+      if (context.onEscapeKeyDownRef) {
+        context.onEscapeKeyDownRef.current = undefined;
       }
-
-      if (open) {
-        event.preventDefault();
-        setOpen(false);
-        triggerRef?.current?.focus();
-      }
-
-      return true;
-    },
-    [markEscapeKeyDownHandled, onEscapeKeyDown, open, setOpen, triggerRef],
-  );
-
-  const handleEscapeKeyDown = (event: ReactKeyboardEvent) => {
-    if (event.key !== "Escape") {
-      return false;
-    }
-
-    const baseUIEvent = event as ReactKeyboardEvent & {
-      preventBaseUIHandler?: () => void;
     };
+  }, [onEscapeKeyDown, context.onEscapeKeyDownRef]);
 
-    baseUIEvent.preventBaseUIHandler?.();
-
-    if (event.defaultPrevented || event.nativeEvent.defaultPrevented) {
-      return true;
-    }
-
-    return handleEscapeKeyDownEvent(event.nativeEvent);
-  };
+  // Focus the in-popup input synchronously on open. Base UI moves focus there
+  // itself, but only on a later animation frame, which would drop keystrokes
+  // typed immediately after opening. Focusing here (a layout effect) lands
+  // focus before that frame; Base UI's later focus targets the same input.
+  // Skipped when a consumer supplies `onOpenAutoFocus` — they own open-focus.
+  useLayoutEffect(() => {
+    if (!context.open || onOpenAutoFocus) return;
+    const input = context.contentRef?.current?.querySelector<HTMLInputElement>(
+      "[data-tgph-combobox-search], [data-tgph-combobox-input-hidden]",
+    );
+    input?.focus();
+  }, [context.open, context.contentRef, onOpenAutoFocus]);
 
   const setHeightFromContent = useCallback(
     (element: Element) => {
@@ -497,119 +738,157 @@ const Content = <T extends TgphElement = "div">({
     }
 
     const timeout = window.setTimeout(() => {
-      setHeightFromContent(internalContentRef.current as unknown as Element);
+      if (internalContentRef.current) {
+        setHeightFromContent(internalContentRef.current);
+      }
     }, 10);
 
     return () => window.clearTimeout(timeout);
   }, [context.open, setHeightFromContent]);
 
-  useEffect(() => {
-    return () => {
-      window.clearTimeout(handledEscapeKeyDownTimeoutRef.current);
-    };
-  }, []);
+  // Mirror the old `onCloseAutoFocus` → trigger refocus behavior. Base UI's
+  // default returns focus to the trigger when the popup was opened by pointer,
+  // but leaves it on the in-popup input when opened via the keyboard; return
+  // focus to the trigger explicitly (except on outside pointer dismissal, where
+  // focus should follow the click) to keep the trigger focused after closing.
+  const resolvedFinalFocus = useMemo<
+    boolean | RefObject<HTMLElement | null> | ((closeType: string) => unknown)
+  >(() => {
+    if (finalFocus !== undefined) {
+      return finalFocus;
+    }
 
-  const contentContext = {
-    ...context,
-    onEscapeKeyDown,
-  };
+    if (!onCloseAutoFocus) {
+      return (closeType: string) =>
+        closeType === "keyboard" ? context.triggerRef?.current : true;
+    }
+
+    return () => {
+      const event = new Event("closeAutoFocus", { cancelable: true });
+      onCloseAutoFocus(event);
+      return event.defaultPrevented ? false : true;
+    };
+  }, [finalFocus, onCloseAutoFocus, context.triggerRef]);
+
+  // Bridge the old `onOpenAutoFocus` onto Base UI's `initialFocus`. When a
+  // consumer supplies it they own open-focus (the layout effect above yields
+  // too), so return false to keep Base UI from moving focus and let their
+  // handler place it. Mirrors the `onCloseAutoFocus` → `finalFocus` bridge.
+  const resolvedInitialFocus = useMemo<
+    ((openType: string) => unknown) | undefined
+  >(() => {
+    if (!onOpenAutoFocus) {
+      return undefined;
+    }
+    return () => {
+      const event = new Event("openAutoFocus", { cancelable: true });
+      onOpenAutoFocus(event);
+      return false;
+    };
+  }, [onOpenAutoFocus]);
+
+  const stackProps = props as StackProps;
 
   return (
-    <ComboboxContext.Provider value={contentContext}>
-      <TelegraphMenu.Content
-        className="tgph"
-        mt="1"
-        onEscapeKeyDown={(event: KeyboardEvent) => {
-          if (handledEscapeKeyDownRef.current) {
-            handledEscapeKeyDownRef.current = false;
-            return;
-          }
-
-          onEscapeKeyDown?.(event);
-
-          if (event.defaultPrevented) {
-            // Consumer escape handlers can keep the popup open.
-            return;
-          }
-
-          if (context.open) {
-            // Don't allow the event to bubble up outside of the menu
-            event.stopPropagation();
-            event.preventDefault();
-            context.setOpen(false);
-          }
-        }}
-        onCloseAutoFocus={(event: Event) => {
-          if (!hasInteractedOutside.current) {
-            // Menu close autofocus would otherwise move focus away from the
-            // combobox trigger after keyboard selection or Escape close.
-            context.triggerRef?.current?.focus();
-          }
-
-          hasInteractedOutside.current = false;
-
-          event.preventDefault();
-        }}
-        bg="surface-1"
-        style={{
-          width: "var(--tgph-combobox-trigger-width)",
-          transition: "min-height 200ms ease-in-out",
-          minHeight: height ? `${height}px` : "0",
-          ...style,
-          ...{
-            "--tgph-combobox-content-transform-origin":
-              "var(--radix-popper-transform-origin)",
-            "--tgph-combobox-content-available-width":
-              "var(--radix-popper-available-width)",
-            "--tgph-combobox-content-available-height":
-              "calc(var(--radix-popper-available-height) - var(--tgph-spacing-8))",
-            "--tgph-combobox-trigger-width": "var(--radix-popper-anchor-width)",
-            "--tgph-combobox-trigger-height":
-              "var(--radix-popper-anchor-height)",
-          },
-        }}
-        {...props}
-        tgphRef={composedRef}
-        data-tgph-combobox-content
-        data-tgph-combobox-content-open={context.open}
-        // Cancel out accessibility attributes related to aria menu
-        role={undefined}
-        aria-orientation={undefined}
-        onKeyDown={(event: ReactKeyboardEvent) => {
-          if (handleEscapeKeyDown(event)) {
-            return;
-          }
-
-          // Don't allow the event to bubble up outside of the menu
-          event.stopPropagation();
-
-          // If the first option is focused and the user presses the up
-          // arrow key, focus the search input
-          const options = context.contentRef?.current?.querySelectorAll(
-            "[data-tgph-combobox-option]",
-          );
-
-          if (
-            document.activeElement === options?.[0] &&
-            LAST_KEYS.includes(event.key)
-          ) {
-            // Moving backward from the first option should return focus to search,
-            // matching the previous keyboard loop inside the combobox popup.
-            context.searchRef?.current?.focus();
-          }
-        }}
+    <BaseCombobox.Portal keepMounted={forceMount}>
+      <BaseCombobox.Positioner
+        side={side}
+        align={align}
+        sideOffset={sideOffset}
+        alignOffset={alignOffset}
+        collisionPadding={collisionPadding}
+        sticky={sticky}
+        style={(state) =>
+          getBaseUIPositionerVisibilityStyle({
+            anchorHidden: state.anchorHidden,
+            hideWhenDetached,
+            zIndex: "var(--tgph-zIndex-popover)",
+          })
+        }
       >
-        <Stack direction="column" gap="1" tgphRef={internalContentRef}>
-          {children}
-        </Stack>
-      </TelegraphMenu.Content>
-    </ComboboxContext.Provider>
+        <BaseCombobox.Popup
+          initialFocus={
+            resolvedInitialFocus as TgphComponentProps<
+              typeof BaseCombobox.Popup
+            >["initialFocus"]
+          }
+          finalFocus={
+            resolvedFinalFocus as TgphComponentProps<
+              typeof BaseCombobox.Popup
+            >["finalFocus"]
+          }
+          render={createTgphBaseUIRender(
+            <Stack
+              className="tgph"
+              direction="column"
+              gap="1"
+              bg="surface-1"
+              rounded="4"
+              shadow="2"
+              py="1"
+              mt="1"
+              // Base UI renders the popup as role="dialog"; name it via the
+              // trigger so it isn't an unnamed dialog for assistive tech.
+              aria-labelledby={context.triggerId}
+              data-tgph-combobox-content
+              data-tgph-combobox-content-open={context.open}
+              tgphRef={composedRef as StackProps["tgphRef"]}
+              style={{
+                outline: "none",
+                overflowY: "auto",
+                width: "var(--tgph-combobox-trigger-width)",
+                transition: "min-height 200ms ease-in-out",
+                minHeight: height ? `${height}px` : "0",
+                ...style,
+                ...({
+                  "--tgph-combobox-content-transform-origin":
+                    "var(--transform-origin)",
+                  "--tgph-combobox-content-available-width":
+                    "var(--available-width)",
+                  "--tgph-combobox-content-available-height":
+                    "calc(var(--available-height) - var(--tgph-spacing-8))",
+                  "--tgph-combobox-trigger-width": "var(--anchor-width)",
+                  "--tgph-combobox-trigger-height": "var(--anchor-height)",
+                } as CSSProperties),
+              }}
+              {...stackProps}
+            >
+              {/* Virtual focus needs an input in the popup even without a
+                  visible Search; mount a hidden one in that case. */}
+              {!hasSearch ? (
+                <VisuallyHidden>
+                  <BaseCombobox.Input
+                    // Keep it out of the Tab sequence (it is only focused
+                    // programmatically for virtual focus, on open) but labelled
+                    // so it is not an unnamed control for assistive tech.
+                    tabIndex={-1}
+                    aria-label={context.placeholder ?? "Search"}
+                    data-tgph-combobox-input-hidden
+                  />
+                </VisuallyHidden>
+              ) : null}
+              {/* Options animate their selection checkmark with `motion/react-m`,
+                  which needs a `LazyMotion` feature provider. The popup renders in
+                  a portal (outside the trigger's own provider), so wrap it here —
+                  mirrors `Menu.Content`, whose provider the menu-backed combobox
+                  used to rely on. */}
+              <LazyMotion features={domAnimation}>
+                <Stack direction="column" gap="1" tgphRef={internalContentRef}>
+                  {children}
+                </Stack>
+              </LazyMotion>
+            </Stack>,
+          )}
+        />
+      </BaseCombobox.Positioner>
+    </BaseCombobox.Portal>
   );
 };
 
-export type OptionsProps<T extends TgphElement = "div"> = TgphComponentProps<
-  typeof Stack<T>
->;
+// `PolymorphicProps<T>` + the non-generic `StackProps` (see `ContentProps`);
+// a bare `typeof Stack<T>` defers the mapped type and drops `children`/`as`.
+export type OptionsProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<StackProps, "as">;
 
 const Options = <T extends TgphElement = "div">({
   tgphRef,
@@ -621,9 +900,10 @@ const Options = <T extends TgphElement = "div">({
 
   // Scroll to the selected option or defaultScrollToValue when the combobox opens.
   useEffect(() => {
+    let rafId: number | undefined;
     if (context.open && optionsRef.current) {
       // Small delay to ensure the DOM has rendered
-      requestAnimationFrame(() => {
+      rafId = requestAnimationFrame(() => {
         const selectedValue = isSingleSelect(context.value)
           ? getValueFromOption(context.value, context.legacyBehavior)
           : isMultiSelect(context.value) && context.value.length > 0
@@ -657,6 +937,10 @@ const Options = <T extends TgphElement = "div">({
         }
       });
     }
+    // Cancel a still-pending scroll if the popup closes or deps change first.
+    return () => {
+      if (rafId !== undefined) cancelAnimationFrame(rafId);
+    };
   }, [
     context.open,
     context.value,
@@ -665,54 +949,54 @@ const Options = <T extends TgphElement = "div">({
   ]);
 
   return (
-    <Stack
-      id={context.contentId}
-      direction="column"
-      gap="1"
-      style={
-        {
-          overflowY: "auto",
-          // maxHeight defaults to available height - padding from edge of screen
-          "--max-height": !props.maxHeight
-            ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
-            : undefined,
-        } as CSSProperties
-      }
-      // Accessibility attributes
-      role="listbox"
-      tgphRef={composedRef}
-      {...props}
+    <BaseCombobox.List
+      render={createTgphBaseUIRender(
+        <Stack
+          id={context.contentId}
+          direction="column"
+          gap="1"
+          style={
+            {
+              overflowY: "auto",
+              // maxHeight defaults to available height - padding from edge of screen
+              "--max-height": !props.maxHeight
+                ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
+                : undefined,
+            } as CSSProperties
+          }
+          // Accessibility attributes
+          role="listbox"
+          tgphRef={composedRef as StackProps["tgphRef"]}
+          {...(props as StackProps)}
+        />,
+      )}
     />
   );
 };
 
-export type OptionProps<T extends TgphElement = "button"> = Omit<
-  TgphComponentProps<typeof TelegraphMenu.Button<T>>,
-  "label"
-> & {
-  value: DefinedOption["value"];
-  label?: DefinedOption["label"];
-  selected?: boolean | null;
-};
+// Keep the `Omit` off the generic `typeof OptionItem<T>`: wrapping it defers the
+// mapped type and widens the sibling `onSelect` event to `any` at the JSX call
+// site — the KNO-14309 failure documented on `ContentProps` above. Source the
+// element props from `PolymorphicProps<T>` and the row props from the
+// non-generic `OptionItemProps<"div">`.
+export type OptionProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<OptionItemProps<"div">, "as" | "label"> & {
+    value: DefinedOption["value"];
+    label?: DefinedOption["label"];
+    selected?: boolean | null;
+    onSelect?: (event: Event) => void;
+  };
 
-// Do not drop `= "button"`. Without it an absent `as` silently loses the
-// element's own attributes, so `type` stops type checking.
-const Option = <T extends TgphElement = "button">(
-  optionProps: OptionProps<T>,
-) => {
-  const {
-    value,
-    label,
-    selected,
-    onSelect,
-    children,
-    closeOnClick,
-    tgphRef,
-    ...props
-  } = optionProps as OptionProps<"button">;
+const Option = <T extends TgphElement = "div">({
+  value,
+  label,
+  selected,
+  onSelect,
+  children,
+  tgphRef,
+  ...props
+}: OptionProps<T>) => {
   const context = useContext(ComboboxContext);
-  const { onEscapeKeyDown, setOpen, triggerRef } = context;
-  const [isFocused, setIsFocused] = useState(false);
   const contextValue = context.value;
   const optionRef = useRef<HTMLElement>(null);
   const composedRef = useComposedRefs<HTMLElement>(
@@ -740,13 +1024,21 @@ const Option = <T extends TgphElement = "button">(
   });
 
   const isVisible =
+    // The consumer owns which options render (see `manualFiltering`).
+    context.manualFiltering ||
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
       children: label || children,
       value,
       renderedText,
       searchQuery: context.searchQuery,
-    });
+    }) ||
+    // An option whose visible text is produced by a child component can't be
+    // matched until it has mounted and captured that text. If it first mounts
+    // while a query is already active (the async/server-search case), show it
+    // rather than hide it forever; once captured it filters normally.
+    (renderedText.length === 0 &&
+      optionRendersUnsearchableText(label ?? children));
 
   const isSelected = isMultiSelect(contextValue)
     ? contextValue.some(
@@ -754,201 +1046,98 @@ const Option = <T extends TgphElement = "button">(
       )
     : getValueFromOption(contextValue, context.legacyBehavior) === value;
 
-  useEffect(() => {
-    const option = optionRef.current;
-    if (!option) {
-      return undefined;
-    }
-
-    const handleOptionKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") {
+  // Depend on the specific stable context values rather than the whole (per-
+  // render) context object, so this callback isn't rebuilt every Root render.
+  const { closeOnSelect, setOpen } = context;
+  const handleClick = useCallback(
+    (event: ReactMouseEvent<HTMLElement>) => {
+      if (!onSelect) {
         return;
       }
 
-      event.stopPropagation();
-      onEscapeKeyDown?.(event);
-
-      if (event.defaultPrevented) {
-        return;
+      // Base UI has no per-item select callback, and its own commit for this
+      // item is canceled at the Root value bridge (the item is given no
+      // committable value), so run the override here.
+      if (closeOnSelect === true) {
+        setOpen(false);
       }
 
-      event.preventDefault();
-      setOpen(false);
-      triggerRef?.current?.focus();
-    };
+      onSelect(event.nativeEvent);
+    },
+    [onSelect, closeOnSelect, setOpen],
+  );
 
-    option.addEventListener("keydown", handleOptionKeyDown);
-
-    return () => {
-      option.removeEventListener("keydown", handleOptionKeyDown);
-    };
-  }, [onEscapeKeyDown, setOpen, triggerRef]);
-
-  const handleSelection = (event: Event | ReactKeyboardEvent) => {
-    const keyboardEvent = event as ReactKeyboardEvent;
-    if (keyboardEvent.key === "Escape") {
-      event.stopPropagation();
-      context.onEscapeKeyDown?.(keyboardEvent.nativeEvent);
-
-      if (
-        event.defaultPrevented ||
-        keyboardEvent.nativeEvent.defaultPrevented
-      ) {
-        return;
-      }
-
-      event.preventDefault();
-      context.setOpen(false);
-      context.triggerRef?.current?.focus();
-      return;
-    }
-
-    if (keyboardEvent.key && !SELECT_KEYS.includes(keyboardEvent.key)) {
-      // Let non-selection keys bubble to the content layer so Escape dismissal
-      // and popup-level navigation shims still run from focused options.
-      return;
-    }
-
-    // Don't allow selection events to bubble up outside of the menu.
-    event.stopPropagation();
-
-    // Don't bubble up the event
-    event.preventDefault();
-
-    if (context.closeOnSelect === true) {
-      // Close before emitting value changes so controlled callers see the old
-      // menu-backed ordering of open/value updates.
-      context.setOpen(false);
-    }
-
-    if (onSelect) {
-      // Menu onSelect receives an Event; keyboard selection is already handled
-      // here, so bridge the event shape for the public override callback.
-      const onSelectEvent = event as unknown as Event;
-      return onSelect(onSelectEvent);
-    }
-
-    if (isSingleSelect(contextValue)) {
-      const onValueChange =
-        context.onValueChange as SingleSelect["onValueChange"];
-
-      // TODO: Remove this once { value, label } option is deprecated
-      if (context.legacyBehavior === true) {
-        // Legacy single select still emits the option object shape.
-        onValueChange?.({ value, label });
-      } else {
-        onValueChange?.(value);
-      }
-    } else if (isMultiSelect(contextValue)) {
-      const onValueChange =
-        context.onValueChange as MultiSelect["onValueChange"];
-      const contextValue = context.value as Array<Option>;
-
-      const newValue = isSelected
-        ? contextValue.filter(
-            (v) => getValueFromOption(v, context.legacyBehavior) !== value,
-          )
-        : [
-            ...contextValue,
-            // TODO: Remove this once { value, label } option is deprecated
-            // Preserve the legacy array item shape when that mode is enabled.
-            context.legacyBehavior === true ? { value, label } : value,
-          ];
-
-      onValueChange?.(newValue);
-    }
-
-    if (context.closeOnSelect === true) {
-      context.triggerRef?.current?.focus();
-    }
-  };
-
-  if (isVisible) {
-    return (
-      <TelegraphMenu.Button
-        type="button"
-        onSelect={
-          handleSelection as TgphComponentProps<
-            typeof TelegraphMenu.Button<"button">
-          >["onSelect"]
-        }
-        onKeyDown={handleSelection as ReactKeyboardEventHandler}
-        closeOnClick={closeOnClick ?? context.closeOnSelect}
-        // Force null if selected equals null so we
-        // can override the icon of the button
-        selected={selected === null ? null : (selected ?? isSelected)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        // Accessibility attributes
-        role="option"
-        aria-selected={isSelected ? "true" : "false"}
-        // Custom attributes
-        data-tgph-combobox-option
-        data-tgph-combobox-option-focused={isFocused}
-        data-tgph-combobox-option-value={value}
-        data-tgph-combobox-option-label={label}
-        tgphRef={
-          composedRef as TgphComponentProps<
-            typeof TelegraphMenu.Button<T>
-          >["tgphRef"]
-        }
-        {...props}
-      >
-        {label || children || value}
-      </TelegraphMenu.Button>
-    );
+  if (!isVisible) {
+    return null;
   }
+
+  return (
+    <BaseCombobox.Item
+      // Items carrying an `onSelect` (including Create) must not commit a Base
+      // UI selection; the sentinel value keeps them navigable/highlightable
+      // without matching a real value or the "no selection" state, and their
+      // commit is cancelled at the value bridge (see `isOnSelectItemValue`).
+      value={onSelect ? ON_SELECT_ITEM_VALUE : value}
+      onClick={handleClick}
+      render={createTgphBaseUIRender(
+        <OptionItem
+          as="div"
+          mx="1"
+          // Force null if selected equals null so we can override the icon of
+          // the button.
+          selected={selected === null ? null : (selected ?? isSelected)}
+          // Accessibility attributes
+          role="option"
+          aria-selected={isSelected ? "true" : "false"}
+          // Custom attributes
+          data-tgph-combobox-option
+          data-tgph-combobox-option-value={value}
+          data-tgph-combobox-option-label={label}
+          tgphRef={composedRef as OptionItemProps<"div">["tgphRef"]}
+          {...(props as OptionItemProps<"div">)}
+        >
+          {label || children || value}
+        </OptionItem>,
+      )}
+    />
+  );
 };
 
-export type SearchProps = InputProps & {
+// `defaultValue` is dropped: Base UI seeds the input. `value` and
+// `onValueChange` keep the search query controllable, matching the historical
+// (menu-backed) Search API.
+export type SearchProps = RemappedOmit<
+  InputRootProps<"input">,
+  "value" | "defaultValue"
+> & {
   label?: string;
-  // A Combobox-level prop that `Input` does not have.
+  value?: string;
   onValueChange?: (value: string) => void;
+};
+
+// Reset a Base UI (uncontrolled) input to empty by writing through the native
+// value setter and dispatching an input event, so Base UI's own onChange runs
+// and its store — and our mirrored searchQuery — clear in lockstep.
+const clearInputElement = (input: HTMLInputElement | null | undefined) => {
+  if (!input) return;
+  const setValue = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype,
+    "value",
+  )?.set;
+  setValue?.call(input, "");
+  input.dispatchEvent(new Event("input", { bubbles: true }));
 };
 
 const Search = ({
   label = "Search",
   placeholder = "Search",
   tgphRef,
-  value: controlledValueProp,
   onValueChange: onValueChangeProp,
   ...props
 }: SearchProps) => {
   const id = useId();
   const context = useContext(ComboboxContext);
   const composedRef = useComposedRefs(tgphRef, context.searchRef);
-
-  const value = controlledValueProp ?? context.searchQuery;
-  // `Combobox.Root` always provides `setSearchQuery`; the cast only drops the
-  // optional context member from the type.
-  const onValueChange = (onValueChangeProp ?? context.setSearchQuery) as (
-    value: string,
-  ) => void;
-
-  useEffect(() => {
-    const handleSearchKeyDown = (event: KeyboardEvent) => {
-      if (FIRST_KEYS.includes(event.key)) {
-        // Arrowing down from the search input should transfer focus into the
-        // options list without scrolling the popup.
-        context.contentRef?.current?.focus({ preventScroll: true });
-      }
-
-      if (event.key === "Escape") {
-        return;
-      }
-
-      event.stopPropagation();
-    };
-
-    const searchInput = context.searchRef?.current;
-
-    if (searchInput) {
-      searchInput.addEventListener("keydown", handleSearchKeyDown);
-      return () => {
-        searchInput.removeEventListener("keydown", handleSearchKeyDown);
-      };
-    }
-  }, [context]);
 
   return (
     <Box borderBottom="px" px="1" pb="1">
@@ -957,30 +1146,38 @@ const Search = ({
           {label}
         </Text>
       </VisuallyHidden>
-      <TelegraphInput
-        id={id}
-        variant="ghost"
-        placeholder={placeholder}
-        value={value}
+      <BaseCombobox.Input
+        // Base UI owns the input value; mirror it into a consumer-controlled
+        // Search via onChange without making the DOM input controlled (which
+        // races Base UI's own state and drops keystrokes).
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onValueChange(event.target.value);
+          onValueChangeProp?.(event.target.value);
         }}
-        LeadingComponent={<Icon icon={SearchIcon} alt="Search Icon" />}
-        TrailingComponent={
-          context?.searchQuery && context?.searchQuery?.length > 0 ? (
-            <TelegraphButton
-              variant="ghost"
-              color="gray"
-              icon={{ icon: X, alt: "Clear Search Query" }}
-              onClick={() => context.setSearchQuery?.("")}
-            />
-          ) : null
-        }
-        autoFocus
-        data-tgph-combobox-search
-        aria-controls={context.contentId}
-        {...props}
-        tgphRef={composedRef}
+        render={createTgphBaseUIRender(
+          <TelegraphInput
+            id={id}
+            variant="ghost"
+            placeholder={placeholder}
+            LeadingComponent={<Icon icon={SearchIcon} alt="Search Icon" />}
+            TrailingComponent={
+              context?.searchQuery && context?.searchQuery?.length > 0 ? (
+                <TelegraphButton
+                  variant="ghost"
+                  color="gray"
+                  icon={{ icon: X, alt: "Clear Search Query" }}
+                  onClick={() => {
+                    clearInputElement(context.searchRef?.current);
+                    context.setSearchQuery?.("");
+                  }}
+                />
+              ) : null
+            }
+            data-tgph-combobox-search
+            aria-controls={context.contentId}
+            {...props}
+            tgphRef={composedRef}
+          />,
+        )}
       />
     </Box>
   );
@@ -1016,12 +1213,51 @@ const isOptionElement = (element: ReactElement) => {
   return Boolean(props?.value);
 };
 
-export type EmptyProps<T extends TgphElement = "div"> = TgphComponentProps<
-  typeof Stack<T>
-> & {
-  icon?: IconProps | null;
-  message?: string | null;
+// Walk the Content children for a `Combobox.Search` so Content can decide
+// whether to mount its own hidden input for virtual focus.
+const childrenContainSearch = (children: ReactNode): boolean => {
+  let found = false;
+  Children.forEach(children, (child) => {
+    if (found || !(typeof child === "object" && child !== null)) return;
+    const element = child as ReactElement<{ children?: ReactNode }>;
+    if (element.type === Search) {
+      found = true;
+      return;
+    }
+    if (element.props?.children) {
+      found = childrenContainSearch(element.props.children);
+    }
+  });
+  return found;
 };
+
+// Whether an option's label/children can render text that the Root can't read
+// statically — i.e. it contains a component element that may produce searchable
+// text from its own props/state (captured per-option after mount as
+// `renderedText`). Host elements (string `type`) expose their text through
+// their own children, so only component types are treated as opaque. Used to
+// keep such options in `filteredItems` so a valid highlight isn't dropped.
+const optionRendersUnsearchableText = (label: ReactNode): boolean => {
+  let found = false;
+  Children.forEach(label, (child) => {
+    if (found || !isValidElement(child)) return;
+    if (typeof child.type !== "string") {
+      found = true;
+      return;
+    }
+    const grandchildren = (child.props as { children?: ReactNode })?.children;
+    if (grandchildren != null) {
+      found = optionRendersUnsearchableText(grandchildren);
+    }
+  });
+  return found;
+};
+
+export type EmptyProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
+  Omit<StackProps, "as"> & {
+    icon?: IconProps | null;
+    message?: string | null;
+  };
 
 const Empty = <T extends TgphElement = "div">({
   icon = { icon: SearchIcon, alt: "Search Icon" },
@@ -1060,7 +1296,7 @@ const Empty = <T extends TgphElement = "div">({
         w="full"
         my="8"
         data-tgph-combobox-empty
-        {...props}
+        {...(props as StackProps)}
       >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
@@ -1070,11 +1306,12 @@ const Empty = <T extends TgphElement = "div">({
 };
 
 export type CreateProps<
-  T extends TgphElement = "button",
+  T extends TgphElement = "div",
   LB extends boolean = false,
-> = TgphComponentProps<typeof TelegraphMenu.Button<T>> & {
-  leadingText?: string;
-} & (LB extends true
+> = PolymorphicProps<T> &
+  Omit<OptionItemProps<"div">, "as"> & {
+    leadingText?: string;
+  } & (LB extends true
     ? {
         values: Array<DefinedOption>;
         onCreate: (value: { value: string; label?: string }) => void;
@@ -1086,7 +1323,7 @@ export type CreateProps<
         legacyBehavior?: false;
       });
 
-const Create = <T extends TgphElement = "button", LB extends boolean = false>({
+const Create = <T extends TgphElement = "div", LB extends boolean = false>({
   leadingText = "Create",
   values,
   onCreate,
@@ -1135,10 +1372,28 @@ const Create = <T extends TgphElement = "button", LB extends boolean = false>({
             context.setSearchQuery?.("");
           }
         }}
-        {...props}
+        {...(props as Partial<OptionProps<"div">>)}
       />
     );
   }
+};
+
+// Walk the children for a `Combobox.Create` so the Root's `filteredItems` list
+// can reserve a slot for the row Create mounts (it isn't one of `options`).
+const childrenContainCreate = (children: ReactNode): boolean => {
+  let found = false;
+  Children.forEach(children, (child) => {
+    if (found || !(typeof child === "object" && child !== null)) return;
+    const element = child as ReactElement<{ children?: ReactNode }>;
+    if (element.type === Create) {
+      found = true;
+      return;
+    }
+    if (element.props?.children) {
+      found = childrenContainCreate(element.props.children);
+    }
+  });
+  return found;
 };
 
 const Combobox = {} as {
