@@ -119,3 +119,44 @@ export const YearPickerWithScrollToValue: Story = {
     );
   },
 };
+
+// `required` enforces native client-side validation: submitting with no
+// selection is blocked by the browser (Base UI renders a hidden required input).
+export const RequiredInForm: Story = {
+  render: (args) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [value, setValue] = React.useState<string | undefined>(undefined);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [submitted, setSubmitted] = React.useState<string | null>(null);
+    return (
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          setSubmitted(value ?? "");
+        }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+          alignItems: "flex-start",
+        }}
+      >
+        <Select.Root
+          placeholder="Select a channel"
+          value={value}
+          onValueChange={setValue}
+          size={args.size}
+          disabled={args.disabled}
+          required
+          name="channel"
+        >
+          <Select.Option value="email">Email</Select.Option>
+          <Select.Option value="sms">SMS</Select.Option>
+          <Select.Option value="push">Push</Select.Option>
+        </Select.Root>
+        <button type="submit">Submit</button>
+        {submitted !== null && <span>Submitted: {submitted || "(empty)"}</span>}
+      </form>
+    );
+  },
+};
