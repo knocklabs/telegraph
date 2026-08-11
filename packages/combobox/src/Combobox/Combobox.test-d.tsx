@@ -3,6 +3,7 @@ import type {
   ComboboxContentProps,
   ComboboxCreateProps,
   ComboboxEmptyProps,
+  ComboboxInputProps,
   ComboboxOptionProps,
   ComboboxOptionsProps,
   ComboboxRootProps,
@@ -25,6 +26,18 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxSearchProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<ComboboxEmptyProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<ComboboxCreateProps>().not.toHaveProperty("notARealProp");
+  });
+
+  it("types Combobox.Input (anchor input)", () => {
+    // No catch-all passthrough.
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("notARealProp");
+    // The engine owns the input text, so these are intentionally omitted from
+    // the public props (drive them via Combobox.Root's inputValue/value).
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("value");
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("onChange");
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("defaultValue");
+    // A rendered anchor input takes native attributes.
+    <Combobox.Input aria-label="Search" />;
   });
 
   it("keeps declared props narrow", () => {
