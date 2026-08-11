@@ -1,0 +1,64 @@
+/* Lockstep slide for segmented pages. Isolated here (and loaded lazily by
+   Combobox.pageTransition.tsx) so it ships only for multi-page comboboxes.
+
+   On a page switch the incoming panel slides in from the side of the move (this
+   file) while a static clone of the outgoing panel slides out the other side
+   (animated imperatively — see Combobox.pageTransition.tsx). Both are masked by
+   Combobox.Options' `overflow-x: hidden`. The popup's height is animated
+   separately by Combobox.Content's `min-height` transition, so the panels slide
+   while the popup resizes. Disabled under `prefers-reduced-motion`. */
+
+[data-tgph-combobox-page-panel],
+[data-tgph-combobox-page-panel-clone] {
+  display: flex;
+  flex-direction: column;
+  /* Match Combobox.Options gap="1" so rows keep their spacing. */
+  gap: var(--tgph-spacing-1);
+  /* No slide by default (opening the popup); the direction rules below add it
+     only for a real switch, and the clone is animated imperatively. */
+  animation: none;
+}
+
+/* Incoming panel: slides in from the side matching the move. Forward = from the
+   right, back = from the left. No direction (opening the popup) = no slide, so
+   the page just appears in place. */
+[data-tgph-combobox-page-panel][data-tgph-combobox-page-direction="forward"] {
+  animation: tgph-combobox-page-in-forward 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-tgph-combobox-page-panel][data-tgph-combobox-page-direction="back"] {
+  animation: tgph-combobox-page-in-back 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Outgoing snapshot: overlaid on the list and slid out via the Web Animations
+   API. It is a detached, inert copy — no Base UI items, no interaction. */
+[data-tgph-combobox-page-panel-clone] {
+  position: absolute;
+  pointer-events: none;
+}
+
+@keyframes tgph-combobox-page-in-forward {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes tgph-combobox-page-in-back {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Respect reduced-motion: keep the page swap, drop the movement. The clone's
+   slide-out is skipped in JS under the same query. */
+@media (prefers-reduced-motion: reduce) {
+  [data-tgph-combobox-page-panel] {
+    animation: none;
+  }
+}

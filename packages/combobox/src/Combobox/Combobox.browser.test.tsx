@@ -400,3 +400,146 @@ describe("Combobox free-text autocomplete (real browser)", () => {
     });
   });
 });
+
+const PagesCombobox = () => {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={(next) => setValue(next as string | undefined)}
+      defaultPage="channels"
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Search />
+        <Combobox.PageSelector aria-label="Destination type">
+          <Combobox.PageButton value="channels">Channels</Combobox.PageButton>
+          <Combobox.PageButton value="people">People</Combobox.PageButton>
+        </Combobox.PageSelector>
+        <Combobox.Options>
+          <Combobox.Page value="channels">
+            {["general", "random", "design"].map((v) => (
+              <Combobox.Option key={v} value={v}>
+                {v}
+              </Combobox.Option>
+            ))}
+          </Combobox.Page>
+          <Combobox.Page value="people">
+            {["ada", "grace"].map((v) => (
+              <Combobox.Option key={v} value={v}>
+                {v}
+              </Combobox.Option>
+            ))}
+          </Combobox.Page>
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
+const getPageButton = (label: string) =>
+  Array.from(document.querySelectorAll("button")).find(
+    (el) => el.textContent?.trim() === label,
+  ) as HTMLButtonElement | undefined;
+
+describe("Combobox segmented pages (real browser)", () => {
+  it("switches pages with Left/Right while focus stays on the search input", async () => {
+    render(<PagesCombobox />);
+    await openViaTriggerClick();
+
+    const search = document.querySelector(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    expect(search).toBeTruthy();
+    search.focus();
+    await waitFrames(2);
+    expect(document.activeElement).toBe(search);
+
+    // Channels page is active.
+    expect(
+      document.querySelector("[data-tgph-combobox-option-value='general']"),
+    ).toBeTruthy();
+    expect(
+      document.querySelector("[data-tgph-combobox-option-value='ada']"),
+    ).toBeFalsy();
+
+    await userEvent.keyboard("{ArrowRight}");
+    await waitFrames(2);
+    // Focus stays on the input under virtual focus. The People page is active.
+    expect(document.activeElement, "focus stays on the input").toBe(search);
+    expect(
+      document.querySelector("[data-tgph-combobox-option-value='ada']"),
+    ).toBeTruthy();
+    expect(
+      document.querySelector("[data-tgph-combobox-option-value='general']"),
+    ).toBeFalsy();
+
+    await userEvent.keyboard("{ArrowLeft}");
+    await waitFrames(2);
+    expect(document.activeElement).toBe(search);
+    expect(
+      document.querySelector("[data-tgph-combobox-option-value='general']"),
+    ).toBeTruthy();
+  });
+
+  it("keeps Up/Down navigating the active page's list", async () => {
+    render(<PagesCombobox />);
+    await openViaTriggerClick();
+
+    const search = document.querySelector(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    search.focus();
+    await waitFrames(2);
+
+    await userEvent.keyboard("{ArrowDown}");
+    await waitFrames(2);
+
+    // The active descendant is an option on the active (channels) page, and DOM
+    // focus stays on the input.
+    expect(document.activeElement).toBe(search);
+    const activeId = search.getAttribute("aria-activedescendant");
+    expect(activeId).toBeTruthy();
+    const highlighted = activeId ? document.getElementById(activeId) : null;
+    expect(["general", "random", "design"]).toContain(
+      highlighted?.getAttribute("data-tgph-combobox-option-value"),
+    );
+  });
+
+  it("keeps focus on the input across a pointer page switch (no focus-ring blink)", async () => {
+    render(<PagesCombobox />);
+    await openViaTriggerClick();
+
+    const search = document.querySelector(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    search.focus();
+    await waitFrames(2);
+
+    const peopleButton = getPageButton("People");
+    expect(peopleButton).toBeTruthy();
+
+    // The press must not move DOM focus off the input: that focus round-trip is
+    // what blinked the input's focus ring. The selector prevents the button's
+    // mousedown default so focus never leaves.
+    const mousedown = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    peopleButton!.dispatchEvent(mousedown);
+    expect(
+      mousedown.defaultPrevented,
+      "page button press does not steal focus",
+    ).toBe(true);
+
+    await userEvent.click(peopleButton!);
+    await waitFrames(4);
+
+    expect(
+      document.querySelector("[data-tgph-combobox-option-value='ada']"),
+    ).toBeTruthy();
+    // Focus stayed on the input the whole time, so keyboard nav keeps working.
+    expect(document.activeElement, "focus stays on the input").toBe(search);
+  });
+});
