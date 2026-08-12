@@ -339,7 +339,10 @@ const Trigger = <V extends ChildrenValue>({
         variant="outline"
         align="center"
         minH={TRIGGER_MIN_HEIGHT[size]}
-        h="full"
+        // `auto` (not `full`) so the trigger grows with wrapped tags but never
+        // stretches to a definite-height ancestor. Button.Root would otherwise
+        // apply its fixed per-size `h`, which clips the wrap layout.
+        h="auto"
         w="full"
         py="0_5"
         pr="1_5"
