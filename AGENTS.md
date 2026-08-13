@@ -5,9 +5,30 @@ Guidance for AI agents working in this repository.
 Before writing code, read the SKILL.md (and its referenced files) for any
 applicable skill below:
 
-| Task                                  | Skill                          |
-| ------------------------------------- | ------------------------------ |
-| Writing a browser-mode component test | `write-browser-component-test` |
+| Task                                          | Skill                                 |
+| --------------------------------------------- | ------------------------------------- |
+| Reviewing a diff, a PR, or your own work      | `.agents/skills/code-review/SKILL.md` |
+| Changing a props type, or destructuring props | `.agents/skills/code-review/SKILL.md` |
+| Writing a browser-mode component test         | `write-browser-component-test`        |
+
+Skills under `.agents/skills` live in this repo and are always available. Skills
+named without a path are published to Knock's
+[skillset](https://github.com/knocklabs/skillset); install a missing one with
+`skillset install <name>`.
+
+## Prop types are the public API
+
+Every prop type in `packages/*/src` is type-checked against by consuming apps. A
+prop type that is wrong does not fail here — it fails in the consumer, one
+release later. The whole family of defects that produces compiles cleanly, so
+reading the diff is not enough.
+
+Before changing a props type, adding an `as` prop, or destructuring props, read
+`.agents/skills/code-review/SKILL.md` and run:
+
+```bash
+node .agents/skills/code-review/scripts/check-prop-plumbing.cjs
+```
 
 ## Browser-mode component tests (Vitest)
 
