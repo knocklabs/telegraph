@@ -81,7 +81,7 @@
     "@storybook/addon-themes": "^10.4.6",
     "@storybook/icons": "^2.0.2",
     "@storybook/react": "^10.4.0",
-    "@storybook/react-vite": "^10.4.2",
+    "@storybook/react-vite": "^10.5.6",
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
