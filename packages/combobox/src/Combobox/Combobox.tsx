@@ -13,6 +13,7 @@ import {
 import { Icon, type IconProps } from "@telegraph/icon";
 import { type InputProps, Input as TelegraphInput } from "@telegraph/input";
 import { Box, Stack } from "@telegraph/layout";
+import type { StackProps } from "@telegraph/layout";
 import { Menu as TelegraphMenu } from "@telegraph/menu";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
@@ -676,8 +677,7 @@ const Options = <T extends TgphElement = "div">({
         {
           overflowY: "auto",
           // maxHeight defaults to available height - padding from edge of screen
-          "--max-height": !(props as TgphComponentProps<typeof Stack<T>>)
-            .maxHeight
+          "--max-height": !(props as StackProps<T>).maxHeight
             ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
             : undefined,
         } as CSSProperties
@@ -685,7 +685,7 @@ const Options = <T extends TgphElement = "div">({
       // Accessibility attributes
       role="listbox"
       tgphRef={composedRef}
-      {...(props as TgphComponentProps<typeof Stack<T>>)}
+      {...(props as StackProps<T>)}
     />
   );
 };
@@ -1064,7 +1064,7 @@ const Empty = <T extends TgphElement = "div">({
         w="full"
         my="8"
         data-tgph-combobox-empty
-        {...(props as TgphComponentProps<typeof Stack<T>>)}
+        {...(props as StackProps<T>)}
       >
         {icon === null ? <></> : <Icon {...icon} />}
         {message === null ? <></> : <Text as="span">{message}</Text>}
