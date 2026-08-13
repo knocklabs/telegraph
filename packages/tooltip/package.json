@@ -46,7 +46,7 @@
     "@telegraph/prettier-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^19.2.17",
-    "eslint": "^10.4.0",
+    "eslint": "^10.8.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "typescript": "^6.0.2",
