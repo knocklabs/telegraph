@@ -29,8 +29,9 @@ still generic. Every props type built with it therefore lost them: a component
 generic over its element could not read its own `className`. `RemappedOmit`
 removes keys in place and keeps them, so the affected props types now use it.
 
-No runtime change. Reading these props no longer needs a cast, and the props
-each component accepts are otherwise unchanged.
+No runtime change, and no component body needed editing: the affected components
+already read these props, the types just never admitted it because nothing
+type-checked them. The props each component accepts are otherwise unchanged.
 
 One exception, in `@telegraph/modal`: `Modal.Body`, `Modal.Header` and
 `Modal.Footer` no longer accept `color`. They render a `Stack`, which drops
