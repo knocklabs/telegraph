@@ -21,6 +21,26 @@ describe("Modal types", () => {
     expectTypeOf<ModalOverlayProps>().not.toHaveProperty("notARealProp");
   });
 
+  it("rejects `color` on Body, Header and Footer", () => {
+    // They render a Stack, which drops `color` on purpose: React accepts it on
+    // any element and it renders an attribute that paints nothing.
+    expectTypeOf<ModalBodyProps>().not.toHaveProperty("color");
+    expectTypeOf<ModalHeaderProps>().not.toHaveProperty("color");
+    expectTypeOf<ModalFooterProps>().not.toHaveProperty("color");
+    <Modal.Body
+      // @ts-expect-error `color` is not a Modal.Body prop
+      color="red"
+    />;
+    <Modal.Header
+      // @ts-expect-error `color` is not a Modal.Header prop
+      color="red"
+    />;
+    <Modal.Footer
+      // @ts-expect-error `color` is not a Modal.Footer prop
+      color="red"
+    />;
+  });
+
   it("keeps declared props narrow", () => {
     expectTypeOf<ModalRootProps["a11yTitle"]>().not.toBeAny();
     expectTypeOf<ModalRootProps["a11yDescription"]>().not.toBeAny();

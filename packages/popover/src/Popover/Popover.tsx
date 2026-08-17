@@ -4,6 +4,7 @@ import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
   type PolymorphicProps,
+  type RemappedOmit,
   type TgphElement,
   callLegacyDismissHandlers,
   createTgphBaseUIRender,
@@ -187,8 +188,8 @@ export type ContentProps<T extends TgphElement = "div"> = Omit<
 > &
   Omit<BasePopoverPopupProps, "children" | "className" | "render" | "style"> &
   // Drop `as`: the content always renders `motion.div` (KNO-14501).
-  Omit<PolymorphicProps<T>, "as"> &
-  Omit<StackProps, "align" | "as"> & {
+  RemappedOmit<PolymorphicProps<T>, "as"> &
+  RemappedOmit<StackProps, "align" | "as"> & {
     avoidCollisions?: boolean;
     contentStackRef?: Ref<HTMLDivElement>;
     forceMount?: boolean;
@@ -415,7 +416,7 @@ const Content = <T extends TgphElement = "div">(
               key="tgph-popover-content"
               // Keep the `as` omission. It stops the rest props adding a second
               // candidate to Stack's element inference.
-              {...(stackProps as Omit<
+              {...(stackProps as RemappedOmit<
                 StackProps<typeof motion.div>,
                 "as" | "children" | "onAnimationComplete"
               >)}

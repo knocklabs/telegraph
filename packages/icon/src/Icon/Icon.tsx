@@ -1,5 +1,6 @@
 import type {
   PolymorphicPropsWithTgphRef,
+  RemappedOmit,
   TgphElement,
 } from "@telegraph/helpers";
 import type { BoxProps } from "@telegraph/layout";
@@ -27,7 +28,7 @@ type IconA11yProps =
 // build on it without inheriting the XOR.
 export type IconBaseProps<T extends TgphElement = "span"> =
   PolymorphicPropsWithTgphRef<T, HTMLSpanElement> &
-    Omit<BoxProps<T>, "as" | "tgphRef"> &
+    RemappedOmit<BoxProps<T>, "as" | "tgphRef"> &
     BaseIconProps;
 
 export type IconProps<T extends TgphElement = "span"> = IconBaseProps<T> &

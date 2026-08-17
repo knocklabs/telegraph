@@ -31,7 +31,7 @@ type InternalProps = {
   weight: Required<RootBaseProps>["weight"];
 };
 
-export type RootProps<T extends TgphElement = "a"> = Omit<
+export type RootProps<T extends TgphElement = "a"> = RemappedOmit<
   StackProps<T>,
   "as" | "tgphRef" | "color"
 > &

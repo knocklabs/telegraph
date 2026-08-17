@@ -23,6 +23,10 @@ jobs:
     name: Lint Project
     needs: [setup-files]
     uses: ./.github/workflows/lint.yml
+  type-check:
+    name: Type Check Project
+    needs: [setup-files]
+    uses: ./.github/workflows/type-check.yml
   unit-test-packages:
     name: Unit Test Packages
     needs: [setup-files]
