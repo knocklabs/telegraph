@@ -1,3 +1,6 @@
+import { Bell } from "lucide-react";
+import { describe, expectTypeOf, it } from "vitest";
+
 import { DataList } from ".";
 import type {
   DataListItemProps,
@@ -6,8 +9,6 @@ import type {
   DataListListProps,
   DataListValueProps,
 } from ".";
-import { Bell } from "lucide-react";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("DataList types", () => {
   it("has no catch-all index signature", () => {

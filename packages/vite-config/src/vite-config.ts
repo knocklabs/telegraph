@@ -48,7 +48,7 @@ const buildTimeInfo = {
   format: "es",
 };
 
-export default {
+const viteConfig = {
   build: {
     // Ensure LightningCSS emits -webkit-appearance and -webkit-user-select vendor
     // prefixes to match autoprefixer's output from the PostCSS config. Vite 8 uses
@@ -123,3 +123,5 @@ export default {
     react(),
   ],
 };
+
+export default viteConfig;

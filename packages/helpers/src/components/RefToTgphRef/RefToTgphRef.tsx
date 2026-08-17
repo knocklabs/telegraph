@@ -147,5 +147,6 @@ const RefToTgphRef = React.forwardRef<any, any>(
     return applyRefProps({ children: childrenProp, ...props }, stableRef);
   },
 );
+RefToTgphRef.displayName = "RefToTgphRef";
 
 export { RefToTgphRef };

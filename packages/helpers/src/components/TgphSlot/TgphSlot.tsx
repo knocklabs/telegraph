@@ -220,6 +220,7 @@ const TgphSlot = forwardRef<HTMLElement, TgphSlotProps>(
     });
   },
 );
+TgphSlot.displayName = "TgphSlot";
 
 export { TgphSlot };
 export type { TgphSlotProps };

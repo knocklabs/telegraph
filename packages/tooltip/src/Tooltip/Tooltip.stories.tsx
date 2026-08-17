@@ -113,11 +113,7 @@ export const DisabledButtonTrigger: Story = {
       <Stack w="full" my="10" align="center" justify="center" gap="2">
         <TooltipGroupProvider>
           <TelegraphTooltip {...args}>
-            <Button
-              color="blue"
-              onClick={() => console.log("clicked")}
-              disabled
-            >
+            <Button color="blue" onClick={() => {}} disabled>
               Hover me
             </Button>
           </TelegraphTooltip>
@@ -132,12 +128,7 @@ export const DisabledAnchorTrigger: Story = {
       <Stack w="full" my="10" align="center" justify="center" gap="2">
         <TooltipGroupProvider>
           <TelegraphTooltip {...args}>
-            <Button
-              as="a"
-              color="blue"
-              onClick={() => console.log("clicked")}
-              disabled
-            >
+            <Button as="a" color="blue" onClick={() => {}} disabled>
               Hover me
             </Button>
           </TelegraphTooltip>

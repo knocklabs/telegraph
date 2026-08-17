@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { TextArea } from ".";
 import type { TextAreaProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("TextArea types", () => {
   it("has no catch-all index signature", () => {

@@ -28,6 +28,8 @@ const ForwardRefButton = forwardRef<
   return <button ref={ref} type="button" {...props} />;
 });
 
+ForwardRefButton.displayName = "ForwardRefButton";
+
 describe("createTgphBaseUIRender", () => {
   it("forwards Base UI render props to a native element", () => {
     const ref = createRef<HTMLButtonElement>();

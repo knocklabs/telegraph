@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { TabPanel } from ".";
 import type { TabPanelProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("TabPanel types", () => {
   it("has no catch-all index signature", () => {

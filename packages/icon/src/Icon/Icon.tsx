@@ -50,10 +50,14 @@ const Icon = <T extends TgphElement = "span">(iconProps: IconProps<T>) => {
   const IconComponent = icon;
 
   if (!IconComponent) {
+    // Deliberate developer warning; Button.test.tsx asserts on it.
+    // oxlint-disable-next-line eslint/no-console
     console.error(`@telegraph/icon: icon prop is required`);
   }
 
   if (!alt && !props["aria-hidden"]) {
+    // Deliberate developer warning; Button.test.tsx asserts on it.
+    // oxlint-disable-next-line eslint/no-console
     console.error(`@telegraph/icon: alt prop is required`);
   }
 

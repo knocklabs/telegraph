@@ -1,3 +1,5 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Toggle } from ".";
 import type {
   ToggleIndicatorProps,
@@ -8,7 +10,6 @@ import type {
   ToggleSize,
   ToggleSwitchProps,
 } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Toggle types", () => {
   it("has no catch-all index signature", () => {

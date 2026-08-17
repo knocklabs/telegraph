@@ -11,7 +11,7 @@ import { tracking } from "./tokens/tracking";
 import { weight } from "./tokens/weight";
 import { zIndex } from "./tokens/zIndex";
 
-export default {
+const tokens = {
   tokens: {
     "border-style": borderStyle,
     color,
@@ -27,3 +27,5 @@ export default {
     zIndex,
   },
 };
+
+export default tokens;

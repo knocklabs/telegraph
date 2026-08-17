@@ -1,3 +1,5 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Input } from ".";
 import type {
   InputBaseRootProps,
@@ -5,7 +7,6 @@ import type {
   InputRootProps,
   InputSlotProps,
 } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Input types", () => {
   it("has no catch-all index signature", () => {

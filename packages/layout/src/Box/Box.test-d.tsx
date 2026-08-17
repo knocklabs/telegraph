@@ -1,6 +1,7 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Box } from ".";
 import type { BoxProps } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Box types", () => {
   it("has no catch-all index signature", () => {

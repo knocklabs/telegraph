@@ -1,3 +1,6 @@
+// These tests stub `console.error` to assert the component logs a warning,
+// so every `console` reference here is the subject under test, not logging.
+/* oxlint-disable eslint/no-console */
 import { render } from "@testing-library/react";
 import { Bell } from "lucide-react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

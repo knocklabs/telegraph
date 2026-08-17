@@ -1,14 +1,20 @@
-import { SegmentedControl } from ".";
-import type { SegmentedControlOptionProps, SegmentedControlRootProps } from ".";
 import { AlignLeft } from "lucide-react";
 import { forwardRef } from "react";
 import { describe, expectTypeOf, it } from "vitest";
+
+import { SegmentedControl } from ".";
+import type { SegmentedControlOptionProps, SegmentedControlRootProps } from ".";
 
 // Stands in for `next/link`: takes `href` and renders an anchor.
 const RouterLink = forwardRef<
   HTMLAnchorElement,
   { href: string; children?: React.ReactNode }
->(({ href, ...props }, ref) => <a href={href} ref={ref} {...props} />);
+>(({ href, ...props }, ref) => (
+  // Type-only fixture: this file is never rendered, so the rule's premise
+  // does not apply.
+  // oxlint-disable-next-line jsx-a11y/anchor-has-content
+  <a href={href} ref={ref} {...props} />
+));
 RouterLink.displayName = "RouterLink";
 
 describe("SegmentedControl types", () => {

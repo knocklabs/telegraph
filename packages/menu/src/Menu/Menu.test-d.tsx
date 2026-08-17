@@ -1,3 +1,6 @@
+import { forwardRef } from "react";
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Menu } from ".";
 import type {
   MenuButtonProps,
@@ -8,15 +11,18 @@ import type {
   MenuSubProps,
   MenuSubTriggerProps,
 } from ".";
-import { forwardRef } from "react";
-import { describe, expectTypeOf, it } from "vitest";
 
 // Stands in for `next/link`: a component that takes `href` and renders an
 // anchor, which is the shape callers reach for on a menu item that navigates.
 const RouterLink = forwardRef<
   HTMLAnchorElement,
   { href: string; children?: React.ReactNode }
->(({ href, ...props }, ref) => <a href={href} ref={ref} {...props} />);
+>(({ href, ...props }, ref) => (
+  // Type-only fixture: this file is never rendered, so the rule's premise
+  // does not apply.
+  // oxlint-disable-next-line jsx-a11y/anchor-has-content
+  <a href={href} ref={ref} {...props} />
+));
 RouterLink.displayName = "RouterLink";
 
 describe("Menu types", () => {

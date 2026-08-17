@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const interactivePlugin = require("./interactive-plugin").default;
 
-export default {
+const styleEnginePostcssConfig = {
   plugins: [
     // Must run before other plugins so that the generated rules are available
     // for subsequent processing (e.g. autoprefixer, discard-empty).
@@ -18,3 +18,5 @@ export default {
     require("postcss-custom-media"),
   ],
 };
+
+export default styleEnginePostcssConfig;

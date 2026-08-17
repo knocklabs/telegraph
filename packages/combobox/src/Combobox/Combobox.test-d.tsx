@@ -1,3 +1,5 @@
+import { describe, expectTypeOf, it } from "vitest";
+
 import { Combobox } from ".";
 import type {
   ComboboxContentProps,
@@ -9,7 +11,6 @@ import type {
   ComboboxSearchProps,
   ComboboxTriggerProps,
 } from ".";
-import { describe, expectTypeOf, it } from "vitest";
 
 describe("Combobox types", () => {
   it("has no catch-all index signature", () => {

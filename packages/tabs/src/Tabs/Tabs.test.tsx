@@ -17,6 +17,8 @@ type CustomLinkProps = ComponentPropsWithoutRef<"a"> & {
 };
 
 const CustomLink = ({ tgphRef, ...props }: CustomLinkProps) => (
+  // Children reach the anchor through the spread, which the rule cannot see.
+  // oxlint-disable-next-line jsx-a11y/anchor-has-content
   <a ref={tgphRef} {...props} />
 );
 

@@ -25,7 +25,7 @@ const tokensToCss = (variables = {}, mode = "tokens") => {
   function processObject(obj, prefix = "") {
     Object.keys(obj).forEach((key) => {
       const value = obj[key];
-      let currentPrefix = `${prefix}-${key}`;
+      const currentPrefix = `${prefix}-${key}`;
 
       if (typeof value === "object" && !Array.isArray(value)) {
         processObject(value, currentPrefix);

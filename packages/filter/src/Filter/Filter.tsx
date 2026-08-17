@@ -420,6 +420,8 @@ export const Option = ({ name, value, icon: optionIcon }: OptionProps) => {
 
     // If there's no children and no key, warn and do nothing
     if (!filterKey) {
+      // Deliberate developer warning for a misconfigured Filter.
+      // oxlint-disable-next-line eslint/no-console
       console.warn(
         `Filter menu warning: tried to set a filter but no key is active, make sure all of your Items have values or this filter won't set! Check the parent of \`${value}\``,
       );

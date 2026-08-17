@@ -296,6 +296,7 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
     );
   },
 );
+TriggerWithRef.displayName = "TriggerWithRef";
 
 const Trigger = TriggerWithRef as (props: TriggerProps) => ReactElement | null;
 
