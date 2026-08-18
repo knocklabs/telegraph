@@ -1,5 +1,26 @@
 # @telegraph/input
 
+## 0.5.2
+
+### Patch Changes
+
+- [#956](https://github.com/knocklabs/telegraph/pull/956) [`ef8d6c6`](https://github.com/knocklabs/telegraph/commit/ef8d6c60bc8ca3d7f0597bd99bd96a898285e25e) Thanks [@kylemcd](https://github.com/kylemcd)! - chore: replace ESLint with oxlint and Prettier with oxfmt
+
+  Consolidates the monorepo onto the oxc toolchain. A single root `.oxlintrc.json`
+  replaces the per-package `.eslintrc.js` files and a single `.oxfmtrc.json`
+  replaces the Prettier config. The rule set matches the dashboard's, so a rule
+  lands in both repos or neither.
+
+  The five bumped packages each gain a `displayName` on a `forwardRef` component
+  that did not have one, which is what React DevTools and React's own warnings
+  show. No props, types, or rendered output change.
+  (Stacked on the TypeScript 7 type-check PR.)
+
+- Updated dependencies [[`ef8d6c6`](https://github.com/knocklabs/telegraph/commit/ef8d6c60bc8ca3d7f0597bd99bd96a898285e25e), [`259502e`](https://github.com/knocklabs/telegraph/commit/259502ec33f9ce3c14406edff3341bfd0ecaabf5)]:
+  - @telegraph/helpers@0.3.1
+  - @telegraph/layout@0.6.3
+  - @telegraph/typography@0.5.2
+
 ## 0.5.1
 
 ### Patch Changes
