@@ -2901,6 +2901,36 @@ describe("Segmented pages", () => {
     ).toBeFalsy();
   });
 
+  it("keeps inactive panels unmounted when only one page button is registered", async () => {
+    render(
+      <Combobox.Root defaultOpen value={undefined} onValueChange={() => {}}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.PageSelector aria-label="Destination type">
+            <Combobox.PageButton value="channels">Channels</Combobox.PageButton>
+          </Combobox.PageSelector>
+          <Combobox.Options>
+            <Combobox.Page value="channels">
+              <Combobox.Option value="general">general</Combobox.Option>
+            </Combobox.Page>
+            <Combobox.Page value="people">
+              <Combobox.Option value="ada">Ada</Combobox.Option>
+            </Combobox.Page>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    await waitFor(() =>
+      expect(
+        queryPortalElement("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy(),
+    );
+    expect(
+      queryPortalElement("[data-tgph-combobox-option-value='ada']"),
+    ).toBeFalsy();
+  });
+
   it("marks the active page panel with the slide direction", async () => {
     const user = userEvent.setup();
     render(<ComboboxWithPages />);

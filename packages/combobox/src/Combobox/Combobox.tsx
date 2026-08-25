@@ -2133,14 +2133,15 @@ const PageTransition = lazy(() =>
 
 const Page = ({ value, children }: PageProps) => {
   const context = useContext(ComboboxContext);
-  // Fewer than two page buttons means nothing to switch between, so render the
-  // rows unwrapped and skip the slide wrapper/its lazy chunk. Ordered before the
-  // active-page gate so a malformed group (pages but no `Combobox.PageButton`,
-  // where `activePage` is undefined) still renders its options instead of
-  // silently hiding them — matching `scopedOptions`, which returns all options
-  // when there are no page values.
-  if (context.pageValues.length < 2) return <>{children}</>;
+  // A malformed group with pages but no `Combobox.PageButton` has no active
+  // page, so preserve its options instead of silently hiding them — matching
+  // `scopedOptions`, which returns all options when there are no page values.
+  if (context.pageValues.length === 0) return <>{children}</>;
   if (context.activePage !== value) return null;
+  // One registered page has nothing to animate, but it still scopes the mounted
+  // option set: inactive panels must stay unmounted so the DOM and Base UI's
+  // page-aware highlight bounds agree.
+  if (context.pageValues.length === 1) return <>{children}</>;
   // Until the chunk resolves the rows render unwrapped, so options are never
   // blocked on the animation code.
   return (
