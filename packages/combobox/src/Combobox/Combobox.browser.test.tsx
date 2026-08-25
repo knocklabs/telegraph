@@ -612,9 +612,9 @@ const PagesCombobox = () => {
       onValueChange={(next) => setValue(next as string | undefined)}
       defaultPage="channels"
     >
-      <Combobox.Trigger />
+      <Combobox.Trigger aria-label="Choose channel" />
       <Combobox.Content>
-        <Combobox.Search />
+        <Combobox.Search aria-label="Search destinations" />
         <Combobox.PageSelector aria-label="Destination type">
           <Combobox.PageButton value="channels">Channels</Combobox.PageButton>
           <Combobox.PageButton value="people">People</Combobox.PageButton>
@@ -622,14 +622,14 @@ const PagesCombobox = () => {
         <Combobox.Options>
           <Combobox.Page value="channels">
             {["general", "random", "design"].map((v) => (
-              <Combobox.Option key={v} value={v}>
+              <Combobox.Option key={v} value={v} as="a" href={`#${v}`}>
                 {v}
               </Combobox.Option>
             ))}
           </Combobox.Page>
           <Combobox.Page value="people">
             {["ada", "grace"].map((v) => (
-              <Combobox.Option key={v} value={v}>
+              <Combobox.Option key={v} value={v} as="a" href={`#${v}`}>
                 {v}
               </Combobox.Option>
             ))}
@@ -641,108 +641,134 @@ const PagesCombobox = () => {
   );
 };
 
-const getPageButton = (label: string) =>
-  Array.from(document.querySelectorAll("button")).find(
-    (el) => el.textContent?.trim() === label,
-  ) as HTMLButtonElement | undefined;
+const getSearchInput = async () => {
+  const search = page.getByRole("combobox", { name: "Search destinations" });
+  await expect.element(search).toBeInTheDocument();
+  return search.element() as HTMLInputElement;
+};
+
+const getPageButton = async (label: string) => {
+  const button = page.getByRole("radio", { name: label });
+  await expect.element(button).toBeInTheDocument();
+  return button.element() as HTMLButtonElement;
+};
 
 describe("Combobox segmented pages (real browser)", () => {
   it("switches pages with Left/Right while focus stays on the search input", async () => {
-    render(<PagesCombobox />);
+    await render(<PagesCombobox />);
     await openViaTriggerClick();
 
-    const search = document.querySelector(
-      "[data-tgph-combobox-search]",
-    ) as HTMLInputElement;
-    expect(search).toBeTruthy();
+    const search = await getSearchInput();
     search.focus();
-    await waitFrames(2);
-    expect(document.activeElement).toBe(search);
-
-    // Channels page is active.
-    expect(
-      document.querySelector("[data-tgph-combobox-option-value='general']"),
-    ).toBeTruthy();
-    expect(
-      document.querySelector("[data-tgph-combobox-option-value='ada']"),
-    ).toBeFalsy();
+    await vi.waitFor(() => {
+      expect(document.activeElement).toBe(search);
+      expect(
+        document.querySelector("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy();
+      expect(
+        document.querySelector("[data-tgph-combobox-option-value='ada']"),
+      ).toBeFalsy();
+    });
 
     await userEvent.keyboard("{ArrowRight}");
-    await waitFrames(2);
-    // Focus stays on the input under virtual focus. The People page is active.
-    expect(document.activeElement, "focus stays on the input").toBe(search);
-    expect(
-      document.querySelector("[data-tgph-combobox-option-value='ada']"),
-    ).toBeTruthy();
-    expect(
-      document.querySelector("[data-tgph-combobox-option-value='general']"),
-    ).toBeFalsy();
+    await vi.waitFor(() => {
+      expect(document.activeElement, "focus stays on the input").toBe(search);
+      expect(
+        document.querySelector("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+      expect(
+        document.querySelector("[data-tgph-combobox-option-value='general']"),
+      ).toBeFalsy();
+    });
 
     await userEvent.keyboard("{ArrowLeft}");
-    await waitFrames(2);
-    expect(document.activeElement).toBe(search);
-    expect(
-      document.querySelector("[data-tgph-combobox-option-value='general']"),
-    ).toBeTruthy();
+    await vi.waitFor(() => {
+      expect(document.activeElement).toBe(search);
+      expect(
+        document.querySelector("[data-tgph-combobox-option-value='general']"),
+      ).toBeTruthy();
+    });
   });
 
   it("keeps Up/Down navigating the active page's list", async () => {
-    render(<PagesCombobox />);
+    await render(<PagesCombobox />);
     await openViaTriggerClick();
 
-    const search = document.querySelector(
-      "[data-tgph-combobox-search]",
-    ) as HTMLInputElement;
+    const search = await getSearchInput();
     search.focus();
-    await waitFrames(2);
+    await vi.waitFor(() => {
+      expect(document.activeElement).toBe(search);
+    });
 
     await userEvent.keyboard("{ArrowDown}");
-    await waitFrames(2);
-
-    // The active descendant is an option on the active (channels) page, and DOM
-    // focus stays on the input.
-    expect(document.activeElement).toBe(search);
-    const activeId = search.getAttribute("aria-activedescendant");
-    expect(activeId).toBeTruthy();
-    const highlighted = activeId ? document.getElementById(activeId) : null;
-    expect(["general", "random", "design"]).toContain(
-      highlighted?.getAttribute("data-tgph-combobox-option-value"),
-    );
+    await vi.waitFor(() => {
+      // The active descendant is an option on the active (channels) page, and
+      // DOM focus stays on the input.
+      expect(document.activeElement).toBe(search);
+      const activeId = search.getAttribute("aria-activedescendant");
+      expect(activeId).toBeTruthy();
+      const highlighted = activeId ? document.getElementById(activeId) : null;
+      expect(["general", "random", "design"]).toContain(
+        highlighted?.getAttribute("data-tgph-combobox-option-value"),
+      );
+    });
   });
 
   it("keeps focus on the input across a pointer page switch (no focus-ring blink)", async () => {
-    render(<PagesCombobox />);
+    await render(<PagesCombobox />);
     await openViaTriggerClick();
 
-    const search = document.querySelector(
-      "[data-tgph-combobox-search]",
-    ) as HTMLInputElement;
+    const search = await getSearchInput();
     search.focus();
-    await waitFrames(2);
-
-    const peopleButton = getPageButton("People");
-    expect(peopleButton).toBeTruthy();
-
-    // The press must not move DOM focus off the input: that focus round-trip is
-    // what blinked the input's focus ring. The selector prevents the button's
-    // mousedown default so focus never leaves.
-    const mousedown = new MouseEvent("mousedown", {
-      bubbles: true,
-      cancelable: true,
+    await vi.waitFor(() => {
+      expect(document.activeElement).toBe(search);
     });
-    peopleButton!.dispatchEvent(mousedown);
-    expect(
-      mousedown.defaultPrevented,
-      "page button press does not steal focus",
-    ).toBe(true);
 
-    await userEvent.click(peopleButton!);
-    await waitFrames(4);
+    const focusOut = vi.fn();
+    search.addEventListener("focusout", focusOut);
+    const peopleButton = await getPageButton("People");
+    await userEvent.click(peopleButton);
 
-    expect(
-      document.querySelector("[data-tgph-combobox-option-value='ada']"),
-    ).toBeTruthy();
-    // Focus stayed on the input the whole time, so keyboard nav keeps working.
-    expect(document.activeElement, "focus stays on the input").toBe(search);
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-tgph-combobox-option-value='ada']"),
+      ).toBeTruthy();
+      expect(document.activeElement, "focus stays on the input").toBe(search);
+      expect(
+        focusOut,
+        "the page button never blurs the input",
+      ).not.toBeCalled();
+    });
+  });
+
+  it("marks the outgoing page clone inert before focus can enter it", async () => {
+    await render(<PagesCombobox />);
+    await openViaTriggerClick();
+
+    await getSearchInput();
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-tgph-combobox-page-panel]"),
+      ).toBeTruthy();
+    });
+
+    const peopleButton = await getPageButton("People");
+    await userEvent.click(peopleButton);
+
+    let clone: HTMLElement | null = null;
+    await vi.waitFor(() => {
+      clone = document.querySelector("[data-tgph-combobox-page-panel-clone]");
+      expect(clone, "the outgoing page is cloned for its slide").toBeTruthy();
+      expect(clone?.querySelector("a[href]")).toBeTruthy();
+    });
+
+    const cloneElement = clone as unknown as HTMLElement;
+    cloneElement.getAnimations().forEach((animation) => animation.pause());
+    expect(cloneElement.inert).toBe(true);
+
+    const clonedLink = cloneElement.querySelector<HTMLElement>("a[href]");
+    expect(clonedLink).toBeTruthy();
+    clonedLink?.focus();
+    expect(document.activeElement).not.toBe(clonedLink);
   });
 });

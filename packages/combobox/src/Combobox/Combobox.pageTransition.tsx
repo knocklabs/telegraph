@@ -82,6 +82,7 @@ export const PageTransition = ({
       clone.removeAttribute("data-tgph-combobox-page-panel");
       clone.setAttribute("data-tgph-combobox-page-panel-clone", "");
       clone.setAttribute("aria-hidden", "true");
+      clone.inert = true;
       clone.style.top = `${node.offsetTop}px`;
       clone.style.left = `${node.offsetLeft}px`;
       clone.style.width = `${node.offsetWidth}px`;
@@ -102,13 +103,8 @@ export const PageTransition = ({
           delete parent.dataset.tgphPagePrevOverflowY;
         }
       };
-      // `.finished` can be absent on very old WAAPI engines even when `.animate`
-      // exists; remove the clone immediately then instead of throwing.
-      if (animation.finished) {
-        animation.finished.then(finish, finish);
-      } else {
-        finish();
-      }
+      animation.onfinish = finish;
+      animation.oncancel = finish;
     };
   }, []);
 
