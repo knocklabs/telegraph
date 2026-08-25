@@ -623,9 +623,23 @@ const Content = <T extends TgphElement = "div">({
   const [initialAnimationComplete, setInitialAnimationComplete] =
     useState(false);
 
-  // Whether the consumer rendered a `Combobox.Search`. When absent we still need
-  // an input in the popup for Base UI's virtual focus, so we mount a hidden one.
-  const hasSearch = useMemo(() => childrenContainSearch(children), [children]);
+  // Start without a hidden input, then inspect the rendered popup. This catches
+  // `Combobox.Search` even when a consumer component renders it internally — a
+  // static walk of `children` cannot see through that component boundary. When
+  // there is no visible Search, the follow-up layout commit mounts the hidden
+  // Base UI input before paint so button-trigger comboboxes keep virtual focus.
+  const [needsHiddenInput, setNeedsHiddenInput] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!context.open) return;
+    const hasRenderedSearch = Boolean(
+      context.contentRef?.current?.querySelector("[data-tgph-combobox-search]"),
+    );
+    setNeedsHiddenInput((current) => {
+      const next = !hasRenderedSearch;
+      return current === next ? current : next;
+    });
+  }, [children, context.open, context.contentRef]);
 
   // Register the escape handler so the Root-level open-change bridge can call it
   // and honor a consumer preventing dismissal.
@@ -646,11 +660,14 @@ const Content = <T extends TgphElement = "div">({
   // Skipped when a consumer supplies `onOpenAutoFocus` — they own open-focus.
   useLayoutEffect(() => {
     if (!context.open || onOpenAutoFocus) return;
-    const input = context.contentRef?.current?.querySelector<HTMLInputElement>(
-      "[data-tgph-combobox-search], [data-tgph-combobox-input-hidden]",
-    );
+    const content = context.contentRef?.current;
+    const input =
+      content?.querySelector<HTMLInputElement>("[data-tgph-combobox-search]") ??
+      content?.querySelector<HTMLInputElement>(
+        "[data-tgph-combobox-input-hidden]",
+      );
     input?.focus();
-  }, [context.open, context.contentRef, onOpenAutoFocus]);
+  }, [context.open, context.contentRef, needsHiddenInput, onOpenAutoFocus]);
 
   const setHeightFromContent = useCallback(
     (element: Element) => {
@@ -731,10 +748,11 @@ const Content = <T extends TgphElement = "div">({
     };
   }, [finalFocus, onCloseAutoFocus, context.triggerRef]);
 
-  // Bridge the old `onOpenAutoFocus` onto Base UI's `initialFocus`. When a
-  // consumer supplies it they own open-focus (the layout effect above yields
-  // too), so return false to keep Base UI from moving focus and let their
-  // handler place it. Mirrors the `onCloseAutoFocus` → `finalFocus` bridge.
+  // Bridge the old `onOpenAutoFocus` onto Base UI's `initialFocus`. Preventing
+  // the legacy event cancels Base UI's move; otherwise return the popup input so
+  // side-effect-only handlers retain the historical default focus behavior.
+  // The layout effect above yields whenever this handler exists so prevention
+  // is observed before any focus move. Mirrors the close-autofocus bridge.
   const resolvedInitialFocus = useMemo<
     ((openType: string) => unknown) | undefined
   >(() => {
@@ -744,9 +762,18 @@ const Content = <T extends TgphElement = "div">({
     return () => {
       const event = new Event("openAutoFocus", { cancelable: true });
       onOpenAutoFocus(event);
-      return false;
+      if (event.defaultPrevented) {
+        return false;
+      }
+      return (
+        context.searchRef?.current ??
+        context.contentRef?.current?.querySelector<HTMLInputElement>(
+          "[data-tgph-combobox-search], [data-tgph-combobox-input-hidden]",
+        ) ??
+        null
+      );
     };
-  }, [onOpenAutoFocus]);
+  }, [onOpenAutoFocus, context.searchRef, context.contentRef]);
 
   const stackProps = props as StackProps;
 
@@ -816,7 +843,7 @@ const Content = <T extends TgphElement = "div">({
             >
               {/* Virtual focus needs an input in the popup even without a
                   visible Search; mount a hidden one in that case. */}
-              {!hasSearch ? (
+              {needsHiddenInput ? (
                 <VisuallyHidden>
                   <BaseCombobox.Input
                     // Keep it out of the Tab sequence (it is only focused
@@ -1169,24 +1196,6 @@ const isOptionElement = (element: ReactElement) => {
 
   if (hasChangeHandler && !isOptionShaped) return false;
   return Boolean(props?.value);
-};
-
-// Walk the Content children for a `Combobox.Search` so Content can decide
-// whether to mount its own hidden input for virtual focus.
-const childrenContainSearch = (children: ReactNode): boolean => {
-  let found = false;
-  Children.forEach(children, (child) => {
-    if (found || !(typeof child === "object" && child !== null)) return;
-    const element = child as ReactElement<{ children?: ReactNode }>;
-    if (element.type === Search) {
-      found = true;
-      return;
-    }
-    if (element.props?.children) {
-      found = childrenContainSearch(element.props.children);
-    }
-  });
-  return found;
 };
 
 // Whether an option's label/children can render text that the Root can't read

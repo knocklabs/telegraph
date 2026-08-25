@@ -678,6 +678,35 @@ describe("Combobox", () => {
       await waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalled());
     });
 
+    it("keeps the default input focus when onOpenAutoFocus does not prevent it", async () => {
+      const user = userEvent.setup();
+      const onOpenAutoFocus = vi.fn();
+      const { container } = render(
+        <Combobox.Root defaultValue={VALUES[0]}>
+          <Combobox.Trigger />
+          <Combobox.Content onOpenAutoFocus={onOpenAutoFocus}>
+            <Combobox.Search />
+            <Combobox.Options>
+              {VALUES.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {LABELS[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>,
+      );
+
+      await user.click(
+        container.querySelector("[data-tgph-combobox-trigger]")!,
+      );
+
+      await waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalledTimes(1));
+      await waitFor(() =>
+        expect(queryPortalElement("[data-tgph-combobox-search]")).toHaveFocus(),
+      );
+    });
+
     it("keeps the combobox open when escape dismissal is prevented", async () => {
       const user = userEvent.setup();
       const onEscapeKeyDown = vi.fn((event: KeyboardEvent) => {

@@ -80,6 +80,30 @@ const ButtonOnlyCombobox = () => {
   );
 };
 
+const WrappedSearch = () => <Combobox.Search />;
+
+const WrappedSearchCombobox = () => {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={(next) => setValue(next as string | undefined)}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <WrappedSearch />
+        <Combobox.Options>
+          {VALUES.map((option, index) => (
+            <Combobox.Option key={option} value={option}>
+              {LABELS[index]}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
 const getTrigger = async () => {
   let trigger: HTMLElement | null = null;
   // Browser-mode render commits asynchronously, so wait for the trigger to mount
@@ -140,6 +164,28 @@ describe("Combobox virtual focus (real browser)", () => {
       document.querySelector("[data-tgph-combobox-option][data-highlighted]"),
       "arrow navigation highlights an option via the hidden input",
     ).toBeTruthy();
+  });
+
+  it("uses a wrapped Search as the sole virtual-focus input", async () => {
+    render(<WrappedSearchCombobox />);
+    await openViaTriggerClick();
+
+    const search = document.querySelector<HTMLInputElement>(
+      "[data-tgph-combobox-search]",
+    );
+    expect(search).toBeTruthy();
+    expect(
+      document.querySelector("[data-tgph-combobox-input-hidden]"),
+      "a wrapped Search must not cause a second hidden Base UI input",
+    ).toBeNull();
+    expect(document.activeElement).toBe(search);
+
+    await userEvent.keyboard("sms");
+    await vi.waitFor(() => {
+      expect(
+        document.querySelectorAll("[data-tgph-combobox-option]").length,
+      ).toBe(1);
+    });
   });
 });
 
@@ -247,5 +293,27 @@ describe("Combobox Create row highlight (real browser)", () => {
     await waitFrames(2);
     expect(onValueChange).toHaveBeenLastCalledWith("sms");
     expect(onCreate, "Create is not triggered").not.toHaveBeenCalled();
+  });
+
+  it("activates the Create row with Enter when it is the only match", async () => {
+    const onValueChange = vi.fn();
+    const onCreate = vi.fn();
+    render(
+      <CreatableCombobox onValueChange={onValueChange} onCreate={onCreate} />,
+    );
+    await openViaTriggerClick();
+
+    await userEvent.keyboard("custom");
+    await vi.waitFor(() => {
+      const create = document.querySelector(
+        '[data-tgph-combobox-option-value="custom"]',
+      );
+      expect(create?.getAttribute("data-highlighted")).not.toBeNull();
+    });
+
+    await userEvent.keyboard("[Enter]");
+    await waitFrames(2);
+    expect(onCreate).toHaveBeenLastCalledWith("custom");
+    expect(onValueChange).not.toHaveBeenCalled();
   });
 });
