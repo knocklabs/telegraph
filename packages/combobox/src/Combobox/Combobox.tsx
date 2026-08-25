@@ -762,11 +762,11 @@ const Root = <V extends ComboboxValue = string>({
           // Preserve the historical typeahead: seed the highlight on the first
           // match after the query changes so pressing Enter selects it.
           autoHighlight={autoHighlightProp ?? true}
-          // Telegraph controls the engine input from either Root input props,
-          // controlled Search props, or its mirrored internal query. Keeping a
-          // single source of truth makes consumer rewrites and clear actions
-          // render without racing Base UI's internal input state.
-          inputValue={searchQuery}
+          // The popup Search stays controlled by Telegraph's query bridge. An
+          // anchor Input stays uncontrolled when Root inputValue is absent so
+          // Base UI can replace typed text with the selected option's label.
+          inputValue={hasAnchorInput ? inputValueProp : searchQuery}
+          defaultInputValue={hasAnchorInput ? defaultInputValueProp : undefined}
           openOnInputClick={openOnInputClickProp}
           loopFocus={loopFocusProp}
           onItemHighlighted={
