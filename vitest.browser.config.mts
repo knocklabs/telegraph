@@ -19,6 +19,9 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   // @ts-expect-error -- plugin type mismatch, same as vitest/config.mts
   plugins: [tsconfigPaths()],
+  optimizeDeps: {
+    include: ["lucide-react/dist/esm/icons/check.mjs"],
+  },
   test: {
     name: "browser",
     globals: true,

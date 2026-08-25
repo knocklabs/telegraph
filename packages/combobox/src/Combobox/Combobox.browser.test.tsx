@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { userEvent } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 
 import { Combobox } from "./Combobox";
 
@@ -12,20 +12,6 @@ import { Combobox } from "./Combobox";
 
 const VALUES = ["email", "sms", "push", "inapp", "webhook"];
 const LABELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
-
-const waitFrames = (count: number) =>
-  new Promise<void>((resolve) => {
-    let remaining = count;
-    const step = () => {
-      remaining -= 1;
-      if (remaining <= 0) {
-        resolve();
-        return;
-      }
-      requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  });
 
 const SearchableCombobox = ({
   initialValue,
@@ -43,7 +29,7 @@ const SearchableCombobox = ({
         onValueChange?.(next as string | undefined);
       }}
     >
-      <Combobox.Trigger />
+      <Combobox.Trigger aria-label="Choose channel" />
       <Combobox.Content>
         <Combobox.Search />
         <Combobox.Options>
@@ -66,7 +52,7 @@ const ButtonOnlyCombobox = () => {
       value={value}
       onValueChange={(next) => setValue(next as string | undefined)}
     >
-      <Combobox.Trigger />
+      <Combobox.Trigger aria-label="Choose channel" />
       <Combobox.Content>
         <Combobox.Options>
           {VALUES.map((option, index) => (
@@ -89,7 +75,7 @@ const WrappedSearchCombobox = () => {
       value={value}
       onValueChange={(next) => setValue(next as string | undefined)}
     >
-      <Combobox.Trigger />
+      <Combobox.Trigger aria-label="Choose channel" />
       <Combobox.Content>
         <WrappedSearch />
         <Combobox.Options>
@@ -105,26 +91,24 @@ const WrappedSearchCombobox = () => {
 };
 
 const getTrigger = async () => {
-  let trigger: HTMLElement | null = null;
-  // Browser-mode render commits asynchronously, so wait for the trigger to mount
-  // before interacting (mirrors the menu browser test awaiting its first element).
-  await vi.waitFor(() => {
-    trigger = document.querySelector("[data-tgph-combobox-trigger]");
-    if (!trigger) throw new Error("combobox trigger not mounted yet");
-  });
-  return trigger as unknown as HTMLElement;
+  const trigger = page.getByRole("combobox", { name: "Choose channel" });
+  await expect.element(trigger).toBeInTheDocument();
+  return trigger.element();
 };
 
 const openViaTriggerClick = async () => {
   const trigger = await getTrigger();
   await userEvent.click(trigger);
-  await waitFrames(4);
+  await vi.waitFor(() => {
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(document.activeElement?.tagName).toBe("INPUT");
+  });
   return trigger;
 };
 
 describe("Combobox virtual focus (real browser)", () => {
   it("keeps DOM focus on the popup input and tracks the highlight with aria-activedescendant", async () => {
-    render(<SearchableCombobox initialValue="email" />);
+    await render(<SearchableCombobox initialValue="email" />);
     await openViaTriggerClick();
 
     // Virtual focus: DOM focus lives on an <input>, never on an option.
@@ -132,26 +116,26 @@ describe("Combobox virtual focus (real browser)", () => {
 
     // ArrowDown moves the highlight without moving DOM focus off the input.
     await userEvent.keyboard("[ArrowDown]");
-    await waitFrames(2);
-
-    const highlighted = document.querySelector(
-      "[data-tgph-combobox-option][data-highlighted]",
-    );
-    expect(
-      highlighted,
-      "an option is highlighted after ArrowDown",
-    ).toBeTruthy();
-    expect(document.activeElement?.tagName, "focus stays on the input").toBe(
-      "INPUT",
-    );
-    expect(
-      document.activeElement?.getAttribute("aria-activedescendant"),
-      "aria-activedescendant on the input points at the highlighted option",
-    ).toBe(highlighted?.id);
+    await vi.waitFor(() => {
+      const highlighted = document.querySelector(
+        "[data-tgph-combobox-option][data-highlighted]",
+      );
+      expect(
+        highlighted,
+        "an option is highlighted after ArrowDown",
+      ).toBeTruthy();
+      expect(document.activeElement?.tagName, "focus stays on the input").toBe(
+        "INPUT",
+      );
+      expect(
+        document.activeElement?.getAttribute("aria-activedescendant"),
+        "aria-activedescendant on the input points at the highlighted option",
+      ).toBe(highlighted?.id);
+    });
   });
 
   it("anchors virtual focus on the hidden input when no Search is rendered", async () => {
-    render(<ButtonOnlyCombobox />);
+    await render(<ButtonOnlyCombobox />);
     const trigger = await openViaTriggerClick();
 
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
@@ -159,15 +143,16 @@ describe("Combobox virtual focus (real browser)", () => {
     expect(document.activeElement?.tagName).toBe("INPUT");
 
     await userEvent.keyboard("[ArrowDown]");
-    await waitFrames(2);
-    expect(
-      document.querySelector("[data-tgph-combobox-option][data-highlighted]"),
-      "arrow navigation highlights an option via the hidden input",
-    ).toBeTruthy();
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-tgph-combobox-option][data-highlighted]"),
+        "arrow navigation highlights an option via the hidden input",
+      ).toBeTruthy();
+    });
   });
 
   it("uses a wrapped Search as the sole virtual-focus input", async () => {
-    render(<WrappedSearchCombobox />);
+    await render(<WrappedSearchCombobox />);
     await openViaTriggerClick();
 
     const search = document.querySelector<HTMLInputElement>(
@@ -198,7 +183,7 @@ describe("Combobox type-to-filter highlight (real browser)", () => {
     // webhook is the LAST option: a non-first existing selection, which used to
     // block auto-highlight-on-type until Base UI was fed the filtered option set
     // via `filteredItems` (see Combobox.tsx).
-    render(
+    await render(
       <SearchableCombobox
         initialValue="webhook"
         onValueChange={onValueChange}
@@ -227,8 +212,9 @@ describe("Combobox type-to-filter highlight (real browser)", () => {
 
     // Enter with no explicit ArrowDown commits the highlighted match.
     await userEvent.keyboard("[Enter]");
-    await waitFrames(2);
-    expect(onValueChange).toHaveBeenLastCalledWith("sms");
+    await vi.waitFor(() => {
+      expect(onValueChange).toHaveBeenLastCalledWith("sms");
+    });
   });
 });
 
@@ -248,7 +234,7 @@ const CreatableCombobox = ({
         onValueChange?.(next as string | undefined);
       }}
     >
-      <Combobox.Trigger />
+      <Combobox.Trigger aria-label="Choose channel" />
       <Combobox.Content>
         <Combobox.Search />
         <Combobox.Options>
@@ -272,7 +258,7 @@ describe("Combobox Create row highlight (real browser)", () => {
   it("highlights the matching option (not the Create row) and Enter selects rather than creates", async () => {
     const onValueChange = vi.fn();
     const onCreate = vi.fn();
-    render(
+    await render(
       <CreatableCombobox onValueChange={onValueChange} onCreate={onCreate} />,
     );
     await openViaTriggerClick();
@@ -290,15 +276,16 @@ describe("Combobox Create row highlight (real browser)", () => {
     });
 
     await userEvent.keyboard("[Enter]");
-    await waitFrames(2);
-    expect(onValueChange).toHaveBeenLastCalledWith("sms");
-    expect(onCreate, "Create is not triggered").not.toHaveBeenCalled();
+    await vi.waitFor(() => {
+      expect(onValueChange).toHaveBeenLastCalledWith("sms");
+      expect(onCreate, "Create is not triggered").not.toHaveBeenCalled();
+    });
   });
 
   it("activates the Create row with Enter when it is the only match", async () => {
     const onValueChange = vi.fn();
     const onCreate = vi.fn();
-    render(
+    await render(
       <CreatableCombobox onValueChange={onValueChange} onCreate={onCreate} />,
     );
     await openViaTriggerClick();
@@ -312,8 +299,9 @@ describe("Combobox Create row highlight (real browser)", () => {
     });
 
     await userEvent.keyboard("[Enter]");
-    await waitFrames(2);
-    expect(onCreate).toHaveBeenLastCalledWith("custom");
-    expect(onValueChange).not.toHaveBeenCalled();
+    await vi.waitFor(() => {
+      expect(onCreate).toHaveBeenLastCalledWith("custom");
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
   });
 });

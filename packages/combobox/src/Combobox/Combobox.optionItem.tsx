@@ -6,7 +6,7 @@ import {
 } from "@telegraph/button";
 import type { PolymorphicProps, TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
-import { Check } from "lucide-react";
+import Check from "lucide-react/dist/esm/icons/check.mjs";
 import * as motion from "motion/react-m";
 import type { ReactNode } from "react";
 
