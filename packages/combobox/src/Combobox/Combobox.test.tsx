@@ -1540,8 +1540,8 @@ describe("engine compatibility", () => {
       { capture: true, once: true },
     );
 
-    render(
-      <div onClick={onAncestorClick}>
+    const { container } = render(
+      <div data-click-ancestor>
         <Combobox.Root defaultOpen onValueChange={onValueChange}>
           <Combobox.Trigger />
           <Combobox.Content>
@@ -1554,6 +1554,9 @@ describe("engine compatibility", () => {
         </Combobox.Root>
       </div>,
     );
+    container
+      .querySelector("[data-click-ancestor]")
+      ?.addEventListener("click", onAncestorClick);
 
     await user.click(
       queryPortalElement('[data-tgph-combobox-option-value="sms"]')!,

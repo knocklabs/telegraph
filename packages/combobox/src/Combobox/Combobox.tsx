@@ -1035,7 +1035,7 @@ const Option = <T extends TgphElement = "div">({
 
   // Depend on the specific stable context values rather than the whole (per-
   // render) context object, so this callback isn't rebuilt every Root render.
-  const { closeOnSelect, setOpen } = context;
+  const { closeOnSelect, onValueChange, setOpen } = context;
   const handleClick = useCallback(
     (event: ReactMouseEvent<HTMLElement>) => {
       // The old menu-backed options contained selection clicks and prevented
@@ -1076,9 +1076,9 @@ const Option = <T extends TgphElement = "div">({
         const nextValue = isSelected
           ? contextValue.filter((entry) => entry !== value)
           : [...contextValue, value];
-        (context.onValueChange as MultiSelect["onValueChange"])?.(nextValue);
+        (onValueChange as MultiSelect["onValueChange"])?.(nextValue);
       } else {
-        (context.onValueChange as SingleSelect["onValueChange"])?.(value);
+        (onValueChange as SingleSelect["onValueChange"])?.(value);
       }
     },
     [
@@ -1086,7 +1086,7 @@ const Option = <T extends TgphElement = "div">({
       closeOnSelect,
       setOpen,
       contextValue,
-      context.onValueChange,
+      onValueChange,
       isSelected,
       value,
     ],
