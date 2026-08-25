@@ -16,7 +16,10 @@ import {
   useControllableState,
 } from "@telegraph/helpers";
 import { Icon, type IconProps } from "@telegraph/icon";
-import { type InputRootProps, Input as TelegraphInput } from "@telegraph/input";
+import {
+  type InputProps as TelegraphInputProps,
+  Input as TelegraphInput,
+} from "@telegraph/input";
 import { Box, Stack, type StackProps } from "@telegraph/layout";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
@@ -1062,7 +1065,7 @@ const Option = <T extends TgphElement = "div">({
 // `onValueChange` keep the search query controllable, matching the historical
 // (menu-backed) Search API.
 export type SearchProps = RemappedOmit<
-  InputRootProps<"input">,
+  TelegraphInputProps<"input">,
   "value" | "defaultValue"
 > & {
   label?: string;
