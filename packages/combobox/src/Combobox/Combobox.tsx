@@ -627,12 +627,12 @@ const Content = <T extends TgphElement = "div">({
   // Register the escape handler so the Root-level open-change bridge can call it
   // and honor a consumer preventing dismissal.
   useEffect(() => {
-    if (!context.onEscapeKeyDownRef) return undefined;
-    context.onEscapeKeyDownRef.current = onEscapeKeyDown;
+    const onEscapeKeyDownRef = context.onEscapeKeyDownRef;
+    if (!onEscapeKeyDownRef) return undefined;
+
+    onEscapeKeyDownRef.current = onEscapeKeyDown;
     return () => {
-      if (context.onEscapeKeyDownRef) {
-        context.onEscapeKeyDownRef.current = undefined;
-      }
+      onEscapeKeyDownRef.current = undefined;
     };
   }, [onEscapeKeyDown, context.onEscapeKeyDownRef]);
 
