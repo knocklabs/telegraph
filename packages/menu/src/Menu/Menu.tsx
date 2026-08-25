@@ -714,6 +714,14 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
     tgphRef?: Ref<HTMLElement>;
   };
 
+/**
+ * Renders a Base UI menu item when nested in `Menu.Root`.
+ *
+ * Rendering `Menu.Button` without `Menu.Root` is supported for backwards
+ * compatibility, but deprecated. In that arrangement it is only a styled
+ * action, so menu arrow-key navigation (including from a combobox popup) will
+ * not reach it.
+ */
 const Button = <T extends TgphElement = "button">({
   as,
   closeOnClick,
@@ -733,6 +741,7 @@ const Button = <T extends TgphElement = "button">({
   nativeButton,
   ...props
 }: ButtonProps<T>) => {
+  const compatibilityContext = useContext(MenuCompatibilityContext);
   const combinedLeadingIcon = leadingIcon || icon;
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
@@ -884,37 +893,43 @@ const Button = <T extends TgphElement = "button">({
     preventBaseUIHandlerWhenDefaultPrevented(event);
   };
 
+  const renderedItem = (
+    <MenuItem
+      as={as}
+      {...menuItemProps}
+      onClick={handleClick as MenuItemProps<T>["onClick"]}
+      // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through
+      // the element passthrough, which is a deferred conditional while `T`
+      // is unresolved and therefore not indexable.
+      onKeyDown={handleKeyDown as MenuItemProps<"button">["onKeyDown"]}
+      selected={selected}
+      leadingIcon={combinedLeadingIcon}
+      trailingIcon={trailingIcon}
+      leadingComponent={leadingComponent}
+      trailingComponent={trailingComponent}
+      data-tgph-menu-button
+      disabled={disabled}
+      mx={mx}
+      style={{
+        outline: "none",
+        flexShrink: 0,
+        ...menuItemProps.style,
+      }}
+      tgphRef={composedTgphRef as MenuItemProps<T>["tgphRef"]}
+    />
+  );
+
+  if (!compatibilityContext) {
+    return renderedItem;
+  }
+
   return (
     <BaseMenu.Item
       closeOnClick={closeOnClick}
       disabled={disabled}
       label={label}
       nativeButton={isNativeButton}
-      render={createTgphBaseUIRender(
-        <MenuItem
-          as={as}
-          {...menuItemProps}
-          onClick={handleClick as MenuItemProps<T>["onClick"]}
-          // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through
-          // the element passthrough, which is a deferred conditional while `T`
-          // is unresolved and therefore not indexable.
-          onKeyDown={handleKeyDown as MenuItemProps<"button">["onKeyDown"]}
-          selected={selected}
-          leadingIcon={combinedLeadingIcon}
-          trailingIcon={trailingIcon}
-          leadingComponent={leadingComponent}
-          trailingComponent={trailingComponent}
-          data-tgph-menu-button
-          disabled={disabled}
-          mx={mx}
-          style={{
-            outline: "none",
-            flexShrink: 0,
-            ...menuItemProps.style,
-          }}
-          tgphRef={composedTgphRef as MenuItemProps<T>["tgphRef"]}
-        />,
-      )}
+      render={createTgphBaseUIRender(renderedItem)}
     />
   );
 };

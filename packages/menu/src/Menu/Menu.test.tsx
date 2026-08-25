@@ -125,6 +125,33 @@ describe("Menu", () => {
     }
   });
 
+  it("renders a clickable styled button without Menu.Root", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+
+    render(
+      <>
+        <Menu.Button
+          data-testid="standalone-menu-button"
+          data-tgph-combobox-option
+          onClick={onClick}
+        >
+          Switch account
+        </Menu.Button>
+        <Menu.Divider data-testid="standalone-menu-divider" />
+      </>,
+    );
+
+    const button = screen.getByTestId("standalone-menu-button");
+    expect(button).toHaveAttribute("data-tgph-menu-button");
+    expect(button).toHaveAttribute("data-tgph-combobox-option");
+    expect(screen.getByTestId("standalone-menu-divider")).toBeInTheDocument();
+
+    await user.click(button);
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
   describe("as a link", () => {
     it("keeps disabled item coercion native over an explicit override", async () => {
       const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});

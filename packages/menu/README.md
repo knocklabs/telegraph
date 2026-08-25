@@ -140,6 +140,11 @@ Inherits all Button props for additional styling.
 If `disabled` coerces the item to `<button>`, native semantics take precedence
 over `nativeButton={false}` so Base UI matches the rendered element.
 
+For backwards compatibility, `Menu.Button` can render without a `Menu.Root` as
+a styled action. This standalone use is deprecated: it is not part of a menu's
+arrow-key navigation, including when placed inside a combobox popup. Prefer a
+component native to the surrounding interaction for new code.
+
 ### `<Menu.Sub>`
 
 Groups a `Menu.SubTrigger` with its `Menu.SubContent` to create a nested submenu
