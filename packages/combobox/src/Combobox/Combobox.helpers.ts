@@ -24,10 +24,10 @@ type GetOptionsProps = {
   isOptionElement: (element: ReactElement) => boolean;
 };
 
-export const getOptions = ({
+const getOptionElements = ({
   children,
   isOptionElement,
-}: GetOptionsProps): Array<DefinedOption> => {
+}: GetOptionsProps): Array<ReactElement> => {
   const recursivelyFindOptionElements = (
     children: ReactNode,
     options: Array<ReactNode> = [],
@@ -54,7 +54,14 @@ export const getOptions = ({
     return options;
   };
 
-  const optionElements = recursivelyFindOptionElements(children);
+  return recursivelyFindOptionElements(children) as Array<ReactElement>;
+};
+
+export const getOptions = ({
+  children,
+  isOptionElement,
+}: GetOptionsProps): Array<DefinedOption> => {
+  const optionElements = getOptionElements({ children, isOptionElement });
 
   const options = optionElements.map((_element) => {
     const element = _element as ReactElement<{

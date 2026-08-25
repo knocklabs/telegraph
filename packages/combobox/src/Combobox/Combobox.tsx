@@ -180,7 +180,7 @@ const Root = <V extends ComboboxValue = string>({
   errored,
   placeholder,
   layout,
-  manualFiltering = false,
+  manualFiltering: manualFilteringProp,
   defaultScrollToValue,
   children,
 }: RootProps<V>) => {
@@ -197,6 +197,14 @@ const Root = <V extends ComboboxValue = string>({
     return getOptions({ children, isOptionElement });
   }, [children]);
 
+  const searchControl = useMemo(() => findSearchControl(children), [children]);
+  const searchControlsFiltering =
+    searchControl?.value !== undefined ||
+    searchControl?.onValueChange !== undefined;
+  // A controlled Search historically replaced Telegraph's filter. Preserve
+  // that behavior unless Root explicitly chooses its filtering mode.
+  const manualFiltering = manualFilteringProp ?? searchControlsFiltering;
+
   // Whether a `Combobox.Create` is rendered. It mounts a matching row that isn't
   // part of `options`, so `filteredItems` must reserve a slot for it (below).
   const hasCreate = useMemo(() => childrenContainCreate(children), [children]);
@@ -209,7 +217,10 @@ const Root = <V extends ComboboxValue = string>({
     [valueProp, defaultValueProp],
   );
 
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [uncontrolledSearchQuery, setSearchQuery] = useState<string>(
+    () => searchControl?.defaultValue ?? "",
+  );
+  const searchQuery = searchControl?.value ?? uncontrolledSearchQuery;
 
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
@@ -404,6 +415,7 @@ const Root = <V extends ComboboxValue = string>({
           handleBaseOpenChange as (open: boolean, details: unknown) => void
         }
         onInputValueChange={handleInputValueChange}
+        inputValue={searchQuery}
         // Seed the highlight on the first match after the query changes so
         // pressing Enter selects it, mirroring the old typeahead behavior.
         autoHighlight
@@ -613,6 +625,7 @@ const Content = <T extends TgphElement = "div">({
   collisionPadding,
   sticky,
   hideWhenDetached,
+  onKeyDown: onKeyDownProp,
   tgphRef,
   ...props
 }: ContentProps<T>) => {
@@ -841,6 +854,12 @@ const Content = <T extends TgphElement = "div">({
                 } as CSSProperties),
               }}
               {...stackProps}
+              onKeyDown={(event: ReactKeyboardEvent<HTMLDivElement>) => {
+                onKeyDownProp?.(event);
+                if (context.open) {
+                  event.stopPropagation();
+                }
+              }}
             >
               {/* Virtual focus needs an input in the popup even without a
                   visible Search; mount a hidden one in that case. */}
@@ -1129,35 +1148,24 @@ const Option = <T extends TgphElement = "div">({
   );
 };
 
-// `defaultValue` is dropped: Base UI seeds the input. `value` and
-// `onValueChange` keep the search query controllable, matching the historical
-// (menu-backed) Search API.
+// Root bridges these text props into Base UI's input state. Controlled Search
+// also restores the old contract where the consumer owns option filtering.
 export type SearchProps = RemappedOmit<
   TelegraphInputProps<"input">,
   "value" | "defaultValue"
 > & {
   label?: string;
   value?: string;
+  defaultValue?: string;
   onValueChange?: (value: string) => void;
-};
-
-// Reset a Base UI (uncontrolled) input to empty by writing through the native
-// value setter and dispatching an input event, so Base UI's own onChange runs
-// and its store — and our mirrored searchQuery — clear in lockstep.
-const clearInputElement = (input: HTMLInputElement | null | undefined) => {
-  if (!input) return;
-  const setValue = Object.getOwnPropertyDescriptor(
-    window.HTMLInputElement.prototype,
-    "value",
-  )?.set;
-  setValue?.call(input, "");
-  input.dispatchEvent(new Event("input", { bubbles: true }));
 };
 
 const Search = ({
   label = "Search",
   placeholder = "Search",
   tgphRef,
+  value: _valueProp,
+  defaultValue: _defaultValueProp,
   onValueChange: onValueChangeProp,
   onKeyDown: onKeyDownProp,
   ...props
@@ -1193,8 +1201,8 @@ const Search = ({
                   color="gray"
                   icon={{ icon: X, alt: "Clear Search Query" }}
                   onClick={() => {
-                    clearInputElement(context.searchRef?.current);
                     context.setSearchQuery?.("");
+                    onValueChangeProp?.("");
                   }}
                 />
               ) : null
@@ -1214,6 +1222,46 @@ const Search = ({
       />
     </Box>
   );
+};
+
+type SearchControl = Pick<
+  SearchProps,
+  "value" | "defaultValue" | "onValueChange"
+>;
+
+const findSearchControl = (children: ReactNode): SearchControl | undefined => {
+  let found: SearchControl | undefined;
+
+  Children.forEach(children, (child) => {
+    if (found || !isValidElement(child)) return;
+    const element = child as ReactElement<
+      SearchControl & {
+        children?: ReactNode;
+        label?: unknown;
+        selected?: unknown;
+        onSelect?: unknown;
+      }
+    >;
+
+    const isDirectSearch = element.type === Search;
+    const isOptionShaped =
+      element.props.selected !== undefined ||
+      element.props.onSelect !== undefined ||
+      (element.props.label !== undefined && !isDirectSearch);
+    const isControlledSearchWrapper =
+      element.props.onValueChange !== undefined && !isOptionShaped;
+
+    if (isDirectSearch || isControlledSearchWrapper) {
+      found = element.props;
+      return;
+    }
+
+    if (element.props.children) {
+      found = findSearchControl(element.props.children);
+    }
+  });
+
+  return found;
 };
 
 // Combobox.Option matches by type; a truthy `value` prop keeps consumer

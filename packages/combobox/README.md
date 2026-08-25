@@ -366,10 +366,19 @@ until it first renders.
 
 Search input field for filtering options.
 
-| Prop          | Type     | Default    | Description         |
-| ------------- | -------- | ---------- | ------------------- |
-| `label`       | `string` | `"Search"` | Accessibility label |
-| `placeholder` | `string` | `"Search"` | Input placeholder   |
+| Prop            | Type                      | Default     | Description                         |
+| --------------- | ------------------------- | ----------- | ----------------------------------- |
+| `label`         | `string`                  | `"Search"`  | Accessibility label                 |
+| `placeholder`   | `string`                  | `"Search"`  | Input placeholder                   |
+| `value`         | `string`                  | `undefined` | Controlled search value             |
+| `defaultValue`  | `string`                  | `undefined` | Initial uncontrolled search value   |
+| `onValueChange` | `(value: string) => void` | `undefined` | Called when the search value changes |
+
+Passing `value` or `onValueChange` makes the consumer responsible for filtering
+the rendered options, which preserves the legacy controlled-Search contract and
+supports server-side filtering. An explicit `manualFiltering` value on
+`Combobox.Root` takes precedence: set it to `false` to retain Telegraph's
+built-in text filter with a controlled Search.
 
 ### `<Combobox.Empty>`
 

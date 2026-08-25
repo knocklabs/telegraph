@@ -90,6 +90,28 @@ const WrappedSearchCombobox = () => {
   );
 };
 
+const RewritingSearchCombobox = () => {
+  const [query, setQuery] = useState("");
+  return (
+    <Combobox.Root>
+      <Combobox.Trigger aria-label="Choose channel" />
+      <Combobox.Content>
+        <Combobox.Search
+          value={query}
+          onValueChange={(nextQuery) =>
+            setQuery(nextQuery.toLowerCase().replaceAll(" ", "-"))
+          }
+        />
+        <Combobox.Options>
+          <Combobox.Option value="server-result">
+            Result returned by the server
+          </Combobox.Option>
+        </Combobox.Options>
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+
 const getTrigger = async () => {
   const trigger = page.getByRole("combobox", { name: "Choose channel" });
   await expect.element(trigger).toBeInTheDocument();
@@ -171,6 +193,51 @@ describe("Combobox virtual focus (real browser)", () => {
         document.querySelectorAll("[data-tgph-combobox-option]").length,
       ).toBe(1);
     });
+  });
+});
+
+describe("Combobox controlled Search (real browser)", () => {
+  it("renders consumer rewrites without dropping keystrokes", async () => {
+    await render(<RewritingSearchCombobox />);
+    await openViaTriggerClick();
+
+    await userEvent.keyboard("AB C");
+
+    await vi.waitFor(() => {
+      const search = document.querySelector<HTMLInputElement>(
+        "[data-tgph-combobox-search]",
+      );
+      expect(search?.value).toBe("ab-c");
+      expect(
+        document.querySelectorAll("[data-tgph-combobox-option]").length,
+        "controlled Search leaves server-filtered options mounted",
+      ).toBe(1);
+    });
+  });
+});
+
+describe("Combobox keydown propagation (real browser)", () => {
+  it("contains popup keys but lets closed-trigger Escape propagate", async () => {
+    const onAncestorKeyDown = vi.fn();
+    await render(
+      <div onKeyDown={onAncestorKeyDown}>
+        <ButtonOnlyCombobox />
+      </div>,
+    );
+    const trigger = await openViaTriggerClick();
+
+    await userEvent.keyboard("x");
+    await userEvent.keyboard("[Escape]");
+
+    await vi.waitFor(() => {
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+      expect(trigger).toHaveFocus();
+    });
+    expect(onAncestorKeyDown).not.toHaveBeenCalled();
+
+    await userEvent.keyboard("[Escape]");
+    expect(onAncestorKeyDown).toHaveBeenCalledTimes(1);
+    expect(onAncestorKeyDown.mock.calls[0]?.[0].key).toBe("Escape");
   });
 });
 

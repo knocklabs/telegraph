@@ -378,6 +378,7 @@ describe("Combobox types", () => {
           variant="ghost"
           size="2"
           value=""
+          defaultValue="initial"
           onValueChange={() => {}}
           className="c"
           style={{ opacity: 1 }}

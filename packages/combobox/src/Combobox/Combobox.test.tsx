@@ -1495,6 +1495,108 @@ describe("manualFiltering", () => {
       expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(0),
     );
   });
+
+  it("treats a controlled Search as manually filtered", async () => {
+    const user = userEvent.setup();
+
+    const Harness = () => {
+      const [query, setQuery] = useState("");
+      return (
+        <Combobox.Root defaultValue="server-result">
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Search value={query} onValueChange={setQuery} />
+            <Combobox.Options>
+              <Combobox.Option value="server-result">
+                Result returned by the server
+              </Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+
+    const { container } = render(<Harness />);
+    await openAndType(user, container, "does-not-match");
+
+    expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(1);
+  });
+
+  it("lets an explicit manualFiltering value override controlled Search inference", async () => {
+    const user = userEvent.setup();
+
+    const Harness = () => {
+      const [query, setQuery] = useState("");
+      return (
+        <Combobox.Root manualFiltering={false}>
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Search value={query} onValueChange={setQuery} />
+            <Combobox.Options>
+              <Combobox.Option value="email">Email</Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+
+    const { container } = render(<Harness />);
+    await openAndType(user, container, "zzz");
+
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+        0,
+      ),
+    );
+  });
+
+  it.each(["uncontrolled", "controlled"] as const)(
+    "keeps Create and clear in sync with a %s Search",
+    async (mode) => {
+      const user = userEvent.setup();
+
+      const Harness = () => {
+        const [query, setQuery] = useState("");
+        return (
+          <Combobox.Root>
+            <Combobox.Trigger />
+            <Combobox.Content>
+              {mode === "controlled" ? (
+                <Combobox.Search value={query} onValueChange={setQuery} />
+              ) : (
+                <Combobox.Search />
+              )}
+              <Combobox.Options>
+                <Combobox.Option value="email">Email</Combobox.Option>
+              </Combobox.Options>
+              <Combobox.Create values={["email"]} />
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container } = render(<Harness />);
+      await openAndType(user, container, "custom");
+
+      const search = queryPortalElement(
+        "[data-tgph-combobox-search]",
+      ) as HTMLInputElement;
+      expect(search.value).toBe("custom");
+      expect(
+        queryPortalElement('[data-tgph-combobox-option-value="custom"]'),
+      ).not.toBeNull();
+
+      const clearButton = queryPortalElement(
+        '[aria-label="Clear Search Query"]',
+      )?.closest("button");
+      await user.click(clearButton!);
+
+      await waitFor(() => expect(search.value).toBe(""));
+      expect(
+        queryPortalElement('[data-tgph-combobox-option-value="custom"]'),
+      ).toBeNull();
+    },
+  );
 });
 
 describe("engine compatibility", () => {
@@ -1591,6 +1693,71 @@ describe("engine compatibility", () => {
     await user.type(search, "e");
 
     expect(onAncestorKeyDown).not.toHaveBeenCalled();
+  });
+
+  it("keeps hidden-input keydowns out of ancestor shortcuts", async () => {
+    const user = userEvent.setup();
+    const onAncestorKeyDown = vi.fn();
+
+    render(
+      <div onKeyDown={onAncestorKeyDown}>
+        <Combobox.Root defaultOpen>
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Options>
+              <Combobox.Option value="email">Email</Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>,
+    );
+
+    await waitFor(() =>
+      expect(
+        queryPortalElement("[data-tgph-combobox-input-hidden]"),
+      ).toHaveFocus(),
+    );
+    await user.keyboard("e");
+
+    expect(onAncestorKeyDown).not.toHaveBeenCalled();
+  });
+
+  it("contains Escape only while the popup is open", async () => {
+    const user = userEvent.setup();
+    const onAncestorKeyDown = vi.fn();
+    const { container } = render(
+      <div onKeyDown={onAncestorKeyDown}>
+        <Combobox.Root>
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Search />
+            <Combobox.Options>
+              <Combobox.Option value="email">Email</Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>,
+    );
+    const trigger = container.querySelector<HTMLElement>(
+      "[data-tgph-combobox-trigger]",
+    );
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger).toHaveAttribute("aria-expanded", "true"),
+    );
+    await user.keyboard("[Escape]");
+
+    await waitFor(() =>
+      expect(trigger).toHaveAttribute("aria-expanded", "false"),
+    );
+    expect(onAncestorKeyDown).not.toHaveBeenCalled();
+
+    trigger?.focus();
+    await user.keyboard("[Escape]");
+
+    expect(onAncestorKeyDown).toHaveBeenCalledTimes(1);
+    expect(onAncestorKeyDown.mock.calls[0]?.[0].key).toBe("Escape");
   });
 });
 
