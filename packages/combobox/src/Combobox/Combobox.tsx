@@ -145,8 +145,9 @@ type RootSharedProps = {
   // Autocomplete root, where there is no selected value and the input text is
   // the state.
   selectionMode?: ComboboxSelectionMode;
-  // Controlled input text, distinct from the selected `value`. Only meaningful
-  // with a `Combobox.Input` anchor (and the sole state in `selectionMode="none"`).
+  // Controlled input text, distinct from the selected `value`. Controls either
+  // a `Combobox.Input` anchor or the popup's `Combobox.Search` input (and is the
+  // sole state in `selectionMode="none"`).
   inputValue?: string;
   defaultInputValue?: string;
   onInputValueChange?: (value: string, details: ComboboxChangeDetails) => void;
@@ -531,6 +532,7 @@ const RootImplementation = ({
   // The query that drives children-mode filtering is derived during render so
   // external Search or Root input-value changes filter without a stale frame.
   const activeSearchQuery = searchQuery;
+  const preserveMultiSearchQueryRef = useRef(false);
   const shouldFilterOptions =
     !manualFiltering &&
     (!isNoneMode || autocompleteMode === "list" || autocompleteMode === "both");
@@ -643,6 +645,7 @@ const RootImplementation = ({
     // `inputValue`/`defaultInputValue`. Free text persists across open/close (the
     // anchor input is the state), so it is never reset here.
     if (wasOpenRef.current && !open) {
+      preserveMultiSearchQueryRef.current = false;
       // Reset the page-slide direction on close so reopening shows the active
       // page in place; only a real switch should slide.
       pageDirectionRef.current = undefined;
@@ -685,6 +688,15 @@ const RootImplementation = ({
         return;
       }
 
+      // Base UI clears an in-popup input after every filtered multi-select item
+      // press. The menu-backed combobox kept that query while the popup stayed
+      // open, allowing several matching options to be toggled in succession.
+      preserveMultiSearchQueryRef.current =
+        multiple &&
+        closeOnSelect === false &&
+        eventDetails.reason === ITEM_PRESS_REASON &&
+        activeSearchQuery.trim() !== "";
+
       // Preserve the menu-backed callback order. Controlled callers observe the
       // popup close before they receive the selected value.
       if (closeOnSelect === true && next != null) {
@@ -706,7 +718,13 @@ const RootImplementation = ({
         setOpen(false);
       }
     },
-    [multiple, setValue, closeOnSelect, setOpen],
+    [
+      multiple,
+      setValue,
+      closeOnSelect,
+      setOpen,
+      activeSearchQuery,
+    ],
   );
 
   const handleBaseOpenChange = useCallback(
@@ -759,6 +777,21 @@ const RootImplementation = ({
         return;
       }
 
+      const isPostSelectionClear =
+        preserveMultiSearchQueryRef.current &&
+        eventDetails.reason === "input-clear";
+      preserveMultiSearchQueryRef.current = false;
+      if (isPostSelectionClear) {
+        eventDetails.cancel();
+        return;
+      }
+
+      // Give consumers first refusal over the input change, matching Base UI's
+      // cancelable callback contract. This lets callers translate a paste into
+      // selected values without Telegraph retaining the pasted text as a query.
+      onInputValueChangeProp?.(nextValue, eventDetails);
+      if (eventDetails.isCanceled) return;
+
       // Mirror the query into the popup search-query state so children-mode
       // filtering runs — but only when the user edited the input, never for Base
       // UI's programmatic label resyncs (reason `"none"`) or item-press fills,
@@ -774,8 +807,6 @@ const RootImplementation = ({
       if (isNoneMode && !isInputControlled) {
         setUncontrolledInputValue(nextValue);
       }
-
-      onInputValueChangeProp?.(nextValue, eventDetails);
     },
     [isNoneMode, isInputControlled, onInputValueChangeProp],
   );
@@ -785,6 +816,7 @@ const RootImplementation = ({
   // so clear its uncontrolled value instead of the unused search-query state.
   const clearSearchQuery = useCallback(
     (query: string) => {
+      preserveMultiSearchQueryRef.current = false;
       if (isNoneMode) {
         if (!isInputControlled) setUncontrolledInputValue(query);
         return;

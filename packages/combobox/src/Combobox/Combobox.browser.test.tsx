@@ -148,6 +148,79 @@ const RewritingSearchCombobox = () => {
   );
 };
 
+const BulkPasteCombobox = () => {
+  const [values, setValues] = useState<Array<string>>([]);
+
+  return (
+    <>
+      <input aria-label="Paste source" defaultValue="email, sms" />
+      <output data-selected-channels>{values.join(", ")}</output>
+      <Combobox.Root
+        value={values}
+        onValueChange={(next) => setValues(next as Array<string>)}
+        onInputValueChange={(next, details) => {
+          if (
+            details.reason !== "input-change" ||
+            !(details.event instanceof InputEvent) ||
+            details.event.inputType !== "insertFromPaste"
+          ) {
+            return;
+          }
+
+          details.cancel();
+          setValues(
+            next
+              .split(",")
+              .map((value) => value.trim())
+              .filter(Boolean),
+          );
+        }}
+      >
+        <Combobox.Trigger aria-label="Choose channel">
+          Choose channel
+        </Combobox.Trigger>
+        <Combobox.Content>
+          <Combobox.Search aria-label="Search channels" />
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>
+    </>
+  );
+};
+
+const PersistentMultiSearchCombobox = () => {
+  const [values, setValues] = useState<Array<string>>([]);
+
+  return (
+    <>
+      <output data-selected-channels>{values.join(", ")}</output>
+      <Combobox.Root
+        closeOnSelect={false}
+        value={values}
+        onValueChange={(next) => setValues(next as Array<string>)}
+      >
+        <Combobox.Trigger aria-label="Choose channel" />
+        <Combobox.Content>
+          <Combobox.Search aria-label="Search channels" />
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>
+    </>
+  );
+};
+
 const getTrigger = async () => {
   const trigger = page.getByRole("combobox", { name: "Choose channel" });
   await expect.element(trigger).toBeInTheDocument();
@@ -305,6 +378,87 @@ describe("Combobox controlled Search (real browser)", () => {
   });
 });
 
+describe("Combobox canceled paste (real browser)", () => {
+  it("lets a consumer convert pasted text into selections without retaining a search query", async () => {
+    await render(<BulkPasteCombobox />);
+
+    const source = page.getByRole("textbox", { name: "Paste source" });
+    await expect.element(source).toBeInTheDocument();
+    const sourceInput = source.element() as HTMLInputElement;
+    sourceInput.select();
+    await userEvent.copy();
+
+    await openViaTriggerClick();
+    await userEvent.paste();
+
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-selected-channels]")?.textContent,
+      ).toBe("email, sms");
+      expect(
+        document.querySelector<HTMLInputElement>("[data-tgph-combobox-search]")
+          ?.value,
+      ).toBe("");
+      expect(
+        document.querySelectorAll("[data-tgph-combobox-option]"),
+      ).toHaveLength(VALUES.length);
+    });
+  });
+});
+
+describe("Combobox persistent multi-select Search (real browser)", () => {
+  it("keeps the query while toggling options and still lets the user clear it", async () => {
+    await render(<PersistentMultiSearchCombobox />);
+    await openViaTriggerClick();
+
+    await userEvent.keyboard("sm");
+
+    const getSearch = () =>
+      document.querySelector<HTMLInputElement>("[data-tgph-combobox-search]");
+    const getSmsOption = () =>
+      document.querySelector<HTMLElement>(
+        '[data-tgph-combobox-option-value="sms"]',
+      );
+    await vi.waitFor(() => {
+      expect(getSearch()?.value).toBe("sm");
+      expect(
+        document.querySelectorAll("[data-tgph-combobox-option]"),
+      ).toHaveLength(1);
+    });
+
+    await userEvent.click(getSmsOption()!);
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-selected-channels]")?.textContent,
+      ).toBe("sms");
+      expect(getSearch()?.value).toBe("sm");
+      expect(
+        document.querySelectorAll("[data-tgph-combobox-option]"),
+      ).toHaveLength(1);
+    });
+
+    await userEvent.click(getSmsOption()!);
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-selected-channels]")?.textContent,
+      ).toBe("");
+      expect(getSearch()?.value).toBe("sm");
+    });
+
+    const clearButton = document
+      .querySelector('[aria-label="Clear Search Query"]')
+      ?.closest("button");
+    await userEvent.click(clearButton as HTMLButtonElement);
+
+    await vi.waitFor(() => {
+      expect(getSearch()?.value).toBe("");
+      expect(
+        document.querySelectorAll("[data-tgph-combobox-option]"),
+      ).toHaveLength(VALUES.length);
+    });
+  });
+});
+
 describe("Combobox keydown propagation (real browser)", () => {
   it("contains popup keys but lets closed-trigger Escape propagate", async () => {
     const onAncestorKeyDown = vi.fn();
@@ -329,7 +483,6 @@ describe("Combobox keydown propagation (real browser)", () => {
     expect(onAncestorKeyDown.mock.calls[0]?.[0].key).toBe("Escape");
   });
 });
-
 describe("Combobox type-to-filter highlight (real browser)", () => {
   // Diagnostic for the auto-highlight-on-type case flagged in the rewrite: with
   // a non-first existing selection, does typing to filter highlight the first

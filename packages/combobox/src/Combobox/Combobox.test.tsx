@@ -7,6 +7,7 @@ import { axe, expectToHaveNoViolations } from "vitest.axe";
 import { Combobox } from "./Combobox";
 import { findStringNodes, getOptionAccessibleLabel } from "./Combobox.helpers";
 import type {
+  ComboboxChangeDetails,
   ComboboxContentProps,
   ComboboxOptionProps,
   ComboboxOptionsProps,
@@ -220,6 +221,48 @@ describe("Combobox", () => {
 
     expect(container.querySelector("b")).toBeNull();
     expect(container.querySelector("span")).not.toBeNull();
+  });
+
+  it("does not filter options when the consumer cancels an input change", async () => {
+    const user = userEvent.setup();
+    const onInputValueChange = vi.fn(
+      (_nextValue: string, details: ComboboxChangeDetails) => {
+        details.cancel();
+      },
+    );
+
+    render(
+      <Combobox.Root
+        defaultOpen
+        value={[]}
+        onInputValueChange={onInputValueChange}
+      >
+        <Combobox.Trigger aria-label="Choose channel" />
+        <Combobox.Content>
+          <Combobox.Search aria-label="Search channels" />
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(search, "sms");
+
+    expect(onInputValueChange).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(search.value).toBe("");
+      expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+        VALUES.length,
+      );
+    });
   });
 
   describe("Single Select", () => {
@@ -678,6 +721,82 @@ describe("Combobox", () => {
       // option is tracked with data-highlighted rather than receiving DOM focus.
       expect(queryPortalElement("[data-tgph-combobox-search]")).toHaveFocus();
       expect(getSmsOption()?.getAttribute("data-highlighted")).not.toBeNull();
+    });
+
+    it("keeps a multi-select query through selection and deselection until it is cleared", async () => {
+      const user = userEvent.setup();
+
+      const Harness = () => {
+        const [value, setValue] = useState<Array<string>>([]);
+        return (
+          <Combobox.Root
+            closeOnSelect={false}
+            value={value}
+            onValueChange={setValue}
+          >
+            <Combobox.Trigger />
+            <Combobox.Content>
+              <Combobox.Search />
+              <Combobox.Options>
+                {VALUES.map((option, index) => (
+                  <Combobox.Option key={option} value={option}>
+                    {LABELS[index]}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Options>
+            </Combobox.Content>
+          </Combobox.Root>
+        );
+      };
+
+      const { container } = render(<Harness />);
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+      await user.click(trigger!);
+      await waitFor(() =>
+        expect(trigger).toHaveAttribute("aria-expanded", "true"),
+      );
+
+      const search = queryPortalElement(
+        "[data-tgph-combobox-search]",
+      ) as HTMLInputElement;
+      await user.type(search, "sm");
+
+      const getSmsOption = () =>
+        queryPortalElement(
+          '[data-tgph-combobox-option-value="sms"]',
+        ) as HTMLElement | null;
+      await waitFor(() => {
+        expect(search.value).toBe("sm");
+        expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+          1,
+        );
+      });
+
+      await user.click(getSmsOption()!);
+      await waitFor(() => expect(trigger?.textContent).toBe("SMS"));
+      expect(search.value).toBe("sm");
+      expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+        1,
+      );
+
+      await user.click(getSmsOption()!);
+      await waitFor(() => expect(trigger?.textContent).toBe(""));
+      expect(search.value).toBe("sm");
+      expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+        1,
+      );
+
+      const clearButton = queryPortalElement(
+        '[aria-label="Clear Search Query"]',
+      )?.closest("button");
+      await user.click(clearButton!);
+
+      await waitFor(() => {
+        expect(search.value).toBe("");
+        expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+          VALUES.length,
+        );
+      });
     });
 
     it("empty state should show when there are no results", async () => {
