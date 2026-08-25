@@ -1235,23 +1235,10 @@ const findSearchControl = (children: ReactNode): SearchControl | undefined => {
   Children.forEach(children, (child) => {
     if (found || !isValidElement(child)) return;
     const element = child as ReactElement<
-      SearchControl & {
-        children?: ReactNode;
-        label?: unknown;
-        selected?: unknown;
-        onSelect?: unknown;
-      }
+      SearchControl & { children?: ReactNode }
     >;
 
-    const isDirectSearch = element.type === Search;
-    const isOptionShaped =
-      element.props.selected !== undefined ||
-      element.props.onSelect !== undefined ||
-      (element.props.label !== undefined && !isDirectSearch);
-    const isControlledSearchWrapper =
-      element.props.onValueChange !== undefined && !isOptionShaped;
-
-    if (isDirectSearch || isControlledSearchWrapper) {
+    if (element.type === Search) {
       found = element.props;
       return;
     }

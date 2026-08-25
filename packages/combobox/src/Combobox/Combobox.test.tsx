@@ -1437,6 +1437,18 @@ describe("controlled value changes", () => {
 });
 
 describe("manualFiltering", () => {
+  const NonSearchValueControl = ({
+    value,
+    onValueChange,
+  }: {
+    value: string;
+    onValueChange: (value: string) => void;
+  }) => (
+    <button type="button" onClick={() => onValueChange(value)}>
+      Branches
+    </button>
+  );
+
   const renderWithSearch = (props?: { manualFiltering?: boolean }) =>
     render(
       <Combobox.Root defaultValue="email" {...props}>
@@ -1494,6 +1506,76 @@ describe("manualFiltering", () => {
     await waitFor(() =>
       expect(queryPortalElements("[data-tgph-combobox-option]").length).toBe(0),
     );
+  });
+
+  it("ignores other value controls before an uncontrolled Search", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Combobox.Root defaultValue="email">
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <NonSearchValueControl value="my-branches" onValueChange={vi.fn()} />
+          <Combobox.Search />
+          <Combobox.Options>
+            <Combobox.Option value="email">Email</Combobox.Option>
+            <Combobox.Option value="push">Push</Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    await openAndType(user, container, "push");
+
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    expect(search.value).toBe("push");
+    await waitFor(() =>
+      expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+        1,
+      ),
+    );
+    expect(
+      queryPortalElement('[data-tgph-combobox-option-value="push"]'),
+    ).not.toBeNull();
+  });
+
+  it("attaches the controlled Search contract to Search instead of an earlier value control", async () => {
+    const user = userEvent.setup();
+
+    const Harness = () => {
+      const [query, setQuery] = useState("server-query");
+      return (
+        <Combobox.Root defaultValue="server-result">
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <NonSearchValueControl
+              value="my-branches"
+              onValueChange={vi.fn()}
+            />
+            <Combobox.Search value={query} onValueChange={setQuery} />
+            <Combobox.Options>
+              <Combobox.Option value="server-result">
+                Result returned by the server
+              </Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+
+    const { container } = render(<Harness />);
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    expect(search.value).toBe("server-query");
+    expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(1);
   });
 
   it("treats a controlled Search as manually filtered", async () => {
