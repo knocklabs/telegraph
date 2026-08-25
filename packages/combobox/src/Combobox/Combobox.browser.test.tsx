@@ -165,12 +165,9 @@ const openViaTriggerClick = async () => {
 };
 
 const getAnchorInput = async () => {
-  let input: HTMLElement | null = null;
-  await vi.waitFor(() => {
-    input = document.querySelector("[data-tgph-combobox-input]");
-    if (!input) throw new Error("combobox anchor input not mounted yet");
-  });
-  return input as unknown as HTMLInputElement;
+  const input = page.getByRole("combobox", { name: "Choose channel" });
+  await expect.element(input).toBeInTheDocument();
+  return input.element() as HTMLInputElement;
 };
 
 describe("Combobox virtual focus (real browser)", () => {
@@ -479,7 +476,7 @@ const InputTriggerCombobox = ({
         onValueChange?.(next as string | undefined);
       }}
     >
-      <Combobox.Input />
+      <Combobox.Input aria-label="Choose channel" />
       <Combobox.Content>
         <Combobox.Options>
           {VALUES.map((option, index) => (
@@ -500,14 +497,16 @@ describe("Combobox input-as-trigger virtual focus (real browser)", () => {
   // tracked via aria-activedescendant (never roving onto an option).
   it("keeps DOM focus on the anchor input through open, type, highlight, and select", async () => {
     const onValueChange = vi.fn();
-    render(<InputTriggerCombobox onValueChange={onValueChange} />);
+    await render(<InputTriggerCombobox onValueChange={onValueChange} />);
 
     const input = await getAnchorInput();
     await userEvent.click(input);
-    await waitFrames(4);
-    expect(document.activeElement, "focus lands on the anchor input").toBe(
-      input,
-    );
+    await vi.waitFor(() => {
+      expect(document.activeElement, "focus lands on the anchor input").toBe(
+        input,
+      );
+      expect(input.getAttribute("aria-expanded")).toBe("true");
+    });
 
     // Typing opens the popup and filters to SMS, auto-highlighting the match.
     await userEvent.keyboard("sms");
@@ -535,8 +534,9 @@ describe("Combobox input-as-trigger virtual focus (real browser)", () => {
 
     // Enter with no explicit ArrowDown commits the highlighted match.
     await userEvent.keyboard("[Enter]");
-    await waitFrames(2);
-    expect(onValueChange).toHaveBeenLastCalledWith("sms");
+    await vi.waitFor(() => {
+      expect(onValueChange).toHaveBeenLastCalledWith("sms");
+    });
   });
 });
 
@@ -555,7 +555,7 @@ const FreeTextCombobox = ({
         onInputValueChange?.(next);
       }}
     >
-      <Combobox.Input />
+      <Combobox.Input aria-label="Choose channel" />
       <Combobox.Content>
         <Combobox.Options>
           {LABELS.map((label) => (
@@ -575,26 +575,23 @@ describe("Combobox free-text autocomplete (real browser)", () => {
   // preserved, focus stays on the input, and pressing a suggestion fills the
   // input and closes (the item-press close is honored in free-text mode).
   it("keeps typed text and focus, then a pressed suggestion fills the input and closes", async () => {
-    render(<FreeTextCombobox />);
+    await render(<FreeTextCombobox />);
 
     const input = await getAnchorInput();
     await userEvent.click(input);
     await userEvent.keyboard("sm");
-    await waitFrames(2);
-
-    expect(document.activeElement, "focus stays on the anchor input").toBe(
-      input,
-    );
-    expect(input.value, "arbitrary typed text is preserved").toBe("sm");
 
     let sms: Element | null = null;
     await vi.waitFor(() => {
+      expect(document.activeElement, "focus stays on the anchor input").toBe(
+        input,
+      );
+      expect(input.value, "arbitrary typed text is preserved").toBe("sm");
       sms = document.querySelector('[data-tgph-combobox-option-value="SMS"]');
       expect(sms, "the SMS suggestion is mounted").toBeTruthy();
     });
 
     await userEvent.click(sms as unknown as HTMLElement);
-    await waitFrames(2);
 
     // The suggestion fills the input, and the popup closes on item-press.
     await vi.waitFor(() => {

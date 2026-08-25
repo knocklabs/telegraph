@@ -20,7 +20,10 @@ export default defineConfig({
   // @ts-expect-error -- plugin type mismatch, same as vitest/config.mts
   plugins: [tsconfigPaths()],
   optimizeDeps: {
-    include: ["lucide-react/dist/esm/icons/check.mjs"],
+    include: [
+      "@base-ui/react/autocomplete",
+      "lucide-react/dist/esm/icons/check.mjs",
+    ],
   },
   test: {
     name: "browser",

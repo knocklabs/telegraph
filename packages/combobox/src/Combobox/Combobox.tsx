@@ -326,10 +326,8 @@ const Root = <V extends ComboboxValue = string>({
   // `selectionMode` overrides it. Consumers should keep that shape stable
   // (multi-select initializes with an array); Base UI does not support the
   // `multiple` flag flipping after mount.
-  const inferredMultiple = useMemo(
-    () => isMultiSelect(valueProp) || isMultiSelect(defaultValueProp),
-    [valueProp, defaultValueProp],
-  );
+  const inferredMultiple =
+    isMultiSelect(valueProp) || isMultiSelect(defaultValueProp);
   const resolvedSelectionMode: ComboboxSelectionMode =
     selectionModeProp ?? (inferredMultiple ? "multiple" : "single");
   const isNoneMode = resolvedSelectionMode === "none";
