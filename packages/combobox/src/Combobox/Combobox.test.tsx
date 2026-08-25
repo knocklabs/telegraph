@@ -1497,6 +1497,100 @@ describe("manualFiltering", () => {
   });
 });
 
+describe("engine compatibility", () => {
+  it("closes before emitting the selected value", async () => {
+    const user = userEvent.setup();
+    const calls: string[] = [];
+
+    render(
+      <Combobox.Root
+        defaultOpen
+        defaultValue="email"
+        onOpenChange={(open) => calls.push(`open:${open}`)}
+        onValueChange={(value) => calls.push(`value:${value}`)}
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            <Combobox.Option value="email">Email</Combobox.Option>
+            <Combobox.Option value="sms">SMS</Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    await user.click(
+      queryPortalElement('[data-tgph-combobox-option-value="sms"]')!,
+    );
+
+    expect(calls).toEqual(["open:false", "value:sms"]);
+  });
+
+  it("contains option clicks and prevents polymorphic link navigation", async () => {
+    const user = userEvent.setup();
+    const onAncestorClick = vi.fn();
+    const onValueChange = vi.fn();
+    let clickEvent: MouseEvent | undefined;
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        clickEvent = event as MouseEvent;
+      },
+      { capture: true, once: true },
+    );
+
+    render(
+      <div onClick={onAncestorClick}>
+        <Combobox.Root defaultOpen onValueChange={onValueChange}>
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Options>
+              <Combobox.Option as="a" href="#sms" value="sms">
+                SMS
+              </Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>,
+    );
+
+    await user.click(
+      queryPortalElement('[data-tgph-combobox-option-value="sms"]')!,
+    );
+
+    expect(clickEvent?.defaultPrevented).toBe(true);
+    expect(onAncestorClick).not.toHaveBeenCalled();
+    expect(onValueChange).toHaveBeenCalledWith("sms");
+  });
+
+  it("keeps Search keydowns out of ancestor shortcuts", async () => {
+    const user = userEvent.setup();
+    const onAncestorKeyDown = vi.fn();
+
+    render(
+      <div onKeyDown={onAncestorKeyDown}>
+        <Combobox.Root defaultOpen>
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Search />
+            <Combobox.Options>
+              <Combobox.Option value="email">Email</Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>,
+    );
+
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    await user.type(search, "e");
+
+    expect(onAncestorKeyDown).not.toHaveBeenCalled();
+  });
+});
+
 describe("Trigger ref", () => {
   it("composes a consumer tgphRef with the internal trigger ref", () => {
     const ref = { current: null as HTMLButtonElement | null };

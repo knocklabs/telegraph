@@ -28,6 +28,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   Children,
+  type KeyboardEvent as ReactKeyboardEvent,
   type ReactElement,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
@@ -129,6 +130,8 @@ export const ComboboxContext = createContext<
     options: Array<DefinedOption>;
     manualFiltering: boolean;
     defaultScrollToValue?: string;
+    // Explicit Base UI registry index for a Create row rendered outside Options.
+    createIndex?: number;
   }
 >({
   value: undefined,
@@ -143,6 +146,8 @@ export const ComboboxContext = createContext<
   options: [],
   manualFiltering: false,
 });
+
+const CreateIndexContext = createContext<number | undefined>(undefined);
 
 // Action items (`onSelect`/`Create`) must be navigable and highlightable but
 // must never commit a selection. Base UI keys selection, highlight, and
@@ -220,7 +225,7 @@ const Root = <V extends ComboboxValue = string>({
   // an over-inclusive list is harmless, while an under-inclusive one would let
   // Base UI's bounds check drop a valid highlight — hence the conservative
   // inclusion rules below.
-  const filteredItems = useMemo<Array<string>>(() => {
+  const { filteredItems, createIndex } = useMemo(() => {
     // With manual filtering the consumer decides which options render, so keep
     // every option in the bounds list and never filter it here.
     const query = manualFiltering ? "" : (searchQuery ?? "");
@@ -245,11 +250,13 @@ const Root = <V extends ComboboxValue = string>({
     // forced empty under manualFiltering) so Create stays navigable there too.
     // Over-reserving when Create is hidden (its value already exists) is harmless.
     const createQuery = searchQuery ?? "";
+    let nextCreateIndex: number | undefined;
     if (createQuery && hasCreate) {
+      nextCreateIndex = values.length;
       values.push(createQuery);
     }
 
-    return values;
+    return { filteredItems: values, createIndex: nextCreateIndex };
   }, [options, searchQuery, hasCreate, manualFiltering]);
   // Keep open state controllable like the old menu-backed implementation while
   // still allowing uncontrolled usage through defaultOpen.
@@ -293,35 +300,28 @@ const Root = <V extends ComboboxValue = string>({
       next: string | Array<string> | null,
       eventDetails: BaseUIChangeEventDetails,
     ) => {
-      if (multiple) {
-        const array = Array.isArray(next) ? next : [];
-        // The sentinel (or a null/undefined) entry means an `onSelect`/Create
-        // item was pressed; let its own handler run instead of committing a
-        // selection.
-        if (
-          array.some((entry) => entry == null || isOnSelectItemValue(entry))
-        ) {
-          eventDetails.cancel();
-          return;
-        }
+      const array = multiple && Array.isArray(next) ? next : [];
+      const isActionItem = multiple
+        ? array.some((entry) => entry == null || isOnSelectItemValue(entry))
+        : next == null || Array.isArray(next) || isOnSelectItemValue(next);
 
-        (setValue as MultiSelect["onValueChange"])?.(array);
-      } else {
-        // Real options always carry a string value, so a sentinel (or null)
-        // commit is an `onSelect`/Create item; skip it and let `onClick` handle
-        // the action.
-        if (next == null || Array.isArray(next) || isOnSelectItemValue(next)) {
-          eventDetails.cancel();
-          return;
-        }
-
-        (setValue as SingleSelect["onValueChange"])?.(next);
+      if (isActionItem) {
+        eventDetails.cancel();
+        return;
       }
 
-      // Base UI's single-select close arrives through `onOpenChange`, but we
-      // always drive closing from here so multi-select honors closeOnSelect too.
+      // Preserve the menu-backed callback order. Controlled callers observe the
+      // popup close before they receive the selected value.
       if (closeOnSelect === true) {
         setOpen(false);
+      }
+
+      if (multiple) {
+        (setValue as MultiSelect["onValueChange"])?.(array);
+      } else {
+        // The action-item and array cases returned above, so single-select has
+        // a real string value here.
+        (setValue as SingleSelect["onValueChange"])?.(next as string);
       }
     },
     [multiple, setValue, closeOnSelect, setOpen],
@@ -388,6 +388,7 @@ const Root = <V extends ComboboxValue = string>({
         options,
         manualFiltering,
         defaultScrollToValue,
+        createIndex,
       }}
     >
       <BaseCombobox.Root
@@ -984,6 +985,7 @@ const Option = <T extends TgphElement = "div">({
   ...props
 }: OptionProps<T>) => {
   const context = useContext(ComboboxContext);
+  const explicitIndex = useContext(CreateIndexContext);
   const contextValue = context.value;
   const optionRef = useRef<HTMLElement>(null);
   const composedRef = useComposedRefs<HTMLElement>(
@@ -1036,20 +1038,58 @@ const Option = <T extends TgphElement = "div">({
   const { closeOnSelect, setOpen } = context;
   const handleClick = useCallback(
     (event: ReactMouseEvent<HTMLElement>) => {
-      if (!onSelect) {
+      // The old menu-backed options contained selection clicks and prevented
+      // polymorphic anchors from navigating after a value was chosen.
+      event.stopPropagation();
+      // Prevent the browser default on the native event without marking Base
+      // UI's synthetic event handled; its same-element selection handler still
+      // needs to commit the option after this callback returns.
+      event.nativeEvent.preventDefault();
+
+      if (onSelect) {
+        // Base UI has no per-item select callback, and its own commit for this
+        // item is canceled at the Root value bridge (the item is given no
+        // committable value), so run the override here.
+        if (closeOnSelect === true) {
+          setOpen(false);
+        }
+
+        onSelect(event.nativeEvent);
         return;
       }
 
-      // Base UI has no per-item select callback, and its own commit for this
-      // item is canceled at the Root value bridge (the item is given no
-      // committable value), so run the override here.
+      // Base UI deliberately leaves anchors to native navigation and skips its
+      // selection bridge. Telegraph historically selected polymorphic links
+      // while preventing navigation, so commit that case directly.
+      const isLink =
+        event.currentTarget instanceof HTMLAnchorElement &&
+        event.currentTarget.hasAttribute("href");
+      if (!isLink) {
+        return;
+      }
+
       if (closeOnSelect === true) {
         setOpen(false);
       }
 
-      onSelect(event.nativeEvent);
+      if (isMultiSelect(contextValue)) {
+        const nextValue = isSelected
+          ? contextValue.filter((entry) => entry !== value)
+          : [...contextValue, value];
+        (context.onValueChange as MultiSelect["onValueChange"])?.(nextValue);
+      } else {
+        (context.onValueChange as SingleSelect["onValueChange"])?.(value);
+      }
     },
-    [onSelect, closeOnSelect, setOpen],
+    [
+      onSelect,
+      closeOnSelect,
+      setOpen,
+      contextValue,
+      context.onValueChange,
+      isSelected,
+      value,
+    ],
   );
 
   if (!isVisible) {
@@ -1063,6 +1103,7 @@ const Option = <T extends TgphElement = "div">({
       // without matching a real value or the "no selection" state, and their
       // commit is cancelled at the value bridge (see `isOnSelectItemValue`).
       value={onSelect ? ON_SELECT_ITEM_VALUE : value}
+      index={explicitIndex}
       onClick={handleClick}
       render={createTgphBaseUIRender(
         <OptionItem
@@ -1118,6 +1159,7 @@ const Search = ({
   placeholder = "Search",
   tgphRef,
   onValueChange: onValueChangeProp,
+  onKeyDown: onKeyDownProp,
   ...props
 }: SearchProps) => {
   const id = useId();
@@ -1159,6 +1201,12 @@ const Search = ({
             }
             data-tgph-combobox-search
             aria-controls={context.contentId}
+            onKeyDown={(event: ReactKeyboardEvent<HTMLInputElement>) => {
+              onKeyDownProp?.(event);
+              if (event.key !== "Escape") {
+                event.stopPropagation();
+              }
+            }}
             {...props}
             tgphRef={composedRef}
           />,
@@ -1298,27 +1346,29 @@ const Create = <T extends TgphElement = "div">({
 
   if (context.searchQuery && !variableAlreadyExists(context.searchQuery)) {
     return (
-      <Option
-        leadingIcon={{ icon: Plus, "aria-hidden": true }}
-        mx="1"
-        value={context.searchQuery}
-        label={`${leadingText} "${context.searchQuery}"`}
-        selected={selected}
-        onSelect={() => {
-          if (onCreate && context.searchQuery) {
-            onCreate(context.searchQuery);
+      <CreateIndexContext.Provider value={context.createIndex}>
+        <Option
+          leadingIcon={{ icon: Plus, "aria-hidden": true }}
+          mx="1"
+          value={context.searchQuery}
+          label={`${leadingText} "${context.searchQuery}"`}
+          selected={selected}
+          onSelect={() => {
+            if (onCreate && context.searchQuery) {
+              onCreate(context.searchQuery);
 
-            context.setSearchQuery?.("");
-          }
-        }}
-        // Forward the remaining Create props to Option, minus the ones set
-        // explicitly above. The spread is last, so its type must not re-declare
-        // them or `value` collides (TS2783). Mirrors Button.Icon's Omit cast.
-        {...(props as Omit<
-          OptionProps<"div">,
-          "value" | "label" | "selected" | "onSelect" | "leadingIcon" | "mx"
-        >)}
-      />
+              context.setSearchQuery?.("");
+            }
+          }}
+          // Forward the remaining Create props to Option, minus the ones set
+          // explicitly above. The spread is last, so its type must not re-declare
+          // them or `value` collides (TS2783). Mirrors Button.Icon's Omit cast.
+          {...(props as Omit<
+            OptionProps<"div">,
+            "value" | "label" | "selected" | "onSelect" | "leadingIcon" | "mx"
+          >)}
+        />
+      </CreateIndexContext.Provider>
     );
   }
 };

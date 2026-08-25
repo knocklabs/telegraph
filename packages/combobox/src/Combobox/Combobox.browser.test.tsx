@@ -257,8 +257,8 @@ const CreatableCombobox = ({
               {LABELS[index]}
             </Combobox.Option>
           ))}
-          <Combobox.Create values={VALUES} onCreate={onCreate ?? (() => {})} />
         </Combobox.Options>
+        <Combobox.Create values={VALUES} onCreate={onCreate ?? (() => {})} />
       </Combobox.Content>
     </Combobox.Root>
   );
