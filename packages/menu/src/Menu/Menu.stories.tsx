@@ -155,5 +155,13 @@ export const WithSubmenu: Story = {
 // while ArrowDown still moves into the list.
 export const TypeableTrigger: Story = {
   name: "Typeable Trigger (deprecated)",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "**Deprecated.** A typeable input inside `Menu.Trigger` does not follow the WAI-ARIA menu-button pattern. Use [Combobox's Input As Trigger story](?path=/story/components-combobox--input-as-trigger) for new UI. This legacy example remains only as a reference for the retained focus-bounce behavior.",
+      },
+    },
+  },
   render: (args) => <TypeableTriggerExample {...args} />,
 };
