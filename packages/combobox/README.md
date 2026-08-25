@@ -61,9 +61,10 @@ export const SingleSelectExample = () => {
 
 ## Implementation Notes
 
-Combobox keeps the existing Telegraph compound API while using the Base UI-backed
-Telegraph Menu primitives for popup positioning, portal rendering, dismissal,
-and focus restoration. The package no longer depends on Radix directly.
+Combobox keeps the existing Telegraph compound API while using Base UI's
+Combobox engine for selection, filtering, virtual focus, popup positioning,
+portal rendering, and dismissal. The package no longer depends on Telegraph
+Menu or Radix directly.
 
 Combobox values are strings or string arrays. Single- vs multi-select behavior
 is inferred from the shape of `value` / `defaultValue`.
@@ -76,20 +77,21 @@ without returning to the trigger first.
 
 The root component that manages the state and context for the combobox.
 
-| Prop            | Type                                | Default      | Description                        |
-| --------------- | ----------------------------------- | ------------ | ---------------------------------- |
-| `value`         | `string \| string[]`                 | `undefined`  | The selected value(s)              |
-| `onValueChange` | `(value: string \| undefined \| string[]) => void` | `undefined`  | Callback when selection changes; clearing a single selection reports `undefined` |
-| `layout`        | `"truncate" \| "wrap"`              | `"truncate"` | How to display multiple selections |
-| `open`          | `boolean`                           | `undefined`  | Controlled open state              |
-| `defaultOpen`   | `boolean`                           | `false`      | Initial open state                 |
-| `errored`       | `boolean`                           | `false`      | Shows error styling                |
-| `placeholder`   | `string`                            | `undefined`  | Placeholder text                   |
-| `onOpenChange`  | `(open: boolean) => void`           | `undefined`  | Callback when open state changes   |
-| `modal`         | `boolean`                           | `true`       | Whether to render in a modal       |
-| `closeOnSelect` | `boolean`                           | `true`       | Close menu after selection         |
-| `clearable`     | `boolean`                           | `false`      | Show clear button                  |
-| `disabled`      | `boolean`                           | `false`      | Disable the combobox               |
+| Prop              | Type                                             | Default      | Description                                                               |
+| ----------------- | ------------------------------------------------ | ------------ | ------------------------------------------------------------------------- |
+| `value`           | `string \| string[]`                              | `undefined`  | The selected value(s)                                                     |
+| `onValueChange`   | `(value: string \| undefined \| string[]) => void` | `undefined`  | Callback when selection changes; clearing a single selection reports `undefined` |
+| `layout`          | `"truncate" \| "wrap"`                           | `"truncate"` | How to display multiple selections                                        |
+| `open`            | `boolean`                                        | `undefined`  | Controlled open state                                                     |
+| `defaultOpen`     | `boolean`                                        | `false`      | Initial open state                                                        |
+| `errored`         | `boolean`                                        | `false`      | Shows error styling                                                       |
+| `placeholder`     | `string`                                         | `undefined`  | Placeholder text                                                          |
+| `onOpenChange`    | `(open: boolean) => void`                        | `undefined`  | Callback when open state changes                                          |
+| `modal`           | `boolean`                                        | `true`       | Whether to render in a modal                                              |
+| `closeOnSelect`   | `boolean`                                        | `true`       | Close menu after selection                                                |
+| `clearable`       | `boolean`                                        | `false`      | Show clear button                                                         |
+| `disabled`        | `boolean`                                        | `false`      | Disable the combobox                                                      |
+| `manualFiltering` | `boolean`                                        | `false`      | Show rendered options without the built-in text filter                    |
 
 ### `<Combobox.Trigger>`
 
