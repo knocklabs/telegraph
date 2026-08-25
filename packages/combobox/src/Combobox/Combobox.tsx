@@ -2125,7 +2125,11 @@ export type PageProps = {
 
 // Lazily loaded so the slide markup and its CSS ship as a separate chunk, only
 // for multi-page comboboxes.
-const PageTransition = lazy(() => import("./Combobox.pageTransition"));
+const PageTransition = lazy(() =>
+  import("./Combobox.pageTransition.js").then((module) => ({
+    default: module.PageTransition,
+  })),
+);
 
 const Page = ({ value, children }: PageProps) => {
   const context = useContext(ComboboxContext);

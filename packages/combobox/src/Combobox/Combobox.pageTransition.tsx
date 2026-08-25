@@ -9,8 +9,9 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 
-// The active `Combobox.Page` panel. Default export so `Combobox.Page` can pull
-// it in with `React.lazy` — the wrapper JS and its CSS then ship as a separate
+// The active `Combobox.Page` panel. Exported by name so `Combobox.Page` can pull
+// it in with `React.lazy` while mapping around NodeNext's CommonJS interop. The
+// wrapper JS and its CSS then ship as a separate
 // chunk that loads only for multi-page comboboxes.
 //
 // On mount it plays the CSS slide-in. On unmount (its page switched away) it
@@ -20,7 +21,7 @@ const prefersReducedMotion = () =>
 // The popup's height is animated separately by `Combobox.Content`'s `min-height`
 // transition. `role="presentation"` keeps the wrapper out of the a11y tree so
 // the listbox still owns its options directly.
-const PageTransition = ({
+export const PageTransition = ({
   direction,
   children,
 }: {
@@ -122,5 +123,3 @@ const PageTransition = ({
     </div>
   );
 };
-
-export default PageTransition;
