@@ -983,6 +983,49 @@ describe("Input as trigger", () => {
     ).toBe("sms");
   });
 
+  it("updates filtering when a controlled input value changes externally", async () => {
+    const ControlledInput = ({ inputValue }: { inputValue: string }) => (
+      <Combobox.Root
+        inputValue={inputValue}
+        open
+        modal={false}
+        value={undefined}
+      >
+        <Combobox.Input />
+        <Combobox.Content>
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>
+    );
+    const { rerender } = render(<ControlledInput inputValue="sms" />);
+
+    await waitFor(() => {
+      const options = queryPortalElements("[data-tgph-combobox-option]");
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveAttribute(
+        "data-tgph-combobox-option-value",
+        "sms",
+      );
+    });
+
+    rerender(<ControlledInput inputValue="email" />);
+
+    await waitFor(() => {
+      const options = queryPortalElements("[data-tgph-combobox-option]");
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveAttribute(
+        "data-tgph-combobox-option-value",
+        "email",
+      );
+    });
+  });
+
   it("selecting an option commits its value and closes", async () => {
     const user = userEvent.setup();
     const { container } = render(<ComboboxInputTrigger />);
@@ -1155,6 +1198,27 @@ describe("Input as trigger", () => {
 });
 
 describe("Free-text autocomplete (selectionMode none)", () => {
+  it.each(["none", "inline"] as const)(
+    "keeps the full option list in %s mode",
+    async (mode) => {
+      const user = userEvent.setup();
+      const { container } = render(
+        <FreeTextCombobox defaultOpen mode={mode} />,
+      );
+      const input = container.querySelector(
+        "[data-tgph-combobox-input]",
+      ) as HTMLInputElement;
+
+      await user.type(input, "unmatched");
+
+      await waitFor(() =>
+        expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(
+          FREE_TEXT_CHANNELS.length,
+        ),
+      );
+    },
+  );
+
   it("keeps arbitrary typed text and selects nothing", async () => {
     const user = userEvent.setup();
     const onInputValueChange = vi.fn();

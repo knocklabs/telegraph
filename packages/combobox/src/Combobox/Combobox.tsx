@@ -363,6 +363,8 @@ const Root = <V extends ComboboxValue = string>({
   // The query that drives children-mode filtering is derived during render so
   // external Search or Root input-value changes filter without a stale frame.
   const activeSearchQuery = searchQuery;
+  const shouldFilterOptions =
+    !manualFiltering && (!isNoneMode || mode === "list" || mode === "both");
 
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
@@ -379,9 +381,9 @@ const Root = <V extends ComboboxValue = string>({
   // Base UI's bounds check drop a valid highlight — hence the conservative
   // inclusion rules below.
   const { filteredItems, createIndex } = useMemo(() => {
-    // With manual filtering the consumer decides which options render, so keep
-    // every option in the bounds list and never filter it here.
-    const query = manualFiltering ? "" : activeSearchQuery;
+    // Manual filtering and free-text modes without list autocomplete leave the
+    // rendered options unchanged. The query still drives Create and clear.
+    const query = shouldFilterOptions ? activeSearchQuery : "";
     const values = options
       .filter(
         (option) =>
@@ -411,7 +413,7 @@ const Root = <V extends ComboboxValue = string>({
     }
 
     return { filteredItems: values, createIndex: nextCreateIndex };
-  }, [options, activeSearchQuery, hasCreate, manualFiltering]);
+  }, [options, activeSearchQuery, hasCreate, shouldFilterOptions]);
   // Open state, kept controllable like the old menu-backed implementation. This
   // mirrors `useControllableState` (same no-op-on-equal and updater semantics)
   // but threads Base UI's change `details` to the consumer's `onOpenChange` as an
@@ -699,6 +701,7 @@ const Root = <V extends ComboboxValue = string>({
         layout,
         options,
         manualFiltering,
+        mode,
         defaultScrollToValue,
         createIndex,
         optionCloseOnClickRef,
@@ -1522,9 +1525,13 @@ const Option = <T extends TgphElement = "div">({
     });
   });
 
+  const shouldFilterOptions =
+    !context.manualFiltering &&
+    (context.resolvedSelectionMode !== "none" ||
+      context.mode === "list" ||
+      context.mode === "both");
   const isVisible =
-    // The consumer owns which options render (see `manualFiltering`).
-    context.manualFiltering ||
+    !shouldFilterOptions ||
     !context.searchQuery ||
     doesOptionMatchSearchQuery({
       children: label || children,
