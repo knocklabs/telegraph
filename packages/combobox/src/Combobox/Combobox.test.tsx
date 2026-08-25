@@ -131,7 +131,7 @@ const ControlledOpenCombobox = ({
 
 // The `@telegraph/input`-styled anchor replaces the button trigger. There is no
 // `Combobox.Search`; the anchor input owns role="combobox" and virtual focus.
-const ComboboxInputTrigger = ({ ...props }) => {
+const ComboboxInputTrigger = ({ inputId, ...props }) => {
   const [value, setValue] = useState<string | undefined>(undefined);
   return (
     <Combobox.Root
@@ -140,7 +140,7 @@ const ComboboxInputTrigger = ({ ...props }) => {
       placeholder="Search a channel"
       {...props}
     >
-      <Combobox.Input />
+      <Combobox.Input id={inputId} />
       <Combobox.Content>
         <Combobox.Options>
           {VALUES.map((option, index) => (
@@ -924,6 +924,26 @@ describe("Input as trigger", () => {
     expect(container.querySelector("[data-tgph-combobox-trigger]")).toBeNull();
   });
 
+  it("names the popup dialog with the anchor input id", async () => {
+    const { container } = render(
+      <ComboboxInputTrigger defaultOpen inputId="channel-input" />,
+    );
+    const input = container.querySelector(
+      "[data-tgph-combobox-input]",
+    ) as HTMLInputElement;
+
+    await waitFor(() =>
+      expect(queryPortalElement("[data-tgph-combobox-content]")).toBeTruthy(),
+    );
+
+    expect(input.id).toBe("channel-input");
+    expect(
+      queryPortalElement("[data-tgph-combobox-content]")?.getAttribute(
+        "aria-labelledby",
+      ),
+    ).toBe(input.id);
+  });
+
   it("does not mount a hidden popup input; the anchor input owns virtual focus", async () => {
     render(<ComboboxInputTrigger defaultOpen />);
 
@@ -987,6 +1007,7 @@ describe("Input as trigger", () => {
     await waitFor(() =>
       expect(input.getAttribute("aria-expanded")).toBe("false"),
     );
+    expect(input.value).toBe("Push");
   });
 
   it("does not open when the anchor input is disabled", async () => {
@@ -1045,7 +1066,7 @@ describe("Input as trigger", () => {
     await user.type(input, "push");
     const push = queryPortalElement('[data-tgph-combobox-option-value="push"]');
     await user.click(push!);
-    await waitFor(() => expect(input.value).toBe("push"));
+    await waitFor(() => expect(input.value).toBe("Push"));
     onValueChange.mockClear();
 
     // Emptying the input is a clear: Base UI commits null, which must reach the
@@ -1084,7 +1105,7 @@ describe("Input as trigger", () => {
     await user.click(
       queryPortalElement('[data-tgph-combobox-option-value="push"]')!,
     );
-    await waitFor(() => expect(input.value).toBe("push"));
+    await waitFor(() => expect(input.value).toBe("Push"));
     await user.click(input);
     await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "true"));
 

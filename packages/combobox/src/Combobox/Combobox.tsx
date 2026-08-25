@@ -190,6 +190,9 @@ export const ComboboxContext = createContext<
     resolvedSelectionMode: ComboboxSelectionMode;
     // Whether a `Combobox.Input` anchor is rendered as a direct child of Root.
     hasAnchorInput: boolean;
+    // The consumer-provided id for the anchor input, or Root's generated id.
+    // Content uses the same id to name its dialog.
+    anchorInputId: string;
   }
 >({
   value: undefined,
@@ -206,6 +209,7 @@ export const ComboboxContext = createContext<
   manualFiltering: false,
   resolvedSelectionMode: "single",
   hasAnchorInput: false,
+  anchorInputId: "",
 });
 
 const CreateIndexContext = createContext<number | undefined>(undefined);
@@ -310,10 +314,13 @@ const Root = <V extends ComboboxValue = string>({
 
   // Whether a `Combobox.Input` anchor is rendered (input-as-trigger arrangement)
   // instead of the button `Combobox.Trigger`.
-  const hasAnchorInput = useMemo(
-    () => childrenContainInput(children),
+  const anchorInputElement = useMemo(
+    () => findAnchorInput(children),
     [children],
   );
+  const hasAnchorInput = anchorInputElement !== undefined;
+  const anchorInputId =
+    (anchorInputElement?.props as { id?: string } | undefined)?.id ?? triggerId;
 
   // Single- vs multi-select is derived from the value shape; an explicit
   // `selectionMode` overrides it. Consumers should keep that shape stable
@@ -646,6 +653,24 @@ const Root = <V extends ComboboxValue = string>({
     [onItemHighlightedProp],
   );
 
+  // Base UI otherwise derives the anchor-input text from the raw item value.
+  // Resolve it through Telegraph's option model so a selected `push` option
+  // displays its human-readable `Push` label. Keep the action sentinel's exact
+  // serialization because free-text mode uses it to cancel action-row fills.
+  const itemToStringLabel = useCallback(
+    (itemValue: unknown) => {
+      if (isOnSelectItemValue(itemValue)) return ON_SELECT_ITEM_FILL;
+      if (typeof itemValue !== "string") return "";
+
+      return (
+        getOptionAccessibleLabel(
+          options.find((option) => option.value === itemValue),
+        ) ?? itemValue
+      );
+    },
+    [options],
+  );
+
   return (
     <ComboboxContext.Provider
       value={{
@@ -679,6 +704,7 @@ const Root = <V extends ComboboxValue = string>({
         optionCloseOnClickRef,
         resolvedSelectionMode,
         hasAnchorInput,
+        anchorInputId,
       }}
     >
       {isNoneMode ? (
@@ -700,6 +726,7 @@ const Root = <V extends ComboboxValue = string>({
           // Children mode: options are mounted `Combobox.Item`s; this list only
           // re-seeds the type-to-filter highlight and bounds it to the rows.
           filteredItems={filteredItems}
+          itemToStringValue={itemToStringLabel}
           autoHighlight={autoHighlightProp ?? false}
           openOnInputClick={openOnInputClickProp}
           loopFocus={loopFocusProp}
@@ -753,6 +780,7 @@ const Root = <V extends ComboboxValue = string>({
           // keystroke and bounds it to the mounted rows. See the `filteredItems`
           // memo above for why it is computed conservatively.
           filteredItems={filteredItems}
+          itemToStringLabel={itemToStringLabel}
           modal={modal}
           disabled={disabled}
         >
@@ -962,6 +990,7 @@ const Input = ({
       // exactly the path that raced Base UI and dropped keystrokes in T4.
       render={createTgphBaseUIRender(
         <TelegraphInput
+          id={context.anchorInputId}
           size={size}
           variant={variant}
           // Fall back to the Root-level placeholder/errored/disabled when unset.
@@ -1251,7 +1280,11 @@ const Content = <T extends TgphElement = "div">({
               mt="1"
               // Base UI renders the popup as role="dialog"; name it via the
               // trigger so it isn't an unnamed dialog for assistive tech.
-              aria-labelledby={context.triggerId}
+              aria-labelledby={
+                context.hasAnchorInput
+                  ? context.anchorInputId
+                  : context.triggerId
+              }
               data-tgph-combobox-content
               data-tgph-combobox-content-open={context.open}
               tgphRef={composedRef as StackProps["tgphRef"]}
@@ -1779,16 +1812,16 @@ const isOptionElement = (element: ReactElement) => {
 
 const isOptionsElement = (element: ReactElement) => element.type === Options;
 
-// Walk the Root children for a `Combobox.Input` anchor so Root can flag the
-// input-as-trigger arrangement (Content then skips its hidden popup input, and
-// focus/finalFocus stay on the anchor input).
-const childrenContainInput = (children: ReactNode): boolean => {
-  let found = false;
+// Walk the Root children for a `Combobox.Input` anchor so Root can preserve its
+// id as well as flag the input-as-trigger arrangement (Content then skips its
+// hidden popup input, and focus/finalFocus stay on the anchor input).
+const findAnchorInput = (children: ReactNode): ReactElement | undefined => {
+  let found: ReactElement | undefined;
   Children.forEach(children, (child) => {
     if (found || !(typeof child === "object" && child !== null)) return;
     const element = child as ReactElement<{ children?: ReactNode }>;
     if (element.type === Input) {
-      found = true;
+      found = element;
       return;
     }
     // Stop at Content: an input inside the popup is a Search, not the anchor.
@@ -1796,7 +1829,7 @@ const childrenContainInput = (children: ReactNode): boolean => {
       return;
     }
     if (element.props?.children) {
-      found = childrenContainInput(element.props.children);
+      found = findAnchorInput(element.props.children);
     }
   });
   return found;
