@@ -1682,6 +1682,130 @@ describe("manualFiltering", () => {
 });
 
 describe("engine compatibility", () => {
+  it("exposes disabled options to Base UI without making them selectable", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    render(
+      <Combobox.Root defaultOpen onValueChange={onValueChange}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            <Combobox.Option value="email" disabled>
+              Email
+            </Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    const option = queryPortalElement(
+      '[data-tgph-combobox-option-value="email"]',
+    )!;
+    expect(option).toHaveAttribute("aria-disabled", "true");
+
+    await user.click(option);
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it("keeps options programmatically focusable for virtualized consumers", () => {
+    const onFocus = vi.fn();
+
+    render(
+      <Combobox.Root defaultOpen modal={false}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options onFocus={onFocus}>
+            <Combobox.Option value="email">Email</Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    const option = queryPortalElement(
+      '[data-tgph-combobox-option-value="email"]',
+    ) as HTMLElement;
+    option.focus();
+
+    expect(option).toHaveFocus();
+    expect(onFocus).toHaveBeenCalledOnce();
+  });
+
+  it("bridges virtual highlights into legacy option focus events", async () => {
+    const user = userEvent.setup();
+    const onFocus = vi.fn();
+
+    render(
+      <Combobox.Root defaultOpen modal={false}>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Search />
+          <Combobox.Options onFocus={onFocus}>
+            <Combobox.Option value="email">Email</Combobox.Option>
+            <Combobox.Option value="sms">SMS</Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    const search = queryPortalElement(
+      "[data-tgph-combobox-search]",
+    ) as HTMLInputElement;
+    search.focus();
+    await user.keyboard("[ArrowDown]");
+
+    await waitFor(() => expect(onFocus).toHaveBeenCalled());
+    const focusEvent = onFocus.mock.calls.at(-1)![0];
+    expect(
+      (focusEvent.target as HTMLElement).getAttribute(
+        "data-tgph-combobox-option-value",
+      ),
+    ).toBe("email");
+  });
+
+  it("reopens a controlled popup after selecting an option", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    const Harness = () => {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <Combobox.Root
+          modal={false}
+          open={open}
+          onOpenChange={setOpen}
+          value={undefined}
+          onValueChange={onValueChange}
+        >
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Options>
+              <Combobox.Option value="email">Email</Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      );
+    };
+
+    const { container } = render(<Harness />);
+    const trigger = container.querySelector<HTMLElement>(
+      "[data-tgph-combobox-trigger]",
+    )!;
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    await user.click(
+      queryPortalElement('[data-tgph-combobox-option-value="email"]')!,
+    );
+    expect(onValueChange).toHaveBeenCalledWith("email");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
   it("closes before emitting the selected value", async () => {
     const user = userEvent.setup();
     const calls: string[] = [];

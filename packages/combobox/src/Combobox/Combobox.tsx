@@ -2,6 +2,7 @@ import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import {
   type ButtonRootProps,
   Button as TelegraphButton,
+  resolveButtonNativeButton,
 } from "@telegraph/button";
 import { useComposedRefs } from "@telegraph/compose-refs";
 import {
@@ -28,6 +29,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   Children,
+  type FocusEvent as ReactFocusEvent,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactElement,
   type MouseEvent as ReactMouseEvent,
@@ -73,6 +75,10 @@ type BaseUIChangeEventDetails = {
   isCanceled: boolean;
   reason: string;
   event: Event;
+};
+
+type BaseUIFocusEvent = ReactFocusEvent<HTMLElement> & {
+  preventBaseUIHandler?: () => void;
 };
 
 type LayoutValue<V> = V extends string ? never : "truncate" | "wrap";
@@ -343,10 +349,13 @@ const Root = <V extends ComboboxValue = string>({
       const reason = eventDetails.reason;
 
       if (!nextOpen) {
-        // Selection open/close is managed entirely by the value bridge above so
-        // closeOnSelect behaves identically for single and multi select.
+        // Let Base UI finish its internal close when selection also closes the
+        // controlled Telegraph state. Cancelling that transition leaves Base
+        // UI internally open, so the next trigger press cannot reopen it.
         if (reason === "item-press") {
-          eventDetails.cancel();
+          if (!closeOnSelect) {
+            eventDetails.cancel();
+          }
           return;
         }
 
@@ -365,12 +374,39 @@ const Root = <V extends ComboboxValue = string>({
 
       setOpen(nextOpen);
     },
-    [setOpen],
+    [closeOnSelect, setOpen],
   );
 
   const handleInputValueChange = useCallback((nextValue: string) => {
     setSearchQuery(nextValue);
   }, []);
+
+  // The menu-backed combobox moved DOM focus through its options. Base UI uses
+  // virtual focus instead, but existing virtualized consumers listen for the
+  // bubbling focus event to mount the next window of options. Re-emit that
+  // signal from the highlighted row while the real focus remains on the input.
+  const handleBaseItemHighlighted = useCallback(
+    (highlightedValue: string | undefined) => {
+      if (highlightedValue === undefined) {
+        return;
+      }
+
+      const highlightedOption = Array.from(
+        contentRef.current?.querySelectorAll<HTMLElement>(
+          "[data-tgph-combobox-option]",
+        ) ?? [],
+      ).find(
+        (option) =>
+          option.getAttribute("data-tgph-combobox-option-value") ===
+          highlightedValue,
+      );
+
+      highlightedOption?.dispatchEvent(
+        new FocusEvent("focusin", { bubbles: true }),
+      );
+    },
+    [],
+  );
 
   return (
     <ComboboxContext.Provider
@@ -415,6 +451,7 @@ const Root = <V extends ComboboxValue = string>({
           handleBaseOpenChange as (open: boolean, details: unknown) => void
         }
         onInputValueChange={handleInputValueChange}
+        onItemHighlighted={handleBaseItemHighlighted}
         inputValue={searchQuery}
         // Seed the highlight on the first match after the query changes so
         // pressing Enter selects it, mirroring the old typeahead behavior.
@@ -520,6 +557,14 @@ const Trigger = <V extends ChildrenValue>({
           )
         ) {
           event.stopPropagation();
+          return;
+        }
+
+        // Base UI defers non-input trigger opening to the next animation frame.
+        // The menu-backed combobox opened during mousedown, and consumers use
+        // that turn to start lazy option loading before the click completes.
+        if (event.button === 0 && !context.open && !context.disabled) {
+          context.setOpen(true);
         }
       }}
       render={createTgphBaseUIRender(
@@ -626,6 +671,7 @@ const Content = <T extends TgphElement = "div">({
   sticky,
   hideWhenDetached,
   onKeyDown: onKeyDownProp,
+  onFocus: onFocusProp,
   tgphRef,
   ...props
 }: ContentProps<T>) => {
@@ -860,6 +906,17 @@ const Content = <T extends TgphElement = "div">({
                   event.stopPropagation();
                 }
               }}
+              onFocus={(event: ReactFocusEvent<HTMLDivElement>) => {
+                onFocusProp?.(event);
+                if (
+                  event.target instanceof Element &&
+                  event.target.closest("[data-tgph-combobox-option]")
+                ) {
+                  // Base UI redirects option focus to its input. Preserve
+                  // explicit `.focus()` calls used by legacy virtualizers.
+                  (event as BaseUIFocusEvent).preventBaseUIHandler?.();
+                }
+              }}
             >
               {/* Virtual focus needs an input in the popup even without a
                   visible Search; mount a hidden one in that case. */}
@@ -1000,6 +1057,7 @@ const Option = <T extends TgphElement = "div">({
   selected,
   onSelect,
   children,
+  disabled,
   tgphRef,
   ...props
 }: OptionProps<T>) => {
@@ -1057,6 +1115,10 @@ const Option = <T extends TgphElement = "div">({
   const { closeOnSelect, onValueChange, setOpen } = context;
   const handleClick = useCallback(
     (event: ReactMouseEvent<HTMLElement>) => {
+      if (disabled) {
+        return;
+      }
+
       // The old menu-backed options contained selection clicks and prevented
       // polymorphic anchors from navigating after a value was chosen.
       event.stopPropagation();
@@ -1102,6 +1164,7 @@ const Option = <T extends TgphElement = "div">({
     },
     [
       onSelect,
+      disabled,
       closeOnSelect,
       setOpen,
       contextValue,
@@ -1123,6 +1186,11 @@ const Option = <T extends TgphElement = "div">({
       // commit is cancelled at the value bridge (see `isOnSelectItemValue`).
       value={onSelect ? ON_SELECT_ITEM_VALUE : value}
       index={explicitIndex}
+      disabled={disabled}
+      nativeButton={resolveButtonNativeButton({
+        as: props.as ?? "div",
+        disabled,
+      })}
       onClick={handleClick}
       render={createTgphBaseUIRender(
         <OptionItem
@@ -1138,8 +1206,13 @@ const Option = <T extends TgphElement = "div">({
           data-tgph-combobox-option
           data-tgph-combobox-option-value={value}
           data-tgph-combobox-option-label={label}
+          // Base UI uses virtual focus, but legacy consumers also focus option
+          // elements directly to drive virtualized windows. Keep them out of
+          // the tab order while retaining that programmatic focus contract.
+          tabIndex={-1}
           tgphRef={composedRef as OptionItemProps<"div">["tgphRef"]}
           {...(props as OptionItemProps<"div">)}
+          disabled={disabled}
         >
           {label || children || value}
         </OptionItem>,
