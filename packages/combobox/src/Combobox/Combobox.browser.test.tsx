@@ -66,9 +66,7 @@ const ButtonOnlyCombobox = () => {
   );
 };
 
-const WrappedSearch = () => <Combobox.Search />;
-
-const WrappedSearchCombobox = () => {
+const DirectSearchCombobox = () => {
   const [value, setValue] = useState<string | undefined>(undefined);
   return (
     <Combobox.Root
@@ -77,7 +75,7 @@ const WrappedSearchCombobox = () => {
     >
       <Combobox.Trigger aria-label="Choose channel" />
       <Combobox.Content>
-        <WrappedSearch />
+        <Combobox.Search />
         <Combobox.Options>
           {VALUES.map((option, index) => (
             <Combobox.Option key={option} value={option}>
@@ -173,8 +171,8 @@ describe("Combobox virtual focus (real browser)", () => {
     });
   });
 
-  it("uses a wrapped Search as the sole virtual-focus input", async () => {
-    await render(<WrappedSearchCombobox />);
+  it("uses Search as the sole virtual-focus input", async () => {
+    await render(<DirectSearchCombobox />);
     await openViaTriggerClick();
 
     const search = document.querySelector<HTMLInputElement>(
@@ -183,7 +181,7 @@ describe("Combobox virtual focus (real browser)", () => {
     expect(search).toBeTruthy();
     expect(
       document.querySelector("[data-tgph-combobox-input-hidden]"),
-      "a wrapped Search must not cause a second hidden Base UI input",
+      "Search must not cause a second hidden Base UI input",
     ).toBeNull();
     expect(document.activeElement).toBe(search);
 

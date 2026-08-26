@@ -81,6 +81,10 @@ type BaseUIFocusEvent = ReactFocusEvent<HTMLElement> & {
   preventBaseUIHandler?: () => void;
 };
 
+type BaseUIMouseEvent = ReactMouseEvent<HTMLElement> & {
+  preventBaseUIHandler?: () => void;
+};
+
 type LayoutValue<V> = V extends string ? never : "truncate" | "wrap";
 
 type ValueChangeValue<V extends ComboboxValue> = V extends string
@@ -124,6 +128,7 @@ export const ComboboxContext = createContext<
     onOpenToggle: () => void;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
+    hasSearch: boolean;
     triggerRef?: RefObject<HTMLButtonElement>;
     searchRef?: RefObject<HTMLInputElement>;
     contentRef?: RefObject<HTMLDivElement>;
@@ -150,6 +155,7 @@ export const ComboboxContext = createContext<
   clearable: false,
   disabled: false,
   options: [],
+  hasSearch: false,
   manualFiltering: false,
 });
 
@@ -426,6 +432,7 @@ const Root = <V extends ComboboxValue = string>({
         disabled,
         searchQuery,
         setSearchQuery,
+        hasSearch: searchControl !== undefined,
         triggerRef: triggerRef as RefObject<HTMLButtonElement>,
         searchRef: searchRef as RefObject<HTMLInputElement>,
         contentRef: contentRef as RefObject<HTMLDivElement>,
@@ -557,15 +564,18 @@ const Trigger = <V extends ChildrenValue>({
           )
         ) {
           event.stopPropagation();
-          return;
         }
+      }}
+      onMouseDown={(event: ReactMouseEvent<HTMLElement>) => {
+        if (event.button !== 0 || context.open || context.disabled) return;
 
         // Base UI defers non-input trigger opening to the next animation frame.
         // The menu-backed combobox opened during mousedown, and consumers use
         // that turn to start lazy option loading before the click completes.
-        if (event.button === 0 && !context.open && !context.disabled) {
-          context.setOpen(true);
-        }
+        // Replace Base UI's toggle for this press so it cannot observe the
+        // synchronously opened store and interpret the same press as a close.
+        context.setOpen(true);
+        (event as BaseUIMouseEvent).preventBaseUIHandler?.();
       }}
       render={createTgphBaseUIRender(
         <TelegraphButton.Root
@@ -678,28 +688,16 @@ const Content = <T extends TgphElement = "div">({
   const context = useContext(ComboboxContext);
   const composedRef = useComposedRefs<unknown>(tgphRef, context.contentRef);
   const internalContentRef = useRef<HTMLDivElement>(null);
+  const pointerDownRef = useRef(false);
 
   const [height, setHeight] = useState(0);
   const [initialAnimationComplete, setInitialAnimationComplete] =
     useState(false);
 
-  // Start without a hidden input, then inspect the rendered popup. This catches
-  // `Combobox.Search` even when a consumer component renders it internally — a
-  // static walk of `children` cannot see through that component boundary. When
-  // there is no visible Search, the follow-up layout commit mounts the hidden
-  // Base UI input before paint so button-trigger comboboxes keep virtual focus.
-  const [needsHiddenInput, setNeedsHiddenInput] = useState(false);
-
-  useLayoutEffect(() => {
-    if (!context.open) return;
-    const hasRenderedSearch = Boolean(
-      context.contentRef?.current?.querySelector("[data-tgph-combobox-search]"),
-    );
-    setNeedsHiddenInput((current) => {
-      const next = !hasRenderedSearch;
-      return current === next ? current : next;
-    });
-  }, [children, context.open, context.contentRef]);
+  // Root can identify a direct Combobox.Search before the popup mounts. Wrapper
+  // components cannot be inspected before React renders them, so they keep the
+  // hidden virtual-focus input as a fallback.
+  const needsHiddenInput = !context.hasSearch;
 
   // Register the escape handler so the Root-level open-change bridge can call it
   // and honor a consumer preventing dismissal.
@@ -900,6 +898,22 @@ const Content = <T extends TgphElement = "div">({
                 } as CSSProperties),
               }}
               {...stackProps}
+              onPointerDownCapture={(event) => {
+                stackProps.onPointerDownCapture?.(event);
+                pointerDownRef.current = true;
+              }}
+              onPointerUpCapture={(event) => {
+                stackProps.onPointerUpCapture?.(event);
+                // A pointer-generated click can move focus after pointerup.
+                // Keep the marker through that click, then clear it next task.
+                window.setTimeout(() => {
+                  pointerDownRef.current = false;
+                }, 0);
+              }}
+              onPointerCancelCapture={(event) => {
+                stackProps.onPointerCancelCapture?.(event);
+                pointerDownRef.current = false;
+              }}
               onKeyDown={(event: ReactKeyboardEvent<HTMLDivElement>) => {
                 onKeyDownProp?.(event);
                 if (context.open) {
@@ -909,6 +923,7 @@ const Content = <T extends TgphElement = "div">({
               onFocus={(event: ReactFocusEvent<HTMLDivElement>) => {
                 onFocusProp?.(event);
                 if (
+                  !pointerDownRef.current &&
                   event.target instanceof Element &&
                   event.target.closest("[data-tgph-combobox-option]")
                 ) {
