@@ -533,9 +533,7 @@ const RootImplementation = ({
   const activeSearchQuery = searchQuery;
   const shouldFilterOptions =
     !manualFiltering &&
-    (!isNoneMode ||
-      autocompleteMode === "list" ||
-      autocompleteMode === "both");
+    (!isNoneMode || autocompleteMode === "list" || autocompleteMode === "both");
 
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
