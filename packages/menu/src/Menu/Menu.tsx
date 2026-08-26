@@ -718,9 +718,10 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
  * Renders a Base UI menu item when nested in `Menu.Root`.
  *
  * Rendering `Menu.Button` without `Menu.Root` is supported for backwards
- * compatibility, but deprecated. In that arrangement it is only a styled
- * action, so menu arrow-key navigation (including from a combobox popup) will
- * not reach it.
+ * compatibility, but deprecated and scheduled for removal in a future major
+ * release. In that arrangement it is only a styled action, so menu arrow-key
+ * navigation (including from a combobox popup) will not reach it. Migrate popup
+ * action rows to `Combobox.Option` with `onSelect` or to plain buttons.
  */
 const Button = <T extends TgphElement = "button">({
   as,
