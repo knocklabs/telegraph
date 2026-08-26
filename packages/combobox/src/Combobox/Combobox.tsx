@@ -362,7 +362,8 @@ const Root = <V extends ComboboxValue = string>({
   // external Search or Root input-value changes filter without a stale frame.
   const activeSearchQuery = searchQuery;
   const shouldFilterOptions =
-    !manualFiltering && (!isNoneMode || mode === "list" || mode === "both");
+    !manualFiltering &&
+    (!isNoneMode || autocompleteMode === "list" || autocompleteMode === "both");
 
   // Base UI seeds the type-to-filter highlight from its filtered-items list and
   // only re-runs that seeding when the list's identity changes. In children mode
@@ -699,7 +700,7 @@ const Root = <V extends ComboboxValue = string>({
         layout,
         options,
         manualFiltering,
-        mode,
+        autocompleteMode,
         defaultScrollToValue,
         createIndex,
         optionCloseOnClickRef,
@@ -1526,8 +1527,8 @@ const Option = <T extends TgphElement = "div">({
   const shouldFilterOptions =
     !context.manualFiltering &&
     (context.resolvedSelectionMode !== "none" ||
-      context.mode === "list" ||
-      context.mode === "both");
+      context.autocompleteMode === "list" ||
+      context.autocompleteMode === "both");
   const isVisible =
     !shouldFilterOptions ||
     !context.searchQuery ||

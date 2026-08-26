@@ -10,6 +10,7 @@ import type {
   ComboboxContentProps,
   ComboboxOptionProps,
   ComboboxOptionsProps,
+  ComboboxRootProps,
 } from "./index";
 
 // Mock ResizeObserver
@@ -157,13 +158,17 @@ const ComboboxInputTrigger = ({ inputId, ...props }) => {
 
 // Free text: value === label so a pressed suggestion fills readable text.
 const FREE_TEXT_CHANNELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
+type FreeTextComboboxProps = Pick<
+  ComboboxRootProps<string, false>,
+  "autocompleteMode" | "defaultOpen"
+> & {
+  onInputValueChange?: (value: string) => void;
+};
+
 const FreeTextCombobox = ({
   onInputValueChange,
   ...props
-}: {
-  onInputValueChange?: (value: string) => void;
-  [key: string]: unknown;
-}) => {
+}: FreeTextComboboxProps) => {
   const [inputValue, setInputValue] = useState("");
   return (
     <Combobox.Root
@@ -1200,10 +1205,10 @@ describe("Input as trigger", () => {
 describe("Free-text autocomplete (selectionMode none)", () => {
   it.each(["none", "inline"] as const)(
     "keeps the full option list in %s mode",
-    async (mode) => {
+    async (autocompleteMode) => {
       const user = userEvent.setup();
       const { container } = render(
-        <FreeTextCombobox defaultOpen mode={mode} />,
+        <FreeTextCombobox defaultOpen autocompleteMode={autocompleteMode} />,
       );
       const input = container.querySelector(
         "[data-tgph-combobox-input]",
