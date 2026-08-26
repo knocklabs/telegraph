@@ -387,10 +387,12 @@ const Root = <V extends ComboboxValue = string>({
     setSearchQuery(nextValue);
   }, []);
 
-  // The menu-backed combobox moved DOM focus through its options. Base UI uses
-  // virtual focus instead, but existing virtualized consumers listen for the
-  // bubbling focus event to mount the next window of options. Re-emit that
-  // signal from the highlighted row while the real focus remains on the input.
+  // TRANSITIONAL compatibility bridge: the menu-backed combobox moved DOM
+  // focus through its options. Base UI uses virtual focus instead, but legacy
+  // virtualized consumers listen for the bubbling focus event to mount the next
+  // window of options. Re-emit that signal from the highlighted row while real
+  // focus remains on the input. New consumers must use `onItemHighlighted` on
+  // `Combobox.Root`; remove this bridge in a future major release.
   const handleBaseItemHighlighted = useCallback(
     (highlightedValue: string | undefined) => {
       if (highlightedValue === undefined) {
@@ -927,8 +929,11 @@ const Content = <T extends TgphElement = "div">({
                   event.target instanceof Element &&
                   event.target.closest("[data-tgph-combobox-option]")
                 ) {
-                  // Base UI redirects option focus to its input. Preserve
-                  // explicit `.focus()` calls used by legacy virtualizers.
+                  // TRANSITIONAL compatibility bridge: Base UI redirects option
+                  // focus to its input. Preserve explicit `.focus()` calls used
+                  // by legacy virtualizers. New consumers must use
+                  // `onItemHighlighted` on `Combobox.Root`; remove this bridge
+                  // in a future major release.
                   (event as BaseUIFocusEvent).preventBaseUIHandler?.();
                 }
               }}
@@ -1221,9 +1226,12 @@ const Option = <T extends TgphElement = "div">({
           data-tgph-combobox-option
           data-tgph-combobox-option-value={value}
           data-tgph-combobox-option-label={label}
-          // Base UI uses virtual focus, but legacy consumers also focus option
-          // elements directly to drive virtualized windows. Keep them out of
-          // the tab order while retaining that programmatic focus contract.
+          // TRANSITIONAL compatibility bridge: Base UI uses virtual focus, but
+          // legacy consumers also focus option elements directly to drive
+          // virtualized windows. Keep them out of the tab order while retaining
+          // that programmatic focus contract. New consumers must use
+          // `onItemHighlighted` on `Combobox.Root`; remove this bridge in a
+          // future major release.
           tabIndex={-1}
           tgphRef={composedRef as OptionItemProps<"div">["tgphRef"]}
           {...(props as OptionItemProps<"div">)}
