@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page, userEvent } from "vitest/browser";
@@ -42,6 +42,44 @@ const SearchableCombobox = ({
         <Combobox.Empty />
       </Combobox.Content>
     </Combobox.Root>
+  );
+};
+
+const FocusTrapCombobox = ({
+  active,
+  onValueChange,
+}: {
+  active: boolean;
+  onValueChange: (value: string | undefined) => void;
+}) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const fallbackRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!active) return;
+
+    const refocusInsideTrap = (event: FocusEvent) => {
+      const wrapper = wrapperRef.current;
+      if (
+        wrapper &&
+        event.target instanceof Node &&
+        !wrapper.contains(event.target)
+      ) {
+        fallbackRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("focusin", refocusInsideTrap);
+    return () => document.removeEventListener("focusin", refocusInsideTrap);
+  }, [active]);
+
+  return (
+    <div ref={wrapperRef}>
+      <button ref={fallbackRef} type="button">
+        Focus trap fallback
+      </button>
+      <SearchableCombobox onValueChange={onValueChange} />
+    </div>
   );
 };
 
@@ -151,6 +189,53 @@ describe("Combobox virtual focus (real browser)", () => {
         document.activeElement?.getAttribute("aria-activedescendant"),
         "aria-activedescendant on the input points at the highlighted option",
       ).toBe(highlighted?.id);
+    });
+  });
+
+  it("keeps Search focused while a document focus trap observes highlighted options", async () => {
+    const onValueChange = vi.fn();
+    const screen = await render(
+      <FocusTrapCombobox active={false} onValueChange={onValueChange} />,
+    );
+    const trigger = await openViaTriggerClick();
+    const search = document.querySelector<HTMLInputElement>(
+      "[data-tgph-combobox-search]",
+    );
+    expect(search).toBeTruthy();
+    expect(document.activeElement).toBe(search);
+
+    await screen.rerender(
+      <FocusTrapCombobox active onValueChange={onValueChange} />,
+    );
+
+    const searchBlurred = vi.fn();
+    search?.addEventListener("blur", searchBlurred);
+
+    for (const value of ["email", "sms", "push"]) {
+      await userEvent.keyboard("[ArrowDown]");
+      await vi.waitFor(() => {
+        expect(
+          document.querySelector(
+            `[data-tgph-combobox-option-value="${value}"][data-highlighted]`,
+          ),
+          `${value} is highlighted after ArrowDown`,
+        ).toBeTruthy();
+        expect(document.activeElement, "focus stays on Search").toBe(search);
+        expect(
+          searchBlurred,
+          "Search never loses focus",
+        ).not.toHaveBeenCalled();
+      });
+    }
+
+    await userEvent.keyboard("[Enter]");
+    await vi.waitFor(() => {
+      expect(onValueChange).toHaveBeenLastCalledWith("push");
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+      expect(
+        document.activeElement === trigger || document.activeElement === search,
+        "focus ends on the trigger or Search after selection",
+      ).toBe(true);
     });
   });
 

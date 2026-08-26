@@ -85,6 +85,8 @@ type BaseUIMouseEvent = ReactMouseEvent<HTMLElement> & {
   preventBaseUIHandler?: () => void;
 };
 
+const legacyHighlightFocusEvents = new WeakSet<Event>();
+
 type LayoutValue<V> = V extends string ? never : "truncate" | "wrap";
 
 type ValueChangeValue<V extends ComboboxValue> = V extends string
@@ -409,9 +411,11 @@ const Root = <V extends ComboboxValue = string>({
           highlightedValue,
       );
 
-      highlightedOption?.dispatchEvent(
-        new FocusEvent("focusin", { bubbles: true }),
-      );
+      if (highlightedOption) {
+        const focusEvent = new FocusEvent("focusin", { bubbles: true });
+        legacyHighlightFocusEvents.add(focusEvent);
+        highlightedOption.dispatchEvent(focusEvent);
+      }
     },
     [],
   );
@@ -924,6 +928,8 @@ const Content = <T extends TgphElement = "div">({
               }}
               onFocus={(event: ReactFocusEvent<HTMLDivElement>) => {
                 onFocusProp?.(event);
+                const isLegacyHighlightFocusEvent =
+                  legacyHighlightFocusEvents.has(event.nativeEvent);
                 if (
                   !pointerDownRef.current &&
                   event.target instanceof Element &&
@@ -935,6 +941,11 @@ const Content = <T extends TgphElement = "div">({
                   // `onItemHighlighted` on `Combobox.Root`; remove this bridge
                   // in a future major release.
                   (event as BaseUIFocusEvent).preventBaseUIHandler?.();
+                }
+                if (isLegacyHighlightFocusEvent) {
+                  // Keep the compatibility signal inside the popup. Document-
+                  // level focus traps must only observe real focus movement.
+                  event.stopPropagation();
                 }
               }}
             >
