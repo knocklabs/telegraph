@@ -48,6 +48,35 @@ describe("Combobox types", () => {
     >();
   });
 
+  it("links explicit selection modes to their value contracts", () => {
+    <Combobox.Root
+      selectionMode="single"
+      onValueChange={(value) => expectTypeOf(value).toEqualTypeOf<string>()}
+    />;
+    <Combobox.Root
+      selectionMode="multiple"
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<Array<string>>()
+      }
+    />;
+    <Combobox.Root
+      selectionMode="none"
+      inputValue="draft"
+      onInputValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string>()
+      }
+    />;
+
+    // @ts-expect-error single mode does not accept array values
+    <Combobox.Root selectionMode="single" value={["a"]} />;
+    // @ts-expect-error multiple mode does not accept string values
+    <Combobox.Root selectionMode="multiple" value="a" />;
+    // @ts-expect-error free-text mode has no selected value
+    <Combobox.Root selectionMode="none" value="a" />;
+    // @ts-expect-error free-text mode has no selection callback
+    <Combobox.Root selectionMode="none" onValueChange={() => {}} />;
+  });
+
   it("types Combobox.Input (anchor input)", () => {
     // No catch-all passthrough.
     expectTypeOf<ComboboxInputProps>().not.toHaveProperty("notARealProp");
@@ -283,11 +312,8 @@ describe("Combobox types", () => {
       // @ts-expect-error not a layout value
       layout="sideways"
     />;
-    <Combobox.Root
-      value="a"
-      // @ts-expect-error layout only applies to multi-select values
-      layout="wrap"
-    />;
+    // @ts-expect-error layout only applies to multi-select values
+    <Combobox.Root value="a" layout="wrap" />;
     <Combobox.Trigger
       // @ts-expect-error placeholder is a string
       placeholder={42}

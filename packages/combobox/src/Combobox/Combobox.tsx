@@ -89,11 +89,7 @@ type ValueChangeValue<V extends ComboboxValue> = V extends string
   ? V | undefined
   : V;
 
-export type RootProps<V extends ComboboxValue = string> = {
-  value?: V;
-  defaultValue?: V;
-  onValueChange?: (value: ValueChangeValue<V>) => void;
-  layout?: LayoutValue<V>;
+type RootSharedProps = {
   open?: boolean;
   defaultOpen?: boolean;
   errored?: boolean;
@@ -152,8 +148,58 @@ export type RootProps<V extends ComboboxValue = string> = {
   children?: ReactNode;
 };
 
+type InferredSelectionProps<V extends ComboboxValue> = {
+  selectionMode?: undefined;
+  value?: V;
+  defaultValue?: V;
+  onValueChange?: (value: ValueChangeValue<V>) => void;
+  layout?: LayoutValue<V>;
+};
+
+type SingleSelectionProps = {
+  selectionMode: "single";
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string | undefined) => void;
+  layout?: never;
+};
+
+type MultipleSelectionProps = {
+  selectionMode: "multiple";
+  value?: Array<string>;
+  defaultValue?: Array<string>;
+  onValueChange?: (value: Array<string>) => void;
+  layout?: "truncate" | "wrap";
+};
+
+type NoSelectionProps = {
+  selectionMode: "none";
+  value?: never;
+  defaultValue?: never;
+  onValueChange?: never;
+  layout?: never;
+};
+
+type SelectionProps<V extends ComboboxValue> =
+  | InferredSelectionProps<V>
+  | (V extends string ? SingleSelectionProps | NoSelectionProps : never)
+  | (V extends Array<string> ? MultipleSelectionProps : never);
+
+export type RootProps<V extends ComboboxValue = string> = RootSharedProps &
+  SelectionProps<V>;
+
+type RootImplementationProps = RootSharedProps & {
+  value?: ComboboxValue;
+  defaultValue?: ComboboxValue;
+  onValueChange?:
+    | ((value: string | undefined) => void)
+    | ((value: Array<string>) => void);
+  layout?: "truncate" | "wrap";
+  selectionMode?: ComboboxSelectionMode;
+};
+
 export const ComboboxContext = createContext<
-  Omit<RootProps<ComboboxValue>, "children"> & {
+  Omit<RootImplementationProps, "children"> & {
     contentId: string;
     triggerId: string;
     open: boolean;
@@ -256,7 +302,7 @@ const USER_INPUT_REASONS = new Set<string>([
   "input-clear",
   "input-paste",
 ]);
-const Root = <V extends ComboboxValue = string>({
+const RootImplementation = ({
   modal = true,
   closeOnSelect = true,
   clearable = false,
@@ -284,7 +330,7 @@ const Root = <V extends ComboboxValue = string>({
   onItemHighlighted: onItemHighlightedProp,
   actionsRef,
   children,
-}: RootProps<V>) => {
+}: RootImplementationProps) => {
   const contentId = useId();
   const triggerId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -454,10 +500,12 @@ const Root = <V extends ComboboxValue = string>({
     [isOpenControlled, openProp, onOpenChangeProp],
   );
 
-  const [value, setValue] = useControllableState({
+  const [value, setValue] = useControllableState<ComboboxValue | undefined>({
     prop: valueProp,
-    defaultProp: defaultValueProp as V,
-    onChange: onValueChangeProp as (value: V) => void,
+    defaultProp: defaultValueProp,
+    onChange: onValueChangeProp as
+      | ((value: ComboboxValue | undefined) => void)
+      | undefined,
   });
 
   const onOpenToggle = useCallback(() => {
@@ -793,6 +841,13 @@ const Root = <V extends ComboboxValue = string>({
     </ComboboxContext.Provider>
   );
 };
+
+type RootComponent = {
+  (props: RootSharedProps & MultipleSelectionProps): ReactElement;
+  <V extends ComboboxValue = string>(props: RootProps<V>): ReactElement;
+};
+
+const Root = RootImplementation as RootComponent;
 
 type ChildrenValue = string | Array<string> | never;
 
