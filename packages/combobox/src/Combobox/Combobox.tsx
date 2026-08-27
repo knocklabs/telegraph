@@ -514,7 +514,8 @@ const Root = <V extends ComboboxValue = string>({
       if (multiple) {
         (setValue as MultiSelect["onValueChange"])?.(array);
       } else {
-        const nextValue = next == null ? undefined : next;
+        const nextValue =
+          next == null || Array.isArray(next) ? undefined : next;
         (setValue as SingleSelect["onValueChange"])?.(nextValue);
       }
 

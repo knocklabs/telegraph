@@ -159,7 +159,7 @@ const ComboboxInputTrigger = ({ inputId, ...props }) => {
 // Free text: value === label so a pressed suggestion fills readable text.
 const FREE_TEXT_CHANNELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
 type FreeTextComboboxProps = Pick<
-  ComboboxRootProps<string, false>,
+  ComboboxRootProps<string>,
   "autocompleteMode" | "defaultOpen"
 > & {
   onInputValueChange?: (value: string) => void;
