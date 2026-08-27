@@ -14,6 +14,10 @@ type SelectValue = string | Array<string>;
 
 type Option = ComboboxOptionProps;
 
+type SelectOnValueChange<V extends SelectValue> = NonNullable<
+  ComboboxRootProps<V>["onValueChange"]
+>;
+
 export type RootProps<V extends SelectValue = string> = Omit<
   ComboboxRootProps<V>,
   "onValueChange"
@@ -21,7 +25,7 @@ export type RootProps<V extends SelectValue = string> = Omit<
   // `NoInfer` so `V` comes from `value`/`defaultValue` alone: a `useState`
   // setter would otherwise contribute `SetStateAction<...>`, which fails the
   // constraint and collapses `V` back to it.
-  onValueChange?: NoInfer<(value: V) => void>;
+  onValueChange?: NoInfer<SelectOnValueChange<V>>;
   size?: ComboboxTriggerProps<V>["size"];
   triggerProps?: ComboboxTriggerProps<V>;
   contentProps?: ComboboxContentProps;

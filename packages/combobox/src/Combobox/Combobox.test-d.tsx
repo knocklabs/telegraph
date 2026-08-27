@@ -58,6 +58,28 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxCreateProps["onCreate"]>().not.toBeAny();
   });
 
+  it("reports undefined when a single selection is cleared", () => {
+    expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().toEqualTypeOf<
+      ((value: string | undefined) => void) | undefined
+    >();
+    expectTypeOf<
+      ComboboxRootProps<Array<string>>["onValueChange"]
+    >().toEqualTypeOf<((value: Array<string>) => void) | undefined>();
+
+    <Combobox.Root
+      value="a"
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string | undefined>()
+      }
+    />;
+    <Combobox.Root
+      value={["a"]}
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<Array<string>>()
+      }
+    />;
+  });
+
   it("rejects unknown props", () => {
     <Combobox.Root
       // @ts-expect-error unknown prop
@@ -328,7 +350,7 @@ describe("Combobox types", () => {
     <Combobox.Root
       value="a"
       defaultValue="b"
-      onValueChange={(value) => value.toUpperCase()}
+      onValueChange={(value) => value?.toUpperCase()}
       open
       defaultOpen={false}
       onOpenChange={() => {}}

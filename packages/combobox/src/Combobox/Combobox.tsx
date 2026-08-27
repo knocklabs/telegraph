@@ -61,10 +61,14 @@ import type {
 
 type LayoutValue<V> = V extends string ? never : "truncate" | "wrap";
 
+type ValueChangeValue<V extends ComboboxValue> = V extends string
+  ? V | undefined
+  : V;
+
 export type RootProps<V extends ComboboxValue = string> = {
   value?: V;
   defaultValue?: V;
-  onValueChange?: (value: V) => void;
+  onValueChange?: (value: ValueChangeValue<V>) => void;
   layout?: LayoutValue<V>;
   open?: boolean;
   defaultOpen?: boolean;
@@ -171,7 +175,7 @@ const Root = <V extends ComboboxValue = string>({
         value,
         // Context consumers handle the runtime single/multi branches below, so
         // expose one setter shape here and narrow it at the selection site.
-        onValueChange: setValue as (value: ComboboxValue) => void,
+        onValueChange: setValue as (value: ComboboxValue | undefined) => void,
         placeholder,
         open,
         setOpen,

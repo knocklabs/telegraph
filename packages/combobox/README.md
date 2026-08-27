@@ -79,7 +79,7 @@ The root component that manages the state and context for the combobox.
 | Prop            | Type                                | Default      | Description                        |
 | --------------- | ----------------------------------- | ------------ | ---------------------------------- |
 | `value`         | `string \| string[]`                 | `undefined`  | The selected value(s)              |
-| `onValueChange` | `(value: string \| string[]) => void` | `undefined`  | Callback when selection changes    |
+| `onValueChange` | `(value: string \| undefined \| string[]) => void` | `undefined`  | Callback when selection changes; clearing a single selection reports `undefined` |
 | `layout`        | `"truncate" \| "wrap"`              | `"truncate"` | How to display multiple selections |
 | `open`          | `boolean`                           | `undefined`  | Controlled open state              |
 | `defaultOpen`   | `boolean`                           | `false`      | Initial open state                 |
@@ -385,8 +385,8 @@ Option to create new values when none match search.
 | Prop          | Type                                | Default     | Description              |
 | ------------- | ----------------------------------- | ----------- | ------------------------ |
 | `leadingText` | `string`                            | `"Create"`  | Text before search value |
-| `values`      | `string[] \| Option[]`              | `undefined` | Existing values          |
-| `onCreate`    | `(value: string \| Option) => void` | `undefined` | Creation callback        |
+| `values`      | `string[]`              | `undefined` | Existing values          |
+| `onCreate`    | `(value: string) => void` | `undefined` | Creation callback        |
 
 ### Primitives
 

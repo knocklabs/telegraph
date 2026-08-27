@@ -485,8 +485,10 @@ export const Chip = (props: FilterStateValue) => {
   // or maybe we can just re-render our top-level node? it'll be the same menu...?
 
   // This is where we change the operator
-  const handleComboboxChange = (newOperator: OperatorValue) => {
-    updateKey(filterKey, { operator: newOperator });
+  const handleComboboxChange = (newOperator: OperatorValue | undefined) => {
+    if (newOperator) {
+      updateKey(filterKey, { operator: newOperator });
+    }
   };
 
   // Determine the label of the rendered chip
