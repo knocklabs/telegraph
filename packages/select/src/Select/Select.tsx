@@ -48,18 +48,13 @@ const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
       closeOnSelect={!Array.isArray(value) && !Array.isArray(defaultValue)}
       {...comboboxRootProps}
     >
-      {/* Keep the wrapper's generic children as one ReactNode. Generated
-          declarations cannot reduce the discriminated RootProps union while V
-          is unresolved. The Fragment adds no DOM. */}
-      <>
-        <Combobox.Trigger<V> size={size} {...triggerProps} />
-        <Combobox.Content {...contentProps}>
-          <Combobox.Options {...optionsProps}>{children}</Combobox.Options>
-          {/* Typing filters the options in place; without a message a
-              non-matching query would leave an empty popup. */}
-          <Combobox.Empty />
-        </Combobox.Content>
-      </>
+      <Combobox.Trigger<V> size={size} {...triggerProps} />
+      <Combobox.Content {...contentProps}>
+        <Combobox.Options {...optionsProps}>{children}</Combobox.Options>
+        {/* Typing filters the options in place; without a message a
+            non-matching query would leave an empty popup. */}
+        <Combobox.Empty />
+      </Combobox.Content>
     </Combobox.Root>
   );
 };

@@ -145,6 +145,9 @@ type RootSharedProps = {
     details: ComboboxHighlightDetails,
   ) => void;
   actionsRef?: RefObject<ComboboxActions | null>;
+};
+
+type RootChildrenProps = {
   children?: ReactNode;
 };
 
@@ -180,23 +183,29 @@ type NoSelectionProps = {
   layout?: never;
 };
 
-type SelectionProps<V extends ComboboxValue> =
-  | InferredSelectionProps<V>
-  | (V extends string ? SingleSelectionProps | NoSelectionProps : never)
-  | (V extends Array<string> ? MultipleSelectionProps : never);
+type WithRootSharedProps<Props> = RootChildrenProps & RootSharedProps & Props;
 
-export type RootProps<V extends ComboboxValue = string> = RootSharedProps &
-  SelectionProps<V>;
+export type RootProps<V extends ComboboxValue = string> =
+  | WithRootSharedProps<InferredSelectionProps<V>>
+  | (V extends string
+      ?
+          | WithRootSharedProps<SingleSelectionProps>
+          | WithRootSharedProps<NoSelectionProps>
+      : never)
+  | (V extends Array<string>
+      ? WithRootSharedProps<MultipleSelectionProps>
+      : never);
 
-type RootImplementationProps = RootSharedProps & {
-  value?: ComboboxValue;
-  defaultValue?: ComboboxValue;
-  onValueChange?:
-    | ((value: string | undefined) => void)
-    | ((value: Array<string>) => void);
-  layout?: "truncate" | "wrap";
-  selectionMode?: ComboboxSelectionMode;
-};
+type RootImplementationProps = RootChildrenProps &
+  RootSharedProps & {
+    value?: ComboboxValue;
+    defaultValue?: ComboboxValue;
+    onValueChange?:
+      | ((value: string | undefined) => void)
+      | ((value: Array<string>) => void);
+    layout?: "truncate" | "wrap";
+    selectionMode?: ComboboxSelectionMode;
+  };
 
 export const ComboboxContext = createContext<
   Omit<RootImplementationProps, "children"> & {
@@ -843,7 +852,7 @@ const RootImplementation = ({
 };
 
 type RootComponent = {
-  (props: RootSharedProps & MultipleSelectionProps): ReactElement;
+  (props: WithRootSharedProps<MultipleSelectionProps>): ReactElement;
   <V extends ComboboxValue = string>(props: RootProps<V>): ReactElement;
 };
 

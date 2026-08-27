@@ -77,6 +77,22 @@ describe("Combobox types", () => {
     <Combobox.Root selectionMode="none" onValueChange={() => {}} />;
   });
 
+  it("accepts multiple JSX children for concrete and generic values", () => {
+    <Combobox.Root>
+      <Combobox.Trigger />
+      <Combobox.Content />
+    </Combobox.Root>;
+
+    const GenericRoot = <V extends string | Array<string>>() => (
+      <Combobox.Root<V>>
+        <Combobox.Trigger<V> />
+        <Combobox.Content />
+      </Combobox.Root>
+    );
+
+    expectTypeOf(GenericRoot).toBeFunction();
+  });
+
   it("types Combobox.Input (anchor input)", () => {
     // No catch-all passthrough.
     expectTypeOf<ComboboxInputProps>().not.toHaveProperty("notARealProp");

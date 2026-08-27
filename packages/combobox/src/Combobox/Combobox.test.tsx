@@ -384,6 +384,75 @@ describe("Combobox", () => {
       expect(trigger?.textContent).toBe("SMS");
     });
 
+    it("keeps multiple action rows distinct from selection bookkeeping", async () => {
+      const user = userEvent.setup();
+      const onFirstAction = vi.fn();
+      const onSecondAction = vi.fn();
+      const onValueChange = vi.fn();
+      const { container } = render(
+        <Combobox.Root closeOnSelect={false} onValueChange={onValueChange}>
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Search />
+            <Combobox.Options>
+              <Combobox.Option value="first-action" onSelect={onFirstAction}>
+                First action
+              </Combobox.Option>
+              <Combobox.Option value="second-action" onSelect={onSecondAction}>
+                Second action
+              </Combobox.Option>
+              {VALUES.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {LABELS[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>,
+      );
+      const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+      await user.click(trigger!);
+
+      const firstAction = queryPortalElement(
+        '[data-tgph-combobox-option-value="first-action"]',
+      );
+      const secondAction = queryPortalElement(
+        '[data-tgph-combobox-option-value="second-action"]',
+      );
+      expect(firstAction).toBeTruthy();
+      expect(secondAction).toBeTruthy();
+
+      await user.click(firstAction!);
+      expect(onFirstAction).toHaveBeenCalledTimes(1);
+      expect(onSecondAction).not.toHaveBeenCalled();
+      expect(onValueChange).not.toHaveBeenCalled();
+
+      await user.click(secondAction!);
+      expect(onFirstAction).toHaveBeenCalledTimes(1);
+      expect(onSecondAction).toHaveBeenCalledTimes(1);
+      expect(onValueChange).not.toHaveBeenCalled();
+
+      const search = queryPortalElement(
+        "[data-tgph-combobox-search]",
+      ) as HTMLInputElement;
+      await user.click(search);
+      await user.type(search, "sm");
+
+      const smsOption = queryPortalElement(
+        '[data-tgph-combobox-option-value="sms"]',
+      );
+      await waitFor(() =>
+        expect(smsOption?.getAttribute("data-highlighted")).not.toBeNull(),
+      );
+
+      await user.keyboard("[Enter]");
+      expect(onValueChange).toHaveBeenCalledTimes(1);
+      expect(onValueChange).toHaveBeenCalledWith("sms");
+      expect(onFirstAction).toHaveBeenCalledTimes(1);
+      expect(onSecondAction).toHaveBeenCalledTimes(1);
+    });
+
     it("clear button should clear the field", async () => {
       const user = userEvent.setup();
       const { container } = render(<ComboboxSingleSelect clearable />);
