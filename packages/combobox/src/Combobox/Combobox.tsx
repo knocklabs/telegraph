@@ -718,13 +718,7 @@ const RootImplementation = ({
         setOpen(false);
       }
     },
-    [
-      multiple,
-      setValue,
-      closeOnSelect,
-      setOpen,
-      activeSearchQuery,
-    ],
+    [multiple, setValue, closeOnSelect, setOpen, activeSearchQuery],
   );
 
   const handleBaseOpenChange = useCallback(
