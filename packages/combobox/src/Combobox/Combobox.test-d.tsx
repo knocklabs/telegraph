@@ -5,6 +5,8 @@ import type {
   ComboboxContentProps,
   ComboboxCreateProps,
   ComboboxEmptyProps,
+  ComboboxHighlightDetails,
+  ComboboxHighlightReason,
   ComboboxOptionProps,
   ComboboxOptionsProps,
   ComboboxRootProps,
@@ -31,6 +33,9 @@ describe("Combobox types", () => {
   it("keeps declared props narrow", () => {
     expectTypeOf<ComboboxRootProps<string>["value"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().not.toBeAny();
+    expectTypeOf<
+      ComboboxRootProps<string>["onItemHighlighted"]
+    >().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["placeholder"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["clearable"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["disabled"]>().not.toBeAny();
@@ -63,6 +68,9 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxCreateProps["leadingText"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["values"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["onCreate"]>().not.toBeAny();
+    expectTypeOf<
+      ComboboxHighlightDetails["reason"]
+    >().toEqualTypeOf<ComboboxHighlightReason>();
     expectTypeOf<
       Parameters<NonNullable<ComboboxCreateProps["onCreate"]>>[0]
     >().toEqualTypeOf<string>();
@@ -370,6 +378,10 @@ describe("Combobox types", () => {
       open
       defaultOpen={false}
       onOpenChange={() => {}}
+      onItemHighlighted={(value, details) => {
+        expectTypeOf(value).toEqualTypeOf<string | undefined>();
+        expectTypeOf(details).toEqualTypeOf<ComboboxHighlightDetails>();
+      }}
       errored
       placeholder="Pick one"
       modal

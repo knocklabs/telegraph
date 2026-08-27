@@ -61,6 +61,7 @@ import {
 import { OptionItem, type OptionItemProps } from "./Combobox.optionItem";
 import { Primitives } from "./Combobox.primitives";
 import type {
+  ComboboxHighlightDetails,
   ComboboxValue,
   DefinedOption,
   MultiSelect,
@@ -115,6 +116,12 @@ export type RootProps<V extends ComboboxValue = string> = {
   // the consumer's, hiding server results whose text is produced by child
   // components.
   manualFiltering?: boolean;
+  // Observe virtual option focus without relying on the transitional synthetic
+  // focus event compatibility bridge.
+  onItemHighlighted?: (
+    value: string | undefined,
+    details: ComboboxHighlightDetails,
+  ) => void;
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
@@ -198,6 +205,7 @@ const Root = <V extends ComboboxValue = string>({
   placeholder,
   layout,
   manualFiltering: manualFilteringProp,
+  onItemHighlighted: onItemHighlightedProp,
   defaultScrollToValue,
   children,
 }: RootProps<V>) => {
@@ -212,7 +220,7 @@ const Root = <V extends ComboboxValue = string>({
   const optionCloseOnClickRef = useRef(false);
 
   const options = useMemo(() => {
-    return getOptions({ children, isOptionElement });
+    return getOptions({ children, isOptionElement, isOptionsElement });
   }, [children]);
 
   const searchControl = useMemo(() => findSearchControl(children), [children]);
@@ -407,8 +415,16 @@ const Root = <V extends ComboboxValue = string>({
   // focus remains on the input. New consumers must use `onItemHighlighted` on
   // `Combobox.Root`; remove this bridge in a future major release.
   const handleBaseItemHighlighted = useCallback(
-    (highlightedValue: string | undefined) => {
-      if (highlightedValue === undefined) {
+    (
+      highlightedValue: string | undefined,
+      details: ComboboxHighlightDetails,
+    ) => {
+      const publicValue = isOnSelectItemValue(highlightedValue)
+        ? undefined
+        : highlightedValue;
+      onItemHighlightedProp?.(publicValue, details);
+
+      if (publicValue === undefined) {
         return;
       }
 
@@ -419,7 +435,7 @@ const Root = <V extends ComboboxValue = string>({
       ).find(
         (option) =>
           option.getAttribute("data-tgph-combobox-option-value") ===
-          highlightedValue,
+          publicValue,
       );
 
       if (highlightedOption) {
@@ -428,7 +444,7 @@ const Root = <V extends ComboboxValue = string>({
         highlightedOption.dispatchEvent(focusEvent);
       }
     },
-    [],
+    [onItemHighlightedProp],
   );
 
   return (
@@ -1415,6 +1431,8 @@ const isOptionElement = (element: ReactElement) => {
   if (hasChangeHandler && !isOptionShaped) return false;
   return Boolean(props?.value);
 };
+
+const isOptionsElement = (element: ReactElement) => element.type === Options;
 
 // Whether an option's label/children can render text that the Root can't read
 // statically — i.e. it contains a component element that may produce searchable

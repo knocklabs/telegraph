@@ -1,6 +1,6 @@
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
 
@@ -212,6 +212,37 @@ describe("Combobox", () => {
         expect(secondOption?.getAttribute("data-highlighted")).not.toBeNull(),
       );
       expect(firstOption?.getAttribute("data-highlighted")).toBeNull();
+    });
+
+    it("reports virtual focus changes through onItemHighlighted", async () => {
+      const user = userEvent.setup();
+      const onItemHighlighted = vi.fn();
+      const { container } = render(
+        <Combobox.Root
+          defaultValue="email"
+          onItemHighlighted={onItemHighlighted}
+        >
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Options>
+              <Combobox.Option value="email">Email</Combobox.Option>
+              <Combobox.Option value="sms">SMS</Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>,
+      );
+
+      await user.click(
+        container.querySelector("[data-tgph-combobox-trigger]")!,
+      );
+      await user.keyboard("[ArrowDown]");
+
+      await waitFor(() =>
+        expect(onItemHighlighted).toHaveBeenLastCalledWith(
+          "sms",
+          expect.objectContaining({ reason: "keyboard" }),
+        ),
+      );
     });
 
     it("pressing enter on an option should select it", async () => {
@@ -1444,12 +1475,14 @@ describe("manualFiltering", () => {
   const NonSearchValueControl = ({
     value,
     onValueChange,
+    children,
   }: {
     value: string;
     onValueChange: (value: string) => void;
+    children: ReactNode;
   }) => (
     <button type="button" onClick={() => onValueChange(value)}>
-      Branches
+      {children}
     </button>
   );
 
@@ -1518,7 +1551,9 @@ describe("manualFiltering", () => {
       <Combobox.Root defaultValue="email">
         <Combobox.Trigger />
         <Combobox.Content>
-          <NonSearchValueControl value="my-branches" onValueChange={vi.fn()} />
+          <NonSearchValueControl value="my-branches" onValueChange={vi.fn()}>
+            Push branches
+          </NonSearchValueControl>
           <Combobox.Search />
           <Combobox.Options>
             <Combobox.Option value="email">Email</Combobox.Option>
@@ -1542,10 +1577,25 @@ describe("manualFiltering", () => {
     expect(
       queryPortalElement('[data-tgph-combobox-option-value="push"]'),
     ).not.toBeNull();
+    await waitFor(() =>
+      expect(
+        queryPortalElement(
+          '[data-tgph-combobox-option-value="push"][data-highlighted]',
+        ),
+      ).not.toBeNull(),
+    );
+
+    await user.keyboard("[Enter]");
+    await waitFor(() =>
+      expect(
+        container.querySelector("[data-tgph-combobox-trigger]")?.textContent,
+      ).toBe("Push"),
+    );
   });
 
   it("attaches the controlled Search contract to Search instead of an earlier value control", async () => {
     const user = userEvent.setup();
+    const onNonSearchValueChange = vi.fn();
 
     const Harness = () => {
       const [query, setQuery] = useState("server-query");
@@ -1555,8 +1605,10 @@ describe("manualFiltering", () => {
           <Combobox.Content>
             <NonSearchValueControl
               value="my-branches"
-              onValueChange={vi.fn()}
-            />
+              onValueChange={onNonSearchValueChange}
+            >
+              Server query tabs
+            </NonSearchValueControl>
             <Combobox.Search value={query} onValueChange={setQuery} />
             <Combobox.Options>
               <Combobox.Option value="server-result">
@@ -1580,6 +1632,11 @@ describe("manualFiltering", () => {
     ) as HTMLInputElement;
     expect(search.value).toBe("server-query");
     expect(queryPortalElements("[data-tgph-combobox-option]")).toHaveLength(1);
+
+    await user.clear(search);
+    await user.type(search, "next-query");
+    expect(search.value).toBe("next-query");
+    expect(onNonSearchValueChange).not.toHaveBeenCalled();
   });
 
   it("treats a controlled Search as manually filtered", async () => {

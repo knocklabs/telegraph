@@ -22,30 +22,36 @@ export const isSingleSelect = <T>(
 type GetOptionsProps = {
   children: ReactNode;
   isOptionElement: (element: ReactElement) => boolean;
+  isOptionsElement: (element: ReactElement) => boolean;
 };
 
 const getOptionElements = ({
   children,
   isOptionElement,
+  isOptionsElement,
 }: GetOptionsProps): Array<ReactElement> => {
   const recursivelyFindOptionElements = (
     children: ReactNode,
     options: Array<ReactNode> = [],
+    insideOptions = false,
   ) => {
-    // Options can be wrapped in grouping/layout components, so walk the child
-    // tree instead of assuming direct Combobox.Option children.
+    // Find the Options collection first, then walk its grouping/layout wrappers.
+    // Other popup controls can also carry `value` props, but only descendants of
+    // Combobox.Options participate in selection and filtering.
     const childrenArray = Children.toArray(children);
 
     childrenArray.forEach((child) => {
       if (isValidElement(child)) {
         const childProps = child.props as Record<string, unknown>;
-        if (isOptionElement(child)) {
+        const childIsOptions = isOptionsElement(child);
+
+        if (insideOptions && isOptionElement(child)) {
           options.push(child);
         } else if (childProps.children) {
-          // Non-option wrappers may still contain options further down.
           recursivelyFindOptionElements(
             childProps.children as ReactNode,
             options,
+            insideOptions || childIsOptions,
           );
         }
       }
@@ -60,8 +66,13 @@ const getOptionElements = ({
 export const getOptions = ({
   children,
   isOptionElement,
+  isOptionsElement,
 }: GetOptionsProps): Array<DefinedOption> => {
-  const optionElements = getOptionElements({ children, isOptionElement });
+  const optionElements = getOptionElements({
+    children,
+    isOptionElement,
+    isOptionsElement,
+  });
 
   const options = optionElements.map((_element) => {
     const element = _element as ReactElement<{

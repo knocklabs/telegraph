@@ -9,3 +9,7 @@ export type {
   EmptyProps as ComboboxEmptyProps,
   CreateProps as ComboboxCreateProps,
 } from "./Combobox";
+export type {
+  ComboboxHighlightReason,
+  ComboboxHighlightDetails,
+} from "./Combobox.types";
