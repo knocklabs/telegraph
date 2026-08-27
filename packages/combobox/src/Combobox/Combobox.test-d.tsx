@@ -51,7 +51,9 @@ describe("Combobox types", () => {
   it("links explicit selection modes to their value contracts", () => {
     <Combobox.Root
       selectionMode="single"
-      onValueChange={(value) => expectTypeOf(value).toEqualTypeOf<string>()}
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string | undefined>()
+      }
     />;
     <Combobox.Root
       selectionMode="multiple"
