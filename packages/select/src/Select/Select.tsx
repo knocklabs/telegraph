@@ -14,11 +14,9 @@ type SelectValue = string | Array<string>;
 
 type Option = ComboboxOptionProps;
 
-// `legacyBehavior` is dropped: it makes Combobox emit `{ value, label }` option
-// objects, which `Select.Option` cannot produce.
 export type RootProps<V extends SelectValue = string> = Omit<
-  ComboboxRootProps<V, false>,
-  "legacyBehavior" | "onValueChange"
+  ComboboxRootProps<V>,
+  "onValueChange"
 > & {
   // `NoInfer` so `V` comes from `value`/`defaultValue` alone: a `useState`
   // setter would otherwise contribute `SetStateAction<...>`, which fails the
@@ -40,16 +38,11 @@ const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
     contentProps,
     optionsProps,
     children,
-    // Discarded, not just omitted from the props type: a JSX spread of a
-    // non-literal skips excess-property checking, so `<Select.Root {...p} />`
-    // could still land it on `Combobox.Root<V, false>` and make that `false`
-    // a lie about the values `onValueChange` reports.
-    legacyBehavior: _legacyBehavior,
     ...props
-  } = rootProps as RootProps<V> & { legacyBehavior?: boolean };
+  } = rootProps;
 
   return (
-    <Combobox.Root<V, false>
+    <Combobox.Root<V>
       value={value}
       onValueChange={onValueChange}
       defaultValue={defaultValue}

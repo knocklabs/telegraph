@@ -65,10 +65,8 @@ Combobox keeps the existing Telegraph compound API while using the Base UI-backe
 Telegraph Menu primitives for popup positioning, portal rendering, dismissal,
 and focus restoration. The package no longer depends on Radix directly.
 
-The public value contracts remain unchanged: string values are the recommended
-mode, `legacyBehavior` still supports `{ value, label }` objects for backwards
-compatibility, and single- vs multi-select behavior is still inferred from the
-shape of `value` / `defaultValue`.
+Combobox values are strings or string arrays. Single- vs multi-select behavior
+is inferred from the shape of `value` / `defaultValue`.
 
 When `closeOnSelect={false}`, the dropdown stays open after selection and focus
 remains on the selected option so keyboard users can continue through the list
@@ -78,21 +76,20 @@ without returning to the trigger first.
 
 The root component that manages the state and context for the combobox.
 
-| Prop             | Type                                                        | Default      | Description                            |
-| ---------------- | ----------------------------------------------------------- | ------------ | -------------------------------------- |
-| `value`          | `string \| string[] \| Option \| Option[]`                  | `undefined`  | The selected value(s)                  |
-| `onValueChange`  | `(value: string \| string[] \| Option \| Option[]) => void` | `undefined`  | Callback when selection changes        |
-| `layout`         | `"truncate" \| "wrap"`                                      | `"truncate"` | How to display multiple selections     |
-| `open`           | `boolean`                                                   | `undefined`  | Controlled open state                  |
-| `defaultOpen`    | `boolean`                                                   | `false`      | Initial open state                     |
-| `errored`        | `boolean`                                                   | `false`      | Shows error styling                    |
-| `placeholder`    | `string`                                                    | `undefined`  | Placeholder text                       |
-| `onOpenChange`   | `(open: boolean) => void`                                   | `undefined`  | Callback when open state changes       |
-| `modal`          | `boolean`                                                   | `true`       | Whether to render in a modal           |
-| `closeOnSelect`  | `boolean`                                                   | `true`       | Close menu after selection             |
-| `clearable`      | `boolean`                                                   | `false`      | Show clear button                      |
-| `disabled`       | `boolean`                                                   | `false`      | Disable the combobox                   |
-| `legacyBehavior` | `boolean`                                                   | `false`      | Use legacy object format ⚠️ Deprecated |
+| Prop            | Type                                | Default      | Description                        |
+| --------------- | ----------------------------------- | ------------ | ---------------------------------- |
+| `value`         | `string \| string[]`                 | `undefined`  | The selected value(s)              |
+| `onValueChange` | `(value: string \| string[]) => void` | `undefined`  | Callback when selection changes    |
+| `layout`        | `"truncate" \| "wrap"`              | `"truncate"` | How to display multiple selections |
+| `open`          | `boolean`                           | `undefined`  | Controlled open state              |
+| `defaultOpen`   | `boolean`                           | `false`      | Initial open state                 |
+| `errored`       | `boolean`                           | `false`      | Shows error styling                |
+| `placeholder`   | `string`                            | `undefined`  | Placeholder text                   |
+| `onOpenChange`  | `(open: boolean) => void`           | `undefined`  | Callback when open state changes   |
+| `modal`         | `boolean`                           | `true`       | Whether to render in a modal       |
+| `closeOnSelect` | `boolean`                           | `true`       | Close menu after selection         |
+| `clearable`     | `boolean`                           | `false`      | Show clear button                  |
+| `disabled`      | `boolean`                           | `false`      | Disable the combobox               |
 
 ### `<Combobox.Trigger>`
 
@@ -424,20 +421,13 @@ const [value, setValue] = useState<string>("");
 const [values, setValues] = useState<string[]>([]);
 ```
 
-### Legacy Behavior (⚠️ Deprecated)
+### Migrating from object values
 
-> **Warning**: Legacy behavior is deprecated and will be removed in a future version.
-
-```tsx
-// ⚠️ Deprecated - Don't use in new code
-const [value, setValue] = useState<{ value: string; label?: string }>();
-
-<Combobox.Root
-  value={value}
-  onValueChange={setValue}
-  legacyBehavior={true}
->
-```
+The `legacyBehavior` prop and `{ value, label }` selection objects were removed.
+Store only the option value in state. The trigger derives its display text from
+the matching mounted `Combobox.Option`, using its `label`, then its children,
+then its value. Async and paginated lists must keep the selected item mounted as
+an Option so the trigger can display its label.
 
 ## References
 

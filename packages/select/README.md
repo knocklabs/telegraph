@@ -77,8 +77,8 @@ by Base UI through Telegraph primitives.
 
 `Select.Root` is generic over its value. `value` and `defaultValue` accept a
 string or an array of strings, which matches what `Select.Option` produces, and
-`onValueChange` narrows to the same type. `legacyBehavior` is no longer
-accepted. Use `Combobox` directly for option objects.
+`onValueChange` narrows to the same type. Object selection values are not
+supported by Select or Combobox.
 
 Single-select usage closes after selection, while multi-select usage stays open.
 Telegraph infers this from whether `value` or `defaultValue` is an array.

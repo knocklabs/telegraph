@@ -18,16 +18,10 @@ import React from "react";
 import { ComboboxContext } from "./Combobox";
 import {
   getCurrentOption,
-  getValueFromOption,
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
-import type {
-  DefinedOption,
-  MultiSelect,
-  Option,
-  SingleSelect,
-} from "./Combobox.types";
+import type { MultiSelect, SingleSelect } from "./Combobox.types";
 
 // Drop `as`: this always renders `motion.span` (KNO-14501). Drop `alt` too:
 // the body discards it, so leaving it in the type promised an accessible name
@@ -163,28 +157,10 @@ const TriggerText = <T extends TgphElement = "span">(
   const label = React.useMemo(() => {
     if (!isSingleSelect(context.value)) return;
 
-    const currentOption = getCurrentOption(
-      context.value,
-      context.options,
-      context.legacyBehavior,
-    );
+    const currentOption = getCurrentOption(context.value, context.options);
 
-    const label =
-      currentOption?.label || currentOption?.value || context.placeholder;
-
-    // In `legacyBehavior` mode, we can override the label of the combobox via the `label` prop
-    // in context value. So, if we're in `legacyBehavior` mode and the context value has a
-    // label, we want to use that label instead of the label from the current option
-    const legacyLabelOverride =
-      context.legacyBehavior && (context?.value as DefinedOption)?.label;
-
-    return legacyLabelOverride ? legacyLabelOverride : label;
-  }, [
-    context.value,
-    context.options,
-    context.legacyBehavior,
-    context.placeholder,
-  ]);
+    return currentOption?.label || currentOption?.value || context.placeholder;
+  }, [context.value, context.options, context.placeholder]);
 
   return (
     <TooltipIfTruncated>
@@ -361,23 +337,15 @@ const TriggerTagText = <T extends TgphElement = "span">(
     if (foundOption) return foundOption.label || foundOption.value;
 
     // Find option amongst the current values in the case of creation
-    if (!context.value) return undefined;
-    const contextValue = context.value as Array<Option>;
-    const foundValue = contextValue.find(
-      (v) =>
-        getValueFromOption(v, context.legacyBehavior) ===
-        triggerTagContext.value,
+    if (!isMultiSelect(context.value)) return undefined;
+    const foundValue = context.value.find(
+      (value) => value === triggerTagContext.value,
     );
 
     if (!foundValue) return undefined;
 
     return foundValue;
-  }, [
-    context.options,
-    context.value,
-    triggerTagContext.value,
-    context.legacyBehavior,
-  ]);
+  }, [context.options, context.value, triggerTagContext.value]);
 
   return (
     <Tag.Text
@@ -386,10 +354,7 @@ const TriggerTagText = <T extends TgphElement = "span">(
         "children"
       >)}
     >
-      {/* `Option` includes the legacy `{ value, label }` shape, which is not a
-          `ReactNode`. Rendering it was already the pre-existing behaviour; only
-          the type is narrowed here. */}
-      {children || (option as React.ReactNode)}
+      {children || option}
     </Tag.Text>
   );
 };
@@ -415,12 +380,11 @@ const TriggerTagButton = <T extends TgphElement = "button">(
         if (!context.onValueChange) return;
         const onValueChange =
           context.onValueChange as MultiSelect["onValueChange"];
-        const contextValue = context.value as Array<Option>;
+        const contextValue = context.value as Array<string>;
 
-        const newValue = contextValue.filter((v) => {
-          const valueOption = getValueFromOption(v, context.legacyBehavior);
-          return valueOption !== triggerTagContext.value;
-        });
+        const newValue = contextValue.filter(
+          (value) => value !== triggerTagContext.value,
+        );
 
         onValueChange?.(newValue);
         // Stop click event from bubbling up
@@ -484,14 +448,10 @@ const TriggerValue = () => {
       <LazyMotion features={domAnimation}>
         <TriggerTagsContainer>
           {context.value.map((v, i) => {
-            const value = getValueFromOption(v, context.legacyBehavior);
-            if (
-              value &&
-              ((layout === "truncate" && i <= 1) || layout === "wrap")
-            ) {
+            if (v && ((layout === "truncate" && i <= 1) || layout === "wrap")) {
               return (
-                <RefToTgphRef key={value}>
-                  <TriggerTag.Default value={value} />
+                <RefToTgphRef key={v}>
+                  <TriggerTag.Default value={v} />
                 </RefToTgphRef>
               );
             }

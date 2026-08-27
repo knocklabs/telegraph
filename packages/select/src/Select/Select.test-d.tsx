@@ -135,7 +135,7 @@ describe("Select types", () => {
       value={{ value: "1", label: "Option 1" }}
     />;
     <Select.Root
-      // @ts-expect-error legacyBehavior emits option objects Select cannot produce
+      // @ts-expect-error legacyBehavior was removed from Combobox and Select
       legacyBehavior
     />;
     <Select.Root

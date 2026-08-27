@@ -2,14 +2,15 @@ export type DefinedOption = {
   value: string;
   label?: string | React.ReactNode;
 };
-export type Option = DefinedOption | string | React.ReactNode;
+
+export type ComboboxValue = string | Array<string>;
 
 export type SingleSelect = {
-  value?: Option;
-  onValueChange?: (value: Option | undefined) => void;
+  value?: string;
+  onValueChange?: (value: string | undefined) => void;
 };
 
 export type MultiSelect = {
-  value?: Array<Option>;
-  onValueChange?: (value: Array<Option>) => void;
+  value?: Array<string>;
+  onValueChange?: (value: Array<string>) => void;
 };
