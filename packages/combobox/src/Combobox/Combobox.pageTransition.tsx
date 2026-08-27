@@ -1,9 +1,22 @@
-import { type ReactNode, useLayoutEffect, useRef } from "react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  useLayoutEffect,
+  useRef,
+} from "react";
 
 import "./Combobox.pageTransition.css";
 
 const SLIDE_MS = 240;
 const SLIDE_EASING = "cubic-bezier(0.16, 1, 0.3, 1)";
+type SlideStyle = CSSProperties & {
+  "--tgph-combobox-page-slide-duration": `${number}ms`;
+  "--tgph-combobox-page-slide-easing": string;
+};
+const SLIDE_STYLE: SlideStyle = {
+  "--tgph-combobox-page-slide-duration": `${SLIDE_MS}ms`,
+  "--tgph-combobox-page-slide-easing": SLIDE_EASING,
+};
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
@@ -114,6 +127,7 @@ export const PageTransition = ({
       role="presentation"
       data-tgph-combobox-page-panel
       data-tgph-combobox-page-direction={direction}
+      style={SLIDE_STYLE}
     >
       {children}
     </div>

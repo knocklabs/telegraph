@@ -23,11 +23,14 @@
    right, back = from the left. No direction (opening the popup) = no slide, so
    the page just appears in place. */
 [data-tgph-combobox-page-panel][data-tgph-combobox-page-direction="forward"] {
-  animation: tgph-combobox-page-in-forward 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: tgph-combobox-page-in-forward
+    var(--tgph-combobox-page-slide-duration)
+    var(--tgph-combobox-page-slide-easing);
 }
 
 [data-tgph-combobox-page-panel][data-tgph-combobox-page-direction="back"] {
-  animation: tgph-combobox-page-in-back 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: tgph-combobox-page-in-back var(--tgph-combobox-page-slide-duration)
+    var(--tgph-combobox-page-slide-easing);
 }
 
 /* Outgoing snapshot: overlaid on the list and slid out via the Web Animations
