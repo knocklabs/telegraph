@@ -66,7 +66,7 @@ describe("Combobox types", () => {
       ComboboxRootProps<Array<string>>["onValueChange"]
     >().toEqualTypeOf<((value: Array<string>) => void) | undefined>();
 
-    <Combobox.Root
+    <Combobox.Root<string>
       value="a"
       onValueChange={(value) =>
         expectTypeOf(value).toEqualTypeOf<string | undefined>()
