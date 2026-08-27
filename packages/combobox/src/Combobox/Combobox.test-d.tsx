@@ -321,7 +321,7 @@ describe("Combobox types", () => {
   });
 
   it("keeps legacy option presentation and close props", () => {
-    <Combobox.Option value="a" fontWeight="bold" closeOnClick>
+    <Combobox.Option value="a" fontWeight="semi-bold" closeOnClick>
       A
     </Combobox.Option>;
   });

@@ -1692,7 +1692,7 @@ describe("engine compatibility", () => {
         <Combobox.Trigger />
         <Combobox.Content>
           <Combobox.Options>
-            <Combobox.Option value="email" fontWeight="bold">
+            <Combobox.Option value="email" fontWeight="semi-bold">
               Email
             </Combobox.Option>
           </Combobox.Options>
@@ -1707,7 +1707,7 @@ describe("engine compatibility", () => {
     expect(option).not.toHaveAttribute("fontweight");
     expect(
       option.querySelector("[data-button-text]")?.getAttribute("style"),
-    ).toContain("bold");
+    ).toContain("semi-bold");
   });
 
   it("lets an option close a root whose global closeOnSelect is false", async () => {
