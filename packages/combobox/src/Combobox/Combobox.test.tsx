@@ -1686,6 +1686,59 @@ describe("manualFiltering", () => {
 });
 
 describe("engine compatibility", () => {
+  it("applies option fontWeight to the label without leaking it to the row", () => {
+    render(
+      <Combobox.Root defaultOpen>
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            <Combobox.Option value="email" fontWeight="bold">
+              Email
+            </Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    const option = queryPortalElement(
+      "[data-tgph-combobox-option]",
+    ) as HTMLElement;
+    expect(option).not.toHaveAttribute("font-weight");
+    expect(option).not.toHaveAttribute("fontweight");
+    expect(
+      option.querySelector("[data-button-text]")?.getAttribute("style"),
+    ).toContain("bold");
+  });
+
+  it("lets an option close a root whose global closeOnSelect is false", async () => {
+    const user = userEvent.setup();
+    const calls: Array<string> = [];
+
+    render(
+      <Combobox.Root
+        defaultOpen
+        closeOnSelect={false}
+        onOpenChange={(open) => calls.push(`open:${open}`)}
+        onValueChange={(value) => calls.push(`value:${value}`)}
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            <Combobox.Option value="email" closeOnClick>
+              Email
+            </Combobox.Option>
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    await user.click(
+      queryPortalElement("[data-tgph-combobox-option]") as HTMLElement,
+    );
+
+    expect(calls).toEqual(["value:email", "open:false"]);
+  });
+
   it("exposes disabled options to Base UI without making them selectable", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();

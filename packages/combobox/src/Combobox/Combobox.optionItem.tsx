@@ -35,6 +35,7 @@ export type OptionItemProps<T extends TgphElement = "button"> =
       leadingComponent?: ReactNode;
       trailingComponent?: ReactNode;
       textProps?: ButtonTextProps<"span">;
+      fontWeight?: ButtonTextProps["weight"];
     };
 
 const OptionItem = <T extends TgphElement = "button">({
@@ -51,6 +52,9 @@ const OptionItem = <T extends TgphElement = "button">({
   trailingIcon,
   trailingComponent,
   textProps,
+  // This styles the label only. Destructure it so Button.Root does not pass an
+  // invalid `font-weight` attribute to the option element.
+  fontWeight,
   ...props
 }: OptionItemProps<T>) => {
   const rootProps = props as ButtonRootProps<"button">;
@@ -73,7 +77,7 @@ const OptionItem = <T extends TgphElement = "button">({
           leadingComponent={leadingComponent}
         />
         <Button.Text
-          weight="medium"
+          weight={fontWeight || "medium"}
           w="full"
           overflow="hidden"
           textOverflow="ellipsis"

@@ -47,6 +47,8 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxOptionProps["value"]>().not.toBeAny();
     expectTypeOf<ComboboxOptionProps["label"]>().not.toBeAny();
     expectTypeOf<ComboboxOptionProps["selected"]>().not.toBeAny();
+    expectTypeOf<ComboboxOptionProps["fontWeight"]>().not.toBeAny();
+    expectTypeOf<ComboboxOptionProps["closeOnClick"]>().not.toBeAny();
     // Guard the callback PARAM, not just the function: closed-polymorphic typing
     // must keep it from widening to `any` (the KNO-14309 failure mode).
     expectTypeOf<
@@ -316,6 +318,12 @@ describe("Combobox types", () => {
       // @ts-expect-error create values are strings
       values={[1]}
     />;
+  });
+
+  it("keeps legacy option presentation and close props", () => {
+    <Combobox.Option value="a" fontWeight="bold" closeOnClick>
+      A
+    </Combobox.Option>;
   });
 
   it("rejects the removed legacy value contracts", () => {

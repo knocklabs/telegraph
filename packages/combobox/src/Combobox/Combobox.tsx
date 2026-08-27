@@ -145,6 +145,9 @@ export const ComboboxContext = createContext<
     defaultScrollToValue?: string;
     // Explicit Base UI registry index for a Create row rendered outside Options.
     createIndex?: number;
+    // An option can opt into closing when Root keeps the popup open globally.
+    // The click handler sets this before Base UI commits the selection.
+    optionCloseOnClickRef?: RefObject<boolean>;
   }
 >({
   value: undefined,
@@ -206,6 +209,7 @@ const Root = <V extends ComboboxValue = string>({
   const onEscapeKeyDownRef = useRef<
     ((event: KeyboardEvent) => void) | undefined
   >(undefined);
+  const optionCloseOnClickRef = useRef(false);
 
   const options = useMemo(() => {
     return getOptions({ children, isOptionElement });
@@ -348,6 +352,13 @@ const Root = <V extends ComboboxValue = string>({
         // a real string value here.
         (setValue as SingleSelect["onValueChange"])?.(next as string);
       }
+
+      // The former Menu.Button-backed option allowed one row to close a Root
+      // whose global closeOnSelect was false. Menu emitted the value first for
+      // that per-row override, so preserve the same callback order here.
+      if (!closeOnSelect && optionCloseOnClickRef.current) {
+        setOpen(false);
+      }
     },
     [multiple, setValue, closeOnSelect, setOpen],
   );
@@ -361,7 +372,7 @@ const Root = <V extends ComboboxValue = string>({
         // controlled Telegraph state. Cancelling that transition leaves Base
         // UI internally open, so the next trigger press cannot reopen it.
         if (reason === "item-press") {
-          if (!closeOnSelect) {
+          if (!closeOnSelect && !optionCloseOnClickRef.current) {
             eventDetails.cancel();
           }
           return;
@@ -449,6 +460,7 @@ const Root = <V extends ComboboxValue = string>({
         manualFiltering,
         defaultScrollToValue,
         createIndex,
+        optionCloseOnClickRef,
       }}
     >
       <BaseCombobox.Root
@@ -1075,6 +1087,7 @@ export type OptionProps<T extends TgphElement = "div"> = PolymorphicProps<T> &
     value: DefinedOption["value"];
     label?: DefinedOption["label"];
     selected?: boolean | null;
+    closeOnClick?: boolean;
     onSelect?: (event: Event) => void;
   };
 
@@ -1082,6 +1095,7 @@ const Option = <T extends TgphElement = "div">({
   value,
   label,
   selected,
+  closeOnClick,
   onSelect,
   children,
   disabled,
@@ -1154,6 +1168,15 @@ const Option = <T extends TgphElement = "div">({
       // needs to commit the option after this callback returns.
       event.nativeEvent.preventDefault();
 
+      if (closeOnClick && context.optionCloseOnClickRef) {
+        context.optionCloseOnClickRef.current = true;
+        queueMicrotask(() => {
+          if (context.optionCloseOnClickRef) {
+            context.optionCloseOnClickRef.current = false;
+          }
+        });
+      }
+
       if (onSelect) {
         // Base UI has no per-item select callback, and its own commit for this
         // item is canceled at the Root value bridge (the item is given no
@@ -1163,6 +1186,9 @@ const Option = <T extends TgphElement = "div">({
         }
 
         onSelect(event.nativeEvent);
+        if (!closeOnSelect && closeOnClick) {
+          setOpen(false);
+        }
         return;
       }
 
@@ -1188,13 +1214,19 @@ const Option = <T extends TgphElement = "div">({
       } else {
         (onValueChange as SingleSelect["onValueChange"])?.(value);
       }
+
+      if (!closeOnSelect && closeOnClick) {
+        setOpen(false);
+      }
     },
     [
       onSelect,
       disabled,
+      closeOnClick,
       closeOnSelect,
       setOpen,
       contextValue,
+      context.optionCloseOnClickRef,
       onValueChange,
       isSelected,
       value,
