@@ -40,9 +40,9 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxRootProps<string>>().not.toHaveProperty(
       "autoComplete",
     );
-    expectTypeOf<
-      ComboboxRootProps<string>["autocompleteMode"]
-    >().toEqualTypeOf<"list" | "inline" | "both" | "none" | undefined>();
+    expectTypeOf<ComboboxRootProps<string>["autocompleteMode"]>().toEqualTypeOf<
+      "list" | "inline" | "both" | "none" | undefined
+    >();
     expectTypeOf<ConsumerProps["mode"]>().toEqualTypeOf<
       "compose" | "preview"
     >();
