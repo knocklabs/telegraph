@@ -13,7 +13,13 @@ import { Text } from "@telegraph/typography";
 import { ChevronsUpDown, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
-import React from "react";
+import {
+  createContext,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
+  useContext,
+  useMemo,
+} from "react";
 
 import { ComboboxContext } from "./Combobox";
 import {
@@ -46,7 +52,7 @@ const TriggerIndicator = <T extends TgphElement = "span">(
     as?: TgphElement;
     alt?: string;
   };
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
   return (
     <Button.Icon
       as={motion.span}
@@ -73,7 +79,7 @@ const TriggerClear = <T extends TgphElement = "button">(
 ) => {
   const { tooltipProps, ...props } =
     triggerClearProps as TriggerClearProps<"button">;
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
   const handleClear = () => {
     if (isMultiSelect(context.value)) {
@@ -90,7 +96,7 @@ const TriggerClear = <T extends TgphElement = "button">(
     context.triggerRef?.current?.focus();
   };
 
-  const shouldShowClearable = React.useMemo(() => {
+  const shouldShowClearable = useMemo(() => {
     if (isSingleSelect(context.value)) {
       return context.clearable && context.value;
     }
@@ -109,12 +115,12 @@ const TriggerClear = <T extends TgphElement = "button">(
         icon={{ icon: X, alt: "Clear field" }}
         size="0"
         variant="ghost"
-        onClick={(event: React.MouseEvent) => {
+        onClick={(event: ReactMouseEvent) => {
           if (!context.value) return;
           event.stopPropagation();
           handleClear();
         }}
-        onKeyDown={(event: React.KeyboardEvent) => {
+        onKeyDown={(event: ReactKeyboardEvent) => {
           if (event.key === "Enter" || event.key === " ") {
             event.stopPropagation();
             event.preventDefault();
@@ -152,9 +158,9 @@ const TriggerText = <T extends TgphElement = "span">(
   triggerTextProps: TriggerTextProps<T>,
 ) => {
   const { children, ...props } = triggerTextProps as TriggerTextProps<"span">;
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
-  const label = React.useMemo(() => {
+  const label = useMemo(() => {
     if (!isSingleSelect(context.value)) return;
 
     const currentOption = getCurrentOption(context.value, context.options);
@@ -188,7 +194,7 @@ const TriggerPlaceholder = <T extends TgphElement = "span">(
 ) => {
   const { children, ...props } =
     triggerPlaceholderProps as TriggerPlaceholderProps<"span">;
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
   return (
     <TooltipIfTruncated>
       <Button.Text
@@ -209,7 +215,7 @@ const TriggerPlaceholder = <T extends TgphElement = "span">(
 type TriggerTagsContainerProps = StackProps;
 
 const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
   if (!isMultiSelect(context.value)) return null;
 
@@ -272,7 +278,7 @@ const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
   );
 };
 
-const TriggerTagContext = React.createContext<{
+const TriggerTagContext = createContext<{
   value: string;
 }>({
   value: "",
@@ -326,10 +332,10 @@ const TriggerTagText = <T extends TgphElement = "span">(
 ) => {
   const { children, ...props } =
     triggerTagTextProps as TriggerTagTextProps<"span">;
-  const context = React.useContext(ComboboxContext);
-  const triggerTagContext = React.useContext(TriggerTagContext);
+  const context = useContext(ComboboxContext);
+  const triggerTagContext = useContext(TriggerTagContext);
 
-  const option = React.useMemo(() => {
+  const option = useMemo(() => {
     // Find option amongst other options
     const foundOption = context.options.find(
       (o) => o.value === triggerTagContext.value,
@@ -368,15 +374,15 @@ const TriggerTagButton = <T extends TgphElement = "button">(
 ) => {
   const { children, ...props } =
     triggerTagButtonProps as TriggerTagButtonProps<"button">;
-  const context = React.useContext(ComboboxContext);
-  const triggerTagContext = React.useContext(TriggerTagContext);
+  const context = useContext(ComboboxContext);
+  const triggerTagContext = useContext(TriggerTagContext);
 
   return (
     <Tag.Button
       icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
       height="full"
       borderRightRadius="1"
-      onClick={(event: React.MouseEvent) => {
+      onClick={(event: ReactMouseEvent) => {
         if (!context.onValueChange) return;
         const onValueChange =
           context.onValueChange as MultiSelect["onValueChange"];
@@ -435,7 +441,7 @@ const TriggerActionsContainer = (props: TriggerActionsContainerProps) => {
 };
 
 const TriggerValue = () => {
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
   if (context.value && isMultiSelect(context.value)) {
     const layout = context.layout || "truncate";
