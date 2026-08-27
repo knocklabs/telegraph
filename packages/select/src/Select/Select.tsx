@@ -6,7 +6,7 @@ import {
   type ComboboxRootProps,
   type ComboboxTriggerProps,
 } from "@telegraph/combobox";
-import type { TgphElement } from "@telegraph/helpers";
+import type { RemappedOmit, TgphElement } from "@telegraph/helpers";
 
 // `Select.Option` takes a string `value`, so a Select selects over a single
 // string or an array of them.
@@ -18,7 +18,7 @@ type SelectOnValueChange<V extends SelectValue> = NonNullable<
   ComboboxRootProps<V>["onValueChange"]
 >;
 
-export type RootProps<V extends SelectValue = string> = Omit<
+export type RootProps<V extends SelectValue = string> = RemappedOmit<
   ComboboxRootProps<V>,
   "onValueChange"
 > & {
@@ -35,31 +35,31 @@ export type RootProps<V extends SelectValue = string> = Omit<
 const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
   const {
     size = "1",
-    value,
-    onValueChange,
-    defaultValue,
     triggerProps,
     contentProps,
     optionsProps,
     children,
-    ...props
+    ...comboboxRootProps
   } = rootProps;
+  const { value, defaultValue } = rootProps;
 
   return (
     <Combobox.Root<V>
-      value={value}
-      onValueChange={onValueChange}
-      defaultValue={defaultValue}
       closeOnSelect={!Array.isArray(value) && !Array.isArray(defaultValue)}
-      {...props}
+      {...comboboxRootProps}
     >
-      <Combobox.Trigger<V> size={size} {...triggerProps} />
-      <Combobox.Content {...contentProps}>
-        <Combobox.Options {...optionsProps}>{children}</Combobox.Options>
-        {/* Typing filters the options in place; without a message a
-            non-matching query would leave an empty popup. */}
-        <Combobox.Empty />
-      </Combobox.Content>
+      {/* Keep the wrapper's generic children as one ReactNode. Generated
+          declarations cannot reduce the discriminated RootProps union while V
+          is unresolved. The Fragment adds no DOM. */}
+      <>
+        <Combobox.Trigger<V> size={size} {...triggerProps} />
+        <Combobox.Content {...contentProps}>
+          <Combobox.Options {...optionsProps}>{children}</Combobox.Options>
+          {/* Typing filters the options in place; without a message a
+              non-matching query would leave an empty popup. */}
+          <Combobox.Empty />
+        </Combobox.Content>
+      </>
     </Combobox.Root>
   );
 };
