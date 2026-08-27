@@ -20,5 +20,5 @@ These follow from adopting the Base UI combobox pattern and affect every consume
 ### API changes
 
 - `Combobox.Content` no longer forwards the `onInteractOutside` / `onPointerDownOutside` / `onFocusOutside` dismissal callbacks. `onEscapeKeyDown`, `onCloseAutoFocus`, and `onOpenAutoFocus` remain.
-- `Combobox.Search` is now write-only — Base UI owns the input value, so a controlled search reads/updates the query through `onValueChange` rather than `value`.
+- `Combobox.Search` remains fully controllable: `value` controls the displayed query and `onValueChange` observes edits. Supplying either prop implies manual filtering by default, which preserves the existing contract for consumers that render their own filtered results. Set `manualFiltering={false}` on `Combobox.Root` to opt back into built-in filtering.
 - New `manualFiltering` prop on `Combobox.Root`: disables the built-in option filter so a consumer that already narrows the list itself (e.g. an async/server search driven by `Combobox.Search`'s `onValueChange`) is not double-filtered. The typed query is still exposed to `Combobox.Create` and the Search clear button.

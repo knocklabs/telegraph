@@ -679,7 +679,7 @@ describe("Combobox", () => {
       await waitFor(() =>
         expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
       );
-      await waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalled());
+      await waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalledTimes(1));
     });
 
     it("keeps the default input focus when onOpenAutoFocus does not prevent it", async () => {
