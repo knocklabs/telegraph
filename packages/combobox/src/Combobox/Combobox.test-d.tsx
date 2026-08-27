@@ -321,8 +321,7 @@ describe("Combobox types", () => {
     />;
 
     // @ts-expect-error ComboboxRootProps no longer accepts a legacy-mode generic
-    type LegacyRootProps = ComboboxRootProps<string, true>;
-    expectTypeOf<LegacyRootProps>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string, true>>();
   });
 
   it("accepts valid props", () => {
