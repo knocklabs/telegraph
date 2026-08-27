@@ -82,7 +82,11 @@ const CustomTriggerCombobox = () => {
       <Combobox.Content>
         <Combobox.Options>
           {VALUES.map((option, index) => (
-            <Combobox.Option key={option} value={option} label={LABELS[index]} />
+            <Combobox.Option
+              key={option}
+              value={option}
+              label={LABELS[index]}
+            />
           ))}
         </Combobox.Options>
       </Combobox.Content>

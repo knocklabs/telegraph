@@ -1037,11 +1037,7 @@ const Options = <T extends TgphElement = "div">({
     return () => {
       if (rafId !== undefined) cancelAnimationFrame(rafId);
     };
-  }, [
-    context.open,
-    context.value,
-    context.defaultScrollToValue,
-  ]);
+  }, [context.open, context.value, context.defaultScrollToValue]);
 
   return (
     <BaseCombobox.List
