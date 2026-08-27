@@ -894,34 +894,32 @@ const Button = <T extends TgphElement = "button">({
     preventBaseUIHandlerWhenDefaultPrevented(event);
   };
 
-  const renderedItem = (
-    <MenuItem
-      as={as}
-      {...menuItemProps}
-      onClick={handleClick as MenuItemProps<T>["onClick"]}
-      // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through
-      // the element passthrough, which is a deferred conditional while `T`
-      // is unresolved and therefore not indexable.
-      onKeyDown={handleKeyDown as MenuItemProps<"button">["onKeyDown"]}
-      selected={selected}
-      leadingIcon={combinedLeadingIcon}
-      trailingIcon={trailingIcon}
-      leadingComponent={leadingComponent}
-      trailingComponent={trailingComponent}
-      data-tgph-menu-button
-      disabled={disabled}
-      mx={mx}
-      style={{
-        outline: "none",
-        flexShrink: 0,
-        ...menuItemProps.style,
-      }}
-      tgphRef={composedTgphRef as MenuItemProps<T>["tgphRef"]}
-    />
-  );
+  // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through the
+  // element passthrough, which is a deferred conditional while `T` is
+  // unresolved and therefore not indexable.
+  const resolvedMenuItemProps = {
+    as,
+    ...menuItemProps,
+    onClick: handleClick as MenuItemProps<T>["onClick"],
+    onKeyDown: handleKeyDown as MenuItemProps<"button">["onKeyDown"],
+    selected,
+    leadingIcon: combinedLeadingIcon,
+    trailingIcon,
+    leadingComponent,
+    trailingComponent,
+    "data-tgph-menu-button": true,
+    disabled,
+    mx,
+    style: {
+      outline: "none",
+      flexShrink: 0,
+      ...menuItemProps.style,
+    },
+    tgphRef: composedTgphRef as MenuItemProps<T>["tgphRef"],
+  } satisfies MenuItemProps<T>;
 
   if (!compatibilityContext) {
-    return renderedItem;
+    return <MenuItem {...resolvedMenuItemProps} />;
   }
 
   return (
@@ -930,7 +928,7 @@ const Button = <T extends TgphElement = "button">({
       disabled={disabled}
       label={label}
       nativeButton={isNativeButton}
-      render={createTgphBaseUIRender(renderedItem)}
+      render={createTgphBaseUIRender(<MenuItem {...resolvedMenuItemProps} />)}
     />
   );
 };
