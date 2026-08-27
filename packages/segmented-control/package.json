@@ -35,7 +35,7 @@
     "@telegraph/layout": "workspace:^",
     "@telegraph/truncate": "workspace:^",
     "lucide-react": "^1.23.0",
-    "motion": "^12.38.0"
+    "motion": "^13.1.0"
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",

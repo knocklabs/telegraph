@@ -33,7 +33,7 @@
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
     "@telegraph/typography": "workspace:^",
-    "motion": "^12.38.0"
+    "motion": "^13.1.0"
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",

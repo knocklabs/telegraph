@@ -41,7 +41,7 @@
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^19.2.18",
-    "motion": "^12.38.0",
+    "motion": "^13.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "typescript": "^6.0.2",
