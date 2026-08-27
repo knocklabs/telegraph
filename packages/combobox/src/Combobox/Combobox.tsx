@@ -140,10 +140,6 @@ type RootSharedProps = {
   openOnInputClick?: boolean;
   // Whether arrow-key focus loops between the input and the list ends.
   loopFocus?: boolean;
-  onItemHighlighted?: (
-    value: string | undefined,
-    details: ComboboxHighlightDetails,
-  ) => void;
   actionsRef?: RefObject<ComboboxActions | null>;
 };
 
@@ -336,7 +332,6 @@ const RootImplementation = ({
   autoHighlight: autoHighlightProp,
   openOnInputClick: openOnInputClickProp,
   loopFocus: loopFocusProp,
-  onItemHighlighted: onItemHighlightedProp,
   actionsRef,
   children,
 }: RootImplementationProps) => {

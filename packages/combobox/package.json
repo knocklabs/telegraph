@@ -1,7 +1,7 @@
 {
   "name": "@telegraph/combobox",
   "version": "0.5.3",
-  "description": "A styled menu, triggered by a Select, that combines an Input and Single- or Multi-select.",
+  "description": "A styled combobox for single-select, multi-select, and free-text input.",
   "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/combobox",
   "author": "@knocklabs",
   "license": "MIT",

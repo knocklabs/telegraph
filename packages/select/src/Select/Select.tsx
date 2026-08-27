@@ -14,9 +14,9 @@ type SelectValue = string | Array<string>;
 
 type Option = ComboboxOptionProps;
 
-type SelectOnValueChange<V extends SelectValue> = NonNullable<
-  ComboboxRootProps<V>["onValueChange"]
->;
+type SelectOnValueChange<V extends SelectValue> = (
+  value: V extends string ? V | undefined : V,
+) => void;
 
 export type RootProps<V extends SelectValue = string> = RemappedOmit<
   ComboboxRootProps<V>,
