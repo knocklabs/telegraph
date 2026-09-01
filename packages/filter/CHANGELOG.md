@@ -1,5 +1,13 @@
 # @telegraph/filter
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013), [`e965228`](https://github.com/knocklabs/telegraph/commit/e965228a74285dee1bf0906c3c597e399da9245b), [`e965228`](https://github.com/knocklabs/telegraph/commit/e965228a74285dee1bf0906c3c597e399da9245b), [`ae9d253`](https://github.com/knocklabs/telegraph/commit/ae9d253227fbd8c9e4e82d0e43359ae2f9cf581e), [`d810993`](https://github.com/knocklabs/telegraph/commit/d810993d5b704dffcb2b5b1c0d80b03032dd3b2a), [`21b58fa`](https://github.com/knocklabs/telegraph/commit/21b58faabdf09a7075d9bc22cc78ca6ad47bd701), [`4524eff`](https://github.com/knocklabs/telegraph/commit/4524eff00a989fecbe09f894b84f8b436daacbc1), [`4bca7ab`](https://github.com/knocklabs/telegraph/commit/4bca7abcc905e93e86d7a8bfa82e53ff09d71c53), [`7523f70`](https://github.com/knocklabs/telegraph/commit/7523f7018cc38641eb617e8cffc247c484ccb094), [`4606fe9`](https://github.com/knocklabs/telegraph/commit/4606fe93ba01bd6025dc379da3a55d1147fc1c2c), [`4606fe9`](https://github.com/knocklabs/telegraph/commit/4606fe93ba01bd6025dc379da3a55d1147fc1c2c)]:
+  - @telegraph/menu@0.6.3
+  - @telegraph/combobox@0.6.0
+
 ## 0.2.1
 
 ### Patch Changes

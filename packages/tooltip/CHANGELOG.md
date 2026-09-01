@@ -1,5 +1,16 @@
 # @telegraph/tooltip
 
+## 0.6.3
+
+### Patch Changes
+
+- [#906](https://github.com/knocklabs/telegraph/pull/906) [`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013) Thanks [@kylemcd](https://github.com/kylemcd)! - Bump `@base-ui/react` from `^1.5.0` to `^1.6.0`. No Telegraph component API changes.
+
+- [#976](https://github.com/knocklabs/telegraph/pull/976) [`7523f70`](https://github.com/knocklabs/telegraph/commit/7523f7018cc38641eb617e8cffc247c484ccb094) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.38.0 to 13.1.0
+
+- Updated dependencies [[`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013)]:
+  - @telegraph/helpers@0.3.2
+
 ## 0.6.2
 
 ### Patch Changes

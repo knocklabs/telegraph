@@ -1,5 +1,44 @@
 # @telegraph/select
 
+## 0.2.0
+
+### Minor Changes
+
+- [#913](https://github.com/knocklabs/telegraph/pull/913) [`4bca7ab`](https://github.com/knocklabs/telegraph/commit/4bca7abcc905e93e86d7a8bfa82e53ff09d71c53) Thanks [@kylemcd](https://github.com/kylemcd)! - Add `required` (and `name`) props to `Combobox.Root` and `Select.Root` for native form integration. Base UI's combobox engine renders a hidden form input for the selection, so `required` enforces client-side required validation on submit — matching `<select required>` — and `name` submits the selected value under that key. `Select.Root` inherits both by forwarding to `Combobox.Root`.
+
+  For a multi-select, `required` behaves as "at least one": the form is invalid while nothing is selected and validates once any value is chosen.
+
+  Resolves KNO-14400.
+
+- [#977](https://github.com/knocklabs/telegraph/pull/977) [`21b58fa`](https://github.com/knocklabs/telegraph/commit/21b58faabdf09a7075d9bc22cc78ca6ad47bd701) Thanks [@kylemcd](https://github.com/kylemcd)! - Remove the internal compatibility workaround that discarded `legacyBehavior` before forwarding props to Combobox. Combobox no longer exposes that prop.
+
+  Correct the single-select `onValueChange` type to include `undefined`, which is reported when the selection is cleared. Multi-select callbacks continue to report string arrays.
+
+### Patch Changes
+
+- [#907](https://github.com/knocklabs/telegraph/pull/907) [`e965228`](https://github.com/knocklabs/telegraph/commit/e965228a74285dee1bf0906c3c597e399da9245b) Thanks [@kylemcd](https://github.com/kylemcd)! - Rebase `@telegraph/combobox` onto the Base UI combobox engine (`@base-ui/react/combobox`) instead of `@telegraph/menu`. The compound-component API and its props are preserved, apart from the deliberate changes noted below.
+
+  Options now use virtual focus: DOM focus stays on the popup's input and the active option is tracked with `aria-activedescendant` / `data-highlighted` rather than roving DOM focus. Selection, multi-select tags, `Create`, `Empty`, and scroll-to-selected are preserved.
+
+  `@telegraph/combobox` no longer depends on `@telegraph/menu`: the styled option row is now an in-package presentational component, so consumers no longer pull in the menu package (and its Base UI menu / motion deps) transitively.
+
+  ### Behavior changes from the engine swap
+
+  These follow from adopting the Base UI combobox pattern and affect every consumer, including `@telegraph/select`:
+  - **Type-to-filter instead of typeahead.** In an arrangement without a `Combobox.Search` (e.g. every `Select`), typing now filters the options in place through a hidden input rather than jumping DOM focus to the first match. A `Select` gains a default `Combobox.Empty`, so a non-matching query shows "No results found" instead of an empty popup. Matching is a case-insensitive substring (previously a prefix typeahead).
+  - **Open highlight follows ARIA.** On open, the option matching the current value is highlighted; with no selection nothing is highlighted, so the canonical empty-select flow becomes ArrowDown (open) → ArrowDown (highlight first) → Enter. Pressing Enter with nothing highlighted closes the popup (Base UI's "allow form submission" behavior) rather than selecting the first option.
+  - **Space no longer selects.** Under virtual focus a space is typed into the filter input; Enter and click still select. Disabled options remain keyboard-highlightable (deliberate Base UI behavior — they still cannot be selected).
+
+  ### API changes
+  - `Combobox.Content` no longer forwards the `onInteractOutside` / `onPointerDownOutside` / `onFocusOutside` dismissal callbacks. `onEscapeKeyDown`, `onCloseAutoFocus`, and `onOpenAutoFocus` remain.
+  - `Combobox.Search` remains fully controllable: `value` controls the displayed query and `onValueChange` observes edits. Supplying either prop implies manual filtering by default, which preserves the existing contract for consumers that render their own filtered results. Set `manualFiltering={false}` on `Combobox.Root` to opt back into built-in filtering.
+  - New `manualFiltering` prop on `Combobox.Root`: disables the built-in option filter so a consumer that already narrows the list itself (e.g. an async/server search driven by `Combobox.Search`'s `onValueChange`) is not double-filtered. The typed query is still exposed to `Combobox.Create` and the Search clear button.
+  - New `onItemHighlighted` callback on `Combobox.Root`: observes virtual option focus with the highlighted string value and Base UI event details. Use this supported API for virtualized option windows instead of listening for the deprecated synthetic option `focusin` compatibility signal.
+
+- Updated dependencies [[`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013), [`e965228`](https://github.com/knocklabs/telegraph/commit/e965228a74285dee1bf0906c3c597e399da9245b), [`e965228`](https://github.com/knocklabs/telegraph/commit/e965228a74285dee1bf0906c3c597e399da9245b), [`ae9d253`](https://github.com/knocklabs/telegraph/commit/ae9d253227fbd8c9e4e82d0e43359ae2f9cf581e), [`d810993`](https://github.com/knocklabs/telegraph/commit/d810993d5b704dffcb2b5b1c0d80b03032dd3b2a), [`21b58fa`](https://github.com/knocklabs/telegraph/commit/21b58faabdf09a7075d9bc22cc78ca6ad47bd701), [`4524eff`](https://github.com/knocklabs/telegraph/commit/4524eff00a989fecbe09f894b84f8b436daacbc1), [`4bca7ab`](https://github.com/knocklabs/telegraph/commit/4bca7abcc905e93e86d7a8bfa82e53ff09d71c53), [`7523f70`](https://github.com/knocklabs/telegraph/commit/7523f7018cc38641eb617e8cffc247c484ccb094)]:
+  - @telegraph/helpers@0.3.2
+  - @telegraph/combobox@0.6.0
+
 ## 0.1.3
 
 ### Patch Changes
