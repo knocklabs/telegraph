@@ -555,3 +555,73 @@ export const OptionsWithComponentContent: Story = {
     );
   },
 };
+
+// The `@telegraph/input`-styled `Combobox.Input` replaces the button
+// `Combobox.Trigger` as the anchor. Base UI gives the input role="combobox" and
+// virtual focus and anchors the popup beneath it; typing filters the options in
+// place, so there is no separate `Combobox.Search`.
+export const InputAsTrigger: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = useState<string | undefined>(undefined);
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          placeholder={"Search a channel"}
+        >
+          <TelegraphCombobox.Input />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Options>
+              {VALUES.map((v, index) => (
+                <TelegraphCombobox.Option key={v} value={v}>
+                  {LABELS[index]}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+// Free-text arrangement (`selectionMode="none"`): the input text is the state
+// and there is no selected value. The options are suggestions — pressing one
+// fills the input — but any typed text is equally valid.
+const FREE_TEXT_CHANNELS = ["Email", "SMS", "Push", "In-App", "Webhook"];
+
+export const FreeTextAutocomplete: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [inputValue, setInputValue] = useState("");
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          selectionMode="none"
+          inputValue={inputValue}
+          onInputValueChange={setInputValue}
+          placeholder={"Type or pick a channel"}
+        >
+          <TelegraphCombobox.Input />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Options>
+              {FREE_TEXT_CHANNELS.map((channel) => (
+                <TelegraphCombobox.Option key={channel} value={channel}>
+                  {channel}
+                </TelegraphCombobox.Option>
+              ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};

@@ -77,22 +77,31 @@ remains on the combobox input while `data-highlighted` and
 
 The root component that manages the state and context for the combobox.
 
-| Prop              | Type                                             | Default      | Description                                                               |
-| ----------------- | ------------------------------------------------ | ------------ | ------------------------------------------------------------------------- |
-| `value`           | `string \| string[]`                              | `undefined`  | The selected value(s)                                                     |
-| `onValueChange`   | `(value: string \| undefined \| string[]) => void` | `undefined`  | Callback when selection changes; clearing a single selection reports `undefined` |
-| `layout`          | `"truncate" \| "wrap"`                           | `"truncate"` | How to display multiple selections                                        |
-| `open`            | `boolean`                                        | `undefined`  | Controlled open state                                                     |
-| `defaultOpen`     | `boolean`                                        | `false`      | Initial open state                                                        |
-| `errored`         | `boolean`                                        | `false`      | Shows error styling                                                       |
-| `placeholder`     | `string`                                         | `undefined`  | Placeholder text                                                          |
-| `onOpenChange`    | `(open: boolean) => void`                        | `undefined`  | Callback when open state changes                                          |
-| `modal`           | `boolean`                                        | `true`       | Whether to render in a modal                                              |
-| `closeOnSelect`   | `boolean`                                        | `true`       | Close menu after selection                                                |
-| `clearable`       | `boolean`                                        | `false`      | Show clear button                                                         |
-| `disabled`        | `boolean`                                        | `false`      | Disable the combobox                                                      |
-| `manualFiltering` | `boolean`                                        | automatic    | Show rendered options without the built-in text filter; controlled Search enables it by default |
-| `onItemHighlighted` | `(value: string \| undefined, details: ComboboxHighlightDetails) => void` | `undefined` | Called when virtual option focus changes                                  |
+| Prop                 | Type                                                        | Default      | Description                                            |
+| -------------------- | ----------------------------------------------------------- | ------------ | ------------------------------------------------------ |
+| `value`              | `string \| string[]`                                        | `undefined`  | The selected value(s)                                  |
+| `onValueChange`      | `(value: string \| undefined \| string[]) => void`           | `undefined`  | Called when selection changes; a cleared single selection reports `undefined` |
+| `layout`             | `"truncate" \| "wrap"`                                      | `"truncate"` | How to display multiple selections                     |
+| `open`               | `boolean`                                                   | `undefined`  | Controlled open state                                  |
+| `defaultOpen`        | `boolean`                                                   | `false`      | Initial open state                                     |
+| `errored`            | `boolean`                                                   | `false`      | Shows error styling                                    |
+| `placeholder`        | `string`                                                    | `undefined`  | Placeholder text                                       |
+| `onOpenChange`       | `(open: boolean, details?: ComboboxChangeDetails) => void`  | `undefined`  | Called when the popup state changes                    |
+| `modal`              | `boolean`                                                   | `true`       | Whether to render in a modal                           |
+| `closeOnSelect`      | `boolean`                                                   | `true`       | Close menu after selection                             |
+| `clearable`          | `boolean`                                                   | `false`      | Show clear button                                      |
+| `disabled`           | `boolean`                                                   | `false`      | Disable the combobox                                   |
+| `manualFiltering`    | `boolean`                                                   | automatic    | Show rendered options without the built-in text filter; controlled Search enables it by default |
+| `onItemHighlighted`  | `(value: string \| undefined, details: ComboboxHighlightDetails) => void` | `undefined` | Called when virtual option focus changes               |
+| `selectionMode`      | `"single" \| "multiple" \| "none"`                         | inferred     | Select one, select many, or accept free text           |
+| `inputValue`         | `string`                                                    | `undefined`  | Controlled text for `Combobox.Input`                   |
+| `defaultInputValue`  | `string`                                                    | `undefined`  | Initial uncontrolled input text                        |
+| `onInputValueChange` | `(value: string, details: ComboboxChangeDetails) => void`   | `undefined`  | Called when the input text changes                     |
+| `autocompleteMode`   | `"list" \| "inline" \| "both" \| "none"`                    | `"list"`     | Autocomplete behavior for free-text input              |
+| `autoHighlight`      | `boolean`                                                   | mode-based   | Highlight the first matching option                    |
+| `openOnInputClick`   | `boolean`                                                   | mode-based   | Open when the anchor input is clicked                  |
+| `loopFocus`          | `boolean`                                                   | `undefined`  | Loop arrow navigation through the list                 |
+| `actionsRef`         | `RefObject<ComboboxActions \| null>`                        | `undefined`  | Exposes Base UI imperative actions such as `unmount()` |
 
 ### `<Combobox.Trigger>`
 
@@ -104,11 +113,25 @@ The button that triggers the combobox dropdown.
 | `placeholder` | `string`                   | `undefined` | Placeholder text       |
 | `children`    | `ReactNode`                | `undefined` | Custom trigger content |
 
+### `<Combobox.Input>`
+
+A styled input that replaces `Combobox.Trigger`. Render it as a direct child of
+`Combobox.Root`. The input keeps DOM focus while Base UI uses virtual focus to
+navigate the popup options.
+
+Drive its text with `inputValue`, `defaultInputValue`, and
+`onInputValueChange` on `Combobox.Root`. In `selectionMode="none"`, the text is
+the value and any typed text is valid.
+
+`Combobox.Input` accepts Telegraph Input props except `value`, `defaultValue`,
+and `onChange`, which the combobox engine owns.
+
 ### Other Components
 
 - **`<Combobox.Content>`** - Dropdown menu content container
 - **`<Combobox.Options>`** - Container for option items
 - **`<Combobox.Option>`** - Individual selectable option
+- **`<Combobox.Input>`** - Input anchor that replaces the button trigger
 - **`<Combobox.Search>`** - Search input for filtering options
 - **`<Combobox.Empty>`** - Empty state when no options match
 - **`<Combobox.Create>`** - Option to create new values
@@ -116,6 +139,57 @@ The button that triggers the combobox dropdown.
 For detailed props of each component, see the [Complete Component Reference](#complete-component-reference) section below.
 
 ## Advanced Usage
+
+### Input as Trigger
+
+```tsx
+import { Combobox } from "@telegraph/combobox";
+import { useState } from "react";
+
+export const ChannelSelector = () => {
+  const [channel, setChannel] = useState<string>();
+
+  return (
+    <Combobox.Root value={channel} onValueChange={setChannel}>
+      <Combobox.Input placeholder="Search channels" />
+      <Combobox.Content>
+        <Combobox.Options>
+          <Combobox.Option value="email">Email</Combobox.Option>
+          <Combobox.Option value="sms">SMS</Combobox.Option>
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+```
+
+### Free-Text Autocomplete
+
+```tsx
+import { Combobox } from "@telegraph/combobox";
+import { useState } from "react";
+
+export const CustomChannel = () => {
+  const [channel, setChannel] = useState("");
+
+  return (
+    <Combobox.Root
+      selectionMode="none"
+      inputValue={channel}
+      onInputValueChange={setChannel}
+    >
+      <Combobox.Input placeholder="Type or choose a channel" />
+      <Combobox.Content>
+        <Combobox.Options>
+          <Combobox.Option value="Email">Email</Combobox.Option>
+          <Combobox.Option value="SMS">SMS</Combobox.Option>
+        </Combobox.Options>
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+```
 
 ### Multi-Select with Tags
 

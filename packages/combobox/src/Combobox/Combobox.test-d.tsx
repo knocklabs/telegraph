@@ -7,6 +7,7 @@ import type {
   ComboboxEmptyProps,
   ComboboxHighlightDetails,
   ComboboxHighlightReason,
+  ComboboxInputProps,
   ComboboxOptionProps,
   ComboboxOptionsProps,
   ComboboxRootProps,
@@ -28,6 +29,82 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxSearchProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<ComboboxEmptyProps>().not.toHaveProperty("notARealProp");
     expectTypeOf<ComboboxCreateProps>().not.toHaveProperty("notARealProp");
+  });
+
+  it("keeps autocomplete behavior separate from consumer mode props", () => {
+    type ConsumerProps = ComboboxRootProps<string> & {
+      mode: "compose" | "preview";
+    };
+
+    expectTypeOf<ComboboxRootProps<string>>().not.toHaveProperty("mode");
+    expectTypeOf<ComboboxRootProps<string>>().not.toHaveProperty(
+      "autoComplete",
+    );
+    expectTypeOf<ComboboxRootProps<string>["autocompleteMode"]>().toEqualTypeOf<
+      "list" | "inline" | "both" | "none" | undefined
+    >();
+    expectTypeOf<ConsumerProps["mode"]>().toEqualTypeOf<
+      "compose" | "preview"
+    >();
+  });
+
+  it("links explicit selection modes to their value contracts", () => {
+    <Combobox.Root
+      selectionMode="single"
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string | undefined>()
+      }
+    />;
+    <Combobox.Root
+      selectionMode="multiple"
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<Array<string>>()
+      }
+    />;
+    <Combobox.Root
+      selectionMode="none"
+      inputValue="draft"
+      onInputValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string>()
+      }
+    />;
+
+    // @ts-expect-error single mode does not accept array values
+    <Combobox.Root selectionMode="single" value={["a"]} />;
+    // @ts-expect-error multiple mode does not accept string values
+    <Combobox.Root selectionMode="multiple" value="a" />;
+    // @ts-expect-error free-text mode has no selected value
+    <Combobox.Root selectionMode="none" value="a" />;
+    // @ts-expect-error free-text mode has no selection callback
+    <Combobox.Root selectionMode="none" onValueChange={() => {}} />;
+  });
+
+  it("accepts multiple JSX children for concrete and generic values", () => {
+    <Combobox.Root>
+      <Combobox.Trigger />
+      <Combobox.Content />
+    </Combobox.Root>;
+
+    const GenericRoot = <V extends string | Array<string>>() => (
+      <Combobox.Root<V>>
+        <Combobox.Trigger<V> />
+        <Combobox.Content />
+      </Combobox.Root>
+    );
+
+    expectTypeOf(GenericRoot).toBeFunction();
+  });
+
+  it("types Combobox.Input (anchor input)", () => {
+    // No catch-all passthrough.
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("notARealProp");
+    // The engine owns the input text, so these are intentionally omitted from
+    // the public props (drive them via Combobox.Root's inputValue/value).
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("value");
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("onChange");
+    expectTypeOf<ComboboxInputProps>().not.toHaveProperty("defaultValue");
+    // A rendered anchor input takes native attributes.
+    <Combobox.Input aria-label="Search" />;
   });
 
   it("keeps declared props narrow", () => {
@@ -253,11 +330,8 @@ describe("Combobox types", () => {
       // @ts-expect-error not a layout value
       layout="sideways"
     />;
-    <Combobox.Root
-      value="a"
-      // @ts-expect-error layout only applies to multi-select values
-      layout="wrap"
-    />;
+    // @ts-expect-error layout only applies to multi-select values
+    <Combobox.Root value="a" layout="wrap" />;
     <Combobox.Trigger
       // @ts-expect-error placeholder is a string
       placeholder={42}

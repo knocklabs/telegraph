@@ -6,7 +6,7 @@ import {
   type ComboboxRootProps,
   type ComboboxTriggerProps,
 } from "@telegraph/combobox";
-import type { TgphElement } from "@telegraph/helpers";
+import type { RemappedOmit, TgphElement } from "@telegraph/helpers";
 
 // `Select.Option` takes a string `value`, so a Select selects over a single
 // string or an array of them.
@@ -14,11 +14,11 @@ type SelectValue = string | Array<string>;
 
 type Option = ComboboxOptionProps;
 
-type SelectOnValueChange<V extends SelectValue> = NonNullable<
-  ComboboxRootProps<V>["onValueChange"]
->;
+type SelectOnValueChange<V extends SelectValue> = (
+  value: V extends string ? V | undefined : V,
+) => void;
 
-export type RootProps<V extends SelectValue = string> = Omit<
+export type RootProps<V extends SelectValue = string> = RemappedOmit<
   ComboboxRootProps<V>,
   "onValueChange"
 > & {
@@ -35,23 +35,18 @@ export type RootProps<V extends SelectValue = string> = Omit<
 const Root = <V extends SelectValue = string>(rootProps: RootProps<V>) => {
   const {
     size = "1",
-    value,
-    onValueChange,
-    defaultValue,
     triggerProps,
     contentProps,
     optionsProps,
     children,
-    ...props
+    ...comboboxRootProps
   } = rootProps;
+  const { value, defaultValue } = rootProps;
 
   return (
     <Combobox.Root<V>
-      value={value}
-      onValueChange={onValueChange}
-      defaultValue={defaultValue}
       closeOnSelect={!Array.isArray(value) && !Array.isArray(defaultValue)}
-      {...props}
+      {...comboboxRootProps}
     >
       <Combobox.Trigger<V> size={size} {...triggerProps} />
       <Combobox.Content {...contentProps}>
