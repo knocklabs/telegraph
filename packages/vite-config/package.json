@@ -16,7 +16,7 @@
   "dependencies": {
     "@vitejs/plugin-react": "^6.0.3",
     "vite": "^8.2.1",
-    "vite-plugin-dts": "^5.0.1"
+    "vite-plugin-dts": "^5.0.3"
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",
