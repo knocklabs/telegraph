@@ -5,6 +5,8 @@ import type {
   ComboboxContentProps,
   ComboboxCreateProps,
   ComboboxEmptyProps,
+  ComboboxHighlightDetails,
+  ComboboxHighlightReason,
   ComboboxOptionProps,
   ComboboxOptionsProps,
   ComboboxRootProps,
@@ -31,6 +33,9 @@ describe("Combobox types", () => {
   it("keeps declared props narrow", () => {
     expectTypeOf<ComboboxRootProps<string>["value"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().not.toBeAny();
+    expectTypeOf<
+      ComboboxRootProps<string>["onItemHighlighted"]
+    >().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["placeholder"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["clearable"]>().not.toBeAny();
     expectTypeOf<ComboboxRootProps<string>["disabled"]>().not.toBeAny();
@@ -47,6 +52,13 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxOptionProps["value"]>().not.toBeAny();
     expectTypeOf<ComboboxOptionProps["label"]>().not.toBeAny();
     expectTypeOf<ComboboxOptionProps["selected"]>().not.toBeAny();
+    expectTypeOf<ComboboxOptionProps["fontWeight"]>().not.toBeAny();
+    expectTypeOf<ComboboxOptionProps["closeOnClick"]>().not.toBeAny();
+    // Guard the callback PARAM, not just the function: closed-polymorphic typing
+    // must keep it from widening to `any` (the KNO-14309 failure mode).
+    expectTypeOf<
+      Parameters<NonNullable<ComboboxOptionProps["onSelect"]>>[0]
+    >().toEqualTypeOf<Event>();
 
     expectTypeOf<ComboboxSearchProps["label"]>().not.toBeAny();
 
@@ -56,6 +68,12 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxCreateProps["leadingText"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["values"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["onCreate"]>().not.toBeAny();
+    expectTypeOf<
+      ComboboxHighlightDetails["reason"]
+    >().toEqualTypeOf<ComboboxHighlightReason>();
+    expectTypeOf<
+      Parameters<NonNullable<ComboboxCreateProps["onCreate"]>>[0]
+    >().toEqualTypeOf<string>();
   });
 
   it("reports undefined when a single selection is cleared", () => {
@@ -310,6 +328,12 @@ describe("Combobox types", () => {
     />;
   });
 
+  it("keeps legacy option presentation and close props", () => {
+    <Combobox.Option value="a" fontWeight="semi-bold" closeOnClick>
+      A
+    </Combobox.Option>;
+  });
+
   it("rejects the removed legacy value contracts", () => {
     <Combobox.Root
       // @ts-expect-error legacyBehavior was removed
@@ -354,6 +378,10 @@ describe("Combobox types", () => {
       open
       defaultOpen={false}
       onOpenChange={() => {}}
+      onItemHighlighted={(value, details) => {
+        expectTypeOf(value).toEqualTypeOf<string | undefined>();
+        expectTypeOf(details).toEqualTypeOf<ComboboxHighlightDetails>();
+      }}
       errored
       placeholder="Pick one"
       modal
@@ -370,6 +398,7 @@ describe("Combobox types", () => {
           variant="ghost"
           size="2"
           value=""
+          defaultValue="initial"
           onValueChange={() => {}}
           className="c"
           style={{ opacity: 1 }}
@@ -428,10 +457,11 @@ describe("Combobox types", () => {
   });
 
   it("resolves Create at its default element", () => {
-    // The component took no default for its element parameter, so with no `as`
-    // it fell back to the constraint and the passthrough dropped native
-    // attributes. It renders a button.
-    <Combobox.Create type="submit" />;
+    // Create renders as an option row, so with no `as` it takes `div` native
+    // attributes (`id`) and an explicit `as="a"` switches to anchor attributes.
+    // `type` can't discriminate the default here — Create accepts Button.Root
+    // props (incl. `type`) through its option-row base regardless of element.
+    <Combobox.Create id="create-row" />;
     <Combobox.Create as="a" href="/new" />;
   });
 });

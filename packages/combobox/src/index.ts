@@ -8,4 +8,6 @@ export type {
   ComboboxSearchProps,
   ComboboxEmptyProps,
   ComboboxCreateProps,
+  ComboboxHighlightReason,
+  ComboboxHighlightDetails,
 } from "./Combobox";

@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
@@ -114,13 +114,23 @@ describe("Select", () => {
       "[data-tgph-combobox-trigger]",
     ) as HTMLElement;
 
+    // Base UI uses virtual focus: DOM focus stays on the in-popup input while
+    // the active option is tracked with data-highlighted. Arrow-down from the
+    // trigger opens the popup; a second arrow-down highlights the first option.
     trigger.focus();
     await user.keyboard("[ArrowDown]");
     await waitFor(() =>
       expect(trigger.getAttribute("aria-expanded")).toBe("true"),
     );
+    await user.keyboard("[ArrowDown]");
 
-    expect(document.activeElement).toHaveTextContent("Email");
+    const emailOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="email"]',
+    );
+    await waitFor(() =>
+      expect(emailOption?.getAttribute("data-highlighted")).not.toBeNull(),
+    );
+    expect(document.activeElement?.tagName).toBe("INPUT");
 
     await user.keyboard("[Enter]");
 
@@ -128,20 +138,29 @@ describe("Select", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(onValueChange).toHaveBeenLastCalledWith("email");
 
+    // Reopen: now that Email is selected, it is highlighted on open per ARIA.
     trigger.focus();
     await user.keyboard("[ArrowDown]");
     await waitFor(() =>
       expect(trigger.getAttribute("aria-expanded")).toBe("true"),
     );
 
-    expect(document.activeElement).toHaveTextContent("Email");
+    const reopenedEmailOption = queryPortalElement(
+      '[data-tgph-combobox-option-value="email"]',
+    );
+    await waitFor(() =>
+      expect(
+        reopenedEmailOption?.getAttribute("data-highlighted"),
+      ).not.toBeNull(),
+    );
 
-    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+    await user.keyboard("[Escape]");
 
     await waitFor(() =>
       expect(trigger.getAttribute("aria-expanded")).toBe("false"),
     );
-    expect(trigger).toHaveFocus();
+    // Base UI returns focus to the trigger (finalFocus) asynchronously on close.
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 
   it("selects a controlled single value and closes after selection", async () => {
@@ -326,5 +345,30 @@ describe("Select", () => {
 
     expect(trigger).toHaveTextContent("Email");
     expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it("shows an empty state when typing filters out every option", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Select.Root defaultValue="email">{renderSelectOptions()}</Select.Root>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(trigger!);
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+
+    // Typing in a no-Search Select filters the options in place via the hidden
+    // input; a non-matching query must surface the default empty message rather
+    // than an empty popup.
+    const hiddenInput = queryPortalElement(
+      "[data-tgph-combobox-input-hidden]",
+    ) as HTMLInputElement;
+    await user.type(hiddenInput, "zzz");
+
+    await waitFor(() =>
+      expect(queryPortalElement("[data-tgph-combobox-empty]")).not.toBeNull(),
+    );
   });
 });

@@ -61,35 +61,38 @@ export const SingleSelectExample = () => {
 
 ## Implementation Notes
 
-Combobox keeps the existing Telegraph compound API while using the Base UI-backed
-Telegraph Menu primitives for popup positioning, portal rendering, dismissal,
-and focus restoration. The package no longer depends on Radix directly.
+Combobox keeps the existing Telegraph compound API while using Base UI's
+Combobox engine for selection, filtering, virtual focus, popup positioning,
+portal rendering, and dismissal. The package no longer depends on Telegraph
+Menu or Radix directly.
 
 Combobox values are strings or string arrays. Single- vs multi-select behavior
 is inferred from the shape of `value` / `defaultValue`.
 
 When `closeOnSelect={false}`, the dropdown stays open after selection and focus
-remains on the selected option so keyboard users can continue through the list
-without returning to the trigger first.
+remains on the combobox input while `data-highlighted` and
+`aria-activedescendant` track the active option.
 
 ### `<Combobox.Root>`
 
 The root component that manages the state and context for the combobox.
 
-| Prop            | Type                                | Default      | Description                        |
-| --------------- | ----------------------------------- | ------------ | ---------------------------------- |
-| `value`         | `string \| string[]`                 | `undefined`  | The selected value(s)              |
-| `onValueChange` | `(value: string \| undefined \| string[]) => void` | `undefined`  | Callback when selection changes; clearing a single selection reports `undefined` |
-| `layout`        | `"truncate" \| "wrap"`              | `"truncate"` | How to display multiple selections |
-| `open`          | `boolean`                           | `undefined`  | Controlled open state              |
-| `defaultOpen`   | `boolean`                           | `false`      | Initial open state                 |
-| `errored`       | `boolean`                           | `false`      | Shows error styling                |
-| `placeholder`   | `string`                            | `undefined`  | Placeholder text                   |
-| `onOpenChange`  | `(open: boolean) => void`           | `undefined`  | Callback when open state changes   |
-| `modal`         | `boolean`                           | `true`       | Whether to render in a modal       |
-| `closeOnSelect` | `boolean`                           | `true`       | Close menu after selection         |
-| `clearable`     | `boolean`                           | `false`      | Show clear button                  |
-| `disabled`      | `boolean`                           | `false`      | Disable the combobox               |
+| Prop              | Type                                             | Default      | Description                                                               |
+| ----------------- | ------------------------------------------------ | ------------ | ------------------------------------------------------------------------- |
+| `value`           | `string \| string[]`                              | `undefined`  | The selected value(s)                                                     |
+| `onValueChange`   | `(value: string \| undefined \| string[]) => void` | `undefined`  | Callback when selection changes; clearing a single selection reports `undefined` |
+| `layout`          | `"truncate" \| "wrap"`                           | `"truncate"` | How to display multiple selections                                        |
+| `open`            | `boolean`                                        | `undefined`  | Controlled open state                                                     |
+| `defaultOpen`     | `boolean`                                        | `false`      | Initial open state                                                        |
+| `errored`         | `boolean`                                        | `false`      | Shows error styling                                                       |
+| `placeholder`     | `string`                                         | `undefined`  | Placeholder text                                                          |
+| `onOpenChange`    | `(open: boolean) => void`                        | `undefined`  | Callback when open state changes                                          |
+| `modal`           | `boolean`                                        | `true`       | Whether to render in a modal                                              |
+| `closeOnSelect`   | `boolean`                                        | `true`       | Close menu after selection                                                |
+| `clearable`       | `boolean`                                        | `false`      | Show clear button                                                         |
+| `disabled`        | `boolean`                                        | `false`      | Disable the combobox                                                      |
+| `manualFiltering` | `boolean`                                        | automatic    | Show rendered options without the built-in text filter; controlled Search enables it by default |
+| `onItemHighlighted` | `(value: string \| undefined, details: ComboboxHighlightDetails) => void` | `undefined` | Called when virtual option focus changes                                  |
 
 ### `<Combobox.Trigger>`
 
@@ -308,13 +311,14 @@ export const CustomTrigger = () => (
 
 ### Keyboard Shortcuts
 
-| Key               | Action                         |
-| ----------------- | ------------------------------ |
-| `↓` / `↑`         | Navigate options               |
-| `Enter` / `Space` | Select option                  |
-| `Escape`          | Close dropdown                 |
-| `Tab`             | Move focus                     |
-| `Backspace`       | Remove last tag (multi-select) |
+| Key         | Action                         |
+| ----------- | ------------------------------ |
+| `↓` / `↑`   | Navigate options               |
+| `Enter`     | Select option                  |
+| `Space`     | Type a space into the filter   |
+| `Escape`    | Close dropdown                 |
+| `Tab`       | Move focus                     |
+| `Backspace` | Remove last tag (multi-select) |
 
 ### ARIA Attributes
 
@@ -364,10 +368,19 @@ until it first renders.
 
 Search input field for filtering options.
 
-| Prop          | Type     | Default    | Description         |
-| ------------- | -------- | ---------- | ------------------- |
-| `label`       | `string` | `"Search"` | Accessibility label |
-| `placeholder` | `string` | `"Search"` | Input placeholder   |
+| Prop            | Type                      | Default     | Description                         |
+| --------------- | ------------------------- | ----------- | ----------------------------------- |
+| `label`         | `string`                  | `"Search"`  | Accessibility label                 |
+| `placeholder`   | `string`                  | `"Search"`  | Input placeholder                   |
+| `value`         | `string`                  | `undefined` | Controlled search value             |
+| `defaultValue`  | `string`                  | `undefined` | Initial uncontrolled search value   |
+| `onValueChange` | `(value: string) => void` | `undefined` | Called when the search value changes |
+
+Passing `value` or `onValueChange` makes the consumer responsible for filtering
+the rendered options, which preserves the legacy controlled-Search contract and
+supports server-side filtering. An explicit `manualFiltering` value on
+`Combobox.Root` takes precedence: set it to `false` to retain Telegraph's
+built-in text filter with a controlled Search.
 
 ### `<Combobox.Empty>`
 
@@ -432,7 +445,7 @@ an Option so the trigger can display its label.
 ## References
 
 - [Storybook Demo](https://storybook.telegraph.dev/?path=/docs/combobox)
-- [Base UI Menu](https://base-ui.com/react/components/menu/)
+- [Base UI Combobox](https://base-ui.com/react/components/combobox/)
 - [ARIA Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
 
 ## Contributing
