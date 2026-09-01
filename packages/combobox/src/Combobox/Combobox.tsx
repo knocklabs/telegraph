@@ -23,6 +23,11 @@ import {
   Input as TelegraphInput,
 } from "@telegraph/input";
 import { Box, Stack, type StackProps } from "@telegraph/layout";
+import {
+  SegmentedControl,
+  type SegmentedControlOptionProps,
+  type SegmentedControlRootProps,
+} from "@telegraph/segmented-control";
 import { Text } from "@telegraph/typography";
 import { Plus, Search as SearchIcon, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -30,6 +35,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   Children,
+  type ContextType,
   type FocusEvent as ReactFocusEvent,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactElement,
@@ -38,8 +44,10 @@ import {
   type Ref,
   type RefObject,
   type SetStateAction,
+  Suspense,
   createContext,
   isValidElement,
+  lazy,
   useCallback,
   useContext,
   useEffect,
@@ -123,6 +131,14 @@ type RootSharedProps = {
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
+  // --- Additive: segmented pages -------------------------------------------
+  // Active page. Uncontrolled defaults to the first `Combobox.PageButton`.
+  page?: string;
+  defaultPage?: string;
+  onPageChange?: (page: string) => void;
+  // Whether Left/Right arrow navigation wraps around past the first/last page.
+  // Default `true`. Clicking a `Combobox.PageButton` always jumps directly.
+  loopPages?: boolean;
   // --- Additive (T5): input-as-trigger + free-text arrangement -------------
   // Selection semantics. `undefined` keeps the historical inference from the
   // `value` shape (single vs. multiple). `"none"` renders the free-text
@@ -249,6 +265,15 @@ export const ComboboxContext = createContext<
     // The consumer-provided id for the anchor input, or Root's generated id.
     // Content uses the same id to name its dialog.
     anchorInputId: string;
+    // Segmented-pages state. `switchPage` moves by one, wrapping; `goToPage`
+    // jumps to a value. `pageDirection` is the last switch's direction, so the
+    // incoming panel can slide in from the matching side.
+    activePage?: string;
+    pageValues: Array<string>;
+    pageDirection?: "forward" | "back";
+    setPage: (page: string) => void;
+    goToPage: (page: string) => void;
+    switchPage: (direction: 1 | -1) => void;
   }
 >({
   value: undefined,
@@ -266,6 +291,10 @@ export const ComboboxContext = createContext<
   resolvedSelectionMode: "single",
   hasAnchorInput: false,
   anchorInputId: "",
+  pageValues: [],
+  setPage: () => {},
+  goToPage: () => {},
+  switchPage: () => {},
 });
 
 const CreateIndexContext = createContext<number | undefined>(undefined);
@@ -329,6 +358,10 @@ const RootImplementation = ({
   manualFiltering: manualFilteringProp,
   onItemHighlighted: onItemHighlightedProp,
   defaultScrollToValue,
+  page: pageProp,
+  defaultPage: defaultPageProp,
+  onPageChange: onPageChangeProp,
+  loopPages = true,
   selectionMode: selectionModeProp,
   inputValue: inputValueProp,
   defaultInputValue: defaultInputValueProp,
@@ -378,6 +411,86 @@ const RootImplementation = ({
   const hasAnchorInput = anchorInputElement !== undefined;
   const anchorInputId =
     (anchorInputElement?.props as { id?: string } | undefined)?.id ?? triggerId;
+
+  const pageValues = useMemo(() => getPageValues(children), [children]);
+
+  const [pageState, setPage] = useControllableState({
+    prop: pageProp,
+    defaultProp: defaultPageProp ?? pageValues[0] ?? "",
+    onChange: onPageChangeProp,
+  });
+  // Fall back to the first page when unset or stale (its button was removed).
+  const activePage =
+    pageState && pageValues.includes(pageState) ? pageState : pageValues[0];
+
+  // Last page-switch direction, read during the render `setPage` already
+  // triggers, so the incoming panel slides in from the matching side. A ref (not
+  // state): it must not cause its own render and is always current by the time
+  // the remounted panel reads it.
+  // Undefined until the first switch (and reset on close), so opening the popup
+  // shows the page in place — only a real switch slides.
+  const pageDirectionRef = useRef<"forward" | "back" | undefined>(undefined);
+
+  // Record the switch direction on a ref (read during the render `setPage`
+  // triggers, for the incoming panel) and, synchronously, on the popup content's
+  // DOM — so the outgoing panel's slide-out clone can read it during the same
+  // commit, when the incoming panel isn't in the DOM yet.
+  const publishPageDirection = useCallback((dir: "forward" | "back") => {
+    pageDirectionRef.current = dir;
+    contentRef.current?.setAttribute(
+      "data-tgph-combobox-page-slide-direction",
+      dir,
+    );
+  }, []);
+
+  const goToPage = useCallback(
+    (nextPage: string) => {
+      const fromIndex = pageValues.indexOf(activePage ?? "");
+      const toIndex = pageValues.indexOf(nextPage);
+      if (fromIndex !== -1 && toIndex !== -1 && toIndex !== fromIndex) {
+        publishPageDirection(toIndex > fromIndex ? "forward" : "back");
+      }
+      setPage(nextPage);
+    },
+    [pageValues, activePage, setPage, publishPageDirection],
+  );
+
+  const switchPage = useCallback(
+    (direction: 1 | -1) => {
+      if (pageValues.length < 2) return;
+      const currentIndex = activePage ? pageValues.indexOf(activePage) : -1;
+      const fromIndex = currentIndex < 0 ? 0 : currentIndex;
+      const rawIndex = fromIndex + direction;
+      const nextIndex = loopPages
+        ? (rawIndex + pageValues.length) % pageValues.length
+        : Math.min(Math.max(rawIndex, 0), pageValues.length - 1);
+      const nextPage = pageValues[nextIndex];
+      // With looping off, arrowing past an end clamps to the same page — a no-op
+      // that should not switch or animate.
+      if (nextPage !== undefined && nextIndex !== fromIndex) {
+        // Arrow direction is explicit, so it stays right even when wrapping.
+        publishPageDirection(direction === 1 ? "forward" : "back");
+        setPage(nextPage);
+      }
+    },
+    [pageValues, activePage, setPage, publishPageDirection, loopPages],
+  );
+
+  // Active-page options only, to bound Base UI's highlight to mounted rows. The
+  // all-pages `options` list above still resolves selected labels.
+  const scopedOptions = useMemo(
+    () =>
+      pageValues.length > 0
+        ? getOptions({
+            children,
+            isOptionElement,
+            isOptionsElement,
+            isPageElement,
+            activePage,
+          })
+        : options,
+    [children, activePage, pageValues.length, options],
+  );
 
   // Single- vs multi-select is derived from the value shape; an explicit
   // `selectionMode` overrides it. Consumers should keep that shape stable
@@ -440,7 +553,7 @@ const RootImplementation = ({
     // Manual filtering and free-text modes without list autocomplete leave the
     // rendered options unchanged. The query still drives Create and clear.
     const query = shouldFilterOptions ? activeSearchQuery : "";
-    const values = options
+    const values = scopedOptions
       .filter(
         (option) =>
           !query ||
@@ -469,7 +582,7 @@ const RootImplementation = ({
     }
 
     return { filteredItems: values, createIndex: nextCreateIndex };
-  }, [options, activeSearchQuery, hasCreate, shouldFilterOptions]);
+  }, [scopedOptions, activeSearchQuery, hasCreate, shouldFilterOptions]);
   // Open state, kept controllable like the old menu-backed implementation. This
   // mirrors `useControllableState` (same no-op-on-equal and updater semantics)
   // but threads Base UI's change `details` to the consumer's `onOpenChange` as an
@@ -529,8 +642,16 @@ const RootImplementation = ({
     // open→close transition, not on mount, which would otherwise wipe an initial
     // `inputValue`/`defaultInputValue`. Free text persists across open/close (the
     // anchor input is the state), so it is never reset here.
-    if (wasOpenRef.current && !open && !isNoneMode) {
-      setSearchQuery("");
+    if (wasOpenRef.current && !open) {
+      // Reset the page-slide direction on close so reopening shows the active
+      // page in place; only a real switch should slide.
+      pageDirectionRef.current = undefined;
+      contentRef.current?.removeAttribute(
+        "data-tgph-combobox-page-slide-direction",
+      );
+      if (!isNoneMode) {
+        setSearchQuery("");
+      }
     }
     wasOpenRef.current = open;
   }, [open, isNoneMode]);
@@ -767,6 +888,12 @@ const RootImplementation = ({
         resolvedSelectionMode,
         hasAnchorInput,
         anchorInputId,
+        activePage,
+        pageValues,
+        pageDirection: pageDirectionRef.current,
+        setPage,
+        goToPage,
+        switchPage,
       }}
     >
       {isNoneMode ? (
@@ -1043,6 +1170,7 @@ const Input = ({
   disabled,
   LeadingComponent,
   TrailingComponent,
+  onKeyDownCapture: onKeyDownCaptureProp,
   tgphRef,
   ...props
 }: InputProps) => {
@@ -1079,6 +1207,15 @@ const Input = ({
           // list id, matching how Trigger and Search wire aria-controls.
           aria-controls={context.contentId}
           data-tgph-combobox-input
+          onKeyDownCapture={(event: ReactKeyboardEvent<HTMLInputElement>) => {
+            handlePageArrowKeyDown(event, {
+              pageValues: context.pageValues,
+              switchPage: context.switchPage,
+              alwaysSwitch: false,
+              open: context.open,
+            });
+            onKeyDownCaptureProp?.(event);
+          }}
           {...props}
           tgphRef={composedRef}
         />,
@@ -1439,6 +1576,17 @@ const Content = <T extends TgphElement = "div">({
                     tabIndex={-1}
                     aria-label={context.placeholder ?? "Search"}
                     data-tgph-combobox-input-hidden
+                    // No editable text here, so arrows always switch pages.
+                    onKeyDownCapture={(
+                      event: ReactKeyboardEvent<HTMLInputElement>,
+                    ) =>
+                      handlePageArrowKeyDown(event, {
+                        pageValues: context.pageValues,
+                        switchPage: context.switchPage,
+                        alwaysSwitch: true,
+                        open: context.open,
+                      })
+                    }
                   />
                 </VisuallyHidden>
               ) : null}
@@ -1527,7 +1675,14 @@ const Options = <T extends TgphElement = "div">({
           gap="1"
           style={
             {
+              // Positioning context for the outgoing page-slide clone, which is
+              // absolutely positioned and slid out (see Combobox.pageTransition).
+              position: "relative",
               overflowY: "auto",
+              // Clip horizontal movement so the page-slide animation is masked
+              // (it would otherwise surface a horizontal scrollbar mid-slide,
+              // since `overflow-y: auto` makes `overflow-x` compute to `auto`).
+              overflowX: "hidden",
               // maxHeight defaults to available height - padding from edge of screen
               "--max-height": !props.maxHeight
                 ? "calc(var(--tgph-combobox-content-available-height) - var(--tgph-spacing-12))"
@@ -1774,6 +1929,7 @@ const Search = ({
   defaultValue: _defaultValueProp,
   onValueChange: onValueChangeProp,
   onKeyDown: onKeyDownProp,
+  onKeyDownCapture: onKeyDownCaptureProp,
   ...props
 }: SearchProps) => {
   const id = useId();
@@ -1821,6 +1977,15 @@ const Search = ({
                 event.stopPropagation();
               }
             }}
+            onKeyDownCapture={(event: ReactKeyboardEvent<HTMLInputElement>) => {
+              handlePageArrowKeyDown(event, {
+                pageValues: context.pageValues,
+                switchPage: context.switchPage,
+                alwaysSwitch: false,
+                open: context.open,
+              });
+              onKeyDownCaptureProp?.(event);
+            }}
             {...props}
             tgphRef={composedRef}
           />,
@@ -1857,6 +2022,161 @@ const findSearchControl = (children: ReactNode): SearchControl | undefined => {
   return found;
 };
 
+// ---- Segmented pages -------------------------------------------------------
+
+// A pointer page switch leaves DOM focus on the segmented button. Move it back
+// to the combobox input so keyboard navigation keeps working.
+const focusComboboxInput = (context: ContextType<typeof ComboboxContext>) => {
+  const target =
+    context.searchRef?.current ??
+    context.anchorInputRef?.current ??
+    context.contentRef?.current?.querySelector<HTMLInputElement>(
+      "[data-tgph-combobox-input-hidden]",
+    ) ??
+    null;
+  if (!target) return;
+  // Run after the button takes its own click focus.
+  requestAnimationFrame(() => target.focus());
+};
+
+// Left/Right switch pages from the popup inputs. `alwaysSwitch` is true for the
+// hidden input (no editable text). For the search or anchor input it is false,
+// so arrows switch only while the field is empty and otherwise move the caret.
+const handlePageArrowKeyDown = (
+  event: ReactKeyboardEvent<HTMLInputElement>,
+  {
+    pageValues,
+    switchPage,
+    alwaysSwitch,
+    open,
+  }: {
+    pageValues: Array<string>;
+    switchPage: (direction: 1 | -1) => void;
+    alwaysSwitch: boolean;
+    open: boolean;
+  },
+) => {
+  // The anchor input stays mounted while closed; arrows must not silently
+  // advance the page (and arm a slide) when there is no popup to switch in.
+  if (!open) return;
+  if (pageValues.length < 2) return;
+  if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+  if (!alwaysSwitch && event.currentTarget.value) return;
+  event.preventDefault();
+  event.stopPropagation();
+  switchPage(event.key === "ArrowRight" ? 1 : -1);
+};
+
+// A `SegmentedControl` in the popup that switches between `Combobox.Page` panels.
+// It never takes DOM focus under virtual focus, so the Left/Right handling lives
+// on the popup inputs. A pointer switch returns focus to the input.
+export type PageSelectorProps = Omit<
+  SegmentedControlRootProps,
+  "value" | "defaultValue" | "onValueChange" | "type"
+> & {
+  "aria-label": string;
+};
+
+const PageSelector = ({
+  size = "1",
+  width = "full",
+  ...props
+}: PageSelectorProps) => {
+  const context = useContext(ComboboxContext);
+  return (
+    <Box
+      px="1"
+      pb="1"
+      // Under virtual focus the page buttons never hold DOM focus. Preventing the
+      // default mousedown keeps focus on the combobox input during a pointer
+      // switch, so the input's focus ring doesn't blink off and back on. The
+      // click still fires, so the page still switches.
+      onMouseDown={(event) => event.preventDefault()}
+    >
+      <SegmentedControl.Root
+        value={context.activePage}
+        onValueChange={(value: string) => {
+          context.goToPage(value);
+          focusComboboxInput(context);
+        }}
+        size={size}
+        width={width}
+        {...props}
+      />
+    </Box>
+  );
+};
+
+// One page button. Its `value` links to the matching `Combobox.Page`.
+export type PageButtonProps = SegmentedControlOptionProps;
+
+const PageButton = (props: PageButtonProps) => {
+  return <SegmentedControl.Option {...props} />;
+};
+
+// A page's option panel inside `Combobox.Options`. It mounts its options only
+// while active, so the mounted set matches the active page.
+export type PageProps = {
+  value: string;
+  children?: ReactNode;
+};
+
+// Lazily loaded so the slide markup and its CSS ship as a separate chunk, only
+// for multi-page comboboxes.
+const PageTransition = lazy(async () => {
+  const pageTransitionModule = await import("./Combobox.pageTransition.js");
+  return { default: pageTransitionModule.PageTransition };
+});
+
+const Page = ({ value, children }: PageProps) => {
+  const context = useContext(ComboboxContext);
+  // A malformed group with pages but no `Combobox.PageButton` has no active
+  // page, so preserve its options instead of silently hiding them — matching
+  // `scopedOptions`, which returns all options when there are no page values.
+  if (context.pageValues.length === 0) return <>{children}</>;
+  if (context.activePage !== value) return null;
+  // One registered page has nothing to animate, but it still scopes the mounted
+  // option set: inactive panels must stay unmounted so the DOM and Base UI's
+  // page-aware highlight bounds agree.
+  if (context.pageValues.length === 1) return <>{children}</>;
+  // Until the chunk resolves the rows render unwrapped, so options are never
+  // blocked on the animation code.
+  return (
+    <Suspense fallback={children}>
+      <PageTransition direction={context.pageDirection}>
+        {children}
+      </PageTransition>
+    </Suspense>
+  );
+};
+
+const isPageElement = (element: ReactElement) => element.type === Page;
+const isPageButtonElement = (element: ReactElement) =>
+  element.type === PageButton;
+
+// Ordered `Combobox.PageButton` values. Sets the switch order and default page.
+const getPageValues = (children: ReactNode): Array<string> => {
+  const values: Array<string> = [];
+  const walk = (nodes: ReactNode) => {
+    Children.forEach(nodes, (child) => {
+      if (!isValidElement(child)) return;
+      const element = child as ReactElement<{
+        value?: unknown;
+        children?: ReactNode;
+      }>;
+      if (isPageButtonElement(element)) {
+        if (typeof element.props.value === "string") {
+          values.push(element.props.value);
+        }
+        return;
+      }
+      if (element.props?.children) walk(element.props.children);
+    });
+  };
+  walk(children);
+  return values;
+};
+
 // Combobox.Option matches by type; a truthy `value` prop keeps consumer
 // wrappers around Option matching. Controlled inputs also carry `value` and
 // would become phantom options, so a change handler excludes an element
@@ -1867,6 +2187,11 @@ const isOptionElement = (element: ReactElement) => {
   if (element.type === Search) return false;
   // The anchor input is not an option (and carries no committable value).
   if (element.type === Input) return false;
+  // Page parts carry a `value` for the segmented control, but they wrap/label
+  // pages — never match them as options, or the walk stops at the `Page` and
+  // never descends to the real `Option`s nested inside it.
+  if (element.type === Page) return false;
+  if (element.type === PageButton) return false;
 
   const props = element.props as {
     value?: unknown;
@@ -2065,6 +2390,9 @@ const Combobox = {} as {
   Content: typeof Content;
   Options: typeof Options;
   Option: typeof Option;
+  PageSelector: typeof PageSelector;
+  PageButton: typeof PageButton;
+  Page: typeof Page;
   Search: typeof Search;
   Empty: typeof Empty;
   Create: typeof Create;
@@ -2078,6 +2406,9 @@ Object.assign(Combobox, {
   Content,
   Options,
   Option,
+  PageSelector,
+  PageButton,
+  Page,
   Search,
   Empty,
   Create,

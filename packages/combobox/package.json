@@ -35,6 +35,7 @@
     "@telegraph/icon": "workspace:^",
     "@telegraph/input": "workspace:^",
     "@telegraph/layout": "workspace:^",
+    "@telegraph/segmented-control": "workspace:^",
     "@telegraph/tag": "workspace:^",
     "@telegraph/tooltip": "workspace:^",
     "@telegraph/truncate": "workspace:^",

@@ -104,6 +104,10 @@ The root component that manages the state and context for the combobox.
 | `openOnInputClick`   | `boolean`                                                   | mode-based   | Open when the anchor input is clicked                  |
 | `loopFocus`          | `boolean`                                                   | `undefined`  | Loop arrow navigation through the list                 |
 | `actionsRef`         | `RefObject<ComboboxActions \| null>`                        | `undefined`  | Exposes Base UI imperative actions such as `unmount()` |
+| `page`               | `string`                                                    | `undefined`  | Controlled segmented page                              |
+| `defaultPage`        | `string`                                                    | first page   | Initial uncontrolled page                              |
+| `onPageChange`       | `(page: string) => void`                                    | `undefined`  | Called when the active page changes                    |
+| `loopPages`          | `boolean`                                                   | `true`       | Wrap Left and Right page navigation                    |
 
 ### `<Combobox.Trigger>`
 
@@ -134,6 +138,9 @@ and `onChange`, which the combobox engine owns.
 - **`<Combobox.Options>`** - Container for option items
 - **`<Combobox.Option>`** - Individual selectable option
 - **`<Combobox.Input>`** - Input anchor that replaces the button trigger
+- **`<Combobox.PageSelector>`** - Segmented control for the active page
+- **`<Combobox.PageButton>`** - Button linked to a matching page value
+- **`<Combobox.Page>`** - Option panel that mounts only while active
 - **`<Combobox.Search>`** - Search input for filtering options
 - **`<Combobox.Empty>`** - Empty state when no options match
 - **`<Combobox.Create>`** - Option to create new values
@@ -141,6 +148,36 @@ and `onChange`, which the combobox engine owns.
 For detailed props of each component, see the [Complete Component Reference](#complete-component-reference) section below.
 
 ## Advanced Usage
+
+### Segmented Pages
+
+`Combobox.PageSelector` switches between separate option panels. Left and Right
+switch pages while the search is empty. Up and Down keep navigating options on
+the active page.
+
+```tsx
+<Combobox.Root defaultPage="channels">
+  <Combobox.Trigger />
+  <Combobox.Content>
+    <Combobox.Search />
+    <Combobox.PageSelector aria-label="Destination type">
+      <Combobox.PageButton value="channels">Channels</Combobox.PageButton>
+      <Combobox.PageButton value="people">People</Combobox.PageButton>
+    </Combobox.PageSelector>
+    <Combobox.Options>
+      <Combobox.Page value="channels">
+        <Combobox.Option value="general">#general</Combobox.Option>
+        <Combobox.Option value="random">#random</Combobox.Option>
+      </Combobox.Page>
+      <Combobox.Page value="people">
+        <Combobox.Option value="ada">Ada</Combobox.Option>
+        <Combobox.Option value="grace">Grace</Combobox.Option>
+      </Combobox.Page>
+    </Combobox.Options>
+    <Combobox.Empty />
+  </Combobox.Content>
+</Combobox.Root>
+```
 
 ### Input as Trigger
 
