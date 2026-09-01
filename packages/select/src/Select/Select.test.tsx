@@ -371,4 +371,28 @@ describe("Select", () => {
       expect(queryPortalElement("[data-tgph-combobox-empty]")).not.toBeNull(),
     );
   });
+
+  it("forwards `required` to enforce form validation", () => {
+    const RequiredForm = ({ value }: { value?: string }) => (
+      <form data-testid="form">
+        <Select.Root
+          value={value}
+          onValueChange={() => {}}
+          required
+          name="channel"
+        >
+          {renderSelectOptions()}
+        </Select.Root>
+      </form>
+    );
+
+    const { getByTestId, rerender } = render(<RequiredForm />);
+    const form = getByTestId("form") as HTMLFormElement;
+
+    // `required` reaches Base UI's hidden form input via the Combobox passthrough.
+    expect(form.checkValidity()).toBe(false);
+
+    rerender(<RequiredForm value="email" />);
+    expect(form.checkValidity()).toBe(true);
+  });
 });

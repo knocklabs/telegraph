@@ -1393,6 +1393,91 @@ describe("Free-text autocomplete (selectionMode none)", () => {
   });
 });
 
+describe("required (form integration)", () => {
+  const RequiredForm = ({ value }: { value?: string }) => (
+    <form data-testid="form">
+      <Combobox.Root
+        value={value}
+        onValueChange={() => {}}
+        required
+        name="channel"
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>
+    </form>
+  );
+
+  it("blocks form submission until a value is selected", () => {
+    const { getByTestId, rerender } = render(<RequiredForm />);
+    const form = getByTestId("form") as HTMLFormElement;
+
+    // No selection: Base UI's hidden required input is empty → form invalid.
+    expect(form.checkValidity()).toBe(false);
+
+    // A selection populates the hidden input → the form validates.
+    rerender(<RequiredForm value="email" />);
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it("submits the selected value under the given name", () => {
+    const { getByTestId, rerender } = render(<RequiredForm value="email" />);
+    const form = getByTestId("form") as HTMLFormElement;
+
+    const hidden = form.querySelector(
+      'input[name="channel"]',
+    ) as HTMLInputElement | null;
+    expect(hidden).not.toBeNull();
+    expect(hidden?.value).toBe("email");
+
+    rerender(<RequiredForm value="sms" />);
+    expect(
+      (form.querySelector('input[name="channel"]') as HTMLInputElement)?.value,
+    ).toBe("sms");
+  });
+
+  const MultiRequiredForm = ({ value }: { value?: Array<string> }) => (
+    <form data-testid="form">
+      <Combobox.Root
+        value={value ?? []}
+        onValueChange={() => {}}
+        required
+        name="channels"
+      >
+        <Combobox.Trigger />
+        <Combobox.Content>
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>
+    </form>
+  );
+
+  it("enforces required on a multi-select until at least one value is chosen", () => {
+    const { getByTestId, rerender } = render(<MultiRequiredForm />);
+    const form = getByTestId("form") as HTMLFormElement;
+
+    // Empty multi-select is required → invalid; Base UI drops `required` once a
+    // value exists, so a non-empty selection validates ("at least one" semantics).
+    expect(form.checkValidity()).toBe(false);
+
+    rerender(<MultiRequiredForm value={["email"]} />);
+    expect(form.checkValidity()).toBe(true);
+  });
+});
 describe("findStringNodes", () => {
   it("returns empty array for null node", () => {
     expect(findStringNodes(null)).toStrictEqual([]);

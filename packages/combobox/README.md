@@ -91,6 +91,8 @@ The root component that manages the state and context for the combobox.
 | `closeOnSelect`      | `boolean`                                                   | `true`       | Close menu after selection                             |
 | `clearable`          | `boolean`                                                   | `false`      | Show clear button                                      |
 | `disabled`           | `boolean`                                                   | `false`      | Disable the combobox                                   |
+| `required`           | `boolean`                                                   | `false`      | Require a selection before form submission             |
+| `name`               | `string`                                                    | `undefined`  | Submit the selected value with this field name         |
 | `manualFiltering`    | `boolean`                                                   | automatic    | Show rendered options without the built-in text filter; controlled Search enables it by default |
 | `onItemHighlighted`  | `(value: string \| undefined, details: ComboboxHighlightDetails) => void` | `undefined` | Called when virtual option focus changes               |
 | `selectionMode`      | `"single" \| "multiple" \| "none"`                         | inferred     | Select one, select many, or accept free text           |

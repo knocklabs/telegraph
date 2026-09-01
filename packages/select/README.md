@@ -85,6 +85,9 @@ Telegraph infers this from whether `value` or `defaultValue` is an array.
 `triggerProps`, `contentProps`, and `optionsProps` continue to pass through to
 the underlying Combobox parts.
 
+Set `required` to use native form validation. An empty single- or multi-select
+blocks form submission. Set `name` to include the selected value in form data.
+
 Select does not depend on Radix directly.
 
 ## API Reference
@@ -100,6 +103,8 @@ The main select container component.
 | `size`          | `"0" \| "1" \| "2" \| "3"`            | `"1"`       | Size of the trigger button              |
 | `placeholder`   | `string`                              | `undefined` | Placeholder text when no value selected |
 | `disabled`      | `boolean`                             | `false`     | Whether the select is disabled          |
+| `required`      | `boolean`                             | `false`     | Require a selection before form submission |
+| `name`          | `string`                              | `undefined` | Submit the selected value with this field name |
 | `triggerProps`  | `ComboboxTriggerProps`                | `undefined` | Props passed to the trigger button      |
 | `contentProps`  | `ComboboxContentProps`                | `undefined` | Props passed to the dropdown content    |
 | `optionsProps`  | `ComboboxOptionsProps`                | `undefined` | Props passed to the options container   |
