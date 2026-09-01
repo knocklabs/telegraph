@@ -232,6 +232,21 @@ const TriggerWithRef = forwardRef<HTMLElement, TriggerProps>(
         onKeyDown?.(event);
 
         if (event.target !== event.currentTarget) {
+          const target = event.target;
+          const isEditableTarget =
+            target instanceof HTMLInputElement ||
+            target instanceof HTMLTextAreaElement ||
+            (target instanceof HTMLElement && target.isContentEditable);
+
+          if (isEditableTarget && event.key.length === 1) {
+            // Base UI 1.6 added open-trigger typeahead that prevents printable
+            // keydowns. Nested editable controls own those keys, so keep the
+            // menu handler from consuming them or bubbling them past the trigger.
+            event.stopPropagation();
+            event.preventBaseUIHandler?.();
+            return;
+          }
+
           // Custom trigger children can receive keydown first; still allow the
           // open-trigger focus shim to run from the actual trigger wrapper.
           focusMenuItemFromOpenTriggerKeyDown(event);

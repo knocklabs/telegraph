@@ -46,17 +46,6 @@ export const TypeableTriggerExample = (
                 setOpen(true);
               }}
               onFocus={() => setOpen(true)}
-              onKeyDown={(event) => {
-                // Keep typing in the input rather than Base UI's menu typeahead;
-                // let only navigation/selection keys reach the open menu.
-                if (
-                  !["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(
-                    event.key,
-                  )
-                ) {
-                  event.stopPropagation();
-                }
-              }}
               style={{
                 width: "100%",
                 boxSizing: "border-box",
