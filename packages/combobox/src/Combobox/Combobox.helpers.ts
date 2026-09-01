@@ -5,26 +5,22 @@ import {
   isValidElement,
 } from "react";
 
-import type { DefinedOption, Option } from "./Combobox.types";
+import type { DefinedOption } from "./Combobox.types";
 
 export const FIRST_KEYS = ["ArrowDown", "PageUp", "Home"];
 export const LAST_KEYS = ["ArrowUp", "PageDown", "End"];
 export const SELECT_KEYS = ["Enter", " "];
 
-export const isMultiSelect = (
-  value: Option | Array<Option> | undefined,
-): value is Array<Option> => {
+export const isMultiSelect = <T>(
+  value: T | Array<T> | undefined,
+): value is Array<T> => {
   return Array.isArray(value);
 };
 
-export const isSingleSelect = (
-  value: Option | Array<Option> | undefined,
-): value is Option => {
-  return (
-    (typeof value === "object" && !Array.isArray(value)) ||
-    typeof value === "string" ||
-    !value
-  );
+export const isSingleSelect = <T>(
+  value: T | Array<T> | undefined,
+): value is T | undefined => {
+  return !Array.isArray(value);
 };
 
 type GetOptionsProps = {
@@ -80,21 +76,6 @@ export const getOptions = ({
   return options;
 };
 
-export const getValueFromOption = (
-  option: Option | undefined,
-  legacyBehavior: boolean,
-): string | undefined => {
-  if (!option) return undefined;
-
-  if (legacyBehavior === true) {
-    // Legacy callers store selected values as { value, label } objects.
-    return (option as DefinedOption)?.value;
-  }
-
-  // Newer callers store the selected value directly as a string.
-  return option as string;
-};
-
 export const getOptionAccessibleLabel = (option?: DefinedOption) => {
   if (!option) {
     return undefined;
@@ -113,16 +94,13 @@ export const getOptionAccessibleLabel = (option?: DefinedOption) => {
 };
 
 export const getCurrentOption = (
-  value: Option | undefined,
+  value: string | undefined,
   options: Array<DefinedOption>,
-  legacyBehavior: boolean,
 ): DefinedOption | undefined => {
   if (!value) return undefined;
   if (!options || options.length === 0) return undefined;
 
-  const foundOption = options.find(
-    (o) => o.value === getValueFromOption(value, legacyBehavior),
-  );
+  const foundOption = options.find((o) => o.value === value);
 
   if (!foundOption) return undefined;
 

@@ -14,7 +14,7 @@ import type {
 
 describe("Combobox types", () => {
   it("has no catch-all index signature", () => {
-    expectTypeOf<ComboboxRootProps<string, false>>().not.toHaveProperty(
+    expectTypeOf<ComboboxRootProps<string>>().not.toHaveProperty(
       "notARealProp",
     );
     expectTypeOf<ComboboxTriggerProps<string>>().not.toHaveProperty(
@@ -29,29 +29,18 @@ describe("Combobox types", () => {
   });
 
   it("keeps declared props narrow", () => {
-    expectTypeOf<ComboboxRootProps<string, false>["value"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["value"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["placeholder"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["clearable"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["disabled"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["closeOnSelect"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["errored"]>().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<string>["modal"]>().not.toBeAny();
     expectTypeOf<
-      ComboboxRootProps<string, false>["onValueChange"]
+      ComboboxRootProps<string>["defaultScrollToValue"]
     >().not.toBeAny();
-    expectTypeOf<
-      ComboboxRootProps<string, false>["placeholder"]
-    >().not.toBeAny();
-    expectTypeOf<ComboboxRootProps<string, false>["clearable"]>().not.toBeAny();
-    expectTypeOf<ComboboxRootProps<string, false>["disabled"]>().not.toBeAny();
-    expectTypeOf<
-      ComboboxRootProps<string, false>["closeOnSelect"]
-    >().not.toBeAny();
-    expectTypeOf<ComboboxRootProps<string, false>["errored"]>().not.toBeAny();
-    expectTypeOf<ComboboxRootProps<string, false>["modal"]>().not.toBeAny();
-    expectTypeOf<
-      ComboboxRootProps<string, false>["legacyBehavior"]
-    >().not.toBeAny();
-    expectTypeOf<
-      ComboboxRootProps<string, false>["defaultScrollToValue"]
-    >().not.toBeAny();
-    expectTypeOf<
-      ComboboxRootProps<Array<string>, false>["layout"]
-    >().not.toBeAny();
+    expectTypeOf<ComboboxRootProps<Array<string>>["layout"]>().not.toBeAny();
 
     expectTypeOf<ComboboxTriggerProps<string>["placeholder"]>().not.toBeAny();
 
@@ -67,6 +56,28 @@ describe("Combobox types", () => {
     expectTypeOf<ComboboxCreateProps["leadingText"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["values"]>().not.toBeAny();
     expectTypeOf<ComboboxCreateProps["onCreate"]>().not.toBeAny();
+  });
+
+  it("reports undefined when a single selection is cleared", () => {
+    expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().toEqualTypeOf<
+      ((value: string | undefined) => void) | undefined
+    >();
+    expectTypeOf<
+      ComboboxRootProps<Array<string>>["onValueChange"]
+    >().toEqualTypeOf<((value: Array<string>) => void) | undefined>();
+
+    <Combobox.Root<string>
+      value="a"
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string | undefined>()
+      }
+    />;
+    <Combobox.Root
+      value={["a"]}
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<Array<string>>()
+      }
+    />;
   });
 
   it("rejects unknown props", () => {
@@ -299,11 +310,47 @@ describe("Combobox types", () => {
     />;
   });
 
+  it("rejects the removed legacy value contracts", () => {
+    <Combobox.Root
+      // @ts-expect-error legacyBehavior was removed
+      legacyBehavior
+    />;
+    <Combobox.Root
+      // @ts-expect-error single-select values are strings, not option objects
+      value={{ value: "a", label: "A" }}
+    />;
+    <Combobox.Root
+      value="a"
+      // @ts-expect-error single-select callbacks receive strings
+      onValueChange={(_value: { value: string; label?: string }) => {}}
+    />;
+    <Combobox.Root
+      // @ts-expect-error multi-select values are string arrays
+      value={[{ value: "a", label: "A" }]}
+    />;
+    <Combobox.Root
+      value={["a"]}
+      // @ts-expect-error multi-select callbacks receive string arrays
+      onValueChange={(_value: Array<{ value: string; label?: string }>) => {}}
+    />;
+    <Combobox.Create
+      // @ts-expect-error Create values are strings
+      values={[{ value: "a", label: "A" }]}
+    />;
+    <Combobox.Create
+      // @ts-expect-error Create callbacks receive strings
+      onCreate={(_value: { value: string; label?: string }) => {}}
+    />;
+
+    // @ts-expect-error ComboboxRootProps no longer accepts a legacy-mode generic
+    expectTypeOf<ComboboxRootProps<string, true>>();
+  });
+
   it("accepts valid props", () => {
     <Combobox.Root
       value="a"
       defaultValue="b"
-      onValueChange={(value) => value.toUpperCase()}
+      onValueChange={(value) => value?.toUpperCase()}
       open
       defaultOpen={false}
       onOpenChange={() => {}}
@@ -313,7 +360,6 @@ describe("Combobox types", () => {
       closeOnSelect
       clearable
       disabled
-      legacyBehavior={false}
       defaultScrollToValue="a"
     >
       <Combobox.Trigger placeholder="Pick one" disabled id="trigger" />

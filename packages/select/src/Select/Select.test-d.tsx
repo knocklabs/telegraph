@@ -86,7 +86,7 @@ describe("Select types", () => {
 
   it("narrows the reported value to the value it was given", () => {
     expectTypeOf<SelectProps<string>["onValueChange"]>().toEqualTypeOf<
-      ((value: string) => void) | undefined
+      ((value: string | undefined) => void) | undefined
     >();
     expectTypeOf<SelectProps<Array<string>>["onValueChange"]>().toEqualTypeOf<
       ((value: Array<string>) => void) | undefined
@@ -94,7 +94,9 @@ describe("Select types", () => {
 
     <Select.Root
       value={single}
-      onValueChange={(value) => expectTypeOf(value).toEqualTypeOf<string>()}
+      onValueChange={(value) =>
+        expectTypeOf(value).toEqualTypeOf<string | undefined>()
+      }
     />;
     <Select.Root
       value={multi}
@@ -135,7 +137,7 @@ describe("Select types", () => {
       value={{ value: "1", label: "Option 1" }}
     />;
     <Select.Root
-      // @ts-expect-error legacyBehavior emits option objects Select cannot produce
+      // @ts-expect-error legacyBehavior was removed from Combobox and Select
       legacyBehavior
     />;
     <Select.Root

@@ -48,30 +48,28 @@ import {
   getOptionAccessibleLabel,
   getOptions,
   getRenderedSearchText,
-  getValueFromOption,
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
 import { Primitives } from "./Combobox.primitives";
 import type {
+  ComboboxValue,
   DefinedOption,
   MultiSelect,
-  Option,
   SingleSelect,
 } from "./Combobox.types";
 
-type LayoutValue<O> = O extends DefinedOption | string | undefined
-  ? never
-  : "truncate" | "wrap";
+type LayoutValue<V> = V extends string ? never : "truncate" | "wrap";
 
-export type RootProps<
-  O extends (Option | Array<Option>) | (string | Array<string>),
-  LB extends boolean,
-> = {
-  value?: O;
-  defaultValue?: O;
-  onValueChange?: (value: O) => void;
-  layout?: LayoutValue<O>;
+type ValueChangeValue<V extends ComboboxValue> = V extends string
+  ? V | undefined
+  : V;
+
+export type RootProps<V extends ComboboxValue = string> = {
+  value?: V;
+  defaultValue?: V;
+  onValueChange?: (value: ValueChangeValue<V>) => void;
+  layout?: LayoutValue<V>;
   open?: boolean;
   defaultOpen?: boolean;
   errored?: boolean;
@@ -81,7 +79,6 @@ export type RootProps<
   closeOnSelect?: boolean;
   clearable?: boolean;
   disabled?: boolean;
-  legacyBehavior?: LB;
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
   defaultScrollToValue?: string;
@@ -89,10 +86,7 @@ export type RootProps<
 };
 
 export const ComboboxContext = createContext<
-  Omit<
-    RootProps<(Option | Array<Option>) | (string | Array<string>), boolean>,
-    "children"
-  > & {
+  Omit<RootProps<ComboboxValue>, "children"> & {
     contentId: string;
     triggerId: string;
     open: boolean;
@@ -105,7 +99,6 @@ export const ComboboxContext = createContext<
     contentRef?: RefObject<HTMLDivElement>;
     onEscapeKeyDown?: (event: KeyboardEvent) => void;
     options: Array<DefinedOption>;
-    legacyBehavior: boolean;
     defaultScrollToValue?: string;
   }
 >({
@@ -119,18 +112,13 @@ export const ComboboxContext = createContext<
   clearable: false,
   disabled: false,
   options: [],
-  legacyBehavior: false,
 });
 
-const Root = <
-  O extends (Option | Array<Option>) | (string | Array<string>),
-  LB extends boolean,
->({
+const Root = <V extends ComboboxValue = string>({
   modal = true,
   closeOnSelect = true,
   clearable = false,
   disabled = false,
-  legacyBehavior = false as LB,
   open: openProp,
   onOpenChange: onOpenChangeProp,
   defaultOpen: defaultOpenProp,
@@ -143,7 +131,7 @@ const Root = <
   defaultScrollToValue,
   children,
   ...props
-}: RootProps<O, LB>) => {
+}: RootProps<V>) => {
   const contentId = useId();
   const triggerId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -163,12 +151,10 @@ const Root = <
     onChange: onOpenChangeProp,
   });
 
-  // The selected value can be a string, legacy option object, or array of
-  // either; this shared helper preserves that public contract.
   const [value, setValue] = useControllableState({
     prop: valueProp,
-    defaultProp: defaultValueProp as O,
-    onChange: onValueChangeProp as (value: O) => void,
+    defaultProp: defaultValueProp as V,
+    onChange: onValueChangeProp as (value: V) => void,
   });
 
   const onOpenToggle = useCallback(() => {
@@ -189,7 +175,7 @@ const Root = <
         value,
         // Context consumers handle the runtime single/multi branches below, so
         // expose one setter shape here and narrow it at the selection site.
-        onValueChange: setValue as (value: Option | Array<Option>) => void,
+        onValueChange: setValue as (value: ComboboxValue | undefined) => void,
         placeholder,
         open,
         setOpen,
@@ -205,7 +191,6 @@ const Root = <
         errored,
         layout,
         options,
-        legacyBehavior,
         defaultScrollToValue,
       }}
     >
@@ -257,21 +242,15 @@ const Trigger = <V extends ChildrenValue>({
     if (isSingleSelect(context.value)) {
       // Convert the public selected value back to the option object so custom
       // trigger render functions receive the same shape as before the rewrite.
-      return getCurrentOption(
-        context.value,
-        context.options,
-        context.legacyBehavior,
-      );
+      return getCurrentOption(context.value, context.options);
     }
     if (isMultiSelect(context.value)) {
       // Preserve array order from the selected value while resolving each entry
       // against the current option list.
-      return context.value.map((v) =>
-        getCurrentOption(v, context.options, context.legacyBehavior),
-      );
+      return context.value.map((v) => getCurrentOption(v, context.options));
     }
     return undefined;
-  }, [context.value, context.options, context.legacyBehavior]);
+  }, [context.value, context.options]);
 
   const getAriaLabelString = useCallback(() => {
     if (!currentValue) return context.placeholder;
@@ -629,9 +608,9 @@ const Options = <T extends TgphElement = "div">({
       // Small delay to ensure the DOM has rendered
       requestAnimationFrame(() => {
         const selectedValue = isSingleSelect(context.value)
-          ? getValueFromOption(context.value, context.legacyBehavior)
+          ? context.value
           : isMultiSelect(context.value) && context.value.length > 0
-            ? getValueFromOption(context.value[0], context.legacyBehavior)
+            ? context.value[0]
             : null;
 
         // Prefer the current selection, then fall back to the explicit initial
@@ -661,12 +640,7 @@ const Options = <T extends TgphElement = "div">({
         }
       });
     }
-  }, [
-    context.open,
-    context.value,
-    context.legacyBehavior,
-    context.defaultScrollToValue,
-  ]);
+  }, [context.open, context.value, context.defaultScrollToValue]);
 
   return (
     <Stack
@@ -753,10 +727,8 @@ const Option = <T extends TgphElement = "button">(
     });
 
   const isSelected = isMultiSelect(contextValue)
-    ? contextValue.some(
-        (v) => getValueFromOption(v, context.legacyBehavior) === value,
-      )
-    : getValueFromOption(contextValue, context.legacyBehavior) === value;
+    ? contextValue.includes(value)
+    : contextValue === value;
 
   useEffect(() => {
     const option = optionRef.current;
@@ -835,29 +807,15 @@ const Option = <T extends TgphElement = "button">(
     if (isSingleSelect(contextValue)) {
       const onValueChange =
         context.onValueChange as SingleSelect["onValueChange"];
-
-      // TODO: Remove this once { value, label } option is deprecated
-      if (context.legacyBehavior === true) {
-        // Legacy single select still emits the option object shape.
-        onValueChange?.({ value, label });
-      } else {
-        onValueChange?.(value);
-      }
+      onValueChange?.(value);
     } else if (isMultiSelect(contextValue)) {
       const onValueChange =
         context.onValueChange as MultiSelect["onValueChange"];
-      const contextValue = context.value as Array<Option>;
+      const contextValue = context.value as Array<string>;
 
       const newValue = isSelected
-        ? contextValue.filter(
-            (v) => getValueFromOption(v, context.legacyBehavior) !== value,
-          )
-        : [
-            ...contextValue,
-            // TODO: Remove this once { value, label } option is deprecated
-            // Preserve the legacy array item shape when that mode is enabled.
-            context.legacyBehavior === true ? { value, label } : value,
-          ];
+        ? contextValue.filter((entry) => entry !== value)
+        : [...contextValue, value];
 
       onValueChange?.(newValue);
     }
@@ -1073,43 +1031,29 @@ const Empty = <T extends TgphElement = "div">({
   }
 };
 
-export type CreateProps<
-  T extends TgphElement = "button",
-  LB extends boolean = false,
-> = TgphComponentProps<typeof TelegraphMenu.Button<T>> & {
+export type CreateProps<T extends TgphElement = "button"> = TgphComponentProps<
+  typeof TelegraphMenu.Button<T>
+> & {
   leadingText?: string;
-} & (LB extends true
-    ? {
-        values: Array<DefinedOption>;
-        onCreate: (value: { value: string; label?: string }) => void;
-        legacyBehavior: true;
-      }
-    : {
-        values?: Array<string>;
-        onCreate?: (value: string) => void;
-        legacyBehavior?: false;
-      });
+  values?: Array<string>;
+  onCreate?: (value: string) => void;
+};
 
-const Create = <T extends TgphElement = "button", LB extends boolean = false>({
+const Create = <T extends TgphElement = "button">({
   leadingText = "Create",
   values,
   onCreate,
   selected = null,
-  legacyBehavior = false as LB,
   ...props
-}: CreateProps<T, LB>) => {
+}: CreateProps<T>) => {
   const context = useContext(ComboboxContext);
 
   const variableAlreadyExists = useCallback(
     (searchQuery: string | undefined) => {
-      if (!values || values?.length === 0) return false;
-      // Compare through getValueFromOption so create works for both string
-      // values and legacy { value, label } options.
-      return values.some(
-        (v) => getValueFromOption(v, legacyBehavior) === searchQuery,
-      );
+      if (!searchQuery || !values || values.length === 0) return false;
+      return values.includes(searchQuery);
     },
-    [values, legacyBehavior],
+    [values],
   );
 
   if (context.searchQuery && !variableAlreadyExists(context.searchQuery)) {
@@ -1122,19 +1066,7 @@ const Create = <T extends TgphElement = "button", LB extends boolean = false>({
         selected={selected}
         onSelect={() => {
           if (onCreate && context.searchQuery) {
-            const value =
-              legacyBehavior === true
-                ? { value: context.searchQuery }
-                : context.searchQuery;
-
-            // While `LB` is unresolved, `onCreate` stays a deferred
-            // conditional. Runtime creation narrows through the legacyBehavior
-            // branch above, so read it as the union of both callable shapes.
-            const create = onCreate as (
-              value: { value: string; label?: string } | string,
-            ) => void;
-
-            create(value);
+            onCreate(context.searchQuery);
 
             context.setSearchQuery?.("");
           }

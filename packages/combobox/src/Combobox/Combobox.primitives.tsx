@@ -13,21 +13,21 @@ import { Text } from "@telegraph/typography";
 import { ChevronsUpDown, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
-import React from "react";
+import {
+  createContext,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
+  useContext,
+  useMemo,
+} from "react";
 
 import { ComboboxContext } from "./Combobox";
 import {
   getCurrentOption,
-  getValueFromOption,
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
-import type {
-  DefinedOption,
-  MultiSelect,
-  Option,
-  SingleSelect,
-} from "./Combobox.types";
+import type { MultiSelect, SingleSelect } from "./Combobox.types";
 
 // Drop `as`: this always renders `motion.span` (KNO-14501). Drop `alt` too:
 // the body discards it, so leaving it in the type promised an accessible name
@@ -52,7 +52,7 @@ const TriggerIndicator = <T extends TgphElement = "span">(
     as?: TgphElement;
     alt?: string;
   };
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
   return (
     <Button.Icon
       as={motion.span}
@@ -79,7 +79,7 @@ const TriggerClear = <T extends TgphElement = "button">(
 ) => {
   const { tooltipProps, ...props } =
     triggerClearProps as TriggerClearProps<"button">;
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
   const handleClear = () => {
     if (isMultiSelect(context.value)) {
@@ -96,7 +96,7 @@ const TriggerClear = <T extends TgphElement = "button">(
     context.triggerRef?.current?.focus();
   };
 
-  const shouldShowClearable = React.useMemo(() => {
+  const shouldShowClearable = useMemo(() => {
     if (isSingleSelect(context.value)) {
       return context.clearable && context.value;
     }
@@ -115,12 +115,12 @@ const TriggerClear = <T extends TgphElement = "button">(
         icon={{ icon: X, alt: "Clear field" }}
         size="0"
         variant="ghost"
-        onClick={(event: React.MouseEvent) => {
+        onClick={(event: ReactMouseEvent) => {
           if (!context.value) return;
           event.stopPropagation();
           handleClear();
         }}
-        onKeyDown={(event: React.KeyboardEvent) => {
+        onKeyDown={(event: ReactKeyboardEvent) => {
           if (event.key === "Enter" || event.key === " ") {
             event.stopPropagation();
             event.preventDefault();
@@ -158,33 +158,15 @@ const TriggerText = <T extends TgphElement = "span">(
   triggerTextProps: TriggerTextProps<T>,
 ) => {
   const { children, ...props } = triggerTextProps as TriggerTextProps<"span">;
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
-  const label = React.useMemo(() => {
+  const label = useMemo(() => {
     if (!isSingleSelect(context.value)) return;
 
-    const currentOption = getCurrentOption(
-      context.value,
-      context.options,
-      context.legacyBehavior,
-    );
+    const currentOption = getCurrentOption(context.value, context.options);
 
-    const label =
-      currentOption?.label || currentOption?.value || context.placeholder;
-
-    // In `legacyBehavior` mode, we can override the label of the combobox via the `label` prop
-    // in context value. So, if we're in `legacyBehavior` mode and the context value has a
-    // label, we want to use that label instead of the label from the current option
-    const legacyLabelOverride =
-      context.legacyBehavior && (context?.value as DefinedOption)?.label;
-
-    return legacyLabelOverride ? legacyLabelOverride : label;
-  }, [
-    context.value,
-    context.options,
-    context.legacyBehavior,
-    context.placeholder,
-  ]);
+    return currentOption?.label || currentOption?.value || context.placeholder;
+  }, [context.value, context.options, context.placeholder]);
 
   return (
     <TooltipIfTruncated>
@@ -212,7 +194,7 @@ const TriggerPlaceholder = <T extends TgphElement = "span">(
 ) => {
   const { children, ...props } =
     triggerPlaceholderProps as TriggerPlaceholderProps<"span">;
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
   return (
     <TooltipIfTruncated>
       <Button.Text
@@ -233,7 +215,7 @@ const TriggerPlaceholder = <T extends TgphElement = "span">(
 type TriggerTagsContainerProps = StackProps;
 
 const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
   if (!isMultiSelect(context.value)) return null;
 
@@ -296,7 +278,7 @@ const TriggerTagsContainer = ({ children }: TriggerTagsContainerProps) => {
   );
 };
 
-const TriggerTagContext = React.createContext<{
+const TriggerTagContext = createContext<{
   value: string;
 }>({
   value: "",
@@ -350,10 +332,10 @@ const TriggerTagText = <T extends TgphElement = "span">(
 ) => {
   const { children, ...props } =
     triggerTagTextProps as TriggerTagTextProps<"span">;
-  const context = React.useContext(ComboboxContext);
-  const triggerTagContext = React.useContext(TriggerTagContext);
+  const context = useContext(ComboboxContext);
+  const triggerTagContext = useContext(TriggerTagContext);
 
-  const option = React.useMemo(() => {
+  const option = useMemo(() => {
     // Find option amongst other options
     const foundOption = context.options.find(
       (o) => o.value === triggerTagContext.value,
@@ -361,23 +343,15 @@ const TriggerTagText = <T extends TgphElement = "span">(
     if (foundOption) return foundOption.label || foundOption.value;
 
     // Find option amongst the current values in the case of creation
-    if (!context.value) return undefined;
-    const contextValue = context.value as Array<Option>;
-    const foundValue = contextValue.find(
-      (v) =>
-        getValueFromOption(v, context.legacyBehavior) ===
-        triggerTagContext.value,
+    if (!isMultiSelect(context.value)) return undefined;
+    const foundValue = context.value.find(
+      (value) => value === triggerTagContext.value,
     );
 
     if (!foundValue) return undefined;
 
     return foundValue;
-  }, [
-    context.options,
-    context.value,
-    triggerTagContext.value,
-    context.legacyBehavior,
-  ]);
+  }, [context.options, context.value, triggerTagContext.value]);
 
   return (
     <Tag.Text
@@ -386,10 +360,7 @@ const TriggerTagText = <T extends TgphElement = "span">(
         "children"
       >)}
     >
-      {/* `Option` includes the legacy `{ value, label }` shape, which is not a
-          `ReactNode`. Rendering it was already the pre-existing behaviour; only
-          the type is narrowed here. */}
-      {children || (option as React.ReactNode)}
+      {children || option}
     </Tag.Text>
   );
 };
@@ -403,24 +374,23 @@ const TriggerTagButton = <T extends TgphElement = "button">(
 ) => {
   const { children, ...props } =
     triggerTagButtonProps as TriggerTagButtonProps<"button">;
-  const context = React.useContext(ComboboxContext);
-  const triggerTagContext = React.useContext(TriggerTagContext);
+  const context = useContext(ComboboxContext);
+  const triggerTagContext = useContext(TriggerTagContext);
 
   return (
     <Tag.Button
       icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
       height="full"
       borderRightRadius="1"
-      onClick={(event: React.MouseEvent) => {
+      onClick={(event: ReactMouseEvent) => {
         if (!context.onValueChange) return;
         const onValueChange =
           context.onValueChange as MultiSelect["onValueChange"];
-        const contextValue = context.value as Array<Option>;
+        const contextValue = context.value as Array<string>;
 
-        const newValue = contextValue.filter((v) => {
-          const valueOption = getValueFromOption(v, context.legacyBehavior);
-          return valueOption !== triggerTagContext.value;
-        });
+        const newValue = contextValue.filter(
+          (value) => value !== triggerTagContext.value,
+        );
 
         onValueChange?.(newValue);
         // Stop click event from bubbling up
@@ -471,7 +441,7 @@ const TriggerActionsContainer = (props: TriggerActionsContainerProps) => {
 };
 
 const TriggerValue = () => {
-  const context = React.useContext(ComboboxContext);
+  const context = useContext(ComboboxContext);
 
   if (context.value && isMultiSelect(context.value)) {
     const layout = context.layout || "truncate";
@@ -484,14 +454,10 @@ const TriggerValue = () => {
       <LazyMotion features={domAnimation}>
         <TriggerTagsContainer>
           {context.value.map((v, i) => {
-            const value = getValueFromOption(v, context.legacyBehavior);
-            if (
-              value &&
-              ((layout === "truncate" && i <= 1) || layout === "wrap")
-            ) {
+            if (v && ((layout === "truncate" && i <= 1) || layout === "wrap")) {
               return (
-                <RefToTgphRef key={value}>
-                  <TriggerTag.Default value={value} />
+                <RefToTgphRef key={v}>
+                  <TriggerTag.Default value={v} />
                 </RefToTgphRef>
               );
             }
