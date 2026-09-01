@@ -96,7 +96,7 @@ The root component that manages the state and context for the combobox.
 | `manualFiltering`    | `boolean`                                                   | automatic    | Show rendered options without the built-in text filter; controlled Search enables it by default |
 | `onItemHighlighted`  | `(value: string \| undefined, details: ComboboxHighlightDetails) => void` | `undefined` | Called when virtual option focus changes               |
 | `selectionMode`      | `"single" \| "multiple" \| "none"`                         | inferred     | Select one, select many, or accept free text           |
-| `inputValue`         | `string`                                                    | `undefined`  | Controlled text for `Combobox.Input`                   |
+| `inputValue`         | `string`                                                    | `undefined`  | Controlled text for `Combobox.Input` or `Combobox.Search` |
 | `defaultInputValue`  | `string`                                                    | `undefined`  | Initial uncontrolled input text                        |
 | `onInputValueChange` | `(value: string, details: ComboboxChangeDetails) => void`   | `undefined`  | Called when the input text changes                     |
 | `autocompleteMode`   | `"list" \| "inline" \| "both" \| "none"`                    | `"list"`     | Autocomplete behavior for free-text input              |
@@ -128,6 +128,11 @@ navigate the popup options.
 Drive its text with `inputValue`, `defaultInputValue`, and
 `onInputValueChange` on `Combobox.Root`. In `selectionMode="none"`, the text is
 the value and any typed text is valid.
+
+The same Root props control the popup's `Combobox.Search` when the combobox uses
+a button trigger. Call `details.cancel()` from `onInputValueChange` to reject an
+input change before Telegraph stores it as the search query—for example, when a
+consumer converts pasted text into multiple selected values.
 
 `Combobox.Input` accepts Telegraph Input props except `value`, `defaultValue`,
 and `onChange`, which the combobox engine owns.
@@ -494,6 +499,11 @@ the rendered options, which preserves the legacy controlled-Search contract and
 supports server-side filtering. An explicit `manualFiltering` value on
 `Combobox.Root` takes precedence: set it to `false` to retain Telegraph's
 built-in text filter with a controlled Search.
+
+The equivalent Root-level `inputValue`, `defaultInputValue`, and
+`onInputValueChange` props can control or intercept the same text. Call
+`details.cancel()` from the Root callback to reject a change before Telegraph
+stores it as the query.
 
 ### `<Combobox.Empty>`
 
