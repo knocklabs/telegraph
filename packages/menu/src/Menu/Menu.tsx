@@ -374,15 +374,21 @@ const MenuPopupContent = ({
       return;
     }
 
-    // Base UI's MenuPopup hardcodes initial focus into the popup and exposes no
-    // way to opt out (only Popover/Dialog surface `initialFocus`). Its focus
-    // manager queues that move to the next animation frame, so the previous
-    // setTimeout(0) restore fired first and then lost the race, letting the
-    // popup steal focus from a typeable trigger input. Instead, bounce focus
-    // back the instant Base UI's initial focus lands: focusing an element inside
-    // the popup dispatches `focusin` here synchronously during Base UI's own
-    // `.focus()` call, so re-asserting the intended target from that event wins
-    // with no dependence on timer ordering.
+    // Permanent Radix-compat behavior. This implements the prevented-
+    // `onOpenAutoFocus` contract consumers carried over from Radix: when the
+    // handler calls `preventDefault()`, focus stays where it was instead of
+    // moving into the popup. Base UI's MenuPopup hardcodes initial focus into the
+    // popup and does not expose an `initialFocus` opt-out for menus — upstream
+    // declined to add one because a typeable menu trigger is not the endorsed
+    // pattern (the Autocomplete/Combobox engine is). New UI wanting a typeable
+    // trigger should use `@telegraph/combobox`'s input-as-trigger arrangement;
+    // this bounce is not a temporary shim, it stays as the Radix-compat contract.
+    // Base UI's focus manager queues its move to the next animation frame, which
+    // a `setTimeout(0)` restore loses the race to. Instead, bounce focus back the
+    // instant Base UI's initial focus lands: focusing an element inside the popup
+    // dispatches `focusin` here synchronously during Base UI's own `.focus()`
+    // call, so re-asserting the intended target from that event wins with no
+    // dependence on timer ordering.
     const abortController = new AbortController();
     openAutoFocusAbortRef.current = abortController;
     const { signal } = abortController;
@@ -708,6 +714,15 @@ export type ButtonProps<T extends TgphElement = "button"> = Partial<
     tgphRef?: Ref<HTMLElement>;
   };
 
+/**
+ * Renders a Base UI menu item when nested in `Menu.Root`.
+ *
+ * Rendering `Menu.Button` without `Menu.Root` is supported for backwards
+ * compatibility, but deprecated and scheduled for removal in a future major
+ * release. In that arrangement it is only a styled action, so menu arrow-key
+ * navigation (including from a combobox popup) will not reach it. Migrate popup
+ * action rows to `Combobox.Option` with `onSelect` or to plain buttons.
+ */
 const Button = <T extends TgphElement = "button">({
   as,
   closeOnClick,
@@ -727,6 +742,7 @@ const Button = <T extends TgphElement = "button">({
   nativeButton,
   ...props
 }: ButtonProps<T>) => {
+  const compatibilityContext = useContext(MenuCompatibilityContext);
   const combinedLeadingIcon = leadingIcon || icon;
   const itemRef = useRef<HTMLElement>(null);
   const menuItemProps = props as MenuItemProps<T>;
@@ -878,37 +894,41 @@ const Button = <T extends TgphElement = "button">({
     preventBaseUIHandlerWhenDefaultPrevented(event);
   };
 
+  // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through the
+  // element passthrough, which is a deferred conditional while `T` is
+  // unresolved and therefore not indexable.
+  const resolvedMenuItemProps = {
+    as,
+    ...menuItemProps,
+    onClick: handleClick as MenuItemProps<T>["onClick"],
+    onKeyDown: handleKeyDown as MenuItemProps<"button">["onKeyDown"],
+    selected,
+    leadingIcon: combinedLeadingIcon,
+    trailingIcon,
+    leadingComponent,
+    trailingComponent,
+    "data-tgph-menu-button": true,
+    disabled,
+    mx,
+    style: {
+      outline: "none",
+      flexShrink: 0,
+      ...menuItemProps.style,
+    },
+    tgphRef: composedTgphRef as MenuItemProps<T>["tgphRef"],
+  } satisfies MenuItemProps<T>;
+
+  if (!compatibilityContext) {
+    return <MenuItem {...resolvedMenuItemProps} />;
+  }
+
   return (
     <BaseMenu.Item
       closeOnClick={closeOnClick}
       disabled={disabled}
       label={label}
       nativeButton={isNativeButton}
-      render={createTgphBaseUIRender(
-        <MenuItem
-          as={as}
-          {...menuItemProps}
-          onClick={handleClick as MenuItemProps<T>["onClick"]}
-          // `MenuItemProps<"button">`: `onKeyDown` reaches MenuItem only through
-          // the element passthrough, which is a deferred conditional while `T`
-          // is unresolved and therefore not indexable.
-          onKeyDown={handleKeyDown as MenuItemProps<"button">["onKeyDown"]}
-          selected={selected}
-          leadingIcon={combinedLeadingIcon}
-          trailingIcon={trailingIcon}
-          leadingComponent={leadingComponent}
-          trailingComponent={trailingComponent}
-          data-tgph-menu-button
-          disabled={disabled}
-          mx={mx}
-          style={{
-            outline: "none",
-            flexShrink: 0,
-            ...menuItemProps.style,
-          }}
-          tgphRef={composedTgphRef as MenuItemProps<T>["tgphRef"]}
-        />,
-      )}
+      render={createTgphBaseUIRender(<MenuItem {...resolvedMenuItemProps} />)}
     />
   );
 };

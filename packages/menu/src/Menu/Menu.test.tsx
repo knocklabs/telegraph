@@ -125,6 +125,33 @@ describe("Menu", () => {
     }
   });
 
+  it("renders a clickable styled button without Menu.Root", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+
+    render(
+      <>
+        <Menu.Button
+          data-testid="standalone-menu-button"
+          data-tgph-combobox-option
+          onClick={onClick}
+        >
+          Switch account
+        </Menu.Button>
+        <Menu.Divider data-testid="standalone-menu-divider" />
+      </>,
+    );
+
+    const button = screen.getByTestId("standalone-menu-button");
+    expect(button).toHaveAttribute("data-tgph-menu-button");
+    expect(button).toHaveAttribute("data-tgph-combobox-option");
+    expect(screen.getByTestId("standalone-menu-divider")).toBeInTheDocument();
+
+    await user.click(button);
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
   describe("as a link", () => {
     it("keeps disabled item coercion native over an explicit override", async () => {
       const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -1223,7 +1250,7 @@ describe("Menu", () => {
     expect(submenu).toHaveAttribute("data-align", "start");
   });
 
-  describe("typeable trigger open autofocus", () => {
+  describe("focus-bounce on prevented onOpenAutoFocus (Radix-compat)", () => {
     // Long enough to clear a couple of jsdom animation frames (~16ms each).
     const PENDING_FRAME_DRAIN_MS = 32;
 
@@ -1238,9 +1265,12 @@ describe("Menu", () => {
       });
     });
 
-    // Reproduces the surfaces (PropertySelectorField, block editor suggestion
-    // menus) that compose a typeable input inside Menu.Trigger and prevent the
-    // legacy openAutoFocus so keystrokes keep feeding the input, not the menu.
+    // Behavior contract under test: when a consumer prevents the legacy
+    // `openAutoFocus`, focus bounces back once (staying where it was) and later
+    // intentional navigation into the menu is still allowed. Exercised through
+    // the legacy typeable-trigger composition (a deprecated recipe — new UI
+    // should use the `@telegraph/combobox` input-as-trigger arrangement) purely
+    // because it is the composition that first surfaced the race (KNO-14086).
     const TypeableTriggerMenu = ({
       onOpenAutoFocus,
       preventOpenAutoFocus = true,
