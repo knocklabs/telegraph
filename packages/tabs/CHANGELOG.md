@@ -1,5 +1,15 @@
 # @telegraph/tabs
 
+## 0.3.2
+
+### Patch Changes
+
+- [#906](https://github.com/knocklabs/telegraph/pull/906) [`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013) Thanks [@kylemcd](https://github.com/kylemcd)! - Bump `@base-ui/react` from `^1.5.0` to `^1.6.0`. No Telegraph component API changes.
+
+- Updated dependencies [[`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013), [`7523f70`](https://github.com/knocklabs/telegraph/commit/7523f7018cc38641eb617e8cffc247c484ccb094), [`4606fe9`](https://github.com/knocklabs/telegraph/commit/4606fe93ba01bd6025dc379da3a55d1147fc1c2c), [`4606fe9`](https://github.com/knocklabs/telegraph/commit/4606fe93ba01bd6025dc379da3a55d1147fc1c2c)]:
+  - @telegraph/helpers@0.3.2
+  - @telegraph/menu@0.6.3
+
 ## 0.3.1
 
 ### Patch Changes

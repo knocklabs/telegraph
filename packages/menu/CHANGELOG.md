@@ -1,5 +1,22 @@
 # @telegraph/menu
 
+## 0.6.3
+
+### Patch Changes
+
+- [#906](https://github.com/knocklabs/telegraph/pull/906) [`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013) Thanks [@kylemcd](https://github.com/kylemcd)! - Bump `@base-ui/react` from `^1.5.0` to `^1.6.0`. No Telegraph component API changes.
+
+- [#976](https://github.com/knocklabs/telegraph/pull/976) [`7523f70`](https://github.com/knocklabs/telegraph/commit/7523f7018cc38641eb617e8cffc247c484ccb094) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 12.38.0 to 13.1.0
+
+- [#917](https://github.com/knocklabs/telegraph/pull/917) [`4606fe9`](https://github.com/knocklabs/telegraph/commit/4606fe93ba01bd6025dc379da3a55d1147fc1c2c) Thanks [@kylemcd](https://github.com/kylemcd)! - Keep `Menu.Button` rendering as a standalone styled action when no `Menu.Root` is present as a deprecated compatibility fallback. This fallback will be removed in a future major release. Migrate popup action rows to `Combobox.Option` with `onSelect` or to plain buttons.
+
+- [#917](https://github.com/knocklabs/telegraph/pull/917) [`4606fe9`](https://github.com/knocklabs/telegraph/commit/4606fe93ba01bd6025dc379da3a55d1147fc1c2c) Thanks [@kylemcd](https://github.com/kylemcd)! - Deprecate the typeable-trigger recipe — composing a typeable input inside `Menu.Trigger` — in favor of the `@telegraph/combobox` input-as-trigger arrangement (`Combobox.Input`). This is a documentation-only change: the focus-bounce that keeps focus in place when a consumer prevents `onOpenAutoFocus` is **retained unchanged** as permanent Radix-compat behavior.
+
+  A typeable menu trigger does not follow the WAI-ARIA menu-button pattern, and Base UI declined an `initialFocus` opt-out for menus, so new UI that needs a typeable trigger should use the combobox arrangement. The `Menu.Trigger` typeable composition (and its `TypeableTrigger` story) remain only as a reference for the retained focus-bounce.
+
+- Updated dependencies [[`5e9e6b4`](https://github.com/knocklabs/telegraph/commit/5e9e6b40311e69c04f17ef0f7dff1d9adf877013)]:
+  - @telegraph/helpers@0.3.2
+
 ## 0.6.2
 
 ### Patch Changes
