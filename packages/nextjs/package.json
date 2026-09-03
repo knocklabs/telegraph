@@ -31,6 +31,6 @@
     "@knocklabs/typescript-config": "^0.0.2",
     "@telegraph/vite-config": "workspace:^",
     "typescript": "^6.0.2",
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   }
 }
