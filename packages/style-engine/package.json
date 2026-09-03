@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@telegraph/tokens": "workspace:^",
-    "postcss": "^8.5.26"
+    "postcss": "^8.5.27"
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",
