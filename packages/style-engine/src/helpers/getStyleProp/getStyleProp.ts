@@ -81,11 +81,20 @@ type ApplyDirectionProps = {
   currentValueOfCssVar: string | undefined;
   value: string;
   direction?: Direction;
+  cssVarName: string;
 };
 
-// Helper function to parse directional values (handles calc() expressions)
+// What to write into the slots a directional prop does not own. `0` is a
+// length: a color list rejects it, and the browser then drops the whole
+// declaration and falls back to `currentColor`.
+const emptySlotFor = (cssVarName: string): string =>
+  cssVarName.endsWith("-color") ? "transparent" : "0";
+
+// Splits a four-value CSS list into its slots. Hand-tokenized rather than
+// split on spaces because a slot can be a `calc()` with spaces of its own.
 const parseDirectionalValues = (
   value: string,
+  emptySlot: string,
 ): [string, string, string, string] => {
   const matches: string[] = [];
   let current = "";
@@ -111,32 +120,29 @@ const parseDirectionalValues = (
     }
   }
 
-  // Push the last value
   if (current) {
     matches.push(current);
   }
 
-  // Ensure we always have 4 values
-  while (matches.length < 4) {
-    matches.push("0");
-  }
+  // Fill to 4 the way CSS fills a box shorthand, so a value already written by
+  // a non-directional prop (`borderColor`) keeps applying to the sides a
+  // directional prop leaves alone.
+  const [top = emptySlot, right = top, bottom = top, left = right] = matches;
 
-  return [
-    matches[0] || "0",
-    matches[1] || "0",
-    matches[2] || "0",
-    matches[3] || "0",
-  ];
+  return [top, right, bottom, left];
 };
 
 // For values like margin and padding that require 4 values
 const applyDirectionalValues = ({
-  currentValueOfCssVar = "0 0 0 0",
+  currentValueOfCssVar,
   value,
   direction,
+  cssVarName,
 }: ApplyDirectionProps) => {
-  const [top, right, bottom, left] =
-    parseDirectionalValues(currentValueOfCssVar);
+  const [top, right, bottom, left] = parseDirectionalValues(
+    currentValueOfCssVar ?? "",
+    emptySlotFor(cssVarName),
+  );
 
   const newValues = {
     top,
@@ -296,8 +302,8 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
   mappedValue: string,
   cssVarNameOverride?: string,
 ): StyleProp<CssVars> => {
-  const cssVarName = (cssVarNameOverride ??
-    matchingCssVar.cssVar) as keyof StyleProp<CssVars>;
+  const rawCssVarName = cssVarNameOverride ?? matchingCssVar.cssVar;
+  const cssVarName = rawCssVarName as keyof StyleProp<CssVars>;
 
   if (matchingCssVar.direction) {
     const currentValueOfCssVar = styleProp?.[cssVarName] as string | undefined;
@@ -305,6 +311,7 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
       currentValueOfCssVar,
       value: mappedValue,
       direction: matchingCssVar.direction,
+      cssVarName: rawCssVarName,
     });
     return { ...styleProp, [cssVarName]: directionalValue };
   }

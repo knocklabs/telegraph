@@ -1,5 +1,4 @@
 import { render } from "@testing-library/react";
-import React from "react";
 import { describe, expect, expectTypeOf, it } from "vitest";
 
 import { Stack } from "../Stack";
@@ -23,7 +22,8 @@ describe("Box", () => {
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--border-color": "var(--tgph-red-11) 0 0 0",
+        "--border-color":
+          "var(--tgph-red-11) transparent transparent transparent",
       });
     });
 
@@ -32,7 +32,8 @@ describe("Box", () => {
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--border-color": "0 0 var(--tgph-blue-9) 0",
+        "--border-color":
+          "transparent transparent var(--tgph-blue-9) transparent",
       });
     });
 
@@ -41,7 +42,8 @@ describe("Box", () => {
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--border-color": "0 0 0 var(--tgph-green-10)",
+        "--border-color":
+          "transparent transparent transparent var(--tgph-green-10)",
       });
     });
 
@@ -50,7 +52,8 @@ describe("Box", () => {
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--border-color": "0 var(--tgph-yellow-11) 0 0",
+        "--border-color":
+          "transparent var(--tgph-yellow-11) transparent transparent",
       });
     });
 
@@ -77,10 +80,11 @@ describe("Box", () => {
       );
       const box = container.querySelector(".tgph-box");
 
-      // When both are set, the more specific directional value should win
-      // This depends on the order of prop processing
+      // When both are set, the directional value wins on its own edge and
+      // the base color keeps the other three.
       expect(box).toHaveStyle({
-        "--border-color": "var(--tgph-red-11) 0 0 0",
+        "--border-color":
+          "var(--tgph-red-11) var(--tgph-gray-5) var(--tgph-gray-5) var(--tgph-gray-5)",
       });
     });
 
@@ -128,7 +132,8 @@ describe("Box", () => {
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--border-color": "var(--tgph-red-11) 0 0 0",
+        "--border-color":
+          "var(--tgph-red-11) var(--tgph-gray-5) var(--tgph-gray-5) var(--tgph-gray-5)",
       });
     });
 
@@ -143,7 +148,8 @@ describe("Box", () => {
       const box = container.querySelector(".tgph-box");
 
       expect(box).toHaveStyle({
-        "--border-color": "var(--tgph-red-11) 0 var(--tgph-blue-9) 0",
+        "--border-color":
+          "var(--tgph-red-11) var(--tgph-gray-5) var(--tgph-blue-9) var(--tgph-gray-5)",
       });
     });
   });
