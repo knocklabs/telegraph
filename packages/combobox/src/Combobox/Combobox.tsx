@@ -130,7 +130,23 @@ type RootSharedProps = {
   ) => void;
   // The value to scroll to when the combobox opens if no value is selected.
   // Useful for long lists where you want to start at a specific position.
+  // Root ignores this when `options` is set. The virtualizer owns scrolling.
   defaultScrollToValue?: string;
+  // --- Additive: external virtualization -----------------------------------
+  // The full ordered collection, for a consumer that mounts only a window of
+  // `Combobox.Option` children (e.g. TanStack Virtual). Base UI indexes rows
+  // against this list instead of the mounted DOM, so arrow keys still move one
+  // option at a time across a window boundary. Passing it means:
+  // - Filtering is yours. Root forces `manualFiltering` on.
+  // - Labels come from here, not the children, so a selected option outside the
+  //   window still resolves. Set `label` where the trigger needs more than the
+  //   raw value.
+  // - Scrolling is yours. Drive the virtualizer from `details.index` on
+  //   `onItemHighlighted`.
+  // - Every mounted option needs an entry, action rows included. A missing row
+  //   stays reachable by mouse but not by keyboard. `Combobox.Create` is exempt
+  //   and carries its own index.
+  options?: Array<DefinedOption>;
   // --- Additive: segmented pages -------------------------------------------
   // Active page. Uncontrolled defaults to the first `Combobox.PageButton`.
   page?: string;
@@ -225,8 +241,14 @@ type RootImplementationProps = RootChildrenProps &
     selectionMode?: ComboboxSelectionMode;
   };
 
+type ExternalCollection = {
+  options: Array<DefinedOption>;
+  indexByValue: Map<string, number>;
+};
+
 export const ComboboxContext = createContext<
-  Omit<RootImplementationProps, "children"> & {
+  // `options` below is the resolved collection, not the raw prop.
+  Omit<RootImplementationProps, "children" | "options"> & {
     contentId: string;
     triggerId: string;
     open: boolean;
@@ -250,7 +272,11 @@ export const ComboboxContext = createContext<
     onEscapeKeyDownRef?: RefObject<
       ((event: KeyboardEvent) => void) | undefined
     >;
+    // For label resolution: the consumer's collection, or the mounted children.
     options: Array<DefinedOption>;
+    // Present only when the consumer owns the collection. Parts read its
+    // presence as "only a window of the options is mounted".
+    externalCollection?: ExternalCollection;
     manualFiltering: boolean;
     defaultScrollToValue?: string;
     // Explicit Base UI registry index for a Create row rendered outside Options.
@@ -359,6 +385,7 @@ const RootImplementation = ({
   manualFiltering: manualFilteringProp,
   onItemHighlighted: onItemHighlightedProp,
   defaultScrollToValue,
+  options: optionsProp,
   page: pageProp,
   defaultPage: defaultPageProp,
   onPageChange: onPageChangeProp,
@@ -387,9 +414,25 @@ const RootImplementation = ({
   >(undefined);
   const optionCloseOnClickRef = useRef(false);
 
-  const options = useMemo(() => {
+  const childOptions = useMemo(() => {
     return getOptions({ children, isOptionElement, isOptionsElement });
   }, [children]);
+
+  const externalCollection = useMemo<ExternalCollection | undefined>(() => {
+    if (!optionsProp) return undefined;
+    const indexByValue = new Map<string, number>();
+    optionsProp.forEach((option, index) => {
+      // First occurrence wins, like Base UI's `findItemIndex`. `new Map(...)`
+      // would keep the last and disagree on a duplicated value.
+      if (!indexByValue.has(option.value))
+        indexByValue.set(option.value, index);
+    });
+    return { options: optionsProp, indexByValue };
+  }, [optionsProp]);
+  const isExternallyVirtualized = externalCollection !== undefined;
+
+  // The children cannot describe an option the window never mounts.
+  const options = externalCollection?.options ?? childOptions;
 
   const searchControl = useMemo(() => findSearchControl(children), [children]);
   const searchControlsFiltering =
@@ -397,11 +440,17 @@ const RootImplementation = ({
     searchControl?.onValueChange !== undefined;
   // A controlled Search historically replaced Telegraph's filter. Preserve
   // that behavior unless Root explicitly chooses its filtering mode.
-  const manualFiltering = manualFilteringProp ?? searchControlsFiltering;
+  // A collection forces it on. Telegraph's filter reads only mounted rows, so
+  // hiding one leaves a gap Base UI still counts and arrow keys land on nothing.
+  const manualFiltering = isExternallyVirtualized
+    ? true
+    : (manualFilteringProp ?? searchControlsFiltering);
 
-  // Whether a `Combobox.Create` is rendered. It mounts a matching row that isn't
-  // part of `options`, so `filteredItems` must reserve a slot for it (below).
-  const hasCreate = useMemo(() => childrenContainCreate(children), [children]);
+  // The `Combobox.Create` row, when one is rendered. It mounts a row that is not
+  // part of `options`, so `filteredItems` reserves a slot for it below. Create
+  // hides itself when the query is already one of its `values`, so the slot has
+  // to follow the same rule.
+  const createControl = useMemo(() => findCreateControl(children), [children]);
 
   // Whether a `Combobox.Input` anchor is rendered (input-as-trigger arrangement)
   // instead of the button `Combobox.Trigger`.
@@ -555,7 +604,10 @@ const RootImplementation = ({
     // Manual filtering and free-text modes without list autocomplete leave the
     // rendered options unchanged. The query still drives Create and clear.
     const query = shouldFilterOptions ? activeSearchQuery : "";
-    const values = scopedOptions
+    // The collection arrives pre-narrowed, since it forces `manualFiltering`,
+    // so the filter below is a pass-through for it.
+    const source = externalCollection?.options ?? scopedOptions;
+    const values = source
       .filter(
         (option) =>
           !query ||
@@ -575,16 +627,27 @@ const RootImplementation = ({
     // it navigable. Use the typed query (`activeSearchQuery`) rather than the
     // filter `query` (forced empty under manualFiltering, and the wrong field in
     // free-text mode) so Create stays navigable in every arrangement.
-    // Over-reserving when Create is hidden (its value already exists) is harmless.
+    // Reserving a slot Create does not fill leaves a dead index: with a
+    // collection this list also sizes `listRef`, so arrow keys would land on a
+    // row that is not there.
     const createQuery = activeSearchQuery;
     let nextCreateIndex: number | undefined;
-    if (createQuery && hasCreate) {
+    const createRenders =
+      createControl !== undefined &&
+      !createControl.values?.includes(createQuery);
+    if (createQuery && createRenders) {
       nextCreateIndex = values.length;
       values.push(createQuery);
     }
 
     return { filteredItems: values, createIndex: nextCreateIndex };
-  }, [scopedOptions, activeSearchQuery, hasCreate, shouldFilterOptions]);
+  }, [
+    externalCollection,
+    scopedOptions,
+    activeSearchQuery,
+    createControl,
+    shouldFilterOptions,
+  ]);
   // Open state, kept controllable like the old menu-backed implementation. This
   // mirrors `useControllableState` (same no-op-on-equal and updater semantics)
   // but threads Base UI's change `details` to the consumer's `onOpenChange` as an
@@ -906,6 +969,7 @@ const RootImplementation = ({
         errored,
         layout,
         options,
+        externalCollection,
         manualFiltering,
         autocompleteMode,
         defaultScrollToValue,
@@ -940,7 +1004,12 @@ const RootImplementation = ({
           }
           // Children mode: options are mounted `Combobox.Item`s; this list only
           // re-seeds the type-to-filter highlight and bounds it to the rows.
-          filteredItems={filteredItems}
+          // With a collection it goes over as `items` instead. See the
+          // Combobox root below.
+          filteredItems={isExternallyVirtualized ? undefined : filteredItems}
+          items={isExternallyVirtualized ? filteredItems : undefined}
+          filter={isExternallyVirtualized ? null : undefined}
+          virtualized={isExternallyVirtualized}
           itemToStringValue={itemToStringLabel}
           autoHighlight={autoHighlightProp ?? false}
           openOnInputClick={openOnInputClickProp}
@@ -997,7 +1066,14 @@ const RootImplementation = ({
           // only exists so Base UI re-seeds the type-to-filter highlight per
           // keystroke and bounds it to the mounted rows. See the `filteredItems`
           // memo above for why it is computed conservatively.
-          filteredItems={filteredItems}
+          filteredItems={isExternallyVirtualized ? undefined : filteredItems}
+          // `items`, not `filteredItems`, is what sizes Base UI's navigation
+          // bounds (`listRef.current.length`) to the whole collection. Without
+          // it `virtualized` cannot keep one arrow press to one option.
+          // `filter={null}` stops a second filter pass shifting the indexes.
+          items={isExternallyVirtualized ? filteredItems : undefined}
+          filter={isExternallyVirtualized ? null : undefined}
+          virtualized={isExternallyVirtualized}
           itemToStringLabel={itemToStringLabel}
           modal={modal}
           disabled={disabled}
@@ -1647,10 +1723,13 @@ const Options = <T extends TgphElement = "div">({
   const optionsRef = useRef<HTMLDivElement>(null);
   const composedRef = useComposedRefs<unknown>(tgphRef, optionsRef);
 
-  // Scroll to the selected option or defaultScrollToValue when the combobox opens.
+  // Scroll to the selected option or defaultScrollToValue when the combobox
+  // opens. With a collection the target is usually unmounted and the consumer's
+  // virtualizer owns the scroll position, so skip it.
+  const isExternallyVirtualized = context.externalCollection !== undefined;
   useEffect(() => {
     let rafId: number | undefined;
-    if (context.open && optionsRef.current) {
+    if (!isExternallyVirtualized && context.open && optionsRef.current) {
       // Small delay to ensure the DOM has rendered
       rafId = requestAnimationFrame(() => {
         const selectedValue = isSingleSelect(context.value)
@@ -1690,7 +1769,12 @@ const Options = <T extends TgphElement = "div">({
     return () => {
       if (rafId !== undefined) cancelAnimationFrame(rafId);
     };
-  }, [context.open, context.value, context.defaultScrollToValue]);
+  }, [
+    isExternallyVirtualized,
+    context.open,
+    context.value,
+    context.defaultScrollToValue,
+  ]);
 
   return (
     <BaseCombobox.List
@@ -1803,6 +1887,15 @@ const Option = <T extends TgphElement = "div">({
     ? contextValue.includes(value)
     : contextValue === value;
 
+  // Base UI looks a row's index up by value. An `onSelect` row carries a
+  // sentinel value it never finds, and a row it cannot place gets no id, never
+  // reaches `listRef`, and drops out of keyboard reach. So pass the index.
+  const externalCollection = context.externalCollection;
+  const collectionIndex = externalCollection?.indexByValue.get(value);
+  // A Create row carries its own index and is not in the collection.
+  const positionInCollection =
+    explicitIndex === undefined ? collectionIndex : undefined;
+
   // Depend on the specific stable context values rather than the whole (per-
   // render) context object, so this callback isn't rebuilt every Root render.
   const { closeOnSelect, onValueChange, setOpen } = context;
@@ -1896,7 +1989,7 @@ const Option = <T extends TgphElement = "div">({
       // without matching a real value or the "no selection" state, and their
       // commit is cancelled at the value bridge (see `isOnSelectItemValue`).
       value={onSelect ? ON_SELECT_ITEM_VALUE : value}
-      index={explicitIndex}
+      index={explicitIndex ?? collectionIndex}
       disabled={disabled}
       nativeButton={resolveButtonNativeButton({
         as: props.as ?? "div",
@@ -1913,6 +2006,18 @@ const Option = <T extends TgphElement = "div">({
           // Accessibility attributes
           role="option"
           aria-selected={isSelected ? "true" : "false"}
+          // The mounted rows are a window, so the DOM no longer says how long
+          // the list is or where this row sits in it.
+          aria-setsize={
+            positionInCollection === undefined
+              ? undefined
+              : externalCollection?.options.length
+          }
+          aria-posinset={
+            positionInCollection === undefined
+              ? undefined
+              : positionInCollection + 1
+          }
           // Custom attributes
           data-tgph-combobox-option
           data-tgph-combobox-option-value={value}
@@ -2301,13 +2406,17 @@ const Empty = <T extends TgphElement = "div">({
   const context = useContext(ComboboxContext);
   const [isVisible, setIsVisible] = useState(false);
 
+  // A window can be empty for a frame before the virtualizer measures, while
+  // the collection is full. Require both to be empty.
+  const externalOptionCount = context.externalCollection?.options.length;
+
   useEffect(() => {
     const content = context.contentRef?.current;
     if (!content) return undefined;
 
     const recount = () => {
       const options = content.querySelectorAll("[data-tgph-combobox-option]");
-      setIsVisible(options.length === 0);
+      setIsVisible(options.length === 0 && !externalOptionCount);
     };
 
     recount();
@@ -2318,7 +2427,7 @@ const Empty = <T extends TgphElement = "div">({
     observer.observe(content, { childList: true, subtree: true });
 
     return () => observer.disconnect();
-  }, [context.contentRef]);
+  }, [context.contentRef, externalOptionCount]);
 
   if (isVisible) {
     return (
@@ -2393,17 +2502,22 @@ const Create = <T extends TgphElement = "div">({
 
 // Walk the children for a `Combobox.Create` so the Root's `filteredItems` list
 // can reserve a slot for the row Create mounts (it isn't one of `options`).
-const childrenContainCreate = (children: ReactNode): boolean => {
-  let found = false;
+const findCreateControl = (
+  children: ReactNode,
+): { values?: Array<string> } | undefined => {
+  let found: { values?: Array<string> } | undefined;
   Children.forEach(children, (child) => {
     if (found || !(typeof child === "object" && child !== null)) return;
-    const element = child as ReactElement<{ children?: ReactNode }>;
+    const element = child as ReactElement<{
+      children?: ReactNode;
+      values?: Array<string>;
+    }>;
     if (element.type === Create) {
-      found = true;
+      found = { values: element.props?.values };
       return;
     }
     if (element.props?.children) {
-      found = childrenContainCreate(element.props.children);
+      found = findCreateControl(element.props.children);
     }
   });
   return found;
