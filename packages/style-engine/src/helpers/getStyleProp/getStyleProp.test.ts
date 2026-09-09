@@ -139,6 +139,107 @@ describe("getStyleProp", () => {
     });
   });
 
+  describe("directional neutral values", () => {
+    const cssVars = {
+      borderColor: {
+        cssVar: "--border-color",
+        value: "var(--tgph-VARIABLE)",
+      },
+      borderBottomColor: {
+        cssVar: "--border-color",
+        value: "var(--tgph-VARIABLE)",
+        direction: "bottom" as const,
+        neutral: "transparent",
+      },
+      borderTopColor: {
+        cssVar: "--border-color",
+        value: "var(--tgph-VARIABLE)",
+        direction: "top" as const,
+        neutral: "transparent",
+      },
+      borderWidth: {
+        cssVar: "--border-width",
+        value: "var(--tgph-spacing-VARIABLE)",
+      },
+      borderBottomWidth: {
+        cssVar: "--border-width",
+        value: "var(--tgph-spacing-VARIABLE)",
+        direction: "bottom" as const,
+      },
+    };
+
+    it("fills unset sides of a directional color with its neutral", () => {
+      const { styleProp } = getStyleProp({
+        props: { borderBottomColor: "gray-4" },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--border-color":
+          "transparent transparent var(--tgph-gray-4) transparent",
+      });
+    });
+
+    it("keeps a shorthand color on the sides a directional color leaves alone", () => {
+      const { styleProp } = getStyleProp({
+        props: { borderColor: "gray-5", borderBottomColor: "gray-4" },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--border-color":
+          "var(--tgph-gray-5) var(--tgph-gray-5) var(--tgph-gray-4) var(--tgph-gray-5)",
+      });
+    });
+
+    it("combines two directional colors on one variable", () => {
+      const { styleProp } = getStyleProp({
+        props: { borderTopColor: "red-9", borderBottomColor: "gray-4" },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--border-color":
+          "var(--tgph-red-9) transparent var(--tgph-gray-4) transparent",
+      });
+    });
+
+    it("defaults to a 0 neutral when a prop declares none", () => {
+      const { styleProp } = getStyleProp({
+        props: { borderBottomWidth: "px" },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--border-width": "0 0 var(--tgph-spacing-px) 0",
+      });
+    });
+
+    it("keeps a shorthand width on the sides a directional width leaves alone", () => {
+      const { styleProp } = getStyleProp({
+        props: { borderWidth: "1", borderBottomWidth: "2" },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--border-width":
+          "var(--tgph-spacing-1) var(--tgph-spacing-1) var(--tgph-spacing-2) var(--tgph-spacing-1)",
+      });
+    });
+
+    it("applies the neutral to a directional color in a pseudo state", () => {
+      const { styleProp } = getStyleProp({
+        props: { _hover: { borderBottomColor: "gray-4" } },
+        cssVars,
+      });
+
+      expect(styleProp).toStrictEqual({
+        "--hover--border-color":
+          "transparent transparent var(--tgph-gray-4) transparent",
+      });
+    });
+  });
+
   describe("applyAxisValues", () => {
     it("handles overflow on x-axis only", () => {
       const { styleProp } = getStyleProp({

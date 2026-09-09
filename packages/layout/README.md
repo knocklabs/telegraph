@@ -94,6 +94,10 @@ The foundational layout primitive. Renders as any HTML element with comprehensiv
 | ------------------------------------------------ | --------------------------------- | --------------------------------- |
 | `bg` / `backgroundColor`                         | `ColorToken`                      | Background color                  |
 | `borderColor`                                    | `ColorToken`                      | Border color                      |
+| `borderTopColor`                                 | `ColorToken`                      | Top border color                  |
+| `borderRightColor`                               | `ColorToken`                      | Right border color                |
+| `borderBottomColor`                              | `ColorToken`                      | Bottom border color               |
+| `borderLeftColor`                                | `ColorToken`                      | Left border color                 |
 | `border` / `borderWidth`                         | `SpacingToken`                    | Border width on all sides         |
 | `borderTop` / `borderTopWidth`                   | `SpacingToken`                    | Top border width                  |
 | `borderRight` / `borderRightWidth`               | `SpacingToken`                    | Right border width                |

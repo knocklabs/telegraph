@@ -1,0 +1,5 @@
+/* Stylesheets for Box.browser.test.tsx. The built layout CSS is what a consumer
+   loads, and it is the only form where `border-color: var(--border-color)`
+   exists as a real declaration for the browser to parse and reject. */
+@import "@telegraph/layout/default.css";
+@import "@telegraph/tokens/default";

@@ -20,6 +20,10 @@ export type CssVarProp = {
   value: string;
   direction?: Direction;
   axis?: Axis;
+  // Value written to the sides a directional prop does not set. Defaults to
+  // `0`, which only parses where the property takes a length —
+  // `border-color: 0 0 red 0` is invalid and drops to `currentColor`.
+  neutral?: string;
 };
 
 // Supported pseudo-class states for the object syntax
@@ -81,11 +85,14 @@ type ApplyDirectionProps = {
   currentValueOfCssVar: string | undefined;
   value: string;
   direction?: Direction;
+  neutral?: string;
 };
 
-// Helper function to parse directional values (handles calc() expressions)
+// Splits a four-value CSS list into its slots. Hand-tokenized rather than
+// split on spaces because a slot can be a `calc()` with spaces of its own.
 const parseDirectionalValues = (
   value: string,
+  neutral: string,
 ): [string, string, string, string] => {
   const matches: string[] = [];
   let current = "";
@@ -111,32 +118,29 @@ const parseDirectionalValues = (
     }
   }
 
-  // Push the last value
   if (current) {
     matches.push(current);
   }
 
-  // Ensure we always have 4 values
-  while (matches.length < 4) {
-    matches.push("0");
-  }
+  // Fill to 4 the way CSS fills a box shorthand, so a value already written by
+  // a non-directional prop (`borderColor`) keeps applying to the sides a
+  // directional prop leaves alone.
+  const [top = neutral, right = top, bottom = top, left = right] = matches;
 
-  return [
-    matches[0] || "0",
-    matches[1] || "0",
-    matches[2] || "0",
-    matches[3] || "0",
-  ];
+  return [top, right, bottom, left];
 };
 
 // For values like margin and padding that require 4 values
 const applyDirectionalValues = ({
-  currentValueOfCssVar = "0 0 0 0",
+  currentValueOfCssVar,
   value,
   direction,
+  neutral = "0",
 }: ApplyDirectionProps) => {
-  const [top, right, bottom, left] =
-    parseDirectionalValues(currentValueOfCssVar);
+  const [top, right, bottom, left] = parseDirectionalValues(
+    currentValueOfCssVar ?? "",
+    neutral,
+  );
 
   const newValues = {
     top,
@@ -305,6 +309,7 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
       currentValueOfCssVar,
       value: mappedValue,
       direction: matchingCssVar.direction,
+      neutral: matchingCssVar.neutral,
     });
     return { ...styleProp, [cssVarName]: directionalValue };
   }
