@@ -139,7 +139,7 @@ describe("getStyleProp", () => {
     });
   });
 
-  describe("directional neutral values", () => {
+  describe("directional empty slots", () => {
     const cssVars = {
       borderColor: {
         cssVar: "--border-color",
@@ -149,13 +149,11 @@ describe("getStyleProp", () => {
         cssVar: "--border-color",
         value: "var(--tgph-VARIABLE)",
         direction: "bottom" as const,
-        neutral: "transparent",
       },
       borderTopColor: {
         cssVar: "--border-color",
         value: "var(--tgph-VARIABLE)",
         direction: "top" as const,
-        neutral: "transparent",
       },
       borderWidth: {
         cssVar: "--border-width",
@@ -168,7 +166,7 @@ describe("getStyleProp", () => {
       },
     };
 
-    it("fills unset sides of a directional color with its neutral", () => {
+    it("fills unset sides of a directional color with transparent", () => {
       const { styleProp } = getStyleProp({
         props: { borderBottomColor: "gray-4" },
         cssVars,
@@ -204,7 +202,7 @@ describe("getStyleProp", () => {
       });
     });
 
-    it("defaults to a 0 neutral when a prop declares none", () => {
+    it("keeps a 0 empty slot for a length-valued variable", () => {
       const { styleProp } = getStyleProp({
         props: { borderBottomWidth: "px" },
         cssVars,
@@ -227,7 +225,7 @@ describe("getStyleProp", () => {
       });
     });
 
-    it("applies the neutral to a directional color in a pseudo state", () => {
+    it("uses the color empty slot in a pseudo state too", () => {
       const { styleProp } = getStyleProp({
         props: { _hover: { borderBottomColor: "gray-4" } },
         cssVars,

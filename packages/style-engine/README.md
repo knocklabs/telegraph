@@ -136,7 +136,6 @@ type CssVarProp = {
   cssVar: string; // CSS custom property name
   value: string; // Value template (use VARIABLE for prop value)
   direction?: Direction; // For directional properties
-  neutral?: string; // Value for sides a directional prop does not set (default "0")
 };
 
 type Direction =

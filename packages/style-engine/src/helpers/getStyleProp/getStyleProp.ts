@@ -20,10 +20,6 @@ export type CssVarProp = {
   value: string;
   direction?: Direction;
   axis?: Axis;
-  // Value written to the sides a directional prop does not set. Defaults to
-  // `0`, which only parses where the property takes a length —
-  // `border-color: 0 0 red 0` is invalid and drops to `currentColor`.
-  neutral?: string;
 };
 
 // Supported pseudo-class states for the object syntax
@@ -85,14 +81,20 @@ type ApplyDirectionProps = {
   currentValueOfCssVar: string | undefined;
   value: string;
   direction?: Direction;
-  neutral?: string;
+  cssVarName: string;
 };
+
+// What to write into the slots a directional prop does not own. `0` is a
+// length: a color list rejects it, and the browser then drops the whole
+// declaration and falls back to `currentColor`.
+const emptySlotFor = (cssVarName: string): string =>
+  cssVarName.endsWith("-color") ? "transparent" : "0";
 
 // Splits a four-value CSS list into its slots. Hand-tokenized rather than
 // split on spaces because a slot can be a `calc()` with spaces of its own.
 const parseDirectionalValues = (
   value: string,
-  neutral: string,
+  emptySlot: string,
 ): [string, string, string, string] => {
   const matches: string[] = [];
   let current = "";
@@ -125,7 +127,7 @@ const parseDirectionalValues = (
   // Fill to 4 the way CSS fills a box shorthand, so a value already written by
   // a non-directional prop (`borderColor`) keeps applying to the sides a
   // directional prop leaves alone.
-  const [top = neutral, right = top, bottom = top, left = right] = matches;
+  const [top = emptySlot, right = top, bottom = top, left = right] = matches;
 
   return [top, right, bottom, left];
 };
@@ -135,11 +137,11 @@ const applyDirectionalValues = ({
   currentValueOfCssVar,
   value,
   direction,
-  neutral = "0",
+  cssVarName,
 }: ApplyDirectionProps) => {
   const [top, right, bottom, left] = parseDirectionalValues(
     currentValueOfCssVar ?? "",
-    neutral,
+    emptySlotFor(cssVarName),
   );
 
   const newValues = {
@@ -300,8 +302,8 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
   mappedValue: string,
   cssVarNameOverride?: string,
 ): StyleProp<CssVars> => {
-  const cssVarName = (cssVarNameOverride ??
-    matchingCssVar.cssVar) as keyof StyleProp<CssVars>;
+  const rawCssVarName = cssVarNameOverride ?? matchingCssVar.cssVar;
+  const cssVarName = rawCssVarName as keyof StyleProp<CssVars>;
 
   if (matchingCssVar.direction) {
     const currentValueOfCssVar = styleProp?.[cssVarName] as string | undefined;
@@ -309,7 +311,7 @@ const applyCssVar = <CssVars extends CssVarsPropObject<CssVars>>(
       currentValueOfCssVar,
       value: mappedValue,
       direction: matchingCssVar.direction,
-      neutral: matchingCssVar.neutral,
+      cssVarName: rawCssVarName,
     });
     return { ...styleProp, [cssVarName]: directionalValue };
   }

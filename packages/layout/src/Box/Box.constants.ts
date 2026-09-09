@@ -199,25 +199,21 @@ const baseCssVars: Record<keyof BaseStyleProps, CssVarProp> = {
     cssVar: "--border-color",
     value: "var(--tgph-VARIABLE)",
     direction: "top",
-    neutral: "transparent",
   },
   borderBottomColor: {
     cssVar: "--border-color",
     value: "var(--tgph-VARIABLE)",
     direction: "bottom",
-    neutral: "transparent",
   },
   borderLeftColor: {
     cssVar: "--border-color",
     value: "var(--tgph-VARIABLE)",
     direction: "left",
-    neutral: "transparent",
   },
   borderRightColor: {
     cssVar: "--border-color",
     value: "var(--tgph-VARIABLE)",
     direction: "right",
-    neutral: "transparent",
   },
   borderWidth: {
     cssVar: "--border-width",
