@@ -1,3 +1,4 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { TooltipIfTruncated } from ".";
@@ -67,5 +68,13 @@ describe("TooltipIfTruncated types", () => {
     >
       <span>Some text</span>
     </TooltipIfTruncated>;
+  });
+
+  // TruncatedText's `tooltipProps` reaches these through the exported alias
+  // rather than `TgphComponentProps<typeof TooltipIfTruncated>` (KNO-14778).
+  it("is exactly the component's own props", () => {
+    expectTypeOf<TooltipIfTruncatedProps>().toEqualTypeOf<
+      TgphComponentProps<typeof TooltipIfTruncated>
+    >();
   });
 });

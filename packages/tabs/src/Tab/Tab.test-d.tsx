@@ -1,3 +1,4 @@
+import type { MenuItemProps } from "@telegraph/menu";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Tab } from ".";
@@ -56,5 +57,17 @@ describe("Tab types", () => {
     <Tab value="a" size="1" selected disabled p="2" />;
     <Tab value="a" as="a" className="c" style={{ opacity: 1 }} />;
     <Tab value="a" aria-label="tab" data-testid="tab" onClick={() => {}} />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof MenuItem<T>`, and nothing
+  // else fails if a rename picks the wrong upstream type.
+  it("derives its base props from MenuItem's exported props type", () => {
+    expectTypeOf<TabProps<"button">>().toExtend<MenuItemProps<"button">>();
+    expectTypeOf<TabProps<"button">["leadingIcon"]>().toEqualTypeOf<
+      MenuItemProps<"button">["leadingIcon"]
+    >();
+    expectTypeOf<TabProps<"button">["textProps"]>().toEqualTypeOf<
+      MenuItemProps<"button">["textProps"]
+    >();
   });
 });

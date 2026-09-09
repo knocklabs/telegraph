@@ -1,3 +1,5 @@
+import type { IconProps as TelegraphIconProps } from "@telegraph/icon";
+import type { TextProps as TypographyTextProps } from "@telegraph/typography";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -69,5 +71,27 @@ describe("Button types", () => {
     <Button disabled type="submit" onClick={() => {}} />;
     <Button aria-label="save" data-testid="save" className="c" />;
     <Button style={{ opacity: 0.5 }} state="loading" active />;
+  });
+
+  // Pins the KNO-14778 swap. `Button.Icon` widens icon's props on purpose —
+  // dropping `internal_iconType` to "simplify" it would break icon placement.
+  it("derives its sub-component props from the upstream exported types", () => {
+    expectTypeOf<ButtonIconProps<"span">>().toEqualTypeOf<
+      TelegraphIconProps<"span"> & {
+        internal_iconType?: "leading" | "trailing";
+      }
+    >();
+    expectTypeOf<ButtonTextProps<"span">["size"]>().toEqualTypeOf<
+      TypographyTextProps<"span">["size"]
+    >();
+    expectTypeOf<ButtonTextProps<"span">["color"]>().toEqualTypeOf<
+      TypographyTextProps<"span">["color"]
+    >();
+    expectTypeOf<ButtonTextProps<"span">["weight"]>().toEqualTypeOf<
+      TypographyTextProps<"span">["weight"]
+    >();
+    // Re-declared, so it stays `T` rather than typography's
+    // `OptionalAsPropConfig` pair.
+    expectTypeOf<ButtonTextProps<"p">["as"]>().toEqualTypeOf<"p" | undefined>();
   });
 });

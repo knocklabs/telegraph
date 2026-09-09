@@ -1,3 +1,4 @@
+import type { ButtonProps } from "@telegraph/button";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Modal } from ".";
@@ -175,5 +176,20 @@ describe("Modal types", () => {
     <Modal.Header as="header" className="header" />;
     <Modal.Footer as="footer" style={{ opacity: 1 }} />;
     <Modal.Heading as="h3" size="3" weight="medium" />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Button<T>`, and nothing
+  // else fails if a rename picks the wrong upstream type.
+  it("derives its close props from Button's exported props type", () => {
+    expectTypeOf<ModalCloseProps<"button">>().toExtend<ButtonProps<"button">>();
+    expectTypeOf<ModalCloseProps<"button">["variant"]>().toEqualTypeOf<
+      ButtonProps<"button">["variant"]
+    >();
+    expectTypeOf<ModalCloseProps<"button">["size"]>().toEqualTypeOf<
+      ButtonProps<"button">["size"]
+    >();
+    expectTypeOf<ModalCloseProps<"a">["as"]>().toEqualTypeOf<
+      ButtonProps<"a">["as"]
+    >();
   });
 });

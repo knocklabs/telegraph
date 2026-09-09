@@ -2,7 +2,6 @@ import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import {
   type CSSPropertiesWithVars,
   type RemappedOmit,
-  type TgphComponentProps,
   type TgphElement,
   callLegacyDismissHandlers,
   createTgphBaseUIRender,
@@ -108,7 +107,7 @@ export type TooltipBaseProps<T extends TgphElement = "div"> = {
   children?: ReactNode;
   label?: ReactNode;
   // Drop `as`: the popup label always renders `motion.div` (KNO-14501).
-  labelProps?: RemappedOmit<TgphComponentProps<typeof Stack<T>>, "as">;
+  labelProps?: RemappedOmit<StackProps<T>, "as">;
   enabled?: boolean;
   // When true, prevents focus events from instantly opening the tooltip. This
   // preserves delayed hover behavior when Select/Combobox move DOM focus on hover.

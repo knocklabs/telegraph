@@ -1,3 +1,4 @@
+import type { ButtonRootProps } from "@telegraph/button";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -77,5 +78,22 @@ describe("MenuItem types", () => {
       leadingComponent={<span />}
       onClick={() => {}}
     />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Button.Root<T>`, and nothing
+  // else fails if a rename picks the wrong upstream type.
+  it("derives its base props from Button.Root's exported props type", () => {
+    expectTypeOf<MenuItemProps<"button">>().toExtend<
+      ButtonRootProps<"button">
+    >();
+    expectTypeOf<MenuItemProps<"button">["variant"]>().toEqualTypeOf<
+      ButtonRootProps<"button">["variant"]
+    >();
+    expectTypeOf<MenuItemProps<"button">["size"]>().toEqualTypeOf<
+      ButtonRootProps<"button">["size"]
+    >();
+    expectTypeOf<MenuItemProps<"a">["as"]>().toEqualTypeOf<
+      ButtonRootProps<"a">["as"]
+    >();
   });
 });

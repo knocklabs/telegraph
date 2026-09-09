@@ -1,10 +1,9 @@
 import {
   OptionalAsPropConfig,
   RemappedOmit,
-  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Box, type BoxProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -19,7 +18,7 @@ type BaseCodeProps = Omit<StyleProps, "color"> & {
 };
 
 export type CodeProps<T extends TgphElement = "code"> = BaseCodeProps &
-  RemappedOmit<TgphComponentProps<typeof Box<T>>, keyof BaseCodeProps> &
+  RemappedOmit<BoxProps<T>, keyof BaseCodeProps> &
   OptionalAsPropConfig<T>;
 
 const Code = <T extends TgphElement = "code">({
