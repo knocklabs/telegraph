@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { Button } from "@telegraph/button";
 import type { TgphComponentProps } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { Modal } from "@telegraph/modal";
 import { Text } from "@telegraph/typography";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { Combobox as TelegraphCombobox } from "../Combobox";
 
@@ -840,6 +841,99 @@ export const FreeTextAutocomplete: Story = {
                   {channel}
                 </TelegraphCombobox.Option>
               ))}
+            </TelegraphCombobox.Options>
+            <TelegraphCombobox.Empty />
+          </TelegraphCombobox.Content>
+        </TelegraphCombobox.Root>
+      </Box>
+    );
+  },
+};
+
+// TanStack Virtual mounts only the visible rows, while `options` carries the
+// whole collection. Base UI numbers rows against the collection, so one arrow
+// press moves one option even as rows scroll in and out. Filtering and
+// scrolling both become the consumer's work.
+const VIRTUAL_CHANNELS = Array.from({ length: 5000 }, (_, index) => ({
+  value: `channel-${index}`,
+  label: `#channel-${index}`,
+}));
+
+const VIRTUAL_ROW_HEIGHT = 32;
+
+export const ExternalVirtualization: Story = {
+  render: ({ ...args }) => {
+    // eslint-disable-next-line
+    const [value, setValue] = useState<string | undefined>("channel-1234");
+    // eslint-disable-next-line
+    const [query, setQuery] = useState("");
+    // eslint-disable-next-line
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    // eslint-disable-next-line
+    const options = useMemo(
+      () =>
+        query
+          ? VIRTUAL_CHANNELS.filter((channel) =>
+              channel.label.toLowerCase().includes(query.toLowerCase()),
+            )
+          : VIRTUAL_CHANNELS,
+      [query],
+    );
+
+    // eslint-disable-next-line
+    const virtualizer = useVirtualizer({
+      count: options.length,
+      getScrollElement: () => scrollRef.current,
+      estimateSize: () => VIRTUAL_ROW_HEIGHT,
+      overscan: 8,
+    });
+
+    return (
+      <Box w="80">
+        <TelegraphCombobox.Root
+          {...args}
+          value={value}
+          onValueChange={setValue}
+          options={options}
+          placeholder="Select a channel"
+          onItemHighlighted={(_highlightedValue, details) => {
+            if (details.index >= 0) {
+              virtualizer.scrollToIndex(details.index);
+            }
+          }}
+        >
+          <TelegraphCombobox.Trigger />
+          <TelegraphCombobox.Content>
+            <TelegraphCombobox.Search value={query} onValueChange={setQuery} />
+            <TelegraphCombobox.Options tgphRef={scrollRef} maxHeight="64">
+              <Box
+                w="full"
+                position="relative"
+                style={{ height: `${virtualizer.getTotalSize()}px` }}
+              >
+                {virtualizer.getVirtualItems().map((row) => {
+                  const option = options[row.index];
+                  if (!option) return null;
+                  return (
+                    <Box
+                      key={option.value}
+                      w="full"
+                      position="absolute"
+                      top="0"
+                      left="0"
+                      style={{
+                        height: `${row.size}px`,
+                        transform: `translateY(${row.start}px)`,
+                      }}
+                    >
+                      <TelegraphCombobox.Option value={option.value}>
+                        {option.label}
+                      </TelegraphCombobox.Option>
+                    </Box>
+                  );
+                })}
+              </Box>
             </TelegraphCombobox.Options>
             <TelegraphCombobox.Empty />
           </TelegraphCombobox.Content>
