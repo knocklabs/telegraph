@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 
-import { Tooltip as TelegraphTooltip } from "./Tooltip";
+import { Tooltip as TelegraphTooltip, type TooltipProps } from "./Tooltip";
 import { TooltipGroupProvider } from "./Tooltip.hooks";
 
 const meta: Meta = {
@@ -59,7 +58,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof TelegraphTooltip>>;
+type Story = StoryObj<TooltipProps>;
 
 export const Default: Story = {
   render: ({ ...args }) => {
