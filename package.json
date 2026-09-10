@@ -14,7 +14,6 @@
   "scripts": {
     "generate:package": "moon generate package",
     "dev:packages": "turbo dev --filter=\"./packages/*\" --concurrency=100",
-    "dev:examples": "turbo dev:examples --filter=\"./examples/*\" --concurrency=100",
     "build:packages": "turbo build --filter=\"./packages/*\"",
     "build:config": "turbo build --filter=\"./packages/*-config\"",
     "test": "vitest run --config=./vitest/config.mts",
@@ -35,7 +34,6 @@
   },
   "workspaces": [
     "packages/*",
-    "examples/*",
     "apps/*"
   ],
   "manypkg": {
