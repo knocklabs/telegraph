@@ -41,13 +41,13 @@ jobs:
         run: yarn build:packages
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1.8.0
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          commit: "chore(repo): version packages"
-          title: "chore(repo): version packages"
-          version: yarn changeset version
-          publish: yarn release
+          github-token: ${{ secrets.KNOCK_ENG_BOT_GITHUB_TOKEN }}
+          commit-message: "chore(repo): version packages"
+          pr-title: "chore(repo): version packages"
+          version-script: yarn changeset version
+          publish-script: yarn release
         env:
-          GITHUB_TOKEN: ${{ secrets.KNOCK_ENG_BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
