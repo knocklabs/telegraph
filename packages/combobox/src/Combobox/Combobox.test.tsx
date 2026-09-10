@@ -2818,9 +2818,12 @@ describe("engine compatibility", () => {
     );
 
     await user.click(trigger!);
+    // `aria-expanded` flips a tick before Base UI moves focus into the popup,
+    // so waiting on it alone leaves Escape dispatching at the trigger.
     await waitFor(() =>
-      expect(trigger).toHaveAttribute("aria-expanded", "true"),
+      expect(queryPortalElement("[data-tgph-combobox-search]")).toHaveFocus(),
     );
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
     await user.keyboard("[Escape]");
 
     await waitFor(() =>
@@ -2828,7 +2831,10 @@ describe("engine compatibility", () => {
     );
     expect(onAncestorKeyDown).not.toHaveBeenCalled();
 
+    // Dismissal restores focus to the trigger asynchronously, and jsdom
+    // re-asserts `activeElement` after `.focus()`, so settle before dispatching.
     trigger?.focus();
+    await waitFor(() => expect(trigger).toHaveFocus());
     await user.keyboard("[Escape]");
 
     expect(onAncestorKeyDown).toHaveBeenCalledTimes(1);

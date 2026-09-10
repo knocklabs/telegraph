@@ -1,12 +1,21 @@
-import { Button } from "@telegraph/button";
+import {
+  Button,
+  type ButtonIconProps,
+  type ButtonProps,
+  type ButtonTextProps,
+} from "@telegraph/button";
 import {
   RefToTgphRef,
   type RemappedOmit,
-  type TgphComponentProps,
   type TgphElement,
 } from "@telegraph/helpers";
 import { Box, Stack, type StackProps } from "@telegraph/layout";
-import { Tag } from "@telegraph/tag";
+import {
+  Tag,
+  type TagButtonProps,
+  type TagRootProps,
+  type TagTextProps,
+} from "@telegraph/tag";
 import { Tooltip, type TooltipProps } from "@telegraph/tooltip";
 import { TooltipIfTruncated } from "@telegraph/truncate";
 import { Text } from "@telegraph/typography";
@@ -33,7 +42,7 @@ import type { MultiSelect, SingleSelect } from "./Combobox.types";
 // the body discards it, so leaving it in the type promised an accessible name
 // this never renders.
 type TriggerIndicatorProps<T extends TgphElement> = Omit<
-  Partial<TgphComponentProps<typeof Button.Icon<T>>>,
+  Partial<ButtonIconProps<T>>,
   "as" | "alt"
 >;
 
@@ -61,16 +70,14 @@ const TriggerIndicator = <T extends TgphElement = "span">(
       icon={icon}
       aria-hidden={ariaHidden}
       {...(props as RemappedOmit<
-        TgphComponentProps<typeof Button.Icon<typeof motion.span>>,
+        ButtonIconProps<typeof motion.span>,
         "as" | "icon" | "alt" | "aria-hidden"
       >)}
     />
   );
 };
 
-type TriggerClearProps<T extends TgphElement> = TgphComponentProps<
-  typeof Button<T>
-> & {
+type TriggerClearProps<T extends TgphElement> = ButtonProps<T> & {
   tooltipProps?: TooltipProps;
 };
 
@@ -135,7 +142,7 @@ const TriggerClear = <T extends TgphElement = "button">(
           marginBottom: "calc(-1 * var(--tgph-spacing-1)",
         }}
         {...(props as RemappedOmit<
-          TgphComponentProps<typeof Button<"button">>,
+          ButtonProps<"button">,
           | "type"
           | "icon"
           | "leadingIcon"
@@ -150,9 +157,7 @@ const TriggerClear = <T extends TgphElement = "button">(
   );
 };
 
-type TriggerTextProps<T extends TgphElement> = TgphComponentProps<
-  typeof Button.Text<T>
->;
+type TriggerTextProps<T extends TgphElement> = ButtonTextProps<T>;
 
 const TriggerText = <T extends TgphElement = "span">(
   triggerTextProps: TriggerTextProps<T>,
@@ -175,7 +180,7 @@ const TriggerText = <T extends TgphElement = "span">(
         textOverflow="ellipsis"
         overflow="hidden"
         {...(props as RemappedOmit<
-          TgphComponentProps<typeof Button.Text<"span">>,
+          ButtonTextProps<"span">,
           "color" | "textOverflow" | "overflow" | "children"
         >)}
       >
@@ -185,9 +190,7 @@ const TriggerText = <T extends TgphElement = "span">(
   );
 };
 
-type TriggerPlaceholderProps<T extends TgphElement> = TgphComponentProps<
-  typeof Button.Text<T>
->;
+type TriggerPlaceholderProps<T extends TgphElement> = ButtonTextProps<T>;
 
 const TriggerPlaceholder = <T extends TgphElement = "span">(
   triggerPlaceholderProps: TriggerPlaceholderProps<T>,
@@ -202,7 +205,7 @@ const TriggerPlaceholder = <T extends TgphElement = "span">(
         textOverflow="ellipsis"
         overflow="hidden"
         {...(props as RemappedOmit<
-          TgphComponentProps<typeof Button.Text<"span">>,
+          ButtonTextProps<"span">,
           "color" | "textOverflow" | "overflow" | "children"
         >)}
       >
@@ -287,7 +290,7 @@ const TriggerTagContext = createContext<{
 // Drop `as`: this always renders `motion.span` (KNO-14501).
 type TriggerTagRootProps<T extends TgphElement> = {
   value: string;
-} & RemappedOmit<TgphComponentProps<typeof Tag.Root<T>>, "as">;
+} & RemappedOmit<TagRootProps<T>, "as">;
 
 const TriggerTagRoot = <T extends TgphElement = "span">(
   triggerTagRootProps: TriggerTagRootProps<T>,
@@ -313,7 +316,7 @@ const TriggerTagRoot = <T extends TgphElement = "span">(
         rounded="1"
         layout="position"
         {...(props as RemappedOmit<
-          TgphComponentProps<typeof Tag.Root<typeof motion.span>>,
+          TagRootProps<typeof motion.span>,
           "as" | "size" | "maxH" | "rounded" | "children"
         >)}
       >
@@ -323,9 +326,7 @@ const TriggerTagRoot = <T extends TgphElement = "span">(
   );
 };
 
-type TriggerTagTextProps<T extends TgphElement> = TgphComponentProps<
-  typeof Tag.Text<T>
->;
+type TriggerTagTextProps<T extends TgphElement> = TagTextProps<T>;
 
 const TriggerTagText = <T extends TgphElement = "span">(
   triggerTagTextProps: TriggerTagTextProps<T>,
@@ -354,20 +355,13 @@ const TriggerTagText = <T extends TgphElement = "span">(
   }, [context.options, context.value, triggerTagContext.value]);
 
   return (
-    <Tag.Text
-      {...(props as RemappedOmit<
-        TgphComponentProps<typeof Tag.Text<"span">>,
-        "children"
-      >)}
-    >
+    <Tag.Text {...(props as RemappedOmit<TagTextProps<"span">, "children">)}>
       {children || option}
     </Tag.Text>
   );
 };
 
-type TriggerTagButtonProps<T extends TgphElement> = TgphComponentProps<
-  typeof Tag.Button<T>
->;
+type TriggerTagButtonProps<T extends TgphElement> = TagButtonProps<T>;
 
 const TriggerTagButton = <T extends TgphElement = "button">(
   triggerTagButtonProps: TriggerTagButtonProps<T>,
@@ -400,7 +394,7 @@ const TriggerTagButton = <T extends TgphElement = "button">(
       }}
       data-tgph-combobox-tag-button
       {...(props as RemappedOmit<
-        TgphComponentProps<typeof Tag.Button<"button">>,
+        TagButtonProps<"button">,
         | "icon"
         | "leadingIcon"
         | "trailingIcon"
@@ -415,9 +409,7 @@ const TriggerTagButton = <T extends TgphElement = "button">(
   );
 };
 
-type TriggerTagDefaultProps<T extends TgphElement> = TgphComponentProps<
-  typeof TriggerTagRoot<T>
->;
+type TriggerTagDefaultProps<T extends TgphElement> = TriggerTagRootProps<T>;
 
 const TriggerTagDefault = <T extends TgphElement = "span">(
   triggerTagDefaultProps: TriggerTagDefaultProps<T>,

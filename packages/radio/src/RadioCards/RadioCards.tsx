@@ -5,10 +5,13 @@ import {
 } from "@base-ui/react/direction-provider";
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
-import { Button } from "@telegraph/button";
+import {
+  Button,
+  type ButtonIconProps,
+  type ButtonTextProps,
+} from "@telegraph/button";
 import {
   type CSSPropertiesWithVars,
-  type TgphComponentProps,
   type TgphElement,
   createTgphBaseUIRender,
 } from "@telegraph/helpers";
@@ -201,9 +204,7 @@ const Item = forwardRef<ItemRef, ItemProps>(
 );
 Item.displayName = "Item";
 
-export type ItemTitleProps<T extends TgphElement = "span"> = TgphComponentProps<
-  typeof Button.Text<T>
->;
+export type ItemTitleProps<T extends TgphElement = "span"> = ButtonTextProps<T>;
 
 const ItemTitle = <T extends TgphElement = "span">(
   itemTitleProps: ItemTitleProps<T>,
@@ -219,7 +220,7 @@ const ItemTitle = <T extends TgphElement = "span">(
 };
 
 export type ItemDescriptionProps<T extends TgphElement = "span"> =
-  TgphComponentProps<typeof Button.Text<T>>;
+  ButtonTextProps<T>;
 const ItemDescription = <T extends TgphElement = "span">(
   itemDescriptionProps: ItemDescriptionProps<T>,
 ) => {
@@ -236,9 +237,7 @@ const ItemDescription = <T extends TgphElement = "span">(
   );
 };
 
-export type ItemIconProps<T extends TgphElement = "span"> = TgphComponentProps<
-  typeof Button.Icon<T>
->;
+export type ItemIconProps<T extends TgphElement = "span"> = ButtonIconProps<T>;
 
 const ItemIcon = <T extends TgphElement = "span">(props: ItemIconProps<T>) => {
   return <Button.Icon color="gray" data-tgph-radio-card-icon {...props} />;
