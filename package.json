@@ -25,7 +25,7 @@
     "type:check": "node node_modules/typescript-7/bin/tsc -p tsconfig.check.json",
     "dev:storybook": "storybook dev --port 3005 --no-open --exact-port",
     "build:storybook": "storybook build",
-    "release": "yarn release:publish && yarn changeset tag",
+    "release": "yarn release:publish && yarn changeset git-tag",
     "release:publish": "yarn workspaces foreach -Rpt --no-private --from '@telegraph/*' npm publish --access public --tolerate-republish",
     "postinstall": "manypkg check",
     "prepare": "husky",
@@ -68,7 +68,7 @@
   "devDependencies": {
     "@actions/core": "^3.0.1",
     "@changesets/changelog-github": "^1.0.0",
-    "@changesets/cli": "^2.31.0",
+    "@changesets/cli": "^3.0.1",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.2",
     "@github-ui/storybook-addon-performance-panel": "^1.2.0",
