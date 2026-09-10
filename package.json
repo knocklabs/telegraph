@@ -104,7 +104,7 @@
     "typescript": "^6.0.2",
     "typescript-7": "npm:typescript@7.0.2",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "4.1.10",
+    "vitest": "5.0.0",
     "vitest-axe": "0.1.0",
     "vitest-browser-react": "^2.2.0"
   }
