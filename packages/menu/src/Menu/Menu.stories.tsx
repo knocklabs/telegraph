@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import {
   Archive,
@@ -12,7 +11,7 @@ import {
   Share2,
 } from "lucide-react";
 
-import { Menu as TelegraphMenu } from "./Menu";
+import { Menu as TelegraphMenu, type RootProps as MenuRootProps } from "./Menu";
 import { TypeableTriggerExample } from "./Menu.fixtures";
 
 const meta: Meta = {
@@ -41,7 +40,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<TgphComponentProps<typeof TelegraphMenu.Root>>;
+type Story = StoryObj<MenuRootProps>;
 
 export const Default: Story = {
   render: ({ ...args }) => {

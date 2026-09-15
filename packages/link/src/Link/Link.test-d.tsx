@@ -1,3 +1,5 @@
+import type { IconProps } from "@telegraph/icon";
+import type { TextProps as TypographyTextProps } from "@telegraph/typography";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -102,5 +104,18 @@ describe("Link types", () => {
     <Link.Root as="span" className="c" style={{ opacity: 0.5 }} />;
     <Link.Text as="p" data-testid="text" />;
     <Link.Icon icon={Bell} aria-hidden color="blue" mr="1" />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Icon<T>` / `typeof Text<T>`.
+  // Nothing else fails if a rename picks the wrong upstream type.
+  it("derives its sub-component props from the upstream exported types", () => {
+    expectTypeOf<LinkIconProps<"span">>().toEqualTypeOf<IconProps<"span">>();
+    expectTypeOf<LinkTextProps<"span">["size"]>().toEqualTypeOf<
+      TypographyTextProps<"span">["size"]
+    >();
+    expectTypeOf<LinkTextProps<"span">["color"]>().toEqualTypeOf<
+      TypographyTextProps<"span">["color"]
+    >();
+    expectTypeOf<LinkTextProps<"p">["as"]>().toEqualTypeOf<"p" | undefined>();
   });
 });

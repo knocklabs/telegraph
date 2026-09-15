@@ -1,3 +1,6 @@
+import type { ButtonProps } from "@telegraph/button";
+import type { IconProps } from "@telegraph/icon";
+import type { TextProps as TypographyTextProps } from "@telegraph/typography";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -129,5 +132,18 @@ describe("Tag types", () => {
     <Tag.CopyButton textToCopy="copy me" />;
     <Tag.CopyButton textToCopy="copy me" onClick={() => {}} className="c" />;
     <Tag.Icon icon={Bell} aria-hidden mr="1" />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Icon<T>` / `typeof Button<T>`.
+  // Nothing else fails if a rename picks the wrong upstream type.
+  it("derives its sub-component props from the upstream exported types", () => {
+    expectTypeOf<TagIconProps<"span">>().toEqualTypeOf<IconProps<"span">>();
+    expectTypeOf<TagButtonProps<"button">>().toEqualTypeOf<
+      ButtonProps<"button">
+    >();
+    expectTypeOf<TagTextProps<"span">["size"]>().toEqualTypeOf<
+      TypographyTextProps<"span">["size"]
+    >();
+    expectTypeOf<TagTextProps<"p">["as"]>().toEqualTypeOf<"p" | undefined>();
   });
 });

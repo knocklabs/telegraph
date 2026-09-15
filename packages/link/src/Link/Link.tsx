@@ -3,10 +3,12 @@ import type {
   PolymorphicPropsWithTgphRef,
   RemappedOmit,
   Required,
-  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Icon as TelegraphIcon } from "@telegraph/icon";
+import {
+  Icon as TelegraphIcon,
+  type IconProps as TelegraphIconProps,
+} from "@telegraph/icon";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { Text as TelegraphText } from "@telegraph/typography";
 import type { TextProps as TypographyTextProps } from "@telegraph/typography";
@@ -76,7 +78,7 @@ const Root = <T extends TgphElement = "a">(rootProps: RootProps<T>) => {
 };
 
 export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
-  TgphComponentProps<typeof TelegraphText<T>>,
+  TypographyTextProps<T>,
   "as"
 > & {
   as?: T;
@@ -103,9 +105,7 @@ const Text = <T extends TgphElement = "span">(linkTextProps: TextProps<T>) => {
   );
 };
 
-export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
-  typeof TelegraphIcon<T>
->;
+export type IconProps<T extends TgphElement = "span"> = TelegraphIconProps<T>;
 
 const Icon = <T extends TgphElement = "span">(linkIconProps: IconProps<T>) => {
   const { icon, size, color, ...props } = linkIconProps as IconProps<"span">;
@@ -124,7 +124,7 @@ const Icon = <T extends TgphElement = "span">(linkIconProps: IconProps<T>) => {
 type DefaultIconProps = RemappedOmit<IconProps, "as"> & { as?: TgphElement };
 type DefaultTextProps = RemappedOmit<TextProps, "as"> & { as?: TgphElement };
 export type DefaultProps<T extends TgphElement = "a"> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root<T>> & {
+  RootProps<T> & {
     icon?: DefaultIconProps;
     textProps?: DefaultTextProps;
   };

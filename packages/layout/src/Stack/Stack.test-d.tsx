@@ -1,3 +1,4 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Stack } from ".";
@@ -93,5 +94,19 @@ describe("Stack types", () => {
     <Stack data-testid="stack" onClick={() => {}}>
       children
     </Stack>;
+  });
+
+  // Downstream packages reach these props through the exported alias, not
+  // `TgphComponentProps<typeof Stack<T>>` (KNO-14778). They must not drift.
+  it("is exactly the component's own props", () => {
+    expectTypeOf<StackProps<"div">>().toEqualTypeOf<
+      TgphComponentProps<typeof Stack<"div">>
+    >();
+    expectTypeOf<StackProps<"a">>().toEqualTypeOf<
+      TgphComponentProps<typeof Stack<"a">>
+    >();
+    expectTypeOf<StackProps<"label">>().toEqualTypeOf<
+      TgphComponentProps<typeof Stack<"label">>
+    >();
   });
 });

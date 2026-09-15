@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Ellipsis } from "lucide-react";
 
-import { Popover } from "./Popover";
+import {
+  Popover,
+  type ContentProps as PopoverContentProps,
+  type RootProps as PopoverRootProps,
+} from "./Popover";
 
 const placementOptions = [
   {
@@ -57,10 +60,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<
-  TgphComponentProps<typeof Popover.Root> &
-    TgphComponentProps<typeof Popover.Content>
->;
+type Story = StoryObj<PopoverRootProps & PopoverContentProps>;
 
 export const Default: Story = {
   render: ({ ...args }) => {

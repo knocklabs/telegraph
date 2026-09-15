@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@telegraph/button";
-import type { TgphComponentProps } from "@telegraph/helpers";
 import { Box, Stack } from "@telegraph/layout";
 import { Modal } from "@telegraph/modal";
 import { Text } from "@telegraph/typography";
 import { useState } from "react";
 
-import { Combobox as TelegraphCombobox } from "../Combobox";
+import {
+  Combobox as TelegraphCombobox,
+  type ComboboxRootProps,
+} from "../Combobox";
 
 const meta: Meta = {
   tags: ["autodocs"],
@@ -22,10 +24,7 @@ export default meta;
 // The value-carrying props are dropped from the shared args: every story owns
 // that state locally, over its own value type.
 type Story = StoryObj<
-  Omit<
-    TgphComponentProps<typeof TelegraphCombobox.Root>,
-    "value" | "defaultValue" | "onValueChange" | "layout"
-  >
+  Omit<ComboboxRootProps, "value" | "defaultValue" | "onValueChange" | "layout">
 >;
 
 const LABELS = ["Email", "SMS", "Push", "In-App", "Webhook"];

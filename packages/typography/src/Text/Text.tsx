@@ -1,10 +1,9 @@
 import {
   OptionalAsPropConfig,
   RemappedOmit,
-  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Box, type BoxProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -16,7 +15,7 @@ type BaseTextProps = Omit<StyleProps, "color"> & {
 };
 
 export type TextProps<T extends TgphElement = "span"> = BaseTextProps &
-  RemappedOmit<TgphComponentProps<typeof Box<T>>, keyof BaseTextProps> &
+  RemappedOmit<BoxProps<T>, keyof BaseTextProps> &
   OptionalAsPropConfig<T>;
 
 const Text = <T extends TgphElement = "span">({

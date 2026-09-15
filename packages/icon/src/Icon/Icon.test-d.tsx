@@ -1,3 +1,4 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -89,5 +90,16 @@ describe("Icon types", () => {
     <Icon icon={Bell} alt="bell" as="div" />;
     <Icon icon={Bell} alt="bell" className="c" style={{ opacity: 0.5 }} />;
     <Icon icon={Bell} alt="bell" data-testid="icon" onClick={() => {}} />;
+  });
+
+  // Downstream packages reach these props through the exported alias, not
+  // `TgphComponentProps<typeof Icon<T>>` (KNO-14778). They must not drift.
+  it("is exactly the component's own props", () => {
+    expectTypeOf<IconProps<"span">>().toEqualTypeOf<
+      TgphComponentProps<typeof Icon<"span">>
+    >();
+    expectTypeOf<IconProps<"div">>().toEqualTypeOf<
+      TgphComponentProps<typeof Icon<"div">>
+    >();
   });
 });

@@ -1,3 +1,5 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
+import type { BoxProps } from "@telegraph/layout";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Heading } from ".";
@@ -81,5 +83,29 @@ describe("Heading types", () => {
     <Heading as="h2" data-testid="heading" onClick={() => {}}>
       children
     </Heading>;
+  });
+
+  // See the matching test in Text.test-d.tsx.
+  it("inherits Box's props at Box's own types", () => {
+    expectTypeOf<HeadingProps<"h3">["p"]>().toEqualTypeOf<
+      BoxProps<"h3">["p"]
+    >();
+    expectTypeOf<HeadingProps<"h3">["bg"]>().toEqualTypeOf<
+      BoxProps<"h3">["bg"]
+    >();
+    expectTypeOf<HeadingProps<"h3">["tgphRef"]>().toEqualTypeOf<
+      BoxProps<"h3">["tgphRef"]
+    >();
+  });
+
+  // Downstream packages reach these props through the exported alias, not
+  // `TgphComponentProps<typeof Heading<T>>` (KNO-14778). They must not drift.
+  it("is exactly the component's own props", () => {
+    expectTypeOf<HeadingProps<"h2">>().toEqualTypeOf<
+      TgphComponentProps<typeof Heading<"h2">>
+    >();
+    expectTypeOf<HeadingProps<"h3">>().toEqualTypeOf<
+      TgphComponentProps<typeof Heading<"h3">>
+    >();
   });
 });

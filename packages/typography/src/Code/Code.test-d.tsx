@@ -1,3 +1,5 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
+import type { BoxProps } from "@telegraph/layout";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Code } from ".";
@@ -80,5 +82,27 @@ describe("Code types", () => {
     <Code as="code" data-testid="code" onClick={() => {}}>
       children
     </Code>;
+  });
+
+  // See the matching test in Text.test-d.tsx.
+  it("inherits Box's props at Box's own types", () => {
+    expectTypeOf<CodeProps<"pre">["p"]>().toEqualTypeOf<BoxProps<"pre">["p"]>();
+    expectTypeOf<CodeProps<"pre">["bg"]>().toEqualTypeOf<
+      BoxProps<"pre">["bg"]
+    >();
+    expectTypeOf<CodeProps<"pre">["tgphRef"]>().toEqualTypeOf<
+      BoxProps<"pre">["tgphRef"]
+    >();
+  });
+
+  // Code has no downstream consumer today, but `CodeProps` is the name callers
+  // are pointed at (KNO-14778), so it has to keep meaning the same thing.
+  it("is exactly the component's own props", () => {
+    expectTypeOf<CodeProps<"code">>().toEqualTypeOf<
+      TgphComponentProps<typeof Code<"code">>
+    >();
+    expectTypeOf<CodeProps<"pre">>().toEqualTypeOf<
+      TgphComponentProps<typeof Code<"pre">>
+    >();
   });
 });

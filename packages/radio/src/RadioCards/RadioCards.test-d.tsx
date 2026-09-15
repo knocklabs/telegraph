@@ -1,3 +1,4 @@
+import type { ButtonIconProps, ButtonTextProps } from "@telegraph/button";
 import { Bell } from "lucide-react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -164,5 +165,19 @@ describe("RadioCards types", () => {
         <RadioCards.ItemTitle as="span">Option two</RadioCards.ItemTitle>
       </RadioCards.Item>
     </RadioCards.Root>;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Button.Text<T>`, and nothing
+  // else fails if a rename picks the wrong upstream type.
+  it("derives its item sub-component props from Button's exported types", () => {
+    expectTypeOf<RadioCardsItemTitleProps<"span">>().toEqualTypeOf<
+      ButtonTextProps<"span">
+    >();
+    expectTypeOf<RadioCardsItemDescriptionProps<"span">>().toEqualTypeOf<
+      ButtonTextProps<"span">
+    >();
+    expectTypeOf<RadioCardsItemIconProps<"span">>().toEqualTypeOf<
+      ButtonIconProps<"span">
+    >();
   });
 });
