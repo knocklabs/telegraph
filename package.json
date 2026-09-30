@@ -84,9 +84,9 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@vitest/browser": "4.1.10",
-    "@vitest/browser-playwright": "4.1.10",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/browser": "5.0.3",
+    "@vitest/browser-playwright": "5.0.3",
+    "@vitest/coverage-v8": "5.0.3",
     "husky": "^9.1.7",
     "jsdom": "^30.0.1",
     "lint-staged": "^17.0.2",
@@ -104,7 +104,7 @@
     "typescript": "^6.0.2",
     "typescript-7": "npm:typescript@7.0.2",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "4.1.10",
+    "vitest": "5.0.3",
     "vitest-axe": "0.1.0",
     "vitest-browser-react": "^2.2.0"
   }
