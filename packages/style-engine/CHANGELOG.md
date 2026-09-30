@@ -1,5 +1,24 @@
 # @telegraph/style-engine
 
+## 0.4.3
+
+### Patch Changes
+
+- [#996](https://github.com/knocklabs/telegraph/pull/996) [`b17c1d1`](https://github.com/knocklabs/telegraph/commit/b17c1d1664321ce7954e6b6f45ff887e7e6e67c2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump postcss from 8.5.27 to 8.5.28
+
+- [#989](https://github.com/knocklabs/telegraph/pull/989) [`f88b8c0`](https://github.com/knocklabs/telegraph/commit/f88b8c08b36c10df0098702b9da85ff24be9d5c6) Thanks [@kylemcd](https://github.com/kylemcd)! - fix(layout): make directional border color props apply their token
+
+  `borderTopColor`, `borderBottomColor`, `borderLeftColor` and
+  `borderRightColor` expanded into `--border-color` with `0` in the sides they
+  did not set. `border-color: 0 0 <color> 0` is invalid CSS, so the browser
+  dropped the declaration and the border painted in `currentColor`.
+
+  Directional expansion now picks the empty slot from the variable it writes:
+  `transparent` for a color, `0` everywhere else. It also fills a value that is
+  already there the way CSS fills a box shorthand, so a base `borderColor` keeps
+  applying to the sides a directional prop leaves alone. No prop table or public
+  type changes.
+
 ## 0.4.2
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @telegraph/truncate
 
+## 0.3.2
+
+### Patch Changes
+
+- [#990](https://github.com/knocklabs/telegraph/pull/990) [`84d5ee4`](https://github.com/knocklabs/telegraph/commit/84d5ee4fd3dc1e0dfeb528d6eb3da39211cdef4a) Thanks [@kylemcd](https://github.com/kylemcd)! - Type sub-components with the upstream's exported props type instead of `TgphComponentProps<typeof X<T>>`.
+
+  `TgphComponentProps<typeof X<T>>` resolves through `React.ComponentProps` on a generic component, which defers the mapped type at an unresolved `T`. Every one of these sites now names the props type the upstream package already exports (`BoxProps`, `StackProps`, `IconProps`, `TextProps`, `ButtonRootProps`, `TagRootProps`, `MenuItemProps`, and so on).
+
+  The resolved types are unchanged — only the expression that names them — so this is emitted-declaration churn, not an API change. `*.test-d.tsx` now pins each of those exported types to the component's own `ComponentProps`, so the two cannot drift apart again.
+
+- Updated dependencies [[`84d5ee4`](https://github.com/knocklabs/telegraph/commit/84d5ee4fd3dc1e0dfeb528d6eb3da39211cdef4a)]:
+  - @telegraph/tooltip@0.6.4
+  - @telegraph/typography@0.5.3
+
 ## 0.3.1
 
 ### Patch Changes
