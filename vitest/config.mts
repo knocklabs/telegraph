@@ -1,4 +1,4 @@
-import { configDefaults, defineConfig } from "vitest/config";
+import { configDefaults, defineConfig, mergeConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const sharedConfig = defineConfig({
@@ -10,7 +10,6 @@ const sharedConfig = defineConfig({
       all: false,
       provider: "v8",
     },
-    projects: ["packages/*"],
     globals: true,
     setupFiles: ["../../vitest/setup"],
     environment: "jsdom",
@@ -33,4 +32,11 @@ const sharedConfig = defineConfig({
 });
 
 export { sharedConfig };
-export default sharedConfig;
+
+// The root config is the only one that fans out to the per-package projects.
+// Package configs spread `sharedConfig`, so `projects` must not live there —
+// Vitest 5 resolves `projects` inside project configs too, and "packages/*"
+// matches nothing relative to a package directory.
+export default mergeConfig(sharedConfig, {
+  test: { projects: ["packages/*"] },
+});
