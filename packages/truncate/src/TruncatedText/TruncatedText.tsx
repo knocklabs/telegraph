@@ -1,8 +1,11 @@
-import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
-import { Text } from "@telegraph/typography";
+import type { TgphElement } from "@telegraph/helpers";
+import { Text, type TextProps } from "@telegraph/typography";
 import { type ComponentPropsWithoutRef, type ReactNode, type Ref } from "react";
 
-import { TooltipIfTruncated } from "../TooltipIfTruncated";
+import {
+  TooltipIfTruncated,
+  type TooltipIfTruncatedProps,
+} from "../TooltipIfTruncated";
 
 import {
   middleIsTruncated,
@@ -156,7 +159,7 @@ const LTR_ISOLATE = { direction: "ltr", unicodeBidi: "isolate" } as const;
 // ── Public component ────────────────────────────────────────────────────────
 
 export type TruncatedTextProps<T extends TgphElement = "span"> = {
-  tooltipProps?: Partial<TgphComponentProps<typeof TooltipIfTruncated>>;
+  tooltipProps?: Partial<TooltipIfTruncatedProps>;
   /**
    * `truncate` (default) clips the end, `fruncate` the start, and `middle`
    * elides the middle — all with native `text-overflow: ellipsis`, so they clip
@@ -174,7 +177,7 @@ export type TruncatedTextProps<T extends TgphElement = "span"> = {
   split?: Split;
   /** `middle` mode: which end stays whole; the other truncates (one ellipsis). */
   priority?: TruncatePriority;
-} & TgphComponentProps<typeof Text<T>>;
+} & TextProps<T>;
 
 const TruncatedText = <T extends TgphElement = "span">(
   truncatedTextProps: TruncatedTextProps<T>,

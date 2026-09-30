@@ -1,10 +1,9 @@
 import {
   OptionalAsPropConfig,
   RemappedOmit,
-  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Box } from "@telegraph/layout";
+import { Box, type BoxProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import clsx from "clsx";
 
@@ -16,7 +15,7 @@ type BaseHeadingProps = Omit<StyleProps, "color"> & {
 };
 
 export type HeadingProps<T extends TgphElement = "h2"> = BaseHeadingProps &
-  RemappedOmit<TgphComponentProps<typeof Box<T>>, keyof BaseHeadingProps> &
+  RemappedOmit<BoxProps<T>, keyof BaseHeadingProps> &
   OptionalAsPropConfig<T>;
 
 const Heading = <T extends TgphElement = "h2">({

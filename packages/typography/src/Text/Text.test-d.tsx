@@ -1,3 +1,5 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
+import type { BoxProps } from "@telegraph/layout";
 import type { CSSProperties } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
@@ -104,5 +106,32 @@ describe("Text types", () => {
       // @ts-expect-error not a CSS property
       style={{ colr: "red" }}
     />;
+  });
+
+  // The passthrough is `BoxProps<T>` (KNO-14778). Swapping that source back to
+  // a deferred `ComponentProps` widens these to `any` without failing tsc.
+  it("inherits Box's props at Box's own types", () => {
+    expectTypeOf<TextProps<"p">["p"]>().toEqualTypeOf<BoxProps<"p">["p"]>();
+    expectTypeOf<TextProps<"p">["bg"]>().toEqualTypeOf<BoxProps<"p">["bg"]>();
+    expectTypeOf<TextProps<"p">["rounded"]>().toEqualTypeOf<
+      BoxProps<"p">["rounded"]
+    >();
+    expectTypeOf<TextProps<"p">["tgphRef"]>().toEqualTypeOf<
+      BoxProps<"p">["tgphRef"]
+    >();
+  });
+
+  // Downstream packages reach these props through the exported alias, not
+  // `TgphComponentProps<typeof Text<T>>` (KNO-14778). They must not drift.
+  it("is exactly the component's own props", () => {
+    expectTypeOf<TextProps<"span">>().toEqualTypeOf<
+      TgphComponentProps<typeof Text<"span">>
+    >();
+    expectTypeOf<TextProps<"p">>().toEqualTypeOf<
+      TgphComponentProps<typeof Text<"p">>
+    >();
+    expectTypeOf<TextProps<"label">>().toEqualTypeOf<
+      TgphComponentProps<typeof Text<"label">>
+    >();
   });
 });

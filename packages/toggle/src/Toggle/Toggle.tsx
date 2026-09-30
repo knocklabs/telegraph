@@ -2,15 +2,14 @@ import { Button, type ButtonRootProps } from "@telegraph/button";
 import {
   type PolymorphicPropsWithTgphRef,
   type RemappedOmit,
-  type TgphComponentProps,
   type TgphElement,
   VisuallyHidden,
   useControllableState,
 } from "@telegraph/helpers";
 import { Icon } from "@telegraph/icon";
 import { Stack, type StackProps } from "@telegraph/layout";
-import { Tag } from "@telegraph/tag";
-import { Text } from "@telegraph/typography";
+import { Tag, type TagProps } from "@telegraph/tag";
+import { Text, type TextProps } from "@telegraph/typography";
 import { CheckCircle2, Circle } from "lucide-react";
 import {
   type ReactNode,
@@ -213,9 +212,7 @@ const Switch = ({ as, className, style, ...props }: SwitchProps) => {
   );
 };
 
-export type LabelProps<T extends TgphElement = "label"> = TgphComponentProps<
-  typeof Text<T>
-> & {
+export type LabelProps<T extends TgphElement = "label"> = TextProps<T> & {
   hidden?: boolean;
 };
 
@@ -227,10 +224,7 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
     ...props
   } = labelProps as LabelProps<"label">;
   const context = useContext(ToggleContext);
-  const textProps = props as RemappedOmit<
-    TgphComponentProps<typeof Text<"label">>,
-    "as" | "style"
-  >;
+  const textProps = props as RemappedOmit<TextProps<"label">, "as" | "style">;
 
   if (hidden) {
     return (
@@ -271,11 +265,10 @@ const Label = <T extends TgphElement = "label">(labelProps: LabelProps<T>) => {
 
 // `= "label"`, matching the element it renders below. `"span"` rejected
 // props the rendered element accepts, such as `htmlFor`.
-export type IndicatorProps<T extends TgphElement = "label"> =
-  TgphComponentProps<typeof Tag<T>> & {
-    enabledContent?: ReactNode;
-    disabledContent?: ReactNode;
-  };
+export type IndicatorProps<T extends TgphElement = "label"> = TagProps<T> & {
+  enabledContent?: ReactNode;
+  disabledContent?: ReactNode;
+};
 
 const Indicator = <T extends TgphElement = "label">(
   indicatorProps: IndicatorProps<T>,
@@ -295,7 +288,7 @@ const Indicator = <T extends TgphElement = "label">(
   const size = INDICATOR_SIZE_MAP[context.size];
   // No `Omit`: it would flatten Tag's discriminated `onRemove`/`onCopy` union
   // into a shape no branch accepts.
-  const tagProps = props as TgphComponentProps<typeof Tag<"label">>;
+  const tagProps = props as TagProps<"label">;
 
   return (
     <Tag

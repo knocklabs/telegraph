@@ -1,3 +1,5 @@
+import type { RemappedOmit } from "@telegraph/helpers";
+import type { StackProps } from "@telegraph/layout";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Tooltip, TooltipGroupProvider } from ".";
@@ -136,5 +138,13 @@ describe("Tooltip types", () => {
     <TooltipGroupProvider>
       <span>child</span>
     </TooltipGroupProvider>;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Stack<T>`, and nothing
+  // else fails if a rename picks the wrong upstream type.
+  it("derives labelProps from Stack's exported props type", () => {
+    expectTypeOf<TooltipBaseProps<"div">["labelProps"]>().toEqualTypeOf<
+      RemappedOmit<StackProps<"div">, "as"> | undefined
+    >();
   });
 });

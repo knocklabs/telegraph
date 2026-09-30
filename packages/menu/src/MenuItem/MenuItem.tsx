@@ -1,9 +1,10 @@
 import {
   Button,
   type ButtonIconProps,
+  type ButtonRootProps,
   type ButtonTextProps,
 } from "@telegraph/button";
-import type { TgphComponentProps, TgphElement } from "@telegraph/helpers";
+import type { TgphElement } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { Check } from "lucide-react";
 import * as motion from "motion/react-m";
@@ -16,7 +17,7 @@ type MenuItemIconProps = {
 };
 
 export type MenuItemProps<T extends TgphElement = "button"> =
-  TgphComponentProps<typeof Button.Root<T>> &
+  ButtonRootProps<T> &
     MenuItemIconProps & {
       selected?: boolean | null;
       leadingComponent?: ReactNode;

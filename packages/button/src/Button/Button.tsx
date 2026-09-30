@@ -2,15 +2,21 @@ import {
   type AsAndTgphRefProps,
   RemappedOmit,
   type Required,
-  type TgphComponentProps,
   type TgphElement,
   defineNativeButtonResolver,
   useDeterminateState,
 } from "@telegraph/helpers";
-import { Spinner, Icon as TelegraphIcon } from "@telegraph/icon";
+import {
+  Spinner,
+  Icon as TelegraphIcon,
+  type IconProps as TelegraphIconProps,
+} from "@telegraph/icon";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
-import { Text as TelegraphText } from "@telegraph/typography";
+import {
+  Text as TelegraphText,
+  type TextProps as TelegraphTextProps,
+} from "@telegraph/typography";
 import clsx from "clsx";
 import React from "react";
 
@@ -185,11 +191,10 @@ const Root = <T extends TgphElement = "button">(rootProps: RootProps<T>) => {
   );
 };
 
-export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
-  typeof TelegraphIcon<T>
-> & {
-  internal_iconType?: "leading" | "trailing";
-};
+export type IconProps<T extends TgphElement = "span"> =
+  TelegraphIconProps<T> & {
+    internal_iconType?: "leading" | "trailing";
+  };
 
 const Icon = <T extends TgphElement = "span">(
   buttonIconProps: IconProps<T>,
@@ -239,7 +244,7 @@ const Icon = <T extends TgphElement = "span">(
       {...a11yProps}
       {...iconProps}
       {...(props as Omit<
-        TgphComponentProps<typeof TelegraphIcon<"span">>,
+        TelegraphIconProps<"span">,
         "icon" | "size" | "color" | "variant" | "alt" | "aria-hidden"
       >)}
     />
@@ -247,7 +252,7 @@ const Icon = <T extends TgphElement = "span">(
 };
 
 export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
-  TgphComponentProps<typeof TelegraphText<T>>,
+  TelegraphTextProps<T>,
   "as"
 > & {
   as?: T;
@@ -285,7 +290,7 @@ const Text = <T extends TgphElement = "span">(
         ...style,
       }}
       {...(props as Omit<
-        TgphComponentProps<typeof TelegraphText<"span">>,
+        TelegraphTextProps<"span">,
         "as" | "color" | "size" | "weight" | "style"
       >)}
     />

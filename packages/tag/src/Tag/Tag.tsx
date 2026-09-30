@@ -1,20 +1,26 @@
 import {
   type ButtonRootProps,
   Button as TelegraphButton,
+  type ButtonProps as TelegraphButtonProps,
 } from "@telegraph/button";
 import type {
   PolymorphicProps,
   PolymorphicPropsWithTgphRef,
   RemappedOmit,
   Required,
-  TgphComponentProps,
   TgphElement,
 } from "@telegraph/helpers";
-import { Icon as TelegraphIcon } from "@telegraph/icon";
+import {
+  Icon as TelegraphIcon,
+  type IconProps as TelegraphIconProps,
+} from "@telegraph/icon";
 import { Stack, type StackProps } from "@telegraph/layout";
 import { useStyleEngine } from "@telegraph/style-engine";
 import { Tooltip } from "@telegraph/tooltip";
-import { Text as TelegraphText } from "@telegraph/typography";
+import {
+  Text as TelegraphText,
+  type TextProps as TypographyTextProps,
+} from "@telegraph/typography";
 import { clsx } from "clsx";
 import { Check, Copy, X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
@@ -87,7 +93,7 @@ const Root = <T extends TgphElement = "span">(rootProps: RootProps<T>) => {
 };
 
 export type TextProps<T extends TgphElement = "span"> = RemappedOmit<
-  TgphComponentProps<typeof TelegraphText<T>>,
+  TypographyTextProps<T>,
   "as"
 > & {
   as?: T;
@@ -121,9 +127,8 @@ const Text = <T extends TgphElement = "span">(tagTextProps: TextProps<T>) => {
     />
   );
 };
-export type ButtonProps<T extends TgphElement = "button"> = TgphComponentProps<
-  typeof TelegraphButton<T>
->;
+export type ButtonProps<T extends TgphElement = "button"> =
+  TelegraphButtonProps<T>;
 
 export type CopyButtonProps = ButtonRootProps & {
   textToCopy?: string;
@@ -210,9 +215,7 @@ const Button = <T extends TgphElement = "button">({
     />
   );
 };
-export type IconProps<T extends TgphElement = "span"> = TgphComponentProps<
-  typeof TelegraphIcon<T>
->;
+export type IconProps<T extends TgphElement = "span"> = TelegraphIconProps<T>;
 
 const Icon = <T extends TgphElement = "span">(tagIconProps: IconProps<T>) => {
   const {
@@ -240,7 +243,7 @@ const Icon = <T extends TgphElement = "span">(tagIconProps: IconProps<T>) => {
 };
 
 export type DefaultProps<T extends TgphElement = "span"> = PolymorphicProps<T> &
-  TgphComponentProps<typeof Root<T>> & {
+  RootProps<T> & {
     icon?: IconProps;
     textProps?: TextProps;
     onRemove?: () => void;

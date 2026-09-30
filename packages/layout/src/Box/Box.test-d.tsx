@@ -1,3 +1,4 @@
+import type { TgphComponentProps } from "@telegraph/helpers";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Box } from ".";
@@ -108,5 +109,19 @@ describe("Box types", () => {
     <Box data-testid="box" onClick={() => {}}>
       children
     </Box>;
+  });
+
+  // Downstream packages reach these props through the exported alias, not
+  // `TgphComponentProps<typeof Box<T>>` (KNO-14778). They must not drift.
+  it("is exactly the component's own props", () => {
+    expectTypeOf<BoxProps<"div">>().toEqualTypeOf<
+      TgphComponentProps<typeof Box<"div">>
+    >();
+    expectTypeOf<BoxProps<"a">>().toEqualTypeOf<
+      TgphComponentProps<typeof Box<"a">>
+    >();
+    expectTypeOf<BoxProps<"label">>().toEqualTypeOf<
+      TgphComponentProps<typeof Box<"label">>
+    >();
   });
 });

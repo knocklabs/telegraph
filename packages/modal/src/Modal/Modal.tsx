@@ -1,11 +1,14 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { Button, resolveButtonNativeButton } from "@telegraph/button";
+import {
+  Button,
+  type ButtonProps,
+  resolveButtonNativeButton,
+} from "@telegraph/button";
 import {
   type LegacyDismissEventHandler,
   type LegacyDismissHandlers,
   RefToTgphRef,
   RemappedOmit,
-  type TgphComponentProps,
   type TgphElement,
   VisuallyHidden,
   callLegacyDismissHandlers,
@@ -13,7 +16,10 @@ import {
   useControllableState,
 } from "@telegraph/helpers";
 import { Box, type BoxProps, Stack, type StackProps } from "@telegraph/layout";
-import { Heading as TelegraphHeading } from "@telegraph/typography";
+import {
+  Heading as TelegraphHeading,
+  type HeadingProps as TypographyHeadingProps,
+} from "@telegraph/typography";
 import { X } from "lucide-react";
 import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
@@ -676,9 +682,7 @@ const Content = ({
   );
 };
 
-export type CloseProps<T extends TgphElement = "button"> = TgphComponentProps<
-  typeof Button<T>
-> &
+export type CloseProps<T extends TgphElement = "button"> = ButtonProps<T> &
   Omit<BaseDialogCloseProps, "children" | "color" | "render">;
 const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
   const {
@@ -725,7 +729,7 @@ const Close = <T extends TgphElement = "button">(closeProps: CloseProps<T>) => {
           variant={variant}
           size={size}
           {...(props as Omit<
-            TgphComponentProps<typeof Button<"button">>,
+            ButtonProps<"button">,
             // `icon`/`leadingIcon`/`trailingIcon` are not destructured — a
             // caller can still replace the close glyph. They are omitted here
             // because Button's icon union rejects the explicit `icon` below
@@ -796,7 +800,7 @@ const Footer = <T extends TgphElement = "div">(footerProps: FooterProps<T>) => {
 };
 
 type HeadingProps<T extends TgphElement> = RemappedOmit<
-  TgphComponentProps<typeof TelegraphHeading<T>>,
+  TypographyHeadingProps<T>,
   "as"
 > & {
   as?: T;
@@ -813,7 +817,7 @@ const Heading = <T extends TgphElement = "h2">({
     size,
     weight,
     ...props,
-  } as TgphComponentProps<typeof TelegraphHeading<T>>;
+  } as TypographyHeadingProps<T>;
 
   return <TelegraphHeading {...headingProps} />;
 };

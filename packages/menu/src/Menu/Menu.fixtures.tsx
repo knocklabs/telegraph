@@ -1,8 +1,7 @@
-import type { TgphComponentProps } from "@telegraph/helpers";
 import { Stack } from "@telegraph/layout";
 import { useState } from "react";
 
-import { Menu } from "./Menu";
+import { Menu, type RootProps as MenuRootProps } from "./Menu";
 
 const PROPERTIES = [
   "workflow.name",
@@ -32,9 +31,7 @@ const PROPERTIES = [
  * keys, so the `onKeyDown` below must stop propagation for everything except
  * navigation/selection keys.
  */
-export const TypeableTriggerExample = (
-  args: Partial<TgphComponentProps<typeof Menu.Root>> = {},
-) => {
+export const TypeableTriggerExample = (args: Partial<MenuRootProps> = {}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const matches = PROPERTIES.filter((property) =>

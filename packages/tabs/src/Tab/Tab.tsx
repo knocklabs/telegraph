@@ -1,10 +1,6 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import { resolveButtonNativeButton } from "@telegraph/button";
-import {
-  type TgphComponentProps,
-  type TgphElement,
-  createTgphBaseUIRender,
-} from "@telegraph/helpers";
+import { type TgphElement, createTgphBaseUIRender } from "@telegraph/helpers";
 import { MenuItem, type MenuItemProps } from "@telegraph/menu";
 import { type ComponentPropsWithoutRef, type Ref } from "react";
 
@@ -19,7 +15,7 @@ type BaseTabState = {
 export type TabProps<T extends TgphElement = "button"> = {
   nativeButton?: boolean;
   value: string;
-} & TgphComponentProps<typeof MenuItem<T>>;
+} & MenuItemProps<T>;
 
 // MenuItem's icon props do not depend on its element type, so resolving them
 // through the default element loses nothing.
@@ -38,8 +34,8 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
     ...props
   } = tabProps as TabProps<"button">;
 
-  // Asserted because `@telegraph/menu` derives its icon props from a bare
-  // `TgphComponentProps<typeof Button.Icon>`, which hides `data-*` attributes.
+  // Asserted because `@telegraph/menu` derives its icon props from
+  // `ButtonIconProps`, which hides `data-*` attributes.
   const defaultIconProps = {
     size: "6",
     color: "gray",
@@ -55,7 +51,7 @@ const Tab = <T extends TgphElement = "button">(tabProps: TabProps<T>) => {
   const combinedTrailingIcon = trailingIcon
     ? ({ ...defaultIconProps, ...trailingIcon } as const)
     : undefined;
-  const menuItemProps = props as TgphComponentProps<typeof MenuItem<T>>;
+  const menuItemProps = props as MenuItemProps<T>;
   const nativeButton = resolveButtonNativeButton({
     as: props.as,
     disabled,

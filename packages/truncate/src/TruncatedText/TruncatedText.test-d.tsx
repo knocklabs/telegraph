@@ -1,4 +1,7 @@
+import type { TextProps } from "@telegraph/typography";
 import { describe, expectTypeOf, it } from "vitest";
+
+import type { TooltipIfTruncatedProps } from "../TooltipIfTruncated";
 
 import { TruncatedText } from ".";
 import type {
@@ -127,5 +130,17 @@ describe("TruncatedText types", () => {
       aria-label="truncated"
       data-testid="truncated"
     />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Text<T>`, and nothing
+  // else fails if a rename picks the wrong upstream type.
+  it("derives its base props from the upstream exported types", () => {
+    expectTypeOf<TruncatedTextProps<"p">>().toExtend<TextProps<"p">>();
+    expectTypeOf<TruncatedTextProps<"p">["size"]>().toEqualTypeOf<
+      TextProps<"p">["size"]
+    >();
+    expectTypeOf<TruncatedTextProps<"p">["tooltipProps"]>().toEqualTypeOf<
+      Partial<TooltipIfTruncatedProps> | undefined
+    >();
   });
 });

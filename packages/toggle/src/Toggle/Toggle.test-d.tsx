@@ -1,3 +1,6 @@
+import type { TagProps } from "@telegraph/tag";
+import type { TextProps } from "@telegraph/typography";
+import type { ReactNode } from "react";
 import { describe, expectTypeOf, it } from "vitest";
 
 import { Toggle } from ".";
@@ -150,5 +153,19 @@ describe("Toggle types", () => {
     // It renders `Tag as={as || "label"}`, so the default element has to be
     // `"label"` or props the rendered element accepts are rejected.
     <Toggle.Indicator htmlFor="switch-id" />;
+  });
+
+  // Pins the KNO-14778 swap: these were `typeof Text<T>` / `typeof Tag<T>`.
+  // Nothing else fails if a rename picks the wrong upstream type.
+  it("derives its sub-component props from the upstream exported types", () => {
+    expectTypeOf<ToggleLabelProps<"label">>().toEqualTypeOf<
+      TextProps<"label"> & { hidden?: boolean }
+    >();
+    expectTypeOf<ToggleIndicatorProps<"label">>().toEqualTypeOf<
+      TagProps<"label"> & {
+        enabledContent?: ReactNode;
+        disabledContent?: ReactNode;
+      }
+    >();
   });
 });
