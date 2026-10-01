@@ -2743,7 +2743,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
     lucide-react: "npm:^1.23.0"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -2966,7 +2966,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
     lucide-react: "npm:^1.23.0"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -2993,7 +2993,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
     lucide-react: "npm:^1.23.0"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -3028,7 +3028,7 @@ __metadata:
     "@telegraph/postcss-config": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -3105,7 +3105,7 @@ __metadata:
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
     lucide-react: "npm:^1.23.0"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -3174,7 +3174,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -3202,7 +3202,7 @@ __metadata:
     "@types/react": "npm:^19.2.18"
     clsx: "npm:^2.1.1"
     lucide-react: "npm:^1.23.0"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -3287,7 +3287,7 @@ __metadata:
     "@telegraph/typography": "workspace:^"
     "@telegraph/vite-config": "workspace:^"
     "@types/react": "npm:^19.2.18"
-    motion: "npm:^13.1.0"
+    motion: "npm:^13.4.2"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     typescript: "npm:^6.0.2"
@@ -5159,12 +5159,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^13.1.0":
-  version: 13.1.1
-  resolution: "framer-motion@npm:13.1.1"
+"framer-motion@npm:^13.4.2":
+  version: 13.4.6
+  resolution: "framer-motion@npm:13.4.6"
   dependencies:
-    motion-dom: "npm:^13.1.1"
-    motion-utils: "npm:^13.0.0"
+    motion-dom: "npm:^13.4.5"
+    motion-utils: "npm:^13.3.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -5174,7 +5174,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/db1601442047bbd06286ef9fd5c9af06b4530984dc0cd0f77dffa8590a8dbcac92db05e992b62041455b55db6791bdfba8cd7c0aaa920a2325eba2c277fb7baa
+  checksum: 10c0/507d4d7077310412c4c379a5be5dad672baa6927738c47701db7448395bffb6b5fc64be55ec406ca5502192df2c98f165cbf975ee6b8c442256a262bdad31e5e
   languageName: node
   linkType: hard
 
@@ -6323,27 +6323,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^13.1.1":
-  version: 13.1.1
-  resolution: "motion-dom@npm:13.1.1"
+"motion-dom@npm:^13.4.5":
+  version: 13.4.5
+  resolution: "motion-dom@npm:13.4.5"
   dependencies:
-    motion-utils: "npm:^13.0.0"
-  checksum: 10c0/c7697e6937920f9f584c04d59fe8589e7bbca18a85d2cf1ec7cf4ee229fb29054dda41bec6db2dde4fdf43436f17cfc2a3bbab06d2d9f8232dfa7921e0382d20
+    motion-utils: "npm:^13.3.0"
+  checksum: 10c0/b9443ef8e8ddc9a347959202c9d70f23d99c152c7d5f1b4e0aef416ccca5306d110bd0b06eecab6460cfee60c546ce7d953032fa72211e37c56a0c3c0f22b11b
   languageName: node
   linkType: hard
 
-"motion-utils@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "motion-utils@npm:13.0.0"
-  checksum: 10c0/4b279ce85f71926d668ff5966feb898b174541d16952a61c7150982388553266602ecd2a76e057530076ff8f38d06672e585639ddc73c41dd1a67d04aaa3662d
+"motion-utils@npm:^13.3.0":
+  version: 13.3.0
+  resolution: "motion-utils@npm:13.3.0"
+  checksum: 10c0/9efb8388cc43501d1d6d1f2997fdd3a9e4c2bd42c57c3979586fdbcc83969a3b9aae7e3108cfb53312db0a46d945ad1b4d54ad388a6585f2eb5f5e742a58d927
   languageName: node
   linkType: hard
 
-"motion@npm:^13.1.0":
-  version: 13.1.0
-  resolution: "motion@npm:13.1.0"
+"motion@npm:^13.4.2":
+  version: 13.4.2
+  resolution: "motion@npm:13.4.2"
   dependencies:
-    framer-motion: "npm:^13.1.0"
+    framer-motion: "npm:^13.4.2"
     tslib: "npm:^2.4.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -6353,7 +6353,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/2f974b22929945cf96d0164916fb04c470d993ab81ca9006bd590638edb35d04e202dc3f4e61fede4fd81bc9ef9d8a47555d73c776e428a357e09097e35b2750
+  checksum: 10c0/c5bfb6882b341245ed537d44ee6c7f0f65952edfacdd53c2ac53d3bb8de50e6297e2008f9a07eae6f3b6fd231bbc7ee2576b94772904f680c9138ebe57598eb8
   languageName: node
   linkType: hard
 
