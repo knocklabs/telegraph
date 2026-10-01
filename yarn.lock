@@ -1466,7 +1466,7 @@ __metadata:
     "@manypkg/cli": "npm:^0.25.1"
     "@moonrepo/cli": "npm:^2.3.5"
     "@storybook/addon-links": "npm:^10.5.6"
-    "@storybook/addon-onboarding": "npm:^10.5.6"
+    "@storybook/addon-onboarding": "npm:^10.6.0"
     "@storybook/addon-themes": "npm:^10.5.6"
     "@storybook/icons": "npm:^2.0.2"
     "@storybook/react": "npm:^10.5.6"
@@ -2509,12 +2509,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-onboarding@npm:^10.5.6":
-  version: 10.5.8
-  resolution: "@storybook/addon-onboarding@npm:10.5.8"
+"@storybook/addon-onboarding@npm:^10.6.0":
+  version: 10.6.0
+  resolution: "@storybook/addon-onboarding@npm:10.6.0"
   peerDependencies:
-    storybook: ^10.5.8
-  checksum: 10c0/8faff01f2739b85ada1d7fb7024c27406c823ab0e72c9ffa188d253b52792227f0d72cdbaf5395d6ae8cb0a9e672d9a508d2bf7f6766c9f9e79016b8092ba433
+    storybook: ^10.6.0
+  checksum: 10c0/701fa76bcc854e8bd185d595287a828c776458663fa47afeceee3e436f761b05383ca7185385b373730f1d3653558a8a7861d2bceb1abd1743208f1e2ba3c853
   languageName: node
   linkType: hard
 
