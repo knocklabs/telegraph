@@ -1,5 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { FormEvent } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -10,6 +13,11 @@ import type {
   RootProps as ToggleRootProps,
 } from "./Toggle";
 import { Toggle } from "./Toggle";
+
+const stylesCss = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), "Toggle.styles.css"),
+  "utf8",
+);
 
 describe("Toggle", () => {
   it("is accessible", async () => {
@@ -73,6 +81,40 @@ describe("Toggle", () => {
 
     expect(container.querySelector("[data-tgph-toggle-root]")?.tagName).toBe(
       "SECTION",
+    );
+  });
+
+  // The focus ring hangs off
+  // `[data-tgph-toggle-root]:has([data-tgph-toggle-input]:focus-visible)`.
+  // That only paints the right switch if the input and switch share a root —
+  // pin the ancestry so a composition change cannot silently break the ring
+  // the way an unscoped `:has(...)` once lit every toggle on the page
+  // (KNO-15206).
+  it("keeps the input and switch under the same root for the scoped focus ring", () => {
+    const { container } = render(
+      <>
+        <Toggle.Default label="Invite more" />
+        <Toggle.Default label="Enable auto-join" />
+      </>,
+    );
+
+    const roots = container.querySelectorAll("[data-tgph-toggle-root]");
+    expect(roots).toHaveLength(2);
+
+    for (const root of roots) {
+      expect(root.querySelector("[data-tgph-toggle-input]")).not.toBeNull();
+      expect(root.querySelector("[data-tgph-toggle-switch]")).not.toBeNull();
+    }
+  });
+
+  it("scopes the focus-ring :has() to the toggle root, not the document", () => {
+    expect(stylesCss).toContain(
+      "[data-tgph-toggle-root]:has([data-tgph-toggle-input]:focus-visible)",
+    );
+    // The unscoped form matches from <html>/<body>, so every switch on the
+    // page shared one ring whenever any toggle was focused.
+    expect(stylesCss).not.toMatch(
+      /(?<!\[data-tgph-toggle-root\]):has\(\[data-tgph-toggle-input\]:focus-visible\)/,
     );
   });
 
