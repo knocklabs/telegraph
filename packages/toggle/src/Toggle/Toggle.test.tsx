@@ -76,6 +76,29 @@ describe("Toggle", () => {
     );
   });
 
+  // The focus ring hangs off
+  // `[data-tgph-toggle-root]:has([data-tgph-toggle-input]:focus-visible)`.
+  // That only paints the right switch if the input and switch share a root —
+  // pin the ancestry so a composition change cannot silently break the ring
+  // the way an unscoped `:has(...)` once lit every toggle on the page
+  // (KNO-15206). Real outline isolation is covered by Toggle.browser.test.tsx.
+  it("keeps the input and switch under the same root for the scoped focus ring", () => {
+    const { container } = render(
+      <>
+        <Toggle.Default label="Invite more" />
+        <Toggle.Default label="Enable auto-join" />
+      </>,
+    );
+
+    const roots = container.querySelectorAll("[data-tgph-toggle-root]");
+    expect(roots).toHaveLength(2);
+
+    for (const root of roots) {
+      expect(root.querySelector("[data-tgph-toggle-input]")).not.toBeNull();
+      expect(root.querySelector("[data-tgph-toggle-switch]")).not.toBeNull();
+    }
+  });
+
   it("renders checked when defaultValue is true", () => {
     render(<Toggle.Default label="Enable notifications" defaultValue={true} />);
     const checkbox = screen.getByRole("checkbox");

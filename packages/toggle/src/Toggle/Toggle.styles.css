@@ -5,8 +5,11 @@
   flex-shrink: 0;
 }
 
-/* Focus ring when input receives keyboard focus */
-:has([data-tgph-toggle-input]:focus-visible) [data-tgph-toggle-switch] {
+/* Focus ring when this toggle's input receives keyboard focus.
+   Must be scoped to the root — an unscoped `:has(...)` matches from the
+   document, so every `[data-tgph-toggle-switch]` on the page lit up together. */
+[data-tgph-toggle-root]:has([data-tgph-toggle-input]:focus-visible)
+  [data-tgph-toggle-switch] {
   outline: 2px solid var(--tgph-blue-8);
   outline-offset: 2px;
 }
