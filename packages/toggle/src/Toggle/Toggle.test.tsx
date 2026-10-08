@@ -1,8 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import type { FormEvent } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -13,11 +10,6 @@ import type {
   RootProps as ToggleRootProps,
 } from "./Toggle";
 import { Toggle } from "./Toggle";
-
-const stylesCss = readFileSync(
-  join(dirname(fileURLToPath(import.meta.url)), "Toggle.styles.css"),
-  "utf8",
-);
 
 describe("Toggle", () => {
   it("is accessible", async () => {
@@ -89,7 +81,7 @@ describe("Toggle", () => {
   // That only paints the right switch if the input and switch share a root —
   // pin the ancestry so a composition change cannot silently break the ring
   // the way an unscoped `:has(...)` once lit every toggle on the page
-  // (KNO-15206).
+  // (KNO-15206). Real outline isolation is covered by Toggle.browser.test.tsx.
   it("keeps the input and switch under the same root for the scoped focus ring", () => {
     const { container } = render(
       <>
@@ -105,17 +97,6 @@ describe("Toggle", () => {
       expect(root.querySelector("[data-tgph-toggle-input]")).not.toBeNull();
       expect(root.querySelector("[data-tgph-toggle-switch]")).not.toBeNull();
     }
-  });
-
-  it("scopes the focus-ring :has() to the toggle root, not the document", () => {
-    expect(stylesCss).toContain(
-      "[data-tgph-toggle-root]:has([data-tgph-toggle-input]:focus-visible)",
-    );
-    // The unscoped form matches from <html>/<body>, so every switch on the
-    // page shared one ring whenever any toggle was focused.
-    expect(stylesCss).not.toMatch(
-      /(?<!\[data-tgph-toggle-root\]):has\(\[data-tgph-toggle-input\]:focus-visible\)/,
-    );
   });
 
   it("renders checked when defaultValue is true", () => {
