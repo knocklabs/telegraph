@@ -115,6 +115,7 @@ describe("Toggle focus ring (real browser)", () => {
   it("rings only the focused toggle, not every switch on the page", async () => {
     await render(
       <>
+        <button type="button">Before</button>
         <Toggle.Default data-testid="invite-more" label="Invite more" />
         <Toggle.Default
           data-testid="auto-join"
@@ -123,13 +124,17 @@ describe("Toggle focus ring (real browser)", () => {
       </>,
     );
 
-    // Keyboard focus is what lights `:focus-visible`. Tab into the first
-    // checkbox — the invite-member modal repro is two toggles side by side.
+    // Start on a real control, then Tab into the first checkbox so Chromium
+    // applies `:focus-visible` the way a keyboard user would. The invite-member
+    // modal repro is two toggles side by side — only the focused one should ring.
+    const before = page.getByRole("button", { name: "Before" });
     const inviteRootLocator = page.getByTestId("invite-more");
     const autoJoinRootLocator = page.getByTestId("auto-join");
+    await expect.element(before).toBeInTheDocument();
     await expect.element(inviteRootLocator).toBeInTheDocument();
     await expect.element(autoJoinRootLocator).toBeInTheDocument();
 
+    await before.click();
     await userEvent.tab();
 
     const inviteRoot = inviteRootLocator.element() as HTMLElement;
