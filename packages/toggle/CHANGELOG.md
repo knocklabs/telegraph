@@ -1,5 +1,13 @@
 # @telegraph/toggle
 
+## 0.3.4
+
+### Patch Changes
+
+- [#1023](https://github.com/knocklabs/telegraph/pull/1023) [`1d49ce3`](https://github.com/knocklabs/telegraph/commit/1d49ce31a201b66e7338bcddee57866b45291f2f) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - Scope the toggle focus ring to the focused toggle's root.
+
+  An unscoped `:has([data-tgph-toggle-input]:focus-visible)` matched from the document, so focusing one toggle painted the ring on every `[data-tgph-toggle-switch]` on the page (KNO-15206).
+
 ## 0.3.3
 
 ### Patch Changes

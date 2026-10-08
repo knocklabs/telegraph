@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.1.4
+
+### Patch Changes
+
+- [#1016](https://github.com/knocklabs/telegraph/pull/1016) [`70559a1`](https://github.com/knocklabs/telegraph/commit/70559a1e7ec0f936bab8b9bec63af1f55dd0b301) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump vite-plugin-dts from 5.1.0 to 5.1.1
+
 ## 0.1.3
 
 ### Patch Changes
