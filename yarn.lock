@@ -3146,7 +3146,7 @@ __metadata:
     "@types/node": "npm:^25.7.0"
     "@types/postcss-import": "npm:^14.0.3"
     "@types/react": "npm:^19.3.0"
-    globby: "npm:^16.2.2"
+    globby: "npm:^16.2.4"
     lightningcss: "npm:^1.33.0"
     postcss: "npm:^8.5.29"
     react: "npm:^19.3.0"
@@ -5337,17 +5337,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^16.2.2":
-  version: 16.2.2
-  resolution: "globby@npm:16.2.2"
+"globby@npm:^16.2.4":
+  version: 16.2.4
+  resolution: "globby@npm:16.2.4"
   dependencies:
     "@sindresorhus/merge-streams": "npm:^4.0.0"
     fast-glob: "npm:^3.3.3"
     ignore: "npm:^7.0.5"
     is-path-inside: "npm:^4.0.0"
+    micromatch: "npm:^4.0.8"
     slash: "npm:^5.1.0"
     unicorn-magic: "npm:^0.4.0"
-  checksum: 10c0/77bbd36a8862b2952ccbb7e411064387c5b274cb0a1466fd335b0bf336f2b7d92e05167799ddcaf8beac571229d9a7d8a4d5ea7446d4a90714cdc32cef2443ed
+  checksum: 10c0/ef4a56b656260138b47706bd9532aad86d2820f028c58d51af41f458cf7f1177ce71cf104697cd6068c18eb1e0f3272bf446bc7c6265a357c6a159a1a1e31cec
   languageName: node
   linkType: hard
 
