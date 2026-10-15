@@ -2,4 +2,4 @@
 "@telegraph/postcss-config": patch
 ---
 
-chore(deps): bump postcss-combine-duplicated-selectors from 10.0.3 to 11.0.0
+chore(deps): remove unused postcss-combine-duplicated-selectors dependency
