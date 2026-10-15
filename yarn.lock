@@ -3048,7 +3048,7 @@ __metadata:
     "@telegraph/tokens": "workspace:^"
     autoprefixer: "npm:^10.5.4"
     postcss: "npm:^8.5.29"
-    postcss-combine-duplicated-selectors: "npm:^10.0.3"
+    postcss-combine-duplicated-selectors: "npm:^11.0.0"
     postcss-custom-media: "npm:^11.0.6"
     postcss-discard-empty: "npm:^8.0.1"
     typescript: "npm:^6.0.2"
@@ -7033,14 +7033,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-combine-duplicated-selectors@npm:^10.0.3":
-  version: 10.0.3
-  resolution: "postcss-combine-duplicated-selectors@npm:10.0.3"
+"postcss-combine-duplicated-selectors@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "postcss-combine-duplicated-selectors@npm:11.0.0"
   dependencies:
-    postcss-selector-parser: "npm:^6.0.4"
+    postcss-selector-parser: "npm:^7.0.0"
+    postcss-value-parser: "npm:^4.2.0"
   peerDependencies:
     postcss: ^8.1.0
-  checksum: 10c0/5dba611597653e0ef3fbeb0988e90bc897c53aa1f918c733e57404d572f4557a45c1de3a346c3296537f2603f6e24ed380fcb708a37f36dc1461a52a9bd9e403
+  checksum: 10c0/1b2a9d730b39beae2bd2534374ea9ca7ae3c509cfedc6406989a82c4c7b12553fe4d71130fa942b9de2f1f758cbd57351e23c2e590fc18fb68b7480d4d160b78
   languageName: node
   linkType: hard
 
@@ -7093,13 +7094,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6.0.4":
-  version: 6.0.15
-  resolution: "postcss-selector-parser@npm:6.0.15"
+"postcss-selector-parser@npm:^7.0.0":
+  version: 7.1.6
+  resolution: "postcss-selector-parser@npm:7.1.6"
   dependencies:
     cssesc: "npm:^3.0.0"
     util-deprecate: "npm:^1.0.2"
-  checksum: 10c0/48b425d6cef497bcf6b7d136f6fd95cfca43026955e07ec9290d3c15457de3a862dbf251dd36f42c07a0d5b5ab6f31e41acefeff02528995a989b955505e440b
+  checksum: 10c0/fc8279859896b96ef25b24d0289b2bfff7bce6647b247aa983939ff872e226663788d1ea57bddf9d1695119c071e5cdcb8b2a364ed4313502efe4b0319879154
   languageName: node
   linkType: hard
 
