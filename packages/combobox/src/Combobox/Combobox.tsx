@@ -1932,9 +1932,16 @@ const Option = <T extends TgphElement = "div">({
           // otherwise move DOM focus onto this portaled option and drop it on
           // the page. See `retainAnchorFocusOnKeyboardClick`.
           onClickCapture={(event) => {
-            onClickCaptureProp?.(event);
+            // `onClickCapture` is an intersection of the polymorphic element
+            // handler and the div option handler, so the callback event is not
+            // assignable to every overload. It is the same DOM event.
+            onClickCaptureProp?.(
+              event as Parameters<
+                NonNullable<OptionItemProps<"div">["onClickCapture"]>
+              >[0],
+            );
             retainAnchorFocusOnKeyboardClick(
-              event,
+              event as ReactMouseEvent<HTMLElement>,
               context.anchorInputRef?.current ?? null,
             );
           }}
