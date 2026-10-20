@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page, userEvent } from "vitest/browser";
@@ -685,13 +685,87 @@ describe("Combobox input-as-trigger virtual focus (real browser)", () => {
       document.querySelector('[data-tgph-combobox-option-value="sms"]')?.id,
     );
 
-    // Enter with no explicit ArrowDown commits the highlighted match.
+    // Enter with no explicit ArrowDown commits the highlighted match and
+    // leaves DOM focus on the anchor input.
     await userEvent.keyboard("[Enter]");
     await vi.waitFor(() => {
       expect(onValueChange).toHaveBeenLastCalledWith("sms");
+      expect(document.activeElement, "focus stays on the anchor input").toBe(
+        input,
+      );
+    });
+  });
+
+  // Arrow keys move the highlight. Enter must commit that option and leave DOM
+  // focus on the anchor input. The option is portaled, so a document focus trap
+  // would otherwise steal the keyboard click's option focus and Base UI would
+  // skip return-focus, dropping it on the fallback (or the page).
+  it("commits the arrow-highlighted option on Enter and keeps focus on the anchor input", async () => {
+    const onValueChange = vi.fn();
+    await render(
+      <DocumentFocusTrap>
+        <InputTriggerCombobox onValueChange={onValueChange} />
+      </DocumentFocusTrap>,
+    );
+
+    const input = await getAnchorInput();
+    input.focus();
+    await userEvent.keyboard("[ArrowDown]");
+    await vi.waitFor(() => {
+      expect(input.getAttribute("aria-expanded")).toBe("true");
+    });
+    await userEvent.keyboard("[ArrowDown]");
+    await vi.waitFor(() => {
+      expect(
+        document.querySelector("[data-tgph-combobox-option][data-highlighted]"),
+        "an option is highlighted",
+      ).toBeTruthy();
+    });
+    const highlightedValue = document
+      .querySelector("[data-tgph-combobox-option][data-highlighted]")
+      ?.getAttribute("data-tgph-combobox-option-value");
+    expect(highlightedValue).toBeTruthy();
+
+    await userEvent.keyboard("[Enter]");
+    await vi.waitFor(() => {
+      expect(onValueChange).toHaveBeenLastCalledWith(highlightedValue);
+      expect(input.getAttribute("aria-expanded")).toBe("false");
+      expect(document.activeElement, "focus returns to the anchor input").toBe(
+        input,
+      );
     });
   });
 });
+
+const DocumentFocusTrap = ({ children }: { children: ReactNode }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const fallbackRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const refocusInsideTrap = (event: FocusEvent) => {
+      const wrapper = wrapperRef.current;
+      if (
+        wrapper &&
+        event.target instanceof Node &&
+        !wrapper.contains(event.target)
+      ) {
+        fallbackRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("focusin", refocusInsideTrap);
+    return () => document.removeEventListener("focusin", refocusInsideTrap);
+  }, []);
+
+  return (
+    <div ref={wrapperRef}>
+      <button ref={fallbackRef} type="button">
+        Focus trap fallback
+      </button>
+      {children}
+    </div>
+  );
+};
 
 const FreeTextCombobox = ({
   onInputValueChange,

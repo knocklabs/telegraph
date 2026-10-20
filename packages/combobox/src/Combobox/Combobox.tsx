@@ -1750,6 +1750,7 @@ const Option = <T extends TgphElement = "div">({
   tgphRef,
   ...props
 }: OptionProps<T>) => {
+  const { onClickCapture: onClickCaptureProp, ...optionProps } = props;
   const context = useContext(ComboboxContext);
   const explicitIndex = useContext(CreateIndexContext);
   const contextValue = context.value;
@@ -1925,8 +1926,18 @@ const Option = <T extends TgphElement = "div">({
           // future major release.
           tabIndex={-1}
           tgphRef={composedRef as OptionItemProps<"div">["tgphRef"]}
-          {...(props as OptionItemProps<"div">)}
+          {...(optionProps as OptionItemProps<"div">)}
           disabled={disabled}
+          // Enter selects via a synthetic click (detail 0). That click would
+          // otherwise move DOM focus onto this portaled option and drop it on
+          // the page. See `retainAnchorFocusOnKeyboardClick`.
+          onClickCapture={(event) => {
+            onClickCaptureProp?.(event);
+            retainAnchorFocusOnKeyboardClick(
+              event,
+              context.anchorInputRef?.current ?? null,
+            );
+          }}
         >
           {label || children || value}
         </OptionItem>,
@@ -2049,6 +2060,43 @@ const findSearchControl = (children: ReactNode): SearchControl | undefined => {
 };
 
 // ---- Segmented pages -------------------------------------------------------
+
+// Enter commits the highlighted option by clicking it (`element.click()`,
+// detail 0). List navigation then focuses that option. Options stay
+// programmatically focusable for legacy virtualizers, and they portal outside
+// the trigger, so the focus move leaves the anchor input. A document focus
+// trap treats the portaled option as outside and Base UI skips return-focus,
+// which drops focus on the page. Strip tabindex before that focus call so the
+// keyboard click cannot take DOM focus, then put focus back on the anchor
+// input. Pointer clicks (detail >= 1) are left alone.
+const retainAnchorFocusOnKeyboardClick = (
+  event: ReactMouseEvent<HTMLElement>,
+  anchorInput: HTMLInputElement | null,
+) => {
+  if (event.detail !== 0) return;
+
+  const node = event.currentTarget;
+  if (node.hasAttribute("tabindex")) {
+    const previous = node.getAttribute("tabindex");
+    node.removeAttribute("tabindex");
+    requestAnimationFrame(() => {
+      if (
+        previous !== null &&
+        node.isConnected &&
+        !node.hasAttribute("tabindex")
+      ) {
+        node.setAttribute("tabindex", previous);
+      }
+    });
+  }
+
+  if (!anchorInput) return;
+  requestAnimationFrame(() => {
+    if (anchorInput.isConnected) {
+      anchorInput.focus({ preventScroll: true });
+    }
+  });
+};
 
 // A pointer page switch leaves DOM focus on the segmented button. Move it back
 // to the combobox input so keyboard navigation keeps working.
