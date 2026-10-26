@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ComponentPropsWithoutRef, type Ref, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
@@ -487,6 +487,92 @@ describe("Modal", () => {
     await waitFor(() => {
       expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(0);
     });
+  });
+
+  it("lets the modal beneath close after a stacked modal unmounts while open", async () => {
+    const user = userEvent.setup();
+
+    const StackedModals = () => {
+      const [outerOpen, setOuterOpen] = useState(true);
+      const [innerOpen, setInnerOpen] = useState(true);
+      const [confirmMounted, setConfirmMounted] = useState(true);
+
+      return (
+        <ModalStackingProvider>
+          <Modal.Root
+            a11yTitle="Outer modal"
+            open={outerOpen}
+            onOpenChange={setOuterOpen}
+          >
+            <Modal.Content>
+              <Modal.Header>
+                <Modal.Heading>Outer modal</Modal.Heading>
+                <Modal.Close />
+              </Modal.Header>
+            </Modal.Content>
+          </Modal.Root>
+          <Modal.Root
+            a11yTitle="Inner modal"
+            open={innerOpen}
+            onOpenChange={setInnerOpen}
+          >
+            <Modal.Content>
+              <Modal.Header>
+                <Modal.Heading>Inner modal</Modal.Heading>
+                <Modal.Close />
+              </Modal.Header>
+            </Modal.Content>
+          </Modal.Root>
+          {confirmMounted && (
+            <Modal.Root open a11yTitle="Confirm modal">
+              <Modal.Content>
+                <Modal.Header>
+                  <Modal.Heading>Confirm modal</Modal.Heading>
+                </Modal.Header>
+                <Modal.Body>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmMounted(false)}
+                  >
+                    Unmount confirm
+                  </button>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal.Root>
+          )}
+        </ModalStackingProvider>
+      );
+    };
+
+    render(<StackedModals />);
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(3);
+    });
+
+    await user.click(screen.getByRole("button", { name: "Unmount confirm" }));
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    // Dialogs are portaled in stack order. The inner modal is the second one
+    // and may still be hidden from the accessibility tree if its layer was
+    // not released, so query it from the DOM directly.
+    const dialogs = document.querySelectorAll('[role="dialog"]');
+    const innerClose = within(dialogs[1] as HTMLElement).getByRole("button", {
+      name: "Close Modal",
+      hidden: true,
+    });
+
+    await user.click(innerClose);
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(1);
+    });
+    expect(
+      screen.getByRole("dialog", { name: "Outer modal" }),
+    ).toBeInTheDocument();
   });
 
   describe("type inheritance", () => {
