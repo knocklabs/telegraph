@@ -297,15 +297,23 @@ const RootComponent = ({
       event.preventDefault();
       event.stopPropagation?.();
       event.preventBaseUIHandler?.();
+      // Capture these before `requestClose` unmounts the top overlay. A touch
+      // click is hit-tested again after that unmount and lands on the overlay
+      // revealed underneath.
+      const layersBeneath =
+        stacking?.layers?.filter((id) => id !== layerId) ?? [];
       const didRequestClose = requestClose();
 
       if (didRequestClose) {
+        layersBeneath.forEach((id) => {
+          stacking.suppressNextDismissForLayer(id);
+        });
         suppressNextRootOutsideDismiss();
       }
 
       return didRequestClose;
     },
-    [requestClose, suppressNextRootOutsideDismiss],
+    [layerId, requestClose, stacking, suppressNextRootOutsideDismiss],
   );
   const requestPointerDismiss = useCallback(
     (event: BaseUIPreventableEvent) => {
