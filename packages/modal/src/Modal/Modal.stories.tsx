@@ -20,7 +20,7 @@ const meta: Meta<typeof TelegraphModal.Root> = {
     onOpenChange: {
       control: false,
     },
-    stackingOverlay: {
+    disableStackedOverlay: {
       control: {
         type: "boolean",
       },
@@ -313,7 +313,6 @@ export const StackingOverlay: Story = {
           a11yTitle="Stacked modal"
           open={stackedOpen}
           onOpenChange={setStackedOpen}
-          stackingOverlay
           maxW="96"
         >
           <TelegraphModal.Content>
@@ -322,9 +321,59 @@ export const StackingOverlay: Story = {
               <TelegraphModal.Close />
             </TelegraphModal.Header>
             <TelegraphModal.Body>
-              This layer has no page backdrop of its own. The overlay dims the
-              modal beneath it and sits between the two z-indexes. Click the
-              dimmed area to close this modal and return to the one beneath.
+              Stacked modals dim the one beneath them. This layer has no page
+              backdrop of its own. Click the dimmed area to close this modal and
+              return to the one beneath.
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+      </ModalStackingProvider>
+    );
+  },
+};
+
+export const DisableStackedOverlay: Story = {
+  render: () => {
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const [baseOpen, setBaseOpen] = React.useState(false);
+    const [stackedOpen, setStackedOpen] = React.useState(false);
+    /* eslint-enable react-hooks/rules-of-hooks */
+    return (
+      <ModalStackingProvider>
+        <Button onClick={() => setBaseOpen(true)}>Open Modal</Button>
+        <TelegraphModal.Root
+          a11yTitle="Base modal"
+          open={baseOpen}
+          onOpenChange={setBaseOpen}
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Base modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              <Button size="1" onClick={() => setStackedOpen(true)}>
+                Open stacked modal
+              </Button>
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+        <TelegraphModal.Root
+          a11yTitle="Stacked modal"
+          open={stackedOpen}
+          onOpenChange={setStackedOpen}
+          disableStackedOverlay
+          maxW="96"
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Stacked modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              disableStackedOverlay skips the overlay, so this modal does not
+              dim the one beneath it. The first modal still owns the page
+              backdrop.
             </TelegraphModal.Body>
           </TelegraphModal.Content>
         </TelegraphModal.Root>

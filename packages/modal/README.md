@@ -92,7 +92,7 @@ The root modal container that manages state and provides context.
 | `onMountAutoFocus`   | `(event: Event) => void`  | `undefined` | Called when modal opens and focuses                                                              |
 | `onUnmountAutoFocus` | `(event: Event) => void`  | `undefined` | Called when modal closes and focus returns                                                       |
 | `layer`              | `number`                  | `undefined` | Layer index for stacked modals                                                                   |
-| `stackingOverlay`    | `boolean`                 | `false`     | On a modal past the first, dims the modal beneath. Clicking it closes the top modal             |
+| `disableStackedOverlay` | `boolean`              | `false`     | Skip the overlay that dims the modal beneath a stacked modal. The first modal still draws the page backdrop |
 
 Inherits all Stack props for additional styling.
 
@@ -425,17 +425,17 @@ const StackedModalsExample = () => {
 
 ### Stacking overlay
 
-Modals past the first draw no page backdrop. Set `stackingOverlay` on a stacked
-modal to dim the one beneath it. The overlay uses that lower modal's z-index, so
-it paints over it and stays under the modal on top. Clicking it closes the top
-modal and returns to the one beneath.
+Modals past the first draw no page backdrop. They dim the modal beneath them
+instead. The overlay uses that lower modal's z-index, so it paints over it and
+stays under the modal on top. Clicking it closes the top modal and returns to
+the one beneath. Set `disableStackedOverlay` to skip it.
 
 ```tsx
 <Modal.Root
   open={detailsOpen}
   onOpenChange={setDetailsOpen}
   a11yTitle="Details"
-  stackingOverlay
+  disableStackedOverlay
 >
   <Modal.Content>
     <Modal.Header>
@@ -735,8 +735,9 @@ The modal component uses Telegraph design tokens for consistent styling:
 - ✅ **Focus Restoration**: Returns focus to trigger element
 
 When modals are stacked with `ModalStackingProvider`, only the top layer handles
-Escape and backdrop dismissal. Lower layers stay mounted visually but do not
-own the active focus trap unless `trapped` is explicitly set.
+Escape and backdrop dismissal. Each modal past the first dims the one beneath
+it unless `disableStackedOverlay` is set. Lower layers stay mounted visually
+but do not own the active focus trap unless `trapped` is explicitly set.
 
 ### Keyboard Shortcuts
 

@@ -2,4 +2,4 @@
 "@telegraph/modal": minor
 ---
 
-Add a `stackingOverlay` prop to `Modal.Root`. On a modal past the first, it dims the modal beneath and sits between the two z-indexes. Clicking it closes the top modal.
+Stacked modals dim the modal beneath them. The overlay sits between the two z-indexes, and clicking it closes the top modal. Set `disableStackedOverlay` on `Modal.Root` to skip it. The first modal still draws the page backdrop.

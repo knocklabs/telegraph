@@ -25,17 +25,17 @@ const TestModal = ({
   onOpenChange = vi.fn(),
   onEscapeKeyDown,
   onPointerDownOutside,
-  stackingOverlay,
+  disableStackedOverlay,
   trapped,
 }: {
   a11yTitle?: string;
+  disableStackedOverlay?: boolean;
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
   onOpenChange?: (open: boolean) => void;
   onPointerDownOutside?: (
     event: MouseEvent | PointerEvent | TouchEvent,
   ) => void;
   open?: boolean;
-  stackingOverlay?: boolean;
   trapped?: boolean;
 }) => {
   return (
@@ -44,7 +44,7 @@ const TestModal = ({
       onOpenChange={onOpenChange}
       a11yTitle={a11yTitle}
       a11yDescription="Configure notification settings"
-      stackingOverlay={stackingOverlay}
+      disableStackedOverlay={disableStackedOverlay}
       trapped={trapped}
     >
       <Modal.Content
@@ -447,7 +447,7 @@ describe("Modal", () => {
     expect(onFirstOpenChange).not.toHaveBeenCalled();
   });
 
-  it("dims the modal beneath when stackingOverlay is set", async () => {
+  it("dims the modal beneath a stacked modal by default", async () => {
     const user = userEvent.setup();
     const onFirstOpenChange = vi.fn();
     const onSecondOpenChange = vi.fn();
@@ -455,11 +455,7 @@ describe("Modal", () => {
     render(
       <ModalStackingProvider>
         <TestModal a11yTitle="First modal" onOpenChange={onFirstOpenChange} />
-        <TestModal
-          a11yTitle="Second modal"
-          onOpenChange={onSecondOpenChange}
-          stackingOverlay
-        />
+        <TestModal a11yTitle="Second modal" onOpenChange={onSecondOpenChange} />
       </ModalStackingProvider>,
     );
 
@@ -510,8 +506,8 @@ describe("Modal", () => {
     render(
       <ModalStackingProvider>
         <TestModal a11yTitle="First modal" />
-        <TestModal a11yTitle="Second modal" stackingOverlay />
-        <TestModal a11yTitle="Third modal" stackingOverlay />
+        <TestModal a11yTitle="Second modal" />
+        <TestModal a11yTitle="Third modal" />
       </ModalStackingProvider>,
     );
 
@@ -537,8 +533,25 @@ describe("Modal", () => {
   it("does not render a stacking overlay on the first modal", async () => {
     render(
       <ModalStackingProvider>
-        <TestModal a11yTitle="First modal" stackingOverlay />
-        <TestModal a11yTitle="Second modal" />
+        <TestModal a11yTitle="First modal" />
+      </ModalStackingProvider>,
+    );
+
+    await screen.findByRole("dialog", { name: "First modal" });
+
+    expect(
+      document.querySelector("[data-tgph-modal-stacking-overlay]"),
+    ).not.toBeInTheDocument();
+    expect(document.querySelectorAll("[data-tgph-modal-overlay]")).toHaveLength(
+      1,
+    );
+  });
+
+  it("skips the stacking overlay when disableStackedOverlay is set", async () => {
+    render(
+      <ModalStackingProvider>
+        <TestModal a11yTitle="First modal" />
+        <TestModal a11yTitle="Second modal" disableStackedOverlay />
       </ModalStackingProvider>,
     );
 
@@ -568,7 +581,6 @@ describe("Modal", () => {
         <TestModal a11yTitle="First modal" />
         <TestModal
           a11yTitle="Second modal"
-          stackingOverlay
           onOpenChange={onOpenChange}
           onPointerDownOutside={onPointerDownOutside}
         />
