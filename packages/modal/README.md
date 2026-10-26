@@ -92,6 +92,7 @@ The root modal container that manages state and provides context.
 | `onMountAutoFocus`   | `(event: Event) => void`  | `undefined` | Called when modal opens and focuses                                                              |
 | `onUnmountAutoFocus` | `(event: Event) => void`  | `undefined` | Called when modal closes and focus returns                                                       |
 | `layer`              | `number`                  | `undefined` | Layer index for stacked modals                                                                   |
+| `stackingOverlay`    | `boolean`                 | `false`     | On a modal past the first, dims the modal beneath. Clicking it closes the top modal             |
 
 Inherits all Stack props for additional styling.
 
@@ -420,6 +421,32 @@ const StackedModalsExample = () => {
     </ModalStackingProvider>
   );
 };
+```
+
+### Stacking overlay
+
+Modals past the first draw no page backdrop. Set `stackingOverlay` on a stacked
+modal to dim the one beneath it. The overlay uses that lower modal's z-index, so
+it paints over it and stays under the modal on top. Clicking it closes the top
+modal and returns to the one beneath.
+
+```tsx
+<Modal.Root
+  open={detailsOpen}
+  onOpenChange={setDetailsOpen}
+  a11yTitle="Details"
+  stackingOverlay
+>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Heading>Details</Modal.Heading>
+      <Modal.Close />
+    </Modal.Header>
+    <Modal.Body>
+      <p>Click the dimmed modal behind this one to close it.</p>
+    </Modal.Body>
+  </Modal.Content>
+</Modal.Root>
 ```
 
 ### Custom Focus Management

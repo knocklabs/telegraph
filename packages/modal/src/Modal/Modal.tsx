@@ -41,6 +41,7 @@ import {
   type BaseUIPreventableEvent,
   callAutoFocusHandler,
   getStackedModalScale,
+  getStackingOverlayZIndex,
 } from "./Modal.helpers";
 import { useModalStacking } from "./ModalStacking";
 
@@ -140,6 +141,9 @@ export type RootProps = RootDialogProps &
     a11yTitle: string;
     a11yDescription?: string;
     layer?: number;
+    // On a modal past the first, dim the modal beneath this one. The overlay
+    // sits between the two z-indexes; clicking it closes the top modal.
+    stackingOverlay?: boolean;
   };
 
 const Root = (rootProps: RootProps) => {
@@ -147,6 +151,7 @@ const Root = (rootProps: RootProps) => {
     defaultOpen: defaultOpenProp,
     open: openProp,
     onOpenChange: onOpenChangeProp,
+    stackingOverlay = false,
     // Discarded as well as dropped from the type, because a spread can still
     // carry it. The cast stays in the body: on the parameter it puts `as` back
     // into the public type, so `<Modal.Root as="div">` compiled and did nothing.
@@ -177,6 +182,7 @@ const Root = (rootProps: RootProps) => {
       open={open}
       onOpenChange={onOpenChange}
       stackId={stackId}
+      stackingOverlay={stackingOverlay}
       {...props}
     />
   );
@@ -202,6 +208,7 @@ const RootComponent = ({
   trapped,
   onMountAutoFocus,
   onUnmountAutoFocus,
+  stackingOverlay = false,
   ...props
 }: RootComponentProps) => {
   const layerId = stackId;
@@ -457,7 +464,7 @@ const RootComponent = ({
             // We add the className "tgph" here so that styles within
             // the portal get scoped properly to telegraph
             <BaseDialog.Portal className="tgph">
-              <Overlay layer={layer}>
+              <Overlay layer={layer} stackingOverlay={stackingOverlay}>
                 <RefToTgphRef>
                   <Stack
                     as={motion.div}
@@ -521,14 +528,21 @@ const RootComponent = ({
 
 export type OverlayProps = BoxProps & {
   layer: number;
+  stackingOverlay?: boolean;
 };
 
-const Overlay = ({ layer, children }: OverlayProps) => {
+const Overlay = ({
+  layer,
+  stackingOverlay = false,
+  children,
+}: OverlayProps) => {
   const compatibilityContext = useContext(ModalCompatibilityContext);
+  // The page backdrop only belongs to the first modal. Later layers opt in
+  // with `stackingOverlay`, which dims the modal beneath instead of stacking
+  // another page-level backdrop.
+  const isStackingOverlay = layer > 0 && stackingOverlay;
 
-  // If the layer is greater than 0, we don't want to show this
-  // overlay as to not stack the overlays on top of each other.
-  if (layer > 0) return children;
+  if (layer > 0 && !isStackingOverlay) return children;
 
   return (
     <>
@@ -543,8 +557,11 @@ const Overlay = ({ layer, children }: OverlayProps) => {
             bg="alpha-black-6"
             w="full"
             h="full"
-            zIndex="overlay"
-            data-tgph-modal-overlay
+            {...(isStackingOverlay ? {} : { zIndex: "overlay" as const })}
+            data-tgph-modal-overlay={isStackingOverlay ? undefined : true}
+            data-tgph-modal-stacking-overlay={
+              isStackingOverlay ? true : undefined
+            }
             onPointerDownCapture={(event) => {
               compatibilityContext?.requestPointerDismiss(event);
             }}
@@ -552,6 +569,11 @@ const Overlay = ({ layer, children }: OverlayProps) => {
               position: "fixed",
               cursor: "pointer",
               inset: "0px",
+              // Same z-index as the modal beneath, later in the document, so
+              // it paints over that modal and under this one (`+ layer`).
+              ...(isStackingOverlay
+                ? { zIndex: getStackingOverlayZIndex(layer) }
+                : {}),
             }}
           />,
         )}

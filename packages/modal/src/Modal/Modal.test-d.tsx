@@ -50,6 +50,9 @@ describe("Modal types", () => {
     expectTypeOf<ModalRootProps["trapped"]>().not.toBeAny();
     expectTypeOf<ModalRootProps["open"]>().not.toBeAny();
     expectTypeOf<ModalRootProps["onOpenChange"]>().not.toBeAny();
+    expectTypeOf<ModalRootProps["stackingOverlay"]>().toEqualTypeOf<
+      boolean | undefined
+    >();
     expectTypeOf<ModalRootProps["maxW"]>().not.toBeAny();
     expectTypeOf<ModalContentProps["p"]>().not.toBeAny();
     expectTypeOf<ModalContentProps["className"]>().not.toBeAny();
@@ -109,6 +112,11 @@ describe("Modal types", () => {
       a11yTitle="Settings"
       // @ts-expect-error open is a boolean
       open="yes"
+    />;
+    <Modal.Root
+      a11yTitle="Settings"
+      // @ts-expect-error stackingOverlay is a boolean
+      stackingOverlay="yes"
     />;
     <Modal.Content
       // @ts-expect-error not a spacing token
