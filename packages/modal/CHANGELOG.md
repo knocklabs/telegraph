@@ -1,5 +1,15 @@
 # @telegraph/modal
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1036](https://github.com/knocklabs/telegraph/pull/1036) [`c9d37b0`](https://github.com/knocklabs/telegraph/commit/c9d37b0a8959b437704b670ea954f274465e11be) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - Stacked modals dim the modal beneath them. The overlay sits between the two z-indexes, and clicking it closes the top modal. `stackingBehavior` on `Modal.Root` defaults to `"overlay"`; set it to `"none"` to skip the overlay. The first modal still draws the page backdrop.
+
+### Patch Changes
+
+- [#1035](https://github.com/knocklabs/telegraph/pull/1035) [`0ac4e9d`](https://github.com/knocklabs/telegraph/commit/0ac4e9dfc18ff55dd7e812af46e9efe0cb081e45) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - Release a modal's stacking layer when it unmounts while open, so modals beneath it can still close.
+
 ## 0.7.2
 
 ### Patch Changes
