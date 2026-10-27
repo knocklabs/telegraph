@@ -141,9 +141,9 @@ export type RootProps = RootDialogProps &
     a11yTitle: string;
     a11yDescription?: string;
     layer?: number;
-    // Stacked modals dim the modal beneath them. Set this to skip that overlay.
+    // Stacked modals dim the modal beneath them. `"none"` skips that overlay.
     // The first modal still draws the page backdrop.
-    disableStackedOverlay?: boolean;
+    stackingBehavior?: "overlay" | "none";
   };
 
 const Root = (rootProps: RootProps) => {
@@ -151,7 +151,7 @@ const Root = (rootProps: RootProps) => {
     defaultOpen: defaultOpenProp,
     open: openProp,
     onOpenChange: onOpenChangeProp,
-    disableStackedOverlay = false,
+    stackingBehavior = "overlay",
     // Discarded as well as dropped from the type, because a spread can still
     // carry it. The cast stays in the body: on the parameter it puts `as` back
     // into the public type, so `<Modal.Root as="div">` compiled and did nothing.
@@ -182,7 +182,7 @@ const Root = (rootProps: RootProps) => {
       open={open}
       onOpenChange={onOpenChange}
       stackId={stackId}
-      disableStackedOverlay={disableStackedOverlay}
+      stackingBehavior={stackingBehavior}
       {...props}
     />
   );
@@ -208,7 +208,7 @@ const RootComponent = ({
   trapped,
   onMountAutoFocus,
   onUnmountAutoFocus,
-  disableStackedOverlay = false,
+  stackingBehavior = "overlay",
   ...props
 }: RootComponentProps) => {
   const layerId = stackId;
@@ -472,10 +472,7 @@ const RootComponent = ({
             // We add the className "tgph" here so that styles within
             // the portal get scoped properly to telegraph
             <BaseDialog.Portal className="tgph">
-              <Overlay
-                layer={layer}
-                disableStackedOverlay={disableStackedOverlay}
-              >
+              <Overlay layer={layer} stackingBehavior={stackingBehavior}>
                 <RefToTgphRef>
                   <Stack
                     as={motion.div}
@@ -539,18 +536,18 @@ const RootComponent = ({
 
 export type OverlayProps = BoxProps & {
   layer: number;
-  disableStackedOverlay?: boolean;
+  stackingBehavior?: "overlay" | "none";
 };
 
 const Overlay = ({
   layer,
-  disableStackedOverlay = false,
+  stackingBehavior = "overlay",
   children,
 }: OverlayProps) => {
   const compatibilityContext = useContext(ModalCompatibilityContext);
   // The page backdrop only belongs to the first modal. Later layers dim the
-  // modal beneath them unless `disableStackedOverlay` is set.
-  const isStackingOverlay = layer > 0 && !disableStackedOverlay;
+  // modal beneath them unless `stackingBehavior` is `"none"`.
+  const isStackingOverlay = layer > 0 && stackingBehavior !== "none";
 
   if (layer > 0 && !isStackingOverlay) return children;
 

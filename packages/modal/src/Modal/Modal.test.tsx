@@ -25,11 +25,11 @@ const TestModal = ({
   onOpenChange = vi.fn(),
   onEscapeKeyDown,
   onPointerDownOutside,
-  disableStackedOverlay,
+  stackingBehavior,
   trapped,
 }: {
   a11yTitle?: string;
-  disableStackedOverlay?: boolean;
+  stackingBehavior?: "overlay" | "none";
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
   onOpenChange?: (open: boolean) => void;
   onPointerDownOutside?: (
@@ -44,7 +44,7 @@ const TestModal = ({
       onOpenChange={onOpenChange}
       a11yTitle={a11yTitle}
       a11yDescription="Configure notification settings"
-      disableStackedOverlay={disableStackedOverlay}
+      stackingBehavior={stackingBehavior}
       trapped={trapped}
     >
       <Modal.Content
@@ -659,11 +659,11 @@ describe("Modal", () => {
     );
   });
 
-  it("skips the stacking overlay when disableStackedOverlay is set", async () => {
+  it('skips the stacking overlay when stackingBehavior is "none"', async () => {
     render(
       <ModalStackingProvider>
         <TestModal a11yTitle="First modal" />
-        <TestModal a11yTitle="Second modal" disableStackedOverlay />
+        <TestModal a11yTitle="Second modal" stackingBehavior="none" />
       </ModalStackingProvider>,
     );
 

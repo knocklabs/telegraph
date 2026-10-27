@@ -20,9 +20,10 @@ const meta: Meta<typeof TelegraphModal.Root> = {
     onOpenChange: {
       control: false,
     },
-    disableStackedOverlay: {
+    stackingBehavior: {
+      options: ["overlay", "none"],
       control: {
-        type: "boolean",
+        type: "radio",
       },
     },
   },
@@ -332,7 +333,8 @@ export const StackingOverlay: Story = {
   },
 };
 
-export const DisableStackedOverlay: Story = {
+export const StackingBehaviorNone: Story = {
+  name: 'stackingBehavior="none"',
   render: () => {
     /* eslint-disable react-hooks/rules-of-hooks */
     const [baseOpen, setBaseOpen] = React.useState(false);
@@ -362,7 +364,7 @@ export const DisableStackedOverlay: Story = {
           a11yTitle="Stacked modal"
           open={stackedOpen}
           onOpenChange={setStackedOpen}
-          disableStackedOverlay
+          stackingBehavior="none"
           maxW="96"
         >
           <TelegraphModal.Content>
@@ -371,7 +373,7 @@ export const DisableStackedOverlay: Story = {
               <TelegraphModal.Close />
             </TelegraphModal.Header>
             <TelegraphModal.Body>
-              disableStackedOverlay skips the overlay, so this modal does not
+              stackingBehavior="none" skips the overlay, so this modal does not
               dim the one beneath it. The first modal still owns the page
               backdrop.
             </TelegraphModal.Body>

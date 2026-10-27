@@ -92,7 +92,7 @@ The root modal container that manages state and provides context.
 | `onMountAutoFocus`   | `(event: Event) => void`  | `undefined` | Called when modal opens and focuses                                                              |
 | `onUnmountAutoFocus` | `(event: Event) => void`  | `undefined` | Called when modal closes and focus returns                                                       |
 | `layer`              | `number`                  | `undefined` | Layer index for stacked modals                                                                   |
-| `disableStackedOverlay` | `boolean`              | `false`     | Skip the overlay that dims the modal beneath a stacked modal. The first modal still draws the page backdrop |
+| `stackingBehavior`   | `"overlay" \| "none"`     | `"overlay"` | How a stacked modal treats the modal beneath it. `"overlay"` dims it. `"none"` skips that overlay. The first modal still draws the page backdrop |
 
 Inherits all Stack props for additional styling.
 
@@ -428,14 +428,15 @@ const StackedModalsExample = () => {
 Modals past the first draw no page backdrop. They dim the modal beneath them
 instead. The overlay uses that lower modal's z-index, so it paints over it and
 stays under the modal on top. Clicking it closes the top modal and returns to
-the one beneath. Set `disableStackedOverlay` to skip it.
+the one beneath. `stackingBehavior` defaults to `"overlay"`; set it to
+`"none"` to skip the overlay.
 
 ```tsx
 <Modal.Root
   open={detailsOpen}
   onOpenChange={setDetailsOpen}
   a11yTitle="Details"
-  disableStackedOverlay
+  stackingBehavior="none"
 >
   <Modal.Content>
     <Modal.Header>
@@ -443,7 +444,7 @@ the one beneath. Set `disableStackedOverlay` to skip it.
       <Modal.Close />
     </Modal.Header>
     <Modal.Body>
-      <p>Click the dimmed modal behind this one to close it.</p>
+      <p>This stacked modal does not dim the one beneath it.</p>
     </Modal.Body>
   </Modal.Content>
 </Modal.Root>
@@ -736,7 +737,7 @@ The modal component uses Telegraph design tokens for consistent styling:
 
 When modals are stacked with `ModalStackingProvider`, only the top layer handles
 Escape and backdrop dismissal. Each modal past the first dims the one beneath
-it unless `disableStackedOverlay` is set. Lower layers stay mounted visually
+it unless `stackingBehavior` is `"none"`. Lower layers stay mounted visually
 but do not own the active focus trap unless `trapped` is explicitly set.
 
 ### Keyboard Shortcuts
