@@ -1,0 +1,6 @@
+/* The stacking layer's z-index is an inline
+   `calc(var(--tgph-zIndex-modal) + n)`. jsdom stores that string and never
+   resolves `var()` or `calc()`, so it cannot tell layer 0 from layer 2.
+   Chromium resolves it to an integer, but only once the token exists. */
+@import "@telegraph/layout/default.css";
+@import "@telegraph/tokens/default";
