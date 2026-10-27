@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { getStackedModalScale } from "./Modal.helpers";
+import {
+  getStackedModalScale,
+  getStackingOverlayZIndex,
+} from "./Modal.helpers";
 
 describe("getStackedModalScale", () => {
   it("rests at scale 1 for an unregistered layer (no stacking provider)", () => {
@@ -23,5 +26,20 @@ describe("getStackedModalScale", () => {
     expect(getStackedModalScale(3, 2)).toBe(1);
     expect(getStackedModalScale(3, 1)).toBeCloseTo(0.98);
     expect(getStackedModalScale(3, 0)).toBeCloseTo(0.96);
+  });
+});
+
+describe("getStackingOverlayZIndex", () => {
+  it("matches the first modal's z-index for the first stacked layer", () => {
+    expect(getStackingOverlayZIndex(1)).toBe("var(--tgph-zIndex-modal)");
+  });
+
+  it("steps up with the modal beneath deeper stacked layers", () => {
+    expect(getStackingOverlayZIndex(2)).toBe(
+      "calc(var(--tgph-zIndex-modal) + 1)",
+    );
+    expect(getStackingOverlayZIndex(3)).toBe(
+      "calc(var(--tgph-zIndex-modal) + 2)",
+    );
   });
 });

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ComponentPropsWithoutRef, type Ref, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
@@ -25,9 +25,11 @@ const TestModal = ({
   onOpenChange = vi.fn(),
   onEscapeKeyDown,
   onPointerDownOutside,
+  stackingBehavior,
   trapped,
 }: {
   a11yTitle?: string;
+  stackingBehavior?: "overlay" | "none";
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
   onOpenChange?: (open: boolean) => void;
   onPointerDownOutside?: (
@@ -42,6 +44,7 @@ const TestModal = ({
       onOpenChange={onOpenChange}
       a11yTitle={a11yTitle}
       a11yDescription="Configure notification settings"
+      stackingBehavior={stackingBehavior}
       trapped={trapped}
     >
       <Modal.Content
@@ -442,6 +445,272 @@ describe("Modal", () => {
     expect(onSecondOpenChange).toHaveBeenCalledTimes(1);
     expect(onSecondOpenChange).toHaveBeenCalledWith(false);
     expect(onFirstOpenChange).not.toHaveBeenCalled();
+  });
+
+  it("dims the modal beneath a stacked modal by default", async () => {
+    const user = userEvent.setup();
+    const onFirstOpenChange = vi.fn();
+    const onSecondOpenChange = vi.fn();
+
+    render(
+      <ModalStackingProvider>
+        <TestModal a11yTitle="First modal" onOpenChange={onFirstOpenChange} />
+        <TestModal a11yTitle="Second modal" onOpenChange={onSecondOpenChange} />
+      </ModalStackingProvider>,
+    );
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    // The first modal still owns the only page backdrop.
+    expect(document.querySelectorAll("[data-tgph-modal-overlay]")).toHaveLength(
+      1,
+    );
+
+    const stackingOverlay = document.querySelector(
+      "[data-tgph-modal-stacking-overlay]",
+    );
+    expect(stackingOverlay).toBeInstanceOf(HTMLElement);
+    const overlayElement = stackingOverlay as HTMLElement;
+    expect(overlayElement.style.zIndex).toBe("var(--tgph-zIndex-modal)");
+    expect(overlayElement.style.getPropertyValue("--background-color")).toBe(
+      "var(--tgph-alpha-black-6)",
+    );
+
+    // The lower dialog is aria-hidden while the top modal traps focus.
+    const firstDialog = screen.getByRole("dialog", {
+      name: "First modal",
+      hidden: true,
+    });
+    const secondDialog = screen.getByRole("dialog", { name: "Second modal" });
+    // Later in the document than the modal beneath, and before the top modal,
+    // so the shared z-index paints over the lower modal only.
+    expect(
+      firstDialog.compareDocumentPosition(overlayElement) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      overlayElement.compareDocumentPosition(secondDialog) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+
+    await user.click(overlayElement);
+
+    expect(onSecondOpenChange).toHaveBeenCalledTimes(1);
+    expect(onSecondOpenChange).toHaveBeenCalledWith(false);
+    expect(onFirstOpenChange).not.toHaveBeenCalled();
+  });
+
+  it("keeps the modal beneath open when the stacking overlay click is retargeted", async () => {
+    const StatefulStackedModals = () => {
+      const [firstOpen, setFirstOpen] = useState(true);
+      const [secondOpen, setSecondOpen] = useState(true);
+
+      return (
+        <ModalStackingProvider>
+          <TestModal
+            a11yTitle="First modal"
+            open={firstOpen}
+            onOpenChange={setFirstOpen}
+          />
+          <TestModal
+            a11yTitle="Second modal"
+            open={secondOpen}
+            onOpenChange={setSecondOpen}
+          />
+        </ModalStackingProvider>
+      );
+    };
+
+    render(<StatefulStackedModals />);
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    const stackingOverlay = document.querySelector(
+      "[data-tgph-modal-stacking-overlay]",
+    );
+    expect(stackingOverlay).toBeInstanceOf(HTMLElement);
+
+    // pointerdown unmounts the top overlay. Touch browsers then deliver the
+    // click to the page backdrop that was underneath it.
+    fireEvent.pointerDown(stackingOverlay as HTMLElement);
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(1);
+    });
+
+    const revealedBackdrop = document.querySelector(
+      "[data-tgph-modal-overlay]",
+    );
+    expect(revealedBackdrop).toBeInstanceOf(HTMLElement);
+    fireEvent.click(revealedBackdrop as HTMLElement);
+
+    expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(1);
+    expect(
+      screen.getByRole("dialog", { name: "First modal" }),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps lower modals open when a deeper stacking overlay click is retargeted", async () => {
+    const StatefulStackedModals = () => {
+      const [firstOpen, setFirstOpen] = useState(true);
+      const [secondOpen, setSecondOpen] = useState(true);
+      const [thirdOpen, setThirdOpen] = useState(true);
+
+      return (
+        <ModalStackingProvider>
+          <TestModal
+            a11yTitle="First modal"
+            open={firstOpen}
+            onOpenChange={setFirstOpen}
+          />
+          <TestModal
+            a11yTitle="Second modal"
+            open={secondOpen}
+            onOpenChange={setSecondOpen}
+          />
+          <TestModal
+            a11yTitle="Third modal"
+            open={thirdOpen}
+            onOpenChange={setThirdOpen}
+          />
+        </ModalStackingProvider>
+      );
+    };
+
+    render(<StatefulStackedModals />);
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(3);
+    });
+
+    const stackingOverlays = document.querySelectorAll(
+      "[data-tgph-modal-stacking-overlay]",
+    );
+    fireEvent.pointerDown(
+      stackingOverlays[stackingOverlays.length - 1] as HTMLElement,
+    );
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    const revealedOverlays = document.querySelectorAll(
+      "[data-tgph-modal-stacking-overlay]",
+    );
+    fireEvent.click(
+      revealedOverlays[revealedOverlays.length - 1] as HTMLElement,
+    );
+
+    expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    expect(
+      screen.getByRole("dialog", { name: "Second modal" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("dialog", { name: "First modal", hidden: true }),
+    ).toBeInTheDocument();
+  });
+
+  it("places a deeper stacking overlay between that modal and the one above it", async () => {
+    render(
+      <ModalStackingProvider>
+        <TestModal a11yTitle="First modal" />
+        <TestModal a11yTitle="Second modal" />
+        <TestModal a11yTitle="Third modal" />
+      </ModalStackingProvider>,
+    );
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(3);
+    });
+
+    const overlays = document.querySelectorAll(
+      "[data-tgph-modal-stacking-overlay]",
+    );
+    expect(overlays).toHaveLength(2);
+    expect((overlays[0] as HTMLElement).style.zIndex).toBe(
+      "var(--tgph-zIndex-modal)",
+    );
+    expect((overlays[1] as HTMLElement).style.zIndex).toBe(
+      "calc(var(--tgph-zIndex-modal) + 1)",
+    );
+    expect(document.querySelectorAll("[data-tgph-modal-overlay]")).toHaveLength(
+      1,
+    );
+  });
+
+  it("does not render a stacking overlay on the first modal", async () => {
+    render(
+      <ModalStackingProvider>
+        <TestModal a11yTitle="First modal" />
+      </ModalStackingProvider>,
+    );
+
+    await screen.findByRole("dialog", { name: "First modal" });
+
+    expect(
+      document.querySelector("[data-tgph-modal-stacking-overlay]"),
+    ).not.toBeInTheDocument();
+    expect(document.querySelectorAll("[data-tgph-modal-overlay]")).toHaveLength(
+      1,
+    );
+  });
+
+  it('skips the stacking overlay when stackingBehavior is "none"', async () => {
+    render(
+      <ModalStackingProvider>
+        <TestModal a11yTitle="First modal" />
+        <TestModal a11yTitle="Second modal" stackingBehavior="none" />
+      </ModalStackingProvider>,
+    );
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    expect(
+      document.querySelector("[data-tgph-modal-stacking-overlay]"),
+    ).not.toBeInTheDocument();
+    expect(document.querySelectorAll("[data-tgph-modal-overlay]")).toHaveLength(
+      1,
+    );
+  });
+
+  it("does not close when a stacking overlay click is prevented", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const onPointerDownOutside = vi.fn(
+      (event: MouseEvent | PointerEvent | TouchEvent) => {
+        event.preventDefault();
+      },
+    );
+
+    render(
+      <ModalStackingProvider>
+        <TestModal a11yTitle="First modal" />
+        <TestModal
+          a11yTitle="Second modal"
+          onOpenChange={onOpenChange}
+          onPointerDownOutside={onPointerDownOutside}
+        />
+      </ModalStackingProvider>,
+    );
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    const stackingOverlay = document.querySelector(
+      "[data-tgph-modal-stacking-overlay]",
+    );
+
+    await user.click(stackingOverlay as HTMLElement);
+
+    expect(onPointerDownOutside).toHaveBeenCalledTimes(1);
+    expect(onOpenChange).not.toHaveBeenCalled();
   });
 
   it("does not suppress the next escape after a stacked backdrop dismissal", async () => {

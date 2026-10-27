@@ -20,6 +20,12 @@ const meta: Meta<typeof TelegraphModal.Root> = {
     onOpenChange: {
       control: false,
     },
+    stackingBehavior: {
+      options: ["overlay", "none"],
+      control: {
+        type: "radio",
+      },
+    },
   },
   args: {
     open: true,
@@ -274,6 +280,106 @@ export const NestedModals: Story = {
           />
         </ModalStackingProvider>
       </>
+    );
+  },
+};
+
+export const StackingOverlay: Story = {
+  render: () => {
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const [baseOpen, setBaseOpen] = React.useState(false);
+    const [stackedOpen, setStackedOpen] = React.useState(false);
+    /* eslint-enable react-hooks/rules-of-hooks */
+    return (
+      <ModalStackingProvider>
+        <Button onClick={() => setBaseOpen(true)}>Open Modal</Button>
+        <TelegraphModal.Root
+          a11yTitle="Base modal"
+          open={baseOpen}
+          onOpenChange={setBaseOpen}
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Base modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              <Button size="1" onClick={() => setStackedOpen(true)}>
+                Open stacked modal
+              </Button>
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+        <TelegraphModal.Root
+          a11yTitle="Stacked modal"
+          open={stackedOpen}
+          onOpenChange={setStackedOpen}
+          maxW="96"
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Stacked modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              Stacked modals dim the one beneath them. This layer has no page
+              backdrop of its own. Click the dimmed area to close this modal and
+              return to the one beneath.
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+      </ModalStackingProvider>
+    );
+  },
+};
+
+export const StackingBehaviorNone: Story = {
+  name: 'stackingBehavior="none"',
+  render: () => {
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const [baseOpen, setBaseOpen] = React.useState(false);
+    const [stackedOpen, setStackedOpen] = React.useState(false);
+    /* eslint-enable react-hooks/rules-of-hooks */
+    return (
+      <ModalStackingProvider>
+        <Button onClick={() => setBaseOpen(true)}>Open Modal</Button>
+        <TelegraphModal.Root
+          a11yTitle="Base modal"
+          open={baseOpen}
+          onOpenChange={setBaseOpen}
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Base modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              <Button size="1" onClick={() => setStackedOpen(true)}>
+                Open stacked modal
+              </Button>
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+        <TelegraphModal.Root
+          a11yTitle="Stacked modal"
+          open={stackedOpen}
+          onOpenChange={setStackedOpen}
+          stackingBehavior="none"
+          maxW="96"
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Stacked modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              stackingBehavior="none" skips the overlay, so this modal does not
+              dim the one beneath it. The first modal still owns the page
+              backdrop.
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+      </ModalStackingProvider>
     );
   },
 };
