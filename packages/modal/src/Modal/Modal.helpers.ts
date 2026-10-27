@@ -24,6 +24,24 @@ export const getStackedModalScale = (layersLength: number, layer: number) => {
   return 1 - depthFromTop * MODAL_STACK_SCALE_STEP;
 };
 
+/**
+ * Z-index for the stacking overlay on a modal past the first.
+ *
+ * Modal content uses `calc(var(--tgph-zIndex-modal) + layer)`. The overlay
+ * uses the step of the modal beneath it, so it paints over that modal (same
+ * z-index, later in the document) and stays under this one. The first stacked
+ * modal therefore resolves to `var(--tgph-zIndex-modal)`.
+ */
+export const getStackingOverlayZIndex = (layer: number) => {
+  const beneathLayer = layer - 1;
+
+  if (beneathLayer <= 0) {
+    return "var(--tgph-zIndex-modal)";
+  }
+
+  return `calc(var(--tgph-zIndex-modal) + ${beneathLayer})`;
+};
+
 export const callAutoFocusHandler = (
   handler: ((event: Event) => void) | undefined,
   eventName: string,
