@@ -1,5 +1,11 @@
 # @telegraph/postcss-config
 
+## 0.1.15
+
+### Patch Changes
+
+- [#1024](https://github.com/knocklabs/telegraph/pull/1024) [`1a7298c`](https://github.com/knocklabs/telegraph/commit/1a7298c68d4fe846a65decb09a2561a6957db6bf) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): remove unused postcss-combine-duplicated-selectors dependency
+
 ## 0.1.14
 
 ### Patch Changes
