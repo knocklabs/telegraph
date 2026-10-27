@@ -221,6 +221,11 @@ const RootComponent = ({
   const rootFocusCallbacksRef = useRef<
     ModalCompatibilityContextProps["rootFocusCallbacksRef"]["current"]
   >({});
+  // ModalStackingProvider builds a new context value every render. Hold the
+  // latest add/remove functions in a ref so the layer effect can release the
+  // layer on unmount. Listing `stacking` as a dependency would remove and
+  // re-add the layer on each pass until setState loops.
+  const stackingRef = useRef(stacking);
 
   // Keep the latest Root-level autofocus callbacks available to Content, where
   // Base UI actually asks for initial/final focus decisions.
@@ -228,11 +233,20 @@ const RootComponent = ({
     onMountAutoFocus,
     onUnmountAutoFocus,
   };
+  stackingRef.current = stacking;
 
+  // Register this modal while it is open, and release the layer if it
+  // unmounts before `open` becomes false. Otherwise the stale id stays the
+  // top layer and every modal beneath it refuses to close.
   useLayoutEffect(() => {
-    if (!stacking || !open || stacking.layers.includes(layerId)) return;
-    stacking.addLayer(layerId);
-  }, [layerId, stacking, open]);
+    if (!open) return;
+
+    stackingRef.current.addLayer(layerId);
+
+    return () => {
+      stackingRef.current.removeLayer(layerId);
+    };
+  }, [layerId, open]);
 
   const layerIndex = stacking.layers.indexOf(layerId);
   const layer = layerIndex === -1 ? 0 : layerIndex;
