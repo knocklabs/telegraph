@@ -568,6 +568,9 @@ const Overlay = ({
   return (
     <>
       <BaseDialog.Backdrop
+        // Base UI skips `render` for a dialog nested in another dialog's React
+        // tree, which would leave the stacking dim unpainted.
+        forceRender={isStackingOverlay}
         render={createTgphBaseUIRender(
           <Box
             as={motion.div}
