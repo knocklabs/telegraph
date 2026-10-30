@@ -333,6 +333,56 @@ export const StackingOverlay: Story = {
   },
 };
 
+export const StackingOverlayNested: Story = {
+  render: () => {
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const [baseOpen, setBaseOpen] = React.useState(false);
+    const [stackedOpen, setStackedOpen] = React.useState(false);
+    /* eslint-enable react-hooks/rules-of-hooks */
+    return (
+      <ModalStackingProvider>
+        <Button onClick={() => setBaseOpen(true)}>Open Modal</Button>
+        <TelegraphModal.Root
+          a11yTitle="Base modal"
+          open={baseOpen}
+          onOpenChange={setBaseOpen}
+        >
+          <TelegraphModal.Content>
+            <TelegraphModal.Header>
+              <TelegraphModal.Heading>Base modal</TelegraphModal.Heading>
+              <TelegraphModal.Close />
+            </TelegraphModal.Header>
+            <TelegraphModal.Body>
+              <Button size="1" onClick={() => setStackedOpen(true)}>
+                Open stacked modal
+              </Button>
+              <TelegraphModal.Root
+                a11yTitle="Stacked modal"
+                open={stackedOpen}
+                onOpenChange={setStackedOpen}
+                maxW="96"
+              >
+                <TelegraphModal.Content>
+                  <TelegraphModal.Header>
+                    <TelegraphModal.Heading>
+                      Stacked modal
+                    </TelegraphModal.Heading>
+                    <TelegraphModal.Close />
+                  </TelegraphModal.Header>
+                  <TelegraphModal.Body>
+                    This modal is rendered inside the base modal's content and
+                    still dims the base modal beneath it.
+                  </TelegraphModal.Body>
+                </TelegraphModal.Content>
+              </TelegraphModal.Root>
+            </TelegraphModal.Body>
+          </TelegraphModal.Content>
+        </TelegraphModal.Root>
+      </ModalStackingProvider>
+    );
+  },
+};
+
 export const StackingBehaviorNone: Story = {
   name: 'stackingBehavior="none"',
   render: () => {

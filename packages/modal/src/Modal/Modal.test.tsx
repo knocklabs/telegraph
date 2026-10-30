@@ -453,6 +453,31 @@ describe("Modal", () => {
     expect(onFirstOpenChange).not.toHaveBeenCalled();
   });
 
+  it("dims the modal beneath a stacked modal rendered inside it", async () => {
+    render(
+      <ModalStackingProvider>
+        <Modal.Root open onOpenChange={vi.fn()} a11yTitle="First modal">
+          <Modal.Content>
+            <Modal.Body>
+              <TestModal a11yTitle="Second modal" />
+            </Modal.Body>
+          </Modal.Content>
+        </Modal.Root>
+      </ModalStackingProvider>,
+    );
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(2);
+    });
+
+    expect(document.querySelectorAll("[data-tgph-modal-overlay]")).toHaveLength(
+      1,
+    );
+    expect(
+      document.querySelectorAll("[data-tgph-modal-stacking-overlay]"),
+    ).toHaveLength(1);
+  });
+
   it("dims the modal beneath a stacked modal by default", async () => {
     const user = userEvent.setup();
     const onFirstOpenChange = vi.fn();
