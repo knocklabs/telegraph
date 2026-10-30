@@ -1,5 +1,11 @@
 # @telegraph/modal
 
+## 0.8.1
+
+### Patch Changes
+
+- [#1045](https://github.com/knocklabs/telegraph/pull/1045) [`ab93bb5`](https://github.com/knocklabs/telegraph/commit/ab93bb53460898fc075453e7cdee7c141689cf56) Thanks [@MikeCarbone](https://github.com/MikeCarbone)! - Dim the modal beneath a stacked modal that is rendered inside it in the React tree.
+
 ## 0.8.0
 
 ### Minor Changes
