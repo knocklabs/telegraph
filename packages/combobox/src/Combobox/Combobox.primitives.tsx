@@ -24,7 +24,6 @@ import { LazyMotion, domAnimation } from "motion/react";
 import * as motion from "motion/react-m";
 import {
   createContext,
-  type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent as ReactMouseEvent,
   useContext,
   useMemo,
@@ -105,6 +104,9 @@ const TriggerClear = <T extends TgphElement = "button">(
   };
 
   const shouldShowClearable = useMemo(() => {
+    // A disabled trigger is a native button, and its value stays fixed.
+    if (context.disabled) return false;
+
     if (isSingleSelect(context.value)) {
       return context.clearable && context.value;
     }
@@ -112,7 +114,7 @@ const TriggerClear = <T extends TgphElement = "button">(
     if (isMultiSelect(context.value)) {
       return context.clearable && context.value?.length > 0;
     }
-  }, [context.clearable, context.value]);
+  }, [context.clearable, context.disabled, context.value]);
 
   if (!shouldShowClearable) return null;
 
@@ -127,13 +129,6 @@ const TriggerClear = <T extends TgphElement = "button">(
           if (!context.value) return;
           event.stopPropagation();
           handleClear();
-        }}
-        onKeyDown={(event: ReactKeyboardEvent) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.stopPropagation();
-            event.preventDefault();
-            handleClear();
-          }
         }}
         data-tgph-combobox-clear
         style={{
@@ -151,7 +146,6 @@ const TriggerClear = <T extends TgphElement = "button">(
           | "size"
           | "variant"
           | "onClick"
-          | "onKeyDown"
         >)}
       />
     </Tooltip>
@@ -378,6 +372,9 @@ const TriggerTagButton = <T extends TgphElement = "button">(
     getOptionAccessibleLabel(
       getCurrentOption(triggerTagContext.value, context.options),
     ) ?? triggerTagContext.value;
+
+  // A disabled trigger is a native button, and its value stays fixed.
+  if (context.disabled) return null;
 
   return (
     <Tag.Button

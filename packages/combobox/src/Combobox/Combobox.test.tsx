@@ -51,10 +51,10 @@ const ComboboxSingleSelect = ({ ...props }) => {
   );
 };
 
-const ComboboxMultiSelect = () => {
+const ComboboxMultiSelect = ({ ...props }) => {
   const [value, setValue] = useState<Array<string>>([VALUES[0]!, VALUES[1]!]);
   return (
-    <Combobox.Root value={value} onValueChange={setValue}>
+    <Combobox.Root value={value} onValueChange={setValue} {...props}>
       <Combobox.Trigger />
       <Combobox.Content>
         <Combobox.Search />
@@ -2900,6 +2900,40 @@ describe("Trigger ref", () => {
     // drives keyboard-close refocus) is composed in rather than clobbered.
     const trigger = container.querySelector("[data-tgph-combobox-trigger]");
     expect(ref.current).toBe(trigger);
+  });
+});
+
+describe("Trigger controls", () => {
+  it("keeps the clear and tag remove buttons out of another button", () => {
+    const { container, getAllByRole } = render(
+      <>
+        <ComboboxSingleSelect clearable />
+        <ComboboxMultiSelect />
+      </>,
+    );
+
+    expect(getAllByRole("combobox")).toHaveLength(2);
+    expect(
+      container.querySelectorAll(
+        "[data-tgph-combobox-clear], [data-tgph-combobox-tag-button]",
+      ),
+    ).toHaveLength(3);
+    expect(container.querySelector("button button")).toBeNull();
+  });
+
+  it("offers no clear or tag remove buttons while disabled", () => {
+    const { container } = render(
+      <>
+        <ComboboxSingleSelect clearable disabled />
+        <ComboboxMultiSelect disabled />
+      </>,
+    );
+
+    expect(
+      container.querySelector(
+        "[data-tgph-combobox-clear], [data-tgph-combobox-tag-button]",
+      ),
+    ).toBeNull();
   });
 });
 

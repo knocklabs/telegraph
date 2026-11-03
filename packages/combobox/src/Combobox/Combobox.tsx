@@ -1093,9 +1093,13 @@ const Trigger = <V extends ChildrenValue>({
   return (
     <BaseCombobox.Trigger
       disabled={context.disabled}
-      nativeButton
+      // Matches Button.Root below, which renders a div unless disabled.
+      nativeButton={resolveButtonNativeButton({
+        as: "div",
+        disabled: context.disabled,
+      })}
       // Base UI opens the popup on the trigger's mousedown. The tag-remove and
-      // clear controls live inside the trigger button and only stop the click,
+      // clear controls live inside the trigger and only stop the click,
       // so intercept mousedown in the capture phase for those targets to keep
       // the popup from opening while their own click handlers still run.
       onMouseDownCapture={(event: ReactMouseEvent<HTMLElement>) => {
@@ -1121,8 +1125,9 @@ const Trigger = <V extends ChildrenValue>({
       }}
       render={createTgphBaseUIRender(
         <TelegraphButton.Root
+          // A div, so the clear and tag remove buttons inside stay valid HTML.
+          as="div"
           id={context.triggerId}
-          type="button"
           bg="surface-1"
           variant="outline"
           align="center"
