@@ -1,5 +1,11 @@
 # @telegraph/combobox
 
+## 0.6.2
+
+### Patch Changes
+
+- [#1049](https://github.com/knocklabs/telegraph/pull/1049) [`7880c96`](https://github.com/knocklabs/telegraph/commit/7880c968ccab359d90d7fe732ddbfe5b022939b2) Thanks [@kylemcd](https://github.com/kylemcd)! - Name each multi-select tag's remove button after the option's label instead of its raw value, so screen readers announce "Remove general" rather than "Remove C0123ABC".
+
 ## 0.6.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.1.6
+
+### Patch Changes
+
+- [#1041](https://github.com/knocklabs/telegraph/pull/1041) [`5de1ed3`](https://github.com/knocklabs/telegraph/commit/5de1ed3498ef11e641c550ae39706462477567a4) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump @vitejs/plugin-react from 6.0.3 to 6.1.2
+
 ## 0.1.5
 
 ### Patch Changes
