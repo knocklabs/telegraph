@@ -912,6 +912,42 @@ describe("Combobox", () => {
       const isOpen = trigger?.getAttribute("aria-expanded") === "true";
       expect(isOpen).toBe(wasOpen);
     });
+
+    it("names each tag's remove button after the option's text label", () => {
+      // KNO-15138: screen readers announced "Remove C0123ABC", not the label.
+      const { container } = render(
+        <Combobox.Root
+          layout="wrap"
+          value={["C0123ABC", "C0456DEF", "C0789GHI", "created-value"]}
+          onValueChange={() => {}}
+        >
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Options>
+              <Combobox.Option value="C0123ABC">general</Combobox.Option>
+              <Combobox.Option value="C0456DEF" label="random">
+                <span>#random</span>
+              </Combobox.Option>
+              <Combobox.Option value="C0789GHI">
+                <span>#design</span>
+              </Combobox.Option>
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>,
+      );
+
+      const tagButtons = container.querySelectorAll(
+        "[data-tgph-combobox-tag-button]",
+      );
+
+      expect(tagButtons).toHaveLength(4);
+      expect(tagButtons[0]).toHaveAccessibleName("Remove general");
+      expect(tagButtons[1]).toHaveAccessibleName("Remove random");
+      // Element children with no `label` have no text, so the value stands in.
+      expect(tagButtons[2]).toHaveAccessibleName("Remove C0789GHI");
+      // A created value has no option to read a label from.
+      expect(tagButtons[3]).toHaveAccessibleName("Remove created-value");
+    });
   });
 
   describe("open state", () => {

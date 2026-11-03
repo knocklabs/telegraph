@@ -33,6 +33,7 @@ import {
 import { ComboboxContext } from "./Combobox";
 import {
   getCurrentOption,
+  getOptionAccessibleLabel,
   isMultiSelect,
   isSingleSelect,
 } from "./Combobox.helpers";
@@ -371,9 +372,16 @@ const TriggerTagButton = <T extends TgphElement = "button">(
   const context = useContext(ComboboxContext);
   const triggerTagContext = useContext(TriggerTagContext);
 
+  // Name the button after the option's text label, as the trigger's own
+  // aria-label does. Created values have no option, so fall back to the value.
+  const accessibleLabel =
+    getOptionAccessibleLabel(
+      getCurrentOption(triggerTagContext.value, context.options),
+    ) ?? triggerTagContext.value;
+
   return (
     <Tag.Button
-      icon={{ icon: X, alt: `Remove ${triggerTagContext.value}` }}
+      icon={{ icon: X, alt: `Remove ${accessibleLabel}` }}
       height="full"
       borderRightRadius="1"
       onClick={(event: ReactMouseEvent) => {
