@@ -1,5 +1,7 @@
+import { Button } from "@telegraph/button";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Languages } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { axe, expectToHaveNoViolations } from "vitest.axe";
@@ -2919,6 +2921,77 @@ describe("Trigger controls", () => {
       ),
     ).toHaveLength(3);
     expect(container.querySelector("button button")).toBeNull();
+  });
+
+  it("opens from a label that targets the trigger", async () => {
+    const user = userEvent.setup();
+    const { container, getByText } = render(
+      <>
+        <label htmlFor="channel-select">Channel</label>
+        <Combobox.Root defaultValue="email">
+          <Combobox.Trigger id="channel-select" />
+          <Combobox.Content>
+            <Combobox.Options>
+              {VALUES.map((option, index) => (
+                <Combobox.Option key={option} value={option}>
+                  {LABELS[index]}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Content>
+        </Combobox.Root>
+      </>,
+    );
+    const trigger = container.querySelector("[data-tgph-combobox-trigger]");
+
+    await user.click(getByText("Channel"));
+
+    await waitFor(() =>
+      expect(trigger?.getAttribute("aria-expanded")).toBe("true"),
+    );
+  });
+
+  it("keeps the icon-only layout for a trigger holding one icon", () => {
+    const { container } = render(
+      <Combobox.Root defaultValue="email">
+        <Combobox.Trigger>
+          <Button.Icon icon={Languages} alt="Preview language" />
+        </Combobox.Trigger>
+      </Combobox.Root>,
+    );
+
+    expect(
+      container
+        .querySelector("[data-tgph-combobox-trigger]")
+        ?.getAttribute("data-tgph-button-layout"),
+    ).toBe("icon-only");
+  });
+
+  it("treats a disabled Trigger like a disabled Root", () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const { container } = render(
+      <Combobox.Root defaultValue="email" clearable>
+        <Combobox.Trigger disabled />
+        <Combobox.Content>
+          <Combobox.Options>
+            {VALUES.map((option, index) => (
+              <Combobox.Option key={option} value={option}>
+                {LABELS[index]}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox.Content>
+      </Combobox.Root>,
+    );
+
+    expect(
+      container.querySelector("[data-tgph-combobox-trigger]"),
+    ).toBeDisabled();
+    expect(container.querySelector("[data-tgph-combobox-clear]")).toBeNull();
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
   });
 
   it("offers no clear or tag remove buttons while disabled", () => {

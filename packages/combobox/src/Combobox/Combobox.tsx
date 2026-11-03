@@ -1037,13 +1037,18 @@ export type TriggerProps<V extends ChildrenValue> = TriggerBaseProps & {
   children?: ReactNode | ((props: { value: ChildrenFnValue<V> }) => ReactNode);
 };
 
+// Whether the trigger is disabled, by Root or by the Trigger's own prop.
+export const TriggerDisabledContext = createContext(false);
+
 const Trigger = <V extends ChildrenValue>({
   size = "1",
+  disabled: disabledProp,
   children,
   tgphRef,
   ...props
 }: TriggerProps<V>) => {
   const context = useContext(ComboboxContext);
+  const disabled = !!context.disabled || !!disabledProp;
   // Compose a consumer ref with the internal trigger ref instead of letting the
   // spread below clobber it — the internal ref drives keyboard-close refocus.
   const composedTriggerRef = useComposedRefs(
@@ -1051,6 +1056,22 @@ const Trigger = <V extends ChildrenValue>({
     context.triggerRef,
   );
   const hasTags = isMultiSelect(context.value) && context.value.length > 0;
+
+  // A label cannot target a div, so pass its clicks on as it would to a button.
+  useEffect(() => {
+    const handleLabelClick = (event: MouseEvent) => {
+      const trigger = context.triggerRef?.current;
+      const label = (event.target as Element | null)?.closest?.("label");
+      if (!trigger?.id || label?.htmlFor !== trigger.id) return;
+      // A disabled trigger is a native button, which the label reaches itself.
+      if (trigger.tagName === "BUTTON") return;
+
+      trigger.click();
+    };
+
+    document.addEventListener("click", handleLabelClick);
+    return () => document.removeEventListener("click", handleLabelClick);
+  }, [context.triggerRef]);
 
   const currentValue = useMemo<
     DefinedOption | Array<DefinedOption | undefined> | undefined
@@ -1091,89 +1112,89 @@ const Trigger = <V extends ChildrenValue>({
   }, [currentValue, context.placeholder]);
 
   return (
-    <BaseCombobox.Trigger
-      disabled={context.disabled}
-      // Matches Button.Root below, which renders a div unless disabled.
-      nativeButton={resolveButtonNativeButton({
-        as: "div",
-        disabled: context.disabled,
-      })}
-      // Base UI opens the popup on the trigger's mousedown. The tag-remove and
-      // clear controls live inside the trigger and only stop the click,
-      // so intercept mousedown in the capture phase for those targets to keep
-      // the popup from opening while their own click handlers still run.
-      onMouseDownCapture={(event: ReactMouseEvent<HTMLElement>) => {
-        const target = event.target as HTMLElement;
-        if (
-          target.closest?.(
-            "[data-tgph-combobox-tag-button], [data-tgph-combobox-clear]",
-          )
-        ) {
-          event.stopPropagation();
-        }
-      }}
-      onMouseDown={(event: ReactMouseEvent<HTMLElement>) => {
-        if (event.button !== 0 || context.open || context.disabled) return;
-
-        // Base UI defers non-input trigger opening to the next animation frame.
-        // The menu-backed combobox opened during mousedown, and consumers use
-        // that turn to start lazy option loading before the click completes.
-        // Replace Base UI's toggle for this press so it cannot observe the
-        // synchronously opened store and interpret the same press as a close.
-        context.setOpen(true);
-        (event as BaseUIMouseEvent).preventBaseUIHandler?.();
-      }}
-      render={createTgphBaseUIRender(
-        <TelegraphButton.Root
-          // A div, so the clear and tag remove buttons inside stay valid HTML.
-          as="div"
-          id={context.triggerId}
-          bg="surface-1"
-          variant="outline"
-          align="center"
-          minH={TRIGGER_MIN_HEIGHT[size]}
-          // `auto` (not `full`) so the trigger grows with wrapped tags but never
-          // stretches to a definite-height ancestor. Button.Root would otherwise
-          // apply its fixed per-size `h`, which clips the wrap layout.
-          h="auto"
-          w="full"
-          py="0_5"
-          pr="1_5"
-          pl={hasTags ? "0_5" : "1_5"}
-          size={size}
-          color={context.errored ? "red" : "gray"}
-          justify="space-between"
-          // Accessibility attributes
-          role="combobox"
-          aria-label={getAriaLabelString()}
-          aria-controls={context.contentId}
-          aria-expanded={context.open}
-          aria-haspopup="listbox"
-          // Custom attributes
-          data-tgph-combobox-trigger
-          data-tgph-combobox-trigger-open={context.open}
-          disabled={context.disabled}
-          {...props}
-          tgphRef={composedTriggerRef}
-        >
-          {children ? (
-            typeof children === "function" ? (
-              children({ value: currentValue as ChildrenFnValue<V> })
-            ) : (
-              children
+    // Outside Button.Root, which reads its own children to pick a layout.
+    <TriggerDisabledContext.Provider value={disabled}>
+      <BaseCombobox.Trigger
+        disabled={disabled}
+        // Matches Button.Root below, which renders a div unless disabled.
+        nativeButton={resolveButtonNativeButton({ as: "div", disabled })}
+        // Base UI opens the popup on the trigger's mousedown. The tag-remove and
+        // clear controls live inside the trigger and only stop the click,
+        // so intercept mousedown in the capture phase for those targets to keep
+        // the popup from opening while their own click handlers still run.
+        onMouseDownCapture={(event: ReactMouseEvent<HTMLElement>) => {
+          const target = event.target as HTMLElement;
+          if (
+            target.closest?.(
+              "[data-tgph-combobox-tag-button], [data-tgph-combobox-clear]",
             )
-          ) : (
-            <>
-              <Primitives.TriggerValue />
-              <Primitives.TriggerActionsContainer>
-                <Primitives.TriggerClear />
-                <Primitives.TriggerIndicator />
-              </Primitives.TriggerActionsContainer>
-            </>
-          )}
-        </TelegraphButton.Root>,
-      )}
-    />
+          ) {
+            event.stopPropagation();
+          }
+        }}
+        onMouseDown={(event: ReactMouseEvent<HTMLElement>) => {
+          if (event.button !== 0 || context.open || disabled) return;
+
+          // Base UI defers non-input trigger opening to the next animation frame.
+          // The menu-backed combobox opened during mousedown, and consumers use
+          // that turn to start lazy option loading before the click completes.
+          // Replace Base UI's toggle for this press so it cannot observe the
+          // synchronously opened store and interpret the same press as a close.
+          context.setOpen(true);
+          (event as BaseUIMouseEvent).preventBaseUIHandler?.();
+        }}
+        render={createTgphBaseUIRender(
+          <TelegraphButton.Root
+            // A div, so the clear and tag remove buttons inside stay valid HTML.
+            as="div"
+            id={context.triggerId}
+            bg="surface-1"
+            variant="outline"
+            align="center"
+            minH={TRIGGER_MIN_HEIGHT[size]}
+            // `auto` (not `full`) so the trigger grows with wrapped tags but never
+            // stretches to a definite-height ancestor. Button.Root would otherwise
+            // apply its fixed per-size `h`, which clips the wrap layout.
+            h="auto"
+            w="full"
+            py="0_5"
+            pr="1_5"
+            pl={hasTags ? "0_5" : "1_5"}
+            size={size}
+            color={context.errored ? "red" : "gray"}
+            justify="space-between"
+            // Accessibility attributes
+            role="combobox"
+            aria-label={getAriaLabelString()}
+            aria-controls={context.contentId}
+            aria-expanded={context.open}
+            aria-haspopup="listbox"
+            // Custom attributes
+            data-tgph-combobox-trigger
+            data-tgph-combobox-trigger-open={context.open}
+            disabled={disabled}
+            {...props}
+            tgphRef={composedTriggerRef}
+          >
+            {children ? (
+              typeof children === "function" ? (
+                children({ value: currentValue as ChildrenFnValue<V> })
+              ) : (
+                children
+              )
+            ) : (
+              <>
+                <Primitives.TriggerValue />
+                <Primitives.TriggerActionsContainer>
+                  <Primitives.TriggerClear />
+                  <Primitives.TriggerIndicator />
+                </Primitives.TriggerActionsContainer>
+              </>
+            )}
+          </TelegraphButton.Root>,
+        )}
+      />
+    </TriggerDisabledContext.Provider>
   );
 };
 

@@ -29,7 +29,7 @@ import {
   useMemo,
 } from "react";
 
-import { ComboboxContext } from "./Combobox";
+import { ComboboxContext, TriggerDisabledContext } from "./Combobox";
 import {
   getCurrentOption,
   getOptionAccessibleLabel,
@@ -103,9 +103,11 @@ const TriggerClear = <T extends TgphElement = "button">(
     context.triggerRef?.current?.focus();
   };
 
+  const triggerDisabled = useContext(TriggerDisabledContext);
+
   const shouldShowClearable = useMemo(() => {
     // A disabled trigger is a native button, and its value stays fixed.
-    if (context.disabled) return false;
+    if (triggerDisabled || context.disabled) return false;
 
     if (isSingleSelect(context.value)) {
       return context.clearable && context.value;
@@ -114,7 +116,7 @@ const TriggerClear = <T extends TgphElement = "button">(
     if (isMultiSelect(context.value)) {
       return context.clearable && context.value?.length > 0;
     }
-  }, [context.clearable, context.disabled, context.value]);
+  }, [context.clearable, context.disabled, context.value, triggerDisabled]);
 
   if (!shouldShowClearable) return null;
 
@@ -365,6 +367,7 @@ const TriggerTagButton = <T extends TgphElement = "button">(
     triggerTagButtonProps as TriggerTagButtonProps<"button">;
   const context = useContext(ComboboxContext);
   const triggerTagContext = useContext(TriggerTagContext);
+  const triggerDisabled = useContext(TriggerDisabledContext);
 
   // Name the button after the option's text label, as the trigger's own
   // aria-label does. Created values have no option, so fall back to the value.
@@ -374,7 +377,7 @@ const TriggerTagButton = <T extends TgphElement = "button">(
     ) ?? triggerTagContext.value;
 
   // A disabled trigger is a native button, and its value stays fixed.
-  if (context.disabled) return null;
+  if (triggerDisabled || context.disabled) return null;
 
   return (
     <Tag.Button
