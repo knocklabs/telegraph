@@ -14,7 +14,7 @@
     "build": "yarn clean && tsc -b"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^6.0.3",
+    "@vitejs/plugin-react": "^6.1.2",
     "vite": "^8.3.3",
     "vite-plugin-dts": "^5.1.1"
   },
