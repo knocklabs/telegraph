@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Setup Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -25,22 +27,26 @@ jobs:
         run: yarn --immutable
       - name: Build Current Branch
         run: yarn build:packages
+      # These local actions import @actions/core from the workspace's
+      # node_modules. A `$/` reference runs them from the runner's action cache,
+      # where that import can't resolve, so they stay workspace-relative.
       - name: Get Current Package Sizes
-        uses: ./.github/actions/check-package-sizes-action
+        uses: ./.github/actions/check-package-sizes-action # zizmor: ignore[self-repository]
         id: current-package-sizes
       - name: Checkout Main
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
+          persist-credentials: false
           ref: main
       - name: Install Dependencies
         run: YARN_ENABLE_HARDENED_MODE=0 yarn install --no-immutable
       - name: Build Main Branch
         run: yarn build:packages
       - name: Get Main Package Sizes
-        uses: ./.github/actions/check-package-sizes-action
+        uses: ./.github/actions/check-package-sizes-action # zizmor: ignore[self-repository]
         id: main-package-sizes
       - name: Compare Package Sizes
-        uses: ./.github/actions/compare-package-sizes-action
+        uses: ./.github/actions/compare-package-sizes-action # zizmor: ignore[self-repository]
         with:
           current-package-sizes: ${{ steps.current-package-sizes.outputs.package-sizes }}
           previous-package-sizes: ${{ steps.main-package-sizes.outputs.package-sizes }}
