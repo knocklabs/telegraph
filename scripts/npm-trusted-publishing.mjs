@@ -69,7 +69,7 @@ export const publishablePackages = ({ root = ROOT } = {}) => {
 
 const existsOnNpm = async ({ name }) => {
   // Scoped names keep the leading @ and percent-encode the slash.
-  const res = await fetch(`${REGISTRY}/${name.replace("/", "%2F")}`, {
+  const res = await fetch(`${REGISTRY}/${name.replaceAll("/", "%2F")}`, {
     method: "HEAD",
   });
   if (res.status === 404) return false;
