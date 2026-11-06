@@ -38,5 +38,5 @@ export { sharedConfig };
 // Vitest 5 resolves `projects` inside project configs too, and "packages/*"
 // matches nothing relative to a package directory.
 export default mergeConfig(sharedConfig, {
-  test: { projects: ["packages/*"] },
+  test: { projects: ["packages/*", "scripts"] },
 });

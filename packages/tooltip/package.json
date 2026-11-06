@@ -2,7 +2,11 @@
   "name": "@telegraph/tooltip",
   "version": "0.6.4",
   "description": "A simple tooltip component ",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/tooltip",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/tooltip"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

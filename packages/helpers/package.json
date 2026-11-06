@@ -1,7 +1,11 @@
 {
   "name": "@telegraph/helpers",
   "version": "0.3.2",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/helpers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/helpers"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

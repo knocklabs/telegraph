@@ -2,7 +2,11 @@
   "name": "@telegraph/link",
   "version": "0.2.3",
   "description": "Link component in Telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/link",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/link"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

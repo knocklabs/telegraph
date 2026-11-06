@@ -2,7 +2,11 @@
   "name": "@telegraph/filter",
   "version": "0.2.2",
   "description": "A flexible filter component",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/filter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/filter"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

@@ -2,7 +2,11 @@
   "name": "@telegraph/checkbox",
   "version": "0.1.2",
   "description": "Checkbox component for Telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/checkbox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/checkbox"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

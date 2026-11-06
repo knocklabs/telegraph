@@ -2,7 +2,11 @@
   "name": "@telegraph/nextjs",
   "version": "0.0.5",
   "description": "Utility for utilizing telegraph components in Nextjs",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/nextjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/nextjs"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "exports": {
