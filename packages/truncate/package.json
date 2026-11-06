@@ -2,7 +2,11 @@
   "name": "@telegraph/truncate",
   "version": "0.3.2",
   "description": "Utility components for detecting and responding to content overflow, truncation, and visibility states in the UI.",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/truncate",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/truncate"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

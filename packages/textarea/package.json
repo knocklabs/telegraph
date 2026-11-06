@@ -2,7 +2,11 @@
   "name": "@telegraph/textarea",
   "version": "0.4.1",
   "description": "A multi-line user input.",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/textarea",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/textarea"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

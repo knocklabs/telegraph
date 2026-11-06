@@ -2,7 +2,11 @@
   "name": "@telegraph/{{package_name}}",
   "version": "0.0.0",
   "description": "{{package_description}}",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/{{package_name}}",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/{{package_name}}"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

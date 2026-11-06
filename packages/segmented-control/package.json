@@ -2,7 +2,11 @@
   "name": "@telegraph/segmented-control",
   "version": "0.4.3",
   "description": "A segmented selection between as set of options.",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/segmented-control",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/segmented-control"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

@@ -1,7 +1,11 @@
 {
   "name": "@telegraph/layout",
   "version": "0.6.4",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/layout",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/layout"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

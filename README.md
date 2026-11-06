@@ -84,6 +84,32 @@ yarn lint
 
 We use [changesets](https://github.com/changesets/changesets) to manage releases. Each time a PR is opened, make sure to include a changeset. A changeset bot will add a comment to your PR prompting you to do so with a template, click that and commit it to your PR.
 
+#### Publishing to npm
+
+Releases publish from [`release.yml`](.github/workflows/release.yml) through npm trusted publishing (OIDC). CI holds no npm token: each run gets a short-lived token from GitHub, and every published version carries a signed provenance statement. Only runs in the `production-release` environment can publish, and that environment only allows `main`.
+
+Each package needs a trusted publisher on npm that points at this repo, `release.yml`, and the `production-release` environment. Before you add any, check that the `production-release` environment (repo Settings → Environments) only allows the `main` branch, and that admins can't bypass it. npm doesn't check the branch, so until that policy is in place, any branch that runs `release.yml` in this environment can publish.
+
+Then set up the trusted publishers from your machine:
+
+```bash
+npm install -g npm@11       # npm trust needs 11.15.0+
+npm login                   # your npm account needs 2FA
+yarn release:bootstrap      # all publishable packages, or name specific ones
+```
+
+`npm trust` asks for 2FA once, and its 5-minute skip window covers every package. npm drops a new trusted publisher that doesn't publish within 2 days, so run this while the Version PR that releases the packages is open, and merge it within 2 days. Add `--dry-run` to print the npm commands without running them.
+
+#### Adding a new package
+
+npm can't publish the first version of a new package name through trusted publishing. `yarn release:bootstrap` works around this:
+
+1. Create the package with `yarn generate:package`, and add a changeset for it.
+2. Once the Version PR that releases it is open, run `yarn release:bootstrap @telegraph/<name>`. It publishes a `0.0.0-placeholder` prerelease so the name exists, then adds the trusted publisher.
+3. Merge the Version PR within 2 days. The real first version publishes from CI like every other package.
+
+If a release includes a package that isn't on npm yet, `release:publish` fails before it publishes anything and names the command to run.
+
 ## Packages
 
 ### Core Packages

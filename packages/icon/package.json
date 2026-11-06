@@ -1,7 +1,11 @@
 {
   "name": "@telegraph/icon",
   "version": "0.6.2",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/icon",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/icon"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

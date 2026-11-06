@@ -2,7 +2,11 @@
   "name": "@telegraph/select",
   "version": "0.2.2",
   "description": "A simple select component built on top of @telegraph/combobox",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/select",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/select"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
