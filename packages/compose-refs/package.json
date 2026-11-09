@@ -1,7 +1,11 @@
 {
   "name": "@telegraph/compose-refs",
   "version": "0.0.9",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/compose-refs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/compose-refs"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

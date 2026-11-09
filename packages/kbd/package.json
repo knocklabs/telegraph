@@ -2,7 +2,11 @@
   "name": "@telegraph/kbd",
   "version": "0.2.1",
   "description": "Styled element for keyboard input or hotkey.",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/kbd",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/kbd"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

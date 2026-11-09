@@ -2,7 +2,11 @@
   "name": "@telegraph/menu",
   "version": "0.6.4",
   "description": "A base component used within Menu, Select, and Combobox pop-over components.",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/menu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/menu"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

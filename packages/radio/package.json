@@ -1,7 +1,11 @@
 {
   "name": "@telegraph/radio",
   "version": "0.4.4",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/radio",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/radio"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "dist/cjs/index.js",

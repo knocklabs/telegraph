@@ -2,7 +2,11 @@
   "name": "@telegraph/style-engine",
   "version": "0.4.5",
   "description": "A wrappar around vanilla extract to style telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/style-engine",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/style-engine"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

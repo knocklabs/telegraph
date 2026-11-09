@@ -2,7 +2,11 @@
   "name": "@telegraph/typography",
   "version": "0.5.3",
   "description": "Shared build utilities for Telegraph",
-  "repository": "https://github.com/knocklabs/telegraph/tree/main/packages/typography",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knocklabs/telegraph.git",
+    "directory": "packages/typography"
+  },
   "author": "@knocklabs",
   "license": "MIT",
   "main": "./dist/cjs/index.js",

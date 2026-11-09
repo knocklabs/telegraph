@@ -14,24 +14,24 @@ concurrency:
 jobs:
   setup-files:
     name: Setup Files
-    uses: ./.github/workflows/setup-files.yml
+    uses: $/.github/workflows/setup-files.yml
   format:
     name: Check Project Formatting
     needs: [setup-files]
-    uses: ./.github/workflows/format.yml
+    uses: $/.github/workflows/format.yml
   lint:
     name: Lint Project
     needs: [setup-files]
-    uses: ./.github/workflows/lint.yml
+    uses: $/.github/workflows/lint.yml
   type-check:
     name: Type Check Project
     needs: [setup-files]
-    uses: ./.github/workflows/type-check.yml
+    uses: $/.github/workflows/type-check.yml
   unit-test-packages:
     name: Unit Test Packages
     needs: [setup-files]
-    uses: ./.github/workflows/unit-test-packages.yml
+    uses: $/.github/workflows/unit-test-packages.yml
   browser-test-packages:
     name: Browser Test Packages
     needs: [setup-files]
-    uses: ./.github/workflows/browser-test-packages.yml
+    uses: $/.github/workflows/browser-test-packages.yml
