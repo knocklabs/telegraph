@@ -6,5 +6,5 @@ outputs:
   total-size:
     description: The total size of all the packages
 runs:
-  using: "node20"
+  using: "node24"
   main: "index.mjs"
