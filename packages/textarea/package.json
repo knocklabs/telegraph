@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/textarea",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A multi-line user input.",
   "repository": {
     "type": "git",

@@ -1,5 +1,23 @@
 # @telegraph/combobox
 
+## 0.6.3
+
+### Patch Changes
+
+- [#1055](https://github.com/knocklabs/telegraph/pull/1055) [`7635d95`](https://github.com/knocklabs/telegraph/commit/7635d95e4081f882a584e9b1c8f0fcdb8b6a02ef) Thanks [@kylemcd](https://github.com/kylemcd)! - Publish from GitHub Actions through npm trusted publishing (OIDC) with signed provenance, and point each package's `repository` field at its directory in this repo.
+- Updated dependencies [[`7635d95`](https://github.com/knocklabs/telegraph/commit/7635d95e4081f882a584e9b1c8f0fcdb8b6a02ef)]:
+  - @telegraph/button@0.9.3
+  - @telegraph/compose-refs@0.0.10
+  - @telegraph/helpers@0.3.3
+  - @telegraph/icon@0.6.3
+  - @telegraph/input@0.5.3
+  - @telegraph/layout@0.6.5
+  - @telegraph/segmented-control@0.4.4
+  - @telegraph/tag@0.3.5
+  - @telegraph/tooltip@0.6.5
+  - @telegraph/truncate@0.3.3
+  - @telegraph/typography@0.5.4
+
 ## 0.6.2
 
 ### Patch Changes

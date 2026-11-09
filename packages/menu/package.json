@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/menu",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "A base component used within Menu, Select, and Combobox pop-over components.",
   "repository": {
     "type": "git",

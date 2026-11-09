@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/popover",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Displays content in a portal, triggered by a button.",
   "repository": {
     "type": "git",
