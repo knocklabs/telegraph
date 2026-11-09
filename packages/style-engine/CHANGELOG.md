@@ -1,5 +1,13 @@
 # @telegraph/style-engine
 
+## 0.4.6
+
+### Patch Changes
+
+- [#1055](https://github.com/knocklabs/telegraph/pull/1055) [`7635d95`](https://github.com/knocklabs/telegraph/commit/7635d95e4081f882a584e9b1c8f0fcdb8b6a02ef) Thanks [@kylemcd](https://github.com/kylemcd)! - Publish from GitHub Actions through npm trusted publishing (OIDC) with signed provenance, and point each package's `repository` field at its directory in this repo.
+- Updated dependencies [[`7635d95`](https://github.com/knocklabs/telegraph/commit/7635d95e4081f882a584e9b1c8f0fcdb8b6a02ef)]:
+  - @telegraph/tokens@0.2.3
+
 ## 0.4.5
 
 ### Patch Changes

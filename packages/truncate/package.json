@@ -1,6 +1,6 @@
 {
   "name": "@telegraph/truncate",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Utility components for detecting and responding to content overflow, truncation, and visibility states in the UI.",
   "repository": {
     "type": "git",

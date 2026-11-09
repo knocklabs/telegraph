@@ -1,5 +1,11 @@
 # @telegraph/vite-config
 
+## 0.1.7
+
+### Patch Changes
+
+- [#1055](https://github.com/knocklabs/telegraph/pull/1055) [`7635d95`](https://github.com/knocklabs/telegraph/commit/7635d95e4081f882a584e9b1c8f0fcdb8b6a02ef) Thanks [@kylemcd](https://github.com/kylemcd)! - Publish from GitHub Actions through npm trusted publishing (OIDC) with signed provenance, and point each package's `repository` field at its directory in this repo.
+
 ## 0.1.6
 
 ### Patch Changes
