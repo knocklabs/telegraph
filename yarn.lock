@@ -1502,7 +1502,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^21.2.3"
     "@github-ui/storybook-addon-performance-panel": "npm:^1.2.0"
     "@manypkg/cli": "npm:^0.25.1"
-    "@moonrepo/cli": "npm:^2.3.5"
+    "@moonrepo/cli": "npm:^2.6.5"
     "@storybook/addon-links": "npm:^10.5.6"
     "@storybook/addon-onboarding": "npm:^10.6.1"
     "@storybook/addon-themes": "npm:^10.6.3"
@@ -1604,17 +1604,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@moonrepo/cli@npm:^2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/cli@npm:2.3.5"
+"@moonrepo/cli@npm:^2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/cli@npm:2.6.5"
   dependencies:
-    "@moonrepo/core-linux-arm64-gnu": "npm:2.3.5"
-    "@moonrepo/core-linux-arm64-musl": "npm:2.3.5"
-    "@moonrepo/core-linux-x64-gnu": "npm:2.3.5"
-    "@moonrepo/core-linux-x64-musl": "npm:2.3.5"
-    "@moonrepo/core-macos-arm64": "npm:2.3.5"
-    "@moonrepo/core-macos-x64": "npm:2.3.5"
-    "@moonrepo/core-windows-x64-msvc": "npm:2.3.5"
+    "@moonrepo/core-linux-arm64-gnu": "npm:2.6.5"
+    "@moonrepo/core-linux-arm64-musl": "npm:2.6.5"
+    "@moonrepo/core-linux-x64-gnu": "npm:2.6.5"
+    "@moonrepo/core-linux-x64-musl": "npm:2.6.5"
+    "@moonrepo/core-macos-arm64": "npm:2.6.5"
+    "@moonrepo/core-macos-x64": "npm:2.6.5"
+    "@moonrepo/core-windows-x64-msvc": "npm:2.6.5"
     detect-libc: "npm:^2.1.2"
   dependenciesMeta:
     "@moonrepo/core-linux-arm64-gnu":
@@ -1634,55 +1634,55 @@ __metadata:
   bin:
     moon: moon.js
     moonx: moonx.js
-  checksum: 10c0/b7a32b99606619471b775df4c576e764f880717121d331f040d07aa39d98bb2436f4c7927d52d56e6d1a171319e003fa65251e58623622d776113aee94472bab
+  checksum: 10c0/154e8b2af560d261c790a3db336672742911837a515646fd512ebe2c44883f6ad1aa3540ae613621750275251fca7b31ee80b122a6faa4150d7d1d19ef557230
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-arm64-gnu@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-linux-arm64-gnu@npm:2.3.5"
+"@moonrepo/core-linux-arm64-gnu@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-linux-arm64-gnu@npm:2.6.5"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-arm64-musl@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-linux-arm64-musl@npm:2.3.5"
+"@moonrepo/core-linux-arm64-musl@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-linux-arm64-musl@npm:2.6.5"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-x64-gnu@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-linux-x64-gnu@npm:2.3.5"
+"@moonrepo/core-linux-x64-gnu@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-linux-x64-gnu@npm:2.6.5"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@moonrepo/core-linux-x64-musl@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-linux-x64-musl@npm:2.3.5"
+"@moonrepo/core-linux-x64-musl@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-linux-x64-musl@npm:2.6.5"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@moonrepo/core-macos-arm64@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-macos-arm64@npm:2.3.5"
+"@moonrepo/core-macos-arm64@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-macos-arm64@npm:2.6.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@moonrepo/core-macos-x64@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-macos-x64@npm:2.3.5"
+"@moonrepo/core-macos-x64@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-macos-x64@npm:2.6.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@moonrepo/core-windows-x64-msvc@npm:2.3.5":
-  version: 2.3.5
-  resolution: "@moonrepo/core-windows-x64-msvc@npm:2.3.5"
+"@moonrepo/core-windows-x64-msvc@npm:2.6.5":
+  version: 2.6.5
+  resolution: "@moonrepo/core-windows-x64-msvc@npm:2.6.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
