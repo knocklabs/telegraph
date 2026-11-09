@@ -11,5 +11,5 @@ outputs:
   pr-comment:
     description: The comment to post on the PR
 runs:
-  using: "node20"
+  using: "node24"
   main: "index.mjs"
