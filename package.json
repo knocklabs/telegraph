@@ -108,6 +108,6 @@
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "5.0.5",
     "vitest-axe": "0.1.0",
-    "vitest-browser-react": "^2.2.0"
+    "vitest-browser-react": "^2.3.0"
   }
 }
