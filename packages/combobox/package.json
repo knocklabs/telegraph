@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",
+    "@tanstack/react-virtual": "^3.14.11",
     "@telegraph/postcss-config": "workspace:^",
     "@telegraph/vite-config": "workspace:^",
     "@types/react": "^19.3.0",
