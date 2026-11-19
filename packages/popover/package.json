@@ -36,7 +36,7 @@
     "@telegraph/compose-refs": "workspace:^",
     "@telegraph/helpers": "workspace:^",
     "@telegraph/layout": "workspace:^",
-    "motion": "^13.5.0"
+    "motion": "^14.12.0"
   },
   "devDependencies": {
     "@knocklabs/typescript-config": "^0.0.2",
