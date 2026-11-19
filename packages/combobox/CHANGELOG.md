@@ -1,5 +1,15 @@
 # @telegraph/combobox
 
+## 0.6.4
+
+### Patch Changes
+
+- [#1064](https://github.com/knocklabs/telegraph/pull/1064) [`fed48d9`](https://github.com/knocklabs/telegraph/commit/fed48d9b6374cfd048ec90e2bc92b1cb8d1bce6f) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump motion from 13.5.0 to 14.12.0
+- Updated dependencies [[`fed48d9`](https://github.com/knocklabs/telegraph/commit/fed48d9b6374cfd048ec90e2bc92b1cb8d1bce6f)]:
+  - @telegraph/segmented-control@0.4.5
+  - @telegraph/tag@0.3.6
+  - @telegraph/tooltip@0.6.6
+
 ## 0.6.3
 
 ### Patch Changes
