@@ -94,6 +94,7 @@ The root component that manages the state and context for the combobox.
 | `required`           | `boolean`                                                   | `false`      | Require a selection before form submission             |
 | `name`               | `string`                                                    | `undefined`  | Submit the selected value with this field name         |
 | `manualFiltering`    | `boolean`                                                   | automatic    | Show rendered options without the built-in text filter; controlled Search enables it by default |
+| `options`            | `ComboboxOption[]`                                          | `undefined`  | The full ordered collection, when you mount only a window of the options. See [External Virtualization](#external-virtualization) |
 | `onItemHighlighted`  | `(value: string \| undefined, details: ComboboxHighlightDetails) => void` | `undefined` | Called when virtual option focus changes               |
 | `selectionMode`      | `"single" \| "multiple" \| "none"`                         | inferred     | Select one, select many, or accept free text           |
 | `inputValue`         | `string`                                                    | `undefined`  | Controlled text for `Combobox.Input` or `Combobox.Search` |
@@ -320,6 +321,99 @@ export const AsyncCombobox = () => {
 };
 ```
 
+### External Virtualization
+
+Pass `options` when the list is too long to mount. Render only the visible
+window of `Combobox.Option` children and give `Combobox.Root` the whole ordered
+collection. Base UI numbers each row against that collection instead of the
+mounted DOM, so one arrow press moves one option as rows scroll in and out.
+
+Without `options`, a virtualizer that unmounts earlier rows makes Base UI
+renumber the mounted ones. A single `ArrowDown` can then jump several options.
+
+```tsx
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { Combobox, type ComboboxOption } from "@telegraph/combobox";
+import { Box } from "@telegraph/layout";
+import { useRef, useState } from "react";
+
+export const VirtualizedCombobox = ({
+  channels,
+}: {
+  channels: ComboboxOption[];
+}) => {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const virtualizer = useVirtualizer({
+    count: channels.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => 32,
+    overscan: 8,
+  });
+
+  return (
+    <Combobox.Root
+      value={value}
+      onValueChange={setValue}
+      options={channels}
+      onItemHighlighted={(_value, details) => {
+        if (details.index >= 0) virtualizer.scrollToIndex(details.index);
+      }}
+    >
+      <Combobox.Trigger />
+      <Combobox.Content>
+        <Combobox.Options tgphRef={scrollRef} maxHeight="64">
+          <Box
+            w="full"
+            position="relative"
+            style={{ height: `${virtualizer.getTotalSize()}px` }}
+          >
+            {virtualizer.getVirtualItems().map((row) => {
+              const option = channels[row.index];
+              if (!option) return null;
+              return (
+                <Box
+                  key={option.value}
+                  w="full"
+                  position="absolute"
+                  top="0"
+                  left="0"
+                  style={{
+                    height: `${row.size}px`,
+                    transform: `translateY(${row.start}px)`,
+                  }}
+                >
+                  <Combobox.Option value={option.value}>
+                    {option.label}
+                  </Combobox.Option>
+                </Box>
+              );
+            })}
+          </Box>
+        </Combobox.Options>
+        <Combobox.Empty />
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+};
+```
+
+Four rules come with `options`:
+
+1. Filtering is yours. Root forces `manualFiltering` on, because Telegraph's
+   filter reads only the mounted rows. Pass the collection already narrowed.
+2. Labels come from the collection, not the children. Set `label` on an entry
+   where the trigger needs more than the raw value.
+3. Scrolling is yours. Base UI cannot scroll to a row it has not mounted, so
+   drive the virtualizer from `details.index`.
+4. Every mounted option needs an entry, action rows included. A missing row
+   stays reachable by mouse but not by keyboard. `Combobox.Create` is exempt
+   and carries its own index.
+
+`Combobox.Options` is the scroll container. Pass it to the virtualizer with
+`tgphRef` and give it a bounded height.
+
 ### Create New Options
 
 ```tsx
@@ -445,13 +539,15 @@ export const CustomTrigger = () => (
 - `aria-controls` - Links trigger to dropdown
 - `aria-selected` - Indicates selected options
 - `role="listbox"` and `role="option"` - On dropdown and options
+- `aria-setsize` and `aria-posinset` - On options when `options` is set, so the
+  count reflects the whole collection rather than the mounted window
 
 ### Best Practices
 
 1. **Provide labels**: Use clear, descriptive placeholders
 2. **Handle loading states**: Show loading indicators during async operations
 3. **Error feedback**: Use the `errored` prop and provide error messages
-4. **Reasonable limits**: Consider pagination for large option lists
+4. **Long lists**: Virtualize with `options`, or split the list across pages
 
 ## Complete Component Reference
 
@@ -563,7 +659,8 @@ The `legacyBehavior` prop and `{ value, label }` selection objects were removed.
 Store only the option value in state. The trigger derives its display text from
 the matching mounted `Combobox.Option`, using its `label`, then its children,
 then its value. Async and paginated lists must keep the selected item mounted as
-an Option so the trigger can display its label.
+an Option so the trigger can display its label. A list that passes `options`
+does not. The trigger reads the label from the collection instead.
 
 ## References
 

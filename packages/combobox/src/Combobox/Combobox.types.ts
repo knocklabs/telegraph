@@ -12,6 +12,9 @@ export type DefinedOption = {
   label?: string | ReactNode;
 };
 
+// Public name for an entry of `Combobox.Root`'s `options` collection.
+export type ComboboxOption = DefinedOption;
+
 export type ComboboxValue = string | Array<string>;
 
 // How the combobox remembers a selection. `undefined` (the historical default)

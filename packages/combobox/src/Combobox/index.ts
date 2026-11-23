@@ -20,4 +20,5 @@ export type {
   ComboboxHighlightReason,
   ComboboxHighlightDetails,
   ComboboxActions,
+  ComboboxOption,
 } from "./Combobox.types";

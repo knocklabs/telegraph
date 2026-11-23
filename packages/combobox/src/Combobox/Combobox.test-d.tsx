@@ -180,6 +180,32 @@ describe("Combobox types", () => {
     >().toEqualTypeOf<string>();
   });
 
+  it("types the external virtualization collection", () => {
+    expectTypeOf<ComboboxRootProps<string>["options"]>().not.toBeAny();
+    // Values stay strings — Base UI's object item values never surface here.
+    expectTypeOf<
+      NonNullable<ComboboxRootProps<string>["options"]>[number]["value"]
+    >().toEqualTypeOf<string>();
+    expectTypeOf<
+      NonNullable<ComboboxRootProps<string>["options"]>[number]["label"]
+    >().not.toBeAny();
+
+    // Virtualization is orthogonal to how the combobox remembers a selection,
+    // so the collection has the same shape in every mode.
+    expectTypeOf<ComboboxRootProps<Array<string>>["options"]>().toEqualTypeOf<
+      ComboboxRootProps<string>["options"]
+    >();
+
+    // The index a consumer feeds to its virtualizer rides on the highlight
+    // details, so it must be a number rather than an optional/any.
+    expectTypeOf<ComboboxHighlightDetails["index"]>().toEqualTypeOf<number>();
+
+    <Combobox.Root
+      options={[{ value: "a" }, { value: "b", label: "B" }]}
+      onItemHighlighted={(_value, details) => details.index}
+    />;
+  });
+
   it("reports undefined when a single selection is cleared", () => {
     expectTypeOf<ComboboxRootProps<string>["onValueChange"]>().toEqualTypeOf<
       ((value: string | undefined) => void) | undefined
