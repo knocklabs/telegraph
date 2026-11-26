@@ -77,7 +77,7 @@
     "@manypkg/cli": "^0.25.1",
     "@moonrepo/cli": "^2.6.5",
     "@storybook/addon-links": "^10.5.6",
-    "@storybook/addon-onboarding": "^10.6.1",
+    "@storybook/addon-onboarding": "^10.6.7",
     "@storybook/addon-themes": "^10.6.7",
     "@storybook/icons": "^2.2.0",
     "@storybook/react": "^10.6.5",
