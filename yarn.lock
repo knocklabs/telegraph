@@ -1348,20 +1348,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@github-ui/storybook-addon-performance-panel@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@github-ui/storybook-addon-performance-panel@npm:1.2.0"
+"@github-ui/storybook-addon-performance-panel@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@github-ui/storybook-addon-performance-panel@npm:1.3.1"
   peerDependencies:
     "@storybook/icons": ^2.0.0
-    "@storybook/react": ^10.0.0
+    "@storybook/react": ^10.0.0 || >=11.0.0-0 <12.0.0-0
     react: ^19
-    storybook: ^10.0.0
+    storybook: ^10.0.0 || >=11.0.0-0 <12.0.0-0
   peerDependenciesMeta:
     "@storybook/react":
       optional: true
     react:
       optional: true
-  checksum: 10c0/18c2974f47ecdba230c6a3f65f2e0f63086f68240502b26f1f5aae4afe5ae7fc96416858d2ab84a6b985fb3ae2e79304e01b3f209dc6f2f0cfc2c284771e4356
+  checksum: 10c0/4c44b2d3c904560d314cdf496b8617319a5de5ce7072c0247f0c971e7b40fefe62cffaaaf86e494af9d64a66df19d17099efc40cbe3d7f3ed1627a41038f5efd
   languageName: node
   linkType: hard
 
@@ -1500,7 +1500,7 @@ __metadata:
     "@changesets/cli": "npm:^3.0.3"
     "@commitlint/cli": "npm:^21.2.4"
     "@commitlint/config-conventional": "npm:^21.2.3"
-    "@github-ui/storybook-addon-performance-panel": "npm:^1.2.0"
+    "@github-ui/storybook-addon-performance-panel": "npm:^1.3.1"
     "@manypkg/cli": "npm:^0.25.1"
     "@moonrepo/cli": "npm:^2.6.5"
     "@storybook/addon-links": "npm:^10.5.6"
